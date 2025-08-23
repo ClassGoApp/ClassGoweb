@@ -2845,6 +2845,15 @@ form p span i {
   color: rgba(88, 88, 88, 0.6);
 }
 /** ====== Header layout Start ====== **/
+
+/*== Responsivo*/
+@media (max-width: 768px) {
+  .atajo{
+    display: none;
+  }
+
+
+}
 .am-header {
   width: 100%;
   display: flex;
