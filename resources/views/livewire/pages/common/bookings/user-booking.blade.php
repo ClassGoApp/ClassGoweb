@@ -30,9 +30,10 @@
                 this.showModal = false;
             }
         }">
+       <!--Upcomming Bookings--> 
         <div class="am-booking-calander">
             <div class="am-booking-calander_header">
-                <div class="am-booking-dates-slot">
+                <div class="am-booking-dates-slot" style="display: flex; justify-content: center;">
                     <div class="am-booking-calander-day">
                         <a href="#" @if($disablePrevious) disabled @else wire:click="previousBookings" @endif>
                             <i class="am-icon-chevron-left"></i>
@@ -45,7 +46,7 @@
                         </a>
                     </div>
                     <div class="am-booking-calander-date flatpicker" wire:ignore>
-                        <x-text-input id="flat-picker" />
+                        <x-text-input id="flat-picker"/>
                     </div>
                 </div>
                 <div class="am-booking-filters-wrapper">

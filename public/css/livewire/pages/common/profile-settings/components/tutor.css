@@ -11,6 +11,7 @@
         margin-left: 0.2rem !important;
         margin-right: 0rem !important;
     }
+
     
     .tutor-profile-grid {
         display: grid;
@@ -26,6 +27,10 @@
         justify-content: center;
         align-items: center;
         margin-top: 0rem;
+    }
+
+    .profile-photo-card{
+        padding: 1rem;
     }
     .button_save{
         width: 70% !important;
@@ -52,7 +57,7 @@
         margin-bottom: 2rem; 
         
     }
-    
+
 
     .tutor-profile-data-card {
     background: #fff;

@@ -2851,8 +2851,6 @@ form p span i {
   .atajo{
     display: none;
   }
-
-
 }
 .am-header {
   width: 100%;
@@ -5689,8 +5687,8 @@ body:has(.am-dragfile):before {
   cursor: pointer;
   border-radius: 8px;
   align-items: center;
-  background: #219ebc;
   position: relative;
+
 }
 .am-booking-calander-date::after {
   z-index: 1;

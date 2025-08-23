@@ -27,7 +27,7 @@
 
 
             {{-- header del calendario --}}
-            <div class="am-booking-calander">
+            <div class="am-booking-calander" style="background: red;">
                 <div class="am-booking-calander_header">
                     <div class="am-booking-dates-slot">
                         <div class="am-booking-calander-day">
