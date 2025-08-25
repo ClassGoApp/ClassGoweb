@@ -44,6 +44,8 @@ use App\Services\GoogleMeetService;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TutorPerfilController;
 
+
+
 Route::view('/e', 'vistas.view.pages.e')->name('e');
 
 Route::get('/verify', function (\Illuminate\Http\Request $request) {
@@ -108,9 +110,17 @@ Route::get('auth/{provider}/callback', [SocialController::class, 'callback'])->n
 Route::get('/pay-qr/{orderId}', [PaymentController::class, 'showQR'])->name('pay-qr');
 
 Route::get('/google/authenticate', [GoogleController::class, 'authenticate'])->name('google.authenticate');
-Route::get('/auth/api/google/callback', [GoogleController::class, 'callback'])->name('google.callback');
+Route::get('/auth/api/google/callback', [GoogleController::class, 'googlecallback'])->name('google.callback');
 
-Route::get('auth/{provider}', [SocialController::class, 'redirect'])->name('social.redirect');
+
+
+
+//Route::get('calendar/google/callback', [GoogleController::class, 'googleCallback'])->name('googlecal.callback');
+
+
+
+
+//Route::get('auth/{provider}', [Go::class, 'redirect'])->name('social.redirect');
 
 
 Route::middleware(['locale', 'maintenance'])->group(function () {
