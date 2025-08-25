@@ -44,7 +44,6 @@
                     <a href="{{ route('nosotros')}}"><h1>Nosotros</h1></a>
                     <a href=" {{ route('nosotros')}}#mision"><p>Mision</p></a>
                     <a href=" {{ route('nosotros')}}#vision"><p>Vision</p></a>
-                    <a href="#logros"><p>Logros clave</p></a>
                     <a href="{{ route('nosotros')}}#team"><p>Desarrolladores</p></a>
                 </div>
                 <div class="box">
