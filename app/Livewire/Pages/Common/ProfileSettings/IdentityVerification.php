@@ -192,7 +192,7 @@ class IdentityVerification extends Component
             DB::commit();
             $this->Coupons();
             try {
-                $adminEmail = env('MAIL_FROM_ADDRESS');
+                $adminEmail =  config('mail.from.address');
                 $user = Auth::user();
                 $contenido = "El usuario {$user->profile->first_name} - {$user->profile->last_name}  ({$user->email}) ha hecho una solicitud de verificación de identidad.";
                 \Mail::raw($contenido, function ($message) use ($adminEmail) {
