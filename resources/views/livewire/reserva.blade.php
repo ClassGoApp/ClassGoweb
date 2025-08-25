@@ -1,3 +1,4 @@
+<!--Los estilos de este modal se encuentran den tutor-perfil.css-->
 <div>
     {{-- Mensaje de éxito tras reservar --}}
     @if (session()->has('success_message'))
@@ -106,18 +107,17 @@
         <form wire:submit="makeReservation" class="modal-body">
              <div class="modal-qr-column">
                 @if($isAugustPromotion)
-                    {{-- ✅ Banner de promoción en lugar del QR --}}
-                    <div class="promotion-banner">
-                        <h3>🎉 ¡PROMOCIÓN AGOSTO!</h3>
-                        <p>Tutorías completamente <strong>GRATIS</strong></p>
-                       </div>
+                    <img src="{{ asset('images/agostofree.jpeg') }}" class="banner_agosto">
                 @else
                     <img src="{{ asset('storage/qr/77b1a7da.jpg')}}" alt="Código QR" class="qr-image">
                 @endif
             </div>
             <div class="modal-form-column">
                 <h2 class="form-title">Confirmar Reserva</h2>
-                <div> 
+                
+
+                <div>
+                    <!--COMPROBANTE-->
                     <label class="input-label">Comprobante de pago</label>
                     <label for="comprobante" class="file-input-label">
                         <svg xmlns="http://www.w3.org/2000/svg" class="upload-icon" viewBox="0 0 20 20" fill="currentColor">
@@ -135,7 +135,9 @@
                     @endif
                     @error('paymentReceipt') <span class="form-error">{{ $message }}</span> @enderror
                 </div>
+
                 <div>
+                    <!--Materias-->
                     <label for="materia" class="input-label">Materia</label>
                     <select id="materia" wire:model="selectedSubject" class="select-input">
                         <option value="">-- Elige una materia --</option>

@@ -868,7 +868,7 @@ body.modal-open {
 /* ==================== 9.2 - Modal Content ==================== */
 .modal-content {
     background-color: white;
-    border-radius: 1rem;
+    border-radius: 2rem;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
     width: 100%;
     max-width: 900px;
@@ -895,8 +895,7 @@ body.modal-open {
 /* ==================== 9.5 - Modal Qr ==================== */
 .modal-qr-column {
     width: 100%;
-    background-color: #f9fafb;
-    padding: 1.5rem;
+    background: var(--bg-gradient);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1375,8 +1374,6 @@ body.modal-open {
         height: auto;
         display: flex;
         justify-content: center;
-        padding: 0.6rem 0.6rem 0rem 0.6rem;
-
     }
 
     .qr-image {
