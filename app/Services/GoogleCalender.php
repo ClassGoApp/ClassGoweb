@@ -12,28 +12,37 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
 
-class GoogleCalender {
+
+class GoogleCalender
+{
 
     protected $clientCredentials;
     protected $userAccountSettings = null;
     protected $userService;
 
-    public function __construct($user = null) {
+    public function __construct($user = null)
+    {
+
+        //dd( config('services.callback.url')) ;
         $this->clientCredentials = [
-            'client_id'     => setting('_api.google_client_id'),
-            'client_secret' => setting('_api.google_client_secret'),
-            'redirect_uri'  => config('services.google.redirect_uri'),
-            'scopes'        => [Calendar::CALENDAR]
+            'client_id' => config('services.google.client_id'),
+            'client_secret' => config('services.google.client_secret'),
+            'redirect_uri' => config('services.callback.url'),
+            'scopes' => [Calendar::CALENDAR]
         ];
+       // dd($this->clientCredentials);
         $this->userService = new UserService($user);
         $this->userAccountSettings = $this->userService->getAccountSetting();
+        //dd($this->userAccountSettings, "aver que es esto");
     }
 
-    public function getAuthUrl() {
+    /* public function getAuthUrl() {
+        //dd('llega aca en el servicio');
         try {
             if (empty($this->clientCredentials['client_id']) || empty($this->clientCredentials['client_secret'])) {
                 return ['status' => Response::HTTP_BAD_REQUEST, 'message' => __('passwords.keys_missing')];
             }        
+
             $client = new Client($this->clientCredentials);
             $client->setAccessType('offline');
             $client->setPrompt('consent');
@@ -42,33 +51,64 @@ class GoogleCalender {
         } catch (Exception $ex) {
             return ['status' => $ex->getCode(), 'message' => $ex->getMessage()];
         }
+    } */
+
+
+
+    public function getAuthUrl()
+    {
+        try {
+            $client = new Client($this->clientCredentials);
+
+            // La redirect_uri ya está configurada en el constructor a través de 
+            // 'redirect_uri' => config('services.google.redirect_uri')
+            // No es necesario establecerla aquí de nuevo.
+
+            $client->setAccessType('offline');
+            $client->setPrompt('consent');
+            $auth_url = $client->createAuthUrl();
+            //dd($auth_url);
+            return ['status' => Response::HTTP_OK, 'url' => $auth_url];
+        } catch (Exception $ex) {
+            dd('llega al catch', $ex);
+            return ['status' => $ex->getCode(), 'message' => $ex->getMessage()];
+        }
     }
 
-    public function getAccessTokenInfo($code) {
+
+
+
+
+    public function getAccessTokenInfo($code)
+    {
         $client = new Client($this->clientCredentials);
         return $client->fetchAccessTokenWithAuthCode($code);
     }
 
-    protected function verifyToken() {
-        $isTokenExpired  = $this->isTokenExpired($this->userAccountSettings['google_access_token']);
-        if($isTokenExpired){
+    protected function verifyToken()
+    {
+        $isTokenExpired = $this->isTokenExpired($this->userAccountSettings['google_access_token']);
+        if ($isTokenExpired) {
             $this->userAccountSettings['google_access_token'] = $this->refreshAccessToken($this->userAccountSettings['google_access_token']['refresh_token']);
-            $this->userService->setAccountSetting('google_access_token',$this->userAccountSettings['google_access_token']);
+            $this->userService->setAccountSetting('google_access_token', $this->userAccountSettings['google_access_token']);
         }
     }
 
-    public function refreshAccessToken($refreshToken) {
+    public function refreshAccessToken($refreshToken)
+    {
         $client = new Client($this->clientCredentials);
         return $client->fetchAccessTokenWithRefreshToken($refreshToken);
     }
 
-    public function isTokenExpired($tokenArray) {
+    public function isTokenExpired($tokenArray)
+    {
         $client = new Google_Client();
         $client->setAccessToken($tokenArray);
         return $client->isAccessTokenExpired();
     }
 
-    public function getUserPrimaryCalendar($token) {
+    public function getUserPrimaryCalendar($token)
+    {
         try {
             $client = new Google_Client();
             $client->setAccessToken($token);
@@ -76,10 +116,10 @@ class GoogleCalender {
             $primaryCalendar = array();
             $calendar = $service->calendars->get('primary');
             $primaryCalendar = [
-                'id'            =>  $calendar->getId(),
-                'summary'       =>  $calendar->getSummary(),
-                'description'   =>  $calendar->getDescription(),
-                'timezone'      =>  $calendar->getTimeZone(),
+                'id' => $calendar->getId(),
+                'summary' => $calendar->getSummary(),
+                'description' => $calendar->getDescription(),
+                'timezone' => $calendar->getTimeZone(),
             ];
             return ['status' => Response::HTTP_OK, 'data' => $primaryCalendar];
         } catch (GoogleServiceException $ex) {
@@ -88,7 +128,8 @@ class GoogleCalender {
         }
     }
 
-    public function updateCalendarNotificationSettings($minutes) {
+    public function updateCalendarNotificationSettings($minutes)
+    {
         try {
             $this->verifyToken();
             $client = new Google_Client();
@@ -126,21 +167,22 @@ class GoogleCalender {
      *      'timezone'
      * ]
      */
-    public function createEvent($eventData) {
+    public function createEvent($eventData)
+    {
         try {
             if (!empty($this->userAccountSettings['google_calendar_info']['id'])) {
                 $this->verifyToken();
                 $client = new Google_Client();
                 $client->setAccessToken($this->userAccountSettings['google_access_token']);
                 $service = new Calendar($client);
-                $event  = new Event([
-                    'summary'     => $eventData['title'],
+                $event = new Event([
+                    'summary' => $eventData['title'],
                     'description' => $eventData['description'],
-                    'start'  => [
+                    'start' => [
                         'dateTime' => $eventData['start_time'],
                         'timeZone' => $eventData['timezone']
                     ],
-                    'end'  => [
+                    'end' => [
                         'dateTime' => $eventData['end_time'],
                         'timeZone' => $eventData['timezone']
                     ]
@@ -160,7 +202,8 @@ class GoogleCalender {
      * @param string $eventId
      */
 
-    public function deleteEvent($eventId) {
+    public function deleteEvent($eventId)
+    {
         try {
             if (!empty($this->userAccountSettings['google_calendar_info']['id'])) {
                 $this->verifyToken();
@@ -175,5 +218,5 @@ class GoogleCalender {
             Log::info($ex);
             return ['status' => $ex->getCode(), 'message' => $ex->getMessage()];
         }
-    } 
+    }
 }
