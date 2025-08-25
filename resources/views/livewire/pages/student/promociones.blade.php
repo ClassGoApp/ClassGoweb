@@ -105,6 +105,7 @@
                 <button id="tabInvite" class="w-1/2 py-3 font-semibold border-b-2 border-transparent text-gray-400 transition-colors duration-300">Invitar</button>
             </div>
 
+            <!-- CARD CANJEAR CUPON -->
             <div id="redeemView" class="card-fondo text-white p-6 rounded-2xl shadow-lg flex-col items-center text-center">
                 <h3 class="text-xl font-bold">¿Tienes Código?</h3>
                 <p class="text-tertiary-color mt-1 text-sm">¡Ingrésalo y obtén descuentos!</p>
@@ -118,17 +119,22 @@
                 </div>
             </div>
 
+            <!-- CARD COMPARTIR CODE -->
             <div id="inviteView" class="card-fondo text-white p-6 rounded-2xl shadow-lg flex-col items-center text-center hidden">
                 <h3 class="text-xl font-bold">Tu Código de Invitación</h3>
                 <p class="text-tertiary-color mt-1 text-sm">¡Comparte y obtén descuentos!</p>
                 <div class="my-6">
-                    <div id="inv-code" class="text-4xl font-extrabold tracking-widest bg-white/20 border-2 border-dashed border-tertiary-color p-4 rounded-lg {{ isset($codigo) && $codigo->estado !== 'activo' ? 'inactivo' : '' }}">
+                    <div id="inv-code" class="text-3xl font-extrabold tracking-widest bg-white/20 border-2 border-dashed border-tertiary-color px-4 py-2 rounded-lg {{ isset($codigo) && $codigo->estado !== 'activo' ? 'inactivo' : '' }}">
                         {{ $codigo->codigo ?? 'No Code' }}
                     </div>
                 </div>
-                <div class="w-full space-y-3">
-                    <button id="btnCopiar" type="button" class="w-full bg-white/90 text-primary font-bold py-3 rounded-lg hover:bg-white transition-all">Copiar Código</button>
-                    <button id="compartir-button" type="button" class="w-full bg-tertiary-orange font-bold py-3 rounded-lg hover:opacity-90 transition-all">Compartir</button>
+                <div class="w-full flex gap-3">
+                    <button id="btnCopiar" type="button" class="bg-white/90 text-primary font-bold py-3 rounded-lg hover:bg-white transition-all flex-1">
+                        Copiar 
+                    </button>
+                    <button id="compartir-button" type="button" class="bg-tertiary-orange font-bold py-3 rounded-lg hover:opacity-90 transition-all flex-1">
+                        Compartir
+                    </button>
                     <x-modal-compartir />
                 </div>
                 <div id="copy-feedback" class="pt-3 transition-opacity" style="display:none;">¡Copiado!</div>
