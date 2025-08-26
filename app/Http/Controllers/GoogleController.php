@@ -41,16 +41,11 @@ class GoogleController extends Controller
     {
         $user = Auth::user();
         $googleCalenderService = new GoogleCalender($user);
-
         // Obtén el access token usando el code que Google envía
         $tokenInfo = $googleCalenderService->getAccessTokenInfo($request->input('code'));
-
         // Guarda el token en la configuración del usuario
         $userService = new UserService($user);
         $userService->setAccountSetting('google_access_token', $tokenInfo);
-
-     
-
         return redirect()->route('tutor.profile.account-settings')->with('success', 'Google Calendar conectado correctamente');
     }
 

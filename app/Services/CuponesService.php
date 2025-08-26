@@ -5,9 +5,12 @@ namespace App\Services;
 
 use App\Models\Code;
 use App\Models\Coupon;
+use App\Models\User;
 use App\Models\UserCoupon;
+use Dotenv\Exception\ValidationException;
 use Illuminate\Support\Str;
 use App\Services\interfaces\ICuponesService;
+use Validator;
 
 
 class CuponesService implements ICuponesService
@@ -82,6 +85,79 @@ class CuponesService implements ICuponesService
             }
         }
     }
+
+    function getCuponsByUserId($iduser){
+        return UserCoupon::where('user_id', $iduser)->get();
+    }
+
+
+
+    /**
+     *  funcion que crea el cupon para el usuario con n tutorias gratis
+     * 
+     * @param string $code
+     * @param int $cantidadtutorias
+     * @param User $user
+     * @return void
+     */
+
+
+    function creatreCuponDescTutorias(Code $code,int $cantidadtutorias, User $user){
+
+      if($cantidadtutorias){
+        if($code){
+           $code=Code::where('codigo',$code)->first();
+            UserCoupon::create([
+                    'coupon_id' => Coupon::create([
+                        'code_id' => $code->id,
+                        'descuento' => $code->descuento, // Descuento del 100%
+                        'fecha_caducidad' => $code->fecha_caducidad, // Vence al final del siguiente mes
+                        'estado' => 'activo',
+                    ])->id,
+                    'user_id' => $user->id,
+                    'cantidad' => $cantidadtutorias,
+                ]);
+        }  
+      }
+    }
+
+
+
+    function createCode(string $code){
+
+        $validator = Validator::make(['codigo' => $code], [
+            'codigo' => 'required|string|max:255|unique:codes',
+        ]);
+
+         if ($validator->fails()) {
+             throw new ValidationException($validator);
+         }
+
+        return Code::create([
+            'codigo' => $code,
+            'user_id' => auth()->id(),
+        ]);
+
+    }
+
+   
+    function cobrarcupon($userid,$cuponid){
+
+        $user = User::find($userid);
+        $coupon = Coupon::find($cuponid);
+        $usercupon = UserCoupon::where('user_id', $user->id)->where('coupon_id', $coupon->id)->first();
+
+        if (!$usercupon) {
+           return null;
+        }
+        else {
+            $usercupon->cantidad=$usercupon->cantidad-1;
+            $usercupon->save();
+            return $usercupon;
+        }
+    }
+
+
 }
 
 

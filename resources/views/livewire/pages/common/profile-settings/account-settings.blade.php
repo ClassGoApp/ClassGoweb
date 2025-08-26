@@ -60,7 +60,10 @@
                 </div>
             </fieldset>
         </form> --}}
-       <div class="am-title_wrap">
+      
+
+       @role('tutor')
+         <div class="am-title_wrap">
             <div class="am-title">
                 <h2>{{ __('passwords.link_google_calendar') }}</h2>
                 <p>{{ __('passwords.link__google_calendar_schedule') }}</p>
@@ -91,7 +94,7 @@
                 </a>
             </div>
             @endif
-            @if(!empty($getAccountSetting['google_access_token']))
+           {{-- @if(!empty($getAccountSetting['google_access_token']))
             <div class="am-reminder">
                 <div class="am-reminder_title">
                     <h3>{{ __('passwords.remind_me') }}</h3>
@@ -116,12 +119,21 @@
                     </div>
                 </div>
             </div>
+
             <div class="am-form-btns">
                 <span>{{ __('passwords.update_changes_live') }}</span>
                 <button  wire:click="saveReminder" wire:target="saveReminder" type="submit" wire:loading.class="am-btn_disable" type="button" class="am-btn">{{ __('passwords.Save_update') }}</button>
             </div>
-            @endif
+            @endif --}}
         </div> 
+       @endrole
+         
+
+
+
+
+
+
         @if(session()->get('error'))
             <script>
                 document.addEventListener('DOMContentLoaded', function () {
