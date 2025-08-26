@@ -51,7 +51,6 @@
 .navbar-container {
     position: sticky;
     top: 1px;
-    ;
     z-index: 1000;
 }
 
