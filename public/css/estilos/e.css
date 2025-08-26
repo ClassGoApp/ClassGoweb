@@ -1,237 +1,164 @@
-/* --- Estilos Generales y Tipografía --- */
-body {
-    font-family: 'Inter', sans-serif;
-    background-color: #f8f9fa;
-    color: #111827; /* Equivalente a text-gray-900 */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    margin: 0;
-}
+/* ==================== e.css ==================== */
 
-/* --- Contenedor Principal de la Sección --- */
-.main-section {
-    width: 100%;
-    max-width: 72rem; /* max-w-6xl */
-    margin-left: auto;
-    margin-right: auto;
-    padding: 3rem 1rem; /* py-12 px-4 */
-}
+/** TABLE OF CONTENTS PC
+------------------------------------------------------------/
 
-/* --- Encabezado de la Sección --- */
-.section-header {
-    text-align: center;
-    margin-bottom: 3rem; /* mb-12 */
-}
+1 - Estilos General y Tipografia...................... 14-23
+2 - Estilos Contenedor Princiopal..................... 25-32
+3 - Estilos Encabezado................................ 34-56
+4 - Estilos Carrusel.................................. 58-78
+5 - Estilos Card Tutores............................. 80-188
+6 - Estilos Btn Carrusel............................ 190-226
 
-.section-title {
-    font-size: 1.875rem; /* text-3xl */
-    line-height: 2.25rem;
-    font-weight: 700; /* font-bold */
-    letter-spacing: -0.025em; /* tracking-tight */
-    color: #111827; /* text-gray-900 */
-}
+/// END TABLE OF CONTENTS PC
+------------------------------------------------------------/
 
-.section-description {
-    margin-top: 1rem; /* mt-4 */
-    max-width: 42rem; /* max-w-2xl */
-    margin-left: auto;
-    margin-right: auto;
-    font-size: 1.125rem; /* text-lg */
-    line-height: 1.75rem;
-    color: #6b7280; /* text-gray-500 */
-}
-
-/* --- Estructura del Carrusel --- */
-#carousel-wrapper {
-    position: relative;
-}
-
-.carousel-container {
-    overflow: hidden;
-    position: relative;
-}
-
-.carousel-track {
-    display: flex;
-    transition: transform 0.5s ease-in-out;
-}
-
-.carousel-card-wrapper {
-    flex-shrink: 0;
-    width: 100%;
-    padding: 0.75rem; /* p-3 */
-    box-sizing: border-box; /* Asegura que el padding no afecte el tamaño total */
-}
-
-/* --- Tarjeta del Tutor --- */
+/* =================== 1 - Estilos General y Tipografia =================== */
 .tutor-card {
-    background-color: #ffffff; /* bg-white */
-    border-radius: 0.5rem; /* rounded-lg */
-    overflow: hidden;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    border: 1px solid rgba(229, 231, 235, 0.8); /* border border-gray-200/80 */
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05); /* shadow-sm */
-    transition: box-shadow 0.3s ease;
+  width: 330px;        /* ancho fijo */
+  min-width: 330px;
+  max-width: 330px;
+  height: 410px;       /* altura fija */
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease;
 }
 
 .tutor-card:hover {
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* hover:shadow-xl */
+  transform: translateY(-5px) scale(1.02);
 }
 
-.tutor-card-image {
-    width: 100%;
-    height: 12rem; /* h-48 */
-    object-fit: cover;
+.tutor-card-video {
+  position: relative;
+  height: 140px;        /* igual que tu card original */
+  overflow: hidden;
 }
 
-.tutor-card-content {
-    padding: 1.25rem; /* p-5 */
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1; /* Permite que este div crezca y ocupe el espacio disponible */
+.tutor-card-video video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 0.75rem; /* text-xs */
-    line-height: 1rem;
-    color: #6b7280; /* text-gray-500 */
-    margin-bottom: 0.75rem; /* mb-3 */
+.video-overlay {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.25);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.subject-tag {
-    display: inline-block;
-    border-radius: 9999px; /* rounded-full */
-    background-color: #cffafe; /* bg-cyan-100 */
-    color: #0e7490; /* text-cyan-800 */
-    padding: 0.25rem 0.75rem; /* px-3 py-1 */
-    font-weight: 500; /* font-medium */
+.video-play svg {
+  width: 30px;
+  height: 30px;
+  fill: white;
+  stroke: white;
 }
 
-.tutor-name {
-    font-size: 1.125rem; /* text-lg */
-    line-height: 1.75rem;
-    font-weight: 700; /* font-bold */
-    color: #111827; /* text-gray-900 */
-    margin-bottom: 0.5rem; /* mb-2 */
+.tutor-card-body {
+  padding: 0.75rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  flex: 1;              /* ocupa el resto de la card */
 }
 
-.tutor-description {
-    color: #4b5563; /* text-gray-600 */
-    font-size: 0.875rem; /* text-sm */
-    line-height: 1.25rem;
-    flex-grow: 1; /* Empuja el footer hacia abajo */
-    margin-bottom: 1rem; /* mb-4 */
+.tutor-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-.card-footer {
-    margin-top: auto; /* Empuja el footer al final si hay espacio extra */
-    padding-top: 1rem; /* pt-4 */
-    border-top: 1px solid #f3f4f6; /* border-t border-gray-100 */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 0.875rem; /* text-sm */
-    line-height: 1.25rem;
-    color: #6b7280; /* text-gray-500 */
+.tutor-info img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
-.profile-link {
-    font-weight: 600; /* font-semibold */
-    color: #0891b2; /* text-cyan-600 */
-    text-decoration: none;
-    transition: color 0.3s ease;
+.tutor-names h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #1D4ED8;
 }
 
-.profile-link:hover {
-    color: #164e63; /* hover:text-cyan-700 */
+.tutor-verified {
+  color: #10B981;
+  margin-left: 0.3rem;
 }
 
-.rating-info {
-    display: flex;
-    align-items: center;
+.tutor-subjects {
+  font-size: 0.85rem;
+  color: #334155;
+  line-height: 1.2;
+  height: 3em;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.rating-info .fa-star {
-    color: #facc15; /* text-yellow-400 */
-    margin-right: 0.25rem; /* mr-1 */
+.tutor-stats {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
 }
 
-.rating-info .rating-value {
-    font-weight: 600; /* font-semibold */
-    color: #374151; /* text-gray-700 */
+.tutor-actions {
+  margin-top: auto; /* empuja el botón al final */
 }
 
-.rating-info .reviews-count {
-    margin-left: 0.25rem; /* ml-1 */
+.btn-profile {
+  display: block;
+  text-align: center;
+  background: #3B82F6;
+  color: #fff;
+  padding: 0.6rem;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.btn-profile:hover {
+  background: #2563EB;
 }
 
 
-/* --- Botones de Navegación del Carrusel --- */
-.nav-button {
-    position: absolute;
-    top: 40%;
-    transform: translateY(-50%);
-    background-color: rgba(255, 255, 255, 0.9);
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    transition: all 0.3s ease;
-    color: #333;
-    z-index: 10;
-    border: none; /* Añadido para resetear estilos del botón */
-}
 
-.nav-button:hover {
-    background-color: white;
-    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
-}
-
-.nav-button.prev {
-    left: -20px;
-}
-
-.nav-button.next {
-    right: -20px;
-}
-
-.disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-/* --- Media Queries para Responsividad --- */
-/* Tablet */
+/*-------------------------- Tablet ------------------------*/
 @media (min-width: 768px) {
     .main-section {
-        padding: 3rem 1.5rem; /* sm:px-6 */
+        padding: 3rem 1.5rem;
+        /* sm:px-6 */
     }
+
     .section-title {
-        font-size: 2.25rem; /* sm:text-4xl */
+        font-size: 2.25rem;
+        /* sm:text-4xl */
         line-height: 2.5rem;
     }
+
     .carousel-card-wrapper {
-        width: 50%; /* 2 tarjetas visibles */
+        width: 50%;
+        /* 2 tarjetas visibles */
     }
 }
 
-/* Desktop */
+/*------------------------------- Desktop ------------------------------------*/
 @media (min-width: 1024px) {
     .main-section {
-        padding: 3rem 2rem; /* lg:px-8 */
+        padding: 3rem 2rem;
+        /* lg:px-8 */
     }
+
     .carousel-card-wrapper {
-        width: 33.3333%; /* 3 tarjetas visibles */
+        width: 33.3333%;
+        /* 3 tarjetas visibles */
     }
 }

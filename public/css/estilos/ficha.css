@@ -1,5 +1,19 @@
+/* ==================== ficha.css ==================== */
 @import './variables.css';
 
+/** TABLE OF CONTENTS PC
+------------------------------------------------------------/
+
+1 - Ficha Container................................... 15-24
+2 - Ficha Imagen...................................... 26-41
+3 - Ficha Btn Container............................... 43-98
+    3.1 - Btn Azul................................ 61-78
+    3.2 - Btn Naranja............................. 80-98
+
+/// END TABLE OF CONTENTS PC
+------------------------------------------------------------/
+
+/* =================== 1 - Ficha Container =================== */
 .ficha-container {
     display: flex;
     flex-direction: row;
@@ -9,21 +23,25 @@
     gap: 48px;
     background-color: var(--primary-color);
 }
-.imagen-ficha {
-}
+
+/* =================== 2 - Ficha Imagen =================== */
+.imagen-ficha {}
+
 .imagen-ficha img {
-    box-shadow: 0 8px 32px rgba(0,0,0,0.18), 0 1.5px 8px rgba(0,0,0,0.10);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18), 0 1.5px 8px rgba(0, 0, 0, 0.10);
     border-radius: 18px;
-    transition: transform 0.3s cubic-bezier(.4,2,.6,1), box-shadow 0.3s;
+    transition: transform 0.3s cubic-bezier(.4, 2, .6, 1), box-shadow 0.3s;
     width: 400px;
     height: auto;
     display: block;
 }
+
 .imagen-ficha img:hover {
     transform: scale(1.04) rotate(-2deg);
-    box-shadow: 0 16px 48px rgba(0,0,0,0.22), 0 3px 16px rgba(0,0,0,0.13);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.22), 0 3px 16px rgba(0, 0, 0, 0.13);
 }
 
+/* =================== 3 - Ficha Btn Container =================== */
 .info-buttons {
     display: flex;
     flex-direction: column;
@@ -34,41 +52,46 @@
 }
 
 .info-buttons button {
-/* Eliminado para evitar conflicto con nuevos estilos de botones */
+    /* Eliminado para evitar conflicto con nuevos estilos de botones */
 }
 
-.info-buttons{
-/* Eliminado para evitar conflicto con nuevos estilos de botones */
+.info-buttons {
+    /* Eliminado para evitar conflicto con nuevos estilos de botones */
 }
 
-.button1{
+/* =================== 3.1 - Btn Azul =================== */
+.button1 {
     padding: 14px 36px;
     font-size: 1.15rem;
     border-radius: 8px;
     border: none;
     cursor: pointer;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     transition: background 0.2s, color 0.2s, transform 0.2s;
     font-weight: 600;
     background: #2d8cff;
     color: #fff;
 }
+
 .button1:hover {
     background: #1a6ed8;
     transform: translateY(-2px) scale(1.04);
 }
-.button2{
+
+/* =================== 3.2 - Btn Naranja =================== */
+.button2 {
     padding: 14px 36px;
     font-size: 1.15rem;
     border-radius: 8px;
     border: none;
     cursor: pointer;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     transition: background 0.2s, color 0.2s, transform 0.2s;
     font-weight: 600;
     background: var(--terciary-color2);
     color: #fff;
 }
+
 .button2:hover {
     background: #eaf3ff;
     color: #1a6ed8;

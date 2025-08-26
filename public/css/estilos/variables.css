@@ -1,4 +1,15 @@
+/** TABLE OF CONTENTS
+------------------------------------------------------------/
+
+1 - Variables Root.................................... 10-47
+    1.1 - Colores..................................... 13-29
+    1.2 - Fuentes..................................... 32-45
+
+/// END TABLE OF CONTENTS 
+------------------------------------------------------------/
+    /**-------COLORES----------**/
 :root {
+
     /**-------COLORES----------**/
     --primary-color: #023047;
     --secundary-color: #219EBC;
@@ -11,25 +22,22 @@
     --footer-white: #d6f7fd;
     --white: #fff;
     --text-gris: #888;
-    --panel-background:#f1f3f4;
+    --panel-background: #f1f3f4;
     --bg-gradient: linear-gradient(180deg, rgba(7, 59, 76, 1) 64%, rgba(24, 77, 94, 1) 77%, rgba(33, 158, 188, 1) 100%);
     --bg-gradient2: linear-gradient(135deg, #023047 0%, #219EBC 100%);
-    --bg-gradient3: linear-gradient(135deg,#219EBC   0%, #023047 100%);
-    --bg-gradient4: linear-gradient(180deg, rgb(16, 90, 109) 64%, rgba(24, 77, 94, 1) 77%, rgba(7, 59, 76, 1)  100%);
-
-
+    --bg-gradient3: linear-gradient(135deg, #219EBC 0%, #023047 100%);
+    --bg-gradient4: linear-gradient(180deg, rgb(16, 90, 109) 64%, rgba(24, 77, 94, 1) 77%, rgba(7, 59, 76, 1) 100%);
 
 
     /**-------FUENTES------*/
     --h1: 2.3rem;
-    --h1-regular:1rem;
-    --p:1.1rem;
+    --h1-regular: 1rem;
+    --p: 1.1rem;
     --line-height: 1.1em;
 
     --font-family: 'Inter', sans-serif;
     --font-thin: 100;
-    --font-light: 300
-    --font-regular: 400;
+    --font-light: 300 --font-regular: 400;
     --font-medium: 500;
     --font-semibold: 600;
     --font-bold: 700;
