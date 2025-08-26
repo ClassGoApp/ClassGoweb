@@ -36,6 +36,7 @@ class Reserva extends Component
     public $paymentReceipt;
     public $selectedSubject;
     public $showModal = false;
+    public $showModalCupones = false;
 
 
      public bool $isAugustPromotion = false;
@@ -183,6 +184,12 @@ class Reserva extends Component
         // Emite un evento global que el JavaScript del frontend escuchará.
         //$this->dispatch('open-modal');
 
+    }
+    public function openModalCupones(){
+        $this->showModalCupones = true;
+    }
+    public function closeModalCupones(){
+        $this->showModalCupones = false;
     }
 
     public function closeModal()

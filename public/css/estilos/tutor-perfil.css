@@ -868,7 +868,7 @@ body.modal-open {
 /* ==================== 9.2 - Modal Content ==================== */
 .modal-content {
     background-color: white;
-    border-radius: 2rem;
+    border-radius: 1rem;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
     width: 100%;
     max-width: 900px;
@@ -895,7 +895,8 @@ body.modal-open {
 /* ==================== 9.5 - Modal Qr ==================== */
 .modal-qr-column {
     width: 100%;
-    background: var(--bg-gradient);
+    background-color: #f9fafb;
+    padding: 1.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -969,6 +970,10 @@ body.modal-open {
     margin-top: 0.25rem;
 }
 
+.reserva-info-container{
+    display: flex;
+    flex-flow: row wrap;
+}
 /* ==================== 12 - Turtor Select Personalisado ==================== */
 .select-input {
     width: 100%;
@@ -1038,6 +1043,179 @@ body.modal-open {
 
 .btn-secondary:hover {
     background-color: #d1d5db;
+}
+
+/*=================== 16 CUPONES ===============*/
+/* Base Styles */
+.coupon-section {
+  border-top: 1px solid #e5e7eb;
+  padding-top: 1rem;
+}
+
+.coupon-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #4b5563;
+  margin-bottom: 0.5rem;
+}
+
+/* Coupon Input and Apply Button */
+.coupon-input-group {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.coupon-input {
+  flex-grow: 1;
+  padding: 0.5rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  transition: all 0.15s ease-in-out;
+  text-transform: uppercase;
+}
+
+.coupon-input:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  border-color: #10b981;
+  box-shadow: 0 0 0 2px #10b981;
+}
+
+.apply-button {
+  padding: 0.5rem 1.25rem;
+  background-color: #e5e7eb;
+  color: #4b5563;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  transition: all 0.15s ease-in-out;
+}
+
+.apply-button:hover {
+  background-color: #d1d5db;
+}
+
+/* Applied Coupon Message */
+.applied-coupon-container {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #d1fae5;
+  border: 1px solid #6ee7b7;
+  color: #065f46;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+}
+
+.applied-coupon-text {
+  font-weight: 600;
+}
+
+.remove-button {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #4b5563; /* Default color, not specified in Tailwind */
+  cursor: pointer;
+}
+
+.remove-button:hover {
+  color: #dc2626;
+}
+
+/* "Show My Coupons" Button */
+.show-coupons-button {
+  display: block;
+  width: 100%;
+  margin-top: 0.75rem;
+  padding: 0.5rem 1rem;
+  background-color: #f0fdf4;
+  color: #0d9488;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  border: 1px solid #99f6e4;
+  transition: all 0.15s ease-in-out;
+}
+
+.show-coupons-button:hover {
+  background-color: #ccfbf1;
+}
+
+/* Message */
+.coupon-message {
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+  min-height: 1.25rem; /* Equivalent to h-5 */
+}
+
+/* ============= Modal Cupón =============*/
+/* Estilo del overlay del modal */
+.coupon-modal-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    z-index: 50;
+}
+
+/* Ocultar el modal por defecto */
+.coupon-modal-wrapper.hidden {
+    display: none;
+}
+
+/* Contenedor principal del modal */
+.coupon-modal-dialog {
+    background-color: #fff;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    max-width: 28rem;
+}
+
+/* Cabecera del modal (título y botón de cierre) */
+.coupon-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+/* Título del modal */
+.coupon-modal-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+/* Botón de cierre */
+.coupon-modal-close-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    line-height: 1;
+    color: #6b7280;
+    cursor: pointer;
+    transition: color 0.15s ease-in-out;
+}
+
+.coupon-modal-close-btn:hover {
+    color: #1f2937;
+}
+
+/* Contenedor de la lista de cupones */
+.coupon-list-view {
+    max-height: 16rem;
+    overflow-y: auto;
+}
+
+.coupon-list-view > * + * {
+    margin-top: 0.75rem;
 }
 
 /* =================== RESPONSIVE DESIGN TABLETS=================== */
@@ -1374,6 +1552,8 @@ body.modal-open {
         height: auto;
         display: flex;
         justify-content: center;
+        padding: 0.6rem 0.6rem 0rem 0.6rem;
+
     }
 
     .qr-image {
