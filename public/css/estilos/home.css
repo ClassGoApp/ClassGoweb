@@ -1,36 +1,53 @@
-/* =================== home.css =================== */
+/* ==================== home.css ==================== */
 @import 'variables.css';
 
-/** TABLE OF CONTENTS
+/** TABLE OF CONTENTS PC
 ------------------------------------------------------------/
 
-1 - Hero Principal
-    1.1 Hero Text
-    1.2 Hero Mascota
-    1.3 Buscador
-    1.4 Botones
-2 - Contadores
-    2.1 Fondo Container
-    2.2 Contadores
-3 - Tutores destacados
-    3.1 Cards Tutores
-4 - Anuncio Potencial
-    4.1 Card Container
-    4.2 Cards
-5 - Busca tutorias
-    5.1 tutorias-container
-    5.2 texto izquierdo
-    5.3 imagen lado derecho
-6 - Alianzas
-    6.1 Alianzas Container
-    6.2 Cards Alianzas
+1 - Hero Principal................................... 48-255
+    1.1 - Hero Titular................................ 70-95
+    1.2 - Hero Buscador.............................. 97-198
+        1.2.1 - Contenedor principal................. 99-118
+        1.2.2 - Icono de Lupa....................... 120-130
+        1.2.3 - Campo de Búsqueda................... 132-151
+        1.2.4 - Lista de Resultados................. 153-171
+        1.2.5 - Ítems de la Lista (li).............. 173-198
+    1.3 - Hero Botones.............................. 200-240
+    1.4 - Hero Mascota.............................. 242-255
+2 - User Counter.................................... 257-328
+    2.1 - User Counter Background................... 258-272
+    2.2 - Contadores................................ 274-328
+3 - Tutores destacados.............................. 330-825
+    3.1 - Cards Tutores............................. 369-387
+    3.2 - Video Y Botones........................... 389-498
+    3.3 - Contenido del Card........................ 500-716
+    3.4 - Carrusel de Tarjetas...................... 718-825
+4 - Anuncio Potencial.............................. 827-1066
+5 - Busca tutorias................................ 1077-1294
+    5.1 - Busvador Contenedor principal........... 1084-1096
+    5.2 - Buscador Texto Izquierdo................ 1098-1128
+    5.3 - Buscador Botón.......................... 1130-1147
+    5.4 - Buscador Imagen Derecha................. 1149-1162
+    5.5 - Instala Nuestra Aplicacion.............. 1164-1294
+        5.5.1 - Aplicación Contenedor............. 1165-1173
+        5.5.2 - Aplicación Contenedor Interno..... 1175-1181
+        5.5.3 - Aplicación Grid................... 1183-1193
+        5.5.4 - Aplicación Media Queries.......... 1195-1200
+        5.5.5 - Aplicación Columnas............... 1202-1265
+        5.5.6 - Aplicación Imagen................. 1267-1286
+        5.5.7 - Aplicación Media Queries.......... 1288-1294
+6 - Alianzas...................................... 1296-1408
+    6.1 - Alianzas Container...................... 1297-1310
+    6.2 - Alianzas Títulos........................ 1312-1325
+    6.3 - Alianzas Cards.......................... 1327-1334
+    6.4 - Alianzas Card Individual................ 1336-1408
 
-/// END TABLE OF CONTENTS 
+/// END TABLE OF CONTENTS PC
 ------------------------------------------------------------/
 
-/**---============ 1 - Hero Principal ===============--**/
-body{
-  background-color:  rgba(33, 158, 188, 1)!important;
+/**---============ 1 - Hero Principal ============---**/
+body {
+  background-color: rgba(33, 158, 188, 1) !important;
 }
 
 .hero {
@@ -48,10 +65,9 @@ body{
   align-items: center;
   margin: 0rem 0rem;
   padding: 5rem 0rem 0rem 0rem;
-
 }
 
-/**--- 1.1 - Hero Text --**/
+/**---============ 1.1 - Hero Titular ============---**/
 .hero-text {
   flex: 1;
   padding: 4rem 0rem 4rem 4rem;
@@ -59,12 +75,13 @@ body{
   color: white;
 }
 
-.hero-title-arriba{
+.hero-title-arriba {
   font-size: 3em !important;
   font-weight: var(--font-light);
   color: white;
 }
-.hero-title-abajo{
+
+.hero-title-abajo {
   font-size: 4em !important;
   font-weight: var(--font-bold);
 }
@@ -74,8 +91,7 @@ body{
   margin-top: 2rem;
   margin-bottom: 2rem;
   color: #e0f7fa;
-  line-height:var(--line-height);
-
+  line-height: var(--line-height);
 }
 
 /**--- 1.2 - Hero Mascota --**/
@@ -97,11 +113,10 @@ body{
 /**-- ========== 1.3 - Hero Buscador ===========--**/
 
 /* Estilos para el Buscador con Livewire */
-
-    /* 1. Contenedor principal (.search-box) */
-    /* Este div necesita ser 'relative' para que la lista de resultados (ul)
+/**---============ 1.2.1 - Contenedor principal ============---**/
+/* Este div necesita ser 'relative' para que la lista de resultados (ul)
        pueda posicionarse de forma absoluta con respecto a él. */
-       .search-box {
+.search-box {
   display: flex;
   max-width: 480px;
   border-radius: 50px;
@@ -109,142 +124,104 @@ body{
   height: 50px;
   transition: all 0.2s;
   position: relative;
-        max-width: 32rem; /* Ancho máximo para el buscador */
-        margin-left: 0;
-        margin-right: 0; /* Centrar el componente */
-
+  max-width: 32rem;
+  /* Ancho máximo para el buscador */
+  margin-left: 0;
+  margin-right: 0;
 }
 
-.buscador-home{
+.buscador-home {
   padding: 1rem 0rem;
 }
 
-    /* 2. Icono de Lupa (.icon-search) */
-    /* Lo posicionamos de forma absoluta DENTRO del .search-box */
-    .search-box .icon-search {
-        position: absolute;
-        top: 50%;
-        left: 1rem; /* 16px desde la izquierda */
-        transform: translateY(-50%); /* Truco para centrarlo verticalmente a la perfección */
-        color: #9ca3af; /* Un color gris sutil */
-    }
-
-    /* 3. Campo de Búsqueda (.form-control) */
-    /* Le damos el estilo de píldora redondeada */
-    .search-box .form-control {
-        width: 100%;
-        padding: 0.75rem 1rem 0.75rem 2.75rem; /* Padding: arriba/abajo, derecha, e izquierda (para dejar espacio al icono) */
-        border: 1px solid #d1d5db; /* border-gray-300 */
-        border-radius: 9999px; /* rounded-full */
-        font-size: 1rem;
-        transition: box-shadow 150ms, border-color 150ms;
-    }
-
-    /* Estilo para cuando el input está seleccionado (focus) */
-    .search-box .form-control:focus {
-        border-color: #3b82f6; /* focus:border-blue-500 */
-        box-shadow: 0 0 0 2px #3b82f6; /* focus:ring-2 focus:ring-blue-500 */
-        outline: none;
-    }
-
-    /* 4. Lista de Resultados (ul) */
-    /* ¡Esta es la parte clave! La posicionamos de forma absoluta */
-    .search-box ul {
-        position: absolute;
-        top: 100%;           /* La colocamos justo debajo del contenedor del input */
-        left: 0;
-        width: 100%;
-        margin-top: 0.5rem;  /* Pequeño espacio entre el input y la lista */
-
-        /* Estilos visuales del contenedor de resultados */
-        background-color: white;
-        border-radius: 0.75rem; /* Bordes redondeados */
-        box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-        border: 1px solid #e5e7eb; /* border-gray-200 */
-        max-height: 20rem;
-        overflow-y: auto;
-        z-index: 10;
-
-        /* Limpieza de estilos por defecto de las listas */
-        list-style: none;
-        padding: 0;
-    }
-
-    /* 5. Ítems de la Lista (li) */
-    .search-box ul li {
-        padding: 0.75rem 1rem;
-        cursor: pointer;
-        transition: background-color 150ms;
-        border-bottom: 1px solid #f3f4f6; /* Línea separadora */
-    }
-    
-    /* Para que el último ítem no tenga línea separadora */
-    .search-box ul li:last-child {
-        border-bottom: none;
-    }
-
-    .search-box ul li:hover {
-        background-color: #f9fafb; /* Color sutil al pasar el mouse */
-    }
-
-    /* Estilos para el texto dentro de los li */
-    .search-box ul li strong {
-        color: #1f2937;
-    }
-    .search-box ul li small {
-        color: #6b7281;
-        font-size: 0.875rem;
-    }
-
-
-/* =========================*/
-/* .search-box {
-  display: flex;
-  max-width: 480px;
-  border-radius: 50px;
-  overflow: hidden;
-  background-color: white;
-  height: 50px;
-  transition: all 0.2s;
-
-}
-.search-box:hover{
-  background-color: white;
-  color: var(--secundary-color);
-  box-shadow: 0 0 20px #010e1650;
-  transform: scale(1.03);
+/**---============ 1.2.2 - Icono de Lupa ============---**/
+/* Lo posicionamos de forma absoluta DENTRO del .search-box */
+.search-box .icon-search {
+  position: absolute;
+  top: 50%;
+  left: 1rem;
+  /* 16px desde la izquierda */
+  transform: translateY(-50%);
+  /* Truco para centrarlo verticalmente a la perfección */
+  color: #9ca3af;
 }
 
-.search-box input {
-  flex: 1;
-  padding: 0.8rem 1rem;
-  border: none;
-  outline: none;
+/**---============ 1.2.3 - Campo de Búsqueda ============---**/
+/* Le damos el estilo de píldora redondeada */
+.search-box .form-control {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.75rem;
+  /* Padding para dejar espacio al icono */
+  border: 1px solid #d1d5db;
+  border-radius: 9999px;
   font-size: 1rem;
-  border-radius: 50px 0 0 50px;
+  transition: box-shadow 150ms, border-color 150ms;
 }
 
-.search-box button {
-  background-color: var(--secundary-color);
-  border: none;
-  padding: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 40px;
+/* Estilo para cuando el input está seleccionado (focus) */
+.search-box .form-control:focus {
+  border-color: #3b82f6;
+  /* focus:border-blue-500 */
+  box-shadow: 0 0 0 2px #3b82f6;
+  /* focus:ring-2 focus:ring-blue-500 */
+  outline: none;
+}
+
+/**---============ 1.2.4 - Lista de Resultados ============---**/
+.search-box ul {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  margin-top: 0.5rem;
+  /* Estilos visuales del contenedor de resultados */
+  background-color: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  border: 1px solid #e5e7eb;
+  max-height: 20rem;
+  overflow-y: auto;
+  z-index: 10;
+  /* Limpieza de estilos por defecto de las listas */
+  list-style: none;
+  padding: 0;
+}
+
+/**---============ 1.2.5 - Ítems de la Lista ============---**/
+.search-box ul li {
+  padding: 0.75rem 1rem;
   cursor: pointer;
-  margin: 0.4em;
+  transition: background-color 150ms;
+  border-bottom: 1px solid #f3f4f6;
+  /* Línea separadora */
 }
 
-.icon-search {
-  color: #e0f7fa;
-} */
-/**--- 1.4 Botones --**/
+/* Para que el último ítem no tenga línea separadora */
+.search-box ul li:last-child {
+  border-bottom: none;
+}
+
+.search-box ul li:hover {
+  background-color: #f9fafb;
+}
+
+.search-box ul li strong {
+  color: #1f2937;
+}
+
+.search-box ul li small {
+  color: #6b7281;
+  font-size: 0.875rem;
+}
+
+/**---============ 1.3 - Botones ============---**/
 .hero-buttons {
   display: flex;
-  gap: 1rem; /* espacio entre botones */
-  flex-wrap: wrap; /* para que se acomoden en móviles */
-  justify-content: left; /* o 'flex-start' si los quieres alineados a la izquierda */
+  gap: 1rem;
+  /* espacio entre botones */
+  flex-wrap: wrap;
+  /* para que se acomoden en móviles */
+  justify-content: left;
   margin-top: 1.2rem;
 }
 
@@ -260,11 +237,11 @@ body{
   -webkit-transition: all 0.5s;
 }
 
-.hero-buttons button i{
+.hero-buttons button i {
   padding-right: 0.5em;
 }
 
-.hero-buttons button:hover{
+.hero-buttons button:hover {
   background-color: white;
   color: var(--secundary-color);
   box-shadow: 0 0 20px #010e1650;
@@ -279,17 +256,31 @@ body{
   transform: scale(0.98);
 }
 
-/**--- 2 Contadores --**/
-/**--- 2.1 Fondo --**/
+/**---============ 1.4 - Hero Mascota ============---**/
+.hero-image {
+  flex: 1;
+  min-width: 400px;
+  text-align: right;
+  padding: 2.5rem 5rem 0 0;
+}
 
-.info-container{
+.hero-container img {
+  max-width: 500px;
+  width: 100%;
+  height: auto;
+  padding-right: 2rem;
+}
+
+/**---============ 2 - Contadores ============---**/
+/**---============ 2.1 - Fondo ============---**/
+.info-container {
   background-color: var(--panel-background);
   border-top-left-radius: 5rem;
   border-top-right-radius: 5rem;
   display: flex;
   flex-direction: column;
   margin-top: 10px;
-  box-shadow: 0px -10px #19849e ;
+  box-shadow: 0px -10px #19849e;
   color: var(--primary-color);
   width: 100%;
   max-width: 100vw;
@@ -297,76 +288,63 @@ body{
   box-sizing: border-box;
 }
 
-/**--- 2.1 Contadores --**/
+/**---============ 2.2 - Contadores ============---**/
 .counters {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 30px;
-    padding: 5rem 0;
-    text-align: center;
-    flex-wrap: wrap;
-    width: 100%;
-    box-sizing: border-box;
-    overflow-x: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  padding: 5rem 0;
+  text-align: center;
+  flex-wrap: wrap;
+  width: 100%;
+  box-sizing: border-box;
+  overflow-x: auto;
 }
 
 .counter-box {
-    display: flex;
-    flex-flow: column wrap;
-    padding: 0 20px;
-    justify-content: center;
-    align-items: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
-    border-radius: 12px; /* opcional: suaviza bordes */
-
+  display: flex;
+  flex-flow: column wrap;
+  padding: 0 20px;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+  border-radius: 12px;
 }
 
 .counter-box:hover {
-    transform: translateY(-8px) scale(1.03);
-    background-color: rgba(255, 255, 255, 0.05); /* o un fondo leve si tienes dark mode */
-    cursor: pointer;
+  transform: translateY(-8px) scale(1.03);
+  background-color: rgba(255, 255, 255, 0.05);
+  cursor: pointer;
 }
 
-/*.counter-box:not(:last-child)::after {
-    content: "";
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    height: 70px;
-    width: 5px;
-    background-color: var(--secundary-color); /* línea azul entre contadores 
-}
-*/
-.box-sky{
+.box-sky {
   background-color: var(--secundary-color);
   height: 70px;
   width: 5px;
 }
 
 .counter-number {
-    font-size: 3em;
-    font-weight: var(--font-extrabold);
+  font-size: 3em;
+  font-weight: var(--font-extrabold);
 }
-/**-- Clase Momentanea--**/
-.counter-numbe { 
-    font-size: 3em;
-    font-weight: var(--font-extrabold);
+
+.counter-numbe {
+  font-size: 3em;
+  font-weight: var(--font-extrabold);
 }
 
 .counter-numbe i {
-    font-size: 30px;
+  font-size: 30px;
 }
 
 .counter-box h1 {
-    font-size: var(--h1-regular);
-    color: var(--primary-color) !important;
-    text-transform: none;
+  font-size: var(--h1-regular);
+  color: var(--primary-color) !important;
+  text-transform: none;
 }
 
-/**--- ============= 3 - Tutores Destacados =============== --**/
-
+/**---============ 3 - Tutores Destacados ============---**/
 .tutors-container {
   display: flex;
   flex-direction: column;
@@ -380,29 +358,32 @@ body{
   text-align: center;
 }
 
-
 @media (max-width: 1280px) {
   .tutors-container {
     max-width: 100%;
     padding: 2rem 1rem;
   }
 }
-.over-text{
+
+.over-text {
   font-size: var(--h1-regular);
 }
-.tutors-container h1{
+
+.tutors-container h1 {
   display: flex;
   flex-flow: row wrap;
   justify-content: center;
   align-items: center;
   gap: 12px;
 }
-.linea{
+
+.linea {
   background-color: var(--secundary-color);
   height: 4px;
   width: 50px;
 }
- /* =================== CARDS TUTORES DESTACADOS ===============*/
+
+/* ---============ 3.1 - CARDS TUTORES DESTACADOS ============---*/
 .tutor-card {
   flex: 0 0 350px;
   max-width: 330px;
@@ -410,7 +391,7 @@ body{
   height: 410px;
   margin: 0;
   box-sizing: border-box;
-  box-shadow: 0 8px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 8px 8px rgba(0, 0, 0, 0.1);
   border-radius: 12px;
   transition: all 0.5s;
   -webkit-transition: all 0.5s;
@@ -419,122 +400,123 @@ body{
 
 .tutor-card:hover {
   transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-
-/* ===== VIDEO Y BOTONES ====*/
+/* ---============ 3.2 - Video Y Botones ============---*/
 .tutor-card .tutor-card-img {
-    height: 140px;
-    background-position: center;
-    width: 100%;
-    /* 1. Importante: Establecer posición relativa para que los hijos absolutos se posicionen respecto a este contenedor */
-    position: relative;
-    border-radius: 12px 12px 0 0; /* Asegurar que el contenedor tenga los bordes redondeados */
-    overflow: hidden; /* Ocultar cualquier contenido que se salga de los bordes redondeados */
+  height: 140px;
+  background-position: center;
+  width: 100%;
+  /* 1. Importante: Establecer posición relativa para que los hijos absolutos se posicionen respecto a este contenedor */
+  position: relative;
+  border-radius: 12px 12px 0 0;
+  overflow: hidden;
 }
 
 .tutor-card .tutor-card-img video {
-    width: 100%;
-    height: 100%; /* Cambiar de 140px a 100% para que se ajuste al padre */
-    object-fit: cover;
-    display: block;
-    /* Eliminamos el margin-bottom para que no deje espacio */
-    margin-bottom: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  margin-bottom: 0;
 }
 
 .tutor-card .tutor-card-img .tutor-banner-overlay {
-    /* 2. Importante: Posicionar la superposición de forma absoluta sobre el video */
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    /* 3. Estilo del overlay para hacerlo visible */
-    background: rgba(0, 0, 0, 0.4); /* Un fondo semi-transparente oscuro */
-    cursor: pointer;
-    z-index: 10; /* Un z-index alto para asegurar que esté encima del video */
+  /* 2. Importante: Posicionar la superposición de forma absoluta sobre el video */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* 3. Estilo del overlay para hacerlo visible */
+  background: rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+  z-index: 10;
+  /* Un z-index alto para asegurar que esté encima del video */
 }
 
-/* Estilos para el botón de play */
 .tutor-card .tutor-card-img .tutor-banner-play {
-    background-color: rgba(255, 255, 255, 0.6);
-    border: none;
-    border-radius: 50%;
-    padding: 15px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  background-color: rgba(255, 255, 255, 0.6);
+  border: none;
+  border-radius: 50%;
+  padding: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-/* Hover en el botón de play */
 .tutor-card .tutor-card-img .tutor-banner-play:hover {
-    background-color: rgba(255, 255, 255, 0.8);
-    transform: scale(1.1);
+  background-color: rgba(255, 255, 255, 0.8);
+  transform: scale(1.1);
 }
 
 /* Estilos para el ícono de play (SVG) */
 .tutor-card .tutor-card-img .tutor-banner-play-icon {
-    width: 30px;
-    height: 30px;
-    fill: #000;
-    stroke: #000;
+  width: 30px;
+  height: 30px;
+  fill: #000;
+  stroke: #000;
 }
 
 /* Estilos para el control de volumen */
 .tutor-card .tutor-card-img .tutor-banner-volume {
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
-    width: 100px;
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  width: 100px;
 }
 
 /* Estilos para el contenedor de controles (pausa y volumen) */
 .tutor-video-controls {
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
-    display: flex;
-    align-items: center;
-    background: rgba(0, 0, 0, 0.5);
-    padding: 5px 10px;
-    border-radius: 50px;
-    z-index: 15; /* Asegúrate de que esté por encima del overlay inicial */
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  display: flex;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 5px 10px;
+  border-radius: 50px;
+  z-index: 15;
+  /* Asegúrate de que esté por encima del overlay inicial */
 }
 
 /* Estilos para los botones de control (pausa, etc.) */
 .tutor-control-button {
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    padding: 5px;
-    display: flex;
-    align-items: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  display: flex;
+  align-items: center;
 }
 
 .tutor-control-icon {
-    width: 20px;
-    height: 20px;
-    stroke: #fff;
-    fill: #fff;
+  width: 20px;
+  height: 20px;
+  stroke: #fff;
+  fill: #fff;
 }
 
 /* Estilos para el slider de volumen */
 .tutor-control-volume {
-    width: 80px;
-    margin-left: 10px;
-    /* Estilos para personalizar el slider si usas navegadores modernos */
+  width: 80px;
+  margin-left: 10px;
+  /* Estilos para personalizar el slider si usas navegadores modernos */
 }
 
-.mobile{
+.mobile {
   display: none;
 }
-.tutor-card-content { /* CONTENIDO DE LA CARD*/
+
+/* ---============ 3.3 - Contenido del Card ============---*/
+.tutor-card-content {
+  /* CONTENIDO DE LA CARD*/
   padding: 0rem 1.25rem 0.5rem 1.25rem;
   display: flex;
   flex-direction: column;
@@ -545,33 +527,38 @@ body{
   display: flex;
   align-items: center;
   justify-content: flex-start;
-
 }
+
 .tutor-card-header-left {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   padding-top: 0.7rem;
 }
-.tutor-card-header-left img{
+
+.tutor-card-header-left img {
   width: 50px;
   height: 50px;
   border-radius: 50%;
   object-fit: cover;
 }
+
 .tutor-card-header-left h3 {
   font-size: 1.25rem;
   font-weight: bold;
   color: var(--primary-color);
   margin: 0;
 }
+
 .tutor-card-header-left .tutor-verified {
   color: #2dd4bf;
   margin-left: 0.5rem;
 }
+
 .tutor-card-header-left .tutor-flag {
   margin-left: 0.4rem;
 }
+
 .tutor-card-header button {
   font-size: 1.5rem;
   color: #9ca3af;
@@ -580,6 +567,7 @@ body{
   cursor: pointer;
   transition: color 0.2s;
 }
+
 .tutor-card-header button:hover {
   color: #ef4444;
 }
@@ -588,8 +576,8 @@ body{
   font-size: 0.95rem;
   color: #334155;
   text-align: start;
-  line-height: 1.4; /* Mejora legibilidad */
-  height: 4rem; /* Fuerza altura para 3 líneas aprox */
+  line-height: 1.4;
+  height: 4rem;
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
@@ -605,6 +593,7 @@ body{
   font-size: 0.95rem;
   color: #1a3b4d;
 }
+
 .tutor-card .tutor-card-rating {
   display: flex;
   align-items: center;
@@ -615,23 +604,28 @@ body{
   font-weight: 500;
   gap: 0.25rem;
 }
+
 .tutor-card .tutor-card-rating .star {
   margin-right: 0.25rem;
   color: #f59e42;
 }
+
 .tutor-card .tutor-card-rating .rating-count {
   color: #b45309;
   margin-left: 0.25rem;
 }
+
 .tutor-card .tutor-card-price {
   text-align: right;
 }
+
 .tutor-card .tutor-card-price .price {
   font-size: 1.5rem;
   font-weight: bold;
   color: var(--primary-color);
 }
-i.fa-solid.fa-book.icon::before{
+
+i.fa-solid.fa-book.icon::before {
   margin-right: 0.4rem;
 }
 
@@ -646,9 +640,9 @@ i.fa-solid.fa-book.icon::before{
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  min-height: 5em; /* Altura mínima para una línea */
-
+  min-height: 5em;
 }
+
 .tutor-card .tutor-card-tag {
   background: #f3f4f6;
   color: var(--primary-color);
@@ -665,8 +659,8 @@ i.fa-solid.fa-book.icon::before{
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.75rem;
-
 }
+
 .tutor-card .tutor-card-actions button {
   width: 100%;
   padding: 0.7rem 0;
@@ -677,21 +671,24 @@ i.fa-solid.fa-book.icon::before{
   cursor: pointer;
   transition: background 0.2s, color 0.2s;
 }
+
 .tutor-card .tutor-card-actions .btn-profile {
   background: var(--terciary-color2);
   color: var(--white);
   border: 1px solid #e5e7eb;
 }
+
 .tutor-card .tutor-card-actions .btn-profile:hover {
   background: #e5e7eb;
 }
+
 .tutor-card .tutor-card-actions .btn-reserve {
   background: var(--secundary-color);
   color: #fff;
 }
+
 .tutor-card .tutor-card-actions .btn-reserve:hover {
   background: var(--primary-color);
-
 }
 
 .mas-tutor-card {
@@ -701,7 +698,7 @@ i.fa-solid.fa-book.icon::before{
   margin: 0;
   height: 100%;
   box-sizing: border-box;
-  box-shadow: 0 8px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 8px 8px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -713,6 +710,7 @@ i.fa-solid.fa-book.icon::before{
   justify-content: flex-start;
   background-color: var(--secundary-color);
 }
+
 .mas-tutor-card button {
   width: 80%;
   min-width: 120px;
@@ -728,12 +726,13 @@ i.fa-solid.fa-book.icon::before{
   position: static;
   margin-bottom: 2rem;
 }
+
 .mas-tutor-card i {
   padding-top: 2rem;
   font-size: 3rem;
 }
 
-
+/* ---============ 3.4 - CARRUSEL DE TARJETAS ============--- */
 /*
  * ========================================================
  * == ESTILOS ESENCIALES PARA EL MECANISMO DEL CARRUSEL ===
@@ -741,108 +740,108 @@ i.fa-solid.fa-book.icon::before{
  * Estos estilos NO dan formato a tus tarjetas, solo
  * controlan el comportamiento del carrusel.
 */
-
 /* --- Contenedor Principal y Posicionamiento --- */
 #carousel-wrapper {
-    position: relative;
-    width: 100%;
-    max-width: 1100px; /* Ajusta el ancho máximo según tu diseño */
-    margin: 0 auto;
-    padding: 0 40px; /* Espacio para que los botones no se superpongan */
-    box-sizing: border-box;
+  position: relative;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 40px;
+  /* Espacio para que los botones no se superpongan */
+  box-sizing: border-box;
 }
 
 /* --- Contenedor Visible del Carrusel --- */
 .carousel-container {
-    overflow: hidden;
-    position: relative;
+  overflow: hidden;
+  position: relative;
 }
 
-/* --- NUEVO: Degradados Laterales --- */
+/* --- Degradados Laterales --- */
 .carousel-container::before,
 .carousel-container::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    height: 100%;
-    width: 50px; /* Ancho del degradado. ¡Puedes ajustarlo! */
-    z-index: 2;
-    pointer-events: none; 
+  content: '';
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 50px;
+  /* Ancho del degradado */
+  z-index: 2;
+  pointer-events: none;
 }
 
 .carousel-container::before {
-    left: 0;
-    background: linear-gradient(to right, var(--panel-background), transparent);
+  left: 0;
+  background: linear-gradient(to right, var(--panel-background), transparent);
 }
 
 .carousel-container::after {
-    right: 0;
-    background: linear-gradient(to left, var(--panel-background), transparent);
+  right: 0;
+  background: linear-gradient(to left, var(--panel-background), transparent);
 }
 
 /* --- Pista de Deslizamiento --- */
 /* Esta pista contiene todas tus tarjetas y es lo que se mueve. */
 .carousel-track {
-    display: flex;
-    transition: transform 0.5s ease-in-out;
-    gap: 10px;
-    padding: 2rem 0.2rem 2rem 0rem;
-    justify-content: space-around;
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+  gap: 10px;
+  padding: 2rem 0.2rem 2rem 0rem;
+  justify-content: space-around;
 }
 
 /* --- Envoltura de cada Tarjeta --- */
 /* Esta es la clase que debes agregar a cada una de tus tarjetas. */
 /* Controla el tamaño que ocupa cada tarjeta en la pista. */
 .carousel-card {
-    flex-shrink: 0;
-    width: 100%; /* En móvil, 1 tarjeta visible */
-    box-sizing: border-box;
-    padding: 0 ; /* Espacio entre tarjetas (gutter) */
+  flex-shrink: 0;
+  width: 100%;
+  /* En móvil, 1 tarjeta visible */
+  box-sizing: border-box;
+  padding: 0;
 }
 
 /* --- Botones de Navegación --- */
 .nav-button {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: rgba(255, 255, 255, 0.9);
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    transition: all 0.3s ease;
-    color: #333;
-    z-index: 10;
-    border: none;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+  color: #333;
+  z-index: 10;
+  border: none;
 }
 
 .nav-button:hover {
-    background-color: white;
-    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+  background-color: white;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
 }
 
 .nav-button.prev {
-    left: 0px; /* Posicionado dentro del padding del wrapper */
+  left: 0px;
+  /* Posicionado dentro del padding del wrapper */
 }
 
 .nav-button.next {
-    right: 0px; /* Posicionado dentro del padding del wrapper */
+  right: 0px;
+  /* Posicionado dentro del padding del wrapper */
 }
 
 .nav-button.disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
-
-
-
-/**--- ?=========== 3 - Anuncio Potencial ==================== --**/
-/* === Potencial Container === */
+/**---============ 4 - Anuncio Potencial ============---**/
 .potencial-container {
   width: 100%;
   background: linear-gradient(135deg, #219EBC 0%, #023047 100%);
@@ -853,6 +852,7 @@ i.fa-solid.fa-book.icon::before{
   align-items: center;
   box-sizing: border-box;
 }
+
 .potencial-container h1 {
   display: flex;
   flex-flow: row wrap;
@@ -862,12 +862,14 @@ i.fa-solid.fa-book.icon::before{
   width: 100%;
   text-align: center;
 }
-.potencial-container > p {
+
+.potencial-container>p {
   text-align: center;
   width: 100%;
   line-height: 1rem;
   padding: 0rem 8rem;
 }
+
 .steps {
   display: flex;
   flex-direction: row;
@@ -881,7 +883,9 @@ i.fa-solid.fa-book.icon::before{
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
 }
-.steps-card, .go {
+
+.steps-card,
+.go {
   flex: 0 0 280px;
   max-width: 320px;
   min-width: 260px;
@@ -899,9 +903,11 @@ i.fa-solid.fa-book.icon::before{
   position: relative;
   scroll-snap-align: start;
 }
-.steps-card button, .go button {
+
+.steps-card button,
+.go button {
   font-size: 1.125rem;
-    font-weight: 200;
+  font-weight: 200;
   padding: 0.75rem 2rem;
 
   background-color: var(--terciary-color2);
@@ -910,57 +916,73 @@ i.fa-solid.fa-book.icon::before{
   color: white;
   box-sizing: border-box;
   margin-top: auto;
-    transition: opacity 0.3s ease;
-      display: inline-block;
+  transition: opacity 0.3s ease;
+  display: inline-block;
 }
+
 .go button {
   background-color: var(--primary-color);
   min-width: 130px;
 
 }
+
 .steps::-webkit-scrollbar {
   display: none;
 }
+
 .steps {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
 @media (max-width: 1024px) {
   .steps {
     gap: 1.2rem;
     padding: 1rem 0;
   }
-  .steps-card, .go {
+
+  .steps-card,
+  .go {
     min-width: 220px;
     max-width: 300px;
   }
 }
+
 @media (max-width: 768px) {
   .steps {
     gap: 0.7rem;
     padding: 1rem 0;
   }
-  .steps-card, .go {
+
+  .steps-card,
+  .go {
     min-width: 180px;
     max-width: 250px;
     padding: 0.5rem;
   }
-  .steps-card button, .go button {
+
+  .steps-card button,
+  .go button {
     width: 95%;
   }
+
   .carousel-nav {
     width: 40px;
     height: 40px;
     font-size: 1.1rem;
   }
+
   .carousel-nav.prev {
     left: 2px;
   }
+
   .carousel-nav.next {
     right: 2px;
   }
 }
-.steps-card, .go {
+
+.steps-card,
+.go {
   background: var(--secundary-color2);
   width: 280px;
   min-width: 260px;
@@ -977,16 +999,19 @@ i.fa-solid.fa-book.icon::before{
   box-sizing: border-box;
   justify-content: flex-start;
   position: relative;
-  transition: box-shadow 0.3s cubic-bezier(.4,0,.2,1), transform 0.3s cubic-bezier(.4,0,.2,1);
+  transition: box-shadow 0.3s cubic-bezier(.4, 0, .2, 1), transform 0.3s cubic-bezier(.4, 0, .2, 1);
 
 }
-.steps-card:hover, .go:hover{
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+
+.steps-card:hover,
+.go:hover {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   transform: translateY(-4px) scale(1.02);
 
 }
 
-.steps-card img, .go img {
+.steps-card img,
+.go img {
   width: 100%;
   max-width: 280px;
   min-height: 120px;
@@ -996,14 +1021,18 @@ i.fa-solid.fa-book.icon::before{
   margin: 0 auto;
   display: block;
 }
-.steps-card h1, .go h1 {
+
+.steps-card h1,
+.go h1 {
   font-size: 1.7rem;
   line-height: 30px;
   text-align: center;
   width: 100%;
   margin: 0 auto;
 }
-.steps-card p, .go p {
+
+.steps-card p,
+.go p {
   font-size: 1rem;
   color: var(--primary-color);
   line-height: 1rem;
@@ -1015,9 +1044,10 @@ i.fa-solid.fa-book.icon::before{
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
 }
-.steps-card button, .go button {
-  
-}
+
+.steps-card button,
+.go button {}
+
 .go {
   background: var(--secundary-color);
   color: white;
@@ -1025,16 +1055,20 @@ i.fa-solid.fa-book.icon::before{
   justify-content: center;
   align-items: center;
 }
-.go p{
+
+.go p {
   display: flex;
   flex-flow: wrap column;
   height: 100%;
 }
+
 .go button {
   background-color: var(--primary-color);
   margin: 0rem;
 }
-.steps-card .numero-paso, .go .numero-paso {
+
+.steps-card .numero-paso,
+.go .numero-paso {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1048,25 +1082,26 @@ i.fa-solid.fa-book.icon::before{
   margin: 0 auto;
   color: var(--primary-color);
 }
+
 .go .numero-paso {
   width: 60px;
   height: 50px;
   font-size: 1.2rem;
 }
+
 .go .numero-paso i {
   font-size: 2rem;
 }
 
-/*-------5 Busca tutorías-----*/
+/**---============ 5 - Busca Tutorías ============---**/
 .tutorias-container {
   background: white;
   padding: 4rem 1rem;
 }
-
-/* Contenedor principal */
+/**---============ 5.1 - Busvador Contenedor principal ============---**/
 .tutorias {
   display: flex;
-  flex-wrap: wrap; /* permite que los elementos se acomoden en pantallas pequeñas */
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   margin: 0rem;
@@ -1077,7 +1112,7 @@ i.fa-solid.fa-book.icon::before{
   background: var(--panel-background);
 }
 
-/* Texto izquierdo */
+/**---============ 5.2 - Buscador Texto Izquierdo ============---**/
 .tutores-text {
   flex: 1 1 300px;
   display: flex;
@@ -1109,9 +1144,9 @@ i.fa-solid.fa-book.icon::before{
   font-size: 1rem;
 }
 
-/* Botón */
+/**---============ 5.3 - Buscador Botón ============---**/
 .button-comienza {
-   margin-top: 2rem;
+  margin-top: 2rem;
   background-color: var(--secundary-color);
   color: white;
   font-weight: bold;
@@ -1128,7 +1163,7 @@ i.fa-solid.fa-book.icon::before{
   background-color: var(--primary-color);
 }
 
-/* Imagen derecha */
+/**---============ 5.4 - Buscador Imagen Derecha ============---**/
 .tutores-img {
   flex: 1 1 350px;
   display: flex;
@@ -1141,10 +1176,10 @@ i.fa-solid.fa-book.icon::before{
   height: 360px;
   width: 800px;
   border-radius: 20px;
-} 
+}
 
-/*----- seccion instalate nuestra aplicion------*/
-/* Contenedor principal */
+/**---============ 5.5 - Instala Nuestra Aplicacion ============---**/
+/**---============ 5.5.1 - Aplicación Contenedor ============---**/
 .section-app {
   min-height: 100vh;
   display: flex;
@@ -1154,7 +1189,7 @@ i.fa-solid.fa-book.icon::before{
   background: white;
 }
 
-/* Contenedor interno */
+/**---============ 5.5.2 - Aplicación Contenedor Interno ============---**/
 .container-app {
   max-width: 1200px;
   margin: 0 auto;
@@ -1162,25 +1197,26 @@ i.fa-solid.fa-book.icon::before{
   padding: 1.5rem;
 }
 
-/* Grid de contenido */
+/**---============ 5.5.3 - Aplicación Grid ============---**/
 .grid-app {
   display: grid;
   grid-template-columns: 1fr;
   gap: 2rem;
   align-items: center;
 }
-.grid-app .text-app p{
+
+.grid-app .text-app p {
   margin-bottom: 0.8rem !important;
 }
 
-/* Para pantallas medianas y grandes */
+/**---============ 5.5.4 - Aplicación Media Queries ============---**/
 @media (min-width: 768px) {
   .grid-app {
     grid-template-columns: 1fr 1fr;
   }
 }
 
-/* Columna de texto */
+/**---============ 5.5.5 - Aplicación Columnas ============---**/
 .text-app {
   text-align: center;
 }
@@ -1245,17 +1281,16 @@ i.fa-solid.fa-book.icon::before{
   opacity: 0.9;
 }
 
-/* Columna de imagen */
+/**---============ 5.5.6 - Aplicación Imagen ============---**/
 .image-app {
   display: flex;
   justify-content: flex-end;
   padding: 1rem;
   background: transparent;
 }
-
 .image-app img {
   border-radius: 2rem;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.20);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.20);
   transition: transform 0.5s ease;
   transform: rotate(6deg);
   max-width: 450px;
@@ -1267,9 +1302,7 @@ i.fa-solid.fa-book.icon::before{
 .image-app img:hover {
   transform: rotate(0deg) scale(1.05);
 }
-
-/* ====== MEDIA QUERIES ====== */
-
+/**---============ 5.5.7 - Aplicación Media Queries ============---**/
 /* Tablets */
 @media (max-width: 1024px) {
   .tutores-text h1 {
@@ -1277,18 +1310,13 @@ i.fa-solid.fa-book.icon::before{
   }
 }
 
-
-
-
-/*-----6 - Alianzas ---*/
-/*----6.1 Alianzas Container---*/
-/* Contenedor general */
+/**---============ 6 - Alianzas ============---**/
+/**---============ 6.1 - Alianzas Container ============---**/
 .alianzas {
   text-align: center;
   padding: 5rem 1rem 1rem 1rem;
 }
 
-/* Línea decorativa */
 .linea {
   display: inline-block;
   width: 40px;
@@ -1298,7 +1326,7 @@ i.fa-solid.fa-book.icon::before{
   vertical-align: middle;
 }
 
-/* Títulos y texto */
+/**---============ 6.2 - Alianzas Títulos ============---**/
 .alianzas h1 {
   font-size: 2rem;
   margin-bottom: 1rem;
@@ -1313,7 +1341,7 @@ i.fa-solid.fa-book.icon::before{
   color: var(--primary-color);
 }
 
-/* Contenedor de cards */
+/**---============ 6.3 - Alianzas Cards ============---**/
 .steps-alianzas {
   display: flex;
   flex-wrap: wrap;
@@ -1322,7 +1350,7 @@ i.fa-solid.fa-book.icon::before{
   padding: 2rem 0;
 }
 
-/* Card individual */
+/**---============ 6.4 - Alianzas Card Individual ============---**/
 .alianzas-card {
   width: 300px;
   height: 290px;
@@ -1332,7 +1360,7 @@ i.fa-solid.fa-book.icon::before{
   background-color: #fff;
   border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   flex-shrink: 0;
   scroll-snap-align: start;
@@ -1340,7 +1368,7 @@ i.fa-solid.fa-book.icon::before{
 
 .alianzas-card:hover {
   transform: scale(1.03);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
 .alianzas-card img {
@@ -1364,27 +1392,31 @@ i.fa-solid.fa-book.icon::before{
   overflow: hidden;
 }
 
-
-/**--- Card Tutores --**/
-
 @media (max-width: 1200px) {
-  .tutors-carousel-viewport, .tutors {
+
+  .tutors-carousel-viewport,
+  .tutors {
     width: 100vw;
     min-width: 0;
     max-width: 100vw;
   }
+
   .tutor-card {
     min-width: 300px;
     max-width: 300px;
     flex: 0 0 300px;
   }
 }
+
 @media (max-width: 900px) {
-  .tutors-carousel-viewport, .tutors {
+
+  .tutors-carousel-viewport,
+  .tutors {
     width: 100vw;
     min-width: 0;
     max-width: 100vw;
   }
+
   .tutor-card {
     min-width: 250px;
     max-width: 250px;
@@ -1396,28 +1428,33 @@ i.fa-solid.fa-book.icon::before{
 /* home-tablet.css: Estilos responsivos para tablet (max-width: 1024px) */
 
 @media (max-width: 1024px) {
+
   /* Navbar transparente */
   .navbar {
     background-color: transparent !important;
     box-shadow: none;
   }
+
   /* Hero: centrar gif y texto debajo */
   .hero-container {
     flex-direction: column;
     padding-top: 6rem;
     align-items: center;
   }
+
   .hero-image {
     padding: 0;
     text-align: center;
     order: 1;
   }
+
   .hero-image img {
     margin: 0 auto;
     display: block;
     max-width: 100vw;
     min-width: 400px;
   }
+
   .hero-text {
     padding: 2rem 1rem 1rem 1rem;
     text-align: center;
@@ -1431,10 +1468,11 @@ i.fa-solid.fa-book.icon::before{
     margin: 0 auto;
   }
 
-  .hero-buttons{
+  .hero-buttons {
     display: flex;
     justify-content: center;
   }
+
   /* Contadores en fila de dos */
   .counters {
     flex-wrap: wrap;
@@ -1442,14 +1480,17 @@ i.fa-solid.fa-book.icon::before{
     justify-content: center;
     gap: 2rem;
   }
+
   .counter-box {
     width: 45%;
     min-width: 180px;
     margin-bottom: 1.5rem;
   }
+
   .box-sky {
     display: none;
   }
+
   /* Tutores: 2 cards por fila en tablet */
   .tutors {
     flex-wrap: wrap;
@@ -1459,15 +1500,18 @@ i.fa-solid.fa-book.icon::before{
     justify-content: center;
     align-items: stretch;
   }
+
   .tutor-card {
     flex: 1 1 45%;
     max-width: 48vw;
     min-width: 220px;
     margin: 0 8px 1.2rem 8px;
   }
+
   .tutors-container {
     padding: 2rem 0.5rem;
   }
+
   /* Guía paso a paso: cards ocupan ancho */
   .steps {
     flex-direction: row;
@@ -1475,12 +1519,15 @@ i.fa-solid.fa-book.icon::before{
     gap: 1.2rem;
     padding: 1rem 0;
   }
-  .steps-card, .go {
+
+  .steps-card,
+  .go {
     min-width: 220px;
     max-width: 90vw;
     width: 90vw;
     margin: 0 auto;
   }
+
   /* Busca tutorías: imagen debajo del texto */
   .tutorias {
     flex-direction: column;
@@ -1489,20 +1536,24 @@ i.fa-solid.fa-book.icon::before{
     padding: 2rem 0.5rem;
     height: auto;
   }
+
   .tutores-text {
     padding: 1rem 0.5rem;
     align-items: center;
     text-align: center;
   }
+
   .tutores-img {
     order: 2;
     width: 100%;
     text-align: center;
   }
+
   .tutores-img img {
     max-width: 95vw;
     margin: 0 auto;
   }
+
   /* Alianzas: carrusel */
   .steps-alianzas {
     flex-direction: row;
@@ -1510,36 +1561,44 @@ i.fa-solid.fa-book.icon::before{
     gap: 1.5rem;
     padding: 1.5rem 0.5rem;
   }
+
   .alianzas-card {
     min-width: 220px;
     max-width: 350px;
     margin: 0 auto;
   }
+
   .alianzas-card img {
     width: 100%;
     max-width: 350px;
     height: auto;
   }
+
   /* Footer reducido */
   footer .footer-about .box:not(:nth-child(1)):not(:nth-child(4)) {
     display: none;
   }
+
   .footer-container {
     padding: 1rem 0.5rem;
   }
+
   .container-info {
     flex-direction: column;
     align-items: center;
     padding: 2rem 0 0 0;
   }
+
   .footer-info img {
     width: 180px;
   }
+
   .container-redes {
     justify-content: center;
     padding-right: 0;
     gap: 20px;
   }
+
   /* El carrusel horizontal solo se aplica en móvil */
 }
 
@@ -1547,6 +1606,7 @@ i.fa-solid.fa-book.icon::before{
 /* home-mobile.css: Estilos responsivos para móvil (max-width: 768px) */
 
 @media (max-width: 768px) {
+
   /* Navbar transparente */
   .navbar {
     background-color: transparent !important;
@@ -1555,25 +1615,30 @@ i.fa-solid.fa-book.icon::before{
     border-radius: 0;
     padding: 0.5rem 0.5rem;
   }
+
   .nav-i {
     width: 100px;
   }
+
   /* Hero: centrar gif y texto debajo */
   .hero {
     height: auto;
     min-height: 100vh;
     padding-bottom: 2rem;
   }
+
   .hero-container {
     flex-direction: column;
     padding-top: 2rem;
     align-items: center;
   }
+
   .hero-image {
     padding: 0;
     text-align: center;
     order: 1;
   }
+
   .hero-container img {
     margin: 0 auto;
     display: block;
@@ -1581,6 +1646,7 @@ i.fa-solid.fa-book.icon::before{
     min-width: 150px;
     padding: 3rem 0rem 0rem 0rem;
   }
+
   .hero-text {
     text-align: center;
     order: 2;
@@ -1588,42 +1654,50 @@ i.fa-solid.fa-book.icon::before{
     gap: 1px;
     padding-top: 0rem;
   }
-  .hero-subtext{
+
+  .hero-subtext {
     display: none;
   }
-  
 
-  .hero-title-arriba, .hero-title-abajo {
+
+  .hero-title-arriba,
+  .hero-title-abajo {
     font-size: 2.0em !important;
   }
-  .hero-subtext{
+
+  .hero-subtext {
     font-size: 1em !important;
     padding: 0rem 2rem 0rem 2rem;
   }
-  .search-box{
+
+  .search-box {
     display: flex;
     max-width: 75vw;
     margin: 0 auto;
   }
-  .hero-buttons{
+
+  .hero-buttons {
     display: flex;
     justify-content: center;
   }
+
   .hero-buttons button {
     padding: 0;
     display: flex;
-    flex-flow: column wrap; /* Esto ya lo tenías, mantiene los elementos uno encima del otro */
+    flex-flow: column wrap;
+    /* Esto ya lo tenías, mantiene los elementos uno encima del otro */
     width: 100px;
     gap: 10px;
     padding: 1rem;
     /* Nuevas propiedades para centrar horizontalmente */
-    align-items: center; /* Centra los elementos hijos a lo largo del eje transversal (horizontal en este caso de column wrap) */
-    justify-content: center; /* Centra el contenido del botón en el eje principal (vertical en este caso de column wrap) */
-    text-align: center; /* Asegura que el texto dentro del span también se centre si es necesario */
+    align-items: center;
+    justify-content: center;
+    text-align: center;
     background: rgba(255, 255, 255, 0.185);
     border: none;
-}
-  .hero-buttons button i{
+  }
+
+  .hero-buttons button i {
     display: flex;
     margin: 0 auto;
     font-size: 20px;
@@ -1638,6 +1712,7 @@ i.fa-solid.fa-book.icon::before{
     gap: 0.1rem;
     padding: 1.5rem 0.9rem;
   }
+
   .counter-box {
     width: 48%;
     min-width: 120px;
@@ -1646,49 +1721,58 @@ i.fa-solid.fa-book.icon::before{
     align-items: center;
     gap: 1px;
   }
+
   .counter-number {
     font-size: 3em;
     font-weight: var(--font-extrabold);
   }
-  .counter-box .text-dark{
+
+  .counter-box .text-dark {
     text-align: center;
     margin: 0rem;
     line-height: 18px;
   }
+
   .box-sky {
     display: none;
   }
+
   /* =============== SECCION TUTORES ======== */
 
   .tutors-container {
     padding: 0rem 0rem;
   }
+
   #carousel-wrapper {
-    padding: 0rem 0.6rem; /* Reducir espacio para botones */
+    padding: 0rem 0.6rem;
+    /* Reducir espacio para botones */
   }
 
-  .tutor-card-rating-row .desktop{
+  .tutor-card-rating-row .desktop {
     display: none !important;
     background: red;
   }
-  .tutors-container h1{
+
+  .tutors-container h1 {
     line-height: 2.3rem;
     padding-top: 1rem;
   }
-  .tutors-container p{
+
+  .tutors-container p {
     padding: 1rem 2rem;
   }
 
-  #prev-btn, #next-btn {
+  #prev-btn,
+  #next-btn {
     display: none;
   }
 
   /* 2. Resetear la pista del carrusel */
   .carousel-track {
     display: flex;
-    flex-wrap: wrap; 
+    flex-wrap: wrap;
     /* Muy importante: anular la transformación de JS */
-    transform: none !important; 
+    transform: none !important;
     gap: 20px;
     padding-top: 0rem;
   }
@@ -1696,14 +1780,16 @@ i.fa-solid.fa-book.icon::before{
   /* 3. Hacer que cada tarjeta ocupe todo el ancho */
   .carousel-card {
     width: 100%;
-    flex-shrink: 0; /* Evita que las tarjetas se encojan */
-    margin-bottom: 1rem; /* Añade un espacio entre las tarjetas apiladas */
+    flex-shrink: 0;
+    margin-bottom: 1rem;
   }
+
   .carousel-container::before,
   .carousel-container::after {
-      display: none;
+    display: none;
   }
-    /* =================== CARDS TUTORES DESTACADOS ===============*/
+
+  /* =================== CARDS TUTORES DESTACADOS ===============*/
   .tutor-card {
     flex: 0 0 350px;
     max-width: 330px;
@@ -1711,7 +1797,7 @@ i.fa-solid.fa-book.icon::before{
     height: 430px;
     margin: 0;
     box-sizing: border-box;
-    box-shadow: 0 8px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 8px 8px rgba(0, 0, 0, 0.1);
     border-radius: 12px;
     transition: all 0.5s;
     -webkit-transition: all 0.5s;
@@ -1720,7 +1806,7 @@ i.fa-solid.fa-book.icon::before{
 
   .tutor-card:hover {
     transform: translateY(-4px) scale(1.02);
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   }
 
   .tutor-card .tutor-card-img {
@@ -1729,7 +1815,7 @@ i.fa-solid.fa-book.icon::before{
     width: 100%;
   }
 
-  .tutor-card .tutor-card-img video{
+  .tutor-card .tutor-card-img video {
     width: 100%;
     height: 140px;
     object-fit: cover;
@@ -1739,21 +1825,22 @@ i.fa-solid.fa-book.icon::before{
 
   }
 
-  .tutor-card-header{
+  .tutor-card-header {
     padding-top: 1rem;
     display: flex;
     justify-content: center;
   }
 
-  .tutor-card-price .price{
+  .tutor-card-price .price {
     padding: 0rem 0rem;
   }
-  .tutor-card-price .price-desc{
+
+  .tutor-card-price .price-desc {
     padding: 0rem 0rem;
   }
 
 
-  
+
 
 
   /* ------Guía paso a paso -----*/
@@ -1761,80 +1848,92 @@ i.fa-solid.fa-book.icon::before{
     align-items: center;
     padding: 3rem 1rem;
   }
-  .potencial-container h1{
+
+  .potencial-container h1 {
     line-height: 40px;
   }
-  .potencial-container p{
+
+  .potencial-container p {
     text-align: center;
     padding: 1rem;
   }
-  .numero-paso{
+
+  .numero-paso {
     justify-content: center;
     align-items: center;
     height: 60px !important;
     width: 100px;
   }
+
   .steps {
     flex-direction: column;
     gap: 1rem;
     padding: 1rem 0;
   }
-  .steps-card, .go {
+
+  .steps-card,
+  .go {
     min-width: 150px;
     max-width: 90vw;
     width: 98vw;
     padding: 1rem;
     margin: 0 auto;
   }
-.steps-card img, .go img {
-  width: 100%;
-  max-width: 300px;
-  min-height: 120px;
-  height: 200px;
-  border-radius: 10px;
-  margin: 0 auto;
-  display: block;
-}
-.steps-card button, .go button {
-  
-  font-size: 1.125rem;
+
+  .steps-card img,
+  .go img {
+    width: 100%;
+    max-width: 300px;
+    min-height: 120px;
+    height: 200px;
+    border-radius: 10px;
+    margin: 0 auto;
+    display: block;
+  }
+
+  .steps-card button,
+  .go button {
+
+    font-size: 1.125rem;
     font-weight: bold;
-  padding: 0.75rem 2rem;
+    padding: 0.75rem 2rem;
 
-  background-color: var(--terciary-color2);
-  border-radius: 9999px;
-  border: none;
-  color: white;
-  box-sizing: border-box;
-  margin-top: auto;
+    background-color: var(--terciary-color2);
+    border-radius: 9999px;
+    border: none;
+    color: white;
+    box-sizing: border-box;
+    margin-top: auto;
     transition: opacity 0.3s ease;
-      display: inline-block;
+    display: inline-block;
 
 
-}
+  }
 
-.steps-card p{
-  height: 100%;
-  padding: 0rem 1rem;
-  margin: 0rem;
-}
-.go p{
-  height: 100%;
-  padding: 0rem 1rem;
-}
+  .steps-card p {
+    height: 100%;
+    padding: 0rem 1rem;
+    margin: 0rem;
+  }
 
-.go .numero-paso i{
-  font-size: 2rem;
-}
+  .go p {
+    height: 100%;
+    padding: 0rem 1rem;
+  }
+
+  .go .numero-paso i {
+    font-size: 2rem;
+  }
 
 
 
 
 
   /* ------------- SECCION TUTORIAS -------------- */
-.tutorias-container{
-  padding: 0rem;
-}
+  .tutorias-container {
+    padding: 0rem;
+  }
+
   .tutorias {
     flex-direction: column-reverse;
     text-align: center;
@@ -1866,7 +1965,7 @@ i.fa-solid.fa-book.icon::before{
     padding: 0;
   }
 
-  
+
   /* -----  ALIANZAS ------*/
   .alianzas h1 {
     font-size: 1.5rem;
@@ -1876,56 +1975,61 @@ i.fa-solid.fa-book.icon::before{
     font-size: 0.95rem;
     padding: 0 1rem;
   }
-.alianzas .over-text h1{
-  font-size: 1px !important;
-}
+
+  .alianzas .over-text h1 {
+    font-size: 1px !important;
+  }
+
   .steps-alianzas {
-  display: flex;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  padding: 1rem 0; /* elimina el padding lateral */
-  scroll-padding-left: 1rem; /* activa el snap desde 1rem del borde */
-  scroll-padding-right: 1rem;
-  position: relative;
-}
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding: 1rem 0;
+    scroll-padding-left: 1rem;
+    scroll-padding-right: 1rem;
+    position: relative;
+  }
 
-.alianzas-card:first-child {
-  margin-left: 80rem;
-}
+  .alianzas-card:first-child {
+    margin-left: 80rem;
+  }
 
-.alianzas-card:last-child {
-  margin-right: 1rem;
-}
+  .alianzas-card:last-child {
+    margin-right: 1rem;
+  }
 
-/* Cards individuales */
+  /* Cards individuales */
 
-.alianzas-card {
-  flex: 0 0 auto; /* Impide que se encogen y define ancho fijo */
-  width: 90%;
-  min-width: 260px;
-  max-width: 200px;
-  scroll-snap-align: start; /* Esto es lo que hace el efecto de snap */
-  padding-bottom: 0rem;
-}
+  .alianzas-card {
+    flex: 0 0 auto;
+    width: 90%;
+    min-width: 260px;
+    max-width: 200px;
+    scroll-snap-align: start;
+    padding-bottom: 0rem;
+  }
 
   .alianzas-card img {
     width: 100%;
     height: 200px;
   }
-  .alianzas-card .centro{
+
+  .alianzas-card .centro {
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
   }
-  .alianzas-card .centro p{
+
+  .alianzas-card .centro p {
     padding-top: 1rem;
     margin-bottom: 0rem;
     align-items: center;
   }
- /* Ocultar scrollbar opcional */
+
+  /* Ocultar scrollbar opcional */
   .steps-alianzas::-webkit-scrollbar {
     height: 6px;
   }
@@ -1937,11 +2041,12 @@ i.fa-solid.fa-book.icon::before{
 
   /*<-------- SECCION APP ------->*/
   .section-app {
-  padding: 0rem 0rem;
-  margin: 0rem 0rem;
+    padding: 0rem 0rem;
+    margin: 0rem 0rem;
   }
-  .grid-app .text-app p{
-  margin-bottom: 0rem;
+
+  .grid-app .text-app p {
+    margin-bottom: 0rem;
   }
 
 

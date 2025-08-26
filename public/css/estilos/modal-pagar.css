@@ -1,4 +1,24 @@
-/* Modal Overlay */
+/* ==================== modal-pagar.css ==================== */
+
+/** TABLE OF CONTENTS PC
+------------------------------------------------------------/
+
+1 - Modal Overlay...................................... 21-35
+2 - Modal Overlay...................................... 37-47
+3 - Modal Container.................................... 49-55
+4 - Modal Column Left (QR)............................. 57-72
+5 - Modal Column Right (Form).......................... 74-79
+6 - Modal Titulo....................................... 81-87
+7 - Labels and Inputs................................. 89-117
+8 - Select........................................... 119-135
+9 - Modal Date and Time.............................. 137-145
+10 - Modal Btns...................................... 147-180
+11 - Modal Btn Box................................... 182-200
+    
+/// END TABLE OF CONTENTS PC
+------------------------------------------------------------*/
+
+/* ==================== 1 - Modal Overlay ==================== */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -11,10 +31,10 @@
     justify-content: center;
     z-index: 50;
     padding: 20px;
-    display: none; /* Oculto por defecto */
+    display: none;
 }
 
-/* Modal Content */
+/* ==================== 2 - Modal Overlay ==================== */
 .modal-content {
     background-color: white;
     border-radius: 20px;
@@ -26,7 +46,7 @@
     transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
-/* Modal Container */
+/* ==================== 3 - Modal Container ==================== */
 .modal-container {
     display: flex;
     flex-direction: column;
@@ -34,7 +54,7 @@
     height: 100%;
 }
 
-/* Column Left (QR) */
+/* ==================== 4 - Modal Column Left (QR) ==================== */
 .modal-left {
     width: 100%;
     max-width: 250px;
@@ -51,14 +71,14 @@
     object-fit: contain;
 }
 
-/* Column Right (Form) */
+/* ==================== 5 -  Modal Column Right (Form) ==================== */
 .modal-right {
     padding: 30px;
     display: flex;
     flex-direction: column;
 }
 
-/* Title */
+/* ==================== 6 - Modal Titulo ==================== */
 .modal-title {
     font-size: 24px;
     font-weight: bold;
@@ -66,7 +86,7 @@
     margin-bottom: 16px;
 }
 
-/* Labels and Inputs */
+/* ==================== 7 - Labels and Inputs ==================== */
 .label {
     font-size: 14px;
     font-weight: 500;
@@ -96,7 +116,7 @@
     color: #6c757d;
 }
 
-/* Select */
+/* ==================== 8 - Select ==================== */
 .select-container {
     margin-bottom: 16px;
 }
@@ -114,7 +134,7 @@
     border-color: #007bff;
 }
 
-/* Date and Time */
+/* ==================== 9 - Modal Date and Time ==================== */
 .datetime-container {
     background-color: #f8f9fa;
     padding: 16px;
@@ -124,7 +144,7 @@
     margin-top: 12px;
 }
 
-/* Buttons */
+/* ==================== 10 - Modal Btns ==================== */
 .buttons-container {
     display: flex;
     flex-direction: column;
@@ -159,7 +179,7 @@
     background-color: #0056b3;
 }
 
-/* Button Box */
+/* ==================== 11 - Modal Btn Box ==================== */
 .tutor-pay-btn-box {
     display: flex;
     justify-content: center;
@@ -179,6 +199,7 @@
     background-color: #0056b3;
 }
 
+/*---------------------------movil---------------------------*/
 /* Responsive Styles */
 @media (max-width: 768px) {
     .modal-container {

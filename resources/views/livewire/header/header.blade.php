@@ -16,7 +16,7 @@ new class extends Component
             <div class="form-group" @click="$dispatch('toggle-spotlight')">
                 <i class="am-icon-search-02"></i>
                 <input type="text" class="form-control" placeholder="{{ __('general.quick_search') }}">
-                <span>{{ __('general.ctrl_k') }}</span>
+                <span class="atajo">{{ __('general.ctrl_k') }}</span>
             </div>
         </fieldset>
     </form>

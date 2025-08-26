@@ -277,6 +277,15 @@
                     <div class="tutor-card-rating"><span class="star">⭐</span>4.8 <span>(120 reseñas)</span></div>
                     <div class="tutor-card-price"><i class="fa-solid fa-book"></i><strong class="tutor-nr-claces">10</strong> tutorías</div>
                 </div>
+                <div class="space-y-4">
+                    <button id="copyButton" class="w-full bg-white/90 hover:bg-white text-[#0f3443] font-bold py-3 px-4 rounded-lg transition-transform transform hover:scale-105">
+                        Copiar Código
+                    </button>
+                    <button class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-4 rounded-lg transition-transform transform hover:scale-105">
+                        Compartir
+                    </button>
+                </div>
+                 <p id="copyMessage" class="mt-4 h-5"></p>
             </div>
         </div>
     </div>

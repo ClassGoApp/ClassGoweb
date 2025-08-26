@@ -1,13 +1,23 @@
+/* ==================== preguntas.css ==================== */
 @import "./variables.css";
 
-/* =================== preguntas.css =================== */
-/* ------------------------------------------------------------ */
-/* Estilos para la Página Preguntas */
-/* ------------------------------------------------------------ */
-.preguntas-image img{
-  width: 450px;
-  height: 400px;
-}
+/** TABLE OF CONTENTS PC
+------------------------------------------------------------/
+
+1 - Preguntas Container............................... 20-28
+2 - Preguntas Imagen.................................. 30-34
+3 - Preguntas Header.................................. 36-88
+4 - Preguntas BreadCrumb............................. 90-111
+5 - Preguntas Tabs.................................. 113-179
+    5.1 - Tabs Content.............................. 171-179
+6 - Faq Section..................................... 181-282
+    6.1 - Faq Items................................. 216-282
+7 - BackGroudn-Gradiant de Preguntas................ 284-303
+
+/// END TABLE OF CONTENTS PC
+------------------------------------------------------------/
+
+/* ==================== 1 - Preguntas Container ==================== */
 .preguntas-container {
   display: flex;
   flex-direction: column;
@@ -17,7 +27,13 @@
   background-color: white;
 }
 
-/*-----HEADER-----*/
+/* ==================== 2 - Preguntas Imagen ==================== */
+.preguntas-image img {
+  width: 450px;
+  height: 400px;
+}
+
+/* ==================== 3 - Preguntas Header ==================== */
 .preguntas-header {
   background: var(--secundary-color);
   border-bottom-left-radius: 50px;
@@ -71,6 +87,7 @@
   padding-bottom: 2rem;
 }
 
+/* ==================== 4 - Preguntas BreadCrumb ==================== */
 .breadcrumb {
   color: #eaf6fa;
   font-size: 1rem;
@@ -93,7 +110,7 @@
   text-decoration: underline;
 }
 
-/*-----TABS-----*/
+/* ==================== 5 - Preguntas Tabs ==================== */
 .preguntas-tabs {
   padding-top: 0rem;
   background: transparent;
@@ -127,7 +144,7 @@
 .tab-button.active {
   background: white;
   color: var(--primary-color);
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   font-weight: 600;
 }
 
@@ -144,14 +161,14 @@
 }
 
 .tab-button:hover {
-  background: rgba(255,255,255,0.2);
+  background: rgba(255, 255, 255, 0.2);
 }
 
 .tab-button i {
   font-size: 1.1rem;
 }
 
-/*-----TAB CONTENT-----*/
+/* ==================== 5.1 - Tabs Content ==================== */
 .tab-content {
   display: none;
   width: 100%;
@@ -161,7 +178,7 @@
   display: block;
 }
 
-/*-----FAQ SECTION-----*/
+/* ==================== 6 - Faq Section ==================== */
 .preguntas-section {
   background: white;
   padding: 5rem 4rem;
@@ -196,7 +213,7 @@
   border-radius: 1rem;
 }
 
-/*-----FAQ ITEMS-----*/
+/* ==================== 6.1 - Faq Items ==================== */
 .faq-item {
   border-bottom: 1px solid #e0e0e0;
   margin-bottom: 1rem;
@@ -264,7 +281,7 @@
   padding-bottom: 1.5rem;
 }
 
-/* Fondo gradiente reutilizable para secciones principales */
+/* ==================== 7 - BackGroudn-Gradiant de Preguntas ==================== */
 /* Puedes modificar el gradiente aquí o en el componente fondo-seccion.blade.php */
 .fondo-seccion {
   width: 100%;
@@ -291,12 +308,12 @@
     flex-direction: column;
     gap: 2rem;
   }
-  
+
   .preguntas-image {
     position: static;
     order: -1;
   }
-  
+
   .preguntas-image img {
     max-width: 80%;
   }
@@ -306,21 +323,25 @@
   .preguntas-header-content {
     padding: 8rem 3rem 0rem 3rem;
   }
-  .preguntas-header-text h1{
+
+  .preguntas-header-text h1 {
     padding: 0rem;
   }
+
   .preguntas-content {
     gap: 1.5rem;
     padding: 0rem 2rem;
   }
-  
+
   .preguntas-image img {
     max-width: 90%;
   }
-  .preguntas-section{
+
+  .preguntas-section {
     padding: 0rem;
-  } 
-  .preguntas-image{
+  }
+
+  .preguntas-image {
     padding-top: 1.5rem;
   }
-} 
+}

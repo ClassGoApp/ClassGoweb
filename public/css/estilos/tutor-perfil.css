@@ -1,66 +1,109 @@
-/* =================== tutores.css =================== */
-/* =====================
-   Estilos para Perfil de Tutor
-   ===================== */
+/* ==================== tutor-perfil.css ==================== */
 @import 'variables.css';
 
-.tutor-bg{
-	margin: 0;
-	padding: 0;
-	/* background-color: var(--panel-background); */
-	background: linear-gradient(135deg, #023047 0%, #219EBC 100%);
+/** TABLE OF CONTENTS PC
+------------------------------------------------------------/
 
+1 - Tutor Principal................................... 43-63
+2 - Tutor BreadCrumb.................................. 65-85
+3 - Tutor Grid........................................ 87-98
+4 - Tutor Card...................................... 100-105
+5 - Tutor Banner.................................... 107-153
+    5.1 - Banner Video.............................. 116-153
+6 - Tutor Perfil.................................... 155-220
+7 - Tutor Tabs...................................... 222-382
+8 - Tutor Calendario-Horario........................ 384-847
+    8.1 - Dias-Horarios Disponibles................. 387-390
+    8.2 - Dias Seleccionados........................ 392-397
+    8.3 - Btn De Ocupado............................ 399-406
+    8.4 - Btn De Seleccionado....................... 408-413
+    8.5 - Mensaje De Exito.......................... 415-437
+    8.6 - Dias Pasado............................... 439-443
+    8.7 - Dias Reservados........................... 445-450
+    8.8 - Dias Seleccionados Del Usuario............ 452-457
+    8.9 - Content Horas............................. 459-480
+9 - Tutor Modal..................................... 849-924
+    9.1 - Modal Mostrar............................. 864-869
+    9.2 - Modal Content............................. 871-883
+    9.3 - Modal Aparecer............................ 885-889
+    9.4 - Modal Body................................ 891-896
+    9.5 - Modal Qr.................................. 898-914
+    9.6 - Modal Form................................ 916-924
+10 - Tutor Form..................................... 926-932
+11 - Tutor Input.................................... 934-978
+    11.1 - Input De Archivo Personalizado........... 944-978
+12 - Turtor Select Personalisado.................... 980-995
+13 - Tutor Info Box Horario........................ 997-1009
+14 - Tutor Btn Action............................. 1011-1018
+15 - Tutor Btn Generic............................ 1020-1051
+    
+/// END TABLE OF CONTENTS PC
+------------------------------------------------------------*/
+
+/* ==================== 1 - Tutor Principal ==================== */
+.tutor-bg {
+    margin: 0;
+    padding: 0;
+    /* background-color: var(--panel-background); */
+    background: linear-gradient(135deg, #023047 0%, #219EBC 100%);
 }
-.navbar-container{
+
+.navbar-container {
     position: sticky;
-	top: 1px;;
+    top: 1px;
+    ;
     z-index: 1000;
 }
+
 .tutor-main {
-	max-width: 1200px; /*Tamaño del main */
-	margin: 0 auto;
-	padding: 8rem 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 8rem 1rem;
 }
 
+/* ==================== 2 - Tutor BreadCrumb ==================== */
 .tutor-breadcrumbs {
-	color: white;
-	font-size: 1rem;
-	margin-bottom: 1rem;
+    color: white;
+    font-size: 1rem;
+    margin-bottom: 1rem;
 }
 
 .tutor-breadcrumb-link {
-	color: var(--text-gris);
-	text-decoration: none;
-	transition: var(--transition);
+    color: var(--text-gris);
+    text-decoration: none;
+    transition: var(--transition);
 }
 
 .tutor-breadcrumb-link:hover {
-	color: var(--secundary-color);
+    color: var(--secundary-color);
 }
 
 .tutor-breadcrumb-current {
-	color: var(--bg-gradient);
-	font-weight: bold;
+    color: var(--bg-gradient);
+    font-weight: bold;
 }
 
+/* ==================== 3 - Tutor Grid ==================== */
 .tutor-grid {
-	display: grid;
-	grid-template-columns: 2fr 1fr;
-	gap: 2rem;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
 }
 
 .tutor-col-main {
-	display: flex;
-	flex-direction: column;
-	gap: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
 }
 
+/* ==================== 4 - Tutor Card ==================== */
 .tutor-card-main {
-	border-radius: 1.5rem;
-	box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-	overflow: hidden;
+    border-radius: 1.5rem;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
 }
 
+/* ==================== 5 - Tutor Banner ==================== */
 .tutor-banner {
     position: relative;
     width: 100%;
@@ -68,12 +111,17 @@
     overflow: hidden;
     background: #000;
 }
+
+/* ==================== 5.1 - Banner Video ==================== */
 .tutor-banner-video {
-    left: 0; top: 0;
-    width: 100%; height: 100%;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
     z-index: 1;
 }
+
 .tutor-banner-overlay {
     position: relative;
     z-index: 2;
@@ -82,8 +130,9 @@
     height: 100%;
     justify-content: center;
 }
+
 .tutor-banner-play {
-    background: rgba(0,0,0,0.5);
+    background: rgba(0, 0, 0, 0.5);
     border: none;
     border-radius: 50%;
     padding: 16px;
@@ -91,167 +140,172 @@
     color: #fff;
     transition: background 0.2s;
 }
+
 .tutor-banner-play:hover {
-    background: rgba(0,0,0,0.8);
+    background: rgba(0, 0, 0, 0.8);
 }
 
 .tutor-banner-play-icon {
-	width: 40px;
-	height: 40px;
-	color: #fff;
+    width: 40px;
+    height: 40px;
+    color: #fff;
 }
 
+/* ==================== 6 - Tutor Perfil ==================== */
 .tutor-card-main-content {
     background: #ffffff;
     z-index: 5;
     position: relative;
-	padding: 2rem;
-	border-bottom-left-radius: 30px;
-	border-bottom-right-radius: 30px;
+    padding: 2rem;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
 }
 
 .tutor-profile-img {
-	width: 128px;
-	height: 128px;
-	border-radius: 50%;
-	object-fit: cover;
-	border: 4px solid #fff;
-	position: absolute;
-	top: -64px;
-	left: 32px;
-	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    width: 128px;
+    height: 128px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #fff;
+    position: absolute;
+    top: -64px;
+    left: 32px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
     z-index: 10;
 }
 
 .tutor-profile-info {
-	margin-left: 150px;
-	padding-left: 0.8rem;
+    margin-left: 150px;
+    padding-left: 0.8rem;
 }
 
 .tutor-profile-name {
-	font-size: 2rem;
-	font-weight: bold;
-	color: var(--primary-color);
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--primary-color);
 }
 
 .tutor-profile-meta {
-	display: flex;
-	gap: 2rem;
-	color: #666;
-	margin-top: 0.5rem;
+    display: flex;
+    gap: 2rem;
+    color: #666;
+    margin-top: 0.5rem;
 }
 
 .tutor-profile-rating,
 .tutor-profile-students {
-	display: flex;
-	align-items: center;
-	gap: 0.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
 }
 
 .tutor-star-icon {
-	color: var(--terciary-color2);
-	width: 20px;
-	height: 20px;
+    color: var(--terciary-color2);
+    width: 20px;
+    height: 20px;
 }
 
 .tutor-student-icon {
-	color: var(--secundary-color);
-	width: 20px;
-	height: 20px;
+    color: var(--secundary-color);
+    width: 20px;
+    height: 20px;
 }
 
 .tutor-profile-quote {
-	margin-top: 1.5rem;
-	color: #555;
-	font-size: 1.1rem;
-	text-align: center;
+    margin-top: 1.5rem;
+    color: #555;
+    font-size: 1.1rem;
+    text-align: center;
 }
 
+/* ==================== 7 - Tutor Tabs ==================== */
 .tutor-tabs-card {
-	background: #fff;
-	border-radius: 1.5rem;
-	box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    background: #fff;
+    border-radius: 1.5rem;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
 }
 
 .tutor-tabs-nav {
-	border-bottom: 1px solid #e0e0e0;
+    border-bottom: 1px solid #e0e0e0;
     padding-top: 1rem;
 }
 
 .tutor-tabs-list {
-	display: flex;
-	gap: 2rem;
-	padding: 0 2rem;
-	overflow-x: auto;
+    display: flex;
+    gap: 2rem;
+    padding: 0 2rem;
+    overflow-x: auto;
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* IE y Edge */
 }
+
 .tutor-tabs-list::-webkit-scrollbar {
-    display: none; /* Chrome, Safari y Opera */
+    display: none;
+    /* Chrome, Safari y Opera */
 }
 
 .tutor-tab-btn {
-	background: none;
-	border: none;
-	border-bottom: 2px solid transparent;
-	color: #888;
-	font-size: 1rem;
-	font-weight: 500;
-	padding: 1rem 0.5rem;
-	cursor: pointer;
-	transition: var(--transition);
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: #888;
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 1rem 0.5rem;
+    cursor: pointer;
+    transition: var(--transition);
 }
 
 .tutor-tab-btn.active {
-	border-color: var(--secundary-color);
-	color: var(--secundary-color);
-	font-weight: 600;
+    border-color: var(--secundary-color);
+    color: var(--secundary-color);
+    font-weight: 600;
 }
 
 .tutor-tabs-content {
-	padding: 2rem;
+    padding: 2rem;
 }
 
 .tutor-tab-content {
-	display: block;
+    display: block;
 }
 
 .tutor-tab-content.hidden {
-	display: none;
+    display: none;
 }
 
 .tutor-section-title {
-	font-size: 1.3rem;
-	font-weight: bold;
-	color: var(--primary-color);
-	margin-bottom: 1rem;
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
 }
 
 .tutor-section-title-lg {
-	font-size: 1.7rem;
-	font-weight: bold;
-	color: var(--primary-color);
-	margin-bottom: 2rem;
+    font-size: 1.7rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-bottom: 2rem;
 }
 
 .tutor-section-text {
-	color: #666;
-	line-height: 1.7;
+    color: #666;
+    line-height: 1.7;
 }
 
 .tutor-section-more {
-	color: var(--secundary-color);
-	font-weight: 600;
-	background: none;
-	border: none;
-	margin-top: 0.5rem;
-	cursor: pointer;
+    color: var(--secundary-color);
+    font-weight: 600;
+    background: none;
+    border: none;
+    margin-top: 0.5rem;
+    cursor: pointer;
 }
 
 .tutor-section-divider {
-	border: none;
-	border-top: 1px solid #e0e0e0;
-	margin: 2rem 0;
+    border: none;
+    border-top: 1px solid #e0e0e0;
+    margin: 2rem 0;
 }
 
 .tutor-section-skills {
@@ -260,43 +314,44 @@
     gap: 0.5rem;
     margin-top: 1.5rem;
 }
-.tutor-section-skills-materia{
-	display: flex;
-	flex-direction: column;
-	gap: 1.5rem;
-	margin-top: 1.5rem;
+
+.tutor-section-skills-materia {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
 }
 
 
 .tutor-skill-item {
-	display: flex;
-	align-items: flex-start;
-	gap: 1rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
 }
 
 .tutor-skill-icon {
-	background: var(--terciary-color);
-	padding: 1rem;
-	border-radius: 1rem;
+    background: var(--terciary-color);
+    padding: 1rem;
+    border-radius: 1rem;
 }
 
 .tutor-skill-svg {
-	color: var(--secundary-color);
-	width: 24px;
-	height: 24px;
+    color: var(--secundary-color);
+    width: 24px;
+    height: 24px;
 }
 
 .tutor-skill-title {
-	font-size: 1.1rem;
-	font-weight: 600;
-	color: var(--primary-color);
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--primary-color);
 }
 
 .tutor-skill-tags {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 0.5rem;
-	margin-top: 0.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
 }
 
 .tutor-skill-tag {
@@ -316,43 +371,45 @@
 }
 
 .tutor-language-tag {
-	background: var(--secundary-color2);
-	color: var(--primary-color);
-	font-weight: 500;
-	padding: 0.5rem 1.5rem;
-	border-radius: 1rem;
-}
-/* ======= CALENDARIO ==========*/
-/* Estilos para los días del calendario */
-/* Día con horas disponibles */
-.tutor-calendar-day.has-availability {
-    border: 2px solid var(--terciary-color2); /* Naranja */
+    background: var(--secundary-color2);
+    color: var(--primary-color);
+    font-weight: 500;
+    padding: 0.5rem 1.5rem;
+    border-radius: 1rem;
 }
 
-/* Día seleccionado (mantenemos el celeste) */
+/* ==================== 8 - Tutor Calendario-Horario ==================== */
+/* Estilos para los días del calendario */
+
+/* ==================== 8.1 - Dias-Horarios Disponibles ==================== */
+.tutor-calendar-day.has-availability {
+    border: 2px solid var(--terciary-color2);
+}
+
+/* ==================== 8.2 - Dias Seleccionados ==================== */
 .tutor-calendar-day.selected {
     background-color: var(--primary-color);
     color: white;
     border-color: #3498db;
 }
 
-/* Botón de hora ocupada */
+/* ==================== 8.3 - Btn De Ocupado ==================== */
 .tutor-time-slot-btn.occupied {
-    background-color: #e74c3c; /* Rojo */
+    background-color: #e74c3c;
     color: white;
     text-decoration: line-through;
     cursor: not-allowed;
     border-color: #e74c3c;
 }
 
-/* Botón de hora seleccionada */
+/* ==================== 8.4 - Btn De Seleccionado ==================== */
 .tutor-time-slot-btn.selected {
-    background-color: #3498db; /* Celeste */
+    background-color: #3498db;
     color: white;
     border-color: #2980b9;
 }
 
-/* Mensaje de éxito */
+/* ==================== 8.5 - Mensaje De Exito ==================== */
 .alert-success {
     background-color: #2ecc71;
     color: white;
@@ -361,6 +418,7 @@
     margin-bottom: 1rem;
     text-align: center;
 }
+
 .tutor-calendar-day {
     display: flex;
     justify-content: center;
@@ -375,27 +433,27 @@
     background-color: #f0f0f0;
 }
 
-/* Día pasado (no se puede seleccionar) */
+/* ==================== 8.6 - Dias Pasado ==================== */
 .tutor-calendar-day.past {
     color: #ccc;
     cursor: not-allowed;
 }
 
-/* Día reservado (marcado en naranja) */
+/* ==================== 8.7 - Dias Reservados ==================== */
 .tutor-calendar-day.booked {
-    background-color: #ffe8d6; /* Naranja suave */
-    color: #d9534f; /* Texto oscuro para contraste */
+    background-color: #ffe8d6;
+    color: #d9534f;
     font-weight: bold;
 }
 
-/* Día seleccionado por el usuario (azul) */
+/* ==================== 8.8 - Dias Seleccionados Del Usuario ==================== */
 .tutor-calendar-day.selected {
     background-color: #3498db;
     color: var(--primary-color);
     font-weight: bold;
 }
 
-/* Contenedor de las horas */
+/* ==================== 8.9 - Content Horas ==================== */
 .tutor-time-slots {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
@@ -426,367 +484,367 @@
     border-radius: 8px;
 }
 
-/* ==================================*/
 .tutor-availability-grid {
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	gap: 2rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
 }
 
 .tutor-calendar-box {
-	background: #fff;
-	padding: 1.5rem;
-	border-radius: 1rem;
-	border: 1px solid #e0e0e0;
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    border: 1px solid #e0e0e0;
 }
 
 .tutor-calendar-header {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
 }
 
 .tutor-calendar-nav-btn {
-	background: none;
-	border: none;
-	border-radius: 50%;
-	padding: 0.6rem;
-	cursor: pointer;
-	transition: var(--transition);
+    background: none;
+    border: none;
+    border-radius: 50%;
+    padding: 0.6rem;
+    cursor: pointer;
+    transition: var(--transition);
 }
 
 .tutor-calendar-nav-btn:hover {
-	background: #f0f0f0;
+    background: #f0f0f0;
 }
 
 .tutor-calendar-nav-icon {
-	color: #888;
-	width: 20px;
-	height: 20px;
+    color: #888;
+    width: 20px;
+    height: 20px;
 }
 
 .tutor-calendar-month {
-	font-weight: 600;
-	color: var(--primary-color);
+    font-weight: 600;
+    color: var(--primary-color);
 }
 
 .tutor-calendar-grid {
-	display: grid;
-	grid-template-columns: repeat(7, 1fr);
-	gap: 0.2rem;
-	text-align: center;
-	font-size: 0.95rem;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.2rem;
+    text-align: center;
+    font-size: 0.95rem;
 }
 
 .tutor-calendar-day-label {
-	font-weight: 600;
-	color: #bbb;
+    font-weight: 600;
+    color: #bbb;
 }
 
 .tutor-calendar-day {
-	width: 40px;
-	height: 40px;
-	border-radius: 50%;
-	background: none;
-	border: none;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	cursor: pointer;
-	transition: var(--transition);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: none;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition);
 }
 
 .tutor-calendar-day.selected {
-	background: var(--secundary-color);
-	color: #fff;
-	font-weight: bold;
+    background: var(--secundary-color);
+    color: #fff;
+    font-weight: bold;
 }
 
 .tutor-time-selector-col {
-	display: block;
+    display: block;
 }
 
 .tutor-time-selector-box {
-	background: #fff;
-	padding: 1.5rem;
-	border-radius: 1rem;
-	border: 1px solid #e0e0e0;
-	height: 80%;
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    border: 1px solid #e0e0e0;
+    height: 80%;
 }
 
 .tutor-time-range {
-	color: #888;
-	font-size: 1rem;
-	margin-bottom: 1rem;
+    color: #888;
+    font-size: 1rem;
+    margin-bottom: 1rem;
 }
 
 .tutor-time-slots {
-	display: grid;
-	grid-template-columns: repeat(3, 1fr);
-	gap: 0.5rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
 }
 
 .tutor-time-slot {
-	padding: 0.5rem;
-	border: 1px solid #e0e0e0;
-	border-radius: 0.7rem;
-	background: none;
-	cursor: pointer;
-	transition: var(--transition);
+    padding: 0.5rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 0.7rem;
+    background: none;
+    cursor: pointer;
+    transition: var(--transition);
 }
 
 .tutor-time-slot.selected,
 .tutor-time-slot:hover {
-	background: var(--secundary-color);
-	color: #fff;
-	border-color: var(--secundary-color);
+    background: var(--secundary-color);
+    color: #fff;
+    border-color: var(--secundary-color);
 }
 
 .tutor-time-exact-btn {
-	width: 100%;
-	margin-top: 1rem;
-	background: var(--terciary-color2);
-	color: #fff;
-	font-weight: 600;
-	padding: 0.7rem 0;
-	border-radius: 0.7rem;
-	border: none;
-	cursor: pointer;
-	transition: var(--transition);
+    width: 100%;
+    margin-top: 1rem;
+    background: var(--terciary-color2);
+    color: #fff;
+    font-weight: 600;
+    padding: 0.7rem 0;
+    border-radius: 0.7rem;
+    border: none;
+    cursor: pointer;
+    transition: var(--transition);
 }
 
 .tutor-pay-btn-box {
-	margin-top: 2rem;
-	text-align: center;
+    margin-top: 2rem;
+    text-align: center;
+    padding: 0rem 2rem;
 }
 
 .tutor-pay-btn {
-	background: var(--terciary-color2);
-	color: #fff;
-	font-weight: bold;
-	padding: 1rem 3rem;
-	border-radius: 1rem;
-	font-size: 1.2rem;
-	border: none;
-	cursor: pointer;
-	transition: var(--transition);
-	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    background: var(--terciary-color2);
+    color: #fff;
+    font-weight: bold;
+    padding: 1rem 3rem;
+    border-radius: 1rem;
+    font-size: 1.2rem;
+    border: none;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .tutor-pay-btn:hover {
-	opacity: 0.9;
-	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    opacity: 0.9;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
 }
 
 .tutor-subtabs-nav {
-	display: flex;
-	gap: 1rem;
-	border-bottom: 1px solid #e0e0e0;
-	margin-bottom: 1.5rem;
+    display: flex;
+    gap: 1rem;
+    border-bottom: 1px solid #e0e0e0;
+    margin-bottom: 1.5rem;
 }
 
 .tutor-subtab-btn {
-	background: none;
-	border: none;
-	font-weight: 600;
-	font-size: 1rem;
-	padding: 0.7rem 1.5rem;
-	border-radius: 0.7rem 0.7rem 0 0;
-	color: #888;
-	cursor: pointer;
-	transition: var(--transition);
+    background: none;
+    border: none;
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 0.7rem 1.5rem;
+    border-radius: 0.7rem 0.7rem 0 0;
+    color: #888;
+    cursor: pointer;
+    transition: var(--transition);
 }
 
 .tutor-subtab-btn.active {
-	background: var(--secundary-color);
-	color: #fff;
+    background: var(--secundary-color);
+    color: #fff;
 }
 
 .tutor-subtab-content {
-	display: block;
+    display: block;
 }
 
 .tutor-subtab-content.hidden {
-	display: none;
+    display: none;
 }
 
 .tutor-empty-box {
-	text-align: center;
-	padding: 3rem 0;
+    text-align: center;
+    padding: 3rem 0;
 }
 
 .tutor-empty-img {
-	width: 96px;
-	height: 96px;
-	margin: 0 auto;
+    width: 96px;
+    height: 96px;
+    margin: 0 auto;
 }
 
 .tutor-empty-title {
-	font-size: 1.1rem;
-	font-weight: 600;
-	margin-top: 1rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-top: 1rem;
 }
 
 .tutor-empty-text {
-	color: #888;
-	margin-top: 0.5rem;
+    color: #888;
+    margin-top: 0.5rem;
 }
 
 .tutor-col-actions {
-	display: flex;
-	flex-direction: column;
-	gap: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
 }
 
 .tutor-actions-card {
-	background: #fff;
-	border-radius: 1.5rem;
-	box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-	padding: 2rem 2rem 2rem 2rem;
-	position: sticky;
-	top: 30px;
+    background: #fff;
+    border-radius: 1.5rem;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    padding: 2rem 2rem 2rem 2rem;
+    position: sticky;
+    top: 30px;
 }
 
 .tutor-actions-price-box {
-	margin-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
 }
 
 .tutor-actions-price {
-	font-size: 2rem;
-	font-weight: bold;
-	color: var(--primary-color);
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--primary-color);
 }
 
 .tutor-actions-price-unit {
-	font-size: 1rem;
-	color: #888;
-	font-weight: 400;
+    font-size: 1rem;
+    color: #888;
+    font-weight: 400;
 }
 
 .tutor-actions-meta {
-	display: flex;
-	align-items: center;
-	gap: 1.5rem;
-	color: #888;
-	font-size: 1rem;
-	margin-top: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    color: #888;
+    font-size: 1rem;
+    margin-top: 0.5rem;
 }
 
 .tutor-actions-meta-icon {
-	width: 18px;
-	height: 18px;
-	color: #888;
+    width: 18px;
+    height: 18px;
+    color: #888;
 }
 
 .tutor-actions-meta-icon-green {
-	color: #10b981;
-	margin-left: 1rem;
+    color: #10b981;
+    margin-left: 1rem;
 }
 
 .tutor-actions-meta-verified {
-	color: #10b981;
-	font-weight: 600;
+    color: #10b981;
+    font-weight: 600;
 }
 
 .tutor-actions-btns {
-	display: flex;
-	flex-direction: column;
-	gap: 1rem;
-	margin-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1.5rem;
 }
 
 .tutor-btn {
-	width: 100%;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	gap: 0.7rem;
-	font-size: 1.1rem;
-	font-weight: bold;
-	border-radius: 1rem;
-	border: none;
-	padding: 1rem 0;
-	cursor: pointer;
-	transition: var(--transition);
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.7rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border-radius: 1rem;
+    border: none;
+    padding: 1rem 0;
+    cursor: pointer;
+    transition: var(--transition);
 }
 
 .tutor-btn-now {
-	background: var(--terciary-color2);
-	color: #fff;
+    background: var(--terciary-color2);
+    color: #fff;
 }
 
 .tutor-btn-reservar {
-	background: var(--secundary-color);
-	color: #fff;
+    background: var(--secundary-color);
+    color: #fff;
 }
 
 .tutor-btn-share {
-	background: #e0e0e0;
-	color: #555;
+    background: #e0e0e0;
+    color: #555;
 }
 
 .tutor-btn-icon {
-	width: 24px;
-	height: 24px;
+    width: 24px;
+    height: 24px;
 }
 
 .tutor-footer {
-	background: var(--primary-color);
-	color: #fff;
-	margin-top: 4rem;
-	padding: 2rem 0;
-	text-align: center;
+    background: var(--primary-color);
+    color: #fff;
+    margin-top: 4rem;
+    padding: 2rem 0;
+    text-align: center;
 }
 
 .tutor-reviews-box {
-	display: flex;
-	flex-direction: row;
-	gap: 2rem;
-	align-items: flex-start;
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+    align-items: flex-start;
 }
 
 .tutor-reviews-summary {
-	width: 33%;	
-	padding: 1.5rem;
-	border-radius: 1rem;
-	text-align: center;
+    width: 33%;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    text-align: center;
 }
 
 .tutor-reviews-score {
-	font-size: 2.5rem;
-	font-weight: bold;
+    font-size: 2.5rem;
+    font-weight: bold;
 }
 
 .tutor-reviews-stars {
-	display: flex;
-	justify-content: center;
-	color: #ccc;
-	margin: 1rem 0;
+    display: flex;
+    justify-content: center;
+    color: #ccc;
+    margin: 1rem 0;
 }
 
 .tutor-reviews-count {
-	color: #888;
+    color: #888;
 }
 
 .tutor-reviews-details {
-	width: 67%;
-	display: flex;
-	flex-direction: column;
-	gap: 0.5rem;
+    width: 67%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 
 .tutor-reviews-empty {
-	border-top: 1px solid #e0e0e0;
-	margin-top: 2rem;
-	padding-top: 2rem;
+    border-top: 1px solid #e0e0e0;
+    margin-top: 2rem;
+    padding-top: 2rem;
 }
 
-/* --- Estilos del Modal --- */
 body.modal-open {
     overflow: hidden;
 }
 
+/* ==================== 9 - Tutor Modal ==================== */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -795,19 +853,19 @@ body.modal-open {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 50;
-    display: none; /* Inicialmente oculto */
+    display: none;
     align-items: center;
     justify-content: center;
     padding: 1rem;
 }
 
-/* Clase para mostrar el modal */
+/* ==================== 9.1 - Modal Mostrar ==================== */
 .modal-overlay.is-visible {
     display: flex; /* Cambiar a flex para centrar el contenido */
     z-index: 999999999;
 }
 
-/* Contenedor principal del modal */
+/* ==================== 9.2 - Modal Content ==================== */
 .modal-content {
     background-color: white;
     border-radius: 1rem;
@@ -821,19 +879,20 @@ body.modal-open {
     display: block;
 }
 
-/* Animación de entrada */
+/* ==================== 9.3 - Modal Aparecer ==================== */
 .modal-overlay.is-visible .modal-content {
     transform: scale(1);
     opacity: 1;
 }
 
-/* Cuerpo del modal (contenedor flex) */
+/* ==================== 9.4 - Modal Body ==================== */
 .modal-body {
     display: flex;
-    flex-direction: row; /* Diseño horizontal por defecto */
+    flex-direction: row;
+    /* Diseño horizontal por defecto */
 }
 
-/* Columna del QR */
+/* ==================== 9.5 - Modal Qr ==================== */
 .modal-qr-column {
     width: 100%;
     background-color: #f9fafb;
@@ -851,7 +910,7 @@ body.modal-open {
     object-fit: contain;
 }
 
-/* Columna del Formulario */
+/* ==================== 9.6 - Modal Form ==================== */
 .modal-form-column {
     width: 100%;
     padding: 2rem;
@@ -860,22 +919,24 @@ body.modal-open {
     gap: 1.5rem; /* Espacio entre los elementos del formulario */
 }
 
-
+/* ==================== 10 - Tutor Form ==================== */
 .form-title {
-    font-size: 1.5rem; /* 24px */
+    font-size: 1.5rem;
+    /* 24px */
     font-weight: bold;
     color: #1f2937;
 }
 
+/* ==================== 11 - Tutor Input ==================== */
 .input-label {
     display: block;
-    font-size: 0.875rem; /* 14px */
+    font-size: 0.875rem;
     font-weight: 500;
     color: #4b5563;
     margin-bottom: 0.5rem;
 }
 
-/* Estilos para el input de archivo personalizado */
+/* ==================== 11.1 - Input De Archivo Personalizado ==================== */
 .file-input-label {
     display: inline-flex;
     align-items: center;
@@ -889,23 +950,31 @@ body.modal-open {
     color: #374151;
     transition: background-color 0.2s;
 }
+
 .file-input-label:hover {
     background-color: #f9fafb;
 }
+
 .upload-icon {
-    width: 1.25rem; /* 20px */
+    width: 1.25rem;
     height: 1.25rem;
 }
+
 .file-input-hidden {
     display: none;
 }
+
 .file-name-display {
-    font-size: 0.875rem; /* 14px */
+    font-size: 0.875rem;
     color: #6b7281;
     margin-top: 0.25rem;
 }
 
-/* Estilos para el select */
+.reserva-info-container{
+    display: flex;
+    flex-flow: row wrap;
+}
+/* ==================== 12 - Turtor Select Personalisado ==================== */
 .select-input {
     width: 100%;
     padding: 0.75rem;
@@ -915,33 +984,35 @@ body.modal-open {
     background-color: #fff;
     font-size: 1rem;
 }
+
 .select-input:focus {
     outline: none;
     border-color: #3b82f6;
     box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
 }
 
-/* Caja de información de Fecha y Hora */
+/* ==================== 13 - Tutor Info Box Horario ==================== */
 .info-box {
     background-color: #f3f4f6;
     padding: 1rem;
     border-radius: 0.5rem;
-    font-size: 0.875rem; /* 14px */
+    font-size: 0.875rem;
     color: #4b5563;
 }
-.info-box p + p {
+
+.info-box p+p {
     margin-top: 0.25rem;
 }
 
-/* Contenedor de botones de acción */
+/* ==================== 14 - Tutor Btn Action ==================== */
 .action-buttons {
     display: flex;
-    flex-direction: row; /* Botones apilados en móvil */
+    flex-direction: row;
     gap: 1rem;
     padding-top: 1rem;
 }
 
-/* Estilos de botones genéricos */
+/* ==================== 15 - Tutor Btn Generic ==================== */
 .btn {
     width: 100%;
     font-weight: bold;
@@ -951,6 +1022,7 @@ body.modal-open {
     cursor: pointer;
     transition: background-color 0.2s, transform 0.1s;
 }
+
 .btn:active {
     transform: scale(0.98);
 }
@@ -959,6 +1031,7 @@ body.modal-open {
     background-color: var(--terciary-color2);
     color: white;
 }
+
 .btn-primary:hover {
     background-color: #ffa640;
 }
@@ -967,11 +1040,183 @@ body.modal-open {
     background-color: #e5e7eb;
     color: #1f2937;
 }
+
 .btn-secondary:hover {
     background-color: #d1d5db;
 }
 
+/*=================== 16 CUPONES ===============*/
+/* Base Styles */
+.coupon-section {
+  border-top: 1px solid #e5e7eb;
+  padding-top: 1rem;
+}
 
+.coupon-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #4b5563;
+  margin-bottom: 0.5rem;
+}
+
+/* Coupon Input and Apply Button */
+.coupon-input-group {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.coupon-input {
+  flex-grow: 1;
+  padding: 0.5rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  transition: all 0.15s ease-in-out;
+  text-transform: uppercase;
+}
+
+.coupon-input:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  border-color: #10b981;
+  box-shadow: 0 0 0 2px #10b981;
+}
+
+.apply-button {
+  padding: 0.5rem 1.25rem;
+  background-color: #e5e7eb;
+  color: #4b5563;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  transition: all 0.15s ease-in-out;
+}
+
+.apply-button:hover {
+  background-color: #d1d5db;
+}
+
+/* Applied Coupon Message */
+.applied-coupon-container {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #d1fae5;
+  border: 1px solid #6ee7b7;
+  color: #065f46;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+}
+
+.applied-coupon-text {
+  font-weight: 600;
+}
+
+.remove-button {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #4b5563; /* Default color, not specified in Tailwind */
+  cursor: pointer;
+}
+
+.remove-button:hover {
+  color: #dc2626;
+}
+
+/* "Show My Coupons" Button */
+.show-coupons-button {
+  display: block;
+  width: 100%;
+  margin-top: 0.75rem;
+  padding: 0.5rem 1rem;
+  background-color: #f0fdf4;
+  color: #0d9488;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  border: 1px solid #99f6e4;
+  transition: all 0.15s ease-in-out;
+}
+
+.show-coupons-button:hover {
+  background-color: #ccfbf1;
+}
+
+/* Message */
+.coupon-message {
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+  min-height: 1.25rem; /* Equivalent to h-5 */
+}
+
+/* ============= Modal Cupón =============*/
+/* Estilo del overlay del modal */
+.coupon-modal-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    z-index: 50;
+}
+
+/* Ocultar el modal por defecto */
+.coupon-modal-wrapper.hidden {
+    display: none;
+}
+
+/* Contenedor principal del modal */
+.coupon-modal-dialog {
+    background-color: #fff;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    max-width: 28rem;
+}
+
+/* Cabecera del modal (título y botón de cierre) */
+.coupon-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+/* Título del modal */
+.coupon-modal-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+/* Botón de cierre */
+.coupon-modal-close-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    line-height: 1;
+    color: #6b7280;
+    cursor: pointer;
+    transition: color 0.15s ease-in-out;
+}
+
+.coupon-modal-close-btn:hover {
+    color: #1f2937;
+}
+
+/* Contenedor de la lista de cupones */
+.coupon-list-view {
+    max-height: 16rem;
+    overflow-y: auto;
+}
+
+.coupon-list-view > * + * {
+    margin-top: 0.75rem;
+}
 
 /* =================== RESPONSIVE DESIGN TABLETS=================== */
 @media (max-width: 900px) {
@@ -981,34 +1226,43 @@ body.modal-open {
         max-width: 100vw;
         box-sizing: border-box;
     }
+
     .tutor-grid {
         grid-template-columns: 1fr;
         gap: 1.5rem;
     }
+
     .tutor-col-actions {
         margin-top: 2rem;
     }
+
     .tutor-profile-info {
         margin-left: 0;
         padding-left: 0;
         margin-top: 80px;
     }
+
     .tutor-card-main-content {
         padding: 1.2rem;
     }
+
     .tutor-tabs-list {
         gap: 1rem;
         padding: 0 0.5rem;
     }
+
     .tutor-actions-card {
         padding: 1.2rem;
     }
 }
+
 /* =================== RESPONSIVE DESIGN MOBILE=================== */
 
 
 @media (max-width: 600px) {
-    html, body {
+
+    html,
+    body {
         width: 100vw !important;
         box-sizing: border-box !important;
         margin: 0 !important;
@@ -1016,13 +1270,13 @@ body.modal-open {
     }
 
     body.modal-open {
-    overflow: hidden;
+        overflow: hidden;
     }
 
-	.tutor-breadcrumbs{
-		display: none;
-	}
-	
+    .tutor-breadcrumbs {
+        display: none;
+    }
+
     .tutor-bg {
         width: 100vw !important;
         max-width: 100vw !important;
@@ -1032,6 +1286,7 @@ body.modal-open {
         padding: 0 !important;
         box-sizing: border-box !important;
     }
+
     .tutor-main {
         width: 100vw !important;
         max-width: 100vw !important;
@@ -1041,6 +1296,7 @@ body.modal-open {
         box-sizing: border-box !important;
         overflow-x: hidden !important;
     }
+
     .tutor-grid {
         width: 100vw !important;
         max-width: 100vw !important;
@@ -1049,6 +1305,7 @@ body.modal-open {
         box-sizing: border-box !important;
         overflow-x: hidden !important;
     }
+
     .tutor-tabs-card {
         width: 100vw !important;
         max-width: 100vw !important;
@@ -1059,6 +1316,7 @@ body.modal-open {
         overflow-x: hidden !important;
         padding: 0 !important;
     }
+
     .tutor-tabs-nav {
         width: 100vw !important;
         max-width: 100vw !important;
@@ -1070,6 +1328,7 @@ body.modal-open {
         scrollbar-width: none !important;
         -ms-overflow-style: none !important;
     }
+
     .tutor-tabs-list {
         display: flex !important;
         flex-direction: row !important;
@@ -1082,14 +1341,17 @@ body.modal-open {
         scrollbar-width: none !important;
         -ms-overflow-style: none !important;
     }
+
     .tutor-tabs-list::-webkit-scrollbar {
         height: 4px !important;
         background: #eee !important;
     }
+
     .tutor-tabs-list::-webkit-scrollbar-thumb {
         background: #ccc !important;
         border-radius: 2px !important;
     }
+
     .tutor-tabs-content {
         padding: 1.2rem 0.5rem 1.2rem 0.5rem !important;
         width: 100vw !important;
@@ -1102,6 +1364,7 @@ body.modal-open {
         align-items: center !important;
         justify-content: center !important;
     }
+
     .tutor-tab-content {
         width: 100%;
         max-width: 400px;
@@ -1111,11 +1374,13 @@ body.modal-open {
         flex-direction: column;
         align-items: center;
     }
+
     .tutor-section-title-lg,
     .tutor-section-title {
         text-align: center !important;
         width: 100%;
     }
+
     .tutor-availability-grid {
         display: flex !important;
         flex-direction: column !important;
@@ -1127,6 +1392,7 @@ body.modal-open {
         padding: 0 0.5rem !important;
         overflow-x: hidden !important;
     }
+
     .tutor-calendar-box,
     .tutor-time-selector-box {
         margin: 0 auto !important;
@@ -1142,6 +1408,7 @@ body.modal-open {
         padding-right: 0.5rem !important;
         overflow-x: hidden !important;
     }
+
     .tutor-time-selector-col {
         display: block !important;
         width: 100% !important;
@@ -1149,6 +1416,7 @@ body.modal-open {
         box-sizing: border-box !important;
         overflow-x: hidden !important;
     }
+
     .tutor-subtab-content {
         width: 100%;
         max-width: 400px;
@@ -1158,6 +1426,7 @@ body.modal-open {
         flex-direction: column;
         align-items: center;
     }
+
     .tutor-reviews-box {
         flex-direction: column !important;
         gap: 1rem !important;
@@ -1166,16 +1435,20 @@ body.modal-open {
         max-width: 400px !important;
         margin: 0 auto !important;
     }
-    .tutor-reviews-summary, .tutor-reviews-details {
+
+    .tutor-reviews-summary,
+    .tutor-reviews-details {
         width: 100% !important;
         padding: 0.5rem !important;
         box-sizing: border-box !important;
         margin: 0 auto !important;
     }
+
     /* REVERTIR estilos de .tutor-card-main y sus hijos a como estaban antes */
     .tutor-card-main {
         border-radius: 0rem;
     }
+
     .tutor-banner {
         position: relative;
         overflow: hidden;
@@ -1183,6 +1456,7 @@ body.modal-open {
         height: 280px;
         background: #000;
     }
+
     .tutor-banner::before {
         content: '';
         position: absolute;
@@ -1194,6 +1468,7 @@ body.modal-open {
         background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), transparent);
         pointer-events: none;
     }
+
     .tutor-profile-img {
         left: 50% !important;
         transform: translateX(-50%) !important;
@@ -1201,12 +1476,14 @@ body.modal-open {
         top: 0 !important;
         margin-top: -5rem !important;
     }
+
     .tutor-profile-info {
         margin-left: 0 !important;
         padding-left: 0 !important;
         margin-top: 0.5rem !important;
         text-align: center !important;
     }
+
     .tutor-profile-meta {
         display: flex;
         flex-flow: column wrap;
@@ -1214,9 +1491,13 @@ body.modal-open {
         align-items: center;
         gap: 1px;
     }
+
     .tutor-profile-quote {
         margin-top: 0rem;
+        padding: 1rem 1rem;
+        text-align: justify;
     }
+
     /* FIN REVERTIR estilos de .tutor-card-main */
     /* Ajuste para que los textos largos en skills/materias hagan salto de línea */
     .tutor-section-skills-grupos {
@@ -1225,6 +1506,7 @@ body.modal-open {
         overflow-x: hidden !important;
         word-break: break-word !important;
     }
+
     .tutor-section-skills-materias {
         display: flex !important;
         flex-wrap: wrap !important;
@@ -1236,6 +1518,7 @@ body.modal-open {
         overflow-x: hidden !important;
         word-break: break-word !important;
     }
+
     .tutor-skill-materia {
         word-break: break-word !important;
         white-space: normal !important;
@@ -1243,13 +1526,14 @@ body.modal-open {
         min-width: 0 !important;
         box-sizing: border-box !important;
     }
-	.tutor-subtab-btn{
-		width: 100px;
-		padding: 0.7rem 0.4rem;
-	}
+
+    .tutor-subtab-btn {
+        width: 100px;
+        padding: 0.7rem 0.4rem;
+    }
 
     /*---------- modal reservar -------------*/
-    .modal-content{
+    .modal-content {
         width: 90%;
         height: 95%;
         padding: 0rem;
@@ -1257,9 +1541,11 @@ body.modal-open {
         overflow: scroll;
 
     }
+
     .modal-body {
         display: flex;
-        flex-direction: column; /* QR a la izquierda, form a la derecha */
+        flex-direction: column;
+        /* QR a la izquierda, form a la derecha */
     }
 
     .modal-qr-column {
@@ -1269,7 +1555,8 @@ body.modal-open {
         padding: 0.6rem 0.6rem 0rem 0.6rem;
 
     }
-    .qr-image{
+
+    .qr-image {
         width: 100%;
         height: auto;
     }
@@ -1283,13 +1570,13 @@ body.modal-open {
     }
 
     .action-buttons {
-        flex-direction: row; /* Botones en la misma fila */
+        flex-direction: row;
     }
 
     .form-title {
         display: none;
-        }
-    
+    }
+
     /* Estilos para el input de archivo personalizado */
     .file-input-label {
         gap: 0.2rem;
@@ -1297,8 +1584,9 @@ body.modal-open {
         font-weight: 500;
         width: 100%;
     }
+
     .file-name-display {
-        font-size: 0.675rem; /* 14px */
+        font-size: 0.675rem;
         color: #6b7281;
         margin-top: 0.25rem;
         padding: 0rem;
@@ -1308,10 +1596,14 @@ body.modal-open {
         margin-top: 0.25rem;
         padding: 0.4rem 1rem;
     }
-    .select-input{
+
+    .select-input {
         font-weight: 500;
 
     }
-	
+
 }
-.tutor-main-bg { background: #fff !important; } 
+
+.tutor-main-bg {
+    background: #fff !important;
+}

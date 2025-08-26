@@ -45,20 +45,23 @@
         .sidebar-link.active svg {
             stroke: white;
         }
+        /* Estilo para la pestaña activa */
+        .tab-active {
+            border-bottom-color: #f97316; /* Naranja de Tailwind */
+            color: #ffffff;
+        }
     </style>
 @endpush
 <main class="flex-1 p-6 lg:p-8 overflow-y-auto">
-	<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-		<!-- Columna de Cupones -->
-		<div class="lg:col-span-2 bg-white p-6 rounded-2xl shadow-md">
-			<h3 class="text-xl font-bold mb-4 cupon-text-cupones">Mis cupones</h3>
-			<div class="space-y-4">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div class="lg:col-span-2 bg-white p-6 rounded-2xl shadow-md">
+            <h3 class="text-xl font-bold mb-4 cupon-text-cupones">Mis cupones</h3>
+            <div class="space-y-4">
                 @if($cupones->isEmpty())
                     <div class="border-2 border-dashed border-gray-300 rounded-lg p-12 text-center">
-					    <svg class="mx-auto h-12 w-12 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 010 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 010-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375z" /></svg>
-					    <p class="mt-2 text-sm text-gray-500">No tienes cupones activos en este momento.</p>
-				    </div>
-                
+                        <svg class="mx-auto h-12 w-12 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 010 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 010-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375z" /></svg>
+                        <p class="mt-2 text-sm text-gray-500">No tienes cupones activos en este momento.</p>
+                    </div>
                 @else
                     <div class="cupon-lista">
                         @foreach($cupones as $cupon)
@@ -67,15 +70,15 @@
                                 $inactivo = isset($cupon->estado) && $cupon->estado === 'inactivo';
                                 $canjeado = isset($cupon->pivot->cantidad) && $cupon->pivot->cantidad == 0;
                             @endphp
-                            <!-- Cupón  -->
                             <div class="{{ $vencido ? 'cupon-vencido' : '' }}">
                                 <div class="cupon-item border-2 border-dashed border-gray-200 rounded-lg p-4 flex flex-col sm:flex-row justify-between items-center sm:items-center gap-4">
                                     <div class="item-text">
-                                        <p class="text-xs text-gray-500">Cupón válido hasta el 
+                                        <p class="text-xs text-gray-500">Cupón válido hasta el
                                             {{ $cupon->fecha_caducidad ? \Carbon\Carbon::parse($cupon->fecha_caducidad)->format('d/m/Y') : 'Sin fecha' }}
                                             @if($vencido)
                                                 <span>(Vencido)</span>
-                                            @endif</p>
+                                            @endif
+                                        </p>
                                         <h4 class="font-bold text-lg cupon-text">Obtubiste un descuento del {{ $cupon->descuento }}%</h4>
                                         <p class="text-sm text-gray-600">en tu próxima tutoría - Cantidad: {{ $cupon->pivot->cantidad}}</p>
                                     </div>
@@ -93,75 +96,135 @@
                         @endforeach
                     </div>
                 @endif
-				
-			</div>
-		</div>
+            </div>
+        </div>
 
-		<!-- Columna de Código de Invitación -->
-		<div class="card-fondo text-white p-6 rounded-2xl shadow-lg flex flex-col items-center text-center">
-			<h3 class="text-xl font-bold">Tu Código de Invitación</h3>
-			<p class="text-tertiary-color mt-1 text-sm">¡Comparte y obtén descuentos!</p>
-			<div class="my-6">
-				<div id="inv-code" class="text-4xl font-extrabold tracking-widest bg-white/20 border-2 border-dashed border-tertiary-color p-4 rounded-lg {{ isset($codigo) && $codigo->estado !== 'activo' ? 'inactivo' : '' }}">
-					{{ $codigo->codigo ?? 'No Code' }}
-				</div>
-			</div>
-            
-			<div class="w-full space-y-3">
-				<button id="btnCopiar" type="button" class="w-full bg-white/90 text-primary font-bold py-3 rounded-lg hover:bg-white transition-all">Copiar Código</button>
-				<button id="compartir-button" type="button" class="w-full bg-tertiary-orange font-bold py-3 rounded-lg hover:opacity-90 transition-all">Compartir</button>
-				<x-modal-compartir />
-			</div>
-            <div id="copy-feedback" class="pt-3 transition-opacity" style="display:none;">¡Copiado!</div>
-		</div>
-	</div>
-    
+        <div class="w-full max-w-sm mx-auto bg-[#0f3443] text-white rounded-xl shadow-2xl overflow-hidden">
+            <div class="flex">
+                <button id="tabRedeem" class="w-1/2 py-3 font-semibold border-b-2 border-transparent text-gray-400 transition-colors duration-300">Canjear Cupón</button>
+                <button id="tabInvite" class="w-1/2 py-3 font-semibold border-b-2 border-transparent text-gray-400 transition-colors duration-300">Invitar</button>
+            </div>
+
+            <!-- CARD CANJEAR CUPON -->
+            <div id="redeemView" class="card-fondo text-white p-6 rounded-2xl shadow-lg flex-col items-center text-center">
+                <h3 class="text-xl font-bold">¿Tienes Código?</h3>
+                <p class="text-tertiary-color mt-1 text-sm">¡Ingrésalo y obtén descuentos!</p>
+                <div class="my-6">
+                    <div id="cupon-code" class="font-extrabold tracking-widest bg-white/20 border-2 border-dashed border-tertiary-color p-2 rounded-lg">
+                        <input type="text" class="bg-transparent border-0 outline-none shadow-none focus:shadow-none text-white text-4xl font-extrabold tracking-widest">
+                    </div>
+                </div>
+                <div class="w-full space-y-3">
+                    <button id="btnCanjear" type="button" class="w-full bg-tertiary-orange font-bold py-3 rounded-lg hover:opacity-90 transition-all">Canjear</button>
+                </div>
+            </div>
+
+            <!-- CARD COMPARTIR CODE -->
+            <div id="inviteView" class="card-fondo text-white p-6 rounded-2xl shadow-lg flex-col items-center text-center hidden">
+                <h3 class="text-xl font-bold">Tu Código de Invitación</h3>
+                <p class="text-tertiary-color mt-1 text-sm">¡Comparte y obtén descuentos!</p>
+                <div class="my-6">
+                    <div id="inv-code" class="text-3xl font-extrabold tracking-widest bg-white/20 border-2 border-dashed border-tertiary-color px-4 py-2 rounded-lg {{ isset($codigo) && $codigo->estado !== 'activo' ? 'inactivo' : '' }}">
+                        {{ $codigo->codigo ?? 'No Code' }}
+                    </div>
+                </div>
+                <div class="w-full flex gap-3">
+                    <button id="btnCopiar" type="button" class="bg-white/90 text-primary font-bold py-3 rounded-lg hover:bg-white transition-all flex-1">
+                        Copiar 
+                    </button>
+                    <button id="compartir-button" type="button" class="bg-tertiary-orange font-bold py-3 rounded-lg hover:opacity-90 transition-all flex-1">
+                        Compartir
+                    </button>
+                    <x-modal-compartir />
+                </div>
+                <div id="copy-feedback" class="pt-3 transition-opacity" style="display:none;">¡Copiado!</div>
+            </div>
+        </div>
+    </div>
 </main>
 
-
 @push('scripts')
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    const btn = document.getElementById('btnCopiar');
-    const codigo = document.getElementById('inv-code');
-    const feedback = document.getElementById('copy-feedback');
+    <script>
+        //======== Script para Cambiar Pestañas, Copiar Código de Invitación y Compartir ========//
+        document.addEventListener('DOMContentLoaded', () => {
+        // --- Lógica para Cambiar Pestañas ---
+        const tabRedeem = document.getElementById('tabRedeem');
+        const tabInvite = document.getElementById('tabInvite');
+        const redeemView = document.getElementById('redeemView');
+        const inviteView = document.getElementById('inviteView');
 
-    if(btn && codigo && feedback) {
-        btn.addEventListener('click', () => {
-            const texto = codigo.textContent.trim();
-            navigator.clipboard.writeText(texto).then(() => {
-                feedback.style.display = 'block';
-                feedback.style.opacity = '1';
-                setTimeout(() => {
-                    feedback.style.opacity = '0';
+        function setActiveTab(activeTab, inactiveTab, activeView, inactiveView) {
+            // Estilos para la pestaña activa
+            activeTab.classList.remove('text-gray-400', 'border-transparent');
+            activeTab.classList.add('text-white', 'border-tertiary-orange');
+            
+            // Estilos para la pestaña inactiva
+            inactiveTab.classList.remove('text-white', 'border-tertiary-orange');
+            inactiveTab.classList.add('text-gray-400', 'border-transparent');
+            
+            // Mostrar la vista activa y ocultar la inactiva
+            activeView.classList.remove('hidden');
+            activeView.classList.add('flex');
+            inactiveView.classList.remove('flex');
+            inactiveView.classList.add('hidden');
+        }
+
+        // Eventos de clic para las pestañas
+        tabRedeem.addEventListener('click', () => {
+            setActiveTab(tabRedeem, tabInvite, redeemView, inviteView);
+        });
+
+        tabInvite.addEventListener('click', () => {
+            setActiveTab(tabInvite, tabRedeem, inviteView, redeemView);
+        });
+
+        // Inicializar la vista por defecto al cargar la página
+        setActiveTab(tabRedeem, tabInvite, redeemView, inviteView);
+
+        // --- Lógica para Copiar Código de Invitación ---
+        const btnCopiar = document.getElementById('btnCopiar');
+        const codigo = document.getElementById('inv-code');
+        const feedback = document.getElementById('copy-feedback');
+
+        if (btnCopiar && codigo && feedback) {
+            btnCopiar.addEventListener('click', () => {
+                const texto = codigo.textContent.trim();
+                navigator.clipboard.writeText(texto).then(() => {
+                    feedback.style.display = 'block';
+                    feedback.style.opacity = '1';
                     setTimeout(() => {
-                        feedback.style.display = 'none';
-                        feedback.style.opacity = '1';
-                    }, 500);
-                }, 2000);
+                        feedback.style.opacity = '0';
+                        setTimeout(() => {
+                            feedback.style.display = 'none';
+                        }, 500); // Esperar a que la transición termine
+                    }, 2000);
+                });
             });
-        });
-    }
+        }
 
-    // Modal compartir
-    const abrir = document.getElementById('compartir-button');
-    const modal = document.getElementById('modalCompartir');
-    const cerrar = document.getElementById('cerrarModal');
+        // --- Lógica para el Modal de Compartir ---
+        const abrirModalBtn = document.getElementById('compartir-button');
+        const modal = document.getElementById('modalCompartir');
+        const cerrarModalBtn = document.getElementById('cerrarModal');
 
-    if(abrir && modal && cerrar) {
-        abrir.addEventListener('click', () => {
-            modal.style.display = 'flex';
-        });
-        cerrar.addEventListener('click', () => {
-            modal.style.display = 'none';
-        });
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
+        if (abrirModalBtn && modal && cerrarModalBtn) {
+            abrirModalBtn.addEventListener('click', () => {
+                modal.style.display = 'flex';
+            });
+
+            cerrarModalBtn.addEventListener('click', () => {
                 modal.style.display = 'none';
-            }
-        });
-    }
-});
+            });
+
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        }
+    });
+
+    
 </script>
 @endpush
 

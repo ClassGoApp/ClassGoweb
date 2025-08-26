@@ -61,7 +61,7 @@
 
 
 <!-- CONTADORES INFO -->
-<section class="info-container">
+<section class="info-container" id="logros">
     <!-- CONTADORES -->
     @include('components.counters', ['color' => 'text-dark'])
 
