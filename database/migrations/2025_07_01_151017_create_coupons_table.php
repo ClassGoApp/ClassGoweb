@@ -13,9 +13,13 @@ return new class extends Migration
     {
         Schema::create('coupons', function (Blueprint $table) {
             $table->id();
+            $table->string('nombre');
+            $table->string('codigo')->unique();
             $table->date('fecha_caducidad')->nullable(); // Fecha de caducidad, puede ser null
-            $table->enum('estado', ['activo', 'inactivo','canjeado'])->default('activo'); // Estado del cupón
+            $table->enum('estado', ['activo', 'inactivo'])->default('activo'); // Estado del cupón
             $table->decimal('descuento', 8, 2)->default(0.00); // Descuento asociado al cupón
+            $table->integer('cantidad')->default(1);
+            $table->integer('referencia')->default(0);
             $table->timestamps();
         });
     }

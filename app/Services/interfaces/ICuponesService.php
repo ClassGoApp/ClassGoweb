@@ -26,8 +26,44 @@ interface ICuponesService{
     function cupomcodigorandom($code, $user,);
 
 
+/**
+ * 
+ * funcion que genera el codigo del cupon
+ * 
+ */
+public function generaCodigoCupon($user);
+/**
+ * 
+ * fumncion que genera el cupon de 
+ * invitacion al momento del registro
+ * 
+ */
+public function generaCuponInvitacion($user);
+  /**
+   * 
+   * funcion que asigna el cupon de
+   * invitacion al usuario recien registrado
+   * 
+   */
+  function asignacionCuponInvitacion($cupon, $user);
+  /**
+   * 
+   * Funcion que asigna el cupon de invitacion
+   * al dueño del cupon
+   * 
+   */
+  function asignacionCuponDuenio($cupon);
 
+  /**
+   * 
+   * Funcion que asigan el 
+   * cupon de bienvenida
+   * 
+   */
+  function asignacionCuponBienvenida($user);
 
-
-
+ /**
+  * funcion que genera cupon con parametros
+  */
+ function cuponesGenerales($request);
 }

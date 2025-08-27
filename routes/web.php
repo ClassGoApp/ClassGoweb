@@ -146,6 +146,11 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
 
 
     Route::get('/promociones', [PromocionesController::class, 'index'])->name('promociones');
+    // routes/web.php
+    Route::post('/promociones/canjear', [PromocionesController::class, 'canjear'])
+        ->name('coupons.canjear')
+        ->middleware('auth');
+
     // promociones vista ejemplo    
     Route::post('tutor/favourite', [SearchController::class, 'favouriteTutor'])->name('tutor.favourite');
 
@@ -201,7 +206,7 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
             });
             Route::get('bookings', UserBooking::class)->name('bookings');
             Route::get('invoices', Invoices::class)->name('invoices');
-           
+
             Route::get('favourites', Favourites::class)->name('favourites');
             Route::get('reschedule-session/{id}', RescheduleSession::class)->name('reschedule-session');
             Route::get('complete-booking/{id}', [SiteController::class, 'completeBooking'])->name('complete-booking');
