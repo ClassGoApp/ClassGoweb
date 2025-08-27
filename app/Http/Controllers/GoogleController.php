@@ -39,16 +39,32 @@ class GoogleController extends Controller
 
     public function googlecallback(Request $request)
     {
+        \Log::info('Google callback iniciado.');
+
         $user = Auth::user();
+        \Log::info('Usuario autenticado:', ['user_id' => $user?->id, 'email' => $user?->email]);
+
         $googleCalenderService = new GoogleCalender($user);
-        // Obtén el access token usando el code que Google envía
-        $tokenInfo = $googleCalenderService->getAccessTokenInfo($request->input('code'));
-        // Guarda el token en la configuración del usuario
+        \Log::info('GoogleCalender instanciado.');
+
+        $code = $request->input('code');
+        \Log::info('Código recibido de Google:', ['code' => $code]);
+
+        $tokenInfo = $googleCalenderService->getAccessTokenInfo($code);
+        \Log::info('Token info obtenido:', ['tokenInfo' => $tokenInfo]);
+
         $userService = new UserService($user);
-        $userService->setAccountSetting('google_access_token', $tokenInfo);
+        \Log::info('UserService instanciado.');
+
+        try {
+            $userService->setAccountSetting('google_access_token', $tokenInfo);
+            \Log::info('Token guardado en accountSetting.');
+        } catch (\Exception $e) {
+            \Log::error('Error al guardar el token en accountSetting: ' . $e->getMessage());
+        }
+
         return redirect()->route('tutor.profile.account-settings')->with('success', 'Google Calendar conectado correctamente');
     }
-
 
 
 
