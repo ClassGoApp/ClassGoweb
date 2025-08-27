@@ -99,6 +99,8 @@ class AccountSettings extends Component
         }
         
         $authUrlResponse = $this->googleCalenderService->getAuthUrl();
+
+        session(['google_calendario_user_id' => Auth::id()]);
        // dd($authUrlResponse, "aver que es esto");
         if($authUrlResponse['status'] == Response::HTTP_OK){
             $this->redirect($authUrlResponse['url']);
