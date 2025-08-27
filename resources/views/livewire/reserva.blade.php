@@ -105,35 +105,86 @@
     <div class="modal-overlay is-visible">
         <div class="modal-content">
             <form wire:submit="makeReservation" class="modal-body">
-                <div class="modal-qr-column">
+                @if ($banner100)
                     @if($isAugustPromotion)
-                        <img src="{{ asset('images/agostofree.jpeg') }}" alt="Promoción" class="banner_agosto">
+                    <div class="modal-promocion-column">
+                            <img src="{{ asset('images/agosto.png') }}" alt="Promoción" class="banner_agosto">
+                        </div>       
                     @else
-                        <img src="{{ asset('storage/qr/77b1a7da.jpg')}}" alt="Código QR" class="qr-image">
+                        <div class="modal-qr-column">
+                            <img src="{{ asset('storage/qr/77b1a7da.jpg')}}" alt="Código QR" class="qr-image">
+                        </div>
                     @endif
-                </div>
+                @else
+                    <div class="modal-qr-column">
+                        <img src="{{ asset('storage/qr/77b1a7da.jpg')}}" alt="Código QR" class="qr-image">
+                    </div>
+                @endif
+                    
+              
+
                 <div class="modal-form-column">
                     <h2 class="form-title">Confirmar Reserva</h2>
-                    
-                    <!--COMPROBANTE-->
-                    <div>
-                        <label class="input-label">Comprobante de pago</label>
-                        <label for="comprobante" class="file-input-label">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="upload-icon" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clip-rule="evenodd" />
-                            </svg>
-                            @if($paymentReceipt)
-                                Archivo seleccionado
-                            @else
-                                Subir archivo
+                    <!--Cupones-->
+                    <div class="coupon-section">
+                        <label for="coupon" class="input-label" style="padding-top: 0.5rem">¿Tienes un cupón de descuento?</label>
+                        <div id="couponInputContainer" wire:key="{{ $key }}"> 
+                            <!--La opcion por defecto es esta, muestra los cupones que tiene disponible-->
+                            @if ($introCupon)
+                                <div class="coupon-input-group">
+                                    <input type="text" wire:model="cuponCode" wire:click="mostrarCupones" placeholder="Ej. classgo25" class="coupon-input">
+                                    <button type="button" wire:click="aplicarCupon" id="btnAplicar" class="btn btn-secondary">Aplicar</button>
+                                </div>   
                             @endif
-                        </label>
-                        <input type="file" id="comprobante" wire:model="paymentReceipt" class="file-input-hidden">
-                        @if($paymentReceipt)
-                            <div class="file-name-display">{{ $paymentReceipt->getClientOriginalName() }}</div>
-                        @endif
-                        @error('paymentReceipt') <span class="form-error">{{ $message }}</span> @enderror
+                            
+
+                            @if ($cuponSelecionado)
+                            <div id="appliedCouponContainer" class="applied-coupon-container">
+                                <p class="applied-coupon-text">Cupón aplicado: <br>
+                                    <span id="appliedCouponCode" class="applied-coupon-code">{{ $cuponCode}}</span></p>
+                                <button type="button" wire:click="quitarCupon" class="remove-coupon-btn">Quitar</button>
+                            </div>   
+                            @endif  
+
+                            @if ($cuponMensage)
+                                <p class="coupon-message">{{ $cuponMensage }}</p>
+                            @endif
+
+                            <!--Aquí iran los cupones, extraer de BD-->
+                            @if($cupones)
+                                <div id="couponDropdown" wire:click.away="ocultarCupones" class="coupon-dropdown-content">
+                                    <div class="list-cupon" wire:click="selecionarCupon('DESCUENTO10')">DESCUENTO10%</div>
+                                    <div class="list-cupon" wire:click="selecionarCupon('OFERTA25')">OFERTA25%</div>
+                                    <div class="list-cupon" wire:click="selecionarCupon('PROMO100')">PROMO100%</div>
+                                </div>
+                            @endif
+                            
+                        </div>
+                        {{-- <p id="couponMessage" class="coupon-message"></p> --}}
                     </div>
+
+                    <!--COMPROBANTE-->
+                    @if ($comprobante)
+                        <div>
+                            <label class="input-label">Comprobante de pago</label>
+                            <label for="comprobante" class="input-label">
+                            <label for="comprobante" class="file-upload-label">
+                                    <div class="file-upload-content">
+                                        <span class="file-upload-icon">📄</span>
+                                        @if($paymentReceipt)
+                                            <p id="fileUploadText" class="file-upload-text">{{ $paymentReceipt->getClientOriginalName() }}</p>
+                                        @else
+                                            <p id="fileUploadText" class="file-upload-text">Subir archivo</p>
+                                        @endif
+                                    </div>
+                                    <input type="file" id="comprobante" wire:model="paymentReceipt" class="file-input-hidden">
+                                </label>
+                            </label>
+                            @error('paymentReceipt') <span class="form-error">{{ $message }}</span> @enderror
+
+                        </div>
+                    @endif
+                    
 
                     <!--Materias-->
                     <div>
@@ -146,6 +197,7 @@
                         </select>
                         @error('selectedSubject') <span class="form-error">{{ $message }}</span> @enderror
                     </div>
+                    
                     <!--Info Reservas-->
                     @if ($selectedDay && $selectedTime)
                         <div class="info-box">
@@ -154,50 +206,7 @@
                         </div>
                     @endif
 
-                    <!--Cupones-->
-                    <div class="coupon-section">
-                        <label for="coupon" class="coupon-label">¿Tienes un cupón de descuento?</label>
-                        
-                        <!-- VERIFICAR CUPON SI TIENE EN LA BD REGISTRADO-->
-                        <div id="couponInputContainer">
-                            <div class="coupon-input-group">
-                                <input type="text" id="couponInput" placeholder="O introduce un código" class="coupon-input">
-                                <button type="button" id="applyCouponBtn" class="apply-button">Aplicar</button>
-                            </div>
-                        </div>
-
-                        <div id="appliedCouponContainer" class="applied-coupon-container">
-                            <p class="applied-coupon-text">Cupón aplicado: <span id="appliedCouponCode"></span></p>
-                            <button type="button" id="removeCouponBtn" class="remove-button">Quitar</button>
-                        </div>
-
-                        <button type="button" id="showMyCouponsBtn" wire:click="openModalCupones" class="show-coupons-button">
-                            Seleccionar de Mis Cupones
-                        </button>
-
-                        <!--Modal cupon-->
-                        @if($showModalCupones)
-                        <div id="couponSelectionModal" class="coupon-modal-wrapper is-visible">
-                            <div class="coupon-modal-dialog">
-                                <div class="coupon-modal-header">
-                                    <h3 class="coupon-modal-title">Mis Cupones Disponibles</h3>
-                                    <button id="closeCouponModalBtn" wire:click="closeModalCupones" class="coupon-modal-close-btn">&times;</button>
-                                </div>
-
-                                <!-- LISTA DE LOS CUPONES EXTRAIDOS DE LA BASE DE DATOS
-                                SELECCIONAR Y MOSTRAR EN EL INPUT DE ARRIBA-->
-                                
-                                <div id="couponList" class="coupon-list-view">
-                                    <li> Cupon 100%</li>
-                                    <li> Cupon 100%</li>
-                                    <li> Cupon 100%</li>
-                                    <li> Cupon 100%</li>
-                                </div>
-                            </div>
-                        </div>
-                        @endif
-                        <p id="couponMessage" class="coupon-message"></p>
-                    </div>
+                    
 
                     <!--Botones de Acciones-->
                     <div class="action-buttons">
@@ -209,15 +218,11 @@
         </div>
     </div>
     @endif
-
 </div>
 
 <script>
     console.log('esta ejecuntadnos el script');
-    const abrirModal = document.getElementById('showMyCouponsBtn');
-    const cuponModal = document.getElementById('cuponModal');
-    const cerrarModal = document.getElementById('closeCouponModalBtn');
-
+    
 </script>
 
 

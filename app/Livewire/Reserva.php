@@ -36,18 +36,26 @@ class Reserva extends Component
     public $paymentReceipt;
     public $selectedSubject;
     public $showModal = false;
-    public $showModalCupones = false;
 
+    // ============ Variables de Cupones ============//
+    public $showModalCupones = false;
+    public $cuponSelecionado = false;
+
+    public $cupones = false;
+    public $introCupon = true;//Opcion por defecto
+    public $cuponCode = '';
+    public $key= 1;
+    public $cuponMensage = '';
+    protected $validCupones = ['DESCUENTO10', 'OFERTA25', 'PROMO100']; // =======> SOLO DATOS DE PRUEBA!!!!!
+    public $comprobante = true;
+    public $banner100 = true;
+    //============== End Variables Cupones ===============//
 
      public bool $isAugustPromotion = false;
 
     // Propiedades para el tutor
     public $tutorId;
     public $materiasTutor;
-
-
-
-
 
     public function mount($tutorId)
     {
@@ -59,6 +67,60 @@ class Reserva extends Component
         $this->materiasTutor = UserSubject::where("user_id", $this->tutorId)->get();
     }
 
+    //================== FUNCIONES DE CUPONES ====================//
+    public function mostrarCupones(){ //lista de cupones que se extraerá de la base de datos
+        $this->cupones = true;
+        $this->cuponMensage ='';
+    }
+    public function ocultarCupones(){ //ocultar la lista
+        $this->cupones = false;
+    }
+    public function cuponSeleccionado(){ //Para mostrar el cupón selecionado cambiando la vista
+        $this->cuponSelecionado = true;
+        $this->introCupon = false;
+    }
+    
+    public function quitarCupon(){ //Para quitar el cupón seleccionado
+        $this->introCupon = true;
+        $this->cuponSelecionado = false;
+        $this->comprobante = true;
+        $this->cuponCode = '';
+        $this->banner100 = true;
+        $this->cuponMensage = '';
+    }
+    public function ocultarComprobante(){ 
+        $this->comprobante = false;
+    }
+
+    public function selecionarCupon($codigo){ //Selecionar el cupón
+        $this->cuponCode = $codigo;
+        $this->cuponSeleccionado();
+        $this->ocultarCupones();
+        $this->key= now();
+        if($codigo == 'PROMO100'){ // Comprueba la tutoría Gratis
+            $this->ocultarComprobante();
+        }else{
+            $this->ocultarBanner();
+        }
+        
+    }
+
+    public function ocultarBanner(){
+        //Este código cambia el banner por un qr si es que el cupon no es de 100%
+        $this->banner100 = false;
+    }
+
+    //Método para aplicar nuevo cupón Verificar de BD
+    public function aplicarCupon(){
+        if (in_array($this->cuponCode, $this->validCupones)) {
+            $this->cuponSeleccionado();
+            //Por el momento oculanto el comprobante, luego verificar si es el 100% el cupon introducido
+            $this->ocultarComprobante();
+        }else{
+            $this->cuponMensage = 'Cupón Invalido';
+        }
+    }
+    //==================== END FUNCIONES DE CUPONES =======================//
     /**
      * Carga los datos de disponibilidad para el mes actual.
      * En un caso real, aquí harías una única consulta a tu BBDD para el mes visible.
@@ -185,16 +247,13 @@ class Reserva extends Component
         //$this->dispatch('open-modal');
 
     }
-    public function openModalCupones(){
-        $this->showModalCupones = true;
-    }
-    public function closeModalCupones(){
-        $this->showModalCupones = false;
-    }
 
     public function closeModal()
     {
         $this->showModal = false;
+        $this->cuponCode = '';
+        $this->cuponMensage ='';
+        $this->quitarCupon();
         $this->reset(['paymentReceipt', 'selectedSubject']);
     }
 

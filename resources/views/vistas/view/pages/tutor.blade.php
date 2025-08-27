@@ -282,7 +282,6 @@
             
         </div>
     </div>
-    
     {{-- <!-- Modal Reserva -->
     <div id="reservationModal" class="modal-overlay">
         <div id="modalContent" class="modal-content">

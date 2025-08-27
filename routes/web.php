@@ -138,7 +138,10 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
     Route::view('/preguntas', 'vistas.view.pages.preguntas')->name('preguntas');
     Route::get('/tutores/{slug}', [HomeController::class, 'tutor'])->name('tutor');
     Route::view('/desarrolladores', 'vistas.view.pages.desarrolladores')->name('desarrolladores');
-    Route::get('/tutores', [HomeController::class, 'buscarTutor'])->name('buscar.tutor');
+    Route::get('/tutors', [HomeController::class, 'buscarTutor'])->name('buscar.tutor');
+    //<=== Kevin Pasante ===>
+    Route::view('/terminos', 'vistas.view.pages.terminos')->name('terminos');
+
 
     //Route::get('/buscar-tutor', BuscarTutor::class)->name('buscar.tutor');
     Route::get('/kkkk', BuscadorTutor::class)->name('buscador.tutor');

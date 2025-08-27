@@ -1,61 +1,281 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cupón e Invitación</title>
-    <!-- Incluyendo Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Cards de Tutores</title>
     <style>
-        /* Usando una fuente similar a la del diseño */
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-        body {
-            font-family: 'Inter', sans-serif;
+        :root {
+            --primary-color: #1f2937;
+            --secundary-color: #0ea5e9;
+            --terciary-color2: #10b981;
+            --white: #ffffff;
         }
-        /* Estilo para la pestaña activa */
-        .tab-active {
-            border-bottom-color: #f97316; /* Naranja de Tailwind */
-            color: #ffffff;
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f4f6;
+            padding: 2rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        .carousel-container {
+            overflow-x: auto;
+            display: flex;
+            gap: 1rem;
+            scroll-behavior: smooth;
+            padding-bottom: 1rem;
+        }
+
+        .tutor-card {
+            width: 300px;
+            border-radius: 12px;
+            background-color: #fff;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            text-decoration: none;
+            color: inherit;
+            flex-shrink: 0;
+        }
+
+        .tutor-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+            cursor: pointer;
+        }
+
+        .favorite-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.4);
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.3s;
+            z-index: 20;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0;
+            font-size: 1rem;
+        }
+
+        .favorite-btn.active {
+            background: #FB8500;
+            color: #fff;
+        }
+
+        .favorite-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .tutor-card-img {
+            position: relative;
+            height: 160px;
+            overflow: hidden;
+        }
+
+        .tutor-card-img video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .tutor-banner-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .tutor-banner-play {
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+            padding: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .tutor-banner-play svg {
+            width: 25px;
+            height: 25px;
+            fill: #000;
+            stroke: #000;
+        }
+
+        .tutor-video-controls {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            display: flex;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 5px 10px;
+            border-radius: 50px;
+            z-index: 15;
+            display: none;
+        }
+
+        .tutor-control-button {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+            display: flex;
+            align-items: center;
+        }
+
+        .tutor-control-button svg {
+            width: 18px;
+            height: 18px;
+            fill: #fff;
+            stroke: #fff;
+        }
+
+        .tutor-control-volume {
+            width: 70px;
+            margin-left: 10px;
+        }
+
+        .sound-btn {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            font-size: 16px;
+            cursor: pointer;
+            z-index: 25;
+        }
+
+        .sound-btn:hover {
+            background: #FB8500;
+        }
+
+        .tutor-card-content {
+            padding: 0.8rem 1rem 1rem 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .tutor-card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tutor-card-header img {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .tutor-card-header h3 {
+            font-size: 1.1rem;
+            margin: 0;
+            color: var(--primary-color);
+        }
+
+        .tutor-card-sub {
+            font-size: 0.9rem;
+            color: #334155;
+            line-height: 1.4;
+            max-height: 3.6em;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .tutor-card-rating-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            color: #1a3b4d;
+        }
+
+        .tutor-card-rating {
+            display: flex;
+            align-items: center;
+            background: rgba(251, 191, 36, 0.1);
+            color: #b45309;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.3rem;
+            gap: 0.25rem;
+        }
+
+        .tutor-card-rating .star {
+            color: #f59e42;
+        }
+
+        .tutor-nr-claces {
+            font-size: 15px;
         }
     </style>
 </head>
-<body class="bg-gray-200 flex items-center justify-center min-h-screen">
 
-    <!-- Contenedor principal de la tarjeta -->
-    <div class="w-full max-w-sm mx-auto bg-[#0f3443] text-white rounded-xl shadow-2xl overflow-hidden">
-        
-        <!-- Pestañas para alternar vistas -->
-        <div class="flex">
-            <button id="tabRedeem" class="w-1/2 py-3 font-semibold border-b-2 border-transparent text-gray-400 transition-colors duration-300 tab-active">Canjear Cupón</button>
-            <button id="tabInvite" class="w-1/2 py-3 font-semibold border-b-2 border-transparent text-gray-400 transition-colors duration-300">Invitar</button>
-        </div>
+<body>
 
-        <div class="p-8 text-center">
-            <!-- Vista para Canjear Cupón (visible por defecto) -->
-            <div id="redeemView">
-                <h2 class="text-3xl font-bold mb-2">¿Tienes un Cupón?</h2>
-                <p class="text-gray-300 mb-8">¡Ingrésalo y obtén descuentos!</p>
-                <div class="space-y-4">
-                    <input 
-                        type="text" 
-                        id="couponInput"
-                        placeholder="Ingresa tu código aquí" 
-                        class="w-full px-4 py-3 bg-gray-800/50 border-2 border-dashed border-gray-500 rounded-lg text-white text-center placeholder-gray-400 focus:outline-none focus:border-solid focus:border-orange-500 transition-all duration-300"
-                    >
-                    <button id="redeemButton" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-4 rounded-lg transition-transform transform hover:scale-105">
-                        Canjear
-                    </button>
+    <div class="carousel-container">
+        <div class="tutor-card" data-url="https://example.com/perfil-tutor">
+            <button class="favorite-btn">⭐</button>
+
+            <div class="tutor-card-img">
+                <video class="tutor-intro-video" muted playsinline preload="none" poster="https://via.placeholder.com/300x160" src="https://www.w3schools.com/html/mov_bbb.mp4"></video>
+                <div class="tutor-banner-overlay">
+                    <div class="tutor-banner-play">
+                        <svg viewBox="0 0 24 24">
+                            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                        </svg>
+                    </div>
                 </div>
-                <p id="redeemMessage" class="mt-4 h-5"></p>
+                <div class="tutor-video-controls">
+                    <button class="tutor-control-button">
+                        <svg viewBox="0 0 24 24">
+                            <rect x="6" y="4" width="4" height="16"></rect>
+                            <rect x="14" y="4" width="4" height="16"></rect>
+                        </svg>
+                    </button>
+                    <input type="range" min="0" max="1" step="0.01" value="0.5" class="tutor-control-volume">
+                </div>
+                <button class="sound-btn">🔊</button>
             </div>
 
-            <!-- Vista para Código de Invitación (oculta por defecto) -->
-            <div id="inviteView" class="hidden">
-                <h2 class="text-3xl font-bold mb-2">Tu Código de Invitación</h2>
-                <p class="text-gray-300 mb-8">¡Comparte y obtén descuentos!</p>
-                <!-- Contenedor del código de invitación -->
-                <div id="invitationCode" class="w-full px-4 py-6 mb-4 bg-gray-800/50 border-2 border-dashed border-gray-500 rounded-lg text-white text-center text-2xl font-mono tracking-widest">
-                    INVITE-2024
+            <div class="tutor-card-content">
+                <div class="tutor-card-header">
+                    <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Tutor">
+                    <h3>Juan Pérez</h3>
+                </div>
+                <p class="tutor-card-sub">Puedo enseñar: Matemáticas, Física, Química, Biología</p>
+                <div class="tutor-card-rating-row">
+                    <div class="tutor-card-rating"><span class="star">⭐</span>4.8 <span>(120 reseñas)</span></div>
+                    <div class="tutor-card-price"><i class="fa-solid fa-book"></i><strong class="tutor-nr-claces">10</strong> tutorías</div>
                 </div>
                 <div class="space-y-4">
                     <button id="copyButton" class="w-full bg-white/90 hover:bg-white text-[#0f3443] font-bold py-3 px-4 rounded-lg transition-transform transform hover:scale-105">
@@ -71,77 +291,78 @@
     </div>
 
     <script>
-        // Elementos de las pestañas y vistas
-        const tabRedeem = document.getElementById('tabRedeem');
-        const tabInvite = document.getElementById('tabInvite');
-        const redeemView = document.getElementById('redeemView');
-        const inviteView = document.getElementById('inviteView');
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.tutor-card');
 
-        // Elementos de la vista de canje
-        const redeemButton = document.getElementById('redeemButton');
-        const couponInput = document.getElementById('couponInput');
-        const redeemMessage = document.getElementById('redeemMessage');
+            cards.forEach(card => {
+                const video = card.querySelector('.tutor-intro-video');
+                const overlay = card.querySelector('.tutor-banner-overlay');
+                const playButton = overlay.querySelector('.tutor-banner-play');
+                const controls = card.querySelector('.tutor-video-controls');
+                const pauseButton = controls.querySelector('.tutor-control-button');
+                const volumeControl = controls.querySelector('.tutor-control-volume');
+                const favBtn = card.querySelector('.favorite-btn');
+                const soundBtn = card.querySelector('.sound-btn');
 
-        // Elementos de la vista de invitación
-        const copyButton = document.getElementById('copyButton');
-        const invitationCode = document.getElementById('invitationCode');
-        const copyMessage = document.getElementById('copyMessage');
+                card.addEventListener('click', (e) => {
+                    if (!e.target.closest('.tutor-card-img') && !e.target.closest('.favorite-btn')) {
+                        window.location.href = card.dataset.url;
+                    }
+                });
 
-        // --- Lógica para alternar pestañas ---
-        tabRedeem.addEventListener('click', () => {
-            redeemView.classList.remove('hidden');
-            inviteView.classList.add('hidden');
-            tabRedeem.classList.add('tab-active');
-            tabInvite.classList.remove('tab-active');
-        });
+                overlay.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    video.play();
+                });
 
-        tabInvite.addEventListener('click', () => {
-            inviteView.classList.remove('hidden');
-            redeemView.classList.add('hidden');
-            tabInvite.classList.add('tab-active');
-            tabRedeem.classList.remove('tab-active');
-        });
+                playButton.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    video.play();
+                });
 
-        // --- Lógica para canjear cupón ---
-        redeemButton.addEventListener('click', () => {
-            const couponCode = couponInput.value.trim();
-            redeemMessage.textContent = '';
-            redeemMessage.classList.remove('text-red-400', 'text-green-400');
+                pauseButton.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    video.pause();
+                });
 
-            if (couponCode) {
-                redeemMessage.textContent = `¡Código "${couponCode}" canjeado!`;
-                redeemMessage.classList.add('text-green-400');
-                couponInput.value = '';
-            } else {
-                redeemMessage.textContent = 'Por favor, ingresa un código.';
-                redeemMessage.classList.add('text-red-400');
-            }
-            setTimeout(() => { redeemMessage.textContent = ''; }, 3000);
-        });
+                volumeControl.addEventListener('input', () => {
+                    video.volume = volumeControl.value;
+                });
 
-        // --- Lógica para copiar código ---
-        copyButton.addEventListener('click', () => {
-            const codeToCopy = invitationCode.textContent.trim();
-            
-            // Usamos un textarea temporal para copiar el texto
-            const textArea = document.createElement("textarea");
-            textArea.value = codeToCopy;
-            document.body.appendChild(textArea);
-            textArea.select();
-            try {
-                // Usamos document.execCommand para compatibilidad en iframes
-                document.execCommand('copy');
-                copyMessage.textContent = '¡Código copiado!';
-                copyMessage.classList.add('text-green-400');
-            } catch (err) {
-                copyMessage.textContent = 'Error al copiar.';
-                copyMessage.classList.add('text-red-400');
-                console.error('Error al copiar el código: ', err);
-            }
-            document.body.removeChild(textArea);
-            setTimeout(() => { copyMessage.textContent = ''; }, 3000);
+                video.addEventListener('play', () => {
+                    overlay.style.display = 'none';
+                    controls.style.display = 'flex';
+                });
+
+                video.addEventListener('pause', () => {
+                    overlay.style.display = 'flex';
+                    controls.style.display = 'none';
+                });
+
+                video.addEventListener('ended', () => {
+                    overlay.style.display = 'flex';
+                    controls.style.display = 'none';
+                    video.currentTime = 0;
+                });
+
+                video.volume = volumeControl.value;
+
+                favBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    favBtn.classList.toggle('active');
+                });
+
+                if (soundBtn) {
+                    soundBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        video.muted = !video.muted;
+                        soundBtn.textContent = video.muted ? "🔇" : "🔊";
+                    });
+                }
+            });
         });
     </script>
 
 </body>
+
 </html>
