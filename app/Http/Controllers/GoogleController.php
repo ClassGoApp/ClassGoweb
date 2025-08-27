@@ -10,7 +10,6 @@ use Google_Client;
 use Google_Service_Calendar;
 use Google_Service_Calendar_Event;
 use Carbon\Carbon;
-use \App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class GoogleController extends Controller
@@ -42,12 +41,9 @@ class GoogleController extends Controller
     {
         \Log::info('Google callback iniciado.');
 
-        $userId = session('google_calendario_user_id');
-        $user = User::find($userId);
-        //$user = Auth::user();
+        $user = Auth::user();
         \Log::info('Usuario autenticado:', ['user_id' => $user?->id, 'email' => $user?->email]);
 
-        
         $googleCalenderService = new GoogleCalender($user);
         \Log::info('GoogleCalender instanciado.');
 
