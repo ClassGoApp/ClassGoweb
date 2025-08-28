@@ -116,10 +116,18 @@ class CuponesService implements ICuponesService
      */
     public function todosLosCupones($user)
     {
-        
-        return $user->coupons()
+        $cupones = $user->coupons()
             ->wherePivot('estado', 'activo')   // filtra SOLO por el pivote
             ->get();
+        foreach ($cupones as $cupon) {
+            if ($cupon->fecha_caducidad < now() || $cupon->cantidad <= 0) {
+                // marcar como inactivo en el pivote
+                $cupon->estado = 'inactivo';
+                $cupon->save();
+            }
+        }
+
+        return $cupones;
     }
 
     /**
