@@ -1342,18 +1342,12 @@ i.fa-solid.fa-book.icon::before {
 }
 
 /**---============ 6.3 - Alianzas Cards ============---**/
-.steps-alianzas {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 30px;
-  padding: 2rem 0;
-}
+
 
 /**---============ 6.4 - Alianzas Card Individual ============---**/
 .alianzas-card {
   width: 300px;
-  height: 290px;
+  height: 270px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1364,6 +1358,7 @@ i.fa-solid.fa-book.icon::before {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   flex-shrink: 0;
   scroll-snap-align: start;
+  margin-bottom: 1rem;
 }
 
 .alianzas-card:hover {
@@ -1379,18 +1374,17 @@ i.fa-solid.fa-book.icon::before {
   border-top-right-radius: 20px;
 }
 
-.alianzas-card p {
-  text-align: center;
+.alianzas .card-content{
   height: 100%;
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
-  font-weight: var(--font-bold);
-  color: var(--primary-color);
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  display: flex;
+  align-items: center;
 }
+.alianzas-card p {
+  height: 100;
+  margin: 0rem;
+  padding: 0rem;
+}
+
 
 @media (max-width: 1200px) {
 
@@ -1408,21 +1402,6 @@ i.fa-solid.fa-book.icon::before {
   }
 }
 
-@media (max-width: 900px) {
-
-  .tutors-carousel-viewport,
-  .tutors {
-    width: 100vw;
-    min-width: 0;
-    max-width: 100vw;
-  }
-
-  .tutor-card {
-    min-width: 250px;
-    max-width: 250px;
-    flex: 0 0 250px;
-  }
-}
 
 /* =================== home-tablet.css =================== */
 /* home-tablet.css: Estilos responsivos para tablet (max-width: 1024px) */
@@ -1966,78 +1945,83 @@ i.fa-solid.fa-book.icon::before {
   }
 
 
-  /* -----  ALIANZAS ------*/
-  .alianzas h1 {
+  /* Estilos generales para el carrusel de alianzas */
+.alianzas h1 {
     font-size: 1.5rem;
-  }
+}
 
-  .alianzas p {
+.alianzas p {
     font-size: 0.95rem;
     padding: 0 1rem;
-  }
+}
 
-  .alianzas .over-text h1 {
-    font-size: 1px !important;
-  }
-
-  .steps-alianzas {
+/* Contenedor del carrusel */
+.steps-alianzas {
     display: flex;
     flex-wrap: nowrap;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
+    -webkit-overflow-scrolling: touch; /* Mejora el deslizamiento en iOS */
     padding: 1rem 0;
-    scroll-padding-left: 1rem;
-    scroll-padding-right: 1rem;
-    position: relative;
-  }
+    scroll-padding: 0 1rem; /* Margen para el 'snap' en los extremos */
+}
 
-  .alianzas-card:first-child {
-    margin-left: 80rem;
-  }
+/* Espaciado entre las tarjetas para evitar márgenes extras */
+.steps-alianzas a {
+    flex-shrink: 0;
+}
 
-  .alianzas-card:last-child {
-    margin-right: 1rem;
-  }
+/* Estilos de las tarjetas individuales dentro del carrusel */
+.alianzas-card {
+    width: 80vw; 
+    margin: 0 2.5vw;
+    height: 260px;
+    scroll-snap-align: center; /* Centra la tarjeta al deslizar */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    /* La propiedad flex-shrink: 0 evita que las tarjetas se reduzcan */
+    flex-shrink: 0; 
+}
 
-  /* Cards individuales */
 
-  .alianzas-card {
-    flex: 0 0 auto;
-    width: 90%;
-    min-width: 260px;
-    max-width: 200px;
-    scroll-snap-align: start;
-    padding-bottom: 0rem;
-  }
 
-  .alianzas-card img {
+.alianzas-card img {
     width: 100%;
-    height: 200px;
-  }
+    height: 180px; /* Altura fija para un aspecto uniforme */
+    display: block;
+}
 
-  .alianzas-card .centro {
-    height: 100%;
+.alianzas-card .centro {
     display: flex;
     justify-content: center;
     align-items: center;
-  }
+    padding: 1rem;
+}
 
-  .alianzas-card .centro p {
-    padding-top: 1rem;
-    margin-bottom: 0rem;
-    align-items: center;
-  }
+.alianzas-card .centro p {
+    margin: 0;
+    font-size: 0.9rem;
+    text-align: center;
+}
 
-  /* Ocultar scrollbar opcional */
-  .steps-alianzas::-webkit-scrollbar {
-    height: 6px;
-  }
-
-  .steps-alianzas::-webkit-scrollbar-thumb {
-    background-color: var(--primary-color);
-    border-radius: 4px;
-  }
+/* Ocultar la barra de desplazamiento en los navegadores */
+.steps-alianzas::-webkit-scrollbar {
+    display: none;
+}
+.steps-alianzas {
+  -ms-overflow-style: none; /* Oculta la barra de desplazamiento en IE y Edge */
+  scrollbar-width: none; /* Oculta la barra de desplazamiento en Firefox */
+}
+.alianzas .card-content{
+  height: 100%;
+  
+}
+.alianzas-card p {
+  margin-bottom: 0rem;
+  display: flex;
+  align-items: center;
+}
 
   /*<-------- SECCION APP ------->*/
   .section-app {
@@ -2050,4 +2034,76 @@ i.fa-solid.fa-book.icon::before {
   }
 
 
+}
+
+
+/* Estilos por defecto para Desktop (sin media query) */
+.cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+    padding:1rem 5rem;
+    margin: auto;
+    max-width: 1200px;
+}
+
+.card {
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    text-align: center;
+    padding-bottom: 20px;
+}
+
+.card img {
+    width: 100%;
+    height: 200px;
+}
+
+.card h3 {
+    margin: 15px 0 5px;
+    font-size: 1.2rem;
+}
+
+.card p {
+    margin: 0 10px;
+    font-size: 0.9rem;
+}
+
+/* ------------------------------------------- */
+/* Estilos para Mobile - Se activan a 768px o menos */
+/* ------------------------------------------- */
+@media (max-width: 768px) {
+    .cards-container {
+        /* Carrusel con Flexbox */
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        gap: 15px;
+        padding: 20px 0px 10px 30px;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .card {
+        /* Define el ancho de cada tarjeta en el carrusel */
+        flex-shrink: 0;
+        width: 80vw;
+        scroll-snap-align: center;
+        /* Asegura que haya un pequeño margen en los extremos */
+        margin-left: 20px;
+    }
+    
+    .card:last-child {
+        margin-right: 20px;
+    }
+
+    /* Ocultar la barra de desplazamiento en el carrusel */
+    .cards-container::-webkit-scrollbar {
+        display: none;
+    }
+    .cards-container {
+        -ms-overflow-style: none; /* Oculta la barra de desplazamiento en IE/Edge */
+        scrollbar-width: none; /* Oculta la barra de desplazamiento en Firefox */
+    }
 }
