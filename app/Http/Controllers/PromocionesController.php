@@ -16,7 +16,8 @@ class PromocionesController extends Controller
 
         $cupon = Coupon::where('referencia', $user->id)->latest()->first();
         $codigo = $cupon->codigo;
-        $cupones = $user->coupons;
+         $cuponservice = new \App\Services\CuponesService() ;
+        $cupones = $cuponservice->todosLosCupones($user);
         return view('livewire.pages.student.promociones', compact('codigo', 'cupones'));
     }
     public function canjear(Request $request)

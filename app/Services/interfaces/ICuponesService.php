@@ -1,58 +1,36 @@
 <?php
 
 namespace App\Services\interfaces;
+
 use App\Models\Code;
 use App\Models\User;
 
-interface ICuponesService{
+interface ICuponesService
+{
 
 
-
-    function codeFriendly($code, $user);
-
-    /**
-     *  funcion que agrega un codigo al usuario que se registra
-     *  y 5 cupones desabilitados mientras no se verifique
-     */
-    function codeCoupons($user);
-
-    /**
-     * funcion que agrega un cupon al usuario que ingresa el codigo promocional
-     * 
-     * 
-     * @param  Code $code
-     * @param  User $user
-     */
-    function cupomcodigorandom($code, $user,);
-
-
-/**
- * 
- * funcion que genera el codigo del cupon
- * 
- */
-public function generaCodigoCupon($user);
-/**
- * 
- * fumncion que genera el cupon de 
- * invitacion al momento del registro
- * 
- */
-public function generaCuponInvitacion($user);
+  public function generaCodigoCupon($user);
+  /**
+   * 
+   * funcion que genera el cupon de 
+   * invitacion al momento del registro
+   * 
+   */
+  public function generaCuponInvitacion($user);
   /**
    * 
    * funcion que asigna el cupon de
    * invitacion al usuario recien registrado
    * 
    */
-  function asignacionCuponInvitacion($cupon, $user);
+  public function asignacionCuponInvitacion($cupon, $user);
   /**
    * 
    * Funcion que asigna el cupon de invitacion
    * al dueño del cupon
    * 
    */
-  function asignacionCuponDuenio($cupon);
+  public function asignacionCuponDuenio($cupon);
 
   /**
    * 
@@ -60,10 +38,33 @@ public function generaCuponInvitacion($user);
    * cupon de bienvenida
    * 
    */
-  function asignacionCuponBienvenida($user);
+  public function asignacionCuponBienvenida($user);
 
- /**
-  * funcion que genera cupon con parametros
-  */
- function cuponesGenerales($request);
+  /**
+   * funcion que genera cupon con parametros
+   */
+  public function cuponesGenerales($request);
+
+  /**
+   * funcion muestra los cupones del usuario
+   *
+   */
+  public function todosLosCupones($user);
+
+  /**
+   * Verifica si el cupon es valido
+   */
+  public  function existeCupon($codigo): bool;
+  /**
+   * funcion que canjea el cupon
+   */
+  public function canjeaCupon($codigo, $user);
+  /**
+   * funcion que mmuestra el porcentaje del cupon
+   */
+  public function porcentajeCupon($codigo);
+  /**
+   * funcion que completa el uso del cupon
+   */
+  public function cuponCanjeado($codigo, $user);
 }
