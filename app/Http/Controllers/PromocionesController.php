@@ -14,38 +14,39 @@ class PromocionesController extends Controller
     {
         $user = Auth::user();
         if (!$user) {
-        // Redirigir al login o mostrar un error si no hay sesión iniciada
-        return redirect()->route('login');
+            // Redirigir al login o mostrar un error si no hay sesión iniciada
+            return redirect()->route('login');
         }
 
         // Inicializar la variable $codigo con un valor por defecto
         $codigo = null;
 
         $cupon = Coupon::where('referencia', $user->id)->latest()->first();
-        // Comprobar si se encontró un cupón ANTES de usarlo
-        if ($cupon) {
-            $codigo = $cupon->codigo;   
-        }
-        $cupones = $user->coupons;
+        $codigo = $cupon->codigo;
+        $cuponservice = new \App\Services\CuponesService();
+        $cupones = $cuponservice->todosLosCupones($user);
         return view('livewire.pages.student.promociones', compact('codigo', 'cupones'));
     }
     public function canjear(Request $request)
     {
+        $cuponservice = new \App\Services\CuponesService();
         $user = Auth::user();
         $codigo = trim($request->input('codigo'));
        
-        $cupon = Coupon::where('codigo', $codigo)->first();
-       
-        if ($cupon->doesntExist()) {
+
+
+        if ( !$cuponservice->existeCupon($codigo)) {
             return redirect()->route('promociones')->with('error', 'Cupón no válido.');
+        } else {
+            
+            $cupon = Coupon::where('codigo', $codigo)->first();
+            UserCoupon::create(
+                ['coupon_id' => $cupon->id, 'user_id' => $user->id],
+                ['estado' => 'activo', 'cantidad' => $cupon->cantidad]
+            );
         }
-        if ($cupon->estado != 'activo') {
-            return redirect()->route('promociones')->with('error', 'Cupón no está activo.');
-        }
-        UserCoupon::create(
-            ['coupon_id' => $cupon->id, 'user_id' => $user->id],
-            ['estado' => 'activo', 'cantidad' => $cupon->cantidad]
-        );
+
+
         return redirect()->route('promociones');
     }
 }

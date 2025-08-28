@@ -35,7 +35,7 @@ class SlotBookingService implements interfaces\ISlotBookingService
         return UserSubjectSlot::where('user_id', $tutorId)->get();
     }
 
-    public function crearReserva($studentId, $tutorId, $subjectId, $fecha)
+    public function crearReserva($studentId, $tutorId, $subjectId, $fecha,$session_fee )
     {
 
         $startTime = \Carbon\Carbon::parse($fecha);
@@ -46,7 +46,7 @@ class SlotBookingService implements interfaces\ISlotBookingService
         $booking->student_id = $studentId;
         $booking->tutor_id = $tutorId;
         $booking->subject_id = $subjectId;
-        $booking->session_fee = 15;
+        $booking->session_fee = $session_fee;
         $booking->start_time = $fecha; // Asignar la fecha completa
         $booking->end_time = $endTime->format('Y-m-d H:i:s');     // Convertir de vuelta a string para la BD
         $booking->booked_at = now();

@@ -151,11 +151,13 @@
                             @endif
 
                             <!--Aquí iran los cupones, extraer de BD-->
+                            
                             @if($cupones)
-                                <div id="couponDropdown" wire:click.away="ocultarCupones" class="coupon-dropdown-content">
-                                    <div class="list-cupon" wire:click="selecionarCupon('DESCUENTO10')">DESCUENTO10%</div>
-                                    <div class="list-cupon" wire:click="selecionarCupon('OFERTA25')">OFERTA25%</div>
-                                    <div class="list-cupon" wire:click="selecionarCupon('PROMO100')">PROMO100%</div>
+                            
+                            <div id="couponDropdown" wire:click.away="ocultarCupones" class="coupon-dropdown-content">
+                                    @foreach ($cuponesUsuario as $cupon)
+                                      <div class="list-cupon" wire:click="selecionarCupon('{{ $cupon->codigo }}')">{{$cupon->nombre}}</div>   
+                                    @endforeach  
                                 </div>
                             @endif
                             
