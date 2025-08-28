@@ -3,8 +3,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Services\GoogleCalender;
 use App\Services\UserService;
+use DB;
 use Illuminate\Http\Request;
 use Google_Client;
 use Google_Service_Calendar;
@@ -41,7 +43,11 @@ class GoogleController extends Controller
     {
         \Log::info('Google callback iniciado.');
 
-        $user = Auth::user();
+        $sessionId = $request->cookie(config('session.cookie'));
+
+        $session = DB::table('sessions')->where('id', $sessionId)->first();
+        // Recupera el usuario
+        $user = User::find($session->user_id);
         \Log::info('Usuario autenticado:', ['user_id' => $user?->id, 'email' => $user?->email]);
 
         $googleCalenderService = new GoogleCalender($user);
@@ -66,6 +72,22 @@ class GoogleController extends Controller
         return redirect()->route('tutor.profile.account-settings')->with('success', 'Google Calendar conectado correctamente');
     }
 
+
+
+    /* public function callback(Request $request)
+    {
+        // Recupera la cookie de sesión del navegador
+        $sessionId = $request->cookie(config('session.cookie'));
+
+        if (!$sessionId) {
+            return response()->json(['error' => 'No se encontró la sesión activa'], 401);
+        }
+        $session = DB::table('sessions')->where('id', $sessionId)->first();
+        // Recupera el usuario
+        $user = User::find($session->user_id);
+
+
+    } */
 
 
 
