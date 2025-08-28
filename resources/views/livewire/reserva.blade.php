@@ -1,3 +1,4 @@
+<!--Los estilos de reserva.blade.php se encuentran en tutor-perfil.css-->
 <div>
     {{-- Mensaje de éxito tras reservar --}}
     @if (session()->has('success_message'))
@@ -99,68 +100,131 @@
     </div>
    @endguest
    
-   <!-- ========================== MODAL RESERVA =========================-->
-  @if($showModal)
-<div class="modal-overlay is-visible">
-    <div class="modal-content">
-        <form wire:submit="makeReservation" class="modal-body">
-             <div class="modal-qr-column">
-                @if($isAugustPromotion)
-                    {{-- ✅ Banner de promoción en lugar del QR --}}
-                    <div class="promotion-banner">
-                        <h3>🎉 ¡PROMOCIÓN AGOSTO!</h3>
-                        <p>Tutorías completamente <strong>GRATIS</strong></p>
-                       </div>
-                @else
-                    <img src="{{ asset('storage/qr/77b1a7da.jpg')}}" alt="Código QR" class="qr-image">
-                @endif
-            </div>
-            <div class="modal-form-column">
-                <h2 class="form-title">Confirmar Reserva</h2>
-                <div> 
-                    <label class="input-label">Comprobante de pago</label>
-                    <label for="comprobante" class="file-input-label">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="upload-icon" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clip-rule="evenodd" />
-                        </svg>
-                        @if($paymentReceipt)
-                            Archivo seleccionado
-                        @else
-                            Subir archivo
-                        @endif
-                    </label>
-                    <input type="file" id="comprobante" wire:model="paymentReceipt" class="file-input-hidden">
-                    @if($paymentReceipt)
-                        <div class="file-name-display">{{ $paymentReceipt->getClientOriginalName() }}</div>
+   <!-- =========================== MODAL RESERVA ====================================-->
+    @if($showModal)
+    <div class="modal-overlay is-visible">
+        <div class="modal-content">
+            <form wire:submit="makeReservation" class="modal-body">
+                @if ($banner100)
+                    @if($isAugustPromotion)
+                    <div class="modal-promocion-column">
+                            <img src="{{ asset('images/agosto.png') }}" alt="Promoción" class="banner_agosto">
+                        </div>       
+                    @else
+                        <div class="modal-qr-column">
+                            <img src="{{ asset('storage/qr/77b1a7da.jpg')}}" alt="Código QR" class="qr-image">
+                        </div>
                     @endif
-                    @error('paymentReceipt') <span class="form-error">{{ $message }}</span> @enderror
-                </div>
-                <div>
-                    <label for="materia" class="input-label">Materia</label>
-                    <select id="materia" wire:model="selectedSubject" class="select-input">
-                        <option value="">-- Elige una materia --</option>
-                        @foreach($materiasTutor as $materia)
-                            <option value="{{ $materia->subject->id }}">{{ $materia->subject->name }}</option>
-                        @endforeach
-                    </select>
-                    @error('selectedSubject') <span class="form-error">{{ $message }}</span> @enderror
-                </div>
-                @if ($selectedDay && $selectedTime)
-                    <div class="info-box">
-                        <p><strong>Fecha:</strong> <span>{{ $currentDate->copy()->setDay($selectedDay)->translatedFormat('j \de F \de Y') }}</span></p>
-                        <p><strong>Hora:</strong> <span>{{ \Carbon\Carbon::parse($selectedTime)->format('h:i a') }}</span></p>
+                @else
+                    <div class="modal-qr-column">
+                        <img src="{{ asset('storage/qr/77b1a7da.jpg')}}" alt="Código QR" class="qr-image">
                     </div>
                 @endif
-                <div class="action-buttons">
-                    <button type="button" wire:click="closeModal" class="btn btn-secondary">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Reservar</button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-@endif
+                    
+              
 
+                <div class="modal-form-column">
+                    <h2 class="form-title">Confirmar Reserva</h2>
+                    <!--Cupones-->
+                    <div class="coupon-section">
+                        <label for="coupon" class="input-label" style="padding-top: 0.5rem">¿Tienes un cupón de descuento?</label>
+                        <div id="couponInputContainer" wire:key="{{ $key }}"> 
+                            <!--La opcion por defecto es esta, muestra los cupones que tiene disponible-->
+                            @if ($introCupon)
+                                <div class="coupon-input-group">
+                                    <input type="text" wire:model="cuponCode" wire:click="mostrarCupones" placeholder="Ej. classgo25" class="coupon-input">
+                                    <button type="button" wire:click="aplicarCupon" id="btnAplicar" class="btn btn-secondary">Aplicar</button>
+                                </div>   
+                            @endif
+                            
+
+                            @if ($cuponSelecionado)
+                            <div id="appliedCouponContainer" class="applied-coupon-container">
+                                <p class="applied-coupon-text">Cupón aplicado: <br>
+                                    <span id="appliedCouponCode" class="applied-coupon-code">{{ $cuponCode}}</span></p>
+                                <button type="button" wire:click="quitarCupon" class="remove-coupon-btn">Quitar</button>
+                            </div>   
+                            @endif  
+
+                            @if ($cuponMensage)
+                                <p class="coupon-message">{{ $cuponMensage }}</p>
+                            @endif
+
+                            <!--Aquí iran los cupones, extraer de BD-->
+                            
+                            @if($cupones)
+                            
+                            <div id="couponDropdown" wire:click.away="ocultarCupones" class="coupon-dropdown-content">
+                                    @foreach ($cuponesUsuario as $cupon)
+                                      <div class="list-cupon" wire:click="selecionarCupon('{{ $cupon->codigo }}')">{{$cupon->nombre}}</div>   
+                                    @endforeach  
+                                </div>
+                            @endif
+                            
+                        </div>
+                        {{-- <p id="couponMessage" class="coupon-message"></p> --}}
+                    </div>
+
+                    <!--COMPROBANTE-->
+                    @if ($comprobante)
+                        <div>
+                            <label class="input-label">Comprobante de pago</label>
+                            <label for="comprobante" class="input-label">
+                            <label for="comprobante" class="file-upload-label">
+                                    <div class="file-upload-content">
+                                        <span class="file-upload-icon">📄</span>
+                                        @if($paymentReceipt)
+                                            <p id="fileUploadText" class="file-upload-text">{{ $paymentReceipt->getClientOriginalName() }}</p>
+                                        @else
+                                            <p id="fileUploadText" class="file-upload-text">Subir archivo</p>
+                                        @endif
+                                    </div>
+                                    <input type="file" id="comprobante" wire:model="paymentReceipt" class="file-input-hidden">
+                                </label>
+                            </label>
+                            @error('paymentReceipt') <span class="form-error">{{ $message }}</span> @enderror
+
+                        </div>
+                    @endif
+                    
+
+                    <!--Materias-->
+                    <div>
+                        <label for="materia" class="input-label">Materia</label>
+                        <select id="materia" wire:model="selectedSubject" class="select-input">
+                            <option value="">-- Elige una materia --</option>
+                            @foreach($materiasTutor as $materia)
+                                <option value="{{ $materia->subject->id }}">{{ $materia->subject->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('selectedSubject') <span class="form-error">{{ $message }}</span> @enderror
+                    </div>
+                    
+                    <!--Info Reservas-->
+                    @if ($selectedDay && $selectedTime)
+                        <div class="info-box">
+                            <p><strong>Fecha:</strong> <span>{{ $currentDate->copy()->setDay($selectedDay)->translatedFormat('j \de F \de Y') }}</span></p>
+                            <p><strong>Hora:</strong> <span>{{ \Carbon\Carbon::parse($selectedTime)->format('h:i a') }}</span></p>
+                        </div>
+                    @endif
+
+                    
+
+                    <!--Botones de Acciones-->
+                    <div class="action-buttons">
+                        <button type="button" wire:click="closeModal" class="btn btn-secondary">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Reservar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    @endif
 </div>
+
+<script>
+    console.log('esta ejecuntadnos el script');
+    
+</script>
 
 

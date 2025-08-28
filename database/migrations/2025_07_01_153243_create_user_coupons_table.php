@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('coupon_id')->constrained('coupons')->cascadeOnDelete(); // Relación con coupons
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete(); // Relación con users
-            $table->integer('cantidad')->default(1); // Cantidad de cupones
+            $table->enum('estado', ['activo', 'inactivo'])->default('activo'); // Estado del cupón
+             $table->integer('cantidad')->default(1); 
             $table->timestamps();
         });
     }

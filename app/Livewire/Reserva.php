@@ -8,11 +8,13 @@ use App\Models\SlotBooking;
 use App\Models\Subject;
 use App\Models\User;
 use App\Models\UserSubject;
+use App\Services\CuponesService;
 use Carbon\Carbon;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use App\Services\SlotBookingService;
 use App\Services\ImagenesService;
+use App\Services\interfaces\ICuponesService;
 use App\Services\PagosTutorReservaService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -37,27 +39,110 @@ class Reserva extends Component
     public $selectedSubject;
     public $showModal = false;
 
+    // ============ Variables de Cupones ============//
+    public $showModalCupones = false;
+    public $cuponSelecionado = false;
 
-     public bool $isAugustPromotion = false;
+    public $cupones = false;
+    public $introCupon = true; //Opcion por defecto
+    public $cuponCode = '';
+    public $key = 1;
+    public $cuponMensage = '';
+    protected $validCupones = ['DESCUENTO10', 'OFERTA25', 'PROMO100']; // =======> SOLO DATOS DE PRUEBA!!!!!
+    public $comprobante = true;
+    public $banner100 = true;
+    protected $cuponservice;
+
+    public $cuponesUsuario = [];
+
+    //============== End Variables Cupones ===============//
+
+    public bool $isAugustPromotion = false;
 
     // Propiedades para el tutor
     public $tutorId;
     public $materiasTutor;
 
-
-
-
-
-    public function mount($tutorId)
+    public function mount(ICuponesService $cuponservice, $tutorId)
     {
         $this->tutorId = $tutorId;
         $this->currentDate = Carbon::now();
-         $this->isAugustPromotion = $this->currentDate->month === 8; // ✅ Verificar si es agosto
-       
+        $this->isAugustPromotion = $this->currentDate->month === 8; // ✅ Verificar si es agosto
+
+        $this->cuponservice = $cuponservice;  // OK
+        $this->cuponesUsuario = $this->cuponservice->todosLosCupones(auth()->user());
+
         $this->loadMonthData();
         $this->materiasTutor = UserSubject::where("user_id", $this->tutorId)->get();
     }
 
+    //================== FUNCIONES DE CUPONES ====================//
+    public function mostrarCupones()
+    { //lista de cupones que se extraerá de la base de datos
+        $this->cupones = true;
+        $this->cuponMensage = '';
+    }
+    public function ocultarCupones()
+    { //ocultar la lista
+        $this->cupones = false;
+    }
+    public function cuponSeleccionado()
+    { //Para mostrar el cupón selecionado cambiando la vista
+        $this->cuponSelecionado = true;
+        $this->introCupon = false;
+    }
+
+    public function quitarCupon()
+    { //Para quitar el cupón seleccionado
+        $this->introCupon = true;
+        $this->cuponSelecionado = false;
+        $this->comprobante = true;
+        $this->cuponCode = '';
+        $this->banner100 = true;
+        $this->cuponMensage = '';
+    }
+    public function ocultarComprobante()
+    {
+        $this->comprobante = false;
+    }
+
+    public function selecionarCupon($codigo)
+    { //Selecionar el cupón
+        $service = $this->cuponservice ?? app(ICuponesService::class);
+        $this->cuponCode = $codigo;
+        $this->cuponSeleccionado();
+        $this->ocultarCupones();
+        $this->key = now();
+        // vmeter servicio de cupones
+        $porcentage = $service->porcentajeCupon($codigo);
+        if ($porcentage == 100) { // Comprueba la tutoría Gratis
+            $this->ocultarComprobante();
+        } else {
+            $this->ocultarBanner();
+        }
+    }
+
+    public function ocultarBanner()
+    {
+        //Este código cambia el banner por un qr si es que el cupon no es de 100%
+        $this->banner100 = false;
+    }
+
+    //Método para aplicar nuevo cupón Verificar de BD
+    public function aplicarCupon()
+    {
+        $service = $this->cuponservice ?? app(ICuponesService::class);
+        if ($service->existeCupon($this->cuponCode)) {
+            $service->canjeaCupon($this->cuponCode, auth()->user());
+            $this->cuponesUsuario = $service->todosLosCupones(auth()->user());
+            $this->cuponSeleccionado();
+            //Por el momento oculanto el comprobante, luego verificar si es el 100% el cupon introducido
+            $this->ocultarComprobante();
+        } else {
+            $this->cuponMensage = 'Cupón Invalido';
+        }
+    }
+    //==================== END FUNCIONES DE CUPONES =======================//
     /**
      * Carga los datos de disponibilidad para el mes actual.
      * En un caso real, aquí harías una única consulta a tu BBDD para el mes visible.
@@ -81,7 +166,6 @@ class Reserva extends Component
             ->filter(fn($slots) => collect($slots)->where('status', 'free')->isNotEmpty())
             ->keys()
             ->toArray();
-
     }
 
 
@@ -134,8 +218,6 @@ class Reserva extends Component
             $this->availableTimeSlots = $slotfiltrados;
         } else {
             $this->availableTimeSlots = $this->timeSlotsByDay[$day] ?? [];
-
-
         }
 
         //$this->availableTimeSlots = $this->timeSlotsByDay[$day] ?? [];
@@ -188,6 +270,9 @@ class Reserva extends Component
     public function closeModal()
     {
         $this->showModal = false;
+        $this->cuponCode = '';
+        $this->cuponMensage = '';
+        $this->quitarCupon();
         $this->reset(['paymentReceipt', 'selectedSubject']);
     }
 
@@ -197,11 +282,12 @@ class Reserva extends Component
      */
     public function makeReservation()
     {
-
+        // habilitamos el serivcio de cupones
+        $service = $this->cuponservice ?? app(ICuponesService::class);
         $isAugustPromotion = $this->currentDate->month === 8;
 
 
-        if ($isAugustPromotion) {
+        if ($isAugustPromotion || (!empty($this->cuponCode) )) {
             $this->validate([
                 'selectedSubject' => 'required',
             ]);
@@ -219,6 +305,14 @@ class Reserva extends Component
             $pagostutorreserva = new PagosTutorReservaService();
             $sessionFee = 15;
             $estudianteId = auth()->user()->id;
+            // 2.1. registra que ya se uso el cupon en esta session
+           if (!empty($this->cuponCode)) {
+                if ($service->porcentajeCupon($this->cuponCode) == 100) {
+                    $sessionFee = 0;
+                }
+                $service->cuponCanjeado($this->cuponCode, auth()->user());
+                 $this->cuponesUsuario = $service->todosLosCupones(auth()->user());
+            }
 
             $fechaCompleta = $this->currentDate->copy()
                 ->setDay($this->selectedDay)
@@ -230,7 +324,7 @@ class Reserva extends Component
 
             // 1
             // . Guardar imagen - Obtener el servicio cuando lo necesites
-            if ($isAugustPromotion) {
+            if ($isAugustPromotion || $service->porcentajeCupon($this->cuponCode) == 100) {
                 // Usar imagen por defecto para promoción
                 $path = 'qr/77b1a7da.jpg'; // Imagen por defecto
             } else {
@@ -244,8 +338,10 @@ class Reserva extends Component
                 $estudianteId,
                 $this->tutorId,
                 $this->selectedSubject,
-                $fechaString
+                $fechaString,
+                $sessionFee
             );
+
 
             // 3. Crear registro de pago
             PaymentSlotBooking::create([
@@ -287,7 +383,6 @@ class Reserva extends Component
             $this->showModal = false;
             $this->resetSelection();
             session()->flash('success_message', '¡Hora reservada correctamente!');
-
         } catch (\Exception $e) {
             DB::rollBack();
 
@@ -438,7 +533,6 @@ class Reserva extends Component
 
         //dd($ocupados);  
         return $ocupados;
-
     }
 
     public function render()

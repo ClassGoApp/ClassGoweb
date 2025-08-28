@@ -15,75 +15,169 @@ use Validator;
 
 class CuponesService implements ICuponesService
 {
+    /**
+     * Metodo Generar el Codigo del Cupon
+     * @param mixed $user
+     */
 
-
-    function codeFriendly($code, $user)
+    public function generaCodigoCupon($user)
     {
-        if ($code->user_id) {
-            UserCoupon::create([
-                'coupon_id' => Coupon::create([
-                    'code_id' => $code->id,
-                    'descuento' => 100, // Descuento del 100%
-                    'fecha_caducidad' => now()->endOfMonth(), // Vence al final del siguiente mes
-                    'estado' => 'activo',
-                ])->id,
-                'user_id' => $code->user_id,
-                'cantidad' => 1,
-            ]);
-            if ($user) {
-                UserCoupon::create([
-                    'coupon_id' => Coupon::create([
-                        'code_id' => $code->id,
-                        'descuento' => 100, // Descuento del 100%
-                        'fecha_caducidad' => now()->endOfMonth(), // Vence al final del siguiente mes
-                        'estado' => 'activo',
-                    ])->id,
-                    'user_id' => $user->id,
-                    'cantidad' => 1,
-                ]);
-            }
+        $id = (string) $user->id; // Convertimos a string
+        $longitudId = strlen($id);
+        $longitudTotal = 8;
+
+        // Letras posibles
+        $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $codigo = '';
+
+        // Cantidad de letras aleatorias necesarias
+        $faltantes = $longitudTotal - $longitudId;
+
+        for ($i = 0; $i < $faltantes; $i++) {
+            $codigo .= $chars[random_int(0, strlen($chars) - 1)];
         }
+
+        // Al final agregamos el ID
+        //$codigo .= $id;
+        $codigo = 1;
+
+        return $codigo;
     }
 
-
-    function codeCoupons($user)
+    /**
+     * Genera el Cupon de Invitacion 
+     * al momento de registrarse
+     */
+    public function generaCuponInvitacion($user)
     {
-        UserCoupon::create([
-            'coupon_id' => Coupon::create([
-                'code_id' =>
-                    Code::create([
-                        'nombre' => 'Código de bienvenida',
-                        'codigo' => Str::random(8), // Generar un código único
-                        'user_id' => $user->id,
-                        'fecha_caducidad' => null,
-                        'descuento' => 100, // Descuento del 100%
-                    ])->id,
-                'descuento' => 100, // Descuento del 100%
-                'fecha_caducidad' => now()->endOfMonth(), // Vence al final del siguiente mes
-                'estado' => 'inactivo',
-            ])->id,
-            'user_id' => $user->id,
-            'cantidad' => 5,
+        Coupon::create([
+            'nombre' => 'Cupon de Invitacion ' . $user->profile->first_name,
+            'codigo' => $this->generaCodigoCupon($user),
+            'fecha_caducidad' => now()->addMonthsNoOverflow(3)->toDateString(),
+            'estado' => 'inactivo',
+            'descuento' => 100,
+            'cantidad' => 1,
+            'referencia' => $user->id,
         ]);
     }
 
-    function cupomcodigorandom($code, $user)
+    /**
+     * Metodo asigna cupon de invitacion
+     *  a usuario recien registrado
+     */
+
+    function asignacionCuponInvitacion($cupon, $user)
     {
-        if ($code) {
-            if (!$code->user_id) {
-                // añade 5 a ti
-                UserCoupon::create([
-                    'coupon_id' => Coupon::create([
-                        'code_id' => $code->id,
-                        'descuento' => $code->descuento, // Descuento del 100%
-                        'fecha_caducidad' => $code->fecha_caducidad, // Vence al final del siguiente mes
-                        'estado' => 'activo',
-                    ])->id,
-                    'user_id' => $user->id,
-                    'cantidad' => 1,
-                ]);
+        UserCoupon::firstOrCreate(
+            ['coupon_id' => $cupon->id, 'user_id' => $user->id],
+            ['estado' => 'activo', 'cantidad' => $cupon->cantidad]
+        );
+    }
+    /**
+     * Metodo asigna cupon de invitacion
+     * a usuario dueno del cupon
+     */
+
+    function asignacionCuponDuenio($cupon)
+    {
+        UserCoupon::firstOrCreate(
+            ['coupon_id' => $cupon->id, 'user_id' => $cupon->referencia],
+            ['estado' => 'activo', 'cantidad' => $cupon->cantidad]
+        );
+    }
+
+
+    /**
+     * asigna cupon de bienvenida
+     */
+    function asignacionCuponBienvenida($user)
+    {
+        $cupon = Coupon::where('codigo', 'CLASSGO1')->first();
+
+        UserCoupon::firstOrCreate(
+            ['coupon_id' => $cupon->id, 'user_id' => $user->id],
+            ['estado' => 'activo', 'cantidad' => $cupon->cantidad]
+        );
+    }
+    /**
+     * funcion que genera cupones con parametros
+     */
+    function cuponesGenerales($request)
+    {
+        $cupon = Coupon::create([
+            'nombre' => $request['nombre'],
+            'codigo' => $request['codigo'],
+            'fecha_caducidad' => $request['fecha_caducidad'],
+            'estado' => 'activo',
+            'descuento' => $request['descuento'],
+            'cantidad' => $request['cantidad'],
+            'referencia' => 0,
+        ]);
+    }
+    /**
+     * funcion que muestra todos los cupones del usuario
+     */
+    public function todosLosCupones($user)
+    {
+        $cupones = $user->coupons()
+            ->wherePivot('estado', 'activo')   // filtra SOLO por el pivote
+            ->get();
+        foreach ($cupones as $cupon) {
+            if ($cupon->fecha_caducidad < now() || $cupon->cantidad <= 0) {
+                // marcar como inactivo en el pivote
+                $cupon->estado = 'inactivo';
+                $cupon->save();
             }
         }
+
+        return $cupones;
+    }
+
+    /**
+     * funcion que verifica si el cupon es valido
+     * @return bool
+     */
+
+    public function existeCupon($codigo): bool
+    {
+        return Coupon::where('codigo', $codigo)->exists();
+    }
+
+
+    /**
+     * funcion que canjea el cupon
+     */
+    public function canjeaCupon($codigo, $user)
+    {
+
+        $cupon = Coupon::where('codigo', $codigo)->first();
+        UserCoupon::firstOrCreate(
+            ['coupon_id' => $cupon->id, 'user_id' => $user->id],
+            ['estado' => 'activo', 'cantidad' => $cupon->cantidad]
+        );
+    }
+    /**
+     * funcion que muestra el porcentaje del cupon
+     */
+    public function porcentajeCupon($codigo)
+    {
+        $cupon = Coupon::where('codigo', $codigo)->first();
+        return $cupon->descuento;
+    }
+    /**
+     * funcion que completa el uso del cupon
+     */
+    public function cuponCanjeado($codigo, $user)
+    {
+        $cuponOriginal = Coupon::where('codigo', $codigo)->first();
+        $cuponCanjeado = UserCoupon::where('coupon_id', $cuponOriginal->id)
+            ->where('user_id', $user->id)
+            ->first();
+        $cuponCanjeado->cantidad = $cuponCanjeado->cantidad - 1;
+        if( $cuponCanjeado->cantidad <=0){
+            $cuponCanjeado->estado = 'inactivo';
+        }
+          $cuponCanjeado->save();
     }
 
     function getCuponsByUserId($iduser){
@@ -159,5 +253,3 @@ class CuponesService implements ICuponesService
 
 
 }
-
-

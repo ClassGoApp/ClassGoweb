@@ -31,10 +31,11 @@ class RegisterService
         ]);
         $user->assignRole($request['user_role']);
 
-        $this->codigos($request, $user); // Generar 5 cupones para el usuario
-        
+        // realiza las operaciones necesarias para los cupones
+        $this->generaCupones($request, $user);
+
         $this->assignExistingCourses($user);
-        
+
         $emailData = ['userName' => $user->profile->full_name, 'userEmail' => $user->email, 'key' => $user->getKey()];
         dispatch(new SendNotificationJob('registration', $user, $emailData));
         dispatch(new SendNotificationJob('registration', User::admin(), $emailData));
@@ -43,7 +44,7 @@ class RegisterService
     }
 
 
-   
+
 
     //este es por google 
     public function completeSocialProfile($user, $request): User
@@ -54,13 +55,13 @@ class RegisterService
             'phone_number' => $request['phone_number']
         ]);
         $user->assignRole($request['user_role']);
-        // Generar cupones solo si el usuario es estudiante
-        $this->codigos($request, $user); // Generar 5 cupones para el usuario
-        
-         $this->assignExistingCourses($user);
+        // realiza las operaciones necesarias para los cupones
+        $this->generaCupones($request, $user);
+
+        $this->assignExistingCourses($user);
 
         $emailData = ['userName' => $user->profile->full_name, 'userEmail' => $user->email, 'key' => $user->getKey()];
-        dispatch(new SendNotificationJob('welcome', $user, $emailData));
+        dispatch(job: new SendNotificationJob('welcome', $user, $emailData));
         dispatch(new SendNotificationJob('welcome', User::admin(), $emailData));
         return $user;
     }
@@ -115,17 +116,20 @@ class RegisterService
         ];
     }
 
-    function codigos($request, $user)
+    function generaCupones($request, $user)
     {
         if ($request['user_role'] == 'student') {
             $cuponservice = new CuponesService();
-            $cuponservice->codeCoupons($user); // Generar 5 cupones para el usuario
+            // agrega el cupon de bienvenida
+            $cuponservice->asignacionCuponBienvenida($user);
+            // genera su cupon de invitacion del ususario registrado
+            $cuponservice->generaCuponInvitacion($user);
             if (!empty($request['codigo'])) {
-
-
-                $cuponservice->codeFriendly(Code::where('codigo', $request['codigo'])->first(), $user); // Buscar el código en la base de datos
-
-                $cuponservice->cupomcodigorandom(Code::where('codigo', $request['codigo'])->first(), $user); // Agregar el cupón al usuario 
+                $cupon = Coupon::where('codigo', $request['codigo'])->first();
+                // agregamos el cupon de invitacion al nuevo usuario
+                $cuponservice->asignacionCuponInvitacion($cupon, $user);
+                //agregamos el cupon al dueño del cupón
+                $cuponservice->asignacionCuponDuenio($cupon);
             }
         }
     }
@@ -133,7 +137,7 @@ class RegisterService
 
 
 
-     private function assignExistingCourses(User $user): void
+    private function assignExistingCourses(User $user): void
     {
         // Obtener todos los cursos de la empresa
         $companyCourses = \App\Models\CompanyCourse::all();

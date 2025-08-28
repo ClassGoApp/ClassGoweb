@@ -423,7 +423,7 @@ class DefaultSettingSeeder extends Seeder
                 'cta_text'                          => 'Join Our Community',
                 'cta_url'                           => 'register',
                 'enable_help'                       => false,
-                //'help_section_media'                => [uploadObMedia('demo-content/home-page/banner-video.mp4')],
+              //  'help_section_media'                => [uploadObMedia('demo-content/home-page/banner-video.mp4')],
                 'help_section_title'                => 'Tips to find the best Tutor',
                 'help_section_description'          => 'Choosing the right tutor online requires careful consideration. Here are tips to help you make an informed decision.',
                 'help_section_bullets'              => [

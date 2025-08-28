@@ -38,13 +38,13 @@
                 <div class="box">
                     <h1>Opten la App</h1>
                     <p>¡Lleva tu educación a todas partes!</p>
-                    <a href="https://play.google.com/store/apps/details?id=com.neurasoft.classgo" target="_blank"><img src="{{ asset('images/googleplay.png')}}" alt="" style=" width: 150px; padding-top: 1rem;"></a>
+                    <a href="https://play.google.com/store/apps/details?id=com.neurasoft.classgo" target="_blank"><img src="{{ asset('images/googleplay.png')}}" alt="" style=" width: 150px;"></a>
                 </div>
                 <div class="box">
                     <a href="{{ route('nosotros')}}"><h1>Nosotros</h1></a>
-                    <a href=" {{ route('nosotros')}}"><p>Mision</p></a>
-                    <a href=" {{ route('nosotros')}}"><p>Vision</p></a>
-                    <a href="{{ route('nosotros')}}"><p>Logros clave</p></a>
+                    <a href=" {{ route('nosotros')}}#mision"><p>Mision</p></a>
+                    <a href=" {{ route('nosotros')}}#vision"><p>Vision</p></a>
+                    <a href="{{ route('nosotros')}}#team"><p>Desarrolladores</p></a>
                 </div>
                 <div class="box">
                     <h1>Preguntas</h1>
