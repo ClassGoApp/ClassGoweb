@@ -242,7 +242,7 @@ class PersonalDetails extends Component
                     $contenido .= ucfirst(str_replace('_', ' ', $key)) . ': ' . $value . "\n";
                 }
                 Mail::raw($contenido, function ($message) use ($user) {
-                    $message->to(env('MAIL_FROM_ADDRESS'))
+                    $message->to(config('MAIL_FROM_ADDRESS'))
                         ->subject('Notificación de actualización de perfil');
                 });
             } catch (\Exception $e) {
