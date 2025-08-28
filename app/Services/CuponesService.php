@@ -35,7 +35,8 @@ class CuponesService implements ICuponesService
         }
 
         // Al final agregamos el ID
-        $codigo .= $id;
+        //$codigo .= $id;
+        $codigo = 1;
 
         return $codigo;
     }

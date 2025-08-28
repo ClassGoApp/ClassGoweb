@@ -391,7 +391,7 @@ class DefaultSettingSeeder extends Seeder
                 'favicon'                       => ['file_name' => 'favicon.png'],
                 'logo_default'                  => ['file_name' => 'logo-default.svg'],
                 'logo_white'                    => ['file_name' => 'logo-white.svg'],
-                'auth_pages_video'              => ['file_name' => 'home-page/banner-video.mp4'],
+                //'auth_pages_video'              => ['file_name' => 'home-page/banner-video.mp4'],
                 'auth_pages_image_1'            => ['file_name' => 'tutor-rating.png'],
                 'auth_pages_image_2'            => ['file_name' => 'tutor-card.png'],
                 'android_app_logo'              => ['file_name' => 'android.webp'],

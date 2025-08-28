@@ -13,9 +13,19 @@ class PromocionesController extends Controller
     public function index()
     {
         $user = Auth::user();
+        if (!$user) {
+        // Redirigir al login o mostrar un error si no hay sesión iniciada
+        return redirect()->route('login');
+        }
+
+        // Inicializar la variable $codigo con un valor por defecto
+        $codigo = null;
 
         $cupon = Coupon::where('referencia', $user->id)->latest()->first();
-        $codigo = $cupon->codigo;
+        // Comprobar si se encontró un cupón ANTES de usarlo
+        if ($cupon) {
+            $codigo = $cupon->codigo;   
+        }
         $cupones = $user->coupons;
         return view('livewire.pages.student.promociones', compact('codigo', 'cupones'));
     }
