@@ -159,29 +159,31 @@
                 </div>
 
                 <!-- CARD CANJEAR CUPON -->
-                <form action="{{ route('coupons.canjear') }}" method="POST"
-                    class="card-fondo text-white p-6 rounded-2xl shadow-lg flex-col items-center text-center">
-                    @csrf
-                    <h3 class="text-xl font-bold">¿Tienes Código?</h3>
-                    <p class="text-tertiary-color mt-1 text-sm">¡Ingrésalo y obtén descuentos!</p>
+                <div id="redeemView" class="card-fondo text-white p-6 rounded-2xl shadow-lg flex-col items-center text-center">
+                    <form action="{{ route('coupons.canjear') }}" method="POST">
+                        @csrf
+                        <h3 class="text-xl font-bold">¿Tienes Código?</h3>
+                        <p class="text-tertiary-color mt-1 text-sm">¡Ingrésalo y obtén descuentos!</p>
 
-                    <div class="my-6 w-full">
-                        <div id="cupon-code"
-                            class="font-extrabold tracking-widest bg-white/20 border-2 border-dashed border-tertiary-color p-2 rounded-lg">
-                            <input name="codigo" type="text" required
-                                class="w-full bg-transparent border-0 outline-none shadow-none focus:shadow-none text-white text-4xl font-extrabold tracking-widest"
-                                placeholder="ABC12345">
+                        <div class="my-6 w-full">
+                            <div id="cupon-code"
+                                class="font-extrabold tracking-widest bg-white/20 border-2 border-dashed border-tertiary-color p-2 rounded-lg">
+                                <input name="codigo" type="text" required
+                                    class="w-full bg-transparent border-0 outline-none shadow-none focus:shadow-none text-white text-4xl font-extrabold tracking-widest"
+                                    placeholder="ABC12345">
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="w-full space-y-3">
-                        <button type="submit"
-                            class="w-full bg-tertiary-orange font-bold py-3 rounded-lg hover:opacity-90 transition-all">
-                            Canjear
-                        </button>
-                    </div>
-                </form>
+                        <div class="w-full space-y-3">
+                            <button type="submit"
+                                class="w-full bg-tertiary-orange font-bold py-3 rounded-lg hover:opacity-90 transition-all">
+                                Canjear
+                            </button>
+                        </div>
+                    </form>
 
+                </div>
+                
 
                 <!-- CARD COMPARTIR CODE -->
                 <div id="inviteView"

@@ -74,67 +74,125 @@
                 </div>
             </div>
 
-        </div>
-    </section>
-    <section class="team-section" id="team">
-        <div class="team-container">
-            <div class="team-header">
-                <h1 class="team-title">Nuestro Equipo</h1>
-                <p class="team-subtitle">Los creadores de la página y app de ClassGo, dedicados a revolucionar la educación.</p>
+            <div class="team-section">
+                <div class="team-header">
+                    <h1 class="team-title">Nuestro Equipo</h1>
+                    <p class="team-subtitle">Los creadores de la página y app de ClassGo, dedicados a revolucionar la educación.</p>
+                </div>
+
+                <div class="team-grid">
+                    <div></div>
+                    <div class="team-member">
+                        <div class="member-item">
+                            <div class="member-photo-wrapper">
+                                <img src="{{ asset('images/team/gabriel.webp')}}" alt="Foto de Gabriel Alpiry Hurtado" class="member-photo">
+                            </div>
+                            <a href="#" class="member-link">
+                                <img src="{{ asset('') }}" alt="">
+                                <svg class="arrow-icon" xmlns="http viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                            </a>
+                        </div>
+                        <h3 class="member-name">Gabriel Alpiry Hurtado</h3>
+                        <p class="member-title">CEO ClassGo</p>
+                    </div>
+                    <div></div>
+
+                    <div class="team-member">
+                        <div class="member-item">
+                            <div class="member-photo-wrapper">
+                                <img src="{{ asset('images/team/edwar.webp')}}" alt="Foto de Edward Rojas" class="member-photo">
+                            </div>
+                            <a href="#" class="member-link">
+                                <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                            </a>
+                        </div>
+                        <h3 class="member-name">Edward Rojas</h3>
+                        <p class="member-title">Coordinador General</p>
+                    </div>
+
+                    <div class="team-member">
+                        <div class="member-item">
+                            <div class="member-photo-wrapper">
+                                <img src="{{ asset('images/team/antonio.webp')}}" alt="Foto de Antonio Sandoval Flores" class="member-photo">
+                            </div>
+                            <a href="#" class="member-link">
+                                <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                            </a>
+                        </div>
+                        <h3 class="member-name">Antonio Sandoval Flores</h3>
+                        <p class="member-title">Encargado de Operaciones</p>
+                    </div>
+
+                    <div class="team-member">
+                        <div class="member-item">
+                            <div class="member-photo-wrapper">
+                                <img src="{{ asset('images/team/alvaro.webp')}}" alt="Foto de Alvaro Rojas" class="member-photo">
+                            </div>
+                            <a href="#" class="member-link">
+                                <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                            </a>
+                        </div>
+                        <h3 class="member-name">Alvaro Rojas</h3>
+                        <p class="member-title">Desarrollador Mobile</p>
+                    </div>
+
+                    <div class="team-member">
+                        <div class="member-item">
+                            <div class="member-photo-wrapper">
+                                <img src="{{ asset('images/team/alejandro.webp')}}" alt="Foto de Alejandro Calzadilla Nogales" class="member-photo">
+                            </div>
+                            <a href="#" class="member-link">
+                                <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                            </a>
+                        </div>
+                        <h3 class="member-name">Alejandro Calzadilla</h3>
+                        <p class="member-title">Backend Developer</p>
+                    </div>
+
+                    <div class="team-member">
+                        <div class="member-item">
+                            <div class="member-photo-wrapper">
+                                <img src="{{ asset('images/team/carlos.webp')}}" alt="Foto de Carlos Mamani Torrez" class="member-photo">
+                            </div>
+                            <a href="#" class="member-link">
+                                <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                            </a>
+                        </div>
+                        <h3 class="member-name">Carlos Mamani Torrez</h3>
+                        <p class="member-title">Frontend Developer</p>
+                    </div>
+
+                    <div class="team-member">
+                        <div class="member-item">
+                            <div class="member-photo-wrapper">
+                                <img src="{{ asset('images/team/jhonny.webp')}}" alt="Foto de Jhonny Durán" class="member-photo">
+                            </div>
+                            <a href="#" class="member-link">
+                                <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                            </a>
+                        </div>
+                        <h3 class="member-name">Jhonny Durán</h3>
+                        <p class="member-title">Software Architecture</p>
+                    </div>
+
+                    <div class="team-member">
+                        <div class="member-item">
+                            <div class="member-photo-wrapper">
+                                <img src="{{ asset('images/team/micaela.webp')}}" alt="Foto de Jhonny Durán" class="member-photo">
+                            </div>
+                            <a href="#" class="member-link">
+                                <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                            </a>
+                        </div>
+                        <h3 class="member-name">Mikaela Leon</h3>
+                        <p class="member-title">Diseñadors</p>
+                    </div>
+
+                </div>
             </div>
 
-            <div class="team-grid">
-                <div></div>
-                <div class="team-card">
-                    <img src="{{ asset('images/team/gabriel.webp')}}" alt="" class="team-member-img">
-                    <h3 class="team-member-name">Gabriel Alpiry Hurtado</h3>
-                    <p class="team-member-role">CEO ClassGo</p>
-                    <p class="team-member-quote">"Hola! Soy Gabriel, apasionado por compartir conocimiento y ayudarte a alcanzar tus metas académicas. Con años de experiencia en docencia y finanzas, mi objetivo es guiar tu aprendizaje de manera clara y efectiva."</p>
-                </div>
-                <div></div>
-                <div class="team-card">
-                    <img src="{{ asset('images/team/edwar.webp')}}" alt="" class="team-member-img">
-                    <h3 class="team-member-name">Edward Rojas</h3>
-                    <p class="team-member-role">Coordinador General</p>
-                    <p class="team-member-quote">"Preparado para los desafíos del mundo empresarial digital, con mentalidad ágil y soluciones orientadas a resultados."</p>
-                </div>
-
-                <div class="team-card">
-                    <img src="{{ asset('images/team/antonio.webp')}}" alt="" class="team-member-img">
-                    <h3 class="team-member-name">Antonio Sandoval Flores</h3>
-                    <p class="team-member-role">Encargado de Operaciones</p>
-                    <p class="team-member-quote">"Apasionado por compartir conocimientos de manera clara y práctica. Mi objetivo es ayudarte a aprender de forma sencilla y efectiva."</p>
-                </div>
-
-                <div class="team-card">
-                    <img src="{{ asset('images/team/alvaro.webp')}}" alt="Foto de Ana Fuentes" class="team-member-img">
-                    <h3 class="team-member-name">Alvaro Rojas</h3>
-                    <p class="team-member-role">Desarrollador Mobile</p>
-                    <p class="team-member-quote">"Soy ingeniero en sistemas, desarrollador de paginas web y aplicaciones móbiles."</p>
-                </div>
-
-                <div class="team-card">
-                    <img src="{{ asset('images/team/alejandro.webp')}}" alt="" class="team-member-img">
-                    <h3 class="team-member-name">Alejandro Calzadilla Nogales</h3>
-                    <p class="team-member-role">Backend Developer</p>
-                    <p class="team-member-quote">"Construyendo sistemas robustos, escalables y eficientes que garantizan un rendimiento óptimo y una experiencia fluida para los usuarios, sin importar la complejidad del desafío."</p>
-                </div>
-
-                <div class="team-card">
-                    <img src="{{ asset('images/team/carlos.webp')}}" alt="" class="team-member-img">
-                    <h3 class="team-member-name">Carlos Mamani Torrez</h3>
-                    <p class="team-member-role">Frontend Developer</p>
-                    <p class="team-member-quote">"Creando interfaces intuitivas y atractivas que hacen que el aprendizaje sea una experiencia agradable y accesible para todos."</p>
-                </div>
-
-                <div class="team-card">
-                    <img src="{{ asset('images/tutors/default.png')}}" alt="" class="team-member-img">
-                    <h3 class="team-member-name">Jhonny Durán</h3>
-                    <p class="team-member-role">Software Architecture</p>
-                    <p class="team-member-quote">"Diseñando soluciones tecnológicas sólidas y sostenibles, alineadas con los objetivos del negocio, para asegurar una arquitectura escalable, segura y preparada para el futuro."</p>
-                </div>
-                
-            </div>
         </div>
+
+        
     </section>
 @endsection
