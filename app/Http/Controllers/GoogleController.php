@@ -43,25 +43,16 @@ class GoogleController extends Controller
     {
         \Log::info('Google callback iniciado.');
 
-        $sessionId = $request->cookie(config('session.cookie'));
-
-        $session = DB::table('sessions')->where('id', $sessionId)->first();
-        // Recupera el usuario
-        $user = User::find($session->user_id);
-        \Log::info('Usuario autenticado:', ['user_id' => $user?->id, 'email' => $user?->email]);
+        $user = Auth::user();
+        if (!$user) {
+            \Log::error('Usuario no autenticado en el callback.');
+            return redirect()->route('login')->with('error', 'Debes iniciar sesión para conectar Google Calendar.');
+        }
 
         $googleCalenderService = new GoogleCalender($user);
-        \Log::info('GoogleCalender instanciado.');
-
         $code = $request->input('code');
-        \Log::info('Código recibido de Google:', ['code' => $code]);
-
         $tokenInfo = $googleCalenderService->getAccessTokenInfo($code);
-        \Log::info('Token info obtenido:', ['tokenInfo' => $tokenInfo]);
-
         $userService = new UserService($user);
-        \Log::info('UserService instanciado.');
-
         try {
             $userService->setAccountSetting('google_access_token', $tokenInfo);
             \Log::info('Token guardado en accountSetting.');
