@@ -67,4 +67,9 @@ interface ICuponesService
    * funcion que completa el uso del cupon
    */
   public function cuponCanjeado($codigo, $user);
+  /**
+   * Funcion que verifica si 
+   * ese usuario ya uso ese cupon
+   */
+  public function verificaUsoCupon($codigo, $user): bool;
 }

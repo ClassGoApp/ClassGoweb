@@ -35,8 +35,8 @@ class PromocionesController extends Controller
        
 
 
-        if ( !$cuponservice->existeCupon($codigo)) {
-            return redirect()->route('promociones')->with('error', 'Cupón no válido.');
+        if ( !$cuponservice->existeCupon($codigo) || $cuponservice->verificaUsoCupon($codigo, $user) ) {
+            return redirect()->route('promociones')->with('error', 'Cupón no válido o en uso.');
         } else {
             
             $cupon = Coupon::where('codigo', $codigo)->first();
@@ -47,6 +47,6 @@ class PromocionesController extends Controller
         }
 
 
-        return redirect()->route('promociones');
+        return redirect()->route('promociones')->with('Exito', 'Cupón Cajeado con exito.');
     }
 }

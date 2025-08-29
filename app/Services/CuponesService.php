@@ -35,8 +35,7 @@ class CuponesService implements ICuponesService
         }
 
         // Al final agregamos el ID
-        //$codigo .= $id;
-        $codigo = 1;
+        $codigo .= $id;
 
         return $codigo;
     }
@@ -175,5 +174,25 @@ class CuponesService implements ICuponesService
             $cuponCanjeado->estado = 'inactivo';
         }
           $cuponCanjeado->save();
+    }
+    /**
+     * Funcion que verifica si 
+     * ese usuario ya uso ese cupon
+     */
+    public function verificaUsoCupon($codigo, $user): bool
+    {
+        if (!$this->existeCupon($codigo)) {
+            return true; // El cupón no existe
+        }
+         $cupon = Coupon::where('codigo', $codigo)->first();
+         $cuponUso = UserCoupon::where('coupon_id', $cupon->id)->where('user_id', $user->id)->exists();
+        if($cuponUso){
+                return true;
+        }
+        $cuponUso = UserCoupon::where('coupon_id', $cupon->id)->exists(); 
+        if($cupon->referencia < 0 &&  $cuponUso){
+            return true;
+        }
+         return false;
     }
 }
