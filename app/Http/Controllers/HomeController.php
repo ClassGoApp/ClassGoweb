@@ -5,37 +5,46 @@ use Illuminate\Support\Facades\DB;
 
 use App\Models\UserSubject;
 use App\Services\SiteService;
+use App\Services\CountUserService;
+
 
 
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    protected $tutorService;
+    protected $siteService;
+    protected $countUserService;
 
-    public function __construct(SiteService $tutorService)
+    public function __construct(SiteService $siteService,  CountUserService $countUserService)
     {
-        $this->tutorService = $tutorService;
+        $this->siteService = $siteService;
+        $this->countUserService = $countUserService;
     }
 
     public function index(){
-        
-       // Obtener tutores y materias
-        $tutorData = $this->tutorService->getTutorsWithSubjects();
+        //Obtener un counter de los usuarios
+        $counts = $this->countUserService->getUserCounts();
+
+       // Obtener tutores destacados
+        $featuredTutors = $this->siteService->featuredTutors();
+
 
         // Obtener alianzas
-        $alianzas = $this->tutorService->getAlliances();
+        $alianzas = $this->siteService->getAlliances();
 
         return view('vistas.view.pages.home', [
-            'profiles' => $tutorData['profiles'],
-            'subjectsByUser' => $tutorData['subjectsByUser'],
-            'alianzas' => $alianzas
+            'featuredTutors' => $featuredTutors,
+            'alianzas' => $alianzas,
+            'totalUsers' => $counts['totalUsers'],
+            'totalEstudiantes' => $counts['studentCount'],
+            'totalTutores' => $counts['tutorCount']
         ]);
     }
 
     public function nosotros() {
     // Obtener alianzas
-    $alianzas = $this->tutorService->getAlliances();
+    $alianzas = $this->siteService->getAlliances();
 
     return view('vistas.view.pages.nosotros', [
         'alianzas' => $alianzas
@@ -43,7 +52,7 @@ class HomeController extends Controller
     }
 
     public function tutor($slug){
-        $tutor = $this->tutorService->getTutorDetail($slug);
+        $tutor = $this->siteService->getTutorDetail($slug);
         if (!$tutor) {
             abort(404, 'Tutor no encontrado');
         }

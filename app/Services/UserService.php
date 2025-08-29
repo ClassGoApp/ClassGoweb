@@ -13,8 +13,8 @@ class UserService {
 
     public $user;
 
-    public function __construct($user) {
-        $this->user = $user;
+    public function __construct() {
+       
     }
 
     public function addToFavourite($favouriteUserId) {
@@ -82,6 +82,24 @@ class UserService {
             $query->where('rating', $rating);
         }
         return $query->paginate(10);
+    }
+
+    public function getUserCounts()
+    {
+        // Usa el modelo User directamente en el método para las consultas.
+        $totalUsers = User::count();
+        $studentCount = User::whereHas('roles', function ($query) {
+            $query->where('name', 'estudiante');
+        })->count();
+        $tutorCount = User::whereHas('roles', function ($query) {
+            $query->where('name', 'tutor');
+        })->count();
+
+        return [
+            'total_users' => $totalUsers,
+            'student_count' => $studentCount,
+            'tutor_count' => $tutorCount,
+        ];
     }
 
 

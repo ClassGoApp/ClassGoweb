@@ -94,6 +94,9 @@ body {
   line-height: var(--line-height);
 }
 
+.mobile{
+  display: none;
+}
 /**--- 1.2 - Hero Mascota --**/
 .hero-image {
   flex: 1;
@@ -356,12 +359,14 @@ body {
   box-sizing: border-box;
   overflow-x: hidden;
   text-align: center;
+  background: var(--panel-background) !important;
 }
 
 @media (max-width: 1280px) {
   .tutors-container {
     max-width: 100%;
     padding: 2rem 1rem;
+    background: var(--panel-background);
   }
 }
 
@@ -383,462 +388,237 @@ body {
   width: 50px;
 }
 
+/* ================ Carrusel ==========*/
+.carousel-container {
+position: relative;
+width: 90%;
+max-width: 1000px;
+margin: 40px auto;
+display: flex;
+align-items: center;
+background: var(--panel-background) !important;
+}
+/* El contenedor que recorta las cards */
+.carousel-wrapper {
+overflow: hidden;
+width: 100%;
+}
+/* El carril de las cards */
+.carousel-track {
+display: flex;
+transition: transform 0.5s ease-in-out;
+}
+/* Estilos de las cards */
+.card {
+flex: 0 0 calc(33.333% - 20px); /* Muestra 3 cards, ajustando por el margen */
+box-sizing: border-box;
+padding: 20px;
+margin: 10px;
+background-color: #f0f0f0;
+border: 1px solid #ddd;
+border-radius: 8px;
+text-align: center;
+font-size: 1.2rem;
+}
+/* Botones de navegación */
+.carousel-btn {
+position: absolute;
+top: 50%;
+transform: translateY(-50%);
+background-color: #abb1b8;
+color: white;
+border: none;
+padding: 10px 15px;
+cursor: pointer;
+border-radius: 50%;
+font-size: 1.5rem;
+z-index: 10;
+}
+.prev-btn {
+left: -50px;
+}
+.next-btn {
+right: -50px;
+}
+.carousel-btn:disabled {
+opacity: 0.5;
+cursor: not-allowed;
+}
+
+
 /* ---============ 3.1 - CARDS TUTORES DESTACADOS ============---*/
+
+/* Estilos principales para las tarjetas del tutor en el carrusel */
 .tutor-card {
-  flex: 0 0 350px;
-  max-width: 330px;
-  min-width: 270px;
-  height: 410px;
-  margin: 0;
-  box-sizing: border-box;
-  box-shadow: 0 8px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 12px;
-  transition: all 0.5s;
-  -webkit-transition: all 0.5s;
-  background: #fff;
+    /* Propiedades del carrusel */
+    flex: 0 0 calc(33.333% - 20px); /* Muestra 3 tarjetas, ajustando por el margen */
+    box-sizing: border-box;
+    padding: 0; /* Eliminamos el padding del contenedor padre para que la tarjeta use su propio padding interno */
+    margin: 10px;
+
+    /* Propiedades de la tarjeta del tutor */
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    background: #fff;
+    cursor: pointer;
+    transition: transform 0.2s ease;
 }
 
 .tutor-card:hover {
-  transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    transform: translateY(-5px);
 }
 
-/* ---============ 3.2 - Video Y Botones ============---*/
-.tutor-card .tutor-card-img {
-  height: 140px;
-  background-position: center;
-  width: 100%;
-  /* 1. Importante: Establecer posición relativa para que los hijos absolutos se posicionen respecto a este contenedor */
-  position: relative;
-  border-radius: 12px 12px 0 0;
-  overflow: hidden;
+.favorite-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(255, 255, 255, 0.4);
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 5;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    line-height: 1;
+    padding: 0;
+    transition: background 0.3s;
 }
 
-.tutor-card .tutor-card-img video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  margin-bottom: 0;
+.favorite-btn.active {
+    background: #FB8500;
+    color: white;
 }
 
-.tutor-card .tutor-card-img .tutor-banner-overlay {
-  /* 2. Importante: Posicionar la superposición de forma absoluta sobre el video */
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  /* 3. Estilo del overlay para hacerlo visible */
-  background: rgba(0, 0, 0, 0.4);
-  cursor: pointer;
-  z-index: 10;
-  /* Un z-index alto para asegurar que esté encima del video */
+.fa-book {
+    margin-right: 5px;
 }
 
-.tutor-card .tutor-card-img .tutor-banner-play {
-  background-color: rgba(255, 255, 255, 0.6);
-  border: none;
-  border-radius: 50%;
-  padding: 15px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.tutor-card-img video {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    display: block;
 }
 
-.tutor-card .tutor-card-img .tutor-banner-play:hover {
-  background-color: rgba(255, 255, 255, 0.8);
-  transform: scale(1.1);
-}
-
-/* Estilos para el ícono de play (SVG) */
-.tutor-card .tutor-card-img .tutor-banner-play-icon {
-  width: 30px;
-  height: 30px;
-  fill: #000;
-  stroke: #000;
-}
-
-/* Estilos para el control de volumen */
-.tutor-card .tutor-card-img .tutor-banner-volume {
-  position: absolute;
-  bottom: 10px;
-  left: 10px;
-  width: 100px;
-}
-
-/* Estilos para el contenedor de controles (pausa y volumen) */
-.tutor-video-controls {
-  position: absolute;
-  bottom: 10px;
-  left: 10px;
-  display: flex;
-  align-items: center;
-  background: rgba(0, 0, 0, 0.5);
-  padding: 5px 10px;
-  border-radius: 50px;
-  z-index: 15;
-  /* Asegúrate de que esté por encima del overlay inicial */
-}
-
-/* Estilos para los botones de control (pausa, etc.) */
-.tutor-control-button {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 5px;
-  display: flex;
-  align-items: center;
-}
-
-.tutor-control-icon {
-  width: 20px;
-  height: 20px;
-  stroke: #fff;
-  fill: #fff;
-}
-
-/* Estilos para el slider de volumen */
-.tutor-control-volume {
-  width: 80px;
-  margin-left: 10px;
-  /* Estilos para personalizar el slider si usas navegadores modernos */
-}
-
-.mobile {
-  display: none;
-}
-
-/* ---============ 3.3 - Contenido del Card ============---*/
 .tutor-card-content {
-  /* CONTENIDO DE LA CARD*/
-  padding: 0rem 1.25rem 0.5rem 1.25rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
+    padding: 15px;
 }
 
 .tutor-card-header {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-.tutor-card-header-left {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding-top: 0.7rem;
+.tutor-card-header img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
 }
 
-.tutor-card-header-left img {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  object-fit: cover;
+.tutor-card-sub {
+    font-size: 14px;
+    margin: 8px 0;
+    color: #555;
+    
+    /* Propiedades para limitar a 3 líneas */
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
 }
 
-.tutor-card-header-left h3 {
-  font-size: 1.25rem;
-  font-weight: bold;
-  color: var(--primary-color);
-  margin: 0;
+.tutor-card-rating-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: #333;
 }
 
-.tutor-card-header-left .tutor-verified {
-  color: #2dd4bf;
-  margin-left: 0.5rem;
+/*Card buscar mas*/
+/* Estilos del contenedor de la tarjeta */
+.card-buscarmas {
+    /* Propiedades del carrusel, tomadas de .tutor-card */
+    flex: 0 0 calc(33.333% - 20px);
+    box-sizing: border-box;
+    margin: 10px;
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+
+    /* Propiedades de diseño de la tarjeta .card-buscarmas */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 30px 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-.tutor-card-header-left .tutor-flag {
-  margin-left: 0.4rem;
+.tutor-card:hover, .card-buscarmas:hover {
+    transform: translateY(-5px);
 }
 
-.tutor-card-header button {
-  font-size: 1.5rem;
-  color: #9ca3af;
-  background: none;
-  border: none;
-  cursor: pointer;
-  transition: color 0.2s;
+/* Contenedor del icono */
+.icon-wrapper {
+    background-color: #e0f2fe; /* Azul claro, similar a Tailwind */
+    padding: 15px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.tutor-card-header button:hover {
-  color: #ef4444;
+/* Estilos del SVG */
+.icon-wrapper svg {
+    width: 40px; /* w-10 en Tailwind */
+    height: 40px; /* h-10 en Tailwind */
+    color: #1e40af; /* Azul oscuro, similar a Tailwind */
+    stroke-width: 1.5;
 }
 
-.tutor-card .tutor-card-sub {
-  font-size: 0.95rem;
-  color: #334155;
-  text-align: start;
-  line-height: 1.4;
-  height: 4rem;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
+/* Estilos del título h2 */
+.card h2 {
+    font-size: 1.875rem; /* text-3xl en Tailwind */
+    font-weight: 700;
+    margin: 0;
+    color: #333;
 }
 
-.tutor-card .tutor-card-rating-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 1rem;
-  font-size: 0.95rem;
-  color: #1a3b4d;
+/* Estilos del párrafo descriptivo */
+.card p {
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-top: 1rem;
+    color: #555;
+    opacity: 0.8;
 }
 
-.tutor-card .tutor-card-rating {
-  display: flex;
-  align-items: center;
-  background: rgba(251, 191, 36, 0.1);
-  color: #b45309;
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.375rem;
-  font-weight: 500;
-  gap: 0.25rem;
+/* Estilos del botón de acción */
+.btn-primary {
+    display: inline-block;
+    padding: 12px 24px;
+    margin-top: 20px;
+    font-weight: 600;
+    text-decoration: none;
+    color: #fff;
+    background-color: #007bff;
+    border-radius: 9999px; /* rounded-full en Tailwind */
+    transition: background-color 0.3s ease;
 }
 
-.tutor-card .tutor-card-rating .star {
-  margin-right: 0.25rem;
-  color: #f59e42;
-}
-
-.tutor-card .tutor-card-rating .rating-count {
-  color: #b45309;
-  margin-left: 0.25rem;
-}
-
-.tutor-card .tutor-card-price {
-  text-align: right;
-}
-
-.tutor-card .tutor-card-price .price {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: var(--primary-color);
-}
-
-i.fa-solid.fa-book.icon::before {
-  margin-right: 0.4rem;
-}
-
-.tutor-card .tutor-card-price .price-desc {
-  font-size: 0.75rem;
-  color: var(--primary-color);
-}
-
-.tutor-card .tutor-card-tags {
-  border-top: 1px solid #e5e7eb;
-  padding-top: 1rem;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  min-height: 5em;
-}
-
-.tutor-card .tutor-card-tag {
-  background: #f3f4f6;
-  color: var(--primary-color);
-  font-size: 0.75rem;
-  font-weight: 500;
-  padding: 0.25rem 0.75rem;
-  border-radius: 999px;
-}
-
-.tutor-card-actions {
-  display: flex;
-  justify-content: center;
-  margin-top: 0rem;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.75rem;
-}
-
-.tutor-card .tutor-card-actions button {
-  width: 100%;
-  padding: 0.7rem 0;
-  font-size: 0.95rem;
-  font-weight: 600;
-  border-radius: 0.5rem;
-  border: none;
-  cursor: pointer;
-  transition: background 0.2s, color 0.2s;
-}
-
-.tutor-card .tutor-card-actions .btn-profile {
-  background: var(--terciary-color2);
-  color: var(--white);
-  border: 1px solid #e5e7eb;
-}
-
-.tutor-card .tutor-card-actions .btn-profile:hover {
-  background: #e5e7eb;
-}
-
-.tutor-card .tutor-card-actions .btn-reserve {
-  background: var(--secundary-color);
-  color: #fff;
-}
-
-.tutor-card .tutor-card-actions .btn-reserve:hover {
-  background: var(--primary-color);
-}
-
-.mas-tutor-card {
-  flex: 0 0 350px;
-  max-width: 100%;
-  min-width: 100%;
-  margin: 0;
-  height: 100%;
-  box-sizing: border-box;
-  box-shadow: 0 8px 8px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  color: white;
-  padding: 1rem;
-  border-radius: 13px;
-  align-items: center;
-  box-sizing: border-box;
-  justify-content: flex-start;
-  background-color: var(--secundary-color);
-}
-
-.mas-tutor-card button {
-  width: 80%;
-  min-width: 120px;
-  max-width: 100%;
-  height: 40px;
-  font-size: 1rem;
-  background-color: var(--terciary-color2);
-  border-radius: 10px;
-  border: none;
-  color: white;
-  box-sizing: border-box;
-  margin-top: auto;
-  position: static;
-  margin-bottom: 2rem;
-}
-
-.mas-tutor-card i {
-  padding-top: 2rem;
-  font-size: 3rem;
-}
-
-/* ---============ 3.4 - CARRUSEL DE TARJETAS ============--- */
-/*
- * ========================================================
- * == ESTILOS ESENCIALES PARA EL MECANISMO DEL CARRUSEL ===
- * ========================================================
- * Estos estilos NO dan formato a tus tarjetas, solo
- * controlan el comportamiento del carrusel.
-*/
-/* --- Contenedor Principal y Posicionamiento --- */
-#carousel-wrapper {
-  position: relative;
-  width: 100%;
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0 40px;
-  /* Espacio para que los botones no se superpongan */
-  box-sizing: border-box;
-}
-
-/* --- Contenedor Visible del Carrusel --- */
-.carousel-container {
-  overflow: hidden;
-  position: relative;
-}
-
-/* --- Degradados Laterales --- */
-.carousel-container::before,
-.carousel-container::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  height: 100%;
-  width: 50px;
-  /* Ancho del degradado */
-  z-index: 2;
-  pointer-events: none;
-}
-
-.carousel-container::before {
-  left: 0;
-  background: linear-gradient(to right, var(--panel-background), transparent);
-}
-
-.carousel-container::after {
-  right: 0;
-  background: linear-gradient(to left, var(--panel-background), transparent);
-}
-
-/* --- Pista de Deslizamiento --- */
-/* Esta pista contiene todas tus tarjetas y es lo que se mueve. */
-.carousel-track {
-  display: flex;
-  transition: transform 0.5s ease-in-out;
-  gap: 10px;
-  padding: 2rem 0.2rem 2rem 0rem;
-  justify-content: space-around;
-}
-
-/* --- Envoltura de cada Tarjeta --- */
-/* Esta es la clase que debes agregar a cada una de tus tarjetas. */
-/* Controla el tamaño que ocupa cada tarjeta en la pista. */
-.carousel-card {
-  flex-shrink: 0;
-  width: 100%;
-  /* En móvil, 1 tarjeta visible */
-  box-sizing: border-box;
-  padding: 0;
-}
-
-/* --- Botones de Navegación --- */
-.nav-button {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background-color: rgba(255, 255, 255, 0.9);
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  transition: all 0.3s ease;
-  color: #333;
-  z-index: 10;
-  border: none;
-}
-
-.nav-button:hover {
-  background-color: white;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
-}
-
-.nav-button.prev {
-  left: 0px;
-  /* Posicionado dentro del padding del wrapper */
-}
-
-.nav-button.next {
-  right: 0px;
-  /* Posicionado dentro del padding del wrapper */
-}
-
-.nav-button.disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+.btn-primary:hover {
+    background-color: #0056b3;
 }
 
 /**---============ 4 - Anuncio Potencial ============---**/
@@ -1044,9 +824,6 @@ i.fa-solid.fa-book.icon::before {
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
 }
-
-.steps-card button,
-.go button {}
 
 .go {
   background: var(--secundary-color);
@@ -1489,6 +1266,7 @@ i.fa-solid.fa-book.icon::before {
 
   .tutors-container {
     padding: 2rem 0.5rem;
+    background: var(--panel-background);
   }
 
   /* Guía paso a paso: cards ocupan ancho */
@@ -1604,12 +1382,14 @@ i.fa-solid.fa-book.icon::before {
     height: auto;
     min-height: 100vh;
     padding-bottom: 2rem;
+    display: flex;
+    align-items: center;
   }
 
   .hero-container {
     flex-direction: column;
     padding-top: 2rem;
-    align-items: center;
+    
   }
 
   .hero-image {
@@ -1621,21 +1401,29 @@ i.fa-solid.fa-book.icon::before {
   .hero-container img {
     margin: 0 auto;
     display: block;
-    max-width: 60vw;
+    max-width: 70vw;
     min-width: 150px;
     padding: 3rem 0rem 0rem 0rem;
   }
 
   .hero-text {
     text-align: center;
+    flex-direction: column;
     order: 2;
     line-height: 2rem;
     gap: 1px;
     padding-top: 0rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .hero-subtext {
     display: none;
+  }
+
+  .mobile{
+    display: block;
   }
 
 
@@ -1644,9 +1432,10 @@ i.fa-solid.fa-book.icon::before {
     font-size: 2.0em !important;
   }
 
-  .hero-subtext {
+  .hero-subtext{
     font-size: 1em !important;
-    padding: 0rem 2rem 0rem 2rem;
+    padding: 0.8rem 0rem 0.8rem 0rem;
+    margin: 0rem;
   }
 
   .search-box {
@@ -1658,6 +1447,7 @@ i.fa-solid.fa-book.icon::before {
   .hero-buttons {
     display: flex;
     justify-content: center;
+    margin: 0;
   }
 
   .hero-buttons button {
@@ -1726,100 +1516,6 @@ i.fa-solid.fa-book.icon::before {
     padding: 0rem 0.6rem;
     /* Reducir espacio para botones */
   }
-
-  .tutor-card-rating-row .desktop {
-    display: none !important;
-    background: red;
-  }
-
-  .tutors-container h1 {
-    line-height: 2.3rem;
-    padding-top: 1rem;
-  }
-
-  .tutors-container p {
-    padding: 1rem 2rem;
-  }
-
-  #prev-btn,
-  #next-btn {
-    display: none;
-  }
-
-  /* 2. Resetear la pista del carrusel */
-  .carousel-track {
-    display: flex;
-    flex-wrap: wrap;
-    /* Muy importante: anular la transformación de JS */
-    transform: none !important;
-    gap: 20px;
-    padding-top: 0rem;
-  }
-
-  /* 3. Hacer que cada tarjeta ocupe todo el ancho */
-  .carousel-card {
-    width: 100%;
-    flex-shrink: 0;
-    margin-bottom: 1rem;
-  }
-
-  .carousel-container::before,
-  .carousel-container::after {
-    display: none;
-  }
-
-  /* =================== CARDS TUTORES DESTACADOS ===============*/
-  .tutor-card {
-    flex: 0 0 350px;
-    max-width: 330px;
-    min-width: 270px;
-    height: 430px;
-    margin: 0;
-    box-sizing: border-box;
-    box-shadow: 0 8px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 12px;
-    transition: all 0.5s;
-    -webkit-transition: all 0.5s;
-    background: #fff;
-  }
-
-  .tutor-card:hover {
-    transform: translateY(-4px) scale(1.02);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  }
-
-  .tutor-card .tutor-card-img {
-    height: 140px;
-    background-position: center;
-    width: 100%;
-  }
-
-  .tutor-card .tutor-card-img video {
-    width: 100%;
-    height: 140px;
-    object-fit: cover;
-    border-radius: 12px 12px 0 0;
-    display: block;
-    margin-bottom: 1rem;
-
-  }
-
-  .tutor-card-header {
-    padding-top: 1rem;
-    display: flex;
-    justify-content: center;
-  }
-
-  .tutor-card-price .price {
-    padding: 0rem 0rem;
-  }
-
-  .tutor-card-price .price-desc {
-    padding: 0rem 0rem;
-  }
-
-
-
 
 
   /* ------Guía paso a paso -----*/
@@ -2045,6 +1741,7 @@ i.fa-solid.fa-book.icon::before {
     padding:1rem 5rem;
     margin: auto;
     max-width: 1200px;
+    justify-content: center;
 }
 
 .card {

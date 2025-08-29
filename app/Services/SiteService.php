@@ -299,7 +299,7 @@ public function getTutors($data = array()) {
 
 
     /**
-     * Summary of featuredTutors
+     * Para mostrar tutores en vista tutores destacados
      */
   public function featuredTutors(){
         $featuredTutors = User::query()
@@ -311,13 +311,13 @@ public function getTutors($data = array()) {
                 $query->whereNotNull('verified_at');
             })
             // Solo tutores con al menos un registro en companyCourseUsers
-            ->whereHas('companyCourseUsers')
+            //->whereHas('companyCourseUsers')
             ->with([
                 'profile:id,user_id,slug,tagline,verified_at,first_name,last_name,image,intro_video,description',
                 'address.state',
                 'address.country',
                 'educations',
-                'subjects',
+                'subjects:id,name',
                 'userSubjectSlots'
             ])
             ->withCount([
@@ -343,6 +343,7 @@ public function getTutors($data = array()) {
             // Luego por la cantidad total de companyCourseUsers
             ->orderByDesc('company_course_users_count')
             ->inRandomOrder()
+            ->take(8)
             ->get();
         return $featuredTutors;
     }
@@ -694,10 +695,10 @@ public function getTutors($data = array()) {
 
 
 
-    public function getAlliances()
-    {
-        return DB::table('alianzas')->get();
+    public function getAlliances(){
+    return DB::table('alianzas')
+        ->orderBy('created_at') // Ordena por fecha de creación, del más antiguo al más nuevo
+        ->get();
     }
-
 
 }

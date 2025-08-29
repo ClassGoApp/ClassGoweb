@@ -1,24 +1,4 @@
-<div class="counters">
-    <div class="counter-box">
-        <div class="counter-number" data-target="647">+0</div>
-        <h1 class="{{ $color ?? 'text-dark' }}">Usuarios registrados</h1>
-    </div>
-    <div class="box-sky"></div>
-    <div class="counter-box">
-        <div class="counter-number" data-target="292">+0</div>
-        <h1 class="{{ $color ?? 'text-dark' }}">Tutores disponibles</h1>
-    </div>
-    <div class="box-sky"></div>
-    <div class="counter-box">
-        <div class="counter-number" data-target="356">0</div>
-        <h1 class="{{ $color ?? 'text-dark' }}">Estudiantes registrados</h1>
-    </div>
-    <div class="box-sky"></div>
-    <div class="counter-box">
-        <div class="counter-numbe"><i class="fa fa-star"></i>4.5</div>
-        <h1 class="{{ $color ?? 'text-dark' }}">En Play Store</h1>
-    </div>
-</div> 
+
 <script>
     document.addEventListener("DOMContentLoaded", () => {
     const counters = document.querySelectorAll('.counter-number');
