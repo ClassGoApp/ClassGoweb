@@ -132,7 +132,7 @@ class Reserva extends Component
     public function aplicarCupon()
     {
         $service = $this->cuponservice ?? app(ICuponesService::class);
-        if ($service->existeCupon($this->cuponCode)) {
+        if ($service->existeCupon($this->cuponCode) && !$service->verificaUsoCupon($this->cuponCode, auth()->user())) {
             $service->canjeaCupon($this->cuponCode, auth()->user());
             $this->cuponesUsuario = $service->todosLosCupones(auth()->user());
             $this->cuponSeleccionado();

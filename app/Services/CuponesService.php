@@ -38,8 +38,7 @@ class CuponesService implements ICuponesService
         }
 
         // Al final agregamos el ID
-        //$codigo .= $id;
-        $codigo = 1;
+        $codigo .= $id;
 
         return $codigo;
     }
@@ -179,77 +178,24 @@ class CuponesService implements ICuponesService
         }
           $cuponCanjeado->save();
     }
-
-    function getCuponsByUserId($iduser){
-        return UserCoupon::where('user_id', $iduser)->get();
-    }
-
-
-
     /**
-     *  funcion que crea el cupon para el usuario con n tutorias gratis
-     * 
-     * @param string $code
-     * @param int $cantidadtutorias
-     * @param User $user
-     * @return void
+     * Funcion que verifica si 
+     * ese usuario ya uso ese cupon
      */
-
-
-    function creatreCuponDescTutorias(Code $code,int $cantidadtutorias, User $user){
-
-      if($cantidadtutorias){
-        if($code){
-           $code=Code::where('codigo',$code)->first();
-            UserCoupon::create([
-                    'coupon_id' => Coupon::create([
-                        'code_id' => $code->id,
-                        'descuento' => $code->descuento, // Descuento del 100%
-                        'fecha_caducidad' => $code->fecha_caducidad, // Vence al final del siguiente mes
-                        'estado' => 'activo',
-                    ])->id,
-                    'user_id' => $user->id,
-                    'cantidad' => $cantidadtutorias,
-                ]);
-        }  
-      }
-    }
-
-
-
-    function createCode(string $code){
-
-        $validator = Validator::make(['codigo' => $code], [
-            'codigo' => 'required|string|max:255|unique:codes',
-        ]);
-
-         if ($validator->fails()) {
-             throw new ValidationException($validator);
-         }
-
-        return Code::create([
-            'codigo' => $code,
-            'user_id' => auth()->id(),
-        ]);
-
-    }
-
-   
-    function cobrarcupon($userid,$cuponid){
-
-        $user = User::find($userid);
-        $coupon = Coupon::find($cuponid);
-        $usercupon = UserCoupon::where('user_id', $user->id)->where('coupon_id', $coupon->id)->first();
-
-        if (!$usercupon) {
-           return null;
+    public function verificaUsoCupon($codigo, $user): bool
+    {
+        if (!$this->existeCupon($codigo)) {
+            return true; // El cupón no existe
         }
-        else {
-            $usercupon->cantidad=$usercupon->cantidad-1;
-            $usercupon->save();
-            return $usercupon;
+         $cupon = Coupon::where('codigo', $codigo)->first();
+         $cuponUso = UserCoupon::where('coupon_id', $cupon->id)->where('user_id', $user->id)->exists();
+        if($cuponUso){
+                return true;
         }
+        $cuponUso = UserCoupon::where('coupon_id', $cupon->id)->exists(); 
+        if($cupon->referencia < 0 &&  $cuponUso){
+            return true;
+        }
+         return false;
     }
-
-
 }
