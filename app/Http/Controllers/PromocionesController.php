@@ -39,11 +39,7 @@ class PromocionesController extends Controller
             return redirect()->route('promociones')->with('error', 'Cupón no válido o en uso.');
         } else {
             
-            $cupon = Coupon::where('codigo', $codigo)->first();
-            UserCoupon::create(
-                ['coupon_id' => $cupon->id, 'user_id' => $user->id],
-                ['estado' => 'activo', 'cantidad' => $cupon->cantidad]
-            );
+            $cuponservice->canjeaCupon($codigo, $user);
         }
 
 

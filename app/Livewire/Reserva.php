@@ -68,9 +68,13 @@ class Reserva extends Component
         $this->tutorId = $tutorId;
         $this->currentDate = Carbon::now();
         $this->isAugustPromotion = $this->currentDate->month === 8; // ✅ Verificar si es agosto
-
         $this->cuponservice = $cuponservice;  // OK
-        $this->cuponesUsuario = $this->cuponservice->todosLosCupones(auth()->user());
+       /* if (auth()->check()) {
+            $this->cuponesUsuario = $this->cuponservice->todosLosCupones(auth()->user());
+        } else {
+            $this->cuponesUsuario = [];
+        }*/
+
 
         $this->loadMonthData();
         $this->materiasTutor = UserSubject::where("user_id", $this->tutorId)->get();
@@ -287,7 +291,7 @@ class Reserva extends Component
         $isAugustPromotion = $this->currentDate->month === 8;
 
 
-        if ($isAugustPromotion || (!empty($this->cuponCode) )) {
+        if ($isAugustPromotion || (!empty($this->cuponCode))) {
             $this->validate([
                 'selectedSubject' => 'required',
             ]);
@@ -306,12 +310,12 @@ class Reserva extends Component
             $sessionFee = 15;
             $estudianteId = auth()->user()->id;
             // 2.1. registra que ya se uso el cupon en esta session
-           if (!empty($this->cuponCode)) {
+            if (!empty($this->cuponCode)) {
                 if ($service->porcentajeCupon($this->cuponCode) == 100) {
                     $sessionFee = 0;
                 }
                 $service->cuponCanjeado($this->cuponCode, auth()->user());
-                 $this->cuponesUsuario = $service->todosLosCupones(auth()->user());
+                $this->cuponesUsuario = $service->todosLosCupones(auth()->user());
             }
 
             $fechaCompleta = $this->currentDate->copy()

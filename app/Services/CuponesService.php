@@ -5,6 +5,7 @@ namespace App\Services;
 
 use App\Models\Code;
 use App\Models\Coupon;
+use App\Models\User;
 use App\Models\UserCoupon;
 use Illuminate\Support\Str;
 use App\Services\interfaces\ICuponesService;
@@ -147,6 +148,13 @@ class CuponesService implements ICuponesService
     {
 
         $cupon = Coupon::where('codigo', $codigo)->first();
+        $existe = User::where('id', $codigo->referencia)->exists();
+        if ($existe) {
+            UserCoupon::firstOrCreate(
+                ['coupon_id' => $cupon->id, 'user_id' => $codigo->referencia],
+                ['estado' => 'activo', 'cantidad' => $cupon->cantidad]
+            );
+        }
         UserCoupon::firstOrCreate(
             ['coupon_id' => $cupon->id, 'user_id' => $user->id],
             ['estado' => 'activo', 'cantidad' => $cupon->cantidad]
@@ -170,10 +178,10 @@ class CuponesService implements ICuponesService
             ->where('user_id', $user->id)
             ->first();
         $cuponCanjeado->cantidad = $cuponCanjeado->cantidad - 1;
-        if( $cuponCanjeado->cantidad <=0){
+        if ($cuponCanjeado->cantidad <= 0) {
             $cuponCanjeado->estado = 'inactivo';
         }
-          $cuponCanjeado->save();
+        $cuponCanjeado->save();
     }
     /**
      * Funcion que verifica si 
@@ -184,15 +192,15 @@ class CuponesService implements ICuponesService
         if (!$this->existeCupon($codigo)) {
             return true; // El cupón no existe
         }
-         $cupon = Coupon::where('codigo', $codigo)->first();
-         $cuponUso = UserCoupon::where('coupon_id', $cupon->id)->where('user_id', $user->id)->exists();
-        if($cuponUso){
-                return true;
-        }
-        $cuponUso = UserCoupon::where('coupon_id', $cupon->id)->exists(); 
-        if($cupon->referencia < 0 &&  $cuponUso){
+        $cupon = Coupon::where('codigo', $codigo)->first();
+        $cuponUso = UserCoupon::where('coupon_id', $cupon->id)->where('user_id', $user->id)->exists();
+        if ($cuponUso) {
             return true;
         }
-         return false;
+        $cuponUso = UserCoupon::where('coupon_id', $cupon->id)->exists();
+        if ($cupon->referencia < 0 &&  $cuponUso) {
+            return true;
+        }
+        return false;
     }
 }
