@@ -154,6 +154,9 @@ Route::get('verify-email', [AuthController::class, 'verifyEmail']);
 // Ruta para cambiar disponibilidad de tutoría (solo para tutores)
 Route::post('tutor/availability', [AuthController::class, 'updateTutoringAvailability']);
 
+// Ruta para cambiar disponibilidad del tutor (available_for_tutoring)
+Route::put('user/{id}/tutoring-availability', [TutorController::class, 'updateTutoringAvailability']);
+
 Route::get('user/{id}/profile-image', [ProfileController::class, 'getProfileImage']);
 Route::post('user/{id}/profile-image', [ProfileController::class, 'updateProfileImage']);
 

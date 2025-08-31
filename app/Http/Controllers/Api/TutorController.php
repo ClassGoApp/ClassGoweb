@@ -553,4 +553,94 @@ class TutorController extends Controller
             return $this->error(message: 'Error al obtener slots instantáneos: ' . $e->getMessage());
         }
     }
+
+    /**
+     * API: Cambiar disponibilidad del tutor para dar tutorías
+     * PUT /api/user/{id}/tutoring-availability
+     * @param Request $request
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateTutoringAvailability(Request $request, $id)
+    {
+        try {
+            // Validar los datos de entrada
+            $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
+                'available_for_tutoring' => 'required|integer|in:0,1',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Error de validación',
+                    'errors' => $validator->errors()
+                ], 422);
+            }
+
+            // Buscar el usuario
+            $user = User::find($id);
+            if (!$user) {
+                return $this->error(
+                    data: null,
+                    message: 'Usuario no encontrado',
+                    code: Response::HTTP_NOT_FOUND
+                );
+            }
+
+            // Verificar que el usuario sea un tutor
+            if (!$user->hasRole('tutor')) {
+                return $this->error(
+                    data: null,
+                    message: 'Solo los tutores pueden cambiar su disponibilidad',
+                    code: Response::HTTP_FORBIDDEN
+                );
+            }
+
+            // Obtener el valor actual
+            $oldValue = $user->available_for_tutoring;
+            $newValue = $request->available_for_tutoring;
+
+            // Actualizar el campo
+            $user->available_for_tutoring = $newValue;
+            $result = $user->save();
+
+            if (!$result) {
+                return $this->error(
+                    data: null,
+                    message: 'Error al actualizar la disponibilidad',
+                    code: Response::HTTP_INTERNAL_SERVER_ERROR
+                );
+            }
+
+            // Log del cambio
+            Log::info('Disponibilidad del tutor actualizada', [
+                'user_id' => $user->id,
+                'email' => $user->email,
+                'old_value' => $oldValue,
+                'new_value' => $newValue,
+                'status_text' => $newValue ? 'Disponible' : 'No disponible'
+            ]);
+
+            // Devolver respuesta exitosa
+            return response()->json([
+                'success' => true,
+                'message' => 'Disponibilidad del tutor actualizada correctamente',
+                'data' => [
+                    'id' => $user->id,
+                    'email' => $user->email,
+                    'available_for_tutoring' => $user->available_for_tutoring,
+                    'status_text' => $user->available_for_tutoring ? 'Disponible' : 'No disponible',
+                    'previous_value' => $oldValue
+                ]
+            ], 200);
+
+        } catch (\Exception $e) {
+            Log::error('Error al actualizar disponibilidad del tutor: ' . $e->getMessage());
+            return $this->error(
+                data: null,
+                message: 'Error interno del servidor',
+                code: Response::HTTP_INTERNAL_SERVER_ERROR
+            );
+        }
+    }
 }
