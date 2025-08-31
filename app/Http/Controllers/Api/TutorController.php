@@ -645,7 +645,7 @@ class TutorController extends Controller
     }
 
     /**
-     * API: Obtener solo tutores disponibles (available_for_tutoring = 1)
+     * API: Obtener solo tutores disponibles con materias registradas (available_for_tutoring = 1)
      * GET /api/available-tutors
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
@@ -664,13 +664,14 @@ class TutorController extends Controller
                 'page' => $request->page
             ]);
 
-            // Consulta base - Solo tutores con rol 'tutor', verificados y disponibles
+            // Consulta base - Solo tutores con rol 'tutor', verificados, disponibles y con materias registradas
             $query = User::whereHas('roles', function($q) {
                 $q->where('name', 'tutor');
             })->with(['profile', 'subjects'])
               ->whereHas('profile', function($q) {
                   $q->whereNotNull('verified_at');
               })
+              ->whereHas('subjects') // Solo tutores con materias registradas
               ->where('available_for_tutoring', true); // Solo tutores disponibles (1 o true)
 
             // Filtro por keyword (búsqueda en nombre de materia)
