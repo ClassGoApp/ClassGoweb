@@ -43,7 +43,6 @@ class UserBooking extends Component
     }
 
     public function mount() {
-        
         $this->disputeReason = setting('_dispute_setting.dispute_reasons') ?? [];
         if (is_array($this->disputeReason) && !empty($this->disputeReason)) {
             $this->disputeReason = array_column($this->disputeReason, 'dispute_reason', 'id');
@@ -59,85 +58,44 @@ class UserBooking extends Component
         $this->dispatchSessionMessages();
         $this->activeRoute = Route::currentRouteName();
 
-        // Obtener las reservas del usuario logueado de forma segura sin cargar relaciones morph
-        try {
-            $bookings = SlotBooking::where('student_id', Auth::id())
-                ->select('id', 'start_time', 'end_time', 'status')
-                ->get();
-            
-            $this->bookings = $bookings->map(function($booking) {
-                return [
-                    'title' => $booking->getRawOriginal('status'),
-                    'start' => $booking->start_time,
-                    'end' => $booking->end_time,
-                    'color' => $booking->getRawOriginal('status') === 'confirmed' ? 'green' : ($booking->getRawOriginal('status') === 'pending' ? 'orange' : 'red')
-                ];
-            });
-        } catch (\Exception $e) {
-            \Log::error('Error cargando bookings en UserBooking: ' . $e->getMessage());
-            $this->bookings = collect([]);
-        }
+        // Obtener las reservas del usuario logueado
+        $this->bookings = SlotBooking::getBookingsByStudent(Auth::id())->map(function($booking) {
+            return [
+                'title' => $booking->status,
+                'start' => $booking->start_time,
+                'end' => $booking->end_time,
+                'color' => $booking->status === 'confirmed' ? 'green' : ($booking->status === 'pending' ? 'orange' : 'red')
+            ];
+        });
+        //dd($this->bookings, "aver");
     }
 
     #[Layout('layouts.app')]
     public function render()
     {
-        // Obtener reservas donde el tutor es el usuario actual
         if (Auth::user()->role == 'tutor') {
-            $bookings = SlotBooking::where('tutor_id', Auth::id())
+            // Obtener reservas donde el tutor es el usuario actual
+            $this->upcomingBookings = SlotBooking::where('tutor_id', Auth::id())
                 ->orderBy('start_time')
-                ->get();
+                ->get()
+                ->groupBy(function($item) {
+                    return parseToUserTz($item->start_time)->toDateString();
+                });
+                
         } else if (Auth::user()->role == 'student') {
-            $bookings = SlotBooking::where('student_id', Auth::id())
+            // Obtener reservas donde el estudiante es el usuario actual
+            $this->upcomingBookings = SlotBooking::where('student_id', Auth::id())
                 ->orderBy('start_time')
-                ->get();
-        } else {
-            $bookings = collect();
+                ->get()
+                ->groupBy(function($item) {
+                    return parseToUserTz($item->start_time)->toDateString();
+                });
+                
         }
-
-        // Agrupar y transformar a array plano por fecha
-        $grouped = [];
-        foreach ($bookings as $booking) {
-            $date = parseToUserTz($booking->start_time)->toDateString();
-            if (!isset($grouped[$date])) {
-                $grouped[$date] = [];
-            }
-            $array = $booking->toArray();
-            $array['subject_name'] = $booking->subject->name ?? '';
-            $array['status_num'] = $booking->getRawOriginal('status');
-            $grouped[$date][] = $array;
-        }
-        $this->upcomingBookings = $grouped;
-
+        
         return view('livewire.pages.common.bookings.user-booking', [
             'bookings' => $this->bookings, // Pasar las reservas a la vista
-            'upcomingBookings' => $this->upcomingBookings,
-            'currentDate' => $this->currentDate,
-            
         ]);
-    }
-    
-    /**
-     * Obtener el rol del usuario de forma segura sin cargar relaciones morph
-     */
-    private function getUserRole($user)
-    {
-        try {
-            // Verificar si roles ya está cargado
-            if ($user->relationLoaded('roles')) {
-                if ($user->roles instanceof \Illuminate\Database\Eloquent\Collection && $user->roles->count() > 0) {
-                    return $user->roles->first()->name;
-                }
-                return null;
-            }
-            
-            // Si no está cargado, hacer una consulta directa
-            $role = $user->roles()->select('name')->first();
-            return $role ? $role->name : null;
-        } catch (\Exception $e) {
-            \Log::error('Error obteniendo rol del usuario: ' . $e->getMessage());
-            return null;
-        }
     }
 
     protected function dispatchSessionMessages() {
@@ -222,13 +180,10 @@ class UserBooking extends Component
     }
 
     public function syncWithGoogleCalendar() {
-        $user = Auth::user();
-        $userRole = $this->getUserRole($user);
-        
-        if ($user && $userRole == 'tutor') {
+        if (Auth::user() && Auth::user()->role == 'tutor') {
             $sucess = $this->bookingService->createSlotEventGoogleCalendar(booking: $this->currentBooking, updateMeetingLink: true);
             [$type, $message] = $sucess ? ['success', __('calendar.sync_success')] : ['error', __('calendar.sync_error')];
-        } elseif ($user && $userRole == 'student') {
+        } elseif (Auth::user() && Auth::user()->role == 'student') {
             $sucess = $this->bookingService->createBookingEventGoogleCalendar($this->currentBooking);
             [$type, $message] = $sucess ? ['success', __('calendar.sync_success')] : ['error', __('calendar.sync_error')];
         } else {
@@ -258,14 +213,11 @@ class UserBooking extends Component
         $start = $end = null;
         $this->disablePrevious = $this->isCurrent = false;
         $now = Carbon::now(getUserTimezone());
-        $user = Auth::user();
-        $userRole = $this->getUserRole($user);
-        
         if ($this->showBy == 'daily') {
             $start = $this->currentDate->toDateString()." 00:00:00";
             $end = $this->currentDate->toDateString()." 23:59:59";
             if ($this->currentDate->isSameDay($now)) {
-                if ($userRole == 'tutor') {
+                if (Auth::user()->role == 'tutor') {
                     $this->disablePrevious = true;
                 }
                 $this->isCurrent = true;
@@ -274,7 +226,7 @@ class UserBooking extends Component
             $start = $this->currentDate->copy()->startOfWeek($this->startOfWeek)->toDateString()." 00:00:00";
             $end = $this->currentDate->copy()->endOfWeek(getEndOfWeek($this->startOfWeek))->toDateString()." 23:59:59";
             if ($this->currentDate->isSameWeek($now)) {
-                if ($userRole == 'tutor') {
+                if (Auth::user()->role == 'tutor') {
                     $this->disablePrevious = true;
                 }
                 $this->isCurrent = true;
@@ -283,7 +235,7 @@ class UserBooking extends Component
             $start = $this->currentDate->copy()->firstOfMonth()->startOfWeek($this->startOfWeek)->toDateString()." 00:00:00";
             $end = $this->currentDate->copy()->lastOfMonth()->endOfWeek(getEndOfWeek($this->startOfWeek))->toDateString()." 23:59:59";
             if ($this->currentDate->isSameMonth($now)) {
-                if ($userRole == 'tutor') {
+                if (Auth::user()->role == 'tutor') {
                     $this->disablePrevious = true;
                 }
                 $this->isCurrent = true;

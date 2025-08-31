@@ -486,7 +486,8 @@ class TutorController extends Controller
                     'first_name' => $tutor->profile ? $tutor->profile->first_name : null,
                     'last_name' => $tutor->profile ? $tutor->profile->last_name : null,
                     'profile_image' => $url,
-                    'profile_image_db_path' => $rutaBD
+                    'profile_image_db_path' => $rutaBD,
+                    'available_for_tutoring' => $tutor->available_for_tutoring
                 ];
             });
 
