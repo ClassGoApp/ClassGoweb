@@ -303,7 +303,7 @@ class TutorController extends Controller
     }
 
     /**
-     * API: Obtener tutores verificados con materias registradas y filtros estrictos
+     * API: Obtener tutores verificados con materias registradas
      * GET /api/verified-tutors
      */
     public function getVerifiedTutorsWithSubjects(Request $request)
@@ -317,7 +317,6 @@ class TutorController extends Controller
                 'subject_id' => $request->subject_id,
                 'min_courses' => $request->min_courses,
                 'min_rating' => $request->min_rating,
-                'instant' => $request->instant,
                 'page' => $request->page
             ]);
 
@@ -328,8 +327,7 @@ class TutorController extends Controller
               ->whereHas('profile', function($q) {
                   $q->whereNotNull('verified_at');
               })
-              ->whereHas('subjects') // Solo tutores con materias registradas
-              ->where('available_for_tutoring', true); // Solo tutores disponibles
+              ->whereHas('subjects'); // Solo tutores con materias registradas
 
             // Filtro por keyword (búsqueda en nombre de materia)
             if ($request->filled('keyword')) {
@@ -386,24 +384,7 @@ class TutorController extends Controller
                 }
             }
 
-            // Filtro para tutoría instantánea
-            if ($request->filled('instant') && $request->instant === 'true') {
-                $now = now();
-                $currentTime = $now->format('H:i:s');
-                $currentDate = $now->format('Y-m-d');
-                
-                // Filtrar tutores que tengan slots en la fecha y hora actual
-                $query->whereHas('userSubjectSlots', function($q) use ($currentTime, $currentDate) {
-                    $q->where('date', $currentDate)
-                      ->where('start_time', '<=', $currentTime)
-                      ->where('end_time', '>=', $currentTime);
-                });
-                
-                Log::info('Filtro de tutoría instantánea aplicado en verified-tutors', [
-                    'current_date' => $currentDate,
-                    'current_time' => $currentTime
-                ]);
-            }
+
 
             // Ordenar por el nombre del tutor (usando el perfil relacionado)
             $query->join('profiles', 'users.id', '=', 'profiles.user_id')
@@ -419,27 +400,11 @@ class TutorController extends Controller
             $page = $request->filled('page') ? (int) $request->page : 1;
             
             $tutors = $query->paginate($perPage, ['*'], 'page', $page);
-            
-            $tutors->getCollection()->transform(function ($tutor) use ($request) {
+
+            $tutors->getCollection()->transform(function ($tutor) {
                 $tutor = $this->getFavouriateTutors($tutor);
                 // Agregar el conteo de cursos completados
                 $tutor->completed_courses_count = $tutor->getCompletedCoursesCount();
-                
-                // Si es tutoría instantánea, agregar información de slots disponibles
-                if ($request->filled('instant') && $request->instant === 'true') {
-                    $now = now();
-                    $currentTime = $now->format('H:i:s');
-                    $currentDate = $now->format('Y-m-d');
-                    
-                    $availableSlots = $tutor->userSubjectSlots()
-                        ->where('date', $currentDate)
-                        ->where('start_time', '<=', $currentTime)
-                        ->where('end_time', '>=', $currentTime)
-                        ->get();
-                    
-                    $tutor->available_instant_slots = $availableSlots;
-                    $tutor->available_instant_slots_count = $availableSlots->count();
-                }
                 
                 return $tutor;
             });
@@ -785,11 +750,130 @@ class TutorController extends Controller
                 return $tutor;
             });
 
-            return $this->success(data: new \App\Http\Resources\FindTutors\TutorCollection($tutors));
-
-        } catch (\Exception $e) {
-            Log::error('Error en getAvailableTutors: ' . $e->getMessage());
-            return $this->error(message: 'Error al obtener tutores disponibles: ' . $e->getMessage());
-        }
-    }
-}
+                         return $this->success(data: new \App\Http\Resources\FindTutors\TutorCollection($tutors));
+ 
+         } catch (\Exception $e) {
+             Log::error('Error en getAvailableTutors: ' . $e->getMessage());
+             return $this->error(message: 'Error al obtener tutores disponibles: ' . $e->getMessage());
+         }
+     }
+ 
+     /**
+      * API: Obtener un tutor disponible para una materia específica
+      * GET /api/tutor-for-subject/{subject_id}
+      * @param Request $request
+      * @param int $subject_id
+      * @return \Illuminate\Http\JsonResponse
+      */
+     public function getTutorForSubject(Request $request, $subject_id)
+     {
+         try {
+             // Log de los parámetros recibidos
+             Log::info('Búsqueda de tutor para materia:', [
+                 'subject_id' => $subject_id,
+                 'current_time' => now()->format('Y-m-d H:i:s')
+             ]);
+ 
+             // Verificar que la materia existe
+             $subject = Subject::find($subject_id);
+             if (!$subject) {
+                 return $this->error(
+                     data: null,
+                     message: 'Materia no encontrada',
+                     code: Response::HTTP_NOT_FOUND
+                 );
+             }
+ 
+             // Obtener fecha y hora actual
+             $now = now();
+             $currentTime = $now->format('H:i:s');
+             $currentDate = $now->format('Y-m-d');
+ 
+             // Consulta para encontrar un tutor que cumpla las condiciones:
+             // 1. Sea tutor con perfil verificado
+             // 2. Tenga la materia específica registrada
+             // 3. Cumpla la lógica de disponibilidad:
+             //    - Si available_for_tutoring = true: mostrar sin importar slots
+             //    - Si available_for_tutoring = false: solo mostrar si tiene slots disponibles ahora
+             $tutor = User::whereHas('roles', function($q) {
+                 $q->where('name', 'tutor');
+             })->with(['profile', 'subjects'])
+               ->whereHas('profile', function($q) {
+                   $q->whereNotNull('verified_at');
+               })
+               ->whereHas('subjects', function($q) use ($subject_id) {
+                   $q->where('subjects.id', $subject_id);
+               })
+               ->where(function($q) use ($currentTime, $currentDate) {
+                   // Condición 1: available_for_tutoring = true
+                   $q->where('available_for_tutoring', true)
+                     // O condición 2: available_for_tutoring = false pero tiene slots disponibles ahora
+                     ->orWhere(function($subQ) use ($currentTime, $currentDate) {
+                         $subQ->where('available_for_tutoring', false)
+                              ->whereHas('userSubjectSlots', function($slotQ) use ($currentTime, $currentDate) {
+                                  $slotQ->where('date', $currentDate)
+                                       ->where('start_time', '<=', $currentTime)
+                                       ->where('end_time', '>=', $currentTime);
+                              });
+                     });
+               })
+               ->first(); // Solo obtener el primer tutor que cumpla las condiciones
+ 
+             if (!$tutor) {
+                 return $this->error(
+                     data: null,
+                     message: 'No se encontró ningún tutor disponible para esta materia en este momento',
+                     code: Response::HTTP_NOT_FOUND
+                 );
+             }
+ 
+             // Agregar información adicional al tutor
+             $tutor = $this->getFavouriateTutors($tutor);
+             $tutor->completed_courses_count = $tutor->getCompletedCoursesCount();
+             $tutor->subject_requested = $subject->name;
+             $tutor->subject_id_requested = $subject_id;
+ 
+             // Log del tutor encontrado
+             Log::info('Tutor encontrado para materia:', [
+                 'tutor_id' => $tutor->id,
+                 'tutor_name' => $tutor->profile ? $tutor->profile->first_name . ' ' . $tutor->profile->last_name : 'N/A',
+                 'subject_id' => $subject_id,
+                 'subject_name' => $subject->name,
+                 'available_for_tutoring' => $tutor->available_for_tutoring,
+                 'current_time' => $now->format('Y-m-d H:i:s')
+             ]);
+ 
+             // Devolver respuesta exitosa
+             return response()->json([
+                 'success' => true,
+                 'message' => 'Tutor encontrado exitosamente',
+                 'data' => [
+                     'tutor' => [
+                         'id' => $tutor->id,
+                         'email' => $tutor->email,
+                         'first_name' => $tutor->profile ? $tutor->profile->first_name : null,
+                         'last_name' => $tutor->profile ? $tutor->profile->last_name : null,
+                         'full_name' => $tutor->profile ? $tutor->profile->first_name . ' ' . $tutor->profile->last_name : 'N/A',
+                         'image' => $tutor->profile ? url('public/storage/' . $tutor->profile->image) : null,
+                         'available_for_tutoring' => $tutor->available_for_tutoring,
+                         'completed_courses_count' => $tutor->completed_courses_count,
+                         'is_favorite' => $tutor->is_favorite ?? false
+                     ],
+                     'subject' => [
+                         'id' => $subject->id,
+                         'name' => $subject->name
+                     ],
+                     'search_time' => $now->format('Y-m-d H:i:s')
+                 ]
+             ], 200);
+ 
+         } catch (\Exception $e) {
+             Log::error('Error en getTutorForSubject: ' . $e->getMessage());
+             return $this->error(
+                 data: null,
+                 message: 'Error al buscar tutor para la materia: ' . $e->getMessage(),
+                 code: Response::HTTP_INTERNAL_SERVER_ERROR
+             );
+         }
+     }
+ }
