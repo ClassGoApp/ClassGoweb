@@ -356,7 +356,7 @@ return [
     'sending' => 'Envío...',
     'waiting' => 'Espera...',
     'pro' => 'PRO',
-    'incomplete_profile_error' => 'Primero complete los detalles de su perfil',
+    'incomplete_profile_error' => 'Primero complete los detalles de su perfil y Acceso a Google Calendar(ingrese a  configuraciones de la cuenta)',
     'drop_file_here' => 'Suelte el archivo aquí',
     'copied' => '¡Copiado!',
     'unable_to_delete_subject_group' => '¡No puedes eliminar este grupo de temas ya que este grupo tiene espacios para sesiones!',

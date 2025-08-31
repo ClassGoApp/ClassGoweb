@@ -2845,6 +2845,13 @@ form p span i {
   color: rgba(88, 88, 88, 0.6);
 }
 /** ====== Header layout Start ====== **/
+
+/*== Responsivo*/
+@media (max-width: 768px) {
+  .atajo{
+    display: none;
+  }
+}
 .am-header {
   width: 100%;
   display: flex;
@@ -3516,7 +3523,7 @@ form p span i {
 .am-sidebar_logo {
   display: flex;
   padding: 22px 16px;
-  align-items: center;
+  align-items: start;
 }
 .am-sidebar_toggle {
   margin-left: auto;
@@ -3547,7 +3554,17 @@ form p span i {
   fill: none !important;
   stroke: #060606 !important;
 }
+
+/* ESTILOS LOGOS*/
 .am-logo {
+  display: flex;
+  width: 200px;
+  justify-content: center;
+  padding-left: 4rem;
+}
+.am-logo img {
+  max-width: 120px;
+  height: auto;
   display: block;
 }
 .am-logo a, .am-logo svg {
@@ -5670,8 +5687,8 @@ body:has(.am-dragfile):before {
   cursor: pointer;
   border-radius: 8px;
   align-items: center;
-  background: #219ebc;
   position: relative;
+
 }
 .am-booking-calander-date::after {
   z-index: 1;

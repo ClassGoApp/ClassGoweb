@@ -54,21 +54,22 @@ class UserService {
     }
 
 
-    public function setAccountSetting($keys, $values = null)
+    public function setAccountSetting($key, $value)
     {
-        if (is_array($keys)) {
-            collect($keys)->each(function($key, $index) use ($values) {
-                $value = is_array($values) ? ($values[$index] ?? null) : null;
-                $this->user->accountSetting()->updateOrCreate(
-                    ['meta_key' => $key],
-                    ['meta_key' => $key, 'meta_value' => $value]
-                );
-            });
+        // Buscamos un registro existente que pertenezca a este usuario con esa meta_key
+        $setting = $this->user->accountSetting()->where('meta_key', $key)->first();
+
+        if ($setting) {
+            // Si existe, simplemente actualizamos el valor
+            $setting->meta_value = $value;
+            $setting->save();
         } else {
-            $this->user->accountSetting()->updateOrCreate(
-                ['meta_key' => $keys],
-                ['meta_key' => $keys, 'meta_value' => $values]
-            );
+            // Si no existe, usamos el método create() en la relación.
+            // Esto asignará automáticamente el user_id correcto.
+            $this->user->accountSetting()->create([
+                'meta_key' => $key,
+                'meta_value' => $value
+            ]);
         }
     }
 

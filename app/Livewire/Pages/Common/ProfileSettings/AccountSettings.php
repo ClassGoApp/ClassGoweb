@@ -82,6 +82,14 @@ class AccountSettings extends Component
         $this->dispatch('showAlertMessage', type: 'success', title: __('passwords.success') , message: __('settings.save_time_zone_successfully'));
     }
 
+
+
+
+
+
+
+
+
     public function connectCalender()
     {
         $response = isDemoSite();
@@ -90,12 +98,18 @@ class AccountSettings extends Component
             return;
         }
         $authUrlResponse = $this->googleCalenderService->getAuthUrl();
+        // dd($authUrlResponse, "aver que es esto");
         if($authUrlResponse['status'] == Response::HTTP_OK){
             $this->redirect($authUrlResponse['url']);
         } else {
             $this->dispatch('showAlertMessage', type: 'error', message: $authUrlResponse['message']);
         }
     }
+
+
+
+
+    
 
     public function disconnectCalender()
     {

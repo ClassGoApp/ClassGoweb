@@ -1,114 +1,122 @@
+/* ==================== navbar.css ==================== */
 @import './variables.css';
 
-/** TABLE OF CONTENTS
+/** TABLE OF CONTENTS PC
 ------------------------------------------------------------/
 
-1 - Navbar
+1 - Navbar General.................................... 21-67
+2 - Navbar Desktop................................... 69-109
+3 - Navbar Actions.................................. 111-117
+4 - Navbar Select................................... 119-191
+5 - Navbar Btn...................................... 193-221
+6 - Navbar iconos................................... 223-253
+7 - Navbar Menu Hamburguesa......................... 255-283
+8 - Navbar Menu Movil............................... 285-339
+9 - Navbar Cont Generic............................. 341-346
+10 - Navbar Menu Usuario............................ 348-476
 
-/// END TABLE OF CONTENTS 
-------------------------------------------------------------*/
-/* Navbar Base */
+/// END TABLE OF CONTENTS PC
+------------------------------------------------------------/
+
+/* =================== 1 - Navbar General =================== */
 .navbar {
-    position: absolute;         
-    top: 25px;                     /* Desde el borde superior */
-    left: 0;                  /* Desde el borde izquierdo */
-    width: 100%;               /* Ocupa todo el ancho de la ventana */
-    height: 90px;
-    background-color: var(--secundary-color); /* Color de fondo */
-    border-radius: 50px;           /* Elimina bordes redondeados para ocupar toda la parte superior */
-    box-sizing: border-box;
-    z-index: 1000; 
-    padding: 0.8rem 1.5rem;   
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-    
+  position: absolute;
+  top: 25px;
+  left: 0;
+  width: 100%;
+  height: 90px;
+  background-color: var(--secundary-color);
+  border-radius: 50px;
+  box-sizing: border-box;
+  z-index: 1000;
+  padding: 0.8rem 1.5rem;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
 }
 
 .navbar-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 1em;
-    
+  max-width: 1200px;
+  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1em;
+
 }
 
 .navbar-left {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  z-index: 10;
 }
 
+/* Logo */
 .nav-i {
-    width: 200px;
-    height: auto;
-    margin: 0;
-    flex-shrink: 0;
-    transition: transform 0.3s ease, filter 0.3s ease;
+  width: 200px;
+  height: auto;
+  margin: 0;
+  flex-shrink: 0;
+  transition: transform 0.3s ease, filter 0.3s ease;
 }
-
-
 
 .nav-i:active {
-    transform: scale(0.95);        /* Reduce ligeramente al hacer clic */
-    transition: transform 0.1s ease; /* Transición rápida al hacer clic */
+  transform: scale(0.95);
+  transition: transform 0.1s ease;
 
 }
 
-/* Navegación Desktop */
+/* =================== 2 - Navbar Desktop =================== */
 .navbar-links {
-    display: flex;
+  display: flex;
 }
 
 .navbar-links ul {
-    display: flex;
-    gap: 1.5rem;
-    list-style: none;
-    margin: 0;
-    padding: 0;
+  display: flex;
+  gap: 1.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 .navbar-links a {
-    color: white;
-    text-decoration: none;
-    font-weight: normal;
-    letter-spacing: 0.5px;
-    white-space: nowrap;
-    display: inline-block;
-    transition: transform 0.3s ease, opacity 0.3s ease;
+  color: white;
+  text-decoration: none;
+  font-weight: normal;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  display: inline-block;
+  transition: transform 0.3s ease, opacity 0.3s ease;
 
 }
 
 .navbar-links a:hover {
-    opacity: 0.8;
-    transform: translateY(-3px); 
+  opacity: 0.8;
+  transform: translateY(-3px);
 }
 
 .navbar-links a.active {
-    font-weight: normal;
-    text-decoration: none;
-    border-bottom: 2px solid white;
-    padding-bottom: 2px;
-    opacity: 1;
+  font-weight: normal;
+  text-decoration: none;
+  border-bottom: 2px solid white;
+  padding-bottom: 2px;
+  opacity: 1;
 }
 
 .navbar-links a.active:hover {
-    opacity: 0.8;
-    transform: translateY(-3px);
+  opacity: 0.8;
+  transform: translateY(-3px);
 }
 
-/* Acciones del navbar */
+/* =================== 3 - Navbar Actions =================== */
 .navbar-actions {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  z-index: 10;
 }
 
-
-/*--------Select---------*/
+/* =================== 4 - Navbar Select =================== */
 .language-select {
   position: relative;
   width: 150px;
@@ -139,6 +147,7 @@
   border-radius: 50%;
 }
 
+/* Dropdown de opciones */
 .options-dropdown {
   position: absolute;
   top: 110%;
@@ -147,7 +156,7 @@
   background: #1a1a1a;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   display: none;
   flex-direction: column;
   animation: slideDown 0.3s ease forwards;
@@ -165,168 +174,178 @@
 }
 
 .options-dropdown li:hover {
-  background: rgba(255,255,255,0.1);
+  background: rgba(255, 255, 255, 0.1);
 }
 
+/* Animation para el dropdown */
 @keyframes slideDown {
-  from { transform: translateY(-10px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+  from {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
-
+/* =================== 5 - Navbar Btn =================== */
 .btn-outline {
-    padding: 0.75rem 2rem;
-    font-size: 1rem;
-    border: 2px solid white;
-    background: transparent;
-    color: white;
-    border-radius: 30px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.5s;
-    -webkit-transition: all 0.5s;
-    white-space: nowrap;
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  border: 2px solid white;
+  background: transparent;
+  color: white;
+  border-radius: 30px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.5s;
+  -webkit-transition: all 0.5s;
+  white-space: nowrap;
 }
 
 .btn-outline:hover {
-    background-color: white;
-    color: #24A3BF;
-    box-shadow: 0 0 20px #010e1650;
-    transform: scale(1.1);
+  background-color: white;
+  color: #24A3BF;
+  box-shadow: 0 0 20px #010e1650;
+  transform: scale(1.1);
 }
 
 .btn-outline:active {
-    background-color: white;
-    transition: all 0.25s;
-    -webkit-transition: all 0.25s;
-    box-shadow: none;
-    transform: scale(0.98);
+  background-color: white;
+  transition: all 0.25s;
+  -webkit-transition: all 0.25s;
+  box-shadow: none;
+  transform: scale(0.98);
 }
 
+/* =================== 6 - Navbar iconos =================== */
 .navbar-icon {
-    background-color: white;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.5s;
-    -webkit-transition: all 0.5s;
-    flex-shrink: 0;
+  background-color: white;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.5s;
+  -webkit-transition: all 0.5s;
+  flex-shrink: 0;
 }
 
 .navbar-icon:hover {
-    transform: scale(1.2);
-    box-shadow: 0 0 20px #010e1650;
+  transform: scale(1.2);
+  box-shadow: 0 0 20px #010e1650;
 }
 
 .navbar-icon:active {
-    background-color: white;
-    transition: all 0.25s;
-    -webkit-transition: all 0.25s;
-    box-shadow: none;
-    transform: scale(0.98);
+  background-color: white;
+  transition: all 0.25s;
+  -webkit-transition: all 0.25s;
+  box-shadow: none;
+  transform: scale(0.98);
 }
 
 .icon-white {
-    color: #24A3BF;
+  color: #24A3BF;
 }
 
-/* Menú Hamburguesa */
+/* =================== 7 - Navbar Menu Hamburguesa =================== */
 .hamburger-menu {
-    display: none;
-    flex-direction: column;
-    cursor: pointer;
-    z-index: 15;
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  z-index: 15;
 }
 
 .hamburger-menu span {
-    width: 25px;
-    height: 3px;
-    background-color: white;
-    margin: 3px 0;
-    transition: 0.3s;
-    border-radius: 3px;
+  width: 25px;
+  height: 3px;
+  background-color: white;
+  margin: 3px 0;
+  transition: 0.3s;
+  border-radius: 3px;
 }
 
+/* Animación al activar el menú */
 .hamburger-menu.active span:nth-child(1) {
-    transform: rotate(-45deg) translate(-5px, 6px);
+  transform: rotate(-45deg) translate(-5px, 6px);
 }
 
 .hamburger-menu.active span:nth-child(2) {
-    opacity: 0;
+  opacity: 0;
 }
 
 .hamburger-menu.active span:nth-child(3) {
-    transform: rotate(45deg) translate(-5px, -6px);
+  transform: rotate(45deg) translate(-5px, -6px);
 }
 
-/* Menú móvil */
+/* =================== 8 - Navbar Menu Movil =================== */
 .navbar-mobile {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    background-color: #24a3bf00; /* transparente por defecto */
-    border-radius: 20px;
-    margin-top: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: #24a3bf00;
+  border-radius: 20px;
+  margin-top: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
 }
 
 .navbar-mobile.active {
-    display: block;
-    background-color: #24A3BF !important; /* celeste solo cuando está abierto */
+  display: block;
+  background-color: #24A3BF !important;
 }
 
 .navbar-mobile ul {
-    list-style: none;
-    padding: 1.5rem;
-    margin: 0;
+  list-style: none;
+  padding: 1.5rem;
+  margin: 0;
 }
 
 .navbar-mobile li {
-    margin: 1rem 0;
+  margin: 1rem 0;
 }
 
 .navbar-mobile a {
-    color: white;
-    text-decoration: none;
-    font-weight: normal;
-    letter-spacing: 0.5px;
-    font-size: 1.1rem;
-    display: block;
-    padding: 0.5rem 0;
-    transition: opacity 0.3s;
+  color: white;
+  text-decoration: none;
+  font-weight: normal;
+  letter-spacing: 0.5px;
+  font-size: 1.1rem;
+  display: block;
+  padding: 0.5rem 0;
+  transition: opacity 0.3s;
 }
 
 .navbar-mobile a:hover {
-    opacity: 0.8;
+  opacity: 0.8;
 }
 
 .navbar-mobile a.active {
-    font-weight: normal;
-    text-decoration: none;
-    border-bottom: 2px solid white;
-    padding-bottom: 2px;
-    opacity: 1;
-    background-color: transparent;
-    border-radius: 0;
-    padding: 0.5rem 0;
-    margin: 0;
+  font-weight: normal;
+  text-decoration: none;
+  border-bottom: 2px solid white;
+  padding-bottom: 2px;
+  opacity: 1;
+  background-color: transparent;
+  border-radius: 0;
+  padding: 0.5rem 0;
+  margin: 0;
 }
 
+/* =================== 9 - Navbar Cont Generic =================== */
 .container {
-    max-width: var(--max-width);
-    margin: 0 auto;
-    padding: 0 1rem;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 1rem;
 }
 
-/* ===================== icono perfil y confugación ==================*/
-/* Contenedor principal del menú */
+/* =================== 10 - Navbar Menu Usuario =================== */
 .user-menu {
   position: relative;
   display: inline-block;
@@ -338,7 +357,7 @@
   border: none;
   padding: 0;
   cursor: pointer;
-  border-radius: 50%; /* Asegura que el foco se vea circular */
+  border-radius: 50%;
 }
 
 /* El avatar (foto de perfil) */
@@ -346,22 +365,25 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  object-fit: cover; /* Evita que la imagen se deforme */
-  display: block; /* Elimina espacios extra */
-  border: 2px solid transparent; /* Borde opcional para hover/focus */
+  object-fit: cover;
+  /* Evita que la imagen se deforme */
+  display: block;
+  /* Elimina espacios extra */
+  border: 2px solid transparent;
   transition: border-color 0.2s;
 }
 
 .user-menu__trigger:hover .user-menu__avatar {
-    border-color: #ddd; /* Borde sutil al pasar el mouse */
+  border-color: #ddd;
 }
-
 
 /* El menú desplegable */
 .user-menu__dropdown {
-  display: none; /* Oculto por defecto */
+  display: none;
+  /* Oculto por defecto */
   position: absolute;
-  top: calc(100% + 10px); /* 100% del alto del botón + 10px de espacio */
+  top: calc(100% + 10px);
+  /* 100% del alto del botón + 10px de espacio */
   right: 0;
   width: 260px;
   background-color: #ffffff;
@@ -370,7 +392,8 @@
   border: 1px solid #f0f0f0;
   padding: 8px 0;
   z-index: 1000;
-  overflow: hidden; /* Para que los bordes redondeados se apliquen a los hijos */
+  overflow: hidden;
+  /* Para que los bordes redondeados se apliquen a los hijos */
 }
 
 /* Clase que se añade con JS para mostrar el menú */
@@ -388,8 +411,8 @@
 }
 
 .user-menu__header .user-menu__avatar {
-    width: 48px;
-    height: 48px;
+  width: 48px;
+  height: 48px;
 }
 
 .user-menu__details {
@@ -404,7 +427,7 @@
 }
 
 .user-menu__email {
-  font-size: 0.80rem; /* 14px */
+  font-size: 0.80rem;
   color: #666;
   display: block;
   word-break: break-word
@@ -422,7 +445,8 @@
   align-items: center;
   padding: 0.6rem 1rem;
   text-decoration: none;
-  font-size: 0.85rem; /* ~15px */
+  font-size: 0.85rem;
+  /* ~15px */
   color: #333;
   transition: background-color 0.2s ease-in-out;
 }
@@ -432,168 +456,168 @@
 }
 
 .user-menu__icon {
-    margin-right: 12px;
-    width: 20px;
-    height: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #555; /* Color por defecto para los íconos */
+  margin-right: 12px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #555;
 }
 
-/* Estilo especial para el botón de desconectar */
 .user-menu__item--logout .user-menu__link,
 .user-menu__item--logout .user-menu__icon {
-  color: #d9534f; /* Color rojo */
+  color: #d9534f;
   font-weight: 500;
 }
 
 .user-menu__item--logout .user-menu__link:hover {
-    background-color: #fdeeee; /* Un fondo rojizo muy claro al pasar el mouse */
+  background-color: #fdeeee;
 }
-
 
 /* ========================== Media Queries ===================== */
 
 /* Tablet */
 @media (max-width: 1024px) {
-    .navbar {
-        padding: 0.8rem 1rem;
-        margin: 1rem auto;
-    }
-    
-    .nav-i {
-        width: 160px;
-    }
-    
-    .navbar-links ul {
-        gap: 1rem;
-    }
-    
-    .navbar-links a {
-        font-size: 0.9rem;
-    }
-    
-    .btn-outline {
-        padding: 0.6rem 1.5rem;
-        font-size: 0.9rem;
-    }
+  .navbar {
+    padding: 0.8rem 1rem;
+    margin: 1rem auto;
+  }
+
+  .nav-i {
+    width: 160px;
+  }
+
+  .navbar-links ul {
+    gap: 1rem;
+  }
+
+  .navbar-links a {
+    font-size: 0.9rem;
+  }
+
+  .btn-outline {
+    padding: 0.6rem 1.5rem;
+    font-size: 0.9rem;
+  }
 }
 
 /* Tablet pequeña */
 @media (max-width: 768px) {
-    .navbar {
-        border-radius: 25px;
-        height: 70px;
-        padding: 0.6rem 1rem;
-    }
-    
-    .nav-i {
-        width: 140px;
-    }
-    
-    .navbar-links {
-        display: none;
-    }
-    
-    .hamburger-menu {
-        display: flex;
-    }
-    
-    .navbar-actions {
-        gap: 0.5rem;
-    }
-    
-    .navbar-language {
-        font-size: 0.9rem;
-    }
-    
-    .btn-outline {
-        padding: 0.5rem 1rem;
-        font-size: 0.8rem;
-    }
-    
-    .navbar-icon {
-        width: 32px;
-        height: 32px;
-    }
+  .navbar {
+    border-radius: 25px;
+    height: 70px;
+    padding: 0.6rem 1rem;
+  }
+
+  .nav-i {
+    width: 140px;
+  }
+
+  .navbar-links {
+    display: none;
+  }
+
+  .hamburger-menu {
+    display: flex;
+  }
+
+  .navbar-actions {
+    gap: 0.5rem;
+  }
+
+  .navbar-language {
+    font-size: 0.9rem;
+  }
+
+  .btn-outline {
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+  }
+
+  .navbar-icon {
+    width: 32px;
+    height: 32px;
+  }
 }
 
 /* ========= Móvil ========== */
 @media (max-width: 480px) {
-    .navbar {
-        border-radius: 20px;
-        height: 60px;
-        padding: 0.5rem 0.8rem;
-        margin: 0.5rem auto;
-    }
-    
-    .navbar-left {
-        gap: 0.5rem;
-    }
-    
-    .nav-i {
-        width: 120px;
-    }
-    
-    .navbar-actions {
-        gap: 0.3rem;
-    }
-    
-    .navbar-language {
-        display: none; /* Ocultar selector de idioma en móvil */
-    }
-    
-    .btn-outline {
-        padding: 0.4rem 0.8rem;
-        font-size: 0.7rem;
-    }
-    
-    .navbar-icon {
-        width: 28px;
-        height: 28px;
-    }
-    
-    .navbar-mobile {
-        margin-top: 5px;
-    }
-    
-    .navbar-mobile ul {
-        padding: 1rem;
-    }
-    
-    .navbar-mobile li {
-        margin: 0.8rem 0;
-    }
-    
-    .navbar-mobile a {
-        font-size: 1rem;
-    }
-    .navbar-profile-img{
-        display: none;
-    }
+  .navbar {
+    border-radius: 20px;
+    height: 60px;
+    padding: 0.5rem 0.8rem;
+    margin: 0.5rem auto;
+  }
+
+  .navbar-left {
+    gap: 0.5rem;
+  }
+
+  .nav-i {
+    width: 120px;
+  }
+
+  .navbar-actions {
+    gap: 0.3rem;
+  }
+
+  .navbar-language {
+    display: none;
+    /* Ocultar selector de idioma en móvil */
+  }
+
+  .btn-outline {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.7rem;
+  }
+
+  .navbar-icon {
+    width: 28px;
+    height: 28px;
+  }
+
+  .navbar-mobile {
+    margin-top: 5px;
+  }
+
+  .navbar-mobile ul {
+    padding: 1rem;
+  }
+
+  .navbar-mobile li {
+    margin: 0.8rem 0;
+  }
+
+  .navbar-mobile a {
+    font-size: 1rem;
+  }
+
+  .navbar-profile-img {
+    display: none;
+  }
 }
 
 /* Móvil muy pequeño */
 @media (max-width: 320px) {
-    .navbar {
-        padding: 0.4rem 0.6rem;
-        height: 55px;
-    }
-    
-    .nav-i {
-        width: 100px;
-    }
-    
-    .btn-outline {
-        padding: 0.3rem 0.6rem;
-        font-size: 0.6rem;
-    }
-    
-    .navbar-icon {
-        width: 26px;
-        height: 26px;
-    }
+  .navbar {
+    padding: 0.4rem 0.6rem;
+    height: 55px;
+  }
+
+  .nav-i {
+    width: 100px;
+  }
+
+  .btn-outline {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.6rem;
+  }
+
+  .navbar-icon {
+    width: 26px;
+    height: 26px;
+  }
 }
 
 /* ================= RESPONSIVE DESIGN ================= */
@@ -601,6 +625,7 @@
 
 /* NAVBAR TRANSPARENTE EN VISTAS ESPECÍFICAS (TABLET Y MÓVIL) */
 @media (max-width: 1024px) {
+
   .nosotros .navbar,
   .trabajamos .navbar,
   .preguntas .navbar {
@@ -608,7 +633,9 @@
     box-shadow: none !important;
   }
 }
+
 @media (max-width: 768px) {
+
   .nosotros .navbar,
   .trabajamos .navbar,
   .preguntas .navbar {
@@ -621,11 +648,13 @@
 /* navbar-tablet.css: Estilos responsivos para tablet (max-width: 1024px) */
 
 @media (max-width: 1024px) {
+
   /* Ocultar botón 'Empezar' y botón blanco */
   .btn-outline,
   .navbar-mobile a[href*="Empezar"] {
     display: none !important;
   }
+
   /* Centrar logo y colocar selector de idioma a la izquierda */
   .navbar-container {
     flex-direction: row;
@@ -633,6 +662,7 @@
     align-items: center;
     position: relative;
   }
+
   .navbar-left {
     width: 100%;
     justify-content: center;
@@ -640,6 +670,7 @@
     align-items: center;
     position: relative;
   }
+
   .nav-i {
     margin: 0 auto;
     display: block;
@@ -647,6 +678,7 @@
     left: 0;
     right: 0;
   }
+
   .language-select {
     position: absolute;
     left: 0;
@@ -660,11 +692,14 @@
 /* navbar-mobile.css: Estilos responsivos para móvil (max-width: 768px) */
 
 @media (max-width: 768px) {
+
   /* Ocultar botón 'Empezar' y botón blanco */
-  .btn-outline, .navbar-icon,
+  .btn-outline,
+  .navbar-icon,
   .navbar-mobile a[href*="Empezar"] {
     display: none !important;
   }
+
   /* Centrar logo y colocar selector de idioma a la izquierda */
   .navbar-container {
     flex-direction: row;
@@ -672,6 +707,7 @@
     align-items: center;
     position: relative;
   }
+
   .navbar-left {
     width: 100%;
     justify-content: center;
@@ -679,6 +715,7 @@
     align-items: center;
     position: relative;
   }
+
   .nav-i {
     margin: 0 auto;
     display: block;
@@ -686,6 +723,7 @@
     left: 0;
     right: 0;
   }
+
   .language-select {
     position: absolute;
     left: 0;
@@ -693,12 +731,13 @@
     transform: translateY(-50%);
     z-index: 2;
   }
-  .navbar-left a img{
+
+  .navbar-left a img {
     padding-left: 4rem;
     width: 200px;
   }
 
-  .user-menu{
+  .user-menu {
     display: none;
   }
 }

@@ -39,9 +39,6 @@
 @push('styles')
  <style>
     .profile-photo-card {
-   
-   
-   
     padding: 2.5rem 2rem;
     width: 100%;
     max-width: 400px;
@@ -131,5 +128,33 @@
     margin-top: 1rem;
     text-align: center;
 }
- </style>
+
+/*========= RESPONSIVO ===========*/
+@media (max-width: 768px){  
+    .profile-photo-card{
+        padding: 0rem;
+    }
+    .profile-photo-content{
+        padding: 0rem;
+        text-align: center;
+    }
+    .profile-details-header{
+        text-align: center;
+    }
+    .profile-details-grid{
+        display: flex !important;
+        flex-flow: column wrap;
+    }
+    .profile-details-actions{
+        display: flex;
+        justify-content: center !important;
+    }
+    .am-btn{
+        width: 100%;
+        height: 50px;
+        border-radius: 16px;
+    }
+
+}
+</style>
 @endpush

@@ -1,4 +1,21 @@
+/* ==================== modal.css ==================== */
 
+/** TABLE OF CONTENTS PC
+------------------------------------------------------------/
+
+1 - Modal Compartir................................... 18-27
+2 - Modal Box......................................... 29-38
+3 - Modal Header...................................... 40-50
+4 - Modal Redes...................................... 52-103
+    4.1 - Btns Redes.................................. 66-92
+        4.1.1 - Btn WhatsApp.......................... 84-87
+        4.1.2 - Btn FaceBook.......................... 89-92
+    4.2 - Btn Cerrar................................. 94-103
+    
+/// END TABLE OF CONTENTS PC
+------------------------------------------------------------*/
+
+/* ==================== 1 - Modal Compartir ==================== */
 .modal-compartir {
     display: none;
     position: fixed;
@@ -9,6 +26,7 @@
     align-items: center;
 }
 
+/* ==================== 2 - Modal Box ==================== */
 .modal-box {
     background: #fff;
     padding: 2rem;
@@ -19,6 +37,7 @@
     box-shadow: 0 10px 25px rgba(0,0,0,0.25);
 }
 
+/* ==================== 3 - Modal Header ==================== */
 .modal-header{
     display: flex;
     flex-flow: column wrap;
@@ -30,6 +49,7 @@
     width: 250px;
 }
 
+/* ==================== 4 - Modal Redes ==================== */
 .modal-redes {
     display: flex;
     flex-direction: column;
@@ -43,6 +63,7 @@
     margin-right: 8px;
 }
 
+/* ==================== 4.1 - Btns Redes ==================== */
 .red-btn {
     padding: 0.6rem;
     border-radius: 6px;
@@ -60,14 +81,17 @@
     opacity: 0.9;
 }
 
+/* ==================== 4.1.1 - Btn WhatsApp ==================== */
 .whatsapp {
     background-color: #25D366;
 }
 
+/* ==================== 4.1.2 - Btn FaceBook ==================== */
 .facebook {
     background-color: #1877F2;
 }
 
+/* ==================== 4.2 - Btn Cerrar ==================== */
 .btn-cerrar {
     background-color: transparent;
     padding: 0.6rem 1rem;
