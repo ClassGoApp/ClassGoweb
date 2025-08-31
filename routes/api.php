@@ -157,6 +157,9 @@ Route::post('tutor/availability', [AuthController::class, 'updateTutoringAvailab
 // Ruta para cambiar disponibilidad del tutor (available_for_tutoring)
 Route::put('user/{id}/tutoring-availability', [TutorController::class, 'updateTutoringAvailability']);
 
+// Ruta para obtener solo tutores disponibles (available_for_tutoring = 1)
+Route::get('available-tutors', [TutorController::class, 'getAvailableTutors']);
+
 Route::get('user/{id}/profile-image', [ProfileController::class, 'getProfileImage']);
 Route::post('user/{id}/profile-image', [ProfileController::class, 'updateProfileImage']);
 

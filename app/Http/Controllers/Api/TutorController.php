@@ -643,4 +643,119 @@ class TutorController extends Controller
             );
         }
     }
+
+    /**
+     * API: Obtener solo tutores disponibles (available_for_tutoring = 1)
+     * GET /api/available-tutors
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getAvailableTutors(Request $request)
+    {
+        try {
+            // Log de los parámetros recibidos
+            Log::info('Parámetros de búsqueda available-tutors:', [
+                'keyword' => $request->keyword,
+                'tutor_name' => $request->tutor_name,
+                'group_id' => $request->group_id,
+                'subject_id' => $request->subject_id,
+                'min_courses' => $request->min_courses,
+                'min_rating' => $request->min_rating,
+                'page' => $request->page
+            ]);
+
+            // Consulta base - Solo tutores con rol 'tutor', verificados y disponibles
+            $query = User::whereHas('roles', function($q) {
+                $q->where('name', 'tutor');
+            })->with(['profile', 'subjects'])
+              ->whereHas('profile', function($q) {
+                  $q->whereNotNull('verified_at');
+              })
+              ->where('available_for_tutoring', true); // Solo tutores disponibles (1 o true)
+
+            // Filtro por keyword (búsqueda en nombre de materia)
+            if ($request->filled('keyword')) {
+                $keyword = trim($request->keyword);
+                $query->whereHas('subjects', function($q) use ($keyword) {
+                    $q->where('name', 'LIKE', "%{$keyword}%");
+                });
+            }
+
+            // Filtro por tutor_name (búsqueda en nombre del tutor)
+            if ($request->filled('tutor_name')) {
+                $tutorName = trim($request->tutor_name);
+                $query->whereHas('profile', function($q) use ($tutorName) {
+                    $q->where(function($subQ) use ($tutorName) {
+                        $subQ->where('first_name', 'LIKE', "%{$tutorName}%")
+                             ->orWhere('last_name', 'LIKE', "%{$tutorName}%")
+                             ->orWhere(DB::raw("CONCAT(first_name, ' ', last_name)"), 'LIKE', "%{$tutorName}%");
+                    });
+                });
+            }
+
+            // Filtro por group_id (categoría de materia)
+            if ($request->filled('group_id')) {
+                $query->whereHas('subjects', function($q) use ($request) {
+                    $q->where('subject_group_id', $request->group_id);
+                });
+            }
+
+            // Filtro por subject_id (materia específica)
+            if ($request->filled('subject_id')) {
+                $query->whereHas('subjects', function($q) use ($request) {
+                    $q->where('subjects.id', $request->subject_id);
+                });
+            }
+
+            // Filtro por min_courses (número mínimo de cursos completados)
+            if ($request->filled('min_courses')) {
+                $minCourses = (int) $request->min_courses;
+                $query->whereHas('companyCourseUsers', function($q) use ($minCourses) {
+                    $q->where('status', 'completed');
+                }, '>=', $minCourses);
+            }
+
+            // Filtro por min_rating (calificación mínima)
+            if ($request->filled('min_rating')) {
+                $minRating = (float) $request->min_rating;
+                // Solo aplicar filtro si min_rating es mayor que 0
+                if ($minRating > 0) {
+                    $query->whereHas('reviews', function($q) use ($minRating) {
+                        $q->select('tutor_id')
+                          ->groupBy('tutor_id')
+                          ->havingRaw('AVG(rating) >= ?', [$minRating]);
+                    });
+                }
+            }
+
+            // Ordenar por el nombre del tutor (usando el perfil relacionado)
+            $query->join('profiles', 'users.id', '=', 'profiles.user_id')
+                  ->orderBy('profiles.first_name', 'asc')
+                  ->select('users.*');
+
+            // Log del conteo de resultados
+            $count = $query->count();
+            Log::info('Número de tutores disponibles encontrados: ' . $count);
+
+            // Paginación
+            $perPage = 10; // Puedes hacer esto configurable
+            $page = $request->filled('page') ? (int) $request->page : 1;
+            
+            $tutors = $query->paginate($perPage, ['*'], 'page', $page);
+            
+            $tutors->getCollection()->transform(function ($tutor) {
+                $tutor = $this->getFavouriateTutors($tutor);
+                // Agregar el conteo de cursos completados
+                $tutor->completed_courses_count = $tutor->getCompletedCoursesCount();
+                
+                return $tutor;
+            });
+
+            return $this->success(data: new \App\Http\Resources\FindTutors\TutorCollection($tutors));
+
+        } catch (\Exception $e) {
+            Log::error('Error en getAvailableTutors: ' . $e->getMessage());
+            return $this->error(message: 'Error al obtener tutores disponibles: ' . $e->getMessage());
+        }
+    }
 }
