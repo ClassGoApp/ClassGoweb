@@ -645,7 +645,9 @@ class TutorController extends Controller
     }
 
     /**
-     * API: Obtener solo tutores disponibles con materias registradas (available_for_tutoring = 1)
+     * API: Obtener tutores disponibles con lógica condicional:
+     * - Si available_for_tutoring = true: mostrar sin importar slots
+     * - Si available_for_tutoring = false: solo mostrar si tiene slots disponibles ahora
      * GET /api/available-tutors
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
@@ -664,15 +666,46 @@ class TutorController extends Controller
                 'page' => $request->page
             ]);
 
-            // Consulta base - Solo tutores con rol 'tutor', verificados, disponibles y con materias registradas
+            // Log de la lógica de disponibilidad aplicada
+            $now = now();
+            $currentTime = $now->format('H:i:s');
+            $currentDate = $now->format('Y-m-d');
+            
+            Log::info('Lógica de disponibilidad aplicada:', [
+                'current_date' => $currentDate,
+                'current_time' => $currentTime,
+                'logic' => 'available_for_tutoring=true OR (available_for_tutoring=false AND has_current_slots)'
+            ]);
+
+            // Consulta base - Solo tutores con rol 'tutor', verificados y con materias registradas
             $query = User::whereHas('roles', function($q) {
                 $q->where('name', 'tutor');
             })->with(['profile', 'subjects'])
               ->whereHas('profile', function($q) {
                   $q->whereNotNull('verified_at');
               })
-              ->whereHas('subjects') // Solo tutores con materias registradas
-              ->where('available_for_tutoring', true); // Solo tutores disponibles (1 o true)
+              ->whereHas('subjects'); // Solo tutores con materias registradas
+
+            // Lógica condicional para disponibilidad:
+            // 1. Si available_for_tutoring = true: mostrar sin importar slots
+            // 2. Si available_for_tutoring = false: solo mostrar si tiene slots disponibles ahora
+            $now = now();
+            $currentTime = $now->format('H:i:s');
+            $currentDate = $now->format('Y-m-d');
+
+            $query->where(function($q) use ($currentTime, $currentDate) {
+                // Condición 1: available_for_tutoring = true
+                $q->where('available_for_tutoring', true)
+                  // O condición 2: available_for_tutoring = false pero tiene slots disponibles ahora
+                  ->orWhere(function($subQ) use ($currentTime, $currentDate) {
+                      $subQ->where('available_for_tutoring', false)
+                           ->whereHas('userSubjectSlots', function($slotQ) use ($currentTime, $currentDate) {
+                               $slotQ->where('date', $currentDate)
+                                    ->where('start_time', '<=', $currentTime)
+                                    ->where('end_time', '>=', $currentTime);
+                           });
+                  });
+            });
 
             // Filtro por keyword (búsqueda en nombre de materia)
             if ($request->filled('keyword')) {
