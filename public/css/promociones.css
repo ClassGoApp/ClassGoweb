@@ -1,6 +1,32 @@
 @import './estilos/variables.css';
 @import './estilos/modal.css';
 
+#codigo {
+    font-size: 1.875rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    background: none ;
+        
+    padding-left: 1rem;
+    padding-right: 1rem;
+    
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    text-align: center;
+    border: none;
+    box-shadow: none;
+    color: white;
+}
+#codigo::placeholder{
+    color: rgb(173, 173, 173);
+}
+#codigo::-webkit-input-placeholder { /* Para Chrome, Safari y Opera */
+  color: rgb(206, 205, 205);
+}
+
+#codigo::-moz-placeholder { /* Para Firefox */
+  color: rgb(206, 205, 205);
+}
 
 /** TABLE OF CONTENTS
 ------------------------------------------------------------/

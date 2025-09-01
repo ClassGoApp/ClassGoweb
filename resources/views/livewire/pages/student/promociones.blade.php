@@ -168,9 +168,7 @@
                         <div class="my-6 w-full">
                             <div id="cupon-code"
                                 class="font-extrabold tracking-widest bg-white/20 border-2 border-dashed border-tertiary-color p-2 rounded-lg">
-                                <input name="codigo" type="text" required
-                                    class="w-full bg-transparent border-0 outline-none shadow-none focus:shadow-none text-white text-4xl font-extrabold tracking-widest"
-                                    placeholder="ABC12345">
+                                <input id="codigo" name="codigo" type="text" required placeholder="ABC12345" autocomplete="off">       
                             </div>
                         </div>
 
