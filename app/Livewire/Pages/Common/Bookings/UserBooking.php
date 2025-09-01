@@ -71,33 +71,43 @@ class UserBooking extends Component
     }
 
     #[Layout('layouts.app')]
-    public function render()
-    {
-        if (Auth::user()->role == 'tutor') {
-            // Obtener reservas donde el tutor es el usuario actual
-            $this->upcomingBookings = SlotBooking::where('tutor_id', Auth::id())
-                ->orderBy('start_time')
-                ->get()
-                ->groupBy(function($item) {
-                    return parseToUserTz($item->start_time)->toDateString();
-                });
-                
-        } else if (Auth::user()->role == 'student') {
-            // Obtener reservas donde el estudiante es el usuario actual
-            $this->upcomingBookings = SlotBooking::where('student_id', Auth::id())
-                ->orderBy('start_time')
-                ->get()
-                ->groupBy(function($item) {
-                    return parseToUserTz($item->start_time)->toDateString();
-                });
-        }
-        
-        return view('livewire.pages.common.bookings.user-booking', [
-            'bookings' => $this->bookings,
-            'upcomingBookings' => $this->upcomingBookings, // ✅ RESTAURAR ESTA VARIABLE
-            'currentDate' => $this->currentDate, // ✅ RESTAURAR ESTA VARIABLE
-        ]);
+   public function render()
+{
+    // Obtener reservas donde el tutor es el usuario actual
+    if (Auth::user()->role == 'tutor') {
+        $bookings = SlotBooking::where('tutor_id', Auth::id())
+            ->with(['subject']) // ✅ CARGAR LA RELACIÓN
+            ->orderBy('start_time')
+            ->get();
+    } else if (Auth::user()->role == 'student') {
+        $bookings = SlotBooking::where('student_id', Auth::id())
+            ->with(['subject']) // ✅ CARGAR LA RELACIÓN
+            ->orderBy('start_time')
+            ->get();
+    } else {
+        $bookings = collect();
     }
+
+    // Agrupar y transformar a array plano por fecha
+    $grouped = [];
+    foreach ($bookings as $booking) {
+        $date = parseToUserTz($booking->start_time)->toDateString();
+        if (!isset($grouped[$date])) {
+            $grouped[$date] = [];
+        }
+        $array = $booking->toArray();
+        $array['subject_name'] = $booking->subject->name ?? ''; // ✅ Ahora funcionará
+        $array['status_num'] = $booking->getRawOriginal('status');
+        $grouped[$date][] = $array;
+    }
+    $this->upcomingBookings = $grouped;
+
+    return view('livewire.pages.common.bookings.user-booking', [
+        'bookings' => $this->bookings,
+        'upcomingBookings' => $this->upcomingBookings,
+        'currentDate' => $this->currentDate,
+    ]);
+}
 
     protected function dispatchSessionMessages() {
         if (session('error')) {
