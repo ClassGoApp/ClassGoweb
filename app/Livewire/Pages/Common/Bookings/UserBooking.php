@@ -90,11 +90,12 @@ class UserBooking extends Component
                 ->groupBy(function($item) {
                     return parseToUserTz($item->start_time)->toDateString();
                 });
-                
         }
         
         return view('livewire.pages.common.bookings.user-booking', [
-            'bookings' => $this->bookings, // Pasar las reservas a la vista
+            'bookings' => $this->bookings,
+            'upcomingBookings' => $this->upcomingBookings, // ✅ RESTAURAR ESTA VARIABLE
+            'currentDate' => $this->currentDate, // ✅ RESTAURAR ESTA VARIABLE
         ]);
     }
 
