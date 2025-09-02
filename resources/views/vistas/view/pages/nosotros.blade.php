@@ -166,7 +166,7 @@
                             <div class="member-photo-wrapper">
                                 <img src="{{ asset('images/team/jhonny.webp')}}" alt="Foto de Jhonny Durán" class="member-photo">
                             </div>
-                            <a href="https://www.linkedin.com/in/jhonny-duran-39b105184" class="member-link">
+                            <a href="http://www.linkedin.com/in/jhonny-alfredo-duran-marin-804618376" class="member-link">
                                 <img class="arrow-icon" src="{{ asset('images/team/linkedin.png') }}" alt="">
                             </a>
                         </div>
