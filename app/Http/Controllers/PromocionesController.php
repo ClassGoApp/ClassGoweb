@@ -43,6 +43,6 @@ class PromocionesController extends Controller
         }
 
 
-        return redirect()->route('promociones')->with('Exito', 'Cupón Cajeado con exito.');
+        return redirect()->route('promociones')->with('exito', 'Cupón Cajeado con exito.');
     }
 }
