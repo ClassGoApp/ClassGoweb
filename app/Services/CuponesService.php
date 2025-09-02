@@ -146,9 +146,12 @@ class CuponesService implements ICuponesService
      */
     public function canjeaCupon($codigo, $user)
     {
-
+       
         $cupon = Coupon::where('codigo', $codigo)->first();
-        $existe = User::where('id', $codigo->referencia)->exists();
+        if($cupon->referencia != $user->id){
+
+        }
+        $existe = User::where('id', $cupon->referencia)->exists();
         if ($existe) {
             UserCoupon::firstOrCreate(
                 ['coupon_id' => $cupon->id, 'user_id' => $codigo->referencia],
@@ -189,6 +192,7 @@ class CuponesService implements ICuponesService
      */
     public function verificaUsoCupon($codigo, $user): bool
     {
+   
         if (!$this->existeCupon($codigo)) {
             return true; // El cupón no existe
         }
@@ -199,6 +203,9 @@ class CuponesService implements ICuponesService
         }
         $cuponUso = UserCoupon::where('coupon_id', $cupon->id)->exists();
         if ($cupon->referencia < 0 &&  $cuponUso) {
+            return true;
+        }
+        if($cupon->referencia == $user->id) {       
             return true;
         }
         return false;
