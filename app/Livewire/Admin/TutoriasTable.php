@@ -5,13 +5,10 @@ namespace App\Livewire\Admin;
 use App\Models\SlotBooking;
 use App\Services\GoogleMeetService;
 use App\Services\MailService;
-use App\Services\BookingNotificationService;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Log;
 use App\Models\User;
-use App\Mail\SessionBookingMail;
-use Illuminate\Support\Facades\Mail;
 
 class TutoriasTable extends Component
 {
@@ -24,22 +21,16 @@ class TutoriasTable extends Component
     public $showModal = false;
     public $modalTutoriaId;
     public $modalStatus;
-
     public $fecha; // Para una sola fecha
     public $fecha_inicio;
     public $fecha_fin;
-
     public $modalPaymentStatus;
     public $modalPaymentMethod;
     public $modalPaymentMessage;
     public $modalPaymentId;
-
     public $successMessage = '';
-
     public $errorMessage = '';
 
-
-    //protected $queryString = ['tutor', 'student', 'status'];
 
     public function updating($property)
     {
@@ -51,9 +42,6 @@ class TutoriasTable extends Component
     public function render()
     {
         $query = SlotBooking::with(['tutor', 'student', 'paymentSlotBooking', 'payment']);
-
-
-
         if ($this->status) {
             $query->where('status', $this->status);
         }
@@ -132,31 +120,20 @@ class TutoriasTable extends Component
                 'completado' => 5,
                 'cursando' => 6,
             ];
-            Log::info('Valor recibido en modalStatus:', ['modalStatus' => $this->modalStatus]);
             $nuevoStatus = $this->modalStatus;
-          
             if (!is_numeric($nuevoStatus)) {
-                $estadoAnterior = $nuevoStatus;
-                $nuevoStatus = $estados[strtolower($nuevoStatus)] ?? 2;
-              
+                $nuevoStatus = $estados[strtolower($nuevoStatus)] ?? 2; 
             }
-            // Guardar el estado anterior ANTES de cambiarlo
-            $oldStatus = $tutoria->status;  
             $tutoria->status = $nuevoStatus;
             // Guardar el cambio de estado inmediatamente
             $tutoria->save();
             $link=null;
             // Si el nuevo estado es 'Aceptada' (1), crear reunión Zoom y enviar correos
             if ($nuevoStatus == 1) {
-                $googlemeetservice = new GoogleMeetService;
-                // Crear instancia de Zoom driver directamente con credenciales del .env
-                $meetingService = null;     
-              
+                $googlemeetservice = new GoogleMeetService;   
                 // Formatear la fecha correctamente para Zoom (ISO 8601)
                  $startTimeCarbon = \Carbon\Carbon::parse($tutoria->start_time, 'America/La_Paz');
-                
                 $durationInMinutes = 20;
-
                 $meetingData = [
                     'topic' => 'Tutoría',
                     'agenda' => 'Sesión de tutoría',
@@ -165,40 +142,12 @@ class TutoriasTable extends Component
                     'timezone' => 'America/La_Paz',
                     'duration' => 20, // Duración en minutos
                 ];
-
-
-                $meetingDatameet = [
-                    'title' => 'Reunión de Prueba',
-                    'description' => 'Esta es una reunión de prueba con Google Meet',
-                    'start_time' => now()->addHour()->toISOString(), // En 1 hora
-                    'end_time' => now()->addHour()->addMinutes(30)->toISOString(), // Duración 30 min
-                    'timezone' => 'America/La_Paz',
-                     
-                ];
-
-               
-                
-                
-                // dd($result);
-                  $user=User::find($tutoria->tutor_id);
+                $user=User::find($tutoria->tutor_id);
                 $link=$googlemeetservice->createMeetingPorTutord($meetingData, $user);
                 $tutoria->meeting_link = $link;
-                // dd($link, 'aver el link');
-                $studentProfile = $tutoria->student->profile;
-                $studentName = $studentProfile ? ($studentProfile->first_name . ' ' . $studentProfile->last_name) : '';
-                $studentUser = $tutoria->student?->user;
                 $mailService = new MailService();
-                $mailService->sendTutoriaNotification($tutoria, $link);
-
-                // Enviar correo al tutor
-                $tutorProfile = $tutoria->tutor->profile;
-              
-               
+                $mailService->sendTutoriaNotification($tutoria, $link);               
             } 
-
-             
-        
-            
              // Si se creó un enlace de Zoom, guardar la tutoría nuevamente
             if ($tutoria->meeting_link) {
                 $tutoria->save();
@@ -211,22 +160,15 @@ class TutoriasTable extends Component
         $this->dispatch('cerrar-modal-tutoria');
     }
 
-
-
     public function clearFilters()
     {
         $this->reset(['tutor', 'student', 'fecha', 'fecha_inicio', 'fecha_fin', 'status']);
     }
 
-
-
     public function abrirModalPagoTutor($tutoria)
     {
-
         $bookingId = is_array($tutoria) ? $tutoria['id'] : $tutoria->id;
-        
-        $pago = \App\Models\SlotPayment::where('slot_booking_id', $bookingId)->first();
-        
+        $pago = \App\Models\SlotPayment::where('slot_booking_id', $bookingId)->first();   
         if ($pago) {
             $this->modalPaymentId = $pago->id;
             $this->modalPaymentStatus = $pago->status;
@@ -235,9 +177,6 @@ class TutoriasTable extends Component
         }
     }
 
-
-
-
     public function updatePayment()
     {
 
@@ -245,11 +184,8 @@ class TutoriasTable extends Component
             $pago = \App\Models\SlotPayment::find($this->modalPaymentId);
               //dd($pago,"adahsgdas");
             if ($pago) {
-
-               
                 $estadoActual = (int) $pago->status;
                 $nuevoEstado = (int) $this->modalPaymentStatus;
-
                 // Definir transiciones válidas
                 $transicionesValidas = [
                     1 => [2, 3], // pendiente -> pagado u observado
@@ -268,13 +204,10 @@ class TutoriasTable extends Component
                     $this->dispatch('mostrar-modal-error', ['message' => $this->errorMessage]);
                     return;
                 }
-
                 $pago->status = $nuevoEstado;
                 $pago->payment_method = $this->modalPaymentMethod;
                 $pago->message = $this->modalPaymentMessage;
                 $pago->save();
-
-
                 $this->dispatch('cerrar-modal-pago-tutor');
             }
             $this->successMessage = 'Pago actualizado correctamente.';
@@ -285,42 +218,8 @@ class TutoriasTable extends Component
         }
     }
 
-
-
-
     public function cerrarModalTutoria()
     {
         $this->showModal = false;
     }
-
-
-
 }
-
-
-
-
-/*  if ($tutorUser) {
-                      $mailService->sendTutoriaNotification($tutoria, $result);
-                      Mail::to($tutorUser->email)->send(new SessionBookingMail([
-                         'userName' => $tutorName,
-                         'sessionDate' => date('d/m/Y', strtotime($tutoria->start_time)),
-                         'sessionTime' => date('H:i', strtotime($tutoria->start_time)),
-                         'meetingLink' => $tutoria->meeting_link,
-                         'role' => 'Estudiante',
-                         'oppositeName' => $studentName,
-                     ])); 
-                 }  */
-
-
-
-/*  if ($studentUser) {
-                 Mail::to($studentUser->email)->send(new SessionBookingMail([
-                     'userName' => $studentName,
-                     'sessionDate' => date('d/m/Y', strtotime($tutoria->start_time)),
-                     'sessionTime' => date('H:i', strtotime($tutoria->start_time)),
-                     'meetingLink' => $result,
-                     'role' => 'Tutor',
-                     'oppositeName' => $tutoria->tutor?->profile?->first_name . ' ' . $tutoria->tutor?->profile?->last_name,
-                 ]));
-             }  */

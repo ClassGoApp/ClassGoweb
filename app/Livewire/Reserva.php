@@ -69,12 +69,14 @@ class Reserva extends Component
         $this->currentDate = Carbon::now();
         $this->isAugustPromotion = $this->currentDate->month === 8; // ✅ Verificar si es agosto
         $this->cuponservice = $cuponservice;  // OK
-       /* if (auth()->check()) {
+
+        if (auth()->check()) {
             $this->cuponesUsuario = $this->cuponservice->todosLosCupones(auth()->user());
         } else {
             $this->cuponesUsuario = [];
-        }*/
-
+            // Opcional: puedes redirigir o mostrar un mensaje
+            // session()->flash('error', 'Debes iniciar sesión para ver tus cupones.');
+        }
 
         $this->loadMonthData();
         $this->materiasTutor = UserSubject::where("user_id", $this->tutorId)->get();

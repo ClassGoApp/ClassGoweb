@@ -60,7 +60,10 @@
                 </div>
             </fieldset>
         </form> --}}
-       <div class="am-title_wrap">
+      
+
+       @role('tutor')
+         <div class="am-title_wrap">
             <div class="am-title">
                 <h2>{{ __('passwords.link_google_calendar') }}</h2>
                 <p>{{ __('passwords.link__google_calendar_schedule') }}</p>
@@ -90,38 +93,16 @@
                     {{ __('passwords.connect_google_calendar') }}
                 </a>
             </div>
-            @endif
-            @if(!empty($getAccountSetting['google_access_token']))
-            <div class="am-reminder">
-                <div class="am-reminder_title">
-                    <h3>{{ __('passwords.remind_me') }}</h3>
-                    <p>{{ __('passwords.reminder_scheduled_lesson') }}</p>
-                </div>
-                <div class="am-reminder_option">
-                    <div class="am-radio">
-                        <input type="radio" wire:model="reminder" id="before1" value={{15}} name="reminder">
-                        <label for="before1">{{ __('passwords.15_min_before_lesson') }}</label>
-                    </div>
-                    <div class="am-radio">
-                        <input wire:model="reminder"  value={{30}} type="radio" id="nonoti" name="reminder">
-                        <label for="nonoti">{{ __('passwords.30_min_before_lesson') }}</label>
-                    </div>
-                    <div class="am-radio">
-                        <input wire:model="reminder" value={{60}} type="radio" id="before2" name="reminder">
-                        <label for="before2">{{ __('passwords.60_min_before_lesson') }}</label>
-                    </div>
-                    <div class="am-radio">
-                        <input type="radio" wire:model="reminder" value={{1440}} id="before3" name="reminder">
-                        <label for="before3">{{ __('passwords.24_hours_before_lesson') }}</label>
-                    </div>
-                </div>
-            </div>
-            <div class="am-form-btns">
-                <span>{{ __('passwords.update_changes_live') }}</span>
-                <button  wire:click="saveReminder" wire:target="saveReminder" type="submit" wire:loading.class="am-btn_disable" type="button" class="am-btn">{{ __('passwords.Save_update') }}</button>
-            </div>
-            @endif
+            @endif  
         </div> 
+       @endrole
+         
+
+
+
+
+
+
         @if(session()->get('error'))
             <script>
                 document.addEventListener('DOMContentLoaded', function () {
@@ -146,3 +127,36 @@
         @endif
     </div>
 </div>
+
+
+ {{-- @if(!empty($getAccountSetting['google_access_token']))
+            <div class="am-reminder">
+                <div class="am-reminder_title">
+                    <h3>{{ __('passwords.remind_me') }}</h3>
+                    <p>{{ __('passwords.reminder_scheduled_lesson') }}</p>
+                </div>
+                <div class="am-reminder_option">
+                    <div class="am-radio">
+                        <input type="radio" wire:model="reminder" id="before1" value={{15}} name="reminder">
+                        <label for="before1">{{ __('passwords.15_min_before_lesson') }}</label>
+                    </div>
+                    <div class="am-radio">
+                        <input wire:model="reminder"  value={{30}} type="radio" id="nonoti" name="reminder">
+                        <label for="nonoti">{{ __('passwords.30_min_before_lesson') }}</label>
+                    </div>
+                    <div class="am-radio">
+                        <input wire:model="reminder" value={{60}} type="radio" id="before2" name="reminder">
+                        <label for="before2">{{ __('passwords.60_min_before_lesson') }}</label>
+                    </div>
+                    <div class="am-radio">
+                        <input type="radio" wire:model="reminder" value={{1440}} id="before3" name="reminder">
+                        <label for="before3">{{ __('passwords.24_hours_before_lesson') }}</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="am-form-btns">
+                <span>{{ __('passwords.update_changes_live') }}</span>
+                <button  wire:click="saveReminder" wire:target="saveReminder" type="submit" wire:loading.class="am-btn_disable" type="button" class="am-btn">{{ __('passwords.Save_update') }}</button>
+            </div>
+            @endif --}}

@@ -3,8 +3,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Services\GoogleCalender;
 use App\Services\UserService;
+use DB;
 use Illuminate\Http\Request;
 use Google_Client;
 use Google_Service_Calendar;
@@ -39,22 +41,44 @@ class GoogleController extends Controller
 
     public function googlecallback(Request $request)
     {
+        \Log::info('Google callback iniciado.');
+
         $user = Auth::user();
+        if (!$user) {
+            \Log::error('Usuario no autenticado en el callback.');
+            return redirect()->route('login')->with('error', 'Debes iniciar sesión para conectar Google Calendar.');
+        }
+
         $googleCalenderService = new GoogleCalender($user);
-
-        // Obtén el access token usando el code que Google envía
-        $tokenInfo = $googleCalenderService->getAccessTokenInfo($request->input('code'));
-
-        // Guarda el token en la configuración del usuario
+        $code = $request->input('code');
+        $tokenInfo = $googleCalenderService->getAccessTokenInfo($code);
         $userService = new UserService($user);
-        $userService->setAccountSetting('google_access_token', $tokenInfo);
-
-     
+        try {
+            $userService->setAccountSetting('google_access_token', $tokenInfo);
+            \Log::info('Token guardado en accountSetting.');
+        } catch (\Exception $e) {
+            \Log::error('Error al guardar el token en accountSetting: ' . $e->getMessage());
+        }
 
         return redirect()->route('tutor.profile.account-settings')->with('success', 'Google Calendar conectado correctamente');
     }
 
 
+
+    /* public function callback(Request $request)
+    {
+        // Recupera la cookie de sesión del navegador
+        $sessionId = $request->cookie(config('session.cookie'));
+
+        if (!$sessionId) {
+            return response()->json(['error' => 'No se encontró la sesión activa'], 401);
+        }
+        $session = DB::table('sessions')->where('id', $sessionId)->first();
+        // Recupera el usuario
+        $user = User::find($session->user_id);
+
+
+    } */
 
 
 

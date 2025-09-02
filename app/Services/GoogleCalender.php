@@ -11,7 +11,7 @@ use Google_Client;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
-
+use App\Models\User;
 
 class GoogleCalender
 {
@@ -31,8 +31,8 @@ class GoogleCalender
             'scopes' => [Calendar::CALENDAR]
         ];
        // dd($this->clientCredentials);
-        $this->userService = new UserService($user);
-        $this->userAccountSettings = $this->userService->getAccountSetting();
+       // $this->userService = new UserService($user);
+       // $this->userAccountSettings = $this->userService->getAccountSetting();
         //dd($this->userAccountSettings, "aver que es esto");
     }
 
@@ -55,6 +55,16 @@ class GoogleCalender
 
 
 
+ 
+    public function setUser(User $user)
+    {
+        $this->user = $user;
+        $this->userService = new UserService($this->user);
+        $this->userAccountSettings = $this->userService->getAccountSetting();
+        return $this; // Permite encadenar métodos: (new GoogleCalender())->setUser($user)->createEvent(...)
+    }    
+
+
     public function getAuthUrl()
     {
         try {
@@ -70,7 +80,7 @@ class GoogleCalender
             //dd($auth_url);
             return ['status' => Response::HTTP_OK, 'url' => $auth_url];
         } catch (Exception $ex) {
-            dd('llega al catch', $ex);
+            //dd('llega al catch', $ex);
             return ['status' => $ex->getCode(), 'message' => $ex->getMessage()];
         }
     }
@@ -87,6 +97,8 @@ class GoogleCalender
 
     protected function verifyToken()
     {
+        $this->userService = new UserService($this->user);
+        $this->userAccountSettings = $this->userService->getAccountSetting();
         $isTokenExpired = $this->isTokenExpired($this->userAccountSettings['google_access_token']);
         if ($isTokenExpired) {
             $this->userAccountSettings['google_access_token'] = $this->refreshAccessToken($this->userAccountSettings['google_access_token']['refresh_token']);
@@ -130,6 +142,8 @@ class GoogleCalender
 
     public function updateCalendarNotificationSettings($minutes)
     {
+        $this->userService = new UserService($this->user);
+        $this->userAccountSettings = $this->userService->getAccountSetting();
         try {
             $this->verifyToken();
             $client = new Google_Client();
@@ -169,6 +183,9 @@ class GoogleCalender
      */
     public function createEvent($eventData)
     {
+
+        $this->userService = new UserService($this->user);
+        $this->userAccountSettings = $this->userService->getAccountSetting();
         try {
             if (!empty($this->userAccountSettings['google_calendar_info']['id'])) {
                 $this->verifyToken();
@@ -204,6 +221,10 @@ class GoogleCalender
 
     public function deleteEvent($eventId)
     {
+
+        $this->userService = new UserService($this->user);
+        $this->userAccountSettings = $this->userService->getAccountSetting();
+
         try {
             if (!empty($this->userAccountSettings['google_calendar_info']['id'])) {
                 $this->verifyToken();

@@ -17,7 +17,7 @@ new #[Layout('layouts.guest')] class extends Component
     public string $email = '';
     public string $password = '';
     public string $password_confirmation = '';
-    public string $user_role    = 'tutor';
+    public string $user_role    = 'student';
     public string $terms        = '';
     public string $phone_number = '';
     public string $codigo = '';
@@ -66,7 +66,7 @@ new #[Layout('layouts.guest')] class extends Component
     }
 }; ?>
 
-<div>
+<div x-data="{ role: @entangle('user_role') }">
     @slot('title')
     {{ __('auth.join') }}
     @endslot
@@ -85,6 +85,8 @@ new #[Layout('layouts.guest')] class extends Component
                 <h3>{{ __('auth.register_right_h3') }}</h3>
             </div>
         </x-slot>
+        
+        
         <form wire:submit="register" class="am-themeform am-login-form am-signup-form">
             <fieldset>
                 <div class="am-themeform__wrap">
@@ -182,6 +184,9 @@ new #[Layout('layouts.guest')] class extends Component
                     </div>
                 </div>
         </form>
+
+
+
         @if (!empty(setting('_api.enable_social_login')) && ((!empty(setting('_api.social_google_client_id')) &&
         !empty(setting('_api.social_google_client_secret')))))
         <div class="am-signinoption">

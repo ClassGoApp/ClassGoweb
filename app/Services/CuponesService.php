@@ -7,8 +7,10 @@ use App\Models\Code;
 use App\Models\Coupon;
 use App\Models\User;
 use App\Models\UserCoupon;
+use Dotenv\Exception\ValidationException;
 use Illuminate\Support\Str;
 use App\Services\interfaces\ICuponesService;
+use Validator;
 
 
 class CuponesService implements ICuponesService

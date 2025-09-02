@@ -22,6 +22,10 @@
                 --tertiary-color: #8ECAE6;
                 --tertiary-color2: #FB8500;
                 --bg-color: #f8f9fa;
+                --bg-gradient: linear-gradient(180deg, rgba(7, 59, 76, 1) 64%, rgba(24, 77, 94, 1) 77%, rgba(33, 158, 188, 1) 100%);
+    --bg-gradient2: linear-gradient(135deg, #023047 0%, #219EBC 100%);
+    --bg-gradient3: linear-gradient(135deg, #219EBC 0%, #023047 100%);
+    --bg-gradient4: linear-gradient(180deg, rgb(16, 90, 109) 64%, rgba(24, 77, 94, 1) 77%, rgba(7, 59, 76, 1) 100%);
             }
 
             body {
@@ -79,23 +83,41 @@
             }
         </style>
     @endpush
-    <main class="flex-1 p-6 lg:p-8 overflow-y-auto">
+    <main class="flex-1 p-1 lg:p-8 overflow-y-auto">
         @if (session('success'))
             <script>
                 alert("{{ session('success') }}");
             </script>
         @endif
 
-        @if (session('error'))
-            <script>
-                alert("{{ session('error') }}");
-            </script>
-        @endif
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 ">
             <div class="lg:col-span-2 bg-white p-6 rounded-2xl shadow-md">
                 <h3 class="text-xl font-bold mb-4 cupon-text-cupones">Mis cupones</h3>
                 <div class="space-y-4">
+                    <div class="coupon-container relative max-w-2xl w-full border-3 border-[var(--secondary-color)] bg-white rounded-2xl flex overflow-hidden h-30">
+    
+                        <div class="bg-[linear-gradient(135deg,#023047_0%,#219EBC_100%)] text-white p-2 flex items-center justify-center w-1/3 relative">
+                            <div class="w-60 h-30">
+                                <img src=" {{ asset('images/home/Tugo_With_Phone.webp') }}" alt="">
+                            </div>
+                            <div class="absolute top-0 right-0 h-full pl-1 bg-white border-r-4 border-[#1eb2c4] border-dashed"></div>
+                        </div>
+
+                        <div class="md:p-4 flex flex-col justify-between w-2/3 py-4">
+                            <div>
+                                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                                    <h2 class="text-5xl font-bold text-gray-800">2.00%</h2>
+                                    <span class="text-xs font-medium bg-cyan-100 text-cyan-700 px-2 py-1 rounded-full mt-1 sm:mt-0">disponible</span>
+                                </div>
+                                <p class="text-sm font-bold text-gray-700">Tienes <strong>2.00% de regalo</strong> en tu proxima tutoría</p>
+                                <p class="text-xs text-gray-500 mt-1">Valido hasta el 04 de Sept, 2025</p>
+                            </div>
+                            <div class="text-right mt-1">
+                                <p class="text-sm text-gray-600 font-medium">cantidad: 2</p>
+                            </div>
+                        </div>
+                    </div>
                     @if ($cupones->isEmpty())
                         <div class="border-2 border-dashed border-gray-300 rounded-lg p-12 text-center">
                             <svg class="mx-auto h-12 w-12 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -107,6 +129,7 @@
                         </div>
                     @else
                         <div class="cupon-lista">
+                            
                             @foreach ($cupones as $cupon)
                                 @php
                                     $vencido = $cupon->fecha_caducidad && $cupon->fecha_caducidad < now();
@@ -144,12 +167,14 @@
                                     </div>
                                 </div>
                             @endforeach
+
+                            
                         </div>
                     @endif
                 </div>
             </div>
 
-            <div class="w-full max-w-sm mx-auto bg-[#0f3443] text-white rounded-xl shadow-2xl overflow-hidden">
+            <div class="cards-container card-fondo w-full max-w-sm mx-auto bg-[#0f3443] text-white rounded-xl shadow-2xl overflow-hidden">
                 <div class="flex">
                     <button id="tabRedeem"
                         class="w-1/2 py-3 font-semibold border-b-2 border-transparent text-gray-400 transition-colors duration-300">Canjear
@@ -159,7 +184,7 @@
                 </div>
 
                 <!-- CARD CANJEAR CUPON -->
-                <div id="redeemView" class="card-fondo text-white p-6 rounded-2xl shadow-lg flex-col items-center text-center">
+                <div id="redeemView" class="h-full text-white p-6 rounded-2xl shadow-lg flex-col items-center text-center">
                     <form action="{{ route('coupons.canjear') }}" method="POST">
                         @csrf
                         <h3 class="text-xl font-bold">¿Tienes Código?</h3>
@@ -168,18 +193,19 @@
                         <div class="my-6 w-full">
                             <div id="cupon-code"
                                 class="font-extrabold tracking-widest bg-white/20 border-2 border-dashed border-tertiary-color p-2 rounded-lg">
-                                <input name="codigo" type="text" required
-                                    class="w-full bg-transparent border-0 outline-none shadow-none focus:shadow-none text-white text-4xl font-extrabold tracking-widest"
-                                    placeholder="ABC12345">
+                                <input id="codigo" name="codigo" type="text" required placeholder=" ABC12345" autocomplete="off" maxlength="8" spellcheck="false">       
                             </div>
                         </div>
 
                         <div class="w-full space-y-3">
-                            <button type="submit"
+                            <button type="submit" id="btnCanjear"
                                 class="w-full bg-tertiary-orange font-bold py-3 rounded-lg hover:opacity-90 transition-all">
                                 Canjear
                             </button>
+                            @if (session('error'))<p id="mensaje-error">{{ session('error') }}</p>@endif
+                            @if (session('exito'))<p id="mensaje-success">{{ session('exito') }}</p>@endif
                         </div>
+                        
                     </form>
 
                 </div>
@@ -187,7 +213,7 @@
 
                 <!-- CARD COMPARTIR CODE -->
                 <div id="inviteView"
-                    class="card-fondo text-white p-6 rounded-2xl shadow-lg flex-col items-center text-center hidden">
+                    class="h-full text-white p-6 rounded-2xl shadow-lg flex-col items-center text-center hidden">
                     <h3 class="text-xl font-bold">Tu Código de Invitación</h3>
                     <p class="text-tertiary-color mt-1 text-sm">¡Comparte y obtén descuentos!</p>
                     <div class="my-6">
@@ -292,7 +318,37 @@
                         }
                     });
                 }
+
+                //Logica para el mensaje de error o codigo canjeado correctamente
+                const textoError = document.getElementById('mensaje-error');
+                const textoCorrect = document.getElementById('mensaje-success');
+                const botonCanjear = document.getElementById('btnCanjear');
+
+                if (textoError) {
+                    textoError.style.opacity = '1'
+                    setTimeout(() => {
+                        textoError.style.opacity = '0';
+                        setTimeout(() => {
+                            textoError.style.opacity = 'none'
+                            textoError.style.display = 'none';
+                        }, 600); 
+                    }, 3000); // 5000 milisegundos = 5 segundos
+                }
+                if(textoCorrect){
+                    textoCorrect.style.opacity = '1'
+                    setTimeout(() => {
+                        textoCorrect.style.opacity = '0';
+                        setTimeout(() => {
+                            textoCorrect.style.opacity = 'none'
+                            textoCorrect.style.display = 'none';
+                        }, 600); 
+                    }, 3000); // 5000 milisegundos = 5 segundos
+                }
             });
+
+            
+            
+
         </script>
     @endpush
 
