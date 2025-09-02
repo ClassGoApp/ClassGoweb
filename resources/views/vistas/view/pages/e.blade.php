@@ -1,368 +1,184 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cards de Tutores</title>
+    <title>Tarjeta de Video Interactiva</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary-color: #1f2937;
-            --secundary-color: #0ea5e9;
-            --terciary-color2: #10b981;
-            --white: #ffffff;
-        }
-
+        /* Estilos adicionales para la fuente y la tarjeta */
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f3f4f6;
-            padding: 2rem;
-            display: flex;
-            justify-content: center;
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5;
         }
-
-        .carousel-container {
-            overflow-x: auto;
-            display: flex;
-            gap: 1rem;
-            scroll-behavior: smooth;
-            padding-bottom: 1rem;
-        }
-
-        .tutor-card {
-            width: 300px;
-            border-radius: 12px;
-            background-color: #fff;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            transition: transform 0.3s, box-shadow 0.3s;
-            display: flex;
-            flex-direction: column;
+        .card-container {
+            max-width: 360px;
+            margin: 4rem auto;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border-radius: 1rem;
+            overflow: visible;
             position: relative;
-            text-decoration: none;
-            color: inherit;
-            flex-shrink: 0;
+            background-color: white;
         }
-
-        .tutor-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
-            cursor: pointer;
-        }
-
-        .favorite-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(255, 255, 255, 0.4);
-            border: none;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: background 0.3s, transform 0.3s;
-            z-index: 20;
-            color: #333;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 0;
-            font-size: 1rem;
-        }
-
-        .favorite-btn.active {
-            background: #FB8500;
-            color: #fff;
-        }
-
-        .favorite-btn:hover {
-            transform: scale(1.1);
-        }
-
-        .tutor-card-img {
+        .video-wrapper {
             position: relative;
-            height: 160px;
+            border-top-left-radius: 1rem;
+            border-top-right-radius: 1rem;
             overflow: hidden;
         }
-
-        .tutor-card-img video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-
-        .tutor-banner-overlay {
+        /* Controles personalizados */
+        .custom-controls {
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.4);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-        }
-
-        .tutor-banner-play {
-            background-color: rgba(255, 255, 255, 0.7);
-            border-radius: 50%;
-            padding: 12px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-        }
-
-        .tutor-banner-play svg {
-            width: 25px;
-            height: 25px;
-            fill: #000;
-            stroke: #000;
-        }
-
-        .tutor-video-controls {
-            position: absolute;
-            bottom: 10px;
-            left: 10px;
-            display: flex;
-            align-items: center;
-            background: rgba(0, 0, 0, 0.5);
-            padding: 5px 10px;
-            border-radius: 50px;
-            z-index: 15;
-            display: none;
-        }
-
-        .tutor-control-button {
-            background: transparent;
-            border: none;
-            cursor: pointer;
-            padding: 5px;
-            display: flex;
-            align-items: center;
-        }
-
-        .tutor-control-button svg {
-            width: 18px;
-            height: 18px;
-            fill: #fff;
-            stroke: #fff;
-        }
-
-        .tutor-control-volume {
-            width: 70px;
-            margin-left: 10px;
-        }
-
-        .sound-btn {
-            position: absolute;
-            bottom: 10px;
-            right: 10px;
-            background: rgba(0, 0, 0, 0.6);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 35px;
-            height: 35px;
-            font-size: 16px;
-            cursor: pointer;
-            z-index: 25;
-        }
-
-        .sound-btn:hover {
-            background: #FB8500;
-        }
-
-        .tutor-card-content {
-            padding: 0.8rem 1rem 1rem 1rem;
+            right: 0;
+            bottom: 0;
             display: flex;
             flex-direction: column;
-            gap: 0.3rem;
-        }
-
-        .tutor-card-header {
-            display: flex;
+            justify-content: center;
             align-items: center;
-            gap: 0.5rem;
+            transition: opacity 0.3s ease;
         }
-
-        .tutor-card-header img {
-            width: 45px;
-            height: 45px;
+        #playPauseBtn {
+            background-color: rgba(0, 0, 0, 0.5);
             border-radius: 50%;
-            object-fit: cover;
-        }
-
-        .tutor-card-header h3 {
-            font-size: 1.1rem;
-            margin: 0;
-            color: var(--primary-color);
-        }
-
-        .tutor-card-sub {
-            font-size: 0.9rem;
-            color: #334155;
-            line-height: 1.4;
-            max-height: 3.6em;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .tutor-card-rating-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 0.5rem;
-            font-size: 0.85rem;
-            color: #1a3b4d;
-        }
-
-        .tutor-card-rating {
+            width: 64px;
+            height: 64px;
             display: flex;
             align-items: center;
-            background: rgba(251, 191, 36, 0.1);
-            color: #b45309;
-            padding: 0.2rem 0.5rem;
-            border-radius: 0.3rem;
-            gap: 0.25rem;
+            justify-content: center;
+            cursor: pointer;
+            border: 2px solid white;
+            transition: opacity 0.3s ease, transform 0.2s ease;
         }
-
-        .tutor-card-rating .star {
-            color: #f59e42;
+        #playPauseBtn:hover {
+            transform: scale(1.1);
         }
-
-        .tutor-nr-claces {
-            font-size: 15px;
+        /* Ocultar el botón de play cuando el video se está reproduciendo */
+        .video-wrapper.playing #playPauseBtn {
+            opacity: 0;
+            pointer-events: none;
+        }
+        /* Contenedor del volumen */
+        .volume-container {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            display: flex;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        /* Mostrar control de volumen al pasar el mouse sobre el video */
+        .video-wrapper:hover .volume-container {
+            opacity: 1;
+        }
+        #volumeSlider {
+            width: 80px;
+            cursor: pointer;
         }
     </style>
 </head>
+<body class="flex items-center justify-center min-h-screen">
 
-<body>
+    <div class="card-container">
+        <!-- Contenedor del video -->
+        <div id="videoContainer" class="video-wrapper">
+            <video id="miVideo" class="w-full" poster="https://placehold.co/600x400/cccccc/ffffff?text=Video">
+                <!-- Reemplaza este video con el tuyo -->
+                <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                Tu navegador no soporta la etiqueta de video.
+            </video>
 
-    <div class="carousel-container">
-        <div class="tutor-card" data-url="https://example.com/perfil-tutor">
-            <button class="favorite-btn">⭐</button>
-
-            <div class="tutor-card-img">
-                <video class="tutor-intro-video" muted playsinline preload="none" poster="https://via.placeholder.com/300x160" src="https://www.w3schools.com/html/mov_bbb.mp4"></video>
-                <div class="tutor-banner-overlay">
-                    <div class="tutor-banner-play">
-                        <svg viewBox="0 0 24 24">
-                            <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                        </svg>
-                    </div>
-                </div>
-                <div class="tutor-video-controls">
-                    <button class="tutor-control-button">
-                        <svg viewBox="0 0 24 24">
-                            <rect x="6" y="4" width="4" height="16"></rect>
-                            <rect x="14" y="4" width="4" height="16"></rect>
-                        </svg>
-                    </button>
-                    <input type="range" min="0" max="1" step="0.01" value="0.5" class="tutor-control-volume">
-                </div>
-                <button class="sound-btn">🔊</button>
+            <!-- Controles personalizados -->
+            <div class="custom-controls">
+                <button id="playPauseBtn">
+                    <!-- Icono de Play (SVG) -->
+                    <svg id="playIcon" class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M4.018 15.132A1.25 1.25 0 006 14.253V5.747a1.25 1.25 0 00-1.982-.979l-1.03.515a1.25 1.25 0 000 1.958l1.03.515zM6.25 5.11l8.32 4.16a1.25 1.25 0 010 2.22l-8.32 4.16A1.25 1.25 0 014 14.75V5.25a1.25 1.25 0 012.25-.86z"></path>
+                    </svg>
+                    <!-- Icono de Pausa (SVG) - Oculto por defecto -->
+                    <svg id="pauseIcon" class="w-8 h-8 text-white hidden" fill="currentColor" viewBox="0 0 20 20">
+                         <path d="M5.75 4.5a.75.75 0 00-.75.75v9.5c0 .414.336.75.75.75h1.5a.75.75 0 00.75-.75V5.25a.75.75 0 00-.75-.75H5.75zm7.5 0a.75.75 0 00-.75.75v9.5c0 .414.336.75.75.75h1.5a.75.75 0 00.75-.75V5.25a.75.75 0 00-.75-.75h-1.5z"></path>
+                    </svg>
+                </button>
             </div>
-
-            <div class="tutor-card-content">
-                <div class="tutor-card-header">
-                    <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Tutor">
-                    <h3>Juan Pérez</h3>
-                </div>
-                <p class="tutor-card-sub">Puedo enseñar: Matemáticas, Física, Química, Biología</p>
-                <div class="tutor-card-rating-row">
-                    <div class="tutor-card-rating"><span class="star">⭐</span>4.8 <span>(120 reseñas)</span></div>
-                    <div class="tutor-card-price"><i class="fa-solid fa-book"></i><strong class="tutor-nr-claces">10</strong> tutorías</div>
-                </div>
-                <div class="space-y-4">
-                    <button id="copyButton" class="w-full bg-white/90 hover:bg-white text-[#0f3443] font-bold py-3 px-4 rounded-lg transition-transform transform hover:scale-105">
-                        Copiar Código
-                    </button>
-                    <button class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-4 rounded-lg transition-transform transform hover:scale-105">
-                        Compartir
-                    </button>
-                </div>
-                 <p id="copyMessage" class="mt-4 h-5"></p>
+            <div class="volume-container">
+                 <!-- Icono de Volumen (SVG) -->
+                <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                   <path d="M9.25 4.75a.75.75 0 00-1.5 0v10.5a.75.75 0 001.5 0V4.75zM6.25 6.75a.75.75 0 00-1.5 0v6.5a.75.75 0 001.5 0V6.75zM12.25 2.75a.75.75 0 00-1.5 0v14.5a.75.75 0 001.5 0V2.75zm3 4a.75.75 0 00-1.5 0v6.5a.75.75 0 001.5 0V6.75z"></path>
+                </svg>
+                <input type="range" id="volumeSlider" min="0" max="1" step="0.1" value="1">
             </div>
+        </div>
+
+        <!-- Imagen de perfil -->
+        <div id="contenedorImagen" class="absolute w-full flex justify-center transition-opacity duration-300" style="top: 195px;">
+             <img id="miImagen" src="http://googleusercontent.com/file_content/0" alt="Imagen de contacto" class="w-20 h-20 rounded-full object-cover border-4 border-white shadow-lg" style="transform: translateY(-50%);">
+        </div>
+
+        <!-- Contenido de texto -->
+        <div class="p-6 pt-12 text-center">
+            <h2 class="text-xl font-bold text-gray-800">Gabriel Alpiry Hurtado</h2>
+            <p class="text-gray-600 mt-2">
+                Puedo enseñar: Básico, Ciencias Naturales para Primaria, Mecánica Aplicada, Física de Materiales, Modelos de Regresión...
+            </p>
         </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const cards = document.querySelectorAll('.tutor-card');
+        // Obtener los elementos del DOM
+        const videoContainer = document.getElementById('videoContainer');
+        const video = document.getElementById('miVideo');
+        const imagen = document.getElementById('contenedorImagen');
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const playIcon = document.getElementById('playIcon');
+        const pauseIcon = document.getElementById('pauseIcon');
+        const volumeSlider = document.getElementById('volumeSlider');
 
-            cards.forEach(card => {
-                const video = card.querySelector('.tutor-intro-video');
-                const overlay = card.querySelector('.tutor-banner-overlay');
-                const playButton = overlay.querySelector('.tutor-banner-play');
-                const controls = card.querySelector('.tutor-video-controls');
-                const pauseButton = controls.querySelector('.tutor-control-button');
-                const volumeControl = controls.querySelector('.tutor-control-volume');
-                const favBtn = card.querySelector('.favorite-btn');
-                const soundBtn = card.querySelector('.sound-btn');
+        // Función para alternar entre play y pause
+        function togglePlay() {
+            if (video.paused) {
+                video.play();
+            } else {
+                video.pause();
+            }
+        }
 
-                card.addEventListener('click', (e) => {
-                    if (!e.target.closest('.tutor-card-img') && !e.target.closest('.favorite-btn')) {
-                        window.location.href = card.dataset.url;
-                    }
-                });
+        // Event listeners para el botón y el video
+        playPauseBtn.addEventListener('click', togglePlay);
+        video.addEventListener('click', togglePlay);
 
-                overlay.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    video.play();
-                });
+        // Actualizar UI cuando el video se reproduce
+        video.addEventListener('play', () => {
+            videoContainer.classList.add('playing');
+            playIcon.classList.add('hidden');
+            pauseIcon.classList.remove('hidden');
+            imagen.style.opacity = '0';
+        });
 
-                playButton.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    video.play();
-                });
+        // Actualizar UI cuando el video se pausa
+        video.addEventListener('pause', () => {
+            videoContainer.classList.remove('playing');
+            playIcon.classList.remove('hidden');
+            pauseIcon.classList.add('hidden');
+            imagen.style.opacity = '1';
+        });
+        
+        // Actualizar UI cuando el video termina
+        video.addEventListener('ended', () => {
+            videoContainer.classList.remove('playing');
+            playIcon.classList.remove('hidden');
+            pauseIcon.classList.add('hidden');
+            imagen.style.opacity = '1';
+        });
 
-                pauseButton.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    video.pause();
-                });
-
-                volumeControl.addEventListener('input', () => {
-                    video.volume = volumeControl.value;
-                });
-
-                video.addEventListener('play', () => {
-                    overlay.style.display = 'none';
-                    controls.style.display = 'flex';
-                });
-
-                video.addEventListener('pause', () => {
-                    overlay.style.display = 'flex';
-                    controls.style.display = 'none';
-                });
-
-                video.addEventListener('ended', () => {
-                    overlay.style.display = 'flex';
-                    controls.style.display = 'none';
-                    video.currentTime = 0;
-                });
-
-                video.volume = volumeControl.value;
-
-                favBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    favBtn.classList.toggle('active');
-                });
-
-                if (soundBtn) {
-                    soundBtn.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        video.muted = !video.muted;
-                        soundBtn.textContent = video.muted ? "🔇" : "🔊";
-                    });
-                }
-            });
+        // Control de volumen
+        volumeSlider.addEventListener('input', (e) => {
+            video.volume = e.target.value;
         });
     </script>
 
 </body>
-
 </html>

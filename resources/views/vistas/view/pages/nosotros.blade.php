@@ -85,7 +85,7 @@
                     <div class="team-member">
                         <div class="member-item">
                             <div class="member-photo-wrapper">
-                                <img src="{{ asset('images/team/gabriel.webp')}}" alt="Foto de Gabriel Alpiry Hurtado" class="member-photo">
+                                <img src="{{ asset('images/team/gabriel.jpeg')}}" alt="Foto de Gabriel Alpiry Hurtado" class="member-photo">
                             </div>
                             <a href="https://www.linkedin.com/in/gabriel-alpiry-hurtado-1a6083a5/" class="member-link">
                                 <img class="arrow-icon" src="{{ asset('images/team/linkedin.png') }}" alt="">

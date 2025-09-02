@@ -68,7 +68,6 @@ class Reserva extends Component
         $this->tutorId = $tutorId;
         $this->currentDate = Carbon::now();
         $this->isAugustPromotion = $this->currentDate->month === 8; // ✅ Verificar si es agosto
-
         $this->cuponservice = $cuponservice;  // OK
 
         if (auth()->check()) {
