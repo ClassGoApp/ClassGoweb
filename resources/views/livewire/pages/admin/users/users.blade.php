@@ -120,7 +120,7 @@
                                         
                                         @if($single->roles()->first()->name == 'tutor')
                                            @if($single->profile && $single->profile->slug)  
-                                              <a href="{{ route('tutor-detail',['slug' => $single->profile->slug]) }}" class="am-custom-tooltip">
+                                              <a href="{{ route('tutor',['slug' => $single->profile->slug]) }}" class="am-custom-tooltip">
                                                 <span class="am-tooltip-text">
                                                     <span>{{ __('general.visit_profile') }}</span>
                                                 </span>
