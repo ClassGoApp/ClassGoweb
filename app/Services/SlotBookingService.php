@@ -8,7 +8,7 @@ use App\Models\User;
 use App\Models\SlotBooking;
 use App\Models\UserSubjectSlot;
 use Illuminate\Support\Facades\Auth;
-
+use App\Services\GoogleMeetService;
 
 class SlotBookingService implements interfaces\ISlotBookingService
 {
@@ -18,7 +18,7 @@ class SlotBookingService implements interfaces\ISlotBookingService
         $user = Auth::user();
         if ($user->hasRole('student')) {
             return SlotBooking::where('student_id', $user->id)
-                ->orderBy('start_time', 'desc'); 
+                ->orderBy('start_time', 'desc');
         } else {
             return SlotBooking::where('tutor_id', $user->id)
                 ->orderBy('start_time', 'desc');
@@ -35,7 +35,7 @@ class SlotBookingService implements interfaces\ISlotBookingService
         return UserSubjectSlot::where('user_id', $tutorId)->get();
     }
 
-    public function crearReserva($studentId, $tutorId, $subjectId, $fecha,$session_fee )
+    public function crearReserva($studentId, $tutorId, $subjectId, $fecha, $session_fee)
     {
 
         $startTime = \Carbon\Carbon::parse($fecha);
@@ -53,8 +53,50 @@ class SlotBookingService implements interfaces\ISlotBookingService
         $booking->user_subject_slot_id = null; // Asignar el ID del slot creado
         $booking->status = 2; // Estado inicial
         $booking->save();
+
+
+        if ($session_fee == 0) {
+
+
+
+        }
+
         return $booking;
+
+
     }
+
+
+
+
+    public function generarlink($tutoria)
+    {
+        $googlemeetservice = new GoogleMeetService;
+        // Formatear la fecha correctamente para Zoom (ISO 8601)
+        $startTimeCarbon = \Carbon\Carbon::parse($tutoria->start_time, 'America/La_Paz');
+        $durationInMinutes = 20;
+        $meetingData = [
+            'topic' => 'Tutoría',
+            'agenda' => 'Sesión de tutoría',
+            'start_time' => $startTimeCarbon->toIso8601String(),
+            'end_time' => $startTimeCarbon->copy()->addMinutes($durationInMinutes)->toIso8601String(),
+            'timezone' => 'America/La_Paz',
+            'duration' => 20, // Duración en minutos
+        ];
+        $user = User::find($tutoria->tutor_id);
+        $link = $googlemeetservice->createMeetingPorTutord($meetingData, $user);
+
+        $mailService = new MailService();
+        $mailService->sendTutoriaNotification($tutoria, $link);
+        return $link;
+    }
+
+
+
+
+
+
+
 
 
 }

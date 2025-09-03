@@ -55,6 +55,8 @@ class Reserva extends Component
 
     public $cuponesUsuario = [];
 
+    public float $porcentaje = 0.0;
+
     //============== End Variables Cupones ===============//
 
     public bool $isAugustPromotion = false;
@@ -113,15 +115,17 @@ class Reserva extends Component
     }
 
     public function selecionarCupon($codigo)
-    { //Selecionar el cupón
+    { //Selecionar el cupó
+
         $service = $this->cuponservice ?? app(ICuponesService::class);
         $this->cuponCode = $codigo;
         $this->cuponSeleccionado();
         $this->ocultarCupones();
         $this->key = now();
         // vmeter servicio de cupones
-        $porcentage = $service->porcentajeCupon($codigo);
-        if ($porcentage == 100) { // Comprueba la tutoría Gratis
+        $this->porcentaje = $service->porcentajeCupon($codigo);
+
+        if ($this->porcentaje == 100) { // Comprueba la tutoría Gratis
             $this->ocultarComprobante();
         } else {
             $this->ocultarBanner();
@@ -157,16 +161,11 @@ class Reserva extends Component
     {
         $slotBookingService = app(SlotBookingService::class);
         $hoarioslibres = $slotBookingService->tiempoLibreTutor($this->tutorId);
-
         // Obtener el año y mes actual del calendario
         $currentYear = $this->currentDate->year;
         $currentMonth = $this->currentDate->month;
-
         // Procesar los datos reales de la BBDD
         $this->timeSlotsByDay = $this->processRealSlotData($hoarioslibres, $currentYear, $currentMonth);
-
-
-
         // Determina qué días tienen al menos una hora libre para marcarlos en naranja
         $this->daysWithAvailability = collect($this->timeSlotsByDay)
             ->filter(fn($slots) => collect($slots)->where('status', 'free')->isNotEmpty())
@@ -263,14 +262,9 @@ class Reserva extends Component
                 return;
             }
         }
-
-
-        // dd($tienereserva->start_time,$fechaCompleta);    
-
         $this->showModal = true;
         // Emite un evento global que el JavaScript del frontend escuchará.
         //$this->dispatch('open-modal');
-
     }
 
     public function closeModal()
@@ -288,10 +282,9 @@ class Reserva extends Component
      */
     public function makeReservation()
     {
-        // habilitamos el serivcio de cupones
+
         $service = $this->cuponservice ?? app(ICuponesService::class);
         $isAugustPromotion = $this->currentDate->month === 8;
-
 
         if ($isAugustPromotion || (!empty($this->cuponCode))) {
             $this->validate([
@@ -303,19 +296,17 @@ class Reserva extends Component
                 'selectedSubject' => 'required',
             ]);
         }
-
-
         try {
             DB::beginTransaction();
-
             $pagostutorreserva = new PagosTutorReservaService();
             $sessionFee = 15;
+
+            if ($this->porcentaje != null || $this->porcentaje != 0) {
+                $sessionFee = $sessionFee - ($sessionFee * $this->porcentaje / 100);
+            }
             $estudianteId = auth()->user()->id;
             // 2.1. registra que ya se uso el cupon en esta session
             if (!empty($this->cuponCode)) {
-                if ($service->porcentajeCupon($this->cuponCode) == 100) {
-                    $sessionFee = 0;
-                }
                 $service->cuponCanjeado($this->cuponCode, auth()->user());
                 $this->cuponesUsuario = $service->todosLosCupones(auth()->user());
             }
@@ -324,13 +315,8 @@ class Reserva extends Component
                 ->setDay($this->selectedDay)
                 ->setTimeFromTimeString($this->selectedTime . ':00');
             $fechaString = $fechaCompleta->format('Y-m-d H:i:s');
-
-
-
-
-            // 1
-            // . Guardar imagen - Obtener el servicio cuando lo necesites
-            if ($isAugustPromotion || $service->porcentajeCupon($this->cuponCode) == 100) {
+          
+            if ($this->porcentaje == 100 || $isAugustPromotion) {
                 // Usar imagen por defecto para promoción
                 $path = 'qr/77b1a7da.jpg'; // Imagen por defecto
             } else {
@@ -348,7 +334,6 @@ class Reserva extends Component
                 $sessionFee
             );
 
-
             // 3. Crear registro de pago
             PaymentSlotBooking::create([
                 'slot_booking_id' => $reserva->id,
@@ -356,9 +341,7 @@ class Reserva extends Component
                 'created_at' => now(),
                 'updated_at' => now()
             ]);
-
             // 4. Crear registro de pago del tutor
-
             $pagostutorreserva->create(
                 slot_booking_id: $reserva->id,
                 payment_date: now(),
@@ -367,38 +350,32 @@ class Reserva extends Component
             );
 
             DB::commit();
+            $tutor = User::where('id', $this->tutorId)->first();
+            $emailService = app(MailService::class);
+            $emailService->sendAdminNuevaTutoria(
+                $tutor?->profile?->full_name,
+                $this->selectedSubject,
+                $fechaString
+            );
 
-            // 5. Enviar email
-            try {
-                $tutor = User::where('id', $this->tutorId)->first();
-                $emailService = app(MailService::class);
-                $emailService->sendAdminNuevaTutoria(
-                    $tutor?->profile?->full_name,
-                    $this->selectedSubject,
-                    $fechaString
-                );
-            } catch (\Exception $emailError) {
-                Log::warning('Error enviando email de nueva tutoría', [
-                    'error' => $emailError->getMessage(),
-                    'reserva_id' => $reserva->id
-                ]);
-            }
-
-            $this->loadMonthData();
             // Resetear estado y mostrar éxito
+            $this->quitarCupon();
             $this->showModal = false;
             $this->resetSelection();
+
+
+           
+
+            $this->loadMonthData();
             session()->flash('success_message', '¡Hora reservada correctamente!');
         } catch (\Exception $e) {
             DB::rollBack();
-
             Log::error('Error creando reserva', [
                 'error' => $e->getMessage(),
                 'tutor_id' => $this->tutorId,
                 'student_id' => $estudianteId,
                 'fecha' => $fechaString ?? null
             ]);
-
             session()->flash('error', 'Hubo un error al procesar tu reserva. Por favor, inténtalo de nuevo.');
         }
     }
