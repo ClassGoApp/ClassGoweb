@@ -101,7 +101,7 @@
         <div class="carousel-wrapper">
             <div class="carousel-track" id="carouselTrack">
                 @foreach($featuredTutors as $tutor)
-                    <div class="tutor-card" onclick="window.location.href='https://example.com/perfil-tutor1'">
+                    <div class="tutor-card" onclick="window.location.href='{{ route('tutor', ['slug' => $tutor->profile['slug']]) }}' ">
                         <button class="favorite-btn" onclick="event.stopPropagation(); this.classList.toggle('active')">⭐</button>
                         <div class="tutor-card-img">
                             <video controls preload="auto"

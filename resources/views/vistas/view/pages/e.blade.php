@@ -1,184 +1,429 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tarjeta de Video Interactiva</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        /* Estilos adicionales para la fuente y la tarjeta */
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f0f2f5;
-        }
-        .card-container {
-            max-width: 360px;
-            margin: 4rem auto;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            border-radius: 1rem;
-            overflow: visible;
-            position: relative;
-            background-color: white;
-        }
-        .video-wrapper {
-            position: relative;
-            border-top-left-radius: 1rem;
-            border-top-right-radius: 1rem;
-            overflow: hidden;
-        }
-        /* Controles personalizados */
-        .custom-controls {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            transition: opacity 0.3s ease;
-        }
-        #playPauseBtn {
-            background-color: rgba(0, 0, 0, 0.5);
-            border-radius: 50%;
-            width: 64px;
-            height: 64px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            border: 2px solid white;
-            transition: opacity 0.3s ease, transform 0.2s ease;
-        }
-        #playPauseBtn:hover {
-            transform: scale(1.1);
-        }
-        /* Ocultar el botón de play cuando el video se está reproduciendo */
-        .video-wrapper.playing #playPauseBtn {
-            opacity: 0;
-            pointer-events: none;
-        }
-        /* Contenedor del volumen */
-        .volume-container {
-            position: absolute;
-            bottom: 1rem;
-            right: 1rem;
-            display: flex;
-            align-items: center;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        /* Mostrar control de volumen al pasar el mouse sobre el video */
-        .video-wrapper:hover .volume-container {
-            opacity: 1;
-        }
-        #volumeSlider {
-            width: 80px;
-            cursor: pointer;
-        }
-    </style>
-</head>
-<body class="flex items-center justify-center min-h-screen">
 
-    <div class="card-container">
-        <!-- Contenedor del video -->
-        <div id="videoContainer" class="video-wrapper">
-            <video id="miVideo" class="w-full" poster="https://placehold.co/600x400/cccccc/ffffff?text=Video">
-                <!-- Reemplaza este video con el tuyo -->
-                <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
-                Tu navegador no soporta la etiqueta de video.
-            </video>
 
-            <!-- Controles personalizados -->
-            <div class="custom-controls">
-                <button id="playPauseBtn">
-                    <!-- Icono de Play (SVG) -->
-                    <svg id="playIcon" class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M4.018 15.132A1.25 1.25 0 006 14.253V5.747a1.25 1.25 0 00-1.982-.979l-1.03.515a1.25 1.25 0 000 1.958l1.03.515zM6.25 5.11l8.32 4.16a1.25 1.25 0 010 2.22l-8.32 4.16A1.25 1.25 0 014 14.75V5.25a1.25 1.25 0 012.25-.86z"></path>
-                    </svg>
-                    <!-- Icono de Pausa (SVG) - Oculto por defecto -->
-                    <svg id="pauseIcon" class="w-8 h-8 text-white hidden" fill="currentColor" viewBox="0 0 20 20">
-                         <path d="M5.75 4.5a.75.75 0 00-.75.75v9.5c0 .414.336.75.75.75h1.5a.75.75 0 00.75-.75V5.25a.75.75 0 00-.75-.75H5.75zm7.5 0a.75.75 0 00-.75.75v9.5c0 .414.336.75.75.75h1.5a.75.75 0 00.75-.75V5.25a.75.75 0 00-.75-.75h-1.5z"></path>
-                    </svg>
-                </button>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com"></script>
+<!-- Google Fonts: Inter -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ asset('css/promociones.css') }}">
+<style>
+   :root {
+   --primary-color: #023047;
+   --secondary-color: #219EBC;
+   --secondary-color2: #CDD6DA;
+   --tertiary-color: #8ECAE6;
+   --tertiary-color2: #FB8500;
+   --bg-color: #f8f9fa;
+   --bg-gradient: linear-gradient(180deg, rgba(7, 59, 76, 1) 64%, rgba(24, 77, 94, 1) 77%, rgba(33, 158, 188, 1) 100%);
+   --bg-gradient2: linear-gradient(135deg, #023047 0%, #219EBC 100%);
+   --bg-gradient3: linear-gradient(135deg, #219EBC 0%, #023047 100%);
+   --bg-gradient4: linear-gradient(180deg, rgb(16, 90, 109) 64%, rgba(24, 77, 94, 1) 77%, rgba(7, 59, 76, 1) 100%);
+   }
+   body {
+   font-family: 'Inter', sans-serif;
+   background-color: var(--panel-background);
+   }
+   .bg-primary {
+   background-color: var(--primary-color);
+   }
+   .text-primary {
+   color: var(--primary-color);
+   }
+   .text-secondary {
+   color: var(--secondary-color);
+   }
+   .bg-secondary {
+   background-color: var(--secondary-color);
+   }
+   .bg-tertiary-orange {
+   background-color: var(--tertiary-color2);
+   }
+   .text-tertiary-orange {
+   color: var(--tertiary-color2);
+   }
+   .border-tertiary-orange {
+   border-color: var(--tertiary-color2);
+   }
+   .ring-secondary {
+   --tw-ring-color: var(--secondary-color);
+   }
+   .sidebar-link.active {
+   background-color: var(--secondary-color);
+   color: white;
+   font-weight: 600;
+   }
+   .sidebar-link.active svg {
+   stroke: white;
+   }
+   /* Estilo para la pestaña activa */
+   .tab-active {
+   border-bottom-color: #f97316;
+   /* Naranja de Tailwind */
+   color: #ffffff;
+   }
+</style>
+
+<main class="flex-1 p-1 lg:p-8 overflow-y-auto">
+   {{-- @if (session('success'))
+   <script>
+      alert("{{ session('success') }}");
+      
+   </script>
+   @endif --}}
+   <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 ">
+      <div class="lg:col-span-2 bg-white p-6 rounded-2xl shadow-md">
+         <h3 class="text-xl font-bold mb-4 cupon-text-cupones">Mis cupones</h3>
+         <div class="space-y-4">
+            <div class="coupon-container relative max-w-2xl w-full border-3 border-[var(--secondary-color)] bg-white rounded-2xl flex overflow-hidden h-30">
+               <div class="bg-[linear-gradient(135deg,#023047_0%,#219EBC_100%)] text-white p-2 flex items-center justify-center w-1/3 relative">
+                  <div class="w-60 h-30">
+                     {{-- <img src=" {{ asset('images/home/Tugo_With_Phone.webp') }}" alt=""> --}}
+                  </div>
+                  <div class="absolute top-0 right-0 h-full pl-1 bg-white border-r-4 border-[#1eb2c4] border-dashed"></div>
+               </div>
+               <div class="md:p-4 flex flex-col justify-between w-2/3 py-4">
+                  <div>
+                     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                        <h2 class="text-5xl font-bold text-gray-800">2.00%</h2>
+                        <span class="text-xs font-medium bg-cyan-100 text-cyan-700 px-2 py-1 rounded-full mt-1 sm:mt-0">disponible</span>
+                     </div>
+                     <p class="text-sm font-bold text-gray-700">Tienes <strong>2.00% de regalo</strong> en tu proxima tutoría</p>
+                     <p class="text-xs text-gray-500 mt-1">Valido hasta el 04 de Sept, 2025</p>
+                  </div>
+                  <div class="text-right mt-1">
+                     <p class="text-sm text-gray-600 font-medium">cantidad: 2</p>
+                  </div>
+               </div>
             </div>
-            <div class="volume-container">
-                 <!-- Icono de Volumen (SVG) -->
-                <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
-                   <path d="M9.25 4.75a.75.75 0 00-1.5 0v10.5a.75.75 0 001.5 0V4.75zM6.25 6.75a.75.75 0 00-1.5 0v6.5a.75.75 0 001.5 0V6.75zM12.25 2.75a.75.75 0 00-1.5 0v14.5a.75.75 0 001.5 0V2.75zm3 4a.75.75 0 00-1.5 0v6.5a.75.75 0 001.5 0V6.75z"></path>
-                </svg>
-                <input type="range" id="volumeSlider" min="0" max="1" step="0.1" value="1">
+            {{-- @if ('hola'->isEmpty())
+            <div class="border-2 border-dashed border-gray-300 rounded-lg p-12 text-center">
+               <svg class="mx-auto h-12 w-12 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none"
+                  viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                     d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 010 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 010-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375z" />
+               </svg>
+               <p class="mt-2 text-sm text-gray-500">No tienes cupones activos en este momento.</p>
             </div>
-        </div>
-
-        <!-- Imagen de perfil -->
-        <div id="contenedorImagen" class="absolute w-full flex justify-center transition-opacity duration-300" style="top: 195px;">
-             <img id="miImagen" src="http://googleusercontent.com/file_content/0" alt="Imagen de contacto" class="w-20 h-20 rounded-full object-cover border-4 border-white shadow-lg" style="transform: translateY(-50%);">
-        </div>
-
-        <!-- Contenido de texto -->
-        <div class="p-6 pt-12 text-center">
-            <h2 class="text-xl font-bold text-gray-800">Gabriel Alpiry Hurtado</h2>
-            <p class="text-gray-600 mt-2">
-                Puedo enseñar: Básico, Ciencias Naturales para Primaria, Mecánica Aplicada, Física de Materiales, Modelos de Regresión...
-            </p>
-        </div>
-    </div>
-
-    <script>
-        // Obtener los elementos del DOM
-        const videoContainer = document.getElementById('videoContainer');
-        const video = document.getElementById('miVideo');
-        const imagen = document.getElementById('contenedorImagen');
-        const playPauseBtn = document.getElementById('playPauseBtn');
-        const playIcon = document.getElementById('playIcon');
-        const pauseIcon = document.getElementById('pauseIcon');
-        const volumeSlider = document.getElementById('volumeSlider');
-
-        // Función para alternar entre play y pause
-        function togglePlay() {
-            if (video.paused) {
-                video.play();
-            } else {
-                video.pause();
-            }
-        }
-
-        // Event listeners para el botón y el video
-        playPauseBtn.addEventListener('click', togglePlay);
-        video.addEventListener('click', togglePlay);
-
-        // Actualizar UI cuando el video se reproduce
-        video.addEventListener('play', () => {
-            videoContainer.classList.add('playing');
-            playIcon.classList.add('hidden');
-            pauseIcon.classList.remove('hidden');
-            imagen.style.opacity = '0';
-        });
-
-        // Actualizar UI cuando el video se pausa
-        video.addEventListener('pause', () => {
-            videoContainer.classList.remove('playing');
-            playIcon.classList.remove('hidden');
-            pauseIcon.classList.add('hidden');
-            imagen.style.opacity = '1';
-        });
-        
-        // Actualizar UI cuando el video termina
-        video.addEventListener('ended', () => {
-            videoContainer.classList.remove('playing');
-            playIcon.classList.remove('hidden');
-            pauseIcon.classList.add('hidden');
-            imagen.style.opacity = '1';
-        });
-
-        // Control de volumen
-        volumeSlider.addEventListener('input', (e) => {
-            video.volume = e.target.value;
-        });
-    </script>
-
-</body>
-</html>
+            @else --}}
+            {{-- <div class="cupon-lista">
+               @foreach ('hola' as $cupon)
+               @php
+               $vencido = $cupon->fecha_caducidad && $cupon->fecha_caducidad < now();
+               $inactivo = isset($cupon->estado) && $cupon->estado === 'inactivo';
+               $canjeado = isset($cupon->pivot->estado);
+               @endphp
+               <div class="{{ $vencido ? 'cupon-vencido' : '' }}">
+                  <div
+                     class="cupon-item border-2 border-dashed border-gray-200 rounded-lg p-4 flex flex-col sm:flex-row justify-between items-center sm:items-center gap-4">
+                     <div class="item-text">
+                        <p class="text-xs text-gray-500">Cupón válido hasta el
+                           {{ $cupon->fecha_caducidad ? \Carbon\Carbon::parse($cupon->fecha_caducidad)->format('d/m/Y') : 'Sin fecha' }}
+                           @if ($vencido)
+                           <span>(Vencido)</span>
+                           @endif
+                        </p>
+                        <h4 class="font-bold text-lg cupon-text">Obtubiste un descuento del
+                           {{ $cupon->descuento }}%
+                        </h4>
+                        <p class="text-sm text-gray-600">en tu próxima tutoría - Cantidad:
+                           {{ $cupon->pivot->cantidad }}
+                        </p>
+                     </div>
+                     @if ($canjeado)
+                     <span
+                        class="bg-gray-200 text-gray-800 font-semibold px-4 py-1 rounded-full text-sm">Canjeado</span>
+                     @elseif($inactivo)
+                     <span
+                        class="bg-red-100 text-red-800 font-semibold px-4 py-1 rounded-full text-sm">Inactivo</span>
+                     @elseif($vencido)
+                     <span
+                        class="bg-red-100 text-red-800 font-semibold px-4 py-1 rounded-full text-sm">Vencido</span>
+                     @else
+                     <a href="#"><button
+                        class="button-cupon text-white font-semibold px-6 py-2 rounded-lg hover:opacity-90 transition-all">Usar</button></a>
+                     @endif
+                  </div>
+               </div>
+               @endforeach
+            </div>
+            @endif --}}
+         </div>
+      </div>
+      <div class="cards-container card-fondo w-full max-w-sm mx-auto bg-[#0f3443] text-white rounded-xl shadow-2xl overflow-hidden">
+         <div class="flex">
+            <button id="tabRedeem"
+               class="w-1/2 py-3 font-semibold border-b-2 border-transparent text-gray-400 transition-colors duration-300">Canjear
+            Cupón</button>
+            <button id="tabInvite"
+               class="w-1/2 py-3 font-semibold border-b-2 border-transparent text-gray-400 transition-colors duration-300">Invitar</button>
+         </div>
+         <!-- CARD CANJEAR CUPON -->
+         <div id="redeemView" class="h-full text-white p-6 rounded-2xl shadow-lg flex-col items-center text-center">
+            
+               <h3 class="text-xl font-bold">¿Tienes Código?</h3>
+               <p class="text-tertiary-color mt-1 text-sm">¡Ingrésalo y obtén descuentos!</p>
+               <div class="my-6 w-full">
+                  <div id="cupon-code"
+                     class="font-extrabold tracking-widest bg-white/20 border-2 border-dashed border-tertiary-color p-2 rounded-lg">
+                     <input id="codigo" name="codigo" type="text" required placeholder=" ABC12345" autocomplete="off" maxlength="8" spellcheck="false">
+                  </div>
+               </div>
+               <div class="w-full space-y-3">
+                  <button type="submit" id="btnCanjear"
+                     class="w-full bg-tertiary-orange font-bold py-3 rounded-lg hover:opacity-90 transition-all">
+                  Canjear
+                  </button>
+                  {{-- @if (session('error'))
+                  <p id="mensaje-error">{{ session('error') }}</p>
+                  @endif
+                  @if (session('exito'))
+                  <p id="mensaje-success">{{ session('exito') }}</p>
+                  @endif --}}
+               </div>
+         </div>
+         <!-- CARD COMPARTIR CODE -->
+         <div id="inviteView"
+            class="h-full text-white p-6 rounded-2xl shadow-lg flex-col items-center text-center hidden">
+            <h3 class="text-xl font-bold">Tu Código de Invitación</h3>
+            <p class="text-tertiary-color mt-1 text-sm">¡Comparte y obtén descuentos!</p>
+            <div class="my-6">
+               <div id="inv-code"
+                  class="text-3xl font-extrabold tracking-widest bg-white/20 border-2 border-dashed border-tertiary-color px-4 py-2 rounded-lg ">
+                  2333232
+               </div>
+            </div>
+            <div class="w-full flex gap-3">
+               <button id="btnCopiar" type="button"
+                  class="bg-white/90 text-primary font-bold py-3 rounded-lg hover:bg-white transition-all flex-1">
+               Copiar
+               </button>
+               <button id="compartir-button" type="button"
+                  class="bg-tertiary-orange font-bold py-3 rounded-lg hover:opacity-90 transition-all flex-1">
+               Compartir
+               </button>
+               <x-modal-compartir />
+            </div>
+            <div id="copy-feedback" class="pt-3 transition-opacity" style="display:none;">¡Copiado!</div>
+         </div>
+      </div>
+   </div>
+</main>
+@push('scripts')
+<script>
+   //======== Script para Cambiar Pestañas, Copiar Código de Invitación y Compartir ========//
+   
+   document.addEventListener('DOMContentLoaded', () => {
+   
+   // --- Lógica para Cambiar Pestañas ---
+   
+   const tabRedeem = document.getElementById('tabRedeem');
+   
+   const tabInvite = document.getElementById('tabInvite');
+   
+   const redeemView = document.getElementById('redeemView');
+   
+   const inviteView = document.getElementById('inviteView');
+   
+   
+   
+   function setActiveTab(activeTab, inactiveTab, activeView, inactiveView) {
+   
+   // Estilos para la pestaña activa
+   
+   activeTab.classList.remove('text-gray-400', 'border-transparent');
+   
+   activeTab.classList.add('text-white', 'border-tertiary-orange');
+   
+   
+   
+   // Estilos para la pestaña inactiva
+   
+   inactiveTab.classList.remove('text-white', 'border-tertiary-orange');
+   
+   inactiveTab.classList.add('text-gray-400', 'border-transparent');
+   
+   
+   
+   // Mostrar la vista activa y ocultar la inactiva
+   
+   activeView.classList.remove('hidden');
+   
+   activeView.classList.add('flex');
+   
+   inactiveView.classList.remove('flex');
+   
+   inactiveView.classList.add('hidden');
+   
+   }
+   
+   
+   
+   // Eventos de clic para las pestañas
+   
+   tabRedeem.addEventListener('click', () => {
+   
+   setActiveTab(tabRedeem, tabInvite, redeemView, inviteView);
+   
+   });
+   
+   
+   
+   tabInvite.addEventListener('click', () => {
+   
+   setActiveTab(tabInvite, tabRedeem, inviteView, redeemView);
+   
+   });
+   
+   
+   
+   // Inicializar la vista por defecto al cargar la página
+   
+   setActiveTab(tabRedeem, tabInvite, redeemView, inviteView);
+   
+   
+   
+   // --- Lógica para Copiar Código de Invitación ---
+   
+   const btnCopiar = document.getElementById('btnCopiar');
+   
+   const codigo = document.getElementById('inv-code');
+   
+   const feedback = document.getElementById('copy-feedback');
+   
+   
+   
+   if (btnCopiar && codigo && feedback) {
+   
+   btnCopiar.addEventListener('click', () => {
+   
+   const texto = codigo.textContent.trim();
+   
+   navigator.clipboard.writeText(texto).then(() => {
+   
+   feedback.style.display = 'block';
+   
+   feedback.style.opacity = '1';
+   
+   setTimeout(() => {
+   
+   feedback.style.opacity = '0';
+   
+   setTimeout(() => {
+   
+   feedback.style.display = 'none';
+   
+   }, 500); // Esperar a que la transición termine
+   
+   }, 2000);
+   
+   });
+   
+   });
+   
+   }
+   
+   
+   
+   // --- Lógica para el Modal de Compartir ---
+   
+   const abrirModalBtn = document.getElementById('compartir-button');
+   
+   const modal = document.getElementById('modalCompartir');
+   
+   const cerrarModalBtn = document.getElementById('cerrarModal');
+   
+   
+   
+   if (abrirModalBtn && modal && cerrarModalBtn) {
+   
+   abrirModalBtn.addEventListener('click', () => {
+   
+   modal.style.display = 'flex';
+   
+   });
+   
+   
+   
+   cerrarModalBtn.addEventListener('click', () => {
+   
+   modal.style.display = 'none';
+   
+   });
+   
+   
+   
+   modal.addEventListener('click', (e) => {
+   
+   if (e.target === modal) {
+   
+   modal.style.display = 'none';
+   
+   }
+   
+   });
+   
+   }
+   
+   
+   
+   //Logica para el mensaje de error o codigo canjeado correctamente
+   
+   const textoError = document.getElementById('mensaje-error');
+   
+   const textoCorrect = document.getElementById('mensaje-success');
+   
+   const botonCanjear = document.getElementById('btnCanjear');
+   
+   
+   
+   if (textoError) {
+   
+   textoError.style.opacity = '1'
+   
+   setTimeout(() => {
+   
+   textoError.style.opacity = '0';
+   
+   setTimeout(() => {
+   
+   textoError.style.opacity = 'none'
+   
+   textoError.style.display = 'none';
+   
+   }, 600);
+   
+   }, 3000); // 5000 milisegundos = 5 segundos
+   
+   }
+   
+   if(textoCorrect){
+   
+   textoCorrect.style.opacity = '1'
+   
+   setTimeout(() => {
+   
+   textoCorrect.style.opacity = '0';
+   
+   setTimeout(() => {
+   
+   textoCorrect.style.opacity = 'none'
+   
+   textoCorrect.style.display = 'none';
+   
+   }, 600);
+   
+   }, 3000); // 5000 milisegundos = 5 segundos
+   
+   }
+   
+   });
+   
+   
+   
+   
+   
+   
+   
+</script>
+@endpush
