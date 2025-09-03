@@ -150,10 +150,10 @@ class CuponesService implements ICuponesService
     {
 
         $cupon = Coupon::where('codigo', $codigo)->first();
-        $existe = User::where('id', $codigo->referencia)->exists();
+        $existe = User::where('id', $cupon->referencia)->exists();
         if ($existe) {
             UserCoupon::firstOrCreate(
-                ['coupon_id' => $cupon->id, 'user_id' => $codigo->referencia],
+                ['coupon_id' => $cupon->id, 'user_id' => $cupon->referencia],
                 ['estado' => 'activo', 'cantidad' => $cupon->cantidad]
             );
         }
