@@ -561,7 +561,16 @@ public function getTutors($data = array()) {
                 });
             });
         }
-        // 4. Cargamos las relaciones y realizamos los cálculos.
+
+        // 4. Aplicamos la lógica de ordenamiento personalizado aquí.
+        // Esto ordena a 'Gabriel Alpiry Hurtado' primero si su nombre coincide,
+        // y luego continúa con el resto de la consulta.
+        $tutorsQuery->orderByRaw(
+            "CASE WHEN EXISTS (\n            SELECT 1 FROM profiles p WHERE p.user_id = users.id AND p.first_name = ? AND p.last_name = ?\n        ) THEN 0 ELSE 1 END",
+            ['Gabriel', 'Alpiry Hurtado']
+        );
+
+        // 5. Cargamos las relaciones y realizamos los cálculos.
         $tutors = $tutorsQuery->with([
                 'profile:id,user_id,first_name,last_name,slug,image,description,native_language',
                 'languages:id,name',
@@ -572,19 +581,19 @@ public function getTutors($data = array()) {
             ->orderByDesc('avg_rating')
             ->paginate($perPage);
 
-        // 5. Mapeamos los resultados para darles el formato deseado.
+        // 6. Mapeamos los resultados para darles el formato deseado. Esto no cambia.
         $profiles = $tutors->map(function ($tutor) use ($search) {
             $profile = $tutor->profile;
             $materias = [];
             $grupos = [];
-
             $allSubjects = [];
-            $matchedSubjects = []; 
+            $matchedSubjects = [];
+
             foreach ($tutor->userSubjects as $userSubject) {
                 if ($userSubject->subject) {
                     $subjectName = $userSubject->subject->name;
                     $allSubjects[] = $subjectName;
-                    
+
                     // Si hay una búsqueda, revisamos si esta materia coincide
                     if ($search && Str::contains(strtolower($subjectName), strtolower($search))) {
                         $matchedSubjects[] = $subjectName;
@@ -619,7 +628,7 @@ public function getTutors($data = array()) {
             ];
         });
 
-        // 6. Devolvemos la colección paginada con los datos formateados. Esto no cambia.
+        // 7. Devolvemos la colección paginada con los datos formateados. Esto no cambia.
         $result = $tutors;
         $result->setCollection($profiles);
         return $result;

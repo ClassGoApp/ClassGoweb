@@ -289,6 +289,67 @@
 .buscartutor-tutor-btn-blue:hover {
   opacity: 0.9;
 }
+/* =================== buscartutor Mayo de 2000px =================== */
+@media (min-width: 1400px) {
+  /* Estilos para el contenedor principal de la sección */
+  .buscartutor-hero-section {
+      padding: 7rem 0rem 0rem 0rem; /* Un padding generoso para el espacio exterior */
+  }
+
+  /* Contenedor central que limita el ancho */
+  .buscartutor-container {
+      max-width: 1500px;
+      margin: 0 auto; /* Centra el contenedor en la página */
+      padding: 0 2rem; /* Padding horizontal para evitar que el contenido toque los bordes */
+  }
+
+  /* Contenedor principal para la cuadrícula de texto e imagen */
+  .buscartutor-hero-grid {
+      display: flex;
+      justify-content: space-between; /* Distribuye el espacio entre el texto y la imagen */
+      align-items: center; /* Centra verticalmente los elementos */
+      gap: 4rem; /* Espacio entre las columnas */
+  }
+
+  /* Estilos para el texto de la columna */
+  .buscartutor-hero-label {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+  }
+
+  .buscartutor-hero-title {
+      font-size: 4rem; /* Título grande y legible */
+      line-height: 1.2; /* Altura de línea ajustada para mejor legibilidad */
+      font-weight: bold;
+      margin-bottom: 1.5rem;
+  }
+
+  .buscartutor-hero-desc {
+      font-size: 2rem;
+      line-height: 1.6;
+      max-width: 600px; /* Limita el ancho del párrafo para mejor lectura */
+  }
+
+  /* La clase 'mobile-only' se oculta en escritorios */
+  .mobile-only {
+      display: none;
+  }
+
+  /* Estilos para el contenedor de la imagen */
+  .buscartutor-hero-img-col {
+      flex-shrink: 0; /* Evita que la imagen se encoja */
+      width: 50%; /* Ocupa la mitad del espacio */
+      text-align: right; /* Alinea la imagen a la derecha */
+  }
+
+  /* Estilos de la imagen en sí */
+  .buscartutor-hero-img {
+      max-width: 100%; /* La imagen no excede el ancho de su contenedor */
+      height: auto; /* Mantiene la proporción */
+      display: block;
+  }
+}
+
 
 /* =================== buscartutor-tablet.css =================== */
 @media (min-width: 601px) and (max-width: 1024px) {

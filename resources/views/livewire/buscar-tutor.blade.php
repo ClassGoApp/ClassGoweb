@@ -1,24 +1,6 @@
 <div class="container-buscartuto">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 
-     {{-- <!-- Hero Section -->
-    <section class="buscartutor-hero-section">
-        <div class="buscartutor-container">
-             <div class="buscartutor-hero-grid">
-                <div>
-                    <p class="buscartutor-hero-label">Tutores / Encontrar tutor</p>
-                    <h1 class="buscartutor-hero-title">Descubra un tutor en línea capacitado para sus estudios</h1>
-                    <p class="buscartutor-hero-desc">Domina tus estudios con tutorías personalizadas en línea impartidas por educadores expertos. Nuestros tutores capacitados están aquí para ayudarlo a construir bases sólidas y alcanzar sus objetivos académicos.</p>
-                    <p class="mobile-only">
-                        Nuestros tutores capacitados están aquí para ayudarlo a construir bases sólidas y alcanzar sus objetivos académicos.
-                    </p>
-                </div>
-                <div class="buscartutor-hero-img-col">
-                     <img src="{{ asset('storage/optionbuilder/uploads/740102-17-2025_0859pmTugo-saludando.gif') }}" alt="Mascota de ClassGo" class="buscartutor-hero-img" onerror="this.onerror=null; this.src='https://placehold.co/300x300/ffffff/023047?text=ClassGo';">
-                </div>
-            </div>
-        </div>
-    </section>  --}}
     
     <!-- Componente de búsqueda y listado de tutores -->
     <section class="buscartutor-search-section">
@@ -55,10 +37,12 @@
             </div>
         </div>
     </section>
+    
     <section class="buscartutor-tutorlist-section">
         <div class="buscartutor-tutorlist-space">
+            {{-- ¡Aquí está la solución! --}}
             @forelse ($profiles as $profile)
-                <div class="buscartutor-tutor-card">
+                <div class="buscartutor-tutor-card" wire:key="tutor-{{ $profile['user_id'] }}">
                     <a href="{{ route('tutor', ['slug' => $profile['slug']]) }}">
                         <img 
                         src="{{ $profile['image'] ? asset('storage/' . $profile['image']) : asset('images/tutors/default.png') }}" 
@@ -71,17 +55,14 @@
                             <span>⭐ {{ $profile['avg_rating'] }}/5.0 ({{ $profile['total_reviews'] }} reseñas)</span>
                                 <div class="tutor-subjects-display">
                                     
-                                    {{-- CASO 1: Si la búsqueda coincidió con alguna materia, la mostramos --}}
                                     @if (!empty($profile['matched_subjects']))
                                         
                                         <span class="subjects-matched">
                                             <span>•</span> <strong>{{ implode(', ', $profile['matched_subjects']) }}</strong>
                                         </span>
 
-                                    {{-- CASO 2: Si no hubo coincidencias (o no hay búsqueda), mostramos el resumen --}}
                                     @else
                                         @php
-                                            // Usamos la colección de Laravel para un manejo más fácil
                                             $subjects = collect($profile['all_subjects']);
                                             $firstTwo = $subjects->take(2)->implode(', ');
                                             $moreCount = $subjects->count() > 2 ? $subjects->count() - 2 : 0;
