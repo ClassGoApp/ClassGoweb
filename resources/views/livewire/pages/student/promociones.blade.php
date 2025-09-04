@@ -10,28 +10,24 @@
 @endpush
 
     <main class="main-content">
+
         
         <div class="main-grid-container">
+            <div class="mobile">
+                @if (session('error'))
+                <p class="message-error" style="display: block; opacity: 1;">{{ session('error') }}</p>
+                @endif
+
+                @if (session('success'))
+                    <p class="message-success">{{ session('success') }}</p>
+                @endif
+
+            </div>
+            
+
             <div class="coupons-section">
                 <h3 class="coupons-title">Mis cupones</h3>
                 <div class="coupons-list-container">
-                    
-                    {{-- <div class="coupon-card">
-                        <div class="coupon-image-wrapper">
-                            <img src="{{ asset('images/home/Tugo_With_Phone.webp') }}" alt="Tugo with Phone">
-                        </div>
-                        <div class="coupon-info-wrapper">
-                            <div class="info-text">
-                                <h2 class="coupon-value">2.00%</h2>
-                                <p class="coupon-description">Tienes <strong>2.00% de regalo</strong> en tu próxima tutoría</p>
-                                <p class="coupon-validity">Válido hasta el 04 de Sept, 2025</p>
-                            </div>
-                            <div class="info-disponibilidad">
-                                <span class="coupon-status">disponible</span>
-                                <p class="coupon-amount">Cantidad: 2</p>
-                            </div>
-                        </div>
-                    </div> --}}
 
                     @if ($cupones->isEmpty())
                         <div class="empty-state-message">
@@ -59,15 +55,15 @@
                                         <p class="coupon-description">Tienes <strong>{{ round($cupon->descuento )}}% de descuento</strong> en tu próxima tutoría</p>
                                         <p class="coupon-validity">Válido hasta el
                                             {{ $cupon->fecha_caducidad ? \Carbon\Carbon::parse($cupon->fecha_caducidad)->format('d/m/Y') : 'Sin fecha' }}
-                                            @if ($vencido) <span>(Vencido)</span> @endif
+                                            
                                         </p>
                                         
                                     </div>
                                     <div class="info-disponibilidad">
-                                        @if ($canjeado)
-                                        <span class="coupon-status">Disponible</span>
+                                        @if ($vencido) <span class="coupon-status-red">Vencido</span> 
+                                        @else <span class="coupon-status">Disponible</span>
                                         @endif
-                                        <p class="coupon-amount">Cantidad: {{ $cupon->pivot->cantidad }} </p>
+                                        <p class="coupon-amount">Cantidad:{{ $cupon->pivot->cantidad }} </p>
                                     </div>
                                 </div>
                             </div>
