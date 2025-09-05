@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="{{ asset('css/estilos/buscartutor.css') }}">
     <link rel="stylesheet" href="{{ asset('css/estilos/tutor-perfil.css') }}">
     <link rel="stylesheet" href="{{ asset('css/estilos/terminos.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/estilos/error404.css') }}">
     <link rel="stylesheet" href="{{ asset('css/promociones.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

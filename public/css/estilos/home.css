@@ -1517,6 +1517,30 @@ cursor: not-allowed;
     /* Reducir espacio para botones */
   }
 
+  .carousel-track{
+    background: red;
+    height: 300px;
+  }
+
+  .tutor-card {
+    /* Propiedades del carrusel */
+    flex: 0 0 calc(33.333% - 20px); /* Muestra 3 tarjetas, ajustando por el margen */
+    box-sizing: border-box;
+    padding: 0; /* Eliminamos el padding del contenedor padre para que la tarjeta use su propio padding interno */
+    margin: 10px;
+
+    /* Propiedades de la tarjeta del tutor */
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    background: #fff;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    height: 200px;
+    width: 100%;
+}
+
 
   /* ------Guía paso a paso -----*/
   .potencial-container {
@@ -1772,6 +1796,15 @@ cursor: not-allowed;
 /* Estilos para Mobile - Se activan a 768px o menos */
 /* ------------------------------------------- */
 @media (max-width: 768px) {
+  .hero-container{
+    padding-top: 6rem;
+  }
+    .hero-container img{
+      height: 280px; /* Define la altura máxima que deseas. Ajusta este valor. */
+      width: 100%; /* Ocupa el 100% del ancho disponible en su contenedor */
+      object-fit: cover; /* ¡Esta es la clave! Recorta la imagen para que quepa en el espacio */
+      object-position: center; 
+    }
     .cards-container {
         /* Carrusel con Flexbox */
         display: flex;
@@ -1804,3 +1837,23 @@ cursor: not-allowed;
         scrollbar-width: none; /* Oculta la barra de desplazamiento en Firefox */
     }
 }
+
+@media (max-width: 380px) {
+  .hero{
+    padding: 0rem;
+  }
+  .hero-title-arriba{
+    font-size: 1.6rem !important;
+
+  }
+  .hero-container{
+    padding-top: 3.4rem;
+  }
+  .hero-container img{
+    height: 280px; /* Define la altura máxima que deseas. Ajusta este valor. */
+    width: 100%; /* Ocupa el 100% del ancho disponible en su contenedor */
+    object-fit: cover; /* ¡Esta es la clave! Recorta la imagen para que quepa en el espacio */
+    object-position: center; 
+  }
+}
+

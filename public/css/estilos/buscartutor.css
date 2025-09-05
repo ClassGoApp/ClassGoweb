@@ -309,10 +309,10 @@
 /* Estilos del ícono */
 .no-results-icon-wrapper {
     margin: 0 auto 1.5rem; /* 24px */
-    background-color: #fef3c7; /* yellow-100 */
+    background-color: white; /* yellow-100 */
     border-radius: 9999px; /* rounded-full */
-    height: 5rem; /* 80px */
-    width: 5rem; /* 80px */
+    height: 10rem; /* 80px */
+    width: 10rem; /* 80px */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -692,6 +692,17 @@
   }
   
   .buscartutor-tutor-desc{
+    display: none;
+  }
+
+  /*no resultlados*/
+  .no-results-icon-wrapper {
+    background-color: white; /* yellow-100 */
+    height: 5rem; /* 80px */
+    width: 5rem; /* 80px */
+  
+  }
+  .no-results-suggestions-box{
     display: none;
   }
 }
