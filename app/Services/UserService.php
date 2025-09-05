@@ -45,6 +45,8 @@ class UserService {
 
     public function getAccountSetting($key = null)
     {
+
+     $this->user = Auth::user();   
     return $this->user->accountSetting()
         ->when($key, function($query, $key) {
             return $query->where('meta_key', $key)->pluck('meta_value', 'meta_key');
@@ -57,6 +59,7 @@ class UserService {
     public function setAccountSetting($key, $value)
     {
         // Buscamos un registro existente que pertenezca a este usuario con esa meta_key
+         $this->user = Auth::user();   
         $setting = $this->user->accountSetting()->where('meta_key', $key)->first();
 
         if ($setting) {

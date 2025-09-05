@@ -97,11 +97,11 @@
                 wire:click="addEducation" />
         @endif
     @endif       
-        <div wire:ignore.self class="modal fade am-educationpopup" id="education-popup" data-bs-backdrop="static">
+        <div wire:ignore.self class="modal fade am-educationpopup" id="education-popup" data-bs-backdrop="static" >
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="am-modal-header">
-                        <h2>
+                        <h2 style="color:black !important;">
                             @if ($updateMode)
                                 {{ __('education.update_new_education') }}
                             @else
@@ -116,14 +116,14 @@
                         <form wire:submit="storeEducation" class="am-themeform">
                             <fieldset>
                                 <div class="form-group @error('form.course_title') am-invalid @enderror">
-                                    <x-input-label for="name" class="am-important" :value="__('education.degree')" />
+                                    <x-input-label style="color:black !important;" for="name" class="am-important" :value="__('education.degree')"  />
                                     <x-text-input wire:model="form.course_title" id="course_title" name="course_title"
                                         placeholder="{{ __('education.degree_placeholder') }}" type="text" autofocus
                                         autocomplete="name" />
                                     <x-input-error field_name="form.course_title" />
                                 </div>
                                 <div class="form-group @error('form.institute_name') am-invalid @enderror">
-                                    <x-input-label for="name" class="am-important"
+                                    <x-input-label style="color:black !important;" for="name" class="am-important"
                                         :value="__('education.university')" />
                                     <x-text-input wire:model="form.institute_name" id="institute_name"
                                         name="institute_name" placeholder="{{ __('education.university_placeholder') }}"
@@ -132,7 +132,7 @@
                                 </div>
                                 <div class="form-group form-group-two-wrap">
                                     <div @class(['am-invalid'=> $errors->has('form.country')])>
-                                        <x-input-label for="country" class="am-important"
+                                        <x-input-label style="color:black !important;" for="country" class="am-important"
                                             :value="__('education.country')" />
                                         <span class="am-select" wire:ignore>
                                             <select data-componentid="@this" wire:key="{{ time() }}"
@@ -143,7 +143,7 @@
                                         <x-input-error field_name="form.country" />
                                     </div>
                                     <div class="@error('form.city') am-invalid @enderror">
-                                        <x-input-label class="am-important" for="country"
+                                        <x-input-label style="color:black !important;" class="am-important" for="country"
                                             :value="__('education.city')" />
                                         <x-text-input wire:model="form.city" id="city" name="city"
                                             placeholder="{{ __('education.city_placeholder') }}" autofocus
@@ -152,7 +152,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <x-input-label for="name" class="am-important" :value="__('education.date')" />
+                                    <x-input-label  style="color:black !important;" for="name" class="am-important" :value="__('education.date')" />
                                     <div class="form-group-two-wrap">
                                         <div class="@error('form.start_date') am-invalid @enderror">
                                             <x-text-input wire:model="form.start_date" class="flat-date date"
@@ -163,7 +163,7 @@
                                             <x-input-error field_name="form.start_date" />
                                         </div>
                                         <div class="@error('form.end_date') am-invalid @enderror">
-                                            <x-text-input wire:model="form.end_date" class="flat-date date"
+                                            <x-text-input  wire:model="form.end_date" class="flat-date date"
                                                 id="end_date" name="end_date"
                                                 placeholder="{{ __('education.end_date_placeholder') }}"
                                                 data-format="Y-m-d" type="text" id="datepicker" autofocus
@@ -175,13 +175,13 @@
                                 <div class="form-group">
                                     <div class="am-checkbox">
                                         <input wire:model="form.ongoing" type="checkbox" id="ongoing">
-                                        <label for="ongoing">{{__('education.checkbox_title')}}</label>
+                                        <label style="color:black !important;" for="ongoing">{{__('education.checkbox_title')}}</label>
                                         <x-input-error field_name="form.ongoing" />
                                     </div>
                                 </div>
                                 <div class="form-group @error('form.description') am-invalid @enderror">
                                     <div class="am-label-wrap">
-                                        <x-input-label class="am-important" for="description"
+                                        <x-input-label style="color:black !important;" class="am-important" for="description"
                                             :value="__('education.description')" />
                                         @if(setting('_ai_writer_settings.enable_on_education_settings') == '1')
                                             <button type="button" class="am-ai-btn" data-bs-toggle="modal" data-bs-target="#aiModal"  data-prompt-type="education" data-parent-model-id="education-popup" data-target-selector="#description" data-target-summernote="true">

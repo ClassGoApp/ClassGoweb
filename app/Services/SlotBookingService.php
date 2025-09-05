@@ -57,15 +57,22 @@ class SlotBookingService implements interfaces\ISlotBookingService
 
         if ($session_fee == 0) {
 
-
-
+            $this->aceptartutoria($booking);
+        
         }
-
         return $booking;
-
-
     }
 
+
+
+
+     public function aceptartutoria($tutoria)
+     {
+         $tutoria->status = 1; // Cambiar el estado a 'aceptado'
+         $link=$this->generarlink($tutoria);
+         $tutoria->meeting_link = $link;
+         $tutoria->save();
+     }
 
 
 
