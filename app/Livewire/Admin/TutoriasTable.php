@@ -132,7 +132,6 @@ class TutoriasTable extends Component
                 $link = $this->tutoriaaceptada($tutoria);
                 $tutoria->meeting_link = $link;
             }
-
             // Si se creó un enlace de Zoom, guardar la tutoría nuevamente
             if ($tutoria->meeting_link) {
                 $tutoria->save();
@@ -148,30 +147,9 @@ class TutoriasTable extends Component
 
     public function tutoriaaceptada($tutoria)
     {
-
-       /*  $googlemeetservice = new GoogleMeetService;
-        // Formatear la fecha correctamente para Zoom (ISO 8601)
-        $startTimeCarbon = \Carbon\Carbon::parse($tutoria->start_time, 'America/La_Paz');
-        $durationInMinutes = 20;
-        $meetingData = [
-            'topic' => 'Tutoría',
-            'agenda' => 'Sesión de tutoría',
-            'start_time' => $startTimeCarbon->toIso8601String(),
-            'end_time' => $startTimeCarbon->copy()->addMinutes($durationInMinutes)->toIso8601String(),
-            'timezone' => 'America/La_Paz',
-            'duration' => 20, // Duración en minutos
-        ];
-        $user = User::find($tutoria->tutor_id);
-        $link = $googlemeetservice->createMeetingPorTutord($meetingData, $user);
-
-        $mailService = new MailService();
-        $mailService->sendTutoriaNotification($tutoria, $link);
-        return $link; */
         $reservaservice = new SlotBookingService();
         $link = $reservaservice->generarlink($tutoria);
-
-
-
+          return $link;
     }
 
     public function clearFilters()

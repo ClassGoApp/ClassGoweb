@@ -124,7 +124,7 @@
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="am-modal-header">
-                        <h2>
+                        <h2 style="color:black !important;">
                             @if ($updateMode)
                                 {{ __('experience.update_new_experience') }}
                             @else
@@ -139,7 +139,7 @@
                         <form wire:submit="storeExperience" class="am-themeform">
                             <fieldset>
                                 <div class="form-group @error('form.title') am-invalid @enderror">
-                                    <x-input-label for="title" class="am-important"
+                                    <x-input-label style="color:black !important;" for="title" class="am-important"
                                         :value="__('experience.job_title')" />
                                     <x-text-input wire:model="form.title" id="title" name="title"
                                         placeholder="{{ __('experience.job_title_placeholder') }}" type="text" autofocus
@@ -147,7 +147,7 @@
                                     <x-input-error field_name="form.title" />
                                 </div>
                                 <div class="form-group @error('form.employment_type') am-invalid @enderror">
-                                    <x-input-label for="employment_type" class="am-important"
+                                    <x-input-label style="color:black !important;" for="employment_type" class="am-important"
                                         :value="__('experience.employment_type')" />
                                     <span class="am-select" wire:ignore>
                                         <select wire:key="{{ time().'-types' }}" id="types"
@@ -156,14 +156,14 @@
                                     <x-input-error field_name="form.employment_type" />
                                 </div>
                                 <div class="form-group @error('form.company') am-invalid @enderror">
-                                    <x-input-label for="name" class="am-important" :value="__('experience.company')" />
+                                    <x-input-label style="color:black !important;" for="name" class="am-important" :value="__('experience.company')" />
                                     <x-text-input wire:model="form.company" id="company" name="company"
                                         placeholder="{{ __('experience.company_placeholder') }}" type="text" autofocus
                                         autocomplete="name" />
                                     <x-input-error field_name="form.company" />
                                 </div>
                                 <div class="form-group @error('form.location') am-invalid @enderror">
-                                    <x-input-label for="location" class="am-important"
+                                    <x-input-label style="color:black !important;" for="location" class="am-important"
                                         :value="__('experience.location')" />
                                     <span class="am-select" wire:ignore>
                                         <select wire:key="{{ time().'-location' }}" id="locations"
@@ -173,7 +173,7 @@
                                 </div>
                                 <div class="form-group form-group-two-wrap">
                                     <div class="@error('form.country') am-invalid @enderror">
-                                        <x-input-label class="am-important" for="country"
+                                        <x-input-label style="color:black !important;" class="am-important" for="country"
                                             :value="__('experience.country')" />
                                         <span class="am-select" wire:ignore>
                                             <select wire:key="{{ time().'-country' }}" id="countries"
@@ -182,7 +182,7 @@
                                         <x-input-error field_name="form.country" />
                                     </div>
                                     <div class="@error('form.city') am-invalid @enderror">
-                                        <x-input-label class="am-important" for="country"
+                                        <x-input-label style="color:black !important;" class="am-important" for="country"
                                             :value="__('experience.city')" />
                                         <x-text-input wire:model="form.city" id="city" name="city"
                                             placeholder="{{ __('experience.city_placeholder') }}" autofocus
@@ -191,7 +191,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <x-input-label for="date" class="am-important" :value="__('experience.date')" />
+                                    <x-input-label  style="color:black !important;" for="date" class="am-important" :value="__('experience.date')" />
                                     <div class="form-group-two-wrap">
                                         <div class="@error('form.start_date') am-invalid @enderror">
                                             <x-text-input wire:model="form.start_date" class="flat-date" id="startdate"
@@ -214,13 +214,13 @@
                                 <div class="form-group">
                                     <div class="am-checkbox">
                                         <input wire:model="form.is_current" type="checkbox" id="is_current">
-                                        <label for="is_current">{{__('experience.checkbox_title')}}</label>
+                                        <label style="color:black !important;" for="is_current">{{__('experience.checkbox_title')}}</label>
                                         <x-input-error field_name="form.is_current" />
                                     </div>
                                 </div>
                                 <div class="form-group @error('form.description') am-invalid @enderror">
                                     <div class="am-label-wrap">
-                                        <x-input-label class="am-important" for="description"
+                                        <x-input-label style="color:black !important;" class="am-important" for="description"
                                             :value="__('experience.description')" />
                                         @if(setting('_ai_writer_settings.enable_on_experience_settings') == '1')
                                             <button type="button" class="am-ai-btn" data-bs-toggle="modal" data-bs-target="#aiModal"  data-prompt-type="experience" data-parent-model-id="experience-popup" data-target-selector="#description" data-target-summernote="true">

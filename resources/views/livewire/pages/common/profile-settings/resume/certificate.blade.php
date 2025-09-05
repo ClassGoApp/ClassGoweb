@@ -1,4 +1,4 @@
-<div class="am-resumebox_content" wire:init="loadData">
+<div style="color:black !important;" class="am-resumebox_content" wire:init="loadData">
     @slot('title')
         {{ __('certificate.certificate_details') }}
     @endslot
@@ -7,8 +7,8 @@
         @include('skeletons.certificate')
     @else
         @if(!$certificates->isEmpty())
-            <div class="am-title_wrap">
-                <div class="am-title">
+            <div style="color:black !important;" class="am-title_wrap">
+                <div style="color:black !important;" class="am-title">
                     <h2>{{ __('certificate.certificate_details') }}</h2>
                     <p>{{ __('certificate.certificate_message') }}</p>
                 </div>
@@ -103,7 +103,7 @@
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="am-modal-header">
-                        <h2>
+                        <h2 style="color:black !important;">
                             @if ($updateMode)
                             {{ __('certificate.update_new_certificate') }}
                             @else
@@ -118,7 +118,7 @@
                         <form wire:submit="storeCertificate" class="am-themeform">
                             <fieldset>
                                 <div class="form-group">
-                                    <x-input-label for="image" class="am-important"
+                                    <x-input-label style="color:black !important;" for="image" class="am-important"
                                         :value="__('certificate.image_title')" />
                                     <div class="am-uploadoption" x-data="{isUploading:false}" wire:key="uploading-profile-{{ time() }}">
                                         <div class="tk-draganddrop"
@@ -132,7 +132,7 @@
                                                 x-ref="file_upload"
                                                 accept="{{ !empty($allowImgFileExt) ?  join(',', array_map(function($ex){return('.'.$ex);}, $allowImgFileExt)) : '*' }}"
                                                 x-on:change=" isUploading = true; $wire.upload('form.image', $refs.file_upload.files[0])"/>
-                                            <label for="at_upload_photo" class="am-uploadfile">
+                                            <label style="color:black !important;" for="at_upload_photo" class="am-uploadfile">
                                                 <span class="am-dropfileshadow">
                                                     <svg class="am-border-svg "><rect width="100%" height="100%" rx="12"></rect></svg>
                                                     <i class="am-icon-plus-02"></i>
@@ -168,7 +168,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group @error('form.title') am-invalid @enderror">
-                                    <x-input-label for="title" class="am-important"
+                                    <x-input-label style="color:black !important;" for="title" class="am-important"
                                         :value="__('certificate.certificate_title')" />
                                     <x-text-input wire:model="form.title" id="title" name="title"
                                         placeholder="{{ __('certificate.title_placeholder') }}" type="text" autofocus
@@ -176,7 +176,7 @@
                                     <x-input-error field_name="form.title" />
                                 </div>
                                 <div class="form-group @error('form.institute_name') am-invalid @enderror">
-                                    <x-input-label for="institute_name" class="am-important"
+                                    <x-input-label style="color:black !important;" for="institute_name" class="am-important"
                                         :value="__('certificate.university')" />
                                     <x-text-input wire:model="form.institute_name" id="institute_name"
                                         name="institute_name"
@@ -186,7 +186,7 @@
                                 </div>
                                 <div class="form-group form-group-two-wrap">
                                     <div class="@error('form.issue_date') am-invalid @enderror">
-                                        <x-input-label for="issue_date" class="am-important"
+                                        <x-input-label style="color:black !important;" for="issue_date" class="am-important"
                                             :value="__('certificate.issue_date')" />
                                         <x-text-input wire:model="form.issue_date" class="flat-date" id="issue_date"
                                             name="issue_date"
@@ -196,7 +196,7 @@
                                         <x-input-error field_name="form.issue_date" />
                                     </div>
                                     <div class="@error('form.expiry_date') am-invalid @enderror">
-                                        <x-input-label for="expiry_date" class="am-important"
+                                        <x-input-label style="color:black !important;" for="expiry_date" class="am-important"
                                             :value="__('certificate.expiry_date')" />
                                         <x-text-input wire:model="form.expiry_date" class="flat-date" id="expiry_date"
                                             name="expiry_date"
@@ -208,7 +208,7 @@
                                 </div>
                                 <div class="form-group @error('form.description') am-invalid @enderror">
                                     <div class="am-label-wrap">
-                                        <x-input-label for="description" :value="__('certificate.description')" />
+                                        <x-input-label style="color:black !important;" for="description" :value="__('certificate.description')" />
                                         @if(setting('_ai_writer_settings.enable_on_awards_settings') == '1')
                                             <button type="button" class="am-ai-btn" data-bs-toggle="modal" data-bs-target="#aiModal"  data-prompt-type="awards" data-parent-model-id="certificate-popup" data-target-selector="#description" data-target-summernote="true">
                                                 <img src="{{ asset('images/ai-icon.svg') }}" alt="AI">

@@ -284,7 +284,7 @@ class Reserva extends Component
     {
 
         $service = $this->cuponservice ?? app(ICuponesService::class);
-        $isAugustPromotion = $this->currentDate->month === 8;
+        $isAugustPromotion = $this->currentDate->month === 9;
 
         if ($isAugustPromotion || (!empty($this->cuponCode))) {
             $this->validate([

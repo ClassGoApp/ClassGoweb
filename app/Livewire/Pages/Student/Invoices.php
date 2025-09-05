@@ -39,7 +39,7 @@ class Invoices extends Component
     #[Layout('layouts.app')]
     public function render()
     {
-        $tutorias = $this->slotBookingService->getSlotBookingByUserId()->paginate(10);
+        $tutorias = $this->slotBookingService->getSlotBookingByUserId()->paginate(8);
         return view('livewire.pages.student.invoices', compact('tutorias'));
     }
 

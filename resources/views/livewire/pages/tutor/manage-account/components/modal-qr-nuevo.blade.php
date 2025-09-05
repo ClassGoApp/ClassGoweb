@@ -88,7 +88,7 @@
                                         <p>o <span class="upload-link">haz clic para seleccionar</span></p>
                                     </div>
                                     <div class="upload-requirements">
-                                        <small>PNG, JPG, GIF • Máximo 2MB</small>
+                                        <small>PNG, JPG, GIF • Máximo 5MB</small>
                                     </div>
                                 </div>
                             @endif
