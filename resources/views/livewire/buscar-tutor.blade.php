@@ -91,7 +91,42 @@
                     </div>
                 </div>
             @empty
-                <div class="text-center py-8 text-gray-500">No se encontraron tutores para los criterios de búsqueda.</div>
+                <div id="no-results" class="no-results-card">
+                    <div class="no-results-icon-wrapper">
+                        <svg class="no-results-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                        </svg>
+                    </div>
+
+                    <h2 class="no-results-title">
+                        ¡Vaya! No encontramos resultados.
+                    </h2>
+                    <p class="no-results-message">
+                        Pero no te preocupes, ¡estamos aquí para ayudarte! Es posible que el tutor o la materia que buscas no esté disponible, o que haya un error de escritura.
+                    </p>
+
+                    <div class="no-results-suggestions-box">
+                        <h3 class="no-results-suggestions-title">¿Qué puedes hacer?</h3>
+                        <ul class="no-results-suggestions-list">
+                            <li class="no-results-suggestion-item">
+                                <span class="no-results-check-icon">✓</span>
+                                <strong>Revisa si escribiste bien&nbsp;</strong> el nombre.
+                            </li>
+                            <li class="no-results-suggestion-item">
+                                <span class="no-results-check-icon">✓</span>
+                                    Prueba con una materia similar o &nbsp;<strong>más general</strong>.
+                            </li>
+                            <li class="no-results-suggestion-item">
+                                <span class="no-results-check-icon">✓</span>
+                                <strong>¡Ponte en contacto con nosotros!&nbsp;</strong> Dinos, necesitas alguna materia en específica?
+                            </li>
+                        </ul>
+                    </div>
+
+                    <a href="https://wa.link/8f8z6i" class="no-results-contact-btn" target="_blank">
+                        Contáctanos
+                    </a>
+                </div>
             @endforelse
         </div>
         <div class="buscartutor-pagination">
