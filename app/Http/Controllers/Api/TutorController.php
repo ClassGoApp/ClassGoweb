@@ -271,10 +271,15 @@ class TutorController extends Controller
     public function getFavouriateTutors($tutors)
     {
         $favoritesTutor = [];
-        if (Auth::check()) {
-            $user           = Auth::user();
-            $userService    = new UserService($user);
-            $favoritesTutor = $userService->getFavouriteUsers()->get(['favourite_user_id'])?->pluck('favourite_user_id')->toArray();
+        if (Auth::check() && Auth::user()) {
+            try {
+                $user           = Auth::user();
+                $userService    = new UserService($user);
+                $favoritesTutor = $userService->getFavouriteUsers()->get(['favourite_user_id'])?->pluck('favourite_user_id')->toArray();
+            } catch (\Exception $e) {
+                Log::error('Error obteniendo favoritos del usuario: ' . $e->getMessage());
+                $favoritesTutor = [];
+            }
         }
 
         if (is_array($tutors) || $tutors instanceof \Illuminate\Support\Collection) {

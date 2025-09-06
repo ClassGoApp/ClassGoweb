@@ -13,8 +13,8 @@ class UserService {
 
     public $user;
 
-    public function __construct() {
-       
+    public function __construct($user = null) {
+        $this->user = $user;
     }
 
     public function addToFavourite($favouriteUserId) {
@@ -26,10 +26,15 @@ class UserService {
     }
 
     public function removeFavouriteUser($favouriteUserId) {
-        $this->user->favouriteUsers()->detach($favouriteUserId);
+        if ($this->user) {
+            $this->user->favouriteUsers()->detach($favouriteUserId);
+        }
     }
 
     public function getFavouriteUsers() {
+        if (!$this->user) {
+            return collect(); // Devolver una colección vacía si no hay usuario
+        }
         return $this->user->favouriteUsers();
     }
 
@@ -38,9 +43,10 @@ class UserService {
     }
 
     public function setUserPassword(string $password): void {
-        $hashedPassword = Hash::make($password);
-        $this->user->update(['password' => $hashedPassword]);
-
+        if ($this->user) {
+            $hashedPassword = Hash::make($password);
+            $this->user->update(['password' => $hashedPassword]);
+        }
     }
 
     public function getAccountSetting($key = null)
