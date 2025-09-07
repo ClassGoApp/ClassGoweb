@@ -31,7 +31,8 @@ class GoogleAuthController extends Controller
             }
 
             // Para móvil, necesitamos una URL personalizada
-            $redirectUri = config('app.url') . '/api/auth/google/callback';
+            // Usar URL específica que coincide con Google Cloud (con www)
+            $redirectUri = 'https://www.classgoapp.com/api/auth/google/callback';
             
             $authUrl = Socialite::driver('google')
                 ->redirectUrl($redirectUri)
@@ -82,8 +83,17 @@ class GoogleAuthController extends Controller
             }
 
             // Intercambiar código por token
+            // Usar URL específica que coincide con Google Cloud (con www)
+            $redirectUri = 'https://www.classgoapp.com/api/auth/google/callback';
+            
+            // Log para debugging
+            Log::info('Google Auth Callback - Redirect URI', [
+                'redirect_uri' => $redirectUri,
+                'code' => $code
+            ]);
+            
             $socialUser = Socialite::driver('google')
-                ->redirectUrl(config('app.url') . '/api/auth/google/callback')
+                ->redirectUrl($redirectUri)
                 ->stateless()
                 ->user();
 
