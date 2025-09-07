@@ -105,9 +105,9 @@ class ProfileController extends Controller
         $url = $rutaBD ? url('public/storage/' . $rutaBD) : null;
         
         // Verificar si el usuario tiene Google Calendar conectado
-        $userService = new \App\Services\UserService($user);
-        $accountSettings = $userService->getAccountSetting();
-        $isCalendarConnected = !empty($accountSettings['google_access_token']);
+        $googleAccessToken = $user->accountSetting()->where('meta_key', 'google_access_token')->first();
+        $googleCalendarInfo = $user->accountSetting()->where('meta_key', 'google_calendar_info')->first();
+        $isCalendarConnected = !empty($googleAccessToken);
         
         return response()->json([
             'id' => $user->id,
@@ -116,7 +116,7 @@ class ProfileController extends Controller
             'name' => $user->name ?? $user->profile->full_name ?? null,
             'email' => $user->email,
             'calendar_connected' => $isCalendarConnected,
-            'calendar_info' => $accountSettings['google_calendar_info'] ?? null
+            'calendar_info' => $googleCalendarInfo ? $googleCalendarInfo->meta_value : null
         ]);
     }
 
