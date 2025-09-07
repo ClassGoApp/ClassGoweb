@@ -100,14 +100,23 @@ class ProfileController extends Controller
         if (!$user || !$user->profile) {
             return response()->json(['message' => 'Usuario o perfil no encontrado'], 404);
         }
+        
         $rutaBD = $user->profile->image ?? null;
         $url = $rutaBD ? url('public/storage/' . $rutaBD) : null;
+        
+        // Verificar si el usuario tiene Google Calendar conectado
+        $userService = new \App\Services\UserService($user);
+        $accountSettings = $userService->getAccountSetting();
+        $isCalendarConnected = !empty($accountSettings['google_access_token']);
+        
         return response()->json([
             'id' => $user->id,
             'profile_image' => $url,
             'profile_image_db_path' => $rutaBD,
             'name' => $user->name ?? $user->profile->full_name ?? null,
             'email' => $user->email,
+            'calendar_connected' => $isCalendarConnected,
+            'calendar_info' => $accountSettings['google_calendar_info'] ?? null
         ]);
     }
 
