@@ -29,7 +29,7 @@ class GoogleCalendarController extends Controller
             $clientCredentials = [
                 'client_id' => config('services.google.client_id'),
                 'client_secret' => config('services.google.client_secret'),
-                'redirect_uri' => config('services.google.redirect_uri'), // URL específica para móvil
+                'redirect_uri' => 'https://www.classgoapp.com/api/google-calendar/callback', // URL específica para móvil
                 'scopes' => [\Google\Service\Calendar::CALENDAR]
             ];
             
@@ -79,7 +79,7 @@ class GoogleCalendarController extends Controller
             $clientCredentials = [
                 'client_id' => config('services.google.client_id'),
                 'client_secret' => config('services.google.client_secret'),
-                'redirect_uri' => config('services.google.redirect_uri'),
+                'redirect_uri' => 'https://www.classgoapp.com/api/google-calendar/callback',
                 'scopes' => [\Google\Service\Calendar::CALENDAR]
             ];
             
