@@ -21,21 +21,27 @@ class GoogleCalendarController extends Controller
     {
         try {
             $user = Auth::user();
+            
+            // Crear servicio con URL específica para móvil
             $googleCalendarService = new GoogleCalender($user);
             
-            $result = $googleCalendarService->getAuthUrl();
+            // Sobrescribir la redirect_uri para móvil
+            $clientCredentials = [
+                'client_id' => config('services.google.client_id'),
+                'client_secret' => config('services.google.client_secret'),
+                'redirect_uri' => config('services.google.redirect_uri'), // URL específica para móvil
+                'scopes' => [\Google\Service\Calendar::CALENDAR]
+            ];
             
-            if ($result['status'] === 200) {
-                return response()->json([
-                    'success' => true,
-                    'auth_url' => $result['url']
-                ]);
-            } else {
-                return response()->json([
-                    'success' => false,
-                    'message' => $result['message'] ?? 'Error al generar URL de autenticación'
-                ], $result['status']);
-            }
+            $client = new \Google\Client($clientCredentials);
+            $client->setAccessType('offline');
+            $client->setPrompt('consent');
+            $authUrl = $client->createAuthUrl();
+            
+            return response()->json([
+                'success' => true,
+                'auth_url' => $authUrl
+            ]);
 
         } catch (\Exception $e) {
             Log::error('Error al obtener URL de autenticación Google Calendar', [
@@ -69,25 +75,39 @@ class GoogleCalendarController extends Controller
                 ], 400);
             }
 
-            $googleCalendarService = new GoogleCalender($user);
-            $tokenInfo = $googleCalendarService->getAccessTokenInfo($code);
+            // Usar la misma configuración que en getAuthUrl
+            $clientCredentials = [
+                'client_id' => config('services.google.client_id'),
+                'client_secret' => config('services.google.client_secret'),
+                'redirect_uri' => config('services.google.redirect_uri'),
+                'scopes' => [\Google\Service\Calendar::CALENDAR]
+            ];
+            
+            $client = new \Google\Client($clientCredentials);
+            $tokenInfo = $client->fetchAccessTokenWithAuthCode($code);
             
             // Guardar token en account settings
             $userService = new UserService($user);
             $userService->setAccountSetting('google_access_token', $tokenInfo);
             
             // Obtener información del calendario primario
-            $calendarInfo = $googleCalendarService->getUserPrimaryCalendar($tokenInfo);
+            $client->setAccessToken($tokenInfo);
+            $service = new \Google\Service\Calendar($client);
+            $calendar = $service->calendarList->get('primary');
             
-            if ($calendarInfo['status'] === 200) {
-                $userService->setAccountSetting('google_calendar_info', $calendarInfo['data']);
-            }
+            $calendarInfo = [
+                'id' => $calendar->getId(),
+                'summary' => $calendar->getSummary(),
+                'minutes' => 30 // Valor por defecto
+            ];
+            
+            $userService->setAccountSetting('google_calendar_info', $calendarInfo);
 
             return response()->json([
                 'success' => true,
                 'message' => 'Google Calendar conectado exitosamente',
                 'data' => [
-                    'calendar_info' => $calendarInfo['data'] ?? null,
+                    'calendar_info' => $calendarInfo,
                     'connected' => true
                 ]
             ]);
