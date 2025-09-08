@@ -489,9 +489,10 @@
 }
 
 .tutor-time-slot-btn:hover {
-    border-color: #0c70b3;
-    color: var(--primary-color);
+    border-color: var(--terciary-color2);
+    color: white;
     font-weight: bold;
+    background-color: var(--terciary-color2);
 }
 
 .tutor-no-availability {
@@ -630,13 +631,13 @@
 .tutor-time-slot:hover {
     background: var(--secundary-color);
     color: #fff;
-    border-color: var(--secundary-color);
+    border-color: var(--terciary-color2);
 }
 
 .tutor-time-exact-btn {
     width: 100%;
     margin-top: 1rem;
-    background: var(--terciary-color2);
+    background: var(--secundary-color);
     color: #fff;
     font-weight: 600;
     padding: 0.7rem 0;
@@ -662,13 +663,15 @@
     font-size: 1.2rem;
     border: none;
     cursor: pointer;
-    transition: var(--transition);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: transform var(--button-transition-duration) ease-in-out, box-shadow var(--button-transition-duration) ease-in-out;
 }
 
 .tutor-pay-btn:hover {
-    opacity: 0.9;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    transform: scale(var(--button-hover-scale));
+    box-shadow: var(--button-hover-shadow);
+}
+.tutor.pay.btn:active{
+    transform: scale(var(--button-active-scale));
 }
 
 .tutor-subtabs-nav {
@@ -800,7 +803,7 @@
     border: none;
     padding: 1rem 0;
     cursor: pointer;
-    transition: var(--transition);
+    transition: transform var(--button-transition-duration) ease-in-out, box-shadow var(--button-transition-duration) ease-in-out;
 }
 
 .tutor-btn-now {
@@ -817,6 +820,14 @@
     background: #e0e0e0;
     color: #555;
 }
+
+.tutor-btn-reservar:hover,
+.tutor-btn-now:hover,
+.tutor-btn-share:hover {
+  transform: scale(var(--button-hover-scale));
+  box-shadow: var(--button-hover-shadow);
+}
+
 
 .tutor-btn-icon {
     width: 24px;
@@ -1089,6 +1100,7 @@ body.modal-open {
 .action-buttons {
     display: flex;
     flex-direction: row;
+    flex-wrap: nowrap;
     gap: 1rem;
     padding-top: 0.5rem;
 }
@@ -1111,20 +1123,27 @@ body.modal-open {
 .btn-primary {
     background-color: var(--terciary-color2);
     color: white;
+    transition: transform var(--button-transition-duration) ease-in-out, box-shadow var(--button-transition-duration) ease-in-out;
 }
 
 .btn-primary:hover {
     background-color: #ffa640;
+    transform: scale(var(--button-hover-scale));
+  box-shadow: var(--button-hover-shadow);
+}
+.btn-primary:active{
+  transform: scale(var(--button-active-scale));
 }
 
-.btn-secondary {
+.btn-primary[type="button"]{
     background-color: #e5e7eb;
     color: #1f2937;
 }
+.btn-primary[type="button"]:hover{
+    background-color: #c4c4c5;
 
-.btn-secondary:hover {
-    background-color: #d1d5db;
 }
+
 
 /*=================== 16 CUPONES ===============*/
 /* Base Styles */

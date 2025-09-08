@@ -209,7 +209,8 @@
 
                     <!--Botones de Acciones-->
                     <div class="action-buttons">
-                        <button type="button" wire:click="closeModal" class="btn btn-secondary">Cancelar</button>
+                        <button type="button" wire:click="closeModal" class="btn btn-primary">Cancelar</button>
+
                         <button type="submit" class="btn btn-primary">Reservar</button>
                     </div>
                 </div>
@@ -219,9 +220,5 @@
     @endif
 </div>
 
-<script>
-    console.log('esta ejecuntadnos el script');
-    
-</script>
 
 
