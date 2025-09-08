@@ -161,6 +161,7 @@
     border-bottom-right-radius: 30px;
 }
 
+/*--------- Imagen de perfil --------*/
 .tutor-profile-img {
     width: 128px;
     height: 128px;
@@ -173,6 +174,8 @@
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
     z-index: 10;
 }
+
+
 
 .tutor-profile-info {
     margin-left: 150px;
