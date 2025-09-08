@@ -57,6 +57,51 @@ class GoogleCalendarController extends Controller
     }
 
     /**
+     * Callback público para Google Calendar (sin autenticación)
+     * 
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function handleCallback(Request $request)
+    {
+        try {
+            $code = $request->input('code');
+            $error = $request->input('error');
+            
+            if ($error) {
+                Log::error('Error en callback de Google Calendar', [
+                    'error' => $error,
+                    'error_description' => $request->input('error_description')
+                ]);
+                
+                return redirect('https://classgoapp.com/calendar-error?error=' . urlencode($error));
+            }
+            
+            if (!$code) {
+                Log::error('Código de autorización no proporcionado en callback');
+                return redirect('https://classgoapp.com/calendar-error?error=no_code');
+            }
+            
+            // Log para debugging
+            Log::info('Google Calendar callback recibido', [
+                'code' => $code,
+                'state' => $request->input('state')
+            ]);
+            
+            // Redirigir a la app con el código
+            return redirect('https://classgoapp.com/calendar-success?code=' . urlencode($code));
+            
+        } catch (\Exception $e) {
+            Log::error('Error en handleCallback de Google Calendar', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            
+            return redirect('https://classgoapp.com/calendar-error?error=server_error');
+        }
+    }
+
+    /**
      * Callback para conectar Google Calendar desde móvil
      * 
      * @param Request $request

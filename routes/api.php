@@ -192,6 +192,9 @@ Route::prefix('auth/google')->group(function () {
 });
 
 // ===== GOOGLE CALENDAR ROUTES =====
+// Ruta pública para el callback de Google (sin middleware auth)
+Route::get('google-calendar/callback', [GoogleCalendarController::class, 'handleCallback']);
+
 Route::prefix('google-calendar')->middleware('auth:sanctum')->group(function () {
     Route::get('auth-url', [GoogleCalendarController::class, 'getAuthUrl']);
     Route::post('connect', [GoogleCalendarController::class, 'connectCalendar']);
