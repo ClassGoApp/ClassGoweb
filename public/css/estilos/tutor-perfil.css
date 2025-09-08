@@ -382,15 +382,31 @@
 /* Estilos para los días del calendario */
 
 /* ==================== 8.1 - Dias-Horarios Disponibles ==================== */
-.tutor-calendar-day.has-availability {
+/* .tutor-calendar-day.has-availability {
     border: 2px solid var(--terciary-color2);
+} */
+.tutor-calendar-day.has-availability {
+    border: none;
+    position: relative;
+}
+.tutor-calendar-day.has-availability::after {
+    content: ''; /* Campo obligatorio para que el pseudo-elemento se muestre */
+    position: absolute; /* Permite posicionar el punto con precisión */
+    bottom: 5px; /* Ajusta la distancia desde la parte inferior del div */
+    left: 50%; /* Centra el punto horizontalmente */
+    transform: translateX(-50%); /* Ajuste final para un centrado perfecto */
+    
+    width: 6px; /* Tamaño del punto */
+    height: 6px; /* Tamaño del punto */
+    background-color: var(--terciary-color2); /* Color del punto */
+    border-radius: 50%; /* ¡Esto lo convierte en un círculo perfecto! */
 }
 
 /* ==================== 8.2 - Dias Seleccionados ==================== */
 .tutor-calendar-day.selected {
     background-color: var(--primary-color);
     color: white;
-    border-color: #3498db;
+    border-color: #db3434;
 }
 
 /* ==================== 8.3 - Btn De Ocupado ==================== */
@@ -430,7 +446,7 @@
 }
 
 .tutor-calendar-day:not(.past):hover {
-    background-color: #f0f0f0;
+    background-color: var(--terciary-color2);
 }
 
 /* ==================== 8.6 - Dias Pasado ==================== */
@@ -438,7 +454,9 @@
     color: #ccc;
     cursor: not-allowed;
 }
-
+.tutor-calendar-day.past.has-availability::after {
+    display: none;
+}
 /* ==================== 8.7 - Dias Reservados ==================== */
 .tutor-calendar-day.booked {
     background-color: #ffe8d6;
@@ -484,10 +502,18 @@
     border-radius: 8px;
 }
 
+.section-reserva{
+    display: flex;
+    flex-flow: column wrap;
+    height: auto;
+}
+
 .tutor-availability-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 2rem;
+    height: 100%;
+
 }
 
 .tutor-calendar-box {
@@ -559,17 +585,22 @@
     color: #fff;
     font-weight: bold;
 }
+.tutor-calendar-day.selected.has-availability::after {
+    display: none;
+}
 
 .tutor-time-selector-col {
-    display: block;
+    display: flex;
+    flex-flow: column nowrap;
+
 }
 
 .tutor-time-selector-box {
-    background: #fff;
+    background: white;
     padding: 1.5rem;
     border-radius: 1rem;
     border: 1px solid #e0e0e0;
-    height: 80%;
+    height: 100%;
 }
 
 .tutor-time-range {
@@ -582,6 +613,8 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 0.5rem;
+    justify-content: center;
+    height: auto;
 }
 
 .tutor-time-slot {
@@ -614,9 +647,10 @@
 }
 
 .tutor-pay-btn-box {
-    margin-top: 2rem;
+    display: flex;
     text-align: center;
-    padding: 0rem 2rem;
+    padding: 2rem 4rem 0rem 4rem;
+    justify-content: center;
 }
 
 .tutor-pay-btn {
