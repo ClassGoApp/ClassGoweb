@@ -179,15 +179,20 @@ class IdentityVerification extends Component
      */
     public function updateInfo()
     {
+       
         $this->data = $this->form->updateInfo($this->hasStates);
 
 
-        $perfilcompleto = Auth::user()->profile?->created_at == Auth::user()->profile?->updated_at;
+        $perfil= Auth::user()->profile;
+        $perfilcompleto = ($perfil->image != null ) && ($perfil->intro_video !=null) && ($perfil->gender != null);
+        //dd($perfilcompleto);
+
         $googlecalendar = AccountSetting::where('user_id', Auth::user()->id)->first();
         $cuentatutor=UserPayoutMethod::where('user_id', Auth::user()->id)->first();      
  
 
-        if ($perfilcompleto==false  && $googlecalendar==null && $cuentatutor==null) {
+
+        if ($perfilcompleto==false  || $googlecalendar==null || $cuentatutor==null) {
             session()->flash('error', __('general.incomplete_profile_error'));
             //return $this->redirect(route(Auth::user()->role . '.profile.personal-details'), navigate: true);
         } else {

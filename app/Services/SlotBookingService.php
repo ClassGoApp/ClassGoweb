@@ -58,7 +58,7 @@ class SlotBookingService implements interfaces\ISlotBookingService
         if ($session_fee == 0) {
 
             $this->aceptartutoria($booking);
-        
+
         }
         return $booking;
     }
@@ -66,13 +66,13 @@ class SlotBookingService implements interfaces\ISlotBookingService
 
 
 
-     public function aceptartutoria($tutoria)
-     {
-         $tutoria->status = 1; // Cambiar el estado a 'aceptado'
-         $link=$this->generarlink($tutoria);
-         $tutoria->meeting_link = $link;
-         $tutoria->save();
-     }
+    public function aceptartutoria($tutoria)
+    {
+        $tutoria->status = 1; // Cambiar el estado a 'aceptado'
+        $link = $this->generarlink($tutoria);
+        $tutoria->meeting_link = $link;
+        $tutoria->save();
+    }
 
 
 
@@ -91,8 +91,15 @@ class SlotBookingService implements interfaces\ISlotBookingService
             'duration' => 20, // Duración en minutos
         ];
         $user = User::find($tutoria->tutor_id);
-        $link = $googlemeetservice->createMeetingPorTutord($meetingData, $user);
+        //$link = $googlemeetservice->createMeetingPorTutord($meetingData, $user);
+        try {
+            // $link= $googlemeetservice->createMeetingConCredencialesApi($meetingData);
+            $link = $googlemeetservice->createMeetingPorTutord($meetingData, $user);
 
+        } catch (\Exception $e) {
+            \Log::error('Error al crear la reunión de Google Meet: ' . $e->getMessage());
+            $link = null; // O manejar el error según sea necesario
+        }
         $mailService = new MailService();
         $mailService->sendTutoriaNotification($tutoria, $link);
         return $link;
