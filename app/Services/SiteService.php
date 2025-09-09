@@ -310,6 +310,7 @@ public function getTutors($data = array()) {
             ->whereHas('profile', function ($query) {
                 $query->whereNotNull('verified_at');
             })
+            
             // Solo tutores con al menos un registro en companyCourseUsers
             ->whereHas( 'companyCourseUsers')
             ->with([
@@ -317,7 +318,7 @@ public function getTutors($data = array()) {
                 'address.state',
                 'address.country',
                 'educations',
-                'subjects:id,name',
+                'subjects:id,subject_group_id,name',
                 'userSubjectSlots'
             ])
             ->withCount([

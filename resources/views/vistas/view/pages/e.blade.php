@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{{-- <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -133,4 +133,156 @@
     </div>
 
 </body>
+</html> --}}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encuentra tu Tutor Ideal</title>
+    <!-- Tailwind CSS para un diseño rápido y responsivo -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts para una tipografía más atractiva -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Estilos personalizados y definición de la paleta de colores */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #023047; /* Azul oscuro de fondo */
+        }
+        .text-custom-orange {
+            color: #FB8500;
+        }
+        .bg-custom-orange {
+            background-color: #FB8500;
+        }
+        .bg-custom-orange:hover {
+            background-color: #e67800; /* Un tono más oscuro para el hover */
+        }
+        .text-custom-blue-light {
+            color: #219EBC;
+        }
+        .border-custom-blue-light {
+            border-color: #219EBC;
+        }
+        .tag {
+            background-color: #219ebc20; /* Azul claro con opacidad */
+            color: #219EBC;
+        }
+        .card-shadow {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(255, 255, 255, 0.05);
+        }
+    </style>
+</head>
+<body class="antialiased text-white">
+    <div class="min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8">
+        <div class="w-full max-w-6xl mx-auto">
+            <!-- Encabezado de la sección -->
+            <div class="text-center mb-12">
+                <span class="text-custom-blue-light font-semibold uppercase tracking-wider text-sm">Tutores Destacados</span>
+                <h1 class="text-4xl md:text-5xl font-extrabold mt-2">Encuentra tu Tutor Ideal</h1>
+                <p class="text-slate-300 mt-4 max-w-2xl mx-auto">
+                    Descubre una variedad de temáticas académicas y prácticas para potenciar tu experiencia de aprendizaje.
+                </p>
+            </div>
+
+            <!-- Contenedor principal con flechas de navegación -->
+            <div class="relative">
+                <!-- Flecha Izquierda -->
+                <button class="absolute top-1/2 -left-4 md:-left-6 lg:-left-12 transform -translate-y-1/2 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full p-3 transition-all z-10">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </button>
+
+                <!-- Grid para las tarjetas de tutores -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    
+                    <!-- Tarjeta de Tutor 1 -->
+                    <div class="bg-[#073b57] rounded-2xl p-6 flex flex-col text-center items-center card-shadow transform hover:-translate-y-2 transition-transform duration-300">
+                        <div class="relative">
+                            <img src="https://placehold.co/100x100/FB8500/023047?text=GA" alt="Avatar de Gabriel Alpiry Hurtado" class="w-24 h-24 rounded-full border-4 border-custom-blue-light object-cover">
+                            <span class="absolute -top-1 -right-1 flex h-6 w-6">
+                                <span class="relative inline-flex rounded-full h-6 w-6 bg-custom-orange items-center justify-center">
+                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                    </svg>
+                                </span>
+                            </span>
+                        </div>
+                        <h3 class="font-bold text-xl mt-4">Gabriel Alpiry Hurtado</h3>
+                        <p class="text-slate-300 text-sm mt-1">Tutor de Ciencias Sociales</p>
+                        <div class="mt-4 flex flex-wrap gap-2 justify-center">
+                            <span class="tag font-medium py-1 px-3 rounded-full text-xs">Estudios Sociales</span>
+                            <span class="tag font-medium py-1 px-3 rounded-full text-xs">Historia</span>
+                            <span class="tag font-medium py-1 px-3 rounded-full text-xs">Geografía</span>
+                        </div>
+                        <button class="bg-custom-orange text-white font-bold py-2 px-6 rounded-lg mt-6 w-full transition-colors">
+                            Ver Perfil
+                        </button>
+                    </div>
+
+                    <!-- Tarjeta de Tutor 2 -->
+                    <div class="bg-[#073b57] rounded-2xl p-6 flex flex-col text-center items-center card-shadow transform hover:-translate-y-2 transition-transform duration-300">
+                         <div class="relative">
+                            <img src="https://placehold.co/100x100/219EBC/FFFFFF?text=JR" alt="Avatar de Johana Rocha Rodriguez" class="w-24 h-24 rounded-full border-4 border-custom-blue-light object-cover">
+                            <span class="absolute -top-1 -right-1 flex h-6 w-6">
+                                <span class="relative inline-flex rounded-full h-6 w-6 bg-custom-orange items-center justify-center">
+                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                    </svg>
+                                </span>
+                            </span>
+                        </div>
+                        <h3 class="font-bold text-xl mt-4">Johana Rocha Rodriguez</h3>
+                        <p class="text-slate-300 text-sm mt-1">Especialista en Psicología</p>
+                        <div class="mt-4 flex flex-wrap gap-2 justify-center">
+                            <span class="tag font-medium py-1 px-3 rounded-full text-xs">Psicología</span>
+                             <span class="tag font-medium py-1 px-3 rounded-full text-xs">Desarrollo Personal</span>
+                        </div>
+                        <button class="bg-custom-orange text-white font-bold py-2 px-6 rounded-lg mt-6 w-full transition-colors">
+                            Ver Perfil
+                        </button>
+                    </div>
+
+                    <!-- Tarjeta de Tutor 3 -->
+                    <div class="bg-[#073b57] rounded-2xl p-6 flex flex-col text-center items-center card-shadow transform hover:-translate-y-2 transition-transform duration-300">
+                        <div class="relative">
+                            <img src="https://placehold.co/100x100/FFFFFF/023047?text=AR" alt="Avatar de Alvaro rojas machuca" class="w-24 h-24 rounded-full border-4 border-custom-blue-light object-cover">
+                            <span class="absolute -top-1 -right-1 flex h-6 w-6">
+                                <span class="relative inline-flex rounded-full h-6 w-6 bg-custom-orange items-center justify-center">
+                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                    </svg>
+                                </span>
+                            </span>
+                        </div>
+                        <h3 class="font-bold text-xl mt-4">Alvaro rojas machuca</h3>
+                        <p class="text-slate-300 text-sm mt-1">Experto en Ciencias Exactas</p>
+                        <div class="mt-4 flex flex-wrap gap-2 justify-center">
+                            <span class="tag font-medium py-1 px-3 rounded-full text-xs">Matemáticas</span>
+                            <span class="tag font-medium py-1 px-3 rounded-full text-xs">Lenguaje</span>
+                            <span class="tag font-medium py-1 px-3 rounded-full text-xs">Literatura</span>
+                        </div>
+                        <button class="bg-custom-orange text-white font-bold py-2 px-6 rounded-lg mt-6 w-full transition-colors">
+                            Ver Perfil
+                        </button>
+                    </div>
+
+                </div>
+
+                <!-- Flecha Derecha -->
+                <button class="absolute top-1/2 -right-4 md:-right-6 lg:-right-12 transform -translate-y-1/2 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full p-3 transition-all z-10">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
 </html>
+
