@@ -13,8 +13,8 @@ class UserService {
 
     public $user;
 
-    public function __construct() {
-       
+    public function __construct($user = null) {
+        $this->user = $user;
     }
 
     public function addToFavourite($favouriteUserId) {
@@ -26,10 +26,15 @@ class UserService {
     }
 
     public function removeFavouriteUser($favouriteUserId) {
-        $this->user->favouriteUsers()->detach($favouriteUserId);
+        if ($this->user) {
+            $this->user->favouriteUsers()->detach($favouriteUserId);
+        }
     }
 
     public function getFavouriteUsers() {
+        if (!$this->user) {
+            return collect(); // Devolver una colección vacía si no hay usuario
+        }
         return $this->user->favouriteUsers();
     }
 
@@ -38,9 +43,10 @@ class UserService {
     }
 
     public function setUserPassword(string $password): void {
-        $hashedPassword = Hash::make($password);
-        $this->user->update(['password' => $hashedPassword]);
-
+        if ($this->user) {
+            $hashedPassword = Hash::make($password);
+            $this->user->update(['password' => $hashedPassword]);
+        }
     }
 
     public function getAccountSetting($key = null)
@@ -58,9 +64,15 @@ class UserService {
 
     public function setAccountSetting($key, $value)
     {
+        // Usar el usuario del constructor o Auth::user() como fallback
+        $user = $this->user ?: Auth::user();
+        
+        if (!$user) {
+            throw new \Exception('No hay usuario disponible para guardar la configuración');
+        }
+        
         // Buscamos un registro existente que pertenezca a este usuario con esa meta_key
-         $this->user = Auth::user();   
-        $setting = $this->user->accountSetting()->where('meta_key', $key)->first();
+        $setting = $user->accountSetting()->where('meta_key', $key)->first();
 
         if ($setting) {
             // Si existe, simplemente actualizamos el valor
@@ -69,7 +81,7 @@ class UserService {
         } else {
             // Si no existe, usamos el método create() en la relación.
             // Esto asignará automáticamente el user_id correcto.
-            $this->user->accountSetting()->create([
+            $user->accountSetting()->create([
                 'meta_key' => $key,
                 'meta_value' => $value
             ]);
