@@ -2,6 +2,8 @@
 <section class="client-testimonials-section">
     <div class="section-header">
         <span class="section-tagline"></span>
+        <h1 class="over-text"><div class="linea"></div>Nuestras Alianzas<div class="linea"></div></h1>
+
         <h1 class="section-title">Alianzas que potencian la educación</h1>
         <p class="section-description">
             En ClassGo creemos en el poder de la colaboración para transformar el aprendizaje. Por eso, trabajamos junto a instituciones educativas, clubes y organizaciones comprometidas con la formación académica y el desarrollo personal.
@@ -13,7 +15,7 @@
             <div id="client-carousel-track" class="client-carousel-track">
 
                 @foreach($alianzas as $alianza)
-                    <div class="client-card-slide">
+                    <div class="client-card-slide" onclick="window.location.href='{{ $alianza->enlace }}' ">
                         <div class="client-card">
                             <img src="{{ $alianza->imagen ? asset('storage/' . $alianza->imagen) : asset('images/tutors/default.png') }}" alt="Imagen de {{ $alianza->titulo }}" class="client-logo">
 

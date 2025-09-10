@@ -1854,6 +1854,15 @@ cursor: not-allowed;
     flex-shrink: 0;
     flex-grow: 0;
     flex-basis: 100%;
+    transition: transform var(--button-transition-duration) ease-in-out, box-shadow var(--button-transition-duration) ease-in-out;
+
+}
+.client-card-slide:hover{
+  cursor: pointer;
+  transform: scale(var(--button-hover-scale));
+  box-shadow: var(--button-hover-shadow);
+
+
 }
 
 .client-card {
