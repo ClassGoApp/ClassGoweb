@@ -129,7 +129,319 @@
     </div>
 </div>
 
+<style>
+    .qr-modal {
+        border: none;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        border-radius: 8px;
+        overflow: hidden;
+    }
 
+    .qr-modal-header {
+        background: white;
+        color: #333;
+        border-bottom: 1px solid #e5e5e5;
+        padding: 16px 24px;
+    }
+
+    .qr-modal-title {
+        font-size: 16px;
+        font-weight: 600;
+        margin: 0;
+        color: #333;
+    }
+
+    .qr-close-btn {
+        background: none;
+        border: none;
+        color: #999;
+        font-size: 24px;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: color 0.2s ease;
+        padding: 0;
+    }
+
+    .qr-close-btn:hover {
+        color: #666;
+    }
+
+    .qr-modal-body {
+        padding: 24px;
+        background: white;
+    }
+
+    .section-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 12px;
+        display: none;
+        /* Ocultar títulos para diseño más limpio */
+    }
+
+    .current-qr-section {
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .current-qr-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        border: 1px solid #e5e5e5;
+    }
+
+    .qr-image-wrapper {
+        position: relative;
+        flex-shrink: 0;
+    }
+
+    .current-qr-image {
+        width: 200px;
+        height: 200px;
+        object-fit: contain;
+        border-radius: 8px;
+        border: 1px solid #e5e5e5;
+        background: white;
+        padding: 8px;
+    }
+
+    .qr-image-overlay {
+        display: none;
+        /* Quitar overlay para diseño más limpio */
+    }
+
+    .qr-status-badge {
+        display: none;
+        /* Quitar badge para diseño más limpio */
+    }
+
+    .qr-description {
+        color: #666;
+        margin: 8px 0 0 0;
+        font-size: 13px;
+        text-align: center;
+    }
+
+    .upload-section {
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .upload-zone {
+        border: 2px dashed #ddd;
+        border-radius: 8px;
+        padding: 30px 20px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        background: #fafafa;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .upload-zone:hover {
+        border-color: #ff6b35;
+        background: #fff5f2;
+    }
+
+    .upload-zone.drag-over {
+        border-color: #ff6b35;
+        background: #fff5f2;
+    }
+
+    .upload-placeholder {
+        pointer-events: none;
+    }
+
+    .upload-icon {
+        font-size: 32px;
+        color: #ccc;
+        margin-bottom: 12px;
+    }
+
+    .upload-text h6 {
+        color: #666;
+        font-weight: 500;
+        margin-bottom: 4px;
+        font-size: 14px;
+    }
+
+    .upload-text p {
+        color: #999;
+        margin: 0;
+        font-size: 13px;
+    }
+
+    .upload-link {
+        color: #ff6b35;
+        font-weight: 500;
+        text-decoration: none;
+    }
+
+    .upload-requirements {
+        margin-top: 8px;
+    }
+
+    .upload-requirements small {
+        color: #999;
+        background: transparent;
+        padding: 0;
+        border: none;
+        font-size: 12px;
+    }
+
+    .new-image-preview {
+        position: relative;
+        max-width: 150px;
+        margin: 0 auto;
+    }
+
+    .preview-image {
+        width: 100%;
+        max-height: 150px;
+        object-fit: contain;
+        border-radius: 8px;
+        border: 1px solid #e5e5e5;
+        background: white;
+        padding: 8px;
+    }
+
+    .preview-overlay {
+        position: absolute;
+        bottom: -25px;
+        left: 0;
+        right: 0;
+        background: transparent;
+        color: #666;
+        padding: 5px;
+        border-radius: 0;
+        text-align: center;
+    }
+
+    .preview-info {
+        text-align: center;
+        font-size: 11px;
+        color: #999;
+    }
+
+    .preview-filename {
+        display: block;
+        font-weight: 500;
+        margin-bottom: 2px;
+        word-break: break-all;
+        color: #666;
+    }
+
+    .remove-preview-btn {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        background: #ff6b35;
+        border: none;
+        color: white;
+        border-radius: 50%;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 10px;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .remove-preview-btn:hover {
+        background: #e55a2b;
+        transform: scale(1.1);
+    }
+
+    .qr-modal-footer {
+        background: white;
+        border-top: 1px solid #e5e5e5;
+        padding: 16px 24px;
+        gap: 12px;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .qr-cancel-btn,
+    .qr-save-btn {
+        border-radius: 6px;
+        font-weight: 500;
+        padding: 10px 20px;
+        transition: all 0.2s ease;
+        font-size: 14px;
+        border: none;
+    }
+
+    .qr-cancel-btn {
+        background: #f5f5f5;
+        color: #666;
+    }
+
+    .qr-cancel-btn:hover {
+        background: #e8e8e8;
+        color: #333;
+    }
+
+    .qr-save-btn {
+        background: #ff6b35;
+        color: white;
+    }
+
+    .qr-save-btn:hover:not(:disabled) {
+        background: #e55a2b;
+    }
+
+    .qr-save-btn:disabled {
+        background: #ccc;
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .qr-modal-body {
+            padding: 16px;
+        }
+
+        .current-qr-container {
+            padding: 16px;
+        }
+
+        .upload-zone {
+            padding: 20px 15px;
+        }
+
+        .qr-modal-footer {
+            padding: 12px 16px;
+            flex-direction: column-reverse;
+        }
+
+        .qr-cancel-btn,
+        .qr-save-btn {
+            width: 100%;
+            margin-bottom: 8px;
+        }
+    }
+
+    /* Ocultar elementos innecesarios */
+    .qr-additional-info,
+    .info-card,
+    .info-icon,
+    .info-content {
+        display: none;
+    }
+</style>
 <script>
     // Función para limpiar completamente el modal y backdrop
     function cleanupModal() {
