@@ -31,27 +31,16 @@
                     <div class="am-resume_item">
                         <div class="am-resume_item_title">
                             <h3>{{ $experience->title }}</h3>
-                            <div class="am-itemdropdown">
-                                <a href="#" id="am-itemdropdown" data-bs-toggle="dropdown" aria-haspopup="true"
-                                    aria-expanded="false">
-                                    <i class="am-icon-ellipsis-horizontal-02"></i>
-                                </a>
-                                <ul class="am-itemdropdown_list dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                    <li>
-                                        <a href="#" wire:click="editExperience({{ $experience }})">
-                                            <i class="am-icon-pencil-02"></i>
-                                            {{ __('general.edit') }}
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:void(0);"
-                                            @click="$wire.dispatch('showConfirm', { id : {{ $experience->id }}, action : 'delete-experience' })">
-                                            <i class="am-icon-trash-02"></i>
-                                            {{ __('general.delete') }}
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
+                        <div class="am-itemactions">
+    <button type="button" class="am-btn am-btn-icon" wire:click="editExperience({{ $experience }})" title="{{ __('general.edit') }}">
+        <i class="am-icon-pencil-02"></i>
+    </button>
+    <button type="button" class="am-btn am-btn-icon"
+        @click="$wire.dispatch('showConfirm', { id : {{ $experience->id }}, action : 'delete-experience' })"
+        title="{{ __('general.delete') }}">
+        <i class="am-icon-trash-02"></i>
+    </button>
+</div>
                             <div id="experience-model-{{ $experience->id }}" class="modal am-educationpopup" tabindex="-1"
                                 role="dialog">
                                 <div class="modal-dialog modal-dialog-centered" role="document">

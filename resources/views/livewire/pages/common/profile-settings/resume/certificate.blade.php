@@ -26,26 +26,16 @@
                     <div class="am-resume_content">
                         <div class="am-resume_item_title">
                             <h3>{{ $certificate->title }}</h3>
-                            <div class="am-itemdropdown">
-                                <a href="#" id="am-itemdropdown" data-bs-toggle="dropdown" aria-haspopup="true"
-                                    aria-expanded="false">
-                                    <i class="am-icon-ellipsis-horizontal-02"></i>
-                                </a>
-                                <ul class="am-itemdropdown_list dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                    <li>
-                                        <a href="#" wire:click="editCertificate({{ $certificate }})">
-                                            <i class="am-icon-pencil-02"></i>
-                                            {{ __('certificate.edit_certificate') }}
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" @click="$wire.dispatch('showConfirm', { id : {{ $certificate->id }}, action : 'delete-certificate' })">
-                                            <i class="am-icon-trash-02"></i>
-                                            {{ __('certificate.delete_certificate') }}
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
+                            <div class="am-itemactions">
+    <button type="button" class="am-btn am-btn-icon" wire:click="editCertificate({{ $certificate }})" title="{{ __('general.edit') }}">
+        <i class="am-icon-pencil-02"></i>
+    </button>
+    <button type="button" class="am-btn am-btn-icon"
+        @click="$wire.dispatch('showConfirm', { id : {{ $certificate->id }}, action : 'delete-certificate' })"
+        title="{{ __('general.delete') }}">
+        <i class="am-icon-trash-02"></i>
+    </button>
+</div>
                             <div id="certificate-model-{{ $certificate->id }}" class="modal am-educationpopup" tabindex="-1"
                                 role="dialog">
                                 <div class="modal-dialog modal-dialog-centered" role="document">
@@ -117,7 +107,7 @@
                     <div class="am-modal-body">
                         <form wire:submit="storeCertificate" class="am-themeform">
                             <fieldset>
-                                <div class="form-group">
+                              {{--   <div class="form-group">
                                     <x-input-label style="color:black !important;" for="image" class="am-important"
                                         :value="__('certificate.image_title')" />
                                     <div class="am-uploadoption" x-data="{isUploading:false}" wire:key="uploading-profile-{{ time() }}">
@@ -166,7 +156,7 @@
                                         @endif
                                         <x-input-error field_name="form.image" />
                                     </div>
-                                </div>
+                                </div> --}}
                                 <div class="form-group @error('form.title') am-invalid @enderror">
                                     <x-input-label style="color:black !important;" for="title" class="am-important"
                                         :value="__('certificate.certificate_title')" />

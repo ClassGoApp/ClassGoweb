@@ -250,7 +250,6 @@ class Reserva extends Component
             return;
         }
         $estudianteId = auth()->user()->id;
-
         $fechaCompleta = $this->currentDate->copy()
             ->setDay($this->selectedDay)
             ->setTimeFromTimeString($this->selectedTime . ':00');
@@ -283,10 +282,13 @@ class Reserva extends Component
     public function makeReservation()
     {
 
+
+        $sessionFee = 15;
         $service = $this->cuponservice ?? app(ICuponesService::class);
         $isAugustPromotion = $this->currentDate->month === 9;
 
         if ($isAugustPromotion || (!empty($this->cuponCode))) {
+             $sessionFee = 0;
             $this->validate([
                 'selectedSubject' => 'required',
             ]);
@@ -299,8 +301,7 @@ class Reserva extends Component
         try {
             DB::beginTransaction();
             $pagostutorreserva = new PagosTutorReservaService();
-            $sessionFee = 15;
-
+            
             if ($this->porcentaje != null || $this->porcentaje != 0) {
                 $sessionFee = $sessionFee - ($sessionFee * $this->porcentaje / 100);
             }
