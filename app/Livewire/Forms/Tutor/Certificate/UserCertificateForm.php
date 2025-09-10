@@ -35,7 +35,7 @@ class UserCertificateForm extends Form
         if(!empty($certificate['id'])){
             $this->id               = $certificate['id'] ?? '';
         }
-        $this->image                = $certificate['image'] ?? '';
+       
         $this->title                = $certificate['title'] ?? '';
         $this->institute_name       = $certificate['institute_name'] ?? '';
         $this->issue_date           = $certificate['issue_date'] ?? '';
@@ -47,16 +47,10 @@ class UserCertificateForm extends Form
         $this->beforeValidation(['image']);
         $this->validate();
 
-        if (!empty($this->image) && $this->image instanceof \Illuminate\Http\UploadedFile) {
-            $imageName             = $this->image->getClientOriginalName();
-            $certificatesImage     = $this->image->storeAs('certificates', $imageName, 'public');
-        } else {
-            $certificatesImage = $this->image;
-        }
 
         $certificate = [
             'id'                    => $this->id,
-            'image'                 => $certificatesImage,
+           
             'title'                 => $this->title,
             'institute_name'        => $this->institute_name,
             'issue_date'            => $this->issue_date,

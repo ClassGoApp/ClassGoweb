@@ -26,17 +26,12 @@ class ManageAccount extends Component
     public $status = '';
     public $isLoading = true;
     public $payoutStatus;
-
-
-
-    
-
     // Agregar estas propiedades para el formulario de banco
     public $bankTitle = '';
     public $bankAccountNumber = '';
     public $bankName = '';
     public $bankRoutingNumber = '';
-
+    public $qrImageTypeError = '';
 
 
     public PayoutForm $form;
@@ -99,84 +94,85 @@ class ManageAccount extends Component
 
     public function updatePayout()
     {
-      
-            // Validar según el tipo de método
-            if ($this->form->current_method === 'QR') {
-                // Para QR validamos la imagen solo si no hay QR existente
-                if (!$this->currentQRPath && !$this->qrImage) {
-                    $this->showErrorMessage(__('tutor.no_file_selected'));
-                    return;
-                }
-
-                // Solo procesar nueva imagen si se seleccionó una
-                if ($this->qrImage) {
-                    $this->validate([
-                        'qrImage' => 'image|mimes:jpeg,png,jpg,gif,svg|max:5120',
-                    ]);
-                    $imagePath = $this->handleQRImageUpload();
-                    $this->deleteExistingQRImage();
-                    $this->updateQRPayoutMethod($imagePath);
-                    // Refrescar la imagen actual después de guardar
-                    $this->loadCurrentQRImage();
-                }
-
-                $this->showSuccessMessage(__('tutor.qr_updated'));
-                $this->closeModal('modalQR');
-
-            } elseif ($this->form->current_method === 'cuentabancaria') {
-                // Validar directamente las propiedades del componente FUERA del try-catch
-                $this->validate([
-                    'bankTitle' => 'required|string|min:3|max:100',
-                    'bankAccountNumber' => 'required|string|min:5|max:50',
-                    'bankName' => 'required|string|min:2|max:100',
-                    'bankRoutingNumber' => 'nullable|string|max:50',
-                ], [
-                    'bankTitle.required' => 'El título de la cuenta es obligatorio',
-                    'bankTitle.min' => 'El título debe tener al menos 3 caracteres',
-                    'bankAccountNumber.required' => 'El número de cuenta es obligatorio',
-                    'bankAccountNumber.min' => 'El número de cuenta debe tener al menos 5 caracteres',
-                    'bankName.required' => 'El nombre del banco es obligatorio',
-                    'bankName.min' => 'El nombre del banco debe tener al menos 2 caracteres',
-                ]);
-
-                try {
-                    // Preparar los datos validados para el campo payout_details
-                    $payoutDetails = [
-                        'title' => $this->bankTitle,
-                        'accountNumber' => $this->bankAccountNumber,
-                        'bankName' => $this->bankName,
-                        'bankRoutingNumber' => $this->bankRoutingNumber,
-                    ];
-                    
-                    $payout = UserPayoutMethod::updateOrCreate(
-                        ['user_id' => Auth::id(), 'payout_method' => 'bank'],
-                        [
-                            'payout_details' => $payoutDetails,
-                            'status' => 'active'
-                        ]
-                    );
-                   
-                    if ($payout) {
-                        $this->showSuccessMessage(__('general.payout_account_add'));
-                        $this->resetFormAndCloseModals(['setupaccountpopup', 'setuppayoneerpopup']);
-                    } else {
-                        $this->showErrorMessage(__('general.payout_account_error'));
-                    }
-
-                } catch (\Exception $e) {
-                    // Manejar cualquier otro error
-                    dd('Error al agregar el método de pago: ' . $e->getMessage());
-                    \Log::error('Error adding payout detail: ' . $e->getMessage(), [
-                        'user_id' => Auth::user()->id,
-                        'method' => $this->form->current_method,
-                        'data' => $payoutDetails ?? null
-                    ]);
-
-                    $this->showErrorMessage('Error al guardar la cuenta bancaria. Inténtalo de nuevo.');
-                }
+       
+        // Validar según el tipo de método
+        if ($this->form->current_method === 'QR') {
+            // Para QR validamos la imagen solo si no hay QR existente
+            if (!$this->currentQRPath && !$this->qrImage) {
+                $this->showErrorMessage(__('tutor.no_file_selected'));
+                return;
             }
 
-      
+            // Solo procesar nueva imagen si se seleccionó una
+            if ($this->qrImage) {
+                $allowedExtensions = ['jpeg', 'jpg', 'png', 'gif', 'svg'];
+                $extension = strtolower($this->qrImage->getClientOriginalExtension());
+
+                if (!in_array($extension, $allowedExtensions)) {
+                    $this->qrImageTypeError = 'Solo se permiten archivos de imagen (jpeg, jpg, png, gif, svg).';
+                    $this->qrImage = null;
+                } else {
+                    $this->qrImageTypeError = '';
+                }
+
+                $this->validate([
+                    'qrImage' => 'image|mimes:jpeg,png,jpg,gif,svg|max:5120',
+                ]);
+                $imagePath = $this->handleQRImageUpload();
+                $this->deleteExistingQRImage();
+                $this->updateQRPayoutMethod($imagePath);
+                // Refrescar la imagen actual después de guardar
+                $this->loadCurrentQRImage();
+            }
+
+            $this->showSuccessMessage(__('tutor.qr_updated'));
+            $this->closeModal('modalQR');
+
+        } elseif ($this->form->current_method === 'cuentabancaria') {
+            // Validar directamente las propiedades del componente FUERA del try-catch
+            $this->validate([
+                'bankTitle' => 'required|string|min:3|max:100',
+                'bankAccountNumber' => 'required|string|min:5|max:50',
+                'bankName' => 'required|string|min:2|max:100',
+                'bankRoutingNumber' => 'nullable|string|max:50',
+            ], [
+                'bankTitle.required' => 'El título de la cuenta es obligatorio',
+                'bankTitle.min' => 'El título debe tener al menos 3 caracteres',
+                'bankAccountNumber.required' => 'El número de cuenta es obligatorio',
+                'bankAccountNumber.min' => 'El número de cuenta debe tener al menos 5 caracteres',
+                'bankName.required' => 'El nombre del banco es obligatorio',
+                'bankName.min' => 'El nombre del banco debe tener al menos 2 caracteres',
+            ]);
+
+            try {
+                // Preparar los datos validados para el campo payout_details
+                $payoutDetails = [
+                    'title' => $this->bankTitle,
+                    'accountNumber' => $this->bankAccountNumber,
+                    'bankName' => $this->bankName,
+                    'bankRoutingNumber' => $this->bankRoutingNumber,
+                ];
+                $payout = UserPayoutMethod::updateOrCreate(
+                    ['user_id' => Auth::id(), 'payout_method' => 'bank'],
+                    [
+                        'payout_details' => $payoutDetails,
+                        'status' => 'active'
+                    ]
+                );
+
+                if ($payout) {
+                    $this->showSuccessMessage(__('general.payout_account_add'));
+                    $this->resetFormAndCloseModals(['setupaccountpopup', 'setuppayoneerpopup']);
+                } else {
+                    $this->showErrorMessage(__('general.payout_account_error'));
+                }
+            } catch (\Exception $e) {
+                \Log::error('Error adding payout detail: ' . $e->getMessage(), );
+                $this->showErrorMessage('Error al guardar la cuenta bancaria. Inténtalo de nuevo.');
+            }
+        }
+
+
     }
 
     private function validateQRImage(): bool
@@ -386,13 +382,13 @@ class ManageAccount extends Component
     private function resetFormAndCloseModals(array $modalIds): void
     {
         $this->form->reset();
-        
+
         // Limpiar campos específicos del banco
         $this->bankTitle = '';
         $this->bankAccountNumber = '';
         $this->bankName = '';
         $this->bankRoutingNumber = '';
-        
+
         foreach ($modalIds as $modalId) {
             $this->closeModal($modalId);
         }
@@ -409,6 +405,21 @@ class ManageAccount extends Component
 
         // Dispatch del evento de cierre para limpieza del DOM
         $this->dispatch('modalClosed');
+    }
+
+    public function updatedQrImage()
+    {
+        if ($this->qrImage) {
+            $allowedExtensions = ['jpeg', 'jpg', 'png', 'gif', 'svg'];
+            $extension = strtolower($this->qrImage->getClientOriginalExtension());
+
+            if (!in_array($extension, $allowedExtensions)) {
+                $this->qrImageTypeError = 'Solo se permiten archivos de imagen (jpeg, jpg, png, gif, svg).';
+                $this->qrImage = null; // Limpia el archivo para evitar preview y error
+            } else {
+                $this->qrImageTypeError = '';
+            }
+        }
     }
 }
 
