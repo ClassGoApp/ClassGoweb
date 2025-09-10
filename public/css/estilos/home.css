@@ -408,18 +408,6 @@ width: 100%;
 display: flex;
 transition: transform 0.5s ease-in-out;
 }
-/* Estilos de las cards */
-.card {
-flex: 0 0 calc(33.333% - 20px); /* Muestra 3 cards, ajustando por el margen */
-box-sizing: border-box;
-padding: 20px;
-margin: 10px;
-background-color: #f0f0f0;
-border: 1px solid #ddd;
-border-radius: 8px;
-text-align: center;
-font-size: 1.2rem;
-}
 /* Botones de navegación */
 .carousel-btn {
 position: absolute;
@@ -447,126 +435,146 @@ cursor: not-allowed;
 
 
 /* ---============ 3.1 - CARDS TUTORES DESTACADOS ============---*/
+/* Estilos para que .tutor-card y .card-buscarmas tengan el mismo tamaño */
+.tutor-card,
+.card-buscarmas {
+  /* Propiedades de tamaño unificadas */
+  flex: 0 0 calc(33.333% - 20px);
+  box-sizing: border-box;
+  margin: 10px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
 
-/* Estilos principales para las tarjetas del tutor en el carrusel */
 .tutor-card {
-    /* Propiedades del carrusel */
-    flex: 0 0 calc(33.333% - 20px); /* Muestra 3 tarjetas, ajustando por el margen */
-    box-sizing: border-box;
-    padding: 0; /* Eliminamos el padding del contenedor padre para que la tarjeta use su propio padding interno */
-    margin: 10px;
+  background: var(--bg-gradient2);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
 
-    /* Propiedades de la tarjeta del tutor */
+.card-buscarmas {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 30px 20px;
+  background-color: #fff;
+  border-radius: 16px;
+}
+
+.tutor-card:hover,
+.card-buscarmas:hover {
+  transform: translateY(-5px);
+}
+
+/* Contenedor del avatar con el badge */
+.tutor-avatar-container {
     position: relative;
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-    background: #fff;
-    cursor: pointer;
-    transition: transform 0.2s ease;
+    max-height: 90px;
 }
 
-.tutor-card:hover {
-    transform: translateY(-5px);
-}
-
-.favorite-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: rgba(255, 255, 255, 0.4);
-    border: none;
-    font-size: 20px;
-    cursor: pointer;
-    z-index: 5;
-    width: 35px;
-    height: 35px;
+.tutor-avatar {
+    width: 6rem; /* 96px */
+    height: 6rem; /* 96px */
     border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    line-height: 1;
-    padding: 0;
-    transition: background 0.3s;
+    border: 4px solid #0d8299;
+    object-fit: cover;
 }
 
-.favorite-btn.active {
-    background: #FB8500;
+/* Badge con el ícono de estrella */
+.tutor-status-badge {
+    position: absolute;
+    top: -1px; /* -16px */
+    right: 80px;
+    display: flex;
+    height: 1.5rem;
+    width: 1.5rem;
+    align-items: center;
+    justify-content: center;
+}
+
+.tutor-status-star {
+    position: relative;
+    display: inline-flex;
+    height: 1.5rem;
+    width: 1.5rem;
+    border-radius: 50%;
+    background-color: var(--terciary-color2);
+    align-items: center;
+    justify-content: center;
+}
+
+.star-icon {
+    height: 1rem;
+    width: 1rem;
     color: white;
 }
 
-.fa-book {
-    margin-right: 5px;
+/* Textos */
+.tutor-name {
+    font-weight: bold;
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    margin-top: 1rem;
+    color: white;
+    white-space: nowrap;
+    text-transform: capitalize;
 }
 
-.tutor-card-img video {
-    width: 100%;
-    height: 160px;
-    object-fit: cover;
-    display: block;
+.tutor-job {
+    color: var(--secondary-text-color);
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    margin-top: 0.25rem;
 }
 
-.tutor-card-content {
-    padding: 15px;
-}
-
-.tutor-card-header {
+/* Contenedor de las etiquetas de materias */
+.tutor-subjects {
+    margin-top: 1rem;
     display: flex;
-    align-items: center;
-    gap: 10px;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    min-height: 100px;
+    max-height: 100px;
+    overflow-y: auto;
+    scrollbar-width: none;
 }
 
-.tutor-card-header img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
+.subject-tag {
+    font-weight: 500;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    height: 100%;
+    color: var(--main-text-color);
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
-.tutor-card-sub {
-    font-size: 14px;
-    margin: 8px 0;
-    color: #555;
-    
-    /* Propiedades para limitar a 3 líneas */
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
+/* Botón "Ver Perfil" */
+.profile-btn {
+    background-color: var(--terciary-color2);
+    color: white;
+    font-weight: bold;
+    padding: 0.7rem 1.5rem;
+    border-radius: 0.5rem;
+    border: none;
+    margin-top: 1.5rem;
+    width: 250px;
+    transition: background-color 0.3s ease;
 }
 
-.tutor-card-rating-row {
-    display: flex;
-    justify-content: space-between;
-    font-size: 14px;
-    color: #333;
+.profile-btn:hover {
+    background-color: #d17000;
 }
 
-/*Card buscar mas*/
-/* Estilos del contenedor de la tarjeta */
-.card-buscarmas {
-    /* Propiedades del carrusel, tomadas de .tutor-card */
-    flex: 0 0 calc(33.333% - 20px);
-    box-sizing: border-box;
-    margin: 10px;
-    position: relative;
-    border-radius: 16px;
-    overflow: hidden;
-    cursor: pointer;
-    transition: transform 0.2s ease;
-
-    /* Propiedades de diseño de la tarjeta .card-buscarmas */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 30px 20px;
-    background-color: #fff;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-}
-
-.tutor-card:hover, .card-buscarmas:hover {
-    transform: translateY(-5px);
-}
 
 /* Contenedor del icono */
 .icon-wrapper {
@@ -1508,14 +1516,7 @@ cursor: not-allowed;
 
   /* =============== SECCION TUTORES ======== */
 
-  .tutors-container {
-    padding: 0rem 0rem;
-  }
 
-  #carousel-wrapper {
-    padding: 0rem 0.6rem;
-    /* Reducir espacio para botones */
-  }
 
 
   /* ------Guía paso a paso -----*/
@@ -1599,9 +1600,6 @@ cursor: not-allowed;
   .go .numero-paso i {
     font-size: 2rem;
   }
-
-
-
 
 
   /* ------------- SECCION TUTORIAS -------------- */
@@ -1728,79 +1726,271 @@ cursor: not-allowed;
   .grid-app .text-app p {
     margin-bottom: 0rem;
   }
-
-
 }
 
+/* ============ MEDIA QUERIES PARA ADAPTAR A DISPOSITIVOS PEQUEÑOS ============ */
 
-/* Estilos por defecto para Desktop (sin media query) */
-.cards-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 1rem;
-    padding:1rem 5rem;
-    margin: auto;
-    max-width: 1200px;
-    justify-content: center;
-}
-
-.card {
-    background-color: #f0f0f0;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    text-align: center;
-    padding-bottom: 20px;
-}
-
-.card img {
-    width: 100%;
-    height: 200px;
-}
-
-.card h3 {
-    margin: 15px 0 5px;
-    font-size: 1.2rem;
-}
-
-.card p {
-    margin: 0 10px;
-    font-size: 0.9rem;
-}
-
-/* ------------------------------------------- */
-/* Estilos para Mobile - Se activan a 768px o menos */
-/* ------------------------------------------- */
 @media (max-width: 768px) {
-    .cards-container {
-        /* Carrusel con Flexbox */
-        display: flex;
-        overflow-x: auto;
-        scroll-snap-type: x mandatory;
-        gap: 15px;
-        padding: 20px 0px 10px 30px;
-        -webkit-overflow-scrolling: touch;
+    .carousel-container {
+        width: 100%;
+        margin: 20px auto;
+        padding: 0 10px; /* Padding para que el contenido no se pegue a los bordes */
     }
 
-    .card {
-        /* Define el ancho de cada tarjeta en el carrusel */
-        flex-shrink: 0;
-        width: 80vw;
-        scroll-snap-align: center;
-        /* Asegura que haya un pequeño margen en los extremos */
-        margin-left: 20px;
-    }
-    
-    .card:last-child {
-        margin-right: 20px;
-    }
-
-    /* Ocultar la barra de desplazamiento en el carrusel */
-    .cards-container::-webkit-scrollbar {
+    /* Ocultar botones de navegación en móviles */
+    .carousel-btn {
         display: none;
     }
-    .cards-container {
-        -ms-overflow-style: none; /* Oculta la barra de desplazamiento en IE/Edge */
-        scrollbar-width: none; /* Oculta la barra de desplazamiento en Firefox */
+
+    .carousel-track {
+        /* Habilitar el scroll horizontal */
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        
+        /* Evitar que las tarjetas se envuelvan */
+        flex-wrap: nowrap;
+        
+        /* Opcional: Ocultar la barra de desplazamiento para un diseño más limpio */
+        scrollbar-width: none;
+        padding-top: 1rem;
+    }
+
+    .carousel-track::-webkit-scrollbar {
+        display: none;
+    }
+
+    .tutor-card,
+    .card-buscarmas {
+        /* Un solo elemento por vista, que ocupe casi todo el ancho */
+        flex: 0 0 calc(90% - 10px) !important; /* Ajusta el ancho para mostrar una tarjeta a la vez */
+    }
+
+    .tutor-card{
+      width: 300px;
+      max-width: 600px;
+      margin-bottom: 0rem;
+    }
+    .card-buscarmas{
+    }
+
+    
+}
+
+
+
+
+/* Variables de color */
+:root {
+  --secundary-color: #219EBC;
+  --text-slate-600: #475569;
+  --primary-white: #ffffff;
+  --secondary-slate-100: #f1f5f9;
+  --tertiary-slate-200: #e2e8f0;
+  --text-dark-blue: #073b57;
+  --custom-orange: #fb8500;
+  --custom-orange-transparent: rgba(251, 133, 0, 0.7);
+  --slate-300: #cbd5e1;
+}
+
+/* Estilos de la sección y el encabezado */
+.client-testimonials-section {
+    width: 100%;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 2rem 1rem;
+    background: white;
+
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 3rem; /* 48px */
+    padding-top: 3rem;
+}
+
+.section-tagline {
+    color: var(--secundary-color);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.875rem; /* 14px */
+}
+
+.section-title {
+    font-size: 2.25rem; /* 36px */
+    line-height: 2.5rem;
+    font-weight: 800;
+    margin-top: 0.5rem; /* 8px */
+    color: var(--primary-color);
+}
+
+.section-description {
+    color: var(--primary-color);
+    margin-top: 1rem; /* 16px */
+    max-width: 48rem; /* 768px */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Contenedor principal del carrusel */
+.client-carousel-wrapper {
+    position: relative;
+}
+
+.client-carousel-container {
+    width: 100%;
+    overflow: hidden;
+}
+
+.client-carousel-track {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+/* Estilos para cada slide y tarjeta */
+.client-card-slide {
+    padding: 1rem; /* 16px */
+    flex-shrink: 0;
+    flex-grow: 0;
+    flex-basis: 100%;
+    transition: transform var(--button-transition-duration) ease-in-out, box-shadow var(--button-transition-duration) ease-in-out;
+
+}
+.client-card-slide:hover{
+  cursor: pointer;
+  transform: scale(var(--button-hover-scale));
+  box-shadow: var(--button-hover-shadow);
+
+
+}
+
+.client-card {
+    background-color: white;
+    border-radius: 1rem; /* 16px */
+    padding: 2rem; /* 32px */
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    height: 100%;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+}
+
+.client-logo {
+    width: 8rem; /* 128px */
+    height: 8rem;
+    border-radius: 50%;
+    border: 4px solid var(--secondary-slate-100);
+    object-fit: cover;
+}
+
+.client-name {
+    font-weight: bold;
+    font-size: 1.25rem; /* 20px */
+    line-height: 1.75rem;
+    margin-top: 1.5rem; /* 24px */
+}
+
+.client-description {
+    color: var(--text-slate-600);
+    font-size: 0.875rem; /* 14px */
+    line-height: 1.25rem;
+    margin-top: 0.25rem; /* 4px */
+}
+
+/* Botones de navegación */
+.client-carousel-nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: white;
+    border: 1px solid var(--tertiary-slate-200);
+    border-radius: 9999px; /* rounded-full */
+    padding: 0.75rem; /* 12px */
+    transition: all 0.3s ease;
+    z-index: 10;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+    cursor: pointer;
+}
+
+.client-carousel-nav-btn:hover {
+    background-color: var(--secondary-slate-100);
+}
+
+.client-carousel-nav-icon {
+    height: 1.5rem;
+    width: 1.5rem;
+    color: var(--text-dark-blue);
+}
+
+.client-carousel-nav-btn.prev {
+    left: -1rem; /* -16px */
+}
+
+.client-carousel-nav-btn.next {
+    right: -1rem; /* -16px */
+}
+
+/* Paginación */
+.client-pagination-dots-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem; /* space-x-2 */
+    margin-top: 2rem; /* mt-8 */
+}
+
+.pagination-dot {
+    width: 0.75rem; /* w-3 */
+    height: 0.75rem; /* h-3 */
+    border-radius: 9999px; /* rounded-full */
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    background-color: var(--slate-300);
+}
+
+.pagination-dot.active {
+    background-color: var(--custom-orange);
+}
+
+.pagination-dot:hover {
+    background-color: var(--custom-orange);
+}
+
+/* --- Media Queries --- */
+
+@media (min-width: 768px) {
+    .client-card-slide {
+        flex-basis: 50%;
+    }
+
+    .client-carousel-nav-btn.prev {
+        left: -1.5rem;
+    }
+
+    .client-carousel-nav-btn.next {
+        right: -1.5rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .client-card-slide {
+        flex-basis: 33.3333%;
+    }
+
+    .client-carousel-nav-btn.prev {
+        left: -3rem;
+    }
+
+    .client-carousel-nav-btn.next {
+        right: -3rem;
+    }
+}
+
+@media (max-width: 767px) {
+    .client-carousel-nav-btn {
+        display: none;
     }
 }

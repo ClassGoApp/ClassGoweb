@@ -1,104 +1,101 @@
 <!--Los estilos de reserva.blade.php se encuentran en tutor-perfil.css-->
 <div>
-    {{-- Mensaje de éxito tras reservar --}}
-    @if (session()->has('success_message'))
-        <div class="alert-success" >{{ session('success_message') }}</div>
-    @endif
-
-     @if (session()->has('error'))
-        <div style="color:red">{{ session('error') }}</div>
-    @endif
-
-    <div class="tutor-availability-grid">
-        {{-- CALENDARIO --}}
-        <div>
-            <h4 class="tutor-section-title">Selecciona un día</h4>
-           {{--  <div>
-                <p>ID del tutor: {{ $this->tutorId }}</p>
-            </div> --}}
-            <div class="tutor-calendar-box">
-                <div class="tutor-calendar-header">
-                  <button wire:click="goToPreviousMonth" class="tutor-calendar-nav-btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tutor-calendar-nav-icon"><path d="m15 18-6-6 6-6"></path></svg></button>
-                  <h5 class="tutor-calendar-month">{{ $currentDate->translatedFormat('F Y') }}</h5>
-                  <button  wire:click="goToNextMonth" class="tutor-calendar-nav-btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tutor-calendar-nav-icon"><path d="m9 18 6-6-6-6"></path></svg></button>
-                </div>
-                <div class="tutor-calendar-grid">
-                    <div class="tutor-calendar-day-label">D</div> 
-                    <div class="tutor-calendar-day-label">L</div> 
-                    <div class="tutor-calendar-day-label">M</div> 
-                    <div class="tutor-calendar-day-label">M</div> 
-                    <div class="tutor-calendar-day-label">J</div> 
-                    <div class="tutor-calendar-day-label">V</div> 
-                    <div class="tutor-calendar-day-label">S</div> 
-                    @for ($i = 0; $i < $startDay; $i++) <div></div> @endfor
-                    @for ($day = 1; $day <= $daysInMonth; $day++)
-                        @php
-                            $isAvailable = in_array($day, $daysWithAvailability);
-                            $isSelected = $selectedDay == $day;
-                            $isPast = $this->isPastDay($day);
-                            $dayClasses = 'tutor-calendar-day';
-                            if ($isAvailable) $dayClasses .= ' has-availability';
-                            if ($isSelected) $dayClasses .= ' selected';
-                            if ($isPast) $dayClasses .= ' past';
-                        @endphp
-                        <div wire:click="selectDay({{ $day }},{{ $currentDate->month }})" class="{{ $dayClasses }}">{{ $day }}</div>
-                    @endfor
-                </div>
-            </div>
-        </div>
-
-        {{-- SELECTOR DE HORA --}}
-        @if ($selectedDay)
-        <div class="tutor-time-selector-col">
-            <h4 class="tutor-section-title">Selecciona una hora</h4>
-            <div class="tutor-time-selector-box">
-                @if (!empty($availableTimeSlots))
-                    <div class="tutor-time-slots">
-                        @foreach ($availableTimeSlots as $slot)
-                            @php
-                                $isOccupied = $slot['status'] === 'occupied';
-                                $isTimeSelected = $selectedTime === $slot['time'];
-                                $slotClasses = 'tutor-time-slot-btn';
-                                if ($isOccupied) $slotClasses .= ' occupied';
-                                if ($isTimeSelected) $slotClasses .= ' selected';
-                                
-                            @endphp
-                            <button wire:click="selectTime('{{ $slot['time'] }}')" class="{{ $slotClasses }}" @if($isOccupied) disabled @endif>
-                                {{ $slot['time'] }}
-                            </button>
-                        @endforeach
-                    </div>
-                @else
-                    <p class="tutor-no-availability">Horas no disponible</p>
-                @endif
-            </div>
-        </div>
+    <div class="section-reserva">
+        {{-- Mensaje de éxito tras reservar --}}
+        @if (session()->has('success_message'))
+            <div class="alert-success" >{{ session('success_message') }}</div>
         @endif
-    </div>
 
-   <!-- Botón para abrir el modal -->
-   {{-- <div class="tutor-pay-btn-box">
-      <button class="tutor-pay-btn" id="openModalBtn">Pagar y reservar</button>
-   </div> --}}
-   @auth
-    @role('student')
-    <div class="tutor-pay-btn-box">
-        <button wire:click="openReservationModal" class="tutor-pay-btn">Pagar y reservar</button>
-    </div>
-    
-        @elserole('tutor')
-        <div class="tutor-pay-btn-box">
-            <p><i>Debes tener una cuenta "Estudiante" para poder reservar</i></p>
+        @if (session()->has('error'))
+            <div style="color:red">{{ session('error') }}</div>
+        @endif
+
+        <div class="tutor-availability-grid">
+            {{-- CALENDARIO --}}
+            <div>
+                <h4 class="tutor-section-title">Selecciona un día</h4>
+            {{--  <div>
+                    <p>ID del tutor: {{ $this->tutorId }}</p>
+                </div> --}}
+                <div class="tutor-calendar-box">
+                    <div class="tutor-calendar-header">
+                    <button wire:click="goToPreviousMonth" class="tutor-calendar-nav-btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tutor-calendar-nav-icon"><path d="m15 18-6-6 6-6"></path></svg></button>
+                    <h5 class="tutor-calendar-month">{{ $currentDate->translatedFormat('F Y') }}</h5>
+                    <button  wire:click="goToNextMonth" class="tutor-calendar-nav-btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tutor-calendar-nav-icon"><path d="m9 18 6-6-6-6"></path></svg></button>
+                    </div>
+                    <div class="tutor-calendar-grid">
+                        <div class="tutor-calendar-day-label">D</div> 
+                        <div class="tutor-calendar-day-label">L</div> 
+                        <div class="tutor-calendar-day-label">M</div> 
+                        <div class="tutor-calendar-day-label">M</div> 
+                        <div class="tutor-calendar-day-label">J</div> 
+                        <div class="tutor-calendar-day-label">V</div> 
+                        <div class="tutor-calendar-day-label">S</div> 
+                        @for ($i = 0; $i < $startDay; $i++) <div></div> @endfor
+                        @for ($day = 1; $day <= $daysInMonth; $day++)
+                            @php
+                                $isAvailable = in_array($day, $daysWithAvailability);
+                                $isSelected = $selectedDay == $day;
+                                $isPast = $this->isPastDay($day);
+                                $dayClasses = 'tutor-calendar-day';
+                                if ($isAvailable) $dayClasses .= ' has-availability';
+                                if ($isSelected) $dayClasses .= ' selected';
+                                if ($isPast) $dayClasses .= ' past';
+                            @endphp
+                            <div wire:click="selectDay({{ $day }},{{ $currentDate->month }})" class="{{ $dayClasses }}">{{ $day }}</div>
+                        @endfor
+                    </div>
+                </div>
+            </div>
+
+            {{-- SELECTOR DE HORA --}}
+            @if ($selectedDay)
+            <div class="tutor-time-selector-col">
+                <h4 class="tutor-section-title">Selecciona una hora</h4>
+                <div class="tutor-time-selector-box">
+                    @if (!empty($availableTimeSlots))
+                        <div class="tutor-time-slots">
+                            @foreach ($availableTimeSlots as $slot)
+                                @php
+                                    $isOccupied = $slot['status'] === 'occupied';
+                                    $isTimeSelected = $selectedTime === $slot['time'];
+                                    $slotClasses = 'tutor-time-slot-btn';
+                                    if ($isOccupied) $slotClasses .= ' occupied';
+                                    if ($isTimeSelected) $slotClasses .= ' selected';
+                                    
+                                @endphp
+                                <button wire:click="selectTime('{{ $slot['time'] }}')" class="{{ $slotClasses }}" @if($isOccupied) disabled @endif>
+                                    {{ $slot['time'] }}
+                                </button>
+                            @endforeach
+                        </div>
+                    @else
+                        <p class="tutor-no-availability">Horas no disponible</p>
+                    @endif
+                </div>
+            </div>
+            @endif
         </div>
-    @endrole
-       
-   @endauth
+   </div>
+    @auth
+        @role('student')
+        <div class="tutor-pay-btn-box">
+            <button wire:click="openReservationModal" class="tutor-pay-btn">Pagar y reservar</button>
+        </div>
 
-   @guest
+            @elserole('tutor')
+            <div class="tutor-pay-btn-box">
+                <p><i>Debes tener una cuenta "Estudiante" para poder reservar</i></p>
+            </div>
+        @endrole
+
+    @endauth
+
+    @guest
     <div class="tutor-pay-btn-box">
         <p><i>Debes tener una cuenta "Estudiante" para poder reservar</i></p>
     </div>
-   @endguest
+    @endguest
    
    <!-- =========================== MODAL RESERVA ====================================-->
     @if($showModal)
@@ -212,7 +209,8 @@
 
                     <!--Botones de Acciones-->
                     <div class="action-buttons">
-                        <button type="button" wire:click="closeModal" class="btn btn-secondary">Cancelar</button>
+                        <button type="button" wire:click="closeModal" class="btn btn-primary">Cancelar</button>
+
                         <button type="submit" class="btn btn-primary">Reservar</button>
                     </div>
                 </div>
@@ -222,9 +220,5 @@
     @endif
 </div>
 
-<script>
-    console.log('esta ejecuntadnos el script');
-    
-</script>
 
 

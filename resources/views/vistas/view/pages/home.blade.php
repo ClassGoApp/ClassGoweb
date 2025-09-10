@@ -52,7 +52,7 @@
 
         <!-- 1.4 Hero Mascota -->
        
-        <img src="{{ asset('storage/optionbuilder/uploads/740102-17-2025_0859pmTugo-saludando.gif') }}" alt="Mascota ClassGo">
+        <img src="{{ asset(path: 'storage/optionbuilder/uploads/740102-17-2025_0859pmTugo-saludando.gif') }}" alt="Mascota ClassGo">
 
 
        
@@ -100,8 +100,8 @@
         <button id="prevBtn" class="carousel-btn prev-btn" aria-label="Anterior">&lt;</button>
         <div class="carousel-wrapper">
             <div class="carousel-track" id="carouselTrack">
-                @foreach($featuredTutors as $tutor)
-                    <div class="tutor-card" onclick="window.location.href='https://example.com/perfil-tutor1'">
+                {{-- @foreach($featuredTutors as $tutor)
+                    <div class="tutor-card" onclick="window.location.href='{{ route('tutor', ['slug' => $tutor->profile['slug']]) }}' ">
                         <button class="favorite-btn" onclick="event.stopPropagation(); this.classList.toggle('active')">⭐</button>
                         <div class="tutor-card-img">
                             <video controls preload="auto"
@@ -122,8 +122,59 @@
                             -->
                         </div>
                     </div>
-                @endforeach
+                @endforeach --}}
 
+                @foreach($featuredTutors as $tutor)
+                <div class="tutor-card" onclick="window.location.href='{{ route('tutor', ['slug' => $tutor->profile['slug']]) }}'">
+                    <div class="tutor-card-content">
+                        <div class="tutor-avatar-container">
+                            <img src="{{ $tutor->profile->image ? asset('storage/' . $tutor->profile->image) : asset('images/tutors/default.png') }}" alt="Tutor" class="tutor-avatar">                               
+                            <span class="tutor-status-badge">
+                                <span class="tutor-status-star">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="star-icon" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                    </svg>
+                                </span>
+                            </span>
+                        </div>
+                        <h3 class="tutor-name">
+                            {{ explode(' ', $tutor->profile->first_name)[0] }}
+                            {{ explode(' ', $tutor->profile->last_name)[0] }}
+                        </h3> <!--NOMBRE DEL TUTOR-->
+
+                        @php
+                            // Accede a la colección de materias del tutor.
+                            $subjects = $tutor->subjects;
+
+                            // Si la colección de materias no está vacía...
+                            if ($subjects->isNotEmpty()) {
+                                // ...accede a la primera materia de la colección.
+                                $firstSubject = $subjects->first();
+                                
+                                // Si la primera materia tiene un grupo asociado...
+                                if ($firstSubject->group) {
+                                    // ...muestra el nombre del grupo.
+
+                                    $materia = $firstSubject->group->name;
+                                }
+                            }
+                        @endphp
+
+                        {{-- <p class="tutor-job">Tutor de Ciencias Sociales </p> --}}
+                        <p class="tutor-job">Tutor de {{$materia}} </p>
+                        <div class="tutor-subjects">
+                            @foreach ($tutor->subjects as $subject)
+                                <span class="subject-tag">{{ $subject->name }}</span>
+                            @endforeach
+                        </div>
+                        <button class="profile-btn">
+                            Ver Perfil
+                        </button>
+                    </div>
+                </div>
+
+
+                @endforeach
                 <!--Card buscar más tutores-->
                 <div class="card-buscarmas">
                     <div class="icon-wrapper">
@@ -135,7 +186,7 @@
                     <p>
                         Encuentra el tutor perfecto para tus necesidades y comienza a aprender hoy mismo.
                     </p>
-                    <a href="#" class="btn-primary">
+                    <a href="{{ route('buscar.tutor') }}" class="btn-primary">
                         Explorar ahora
                     </a>
                 </div>
@@ -262,13 +313,108 @@
         </div>
     </div>
 
-
     <!-- ALIANZAS-->
+
     @include('components.alianzas', ['alianzas' => $alianzas])
+    
 </section>
 
 
+
+
+
 <script>
+    //-----Carrusel de Alianzas
+    document.addEventListener('DOMContentLoaded', function() {
+        const track = document.getElementById('client-carousel-track');
+        const dotsContainer = document.getElementById('client-pagination-dots');
+        const slides = Array.from(track.children);
+        const dots = Array.from(dotsContainer.children);
+        const nextButton = document.getElementById('client-next-button');
+        const prevButton = document.getElementById('client-prev-button');
+
+        // Mueve la lógica del carrusel aquí
+        const getSlidesPerView = () => {
+            if (window.innerWidth >= 1024) return 3;
+            if (window.innerWidth >= 768) return 2;
+            return 1;
+        };
+
+        let currentIndex = 0;
+        let slideInterval;
+
+        const goToSlide = (index) => {
+            const slidesPerView = getSlidesPerView();
+            const maxIndex = slides.length - slidesPerView;
+            
+            if (index < 0) {
+                currentIndex = maxIndex;
+            } else if (index > maxIndex) {
+                currentIndex = 0;
+            } else {
+                currentIndex = index;
+            }
+
+            updateCarousel();
+        };
+
+        const updateCarousel = () => {
+            const slidesPerView = getSlidesPerView();
+            const slideWidth = slides[0].offsetWidth;
+            track.style.transform = 'translateX(' + (-slideWidth * currentIndex) + 'px)';
+
+            // Actualizar puntos de paginación
+            dots.forEach((dot, index) => {
+                dot.classList.remove('active');
+                if (index === currentIndex) {
+                    dot.classList.add('active');
+                }
+            });
+        };
+
+        const startInterval = () => {
+            slideInterval = setInterval(() => {
+                goToSlide(currentIndex + 1);
+            }, 3000);
+        };
+
+        const resetInterval = () => {
+            clearInterval(slideInterval);
+            startInterval();
+        };
+
+        nextButton.addEventListener('click', () => {
+            goToSlide(currentIndex + 1);
+            resetInterval();
+        });
+
+        prevButton.addEventListener('click', () => {
+            goToSlide(currentIndex - 1);
+            resetInterval();
+        });
+
+        // Event listeners para los puntos de paginación
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                goToSlide(index);
+                resetInterval();
+            });
+        });
+
+        window.addEventListener('resize', () => {
+            // Al redimensionar, recalcular todo y mantener en la misma posición relativa
+            const newSlidesPerView = getSlidesPerView();
+            const maxIndex = slides.length - newSlidesPerView;
+            if (currentIndex > maxIndex) {
+                currentIndex = maxIndex;
+            }
+            updateCarousel();
+        });
+
+        // Inicializar carrusel
+        updateCarousel();
+        startInterval();
+    });
 
     document.addEventListener('DOMContentLoaded', () => {
         const track = document.getElementById('carouselTrack');
