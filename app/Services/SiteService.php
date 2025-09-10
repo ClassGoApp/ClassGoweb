@@ -313,6 +313,8 @@ public function getTutors($data = array()) {
             
             // Solo tutores con al menos un registro en companyCourseUsers
             ->whereHas( 'companyCourseUsers')
+            ->whereHas('subjects.group')
+
             ->with([
                 'profile:id,user_id,slug,tagline,verified_at,first_name,last_name,image,intro_video,description',
                 'address.state',

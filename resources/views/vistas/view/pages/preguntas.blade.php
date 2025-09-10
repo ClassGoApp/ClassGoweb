@@ -37,11 +37,11 @@
                 <div class="preguntas-section">
                     <div class="preguntas-content">
                         <div class="preguntas-faq">
-                            <div class="faq-item active">
+                            <div class="faq-item">
                                 <div class="faq-question" onclick="toggleFaq(this)">
                                     <h3>¿Cómo encontrar un tutor?</h3>
                                     <div class="faq-toggle">
-                                        <i class="fa-solid fa-chevron-up"></i>
+                                        <i class="fa-solid fa-chevron-down"></i>
                                     </div>
                                 </div>
                                 <div class="faq-answer">
@@ -121,11 +121,11 @@
                 <div class="preguntas-section">
                     <div class="preguntas-content">
                         <div class="preguntas-faq">
-                            <div class="faq-item active">
+                            <div class="faq-item">
                                 <div class="faq-question" onclick="toggleFaq(this)">
                                     <h3>¿Cómo puedo ser tutor?</h3>
                                     <div class="faq-toggle">
-                                        <i class="fa-solid fa-chevron-up"></i>
+                                        <i class="fa-solid fa-chevron-down"></i>
                                     </div>
                                 </div>
                                 <div class="faq-answer">

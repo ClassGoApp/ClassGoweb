@@ -61,6 +61,7 @@
   grid-template-columns: 1fr 1fr;
   gap: 48px;
   align-items: center;
+  
 
 }
 
@@ -408,7 +409,8 @@
 @media (min-width: 1400px) {
   /* Estilos para el contenedor principal de la sección */
   .buscartutor-hero-section {
-      padding: 7rem 0rem 0rem 0rem; /* Un padding generoso para el espacio exterior */
+    height: 70vh;
+    padding: 7rem 0rem 0rem 0rem; /* Un padding generoso para el espacio exterior */
   }
 
   /* Contenedor central que limita el ancho */
@@ -428,19 +430,19 @@
 
   /* Estilos para el texto de la columna */
   .buscartutor-hero-label {
-      font-size: 1.5rem;
+      font-size: 1rem;
       margin-bottom: 0.5rem;
   }
 
   .buscartutor-hero-title {
-      font-size: 4rem; /* Título grande y legible */
+      font-size: 2rem; /* Título grande y legible */
       line-height: 1.2; /* Altura de línea ajustada para mejor legibilidad */
       font-weight: bold;
       margin-bottom: 1.5rem;
   }
 
   .buscartutor-hero-desc {
-      font-size: 2rem;
+      font-size: 1rem;
       line-height: 1.6;
       max-width: 600px; /* Limita el ancho del párrafo para mejor lectura */
   }
@@ -459,7 +461,7 @@
 
   /* Estilos de la imagen en sí */
   .buscartutor-hero-img {
-      max-width: 100%; /* La imagen no excede el ancho de su contenedor */
+      max-width: 80%; /* La imagen no excede el ancho de su contenedor */
       height: auto; /* Mantiene la proporción */
       display: block;
   }

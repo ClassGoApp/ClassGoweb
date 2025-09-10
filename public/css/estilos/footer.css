@@ -25,14 +25,18 @@ footer {
 .container-info {
   display: flex;
   flex-flow: row wrap;
-  padding: 4rem 0 0 4rem;
+  padding: 2rem 0 0 4rem;
+  justify-content: start;
 }
 
 .info-text {
   display: flex;
-  flex-flow: row wrap;
+  flex-flow: row nowrap !important;
   padding: 0.5rem 1rem;
   gap: 10px;
+  width: 100%;
+  justify-content: start !important;
+  align-items: center !important;
 }
 
 .info-text i {
@@ -44,6 +48,7 @@ footer {
 
 .info-text p {
   color: var(--footer-white);
+
 }
 
 .footer-info img {
@@ -68,7 +73,7 @@ footer {
   flex: 1;
   display: flex;
   flex-flow: row wrap;
-  padding: 2rem 2rem 0 2rem;
+  padding: 1rem 2rem 0 2rem;
 }
 
 .footer-about h1 {
@@ -99,7 +104,7 @@ footer {
   justify-content: flex-end;
   padding-right: 8rem;
   gap: 30px;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 
 .circle-icon {
@@ -186,7 +191,7 @@ hr {
     display: flex !important;
     justify-content: center !important;
     flex-direction: column !important;
-    padding-left: 2rem;
+    padding-left: 1rem;
   }
 
   .footer-info img {
@@ -194,7 +199,7 @@ hr {
   }
 
   .footer-info .info-text {
-    justify-content: center;
+    justify-content: center !important;
     align-items: center;
     gap: 0.1rem;
     line-height: 5px;

@@ -277,14 +277,14 @@
 
         <!-- Botón -->
         <div>
-          <a href="https://play.google.com/store/apps/details?id=com.neurasoft.classgo" class="btn-app">Descargar Ahora</a>
+          <a href="https://play.google.com/store/apps/details?id=com.neurasoft.classgo" target="_blank" class="btn-app">Descargar Ahora</a>
         </div>
       </div>
 
       <!-- Columna Derecha: Imagen -->
       <div class="image-app">
         <img 
-          src="{{ asset('images/home/iphone.webp')}}" 
+          src="{{ asset('images/home/celular-ClassGo.png')}}" 
           alt="ClassGo"
           onerror="this.onerror=null;this.src='https://placehold.co/400x800/023047/FFFFFF?text=App';"
         >
