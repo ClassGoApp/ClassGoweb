@@ -313,13 +313,108 @@
         </div>
     </div>
 
-
     <!-- ALIANZAS-->
+
     @include('components.alianzas', ['alianzas' => $alianzas])
+    
 </section>
 
 
+
+
+
 <script>
+    //-----Carrusel de Alianzas
+    document.addEventListener('DOMContentLoaded', function() {
+        const track = document.getElementById('client-carousel-track');
+        const dotsContainer = document.getElementById('client-pagination-dots');
+        const slides = Array.from(track.children);
+        const dots = Array.from(dotsContainer.children);
+        const nextButton = document.getElementById('client-next-button');
+        const prevButton = document.getElementById('client-prev-button');
+
+        // Mueve la lógica del carrusel aquí
+        const getSlidesPerView = () => {
+            if (window.innerWidth >= 1024) return 3;
+            if (window.innerWidth >= 768) return 2;
+            return 1;
+        };
+
+        let currentIndex = 0;
+        let slideInterval;
+
+        const goToSlide = (index) => {
+            const slidesPerView = getSlidesPerView();
+            const maxIndex = slides.length - slidesPerView;
+            
+            if (index < 0) {
+                currentIndex = maxIndex;
+            } else if (index > maxIndex) {
+                currentIndex = 0;
+            } else {
+                currentIndex = index;
+            }
+
+            updateCarousel();
+        };
+
+        const updateCarousel = () => {
+            const slidesPerView = getSlidesPerView();
+            const slideWidth = slides[0].offsetWidth;
+            track.style.transform = 'translateX(' + (-slideWidth * currentIndex) + 'px)';
+
+            // Actualizar puntos de paginación
+            dots.forEach((dot, index) => {
+                dot.classList.remove('active');
+                if (index === currentIndex) {
+                    dot.classList.add('active');
+                }
+            });
+        };
+
+        const startInterval = () => {
+            slideInterval = setInterval(() => {
+                goToSlide(currentIndex + 1);
+            }, 3000);
+        };
+
+        const resetInterval = () => {
+            clearInterval(slideInterval);
+            startInterval();
+        };
+
+        nextButton.addEventListener('click', () => {
+            goToSlide(currentIndex + 1);
+            resetInterval();
+        });
+
+        prevButton.addEventListener('click', () => {
+            goToSlide(currentIndex - 1);
+            resetInterval();
+        });
+
+        // Event listeners para los puntos de paginación
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                goToSlide(index);
+                resetInterval();
+            });
+        });
+
+        window.addEventListener('resize', () => {
+            // Al redimensionar, recalcular todo y mantener en la misma posición relativa
+            const newSlidesPerView = getSlidesPerView();
+            const maxIndex = slides.length - newSlidesPerView;
+            if (currentIndex > maxIndex) {
+                currentIndex = maxIndex;
+            }
+            updateCarousel();
+        });
+
+        // Inicializar carrusel
+        updateCarousel();
+        startInterval();
+    });
 
     document.addEventListener('DOMContentLoaded', () => {
         const track = document.getElementById('carouselTrack');
