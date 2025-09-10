@@ -22,6 +22,8 @@
     --footer-white: #d6f7fd;
     --white: #fff;
     --text-gris: #888;
+    --secondary-text-color: #cbd5e1;
+    --main-text-color: #f3f4f6;
     --panel-background: #f1f3f4;
     --bg-gradient: linear-gradient(180deg, rgba(7, 59, 76, 1) 64%, rgba(24, 77, 94, 1) 77%, rgba(33, 158, 188, 1) 100%);
     --bg-gradient2: linear-gradient(135deg, #023047 0%, #219EBC 100%);
@@ -42,4 +44,24 @@
     --font-semibold: 600;
     --font-bold: 700;
     --font-extrabold: 800;
+
+    /*-------ANIMACIONES (para botones-------*/
+    --button-transition-duration: 0.3s;
+    --button-hover-scale: 1.02;
+    --button-active-scale: 0.95;
+    --button-hover-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+
+    /*------Clase base para todos los botones---------
+    .btn-animated {
+    transition: transform var(--button-transition-duration) ease-in-out, box-shadow var(--button-transition-duration) ease-in-out;
+    }
+
+    .btn-animated:hover {
+    transform: scale(var(--button-hover-scale));
+    box-shadow: var(--button-hover-shadow);
+    }
+
+    .btn-animated:active {
+    transform: scale(var(--button-active-scale));
+    }*/
 }

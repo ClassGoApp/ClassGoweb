@@ -32,8 +32,9 @@
                     <a href="{{ route('buscar.tutor')}}"><p>Encontrar Tutor</p></a>
                 </div>
                 <div class="box">
-                    <h1>Blog</h1>
-                    <p>Consejos de <br>expertos</p>
+                    <h1>Leer Más</h1>
+                    <a href=" {{ route('terminos') }}"> <p>Términos y Condiciones</p> </a>
+                    
                 </div>
                 <div class="box">
                     <h1>Opten la App</h1>

@@ -161,6 +161,7 @@
     border-bottom-right-radius: 30px;
 }
 
+/*--------- Imagen de perfil --------*/
 .tutor-profile-img {
     width: 128px;
     height: 128px;
@@ -173,6 +174,8 @@
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
     z-index: 10;
 }
+
+
 
 .tutor-profile-info {
     margin-left: 150px;
@@ -382,15 +385,31 @@
 /* Estilos para los días del calendario */
 
 /* ==================== 8.1 - Dias-Horarios Disponibles ==================== */
-.tutor-calendar-day.has-availability {
+/* .tutor-calendar-day.has-availability {
     border: 2px solid var(--terciary-color2);
+} */
+.tutor-calendar-day.has-availability {
+    border: none;
+    position: relative;
+}
+.tutor-calendar-day.has-availability::after {
+    content: ''; /* Campo obligatorio para que el pseudo-elemento se muestre */
+    position: absolute; /* Permite posicionar el punto con precisión */
+    bottom: 5px; /* Ajusta la distancia desde la parte inferior del div */
+    left: 50%; /* Centra el punto horizontalmente */
+    transform: translateX(-50%); /* Ajuste final para un centrado perfecto */
+    
+    width: 6px; /* Tamaño del punto */
+    height: 6px; /* Tamaño del punto */
+    background-color: var(--terciary-color2); /* Color del punto */
+    border-radius: 50%; /* ¡Esto lo convierte en un círculo perfecto! */
 }
 
 /* ==================== 8.2 - Dias Seleccionados ==================== */
 .tutor-calendar-day.selected {
     background-color: var(--primary-color);
     color: white;
-    border-color: #3498db;
+    border-color: #db3434;
 }
 
 /* ==================== 8.3 - Btn De Ocupado ==================== */
@@ -430,7 +449,7 @@
 }
 
 .tutor-calendar-day:not(.past):hover {
-    background-color: #f0f0f0;
+    background-color: var(--terciary-color2);
 }
 
 /* ==================== 8.6 - Dias Pasado ==================== */
@@ -438,7 +457,9 @@
     color: #ccc;
     cursor: not-allowed;
 }
-
+.tutor-calendar-day.past.has-availability::after {
+    display: none;
+}
 /* ==================== 8.7 - Dias Reservados ==================== */
 .tutor-calendar-day.booked {
     background-color: #ffe8d6;
@@ -471,9 +492,10 @@
 }
 
 .tutor-time-slot-btn:hover {
-    border-color: #0c70b3;
-    color: var(--primary-color);
+    border-color: var(--terciary-color2);
+    color: white;
     font-weight: bold;
+    background-color: var(--terciary-color2);
 }
 
 .tutor-no-availability {
@@ -484,10 +506,18 @@
     border-radius: 8px;
 }
 
+.section-reserva{
+    display: flex;
+    flex-flow: column wrap;
+    height: auto;
+}
+
 .tutor-availability-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 2rem;
+    height: 100%;
+
 }
 
 .tutor-calendar-box {
@@ -559,17 +589,22 @@
     color: #fff;
     font-weight: bold;
 }
+.tutor-calendar-day.selected.has-availability::after {
+    display: none;
+}
 
 .tutor-time-selector-col {
-    display: block;
+    display: flex;
+    flex-flow: column nowrap;
+
 }
 
 .tutor-time-selector-box {
-    background: #fff;
+    background: white;
     padding: 1.5rem;
     border-radius: 1rem;
     border: 1px solid #e0e0e0;
-    height: 80%;
+    height: 100%;
 }
 
 .tutor-time-range {
@@ -582,6 +617,8 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 0.5rem;
+    justify-content: center;
+    height: auto;
 }
 
 .tutor-time-slot {
@@ -597,13 +634,13 @@
 .tutor-time-slot:hover {
     background: var(--secundary-color);
     color: #fff;
-    border-color: var(--secundary-color);
+    border-color: var(--terciary-color2);
 }
 
 .tutor-time-exact-btn {
     width: 100%;
     margin-top: 1rem;
-    background: var(--terciary-color2);
+    background: var(--secundary-color);
     color: #fff;
     font-weight: 600;
     padding: 0.7rem 0;
@@ -614,9 +651,10 @@
 }
 
 .tutor-pay-btn-box {
-    margin-top: 2rem;
+    display: flex;
     text-align: center;
-    padding: 0rem 2rem;
+    padding: 2rem 4rem 0rem 4rem;
+    justify-content: center;
 }
 
 .tutor-pay-btn {
@@ -628,13 +666,15 @@
     font-size: 1.2rem;
     border: none;
     cursor: pointer;
-    transition: var(--transition);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: transform var(--button-transition-duration) ease-in-out, box-shadow var(--button-transition-duration) ease-in-out;
 }
 
 .tutor-pay-btn:hover {
-    opacity: 0.9;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    transform: scale(var(--button-hover-scale));
+    box-shadow: var(--button-hover-shadow);
+}
+.tutor.pay.btn:active{
+    transform: scale(var(--button-active-scale));
 }
 
 .tutor-subtabs-nav {
@@ -766,7 +806,7 @@
     border: none;
     padding: 1rem 0;
     cursor: pointer;
-    transition: var(--transition);
+    transition: transform var(--button-transition-duration) ease-in-out, box-shadow var(--button-transition-duration) ease-in-out;
 }
 
 .tutor-btn-now {
@@ -783,6 +823,14 @@
     background: #e0e0e0;
     color: #555;
 }
+
+.tutor-btn-reservar:hover,
+.tutor-btn-now:hover,
+.tutor-btn-share:hover {
+  transform: scale(var(--button-hover-scale));
+  box-shadow: var(--button-hover-shadow);
+}
+
 
 .tutor-btn-icon {
     width: 24px;
@@ -1055,6 +1103,7 @@ body.modal-open {
 .action-buttons {
     display: flex;
     flex-direction: row;
+    flex-wrap: nowrap;
     gap: 1rem;
     padding-top: 0.5rem;
 }
@@ -1077,20 +1126,27 @@ body.modal-open {
 .btn-primary {
     background-color: var(--terciary-color2);
     color: white;
+    transition: transform var(--button-transition-duration) ease-in-out, box-shadow var(--button-transition-duration) ease-in-out;
 }
 
 .btn-primary:hover {
     background-color: #ffa640;
+    transform: scale(var(--button-hover-scale));
+  box-shadow: var(--button-hover-shadow);
+}
+.btn-primary:active{
+  transform: scale(var(--button-active-scale));
 }
 
-.btn-secondary {
+.btn-primary[type="button"]{
     background-color: #e5e7eb;
     color: #1f2937;
 }
+.btn-primary[type="button"]:hover{
+    background-color: #c4c4c5;
 
-.btn-secondary:hover {
-    background-color: #d1d5db;
 }
+
 
 /*=================== 16 CUPONES ===============*/
 /* Base Styles */
