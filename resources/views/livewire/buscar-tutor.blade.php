@@ -40,7 +40,6 @@
     
     <section class="buscartutor-tutorlist-section">
         <div class="buscartutor-tutorlist-space">
-            {{-- ¡Aquí está la solución! --}}
             @forelse ($profiles as $profile)
                 <div class="buscartutor-tutor-card" wire:key="tutor-{{ $profile['user_id'] }}">
                     <a href="{{ route('tutor', ['slug' => $profile['slug']]) }}">

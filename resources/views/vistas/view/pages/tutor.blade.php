@@ -151,31 +151,110 @@
                         </div>
                         <div id="curriculum" class="tutor-tab-content hidden">
                            <nav class="tutor-subtabs-nav"><button onclick="changeSubTab(event, 'educacion')" class="tutor-subtab-btn active">Educación</button><button onclick="changeSubTab(event, 'experiencia')" class="tutor-subtab-btn">Experiencia</button><button onclick="changeSubTab(event, 'certificaciones')" class="tutor-subtab-btn">Certificación</button></nav>
+
                             <div id="educacion" class="tutor-subtab-content">
-                                <div class="tutor-empty-box">
-                                    {{-- LOGICA PARA MOSTRAR DE BASE DE DATOS --}}
+
+                                <!--EN CASO DE ESTAR VACIO--> 
+                                {{-- <div class="tutor-empty-box">
                                     <div class="am-norecord">
-                                        @include('livewire.components.no-record')
+                                        @include('livewire.components.no-record') 
                                     </div>
-                                </div>
+                                </div> --}}
+
+                                <div class="info-card">
+                                    <div class="info-card-header">
+                                        <div class="info-card-content">
+                                            <h3 class="info-card-title">JavaScript Course</h3>
+                                            <div class="info-card-meta">
+
+                                                <div class="info-card-meta-item">
+                                                    <svg class="info-card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                                                    <span>Nombre de la Universidad</span>
+                                                </div>
+                                                <div class="info-card-meta-item">
+                                                    <svg class="info-card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                                    <span>Ciudad y País</span>
+                                                </div>
+                                                <div class="info-card-meta-item">
+                                                    <svg class="info-card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                                    <span>Fechas de Estudio</span>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>     
                             </div>
+
+
                             <div id="experiencia" class="tutor-subtab-content hidden">
-                                <div class="tutor-empty-box">
-                                    {{-- LOGICA PARA MOSTRAR DE BASE DE DATOS --}}
+
+                                <!--En caso de estar vacio-->
+                                {{-- <div class="tutor-empty-box">
                                     <div class="am-norecord">
                                         @include('livewire.components.no-record')
                                     </div>
+                                </div> --}}
+
+                                <div class="info-card">
+                                    <div class="info-card-header">
+                                        <div class="info-card-content">
+                                            <h3 class="info-card-title">JavaScript Course</h3>
+                                            <div class="info-card-meta">
+                                                <div class="info-card-meta-item">
+                                                    <svg class="info-card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                                                    <span>TutorPro</span>
+                                                </div>
+                                                <div class="info-card-meta-item">
+                                                    <svg class="info-card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                                    <span>Part Time</span>
+                                                </div>
+                                                <div class="info-card-meta-item">
+                                                    <svg class="info-card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2h8a2 2 0 002-2v-1a2 2 0 012-2h1.945M7.707 4.293a1 1 0 010 1.414L4.414 9H19.586l-3.293-3.293a1 1 0 010-1.414a1 1 0 011.414 0l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414-1.414L19.586 15H4.414l3.293 3.293a1 1 0 01-1.414 1.414l-5-5a1 1 0 010-1.414l5-5a1 1 0 011.414 0z"></path></svg>
+                                                    <span>Remote</span>
+                                                </div>
+                                                <div class="info-card-meta-item">
+                                                    <svg class="info-card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                                    <span>July 2021 - Present</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+
                             <div id="certificaciones" class="tutor-subtab-content hidden">
-                                <div class="tutor-empty-box">
-                                    {{-- LOGICA PARA MOSTRAR DE BASE DE DATOS --}}
+                                <!--En caso de estar vacio-->
+                                {{-- <div class="tutor-empty-box">
                                     <div class="am-norecord">
                                         @include('livewire.components.no-record')
+                                    </div>
+                                </div> --}}
+
+                                <div class="info-card">
+                                    <div class="info-card-header">
+                                        <div class="info-card-content">
+                                            <h3 class="info-card-title">JavaScript Course</h3>
+                                            <div class="info-card-meta">
+                                                <div class="info-card-meta-item"">
+                                                    <svg class="info-card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg>
+                                                    <span>Institución</span>
+                                                </div>
+                                                <div class="info-card-meta-item"">
+                                                    <svg class="info-card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                                    <span>Fecha de Emisión</span>
+                                                </div>
+                                                <div class="info-card-meta-item"">
+                                                    <svg class="info-card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                                    <span>Fecha de Caducidad</span>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
                         <div id="resenas" class="tutor-tab-content hidden">
                             <h3 class="tutor-section-title" style="margin-bottom: 1.5rem;">Reseñas de estudiantes</h3>
                             <div class="tutor-reviews-box">
@@ -284,58 +363,9 @@
                     Compartir en Facebook
                 </button>
             </div>
-
-            
         </div>
     </div>
-    {{-- <!-- Modal Reserva -->
-    <div id="reservationModal" class="modal-overlay">
-        <div id="modalContent" class="modal-content">
-            <div class="modal-body">
-                <div class="modal-qr-column">
-                    <img src="{{ asset('storage/qr/77b1a7da.jpg')}}" alt="Código QR de Notion" class="qr-image">
-                </div>
 
-                <div class="modal-form-column">
-                    <h2 class="form-title">Selecciona la materia</h2>
-
-                    <div>
-                        <label for="comprobante" class="input-label">Comprobante de pago</label>
-                        <label for="comprobante" class="file-input-label">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="upload-icon" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clip-rule="evenodd" />
-                            </svg>
-                            Subir archivo
-                        </label>
-                        <input type="file" id="comprobante" class="file-input-hidden">
-                        <p id="fileName" class="file-name-display">Ningún archivo seleccionado</p>
-                    </div>
-
-                    <div>
-                        <label for="materia" class="input-label">Materia</label>
-                        <select id="materia" name="materia" class="select-input">
-                            <option value="">-- Elige una materia --</option>
-                            <option value="calculo1">Cálculo I</option>
-                            <option value="algebra">Álgebra Lineal</option>
-                            <option value="fisica2">Física II</option>
-                            <option value="programacion">Programación Avanzada</option>
-                            <option value="basedatos">Bases de Datos</option>
-                        </select>
-                    </div>
-
-                    <div class="info-box">
-                        <p><strong>Fecha:</strong> <span id="currentDate"></span></p>
-                        <p><strong>Hora:</strong> <span id="currentTime"></span></p>
-                    </div>
-
-                    <div class="action-buttons">
-                        <button id="cancelBtn" class="btn btn-secondary">Cancelar</button>
-                        <button class="btn btn-primary">Reservar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> --}}
 
     <script>
         // --- SCRIPT PARA PESTAÑAS ---
