@@ -84,16 +84,35 @@
         </div>
 
             @elserole('tutor')
-            <div class="tutor-pay-btn-box">
-                <p><i>Debes tener una cuenta "Estudiante" para poder reservar</i></p>
+            <div class="alert-box alert-amber" role="alert">
+                <div class="alert-content">
+                    <svg class="alert-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                    <div>
+                        <p class="alert-title">Función solo para Estudiantes</p>
+                        <p class="alert-text">
+                            Para poder reservar una sesión, necesitas utilizar una cuenta de tipo "Estudiante".
+                        </p>
+                        <p class="alert-text alert-subtext">
+                            Si tienes una, por favor <a href="/logout" class="alert-link">cierra sesión</a> y vuelve a ingresar con tu cuenta de estudiante.
+                        </p>
+                    </div>
+                </div>
             </div>
         @endrole
 
     @endauth
 
     @guest
-    <div class="tutor-pay-btn-box">
-        <p><i>Debes tener una cuenta "Estudiante" para poder reservar</i></p>
+    <div class="alert-box alert-teal" role="alert">
+        <div class="alert-content">
+            <svg class="alert-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <div>
+                <p class="alert-title">¡Casi listo para reservar!</p>
+                <p class="alert-text">
+                    Para agendar una sesión, solo necesitas <a href="/login" class="alert-link">iniciar sesión</a> o <a href="/register" class="alert-link">crear tu cuenta</a> de estudiante.
+                </p>
+            </div>
+        </div>
     </div>
     @endguest
    

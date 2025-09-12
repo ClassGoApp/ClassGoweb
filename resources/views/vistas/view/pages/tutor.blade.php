@@ -12,6 +12,7 @@
             <span class="tutor-breadcrumb-current">{{ $tutor->profile->first_name ?? '' }} {{ $tutor->profile->last_name ?? '' }}</span>
         </div>
         <div class="tutor-grid">
+
             <!-- Columna Izquierda (Información del Tutor) -->
             <div class="tutor-col tutor-col-main">
                 <!-- Card Principal del Tutor -->
@@ -153,111 +154,149 @@
                            <nav class="tutor-subtabs-nav"><button onclick="changeSubTab(event, 'educacion')" class="tutor-subtab-btn active">Educación</button><button onclick="changeSubTab(event, 'experiencia')" class="tutor-subtab-btn">Experiencia</button><button onclick="changeSubTab(event, 'certificaciones')" class="tutor-subtab-btn">Certificación</button></nav>
 
                             <div id="educacion" class="tutor-subtab-content">
+                                @if($tutor->educations->isNotEmpty())
 
-                                <!--EN CASO DE ESTAR VACIO--> 
-                                {{-- <div class="tutor-empty-box">
+                                    @foreach ($tutor->educations as $education)
+                                    <div class="info-card">
+                                        <div class="info-card-header">
+                                            <div class="info-card-content">
+                                                <h3 class="info-card-title">{{ $education->course_title}}</h3>
+                                                <div class="info-card-meta">
+
+                                                    <div class="info-card-meta-item">
+                                                        <svg class="info-card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                                                        <span>{{ $education->institute_name}}</span>
+                                                    </div>
+                                                    <div class="info-card-meta-item">
+                                                        <svg class="info-card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                                        <span> {{ $education->city }}, {{ $education->country->short_code}}</span>
+                                                    </div>
+                                                    <?php
+                                                        $fechaInicial = $education->start_date;
+                                                        $fechaInicioFormateada = date("d/m/Y", strtotime($fechaInicial));
+
+                                                        $fechaFinal = $education->end_date;
+                                                        $fechaEndFormateada = date("d/m/Y", strtotime($fechaFinal));
+                                                    ?>
+                                                    <div class="info-card-meta-item">
+                                                        <svg class="info-card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                                        <span>{{ $fechaInicioFormateada}} - {{ $fechaEndFormateada}}</span>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>   
+                                    @endforeach
+                                    
+                                @else
+                                
+                                <div class="tutor-empty-box">
                                     <div class="am-norecord">
                                         @include('livewire.components.no-record') 
                                     </div>
-                                </div> --}}
-
-                                <div class="info-card">
-                                    <div class="info-card-header">
-                                        <div class="info-card-content">
-                                            <h3 class="info-card-title">JavaScript Course</h3>
-                                            <div class="info-card-meta">
-
-                                                <div class="info-card-meta-item">
-                                                    <svg class="info-card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
-                                                    <span>Nombre de la Universidad</span>
-                                                </div>
-                                                <div class="info-card-meta-item">
-                                                    <svg class="info-card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                                                    <span>Ciudad y País</span>
-                                                </div>
-                                                <div class="info-card-meta-item">
-                                                    <svg class="info-card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                                                    <span>Fechas de Estudio</span>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>     
+                                </div>
+                                @endif 
                             </div>
 
 
                             <div id="experiencia" class="tutor-subtab-content hidden">
 
-                                <!--En caso de estar vacio-->
-                                {{-- <div class="tutor-empty-box">
-                                    <div class="am-norecord">
-                                        @include('livewire.components.no-record')
-                                    </div>
-                                </div> --}}
+                                @if($tutor->experiences->isNotEmpty())
+                                    @foreach ($tutor->experiences as $experience)
+                                    <div class="info-card">
+                                        <div class="info-card-header">
+                                            <div class="info-card-content">
+                                                <h3 class="info-card-title">{{ $experience->title}}</h3>
+                                                <span style="color: #9ca3af;">{{ $experience->description}}</span>
+                                                <div class="info-card-meta">
+                                                    <div class="info-card-meta-item">
+                                                        <svg class="info-card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                                                        <span>{{ $experience->company}}</span>
+                                                    </div>
+                                                    <div class="info-card-meta-item">
+                                                        <svg class="info-card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                                        <span>{{ $experience->employment_type}}</span>
+                                                    </div>
+                                                    <div class="info-card-meta-item">
+                                                        <svg class="info-card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2h8a2 2 0 002-2v-1a2 2 0 012-2h1.945M7.707 4.293a1 1 0 010 1.414L4.414 9H19.586l-3.293-3.293a1 1 0 010-1.414a1 1 0 011.414 0l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414-1.414L19.586 15H4.414l3.293 3.293a1 1 0 01-1.414 1.414l-5-5a1 1 0 010-1.414l5-5a1 1 0 011.414 0z"></path></svg>
+                                                        <span>{{ $experience->location}}</span>
+                                                    </div>
+                                                    <?php 
+                                                        $fechaInicial = $experience->start_date;
+                                                        $fechaInicialFormateada = date('d/m/Y', strtotime($fechaFinal));
 
-                                <div class="info-card">
-                                    <div class="info-card-header">
-                                        <div class="info-card-content">
-                                            <h3 class="info-card-title">JavaScript Course</h3>
-                                            <div class="info-card-meta">
-                                                <div class="info-card-meta-item">
-                                                    <svg class="info-card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                                                    <span>TutorPro</span>
-                                                </div>
-                                                <div class="info-card-meta-item">
-                                                    <svg class="info-card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                                    <span>Part Time</span>
-                                                </div>
-                                                <div class="info-card-meta-item">
-                                                    <svg class="info-card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2h8a2 2 0 002-2v-1a2 2 0 012-2h1.945M7.707 4.293a1 1 0 010 1.414L4.414 9H19.586l-3.293-3.293a1 1 0 010-1.414a1 1 0 011.414 0l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414-1.414L19.586 15H4.414l3.293 3.293a1 1 0 01-1.414 1.414l-5-5a1 1 0 010-1.414l5-5a1 1 0 011.414 0z"></path></svg>
-                                                    <span>Remote</span>
-                                                </div>
-                                                <div class="info-card-meta-item">
-                                                    <svg class="info-card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                                                    <span>July 2021 - Present</span>
+                                                        $fechaFinal = $experience->end_date;
+                                                        $fechaFinalFormateada = date('d/m/Y', strtotime($fechaFinal));
+                                                    ?>
+                                                    <div class="info-card-meta-item">
+                                                        <svg class="info-card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                                        <span>{{ $fechaInicialFormateada}} - {{ $fechaFinalFormateada}}</span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>       
+                                    @endforeach
+                                @else
+                                     <!--En caso de estar vacio-->
+                                    <div class="tutor-empty-box">
+                                        <div class="am-norecord">
+                                            @include('livewire.components.no-record')
+                                        </div>
                                     </div>
-                                </div>
+                                @endif
+
+                                
                             </div>
 
                             <div id="certificaciones" class="tutor-subtab-content hidden">
-                                <!--En caso de estar vacio-->
-                                {{-- <div class="tutor-empty-box">
-                                    <div class="am-norecord">
-                                        @include('livewire.components.no-record')
-                                    </div>
-                                </div> --}}
+                                @if($tutor->certificates->isNotEmpty())
+                                    @foreach ($tutor->certificates as $certificate )
+                                    <div class="info-card">
+                                        <div class="info-card-header">
+                                            <div class="info-card-content">
+                                                <h3 class="info-card-title">{{ $certificate->title}}</h3>
+                                                <div class="info-card-meta">
+                                                    <div class="info-card-meta-item"">
+                                                        <svg class="info-card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg>
+                                                        <span>{{ $certificate->institute_name}}</span>
+                                                    </div>
 
-                                <div class="info-card">
-                                    <div class="info-card-header">
-                                        <div class="info-card-content">
-                                            <h3 class="info-card-title">JavaScript Course</h3>
-                                            <div class="info-card-meta">
-                                                <div class="info-card-meta-item"">
-                                                    <svg class="info-card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg>
-                                                    <span>Institución</span>
-                                                </div>
-                                                <div class="info-card-meta-item"">
-                                                    <svg class="info-card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                                                    <span>Fecha de Emisión</span>
-                                                </div>
-                                                <div class="info-card-meta-item"">
-                                                    <svg class="info-card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                                                    <span>Fecha de Caducidad</span>
+                                                    <?php
+                                                        $fechaInicial = $certificate->issue_date;
+                                                        $fechaInicialFormateado = date('d/m/Y', strtotime($fechaInicial)) ;
+                                                        $fechaFinal = $certificate->expiry_date;
+                                                        $fechaFinalFormateado = date('d/m/Y', strtotime($fechaFinal));
+                                                    ?>
+                                                    <div class="info-card-meta-item"">
+                                                        <svg class="info-card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                                        <span>{{ $fechaInicialFormateado}}</span>
+                                                    </div>
+                                                    <div class="info-card-meta-item"">
+                                                        <svg class="info-card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                                        <span>{{ $fechaFinalFormateado}}</span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                    @endforeach
+                                @else
+                                <!--En caso de estar vacio-->
+                                <div class="tutor-empty-box">
+                                    <div class="am-norecord">
+                                        @include('livewire.components.no-record')
+                                    </div>
                                 </div>
+                                @endif
+
                             </div>
                         </div>
 
                         <div id="resenas" class="tutor-tab-content hidden">
                             <h3 class="tutor-section-title" style="margin-bottom: 1.5rem;">Reseñas de estudiantes</h3>
-                            <div class="tutor-reviews-box">
+                            {{-- <div class="tutor-reviews-box">
                                 <!-- Resumen de calificación -->
                                 <div class="tutor-reviews-summary">
                                     <div class="tutor-reviews-score" style="font-size:2.5rem;">0.0</div>
@@ -285,7 +324,7 @@
                                     </div>
                                     @endfor
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="tutor-empty-box tutor-reviews-empty" style="text-align:center;margin-top:2rem;padding-top:2rem;border-top:1px solid #e0e0e0;">
                                 {{-- LOGICA PARA MOSTRAR DE BASE DE DATOS --}}
                                 <div class="am-norecord">

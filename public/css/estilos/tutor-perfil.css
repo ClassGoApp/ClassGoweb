@@ -657,6 +657,7 @@
     justify-content: center;
 }
 
+
 .tutor-pay-btn {
     background: var(--terciary-color2);
     color: #fff;
@@ -690,7 +691,7 @@
     font-weight: 600;
     font-size: 1rem;
     padding: 0.7rem 1.5rem;
-    border-radius: 0.7rem 0.7rem 0 0;
+    border-radius: 0.7rem;
     color: #888;
     cursor: pointer;
     transition: var(--transition);
@@ -890,6 +891,87 @@
 
 body.modal-open {
     overflow: hidden;
+}
+
+/*
+ * Clases CSS Base (para ambos tipos de alertas)
+ */
+.alert-box {
+  padding: 1.5rem; /* p-6 */
+  border-radius: 0.5rem; /* rounded-lg */
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm */
+  margin-top: 2rem;
+}
+
+.alert-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.alert-icon {
+  width: 2rem; /* w-8 */
+  height: 2rem; /* h-8 */
+  margin-bottom: 0.75rem; /* mb-3 */
+}
+
+.alert-title {
+  font-weight: 700; /* font-bold */
+  font-size: 1.125rem; /* text-lg */
+}
+
+.alert-text {
+  font-size: 0.875rem; /* text-sm */
+  margin-top: 0.25rem; /* mt-1 */
+}
+
+.alert-link {
+  font-weight: 600; /* font-semibold */
+  text-decoration: none;
+  transition: text-decoration 0.2s ease;
+}
+
+.alert-link:hover {
+  text-decoration: underline;
+}
+
+/*
+ * Clases Modificadoras (para estilos específicos de cada alerta)
+ */
+
+/* Alerta de Éxito o Información (bg-teal-50) */
+.alert-teal {
+  background-color: #f0fdfa; /* bg-teal-50 */
+  color: #0f766e; /* text-teal-800 */
+}
+
+.alert-teal .alert-icon {
+  color: #14b8a6; /* text-teal-500 */
+}
+
+.alert-teal .alert-link {
+  color: #0d9488; /* text-teal-600 */
+}
+
+/* Alerta de Advertencia (bg-amber-50) */
+.alert-amber {
+  background-color: #fffbeb; /* bg-amber-50 */
+  color: #92400e; /* text-amber-800 */
+}
+
+.alert-amber .alert-icon {
+  color: #f59e0b; /* text-amber-500 */
+}
+
+.alert-amber .alert-link {
+  color: #b45309; /* text-amber-700 */
+}
+
+.alert-amber .alert-subtext {
+  font-size: 0.75rem; /* text-xs */
+  margin-top: 0.5rem; /* mt-2 */
+  color: #b45309; /* text-amber-700 */
 }
 
 /* ==================== 9 - Tutor Modal ==================== */
@@ -1724,6 +1806,7 @@ body.modal-open {
   border: 1px solid #f3f4f6;
   transition-property: box-shadow;
   transition-duration: 0.15s;
+  margin-bottom: 1rem;
 }
 
 .info-card:hover {

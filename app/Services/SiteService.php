@@ -152,6 +152,9 @@ public function getTutors($data = array()) {
         return User::with([
             'languages:id,name',
             'userSubjects.subject',
+            'educations.country',
+            'experiences',
+            'certificates'
         ])
         ->when(\Nwidart\Modules\Facades\Module::has('starup') && \Nwidart\Modules\Facades\Module::isEnabled('starup'), function ($query) {
             $query->with('badges:id,name,image');
