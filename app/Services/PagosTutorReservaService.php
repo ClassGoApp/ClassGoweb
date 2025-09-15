@@ -17,17 +17,8 @@ class PagosTutorReservaService
         $message,
 
     ): SlotPayment {
-        if ($amount == 0) {
+        
            
-            return SlotPayment::create([
-                'slot_booking_id' => $slot_booking_id,
-                'payment_date' => $payment_date,
-                'payment_method' => "",
-                'amount' => $amount,
-                'status' => 2,
-                'message' => $message,
-            ]);
-        } else {
             return SlotPayment::create([
                 'slot_booking_id' => $slot_booking_id,
                 'payment_date' => $payment_date,
@@ -36,7 +27,7 @@ class PagosTutorReservaService
                 'status' => 1,
                 'message' => $message,
             ]);
-        }
+        
     }
 
     /**

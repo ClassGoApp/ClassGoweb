@@ -346,7 +346,7 @@ class Reserva extends Component
             $pagostutorreserva->create(
                 slot_booking_id: $reserva->id,
                 payment_date: now(),
-                amount: $sessionFee,
+                amount: 10,
                 message: ''
             );
 

@@ -2,6 +2,7 @@
 namespace App\Livewire\Pages\Tutor\ManageAccount;
 
 
+use App\Models\SlotPayment;
 use App\Services\PayoutService;
 use Illuminate\Support\Facades\Auth;
 use Livewire\WithFileUploads;
@@ -33,7 +34,6 @@ class ManageAccount extends Component
     public $bankRoutingNumber = '';
     public $qrImageTypeError = '';
 
-
     public PayoutForm $form;
     private ?PayoutService $payoutService = null;
     public function boot()
@@ -45,6 +45,7 @@ class ManageAccount extends Component
     {
         $this->dispatch('initSelect2', target: '.am-select2');
         $this->loadCurrentQRImage();
+        $this->loadData();
     }
 
     private function loadCurrentQRImage()
@@ -61,6 +62,9 @@ class ManageAccount extends Component
         } else {
             $this->currentQRPath = null;
         }
+
+
+
     }
 
     #[On('refresh-payouts')]
@@ -77,13 +81,25 @@ class ManageAccount extends Component
             ->where('user_id', Auth::id())
             ->where('payout_method', 'QR')
             ->first();
-        return view('livewire.pages.tutor.manage-account.manage-account', compact('qr'));
+
+        $pagos = SlotPayment::whereIn('slot_booking_id', function ($query) {
+            $query->select('id')
+                ->from('slot_bookings')
+                ->where('tutor_id', Auth::id());
+        })
+            ->orderBy('payment_date', 'desc')->paginate(4);
+        return view('livewire.pages.tutor.manage-account.manage-account', compact('qr', 'pagos'));
     }
 
-    public function loadData()
+
+
+    public function loadData($perPage = 2)
     {
         $this->isLoading = true;
         $this->payoutStatus = $this->payoutService->getPayoutStatus(Auth::user()->id);
+
+
+
         $this->dispatch('initSelect2', target: '.am-select2');
         $this->isLoading = false;
     }
@@ -94,7 +110,7 @@ class ManageAccount extends Component
 
     public function updatePayout()
     {
-       
+
         // Validar según el tipo de método
         if ($this->form->current_method === 'QR') {
             // Para QR validamos la imagen solo si no hay QR existente

@@ -88,9 +88,11 @@ class Courses extends Component
             })->first();
             $this->exam = $this->currentCourse?->exams?->first();
             $this->answers = [];
+             $this->dispatch('video-updated'); // Evento para reinicializar video
             $this->dispatch('close-exam-modal');
         } else {
             session()->flash('exam_error', 'Algunas respuestas son incorrectas. Intenta de nuevo.');
+            $this->dispatch('video-updated'); // También aquí para reinicializar
         }
     }
 
