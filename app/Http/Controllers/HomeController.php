@@ -1,6 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Models\Conferences;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
 use App\Models\UserSubject;
@@ -22,11 +25,12 @@ class HomeController extends Controller
         $this->countUserService = $countUserService;
     }
 
-    public function index(){
+    public function index()
+    {
         //Obtener un counter de los usuarios
         $counts = $this->countUserService->getUserCounts();
 
-       // Obtener tutores destacados
+        // Obtener tutores destacados
         $featuredTutors = $this->siteService->featuredTutors();
 
 
@@ -39,19 +43,22 @@ class HomeController extends Controller
             'totalUsers' => $counts['totalUsers'],
             'totalEstudiantes' => $counts['studentCount'],
             'totalTutores' => $counts['tutorCount']
+
         ]);
     }
 
-    public function nosotros() {
-    // Obtener alianzas
-    $alianzas = $this->siteService->getAlliances();
+    public function nosotros()
+    {
+        // Obtener alianzas
+        $alianzas = $this->siteService->getAlliances();
 
-    return view('vistas.view.pages.nosotros', [
-        'alianzas' => $alianzas
-    ]);
+        return view('vistas.view.pages.nosotros', [
+            'alianzas' => $alianzas
+        ]);
     }
 
-    public function tutor($slug){
+    public function tutor($slug)
+    {
         $tutor = $this->siteService->getTutorDetail($slug);
         if (!$tutor) {
             abort(404, 'Tutor no encontrado');
@@ -69,16 +76,60 @@ class HomeController extends Controller
                 }
             }
         }
+        $conferencias = Conferences::where('user_id', $tutor->id)->get();
         $materias = array_unique($materias);
         $grupos = array_unique($grupos);
+
         return view('vistas.view.pages.tutor', [
             'tutor' => $tutor,
             'materias' => $materias,
             'grupos' => $grupos,
+            'conferencias' => $conferencias
         ]);
     }
 
-    public function buscarTutor(){
+    public function buscarTutor()
+    {
         return view('vistas.view.pages.buscartutor');
+    }
+    public function enrollStudent(  $conferenceId, $studentId)
+    {        
+        return DB::transaction(function () use ($conferenceId, $studentId) {
+            $conference = Conferences::lockForUpdate()->findOrFail($conferenceId);
+            $student    = User::where('role', 'student')->findOrFail($studentId);
+
+            // Verificar si ya está inscrito
+            $already = DB::table('conference_student')
+                ->where('conference_id', $conference->id)
+                ->where('student_id', $student->id)
+                ->exists();
+
+            if ($already) {
+                return ['ok' => true, 'message' => 'El estudiante ya está inscrito.'];
+            }
+
+            // **Asegurar cupo atómicamente**
+            // Intento incrementar solo si aún hay cupo
+            $updated = DB::table('conferences')
+                ->where('id', $conference->id)
+                ->whereColumn('enrolled_students', '<', 'ability')
+                ->update([
+                    'enrolled_students' => DB::raw('enrolled_students + 1'),
+                ]);
+
+            if ($updated === 0) {
+                return ['ok' => false, 'message' => 'No hay cupos disponibles.'];
+            }
+
+            // Crear la inscripción en el pivot
+            DB::table('conference_student')->insert([
+                'conference_id' => $conference->id,
+                'student_id'    => $student->id,
+                'created_at'    => now(),
+                'updated_at'    => now(),
+            ]);
+
+            return ['ok' => true, 'message' => 'Inscripción exitosa.'];
+        });
     }
 }

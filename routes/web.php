@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\TutorController;
 use App\Http\Controllers\Auth\SocialController;
+use App\Http\Controllers\ConferencesController;
 use App\Http\Controllers\Frontend\SearchController;
 use App\Http\Controllers\GoogleController;
 
@@ -122,11 +123,10 @@ Route::get('/auth/api/google/callback', [GoogleController::class, 'googlecallbac
 
 //Route::get('auth/{provider}', [Go::class, 'redirect'])->name('social.redirect');
 
-
+Route::get('/conferences', [ConferencesController::class, 'index'])
+        ->name('conferences.index');
+        
 Route::middleware(['locale', 'maintenance'])->group(function () {
-    //Route::get('find-tutors', [SearchController::class, 'findTutors'])->name('find-tutors');
-    //Route::get('find-tutors', [SearchController::class, 'findTutors'])->name('find-tutors');
-
     Route::get('/blogs', Blogs::class)->name('blogs');
     Route::get('/blog/{slug}', BlogDetails::class)->name('blog-details');
     Route::view('/subscriptions-page', 'subscriptions-page');
@@ -238,6 +238,10 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
     if (!request()->is('api/*')) {
         require __DIR__ . '/pagebuilder.php';
     }
+
+
+    // routes/web.php
+    
 });
 
 Route::get('/tutor/{id}', [TutorPerfilController::class, 'show'])->name('tutor.perfil');

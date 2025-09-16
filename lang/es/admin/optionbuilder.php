@@ -223,4 +223,5 @@ return [
     'maintenance_email' => 'Correo electrónico de mantenimiento',
     'maintenance_email_desc' => 'Agregue el correo electrónico de mantenimiento aquí',
     'profile_phone_number' => 'Mendotry del número de teléfono del perfil',
+    
 ];
