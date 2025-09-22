@@ -99,27 +99,14 @@
                     <div class="team-member">
                         <div class="member-item">
                             <div class="member-photo-wrapper">
-                                <img src="{{ asset('images/team/edwar.webp')}}" alt="Foto de Edward Rojas" class="member-photo">
+                                <img src="{{ asset('images/team/jose.jpeg')}}" alt="Foto de Jose Daniel Aguirre" class="member-photo">
                             </div>
-                            <a href="https://www.linkedin.com/in/edward-rojas-cespedes-b7a4a61a2/" class="member-link">
+                            <a href="https://www.linkedin.com/in/jose-daniel-aguirre-antelo-193119187" class="member-link">
                                 <img class="arrow-icon" src="{{ asset('images/team/linkedin.png') }}" alt="">
                             </a>
                         </div>
-                        <h3 class="member-name">Edward Rojas</h3>
+                        <h3 class="member-name">Jose Daniel Aguirre</h3>
                         <p class="member-title">Coordinador General</p>
-                    </div>
-
-                    <div class="team-member">
-                        <div class="member-item">
-                            <div class="member-photo-wrapper">
-                                <img src="{{ asset('images/team/antonio.webp')}}" alt="Foto de Antonio Sandoval Flores" class="member-photo">
-                            </div>
-                            <a href="https://www.linkedin.com/in/sandoval-flores-antonio-alexander-17a5aa335/" class="member-link">
-                                <img class="arrow-icon" src="{{ asset('images/team/linkedin.png') }}" alt="">
-                            </a>
-                        </div>
-                        <h3 class="member-name">Antonio Sandoval Flores</h3>
-                        <p class="member-title">Encargado de Operaciones</p>
                     </div>
 
                     <div class="team-member">

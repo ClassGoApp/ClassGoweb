@@ -12,23 +12,23 @@ class ConferencesController extends Controller
      */
     public function index(Request $request)
     {
-        $conferencias = Conferences::all();
-
-       dd($conferencias->tutor->profiles->first_name);
-        return view('conferencias', compact('conferencias'));
+        $conferencias = Conferences::Paginate();
+        return view('conferencias.conferencias', compact('conferencias'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create() {}
+    public function create() {
+        
+    }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        //
+        
     }
 
     /**
