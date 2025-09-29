@@ -221,6 +221,40 @@
     text-align: center;
 }
 
+/*Añadir a favoritos*/
+.favorite-btn-blue {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease-in-out;
+}
+
+.heart-icon-blue {
+  width: 24px;
+  height: 24px;
+  fill: none; /* Relleno inicial transparente */
+  stroke: white; /* Color del borde del corazón (gris) */
+  stroke-width: 1.5; /* Grosor del borde */
+  transition: fill 0.3s ease-in-out, stroke 0.3s ease-in-out;
+}
+.favorite-btn-blue:hover .heart-icon-blue {
+  stroke: white; /* Borde azul al pasar el mouse */
+}
+
+.tutor-btn-favorito{
+    background: var(--primary-color) !important;
+    color: white;
+}
+
+.favorite-btn-blue.is-favorited-blue .heart-icon-blue{
+  fill: white; /* Relleno azul cuando se activa */
+  stroke: white; /* Borde azul cuando se activa */
+}
+
 /* ==================== 7 - Tutor Tabs ==================== */
 .tutor-tabs-card {
     background: #fff;
@@ -819,6 +853,7 @@
     background: var(--secundary-color);
     color: #fff;
 }
+
 
 .tutor-btn-share {
     background: #e0e0e0;

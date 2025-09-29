@@ -355,6 +355,14 @@
                                     <span>Reservar</span>
                                 </button>
                             </a>
+
+                           <button id="favorite-btn-blue" class="favorite-btn-blue tutor-btn tutor-btn-reservar" aria-label="Agregar a favoritos">
+                                <svg class="heart-icon-blue" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                                </svg>
+                                <span id="text-favorito">Añadir a Favoritos</span>
+                            </button>
+                       
                         @elserole('tutor')
                         <a href="{{ route('tutor.dashboard')}}">
                             <button class="tutor-btn tutor-btn-now">
@@ -368,7 +376,7 @@
                             <span>Compartir perfil</span>
                         </button>
 
-                        <a href="{{ route('buscar.tutor')}}">
+                        {{-- <a href="{{ route('buscar.tutor')}}">
                             <button class="tutor-btn tutor-btn-reservar" >
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="11" cy="11" r="8"></circle>
@@ -376,7 +384,7 @@
                             </svg>
                             <span>Buscar más Tutores</span>
                             </button>
-                        </a>
+                        </a> --}}
                     </div>
                 </div>
             </div>
@@ -407,6 +415,43 @@
 
 
     <script>
+        //Para los botones de favoritos
+        document.addEventListener('DOMContentLoaded', () => {
+            const favoriteBtn = document.getElementById('favorite-btn-blue');
+            const localStorageKey = 'isFavoriteBlue'; // Clave para el almacenamiento local
+            const textFavorito = document.getElementById('text-favorito');
+            const estiloFavorito = document.querySelector('.tutor-btn-reservar');
+
+            if (favoriteBtn) {
+                // Cargar el estado guardado al iniciar
+                const isFavorited = localStorage.getItem(localStorageKey) === 'true';
+                if (isFavorited) {
+                    favoriteBtn.classList.add('is-favorited-blue');
+                }
+
+
+                favoriteBtn.addEventListener('click', () => {
+                    // Alternar la clase en el botón
+                    const newFavoriteState = !favoriteBtn.classList.toggle('is-favorited-blue');
+
+                    // Guardar el nuevo estado en el almacenamiento local
+                    localStorage.setItem(localStorageKey, newFavoriteState);
+
+                    // Puedes añadir aquí la lógica para interactuar con el servidor
+                    console.log(estiloFavorito);
+
+                    if (newFavoriteState) {
+                        textFavorito.textContent = 'Añadir a Favoritos';
+                        
+                    } else {
+                        console.log('Botón con corazón azul desactivado.');
+                        textFavorito.textContent = 'En tus Favoritos';
+                    }
+
+                    
+                });
+            }
+        });
         // --- SCRIPT PARA PESTAÑAS ---
         
         function changeTab(event, tabID) {

@@ -643,69 +643,81 @@ public function getTutors($data = array()) {
 
     //=========================== HOME BUSCADOR ========================00
     public function getTutorBuscador($search = null)
-{
-    $tutorIds = \DB::table('model_has_roles')
-        ->join('roles', 'roles.id', '=', 'model_has_roles.role_id')
-        ->where('roles.name', 'tutor')
-        ->pluck('model_has_roles.model_id');
+    {
+        $tutorIds = \DB::table('model_has_roles')
+            ->join('roles', 'roles.id', '=', 'model_has_roles.role_id')
+            ->where('roles.name', 'tutor')
+            ->pluck('model_has_roles.model_id');
 
-    $tutors = User::whereIn('id', $tutorIds)
-        ->whereHas('profile', function ($q) use ($search) {
-            $q->whereNotNull('verified_at')
-              ->whereNotNull('first_name')
-              ->whereNotNull('last_name');
-            if ($search) {
-                $q->where(function($query) use ($search) {
-                    $query->where('first_name', 'like', "%$search%")
-                          ->orWhere('last_name', 'like', "%$search%")
-                          ->orWhereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ["%$search%"])
-                          ->orWhereRaw("CONCAT(last_name, ' ', first_name) LIKE ?", ["%$search%"]);
-                });
-            }
-        })
-        ->whereHas('userSubjects.subject.group')
-        ->with([
-            'profile:id,user_id,first_name,last_name,slug,image,description,native_language',
-            'languages:id,name',
-            'userSubjects.subject.group',
-        ])
-        ->withAvg('ratings as avg_rating', 'rating')
-        ->withCount('ratings as total_reviews')
-        ->orderByDesc('avg_rating')
-        ->limit(5) // 👈 importante para autocompletado
-        ->get();
+        $tutors = User::whereIn('id', $tutorIds)
+            // INICIO DE LA CLÁUSULA WHERE
+            ->where(function ($userQuery) use ($search) {
+                if ($search) {
+                    // 1. Búsqueda por Nombres (mantenemos tu lógica existente)
+                    $userQuery->whereHas('profile', function ($q) use ($search) {
+                        $q->whereNotNull('verified_at')
+                        ->whereNotNull('first_name')
+                        ->whereNotNull('last_name')
+                        ->where(function($query) use ($search) {
+                                $query->where('first_name', 'like', "%$search%")
+                                    ->orWhere('last_name', 'like', "%$search%")
+                                    ->orWhereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ["%$search%"])
+                                    ->orWhereRaw("CONCAT(last_name, ' ', first_name) LIKE ?", ["%$search%"]);
+                            });
+                    });
 
-    // Transforma la colección a un array plano
-    $profiles = $tutors->map(function ($tutor) {
-        $profile = $tutor->profile;
-        $materias = [];
-        $grupos = [];
+                    // 2. O Búsqueda por Materias (NUEVA LÓGICA)
+                    $userQuery->orWhereHas('userSubjects.subject', function($q) use ($search) {
+                        $q->where('name', 'like', "%$search%");
+                    });
+                }
+            })
+            // FIN DE LA CLÁUSULA WHERE
 
-        foreach ($tutor->userSubjects as $userSubject) {
-            if ($userSubject->subject) {
-                $materias[] = $userSubject->subject->name;
-                if ($userSubject->subject->group) {
-                    $grupos[] = $userSubject->subject->group->name;
+            ->whereHas('userSubjects.subject.group')
+            ->with([
+                'profile:id,user_id,first_name,last_name,slug,image,description,native_language',
+                'languages:id,name',
+                'userSubjects.subject.group',
+            ])
+            ->withAvg('ratings as avg_rating', 'rating')
+            ->withCount('ratings as total_reviews')
+            ->orderByDesc('avg_rating')
+            ->limit(5)
+            ->get();
+
+        // ... (El resto del código para transformar el array se mantiene) ...
+
+        $profiles = $tutors->map(function ($tutor) {
+            $profile = $tutor->profile;
+            $materias = [];
+            $grupos = [];
+
+            foreach ($tutor->userSubjects as $userSubject) {
+                if ($userSubject->subject) {
+                    $materias[] = $userSubject->subject->name;
+                    if ($userSubject->subject->group) {
+                        $grupos[] = $userSubject->subject->group->name;
+                    }
                 }
             }
-        }
 
-        return [
-            'user_id' => $tutor->id,
-            'full_name' => trim("{$profile->first_name} {$profile->last_name}"),
-            'slug' => $profile->slug,
-            'image' => $profile->image,
-            'description' => $profile->description,
-            'native_language' => $profile->native_language,
-            'languages' => $tutor->languages->pluck('name'),
-            'avg_rating' => round($tutor->avg_rating ?? 0, 2),
-            'total_reviews' => $tutor->total_reviews ?? 0,
-            'materias' => array_unique($materias),
-            'grupos' => array_unique($grupos),
-        ];
-    });
+            return [
+                'user_id' => $tutor->id,
+                'full_name' => trim("{$profile->first_name} {$profile->last_name}"),
+                'slug' => $profile->slug,
+                'image' => $profile->image,
+                'description' => $profile->description,
+                'native_language' => $profile->native_language,
+                'languages' => $tutor->languages->pluck('name'),
+                'avg_rating' => round($tutor->avg_rating ?? 0, 2),
+                'total_reviews' => $tutor->total_reviews ?? 0,
+                'materias' => array_unique($materias),
+                'grupos' => array_unique($grupos),
+            ];
+        });
 
-    return $profiles; // ✅ Ahora es una colección simple
+        return $profiles;
     }
 
 
