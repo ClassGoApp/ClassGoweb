@@ -4,6 +4,7 @@ namespace App\Livewire\Admin;
 
 use App\Models\SlotBooking;
 use App\Services\GoogleMeetService;
+use App\Services\SlotBookingService;
 use App\Services\MailService;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -122,33 +123,16 @@ class TutoriasTable extends Component
             ];
             $nuevoStatus = $this->modalStatus;
             if (!is_numeric($nuevoStatus)) {
-                $nuevoStatus = $estados[strtolower($nuevoStatus)] ?? 2; 
+                $nuevoStatus = $estados[strtolower($nuevoStatus)] ?? 2;
             }
             $tutoria->status = $nuevoStatus;
-            // Guardar el cambio de estado inmediatamente
-            $tutoria->save();
-            $link=null;
+            $link = null;
             // Si el nuevo estado es 'Aceptada' (1), crear reunión Zoom y enviar correos
             if ($nuevoStatus == 1) {
-                $googlemeetservice = new GoogleMeetService;   
-                // Formatear la fecha correctamente para Zoom (ISO 8601)
-                 $startTimeCarbon = \Carbon\Carbon::parse($tutoria->start_time, 'America/La_Paz');
-                $durationInMinutes = 20;
-                $meetingData = [
-                    'topic' => 'Tutoría',
-                    'agenda' => 'Sesión de tutoría',
-                    'start_time' => $startTimeCarbon->toIso8601String(),
-                     'end_time' => $startTimeCarbon->copy()->addMinutes($durationInMinutes)->toIso8601String(),
-                    'timezone' => 'America/La_Paz',
-                    'duration' => 20, // Duración en minutos
-                ];
-                $user=User::find($tutoria->tutor_id);
-                $link=$googlemeetservice->createMeetingPorTutord($meetingData, $user);
+                $link = $this->tutoriaaceptada($tutoria);
                 $tutoria->meeting_link = $link;
-                $mailService = new MailService();
-                $mailService->sendTutoriaNotification($tutoria, $link);               
-            } 
-             // Si se creó un enlace de Zoom, guardar la tutoría nuevamente
+            }
+            // Si se creó un enlace de Zoom, guardar la tutoría nuevamente
             if ($tutoria->meeting_link) {
                 $tutoria->save();
                 Log::info('TutoriasTable: Enlace de Zoom guardado exitosamente', [
@@ -160,6 +144,14 @@ class TutoriasTable extends Component
         $this->dispatch('cerrar-modal-tutoria');
     }
 
+
+    public function tutoriaaceptada($tutoria)
+    {
+        $reservaservice = new SlotBookingService();
+        $link = $reservaservice->generarlink($tutoria);
+          return $link;
+    }
+
     public function clearFilters()
     {
         $this->reset(['tutor', 'student', 'fecha', 'fecha_inicio', 'fecha_fin', 'status']);
@@ -168,7 +160,7 @@ class TutoriasTable extends Component
     public function abrirModalPagoTutor($tutoria)
     {
         $bookingId = is_array($tutoria) ? $tutoria['id'] : $tutoria->id;
-        $pago = \App\Models\SlotPayment::where('slot_booking_id', $bookingId)->first();   
+        $pago = \App\Models\SlotPayment::where('slot_booking_id', $bookingId)->first();
         if ($pago) {
             $this->modalPaymentId = $pago->id;
             $this->modalPaymentStatus = $pago->status;
@@ -182,7 +174,7 @@ class TutoriasTable extends Component
 
         try {
             $pago = \App\Models\SlotPayment::find($this->modalPaymentId);
-              //dd($pago,"adahsgdas");
+            //dd($pago,"adahsgdas");
             if ($pago) {
                 $estadoActual = (int) $pago->status;
                 $nuevoEstado = (int) $this->modalPaymentStatus;

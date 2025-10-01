@@ -5,8 +5,7 @@ Homestead.yaml
 Homestead.json
 /.vagrant
 .phpunit.result.cache
-
-
+FLUTTER_GOOGLE_INTEGRATION_GUIDE.md
 /storage/pail
 .env.backup
 .env.production

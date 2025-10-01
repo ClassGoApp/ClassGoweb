@@ -113,7 +113,7 @@ class AccountSettings extends Component
 
     public function disconnectCalender()
     {
-        $this->userService->setAccountSetting(['google_access_token','google_calendar_info']);
+        $this->userService->setAccountSetting(['google_access_token','google_calendar_info'], null);
         $this->dispatch('showAlertMessage', type: 'success', title: __('passwords.success') , message: __('passwords.disconnect_calender'));
     }
 

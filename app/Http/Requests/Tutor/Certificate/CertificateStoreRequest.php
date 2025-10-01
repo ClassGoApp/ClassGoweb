@@ -13,7 +13,7 @@ class CertificateStoreRequest extends BaseFormRequest {
     public function rules()
     {
         return [
-            'image'              => $this->imageRule(),
+          
             'title'              => 'required|string|max:255',
             'institute_name'     => 'required|string|max:255',
             'issue_date'         => 'required|date',

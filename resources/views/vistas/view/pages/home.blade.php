@@ -144,6 +144,7 @@
 
                         @php
                             // Accede a la colección de materias del tutor.
+                             $materia = 'Materias Generales'; // Valor por defecto si no hay datos
                             $subjects = $tutor->subjects;
 
                             // Si la colección de materias no está vacía...

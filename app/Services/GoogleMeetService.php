@@ -8,8 +8,9 @@ use Google_Client;
 use Google_Service_Calendar;
 use Google_Service_Calendar_Event;
 use App\Models\User;
-use Carbon\Carbon;
 use App\Models\AccountSetting;
+use Carbon\Carbon;
+
 class GoogleMeetService
 {
 
@@ -23,7 +24,7 @@ class GoogleMeetService
             'start_date_time' => 'required|date',
             'end_date_time' => 'required|date|after:start_date_time',
         ]); */
-       //dd('prueba');
+        //dd('prueba');
         $title = $meetingData['title'] ?? 'Tutoría';
         $description = $meetingData['description'] ?? 'Sesión de tutoría';
         $start_date_time = $meetingData['start_time'] ?? now()->addMinutes(10)->format('Y-m-d H:i:s');
@@ -64,7 +65,7 @@ class GoogleMeetService
         ]);
 
         $calendarId = 'primary';
-       
+
         $event = $service->events->insert($calendarId, $event, ['conferenceDataVersion' => 1]);
         return $event->getHangoutLink();
     }
@@ -72,7 +73,7 @@ class GoogleMeetService
 
 
 
-     /**
+    /**
      * Crea una reunión de Google Meet en el calendario del usuario especificado.
      *
      * @param array $meetingData Datos de la reunión (title, description, start_time, etc.)
@@ -142,7 +143,7 @@ class GoogleMeetService
 
 
 
-      /**
+    /**
      * Crea una reunión de Google Meet en el calendario del usuario especificado.
      *
      * @param array $meetingData Datos de la reunión (title, description, start_time, etc.)
@@ -160,7 +161,7 @@ class GoogleMeetService
         if (!$tokenSetting || empty($tokenSetting->meta_value['refresh_token'])) {
             throw new Exception('El usuario no tiene los tokens de Google necesarios o falta el refresh token.');
         }
-        
+
         // El modelo ya convierte meta_value en un array.
         $tokenData = $tokenSetting->meta_value;
 
@@ -202,6 +203,74 @@ class GoogleMeetService
                 'createRequest' => [
                     'conferenceSolutionKey' => ['type' => 'hangoutsMeet'],
                     'requestId' => 'classgo-' . uniqid(), // Un ID único para la solicitud
+                ],
+            ],
+        ]);
+
+        $calendarId = 'primary';
+        $createdEvent = $service->events->insert($calendarId, $event, ['conferenceDataVersion' => 1]);
+
+        return $createdEvent->getHangoutLink();
+    }
+
+
+
+
+
+    public function createMeetingConCredencialesApi(array $meetingData): ?string
+    {
+        // Supongamos que obtienes el registro de la tabla account_settings
+        $tokenSetting = AccountSetting::where('user_id', 1)
+            ->where('meta_key', 'google_access_token')
+            ->first();
+
+        if (!$tokenSetting) {
+            throw new \Exception('No se encontró el token.');
+        }
+
+        // Decodifica el JSON si es string
+        if (is_string($tokenSetting->meta_value)) {
+            $tokenData = json_decode($tokenSetting->meta_value, true);
+        } else {
+            $tokenData = $tokenSetting->meta_value;
+        }
+
+        if (empty($tokenData['refresh_token'])) {
+            throw new \Exception('Falta el refresh token.');
+        }
+
+        $client = new \Google_Client();
+        $client->setClientId(config('services.google.client_id'));
+        $client->setClientSecret(config('services.google.client_secret'));
+        $client->setRedirectUri(config('services.google.redirect'));
+
+        $client->setAccessToken($tokenData);
+
+        if ($client->isAccessTokenExpired()) {
+            $client->fetchAccessTokenWithRefreshToken($tokenData['refresh_token']);
+            $newAccessToken = $client->getAccessToken();
+            // Opcional: guardar el nuevo token en la base de datos
+            $tokenSetting->meta_value = $newAccessToken;
+            $tokenSetting->save();
+        }
+
+        $service = new \Google_Service_Calendar($client);
+
+        $event = new \Google_Service_Calendar_Event([
+            'summary' => $meetingData['title'] ?? 'Tutoría ClassGo',
+            'description' => $meetingData['description'] ?? 'Sesión de tutoría programada a través de ClassGo.',
+            'start' => [
+                'dateTime' => \Carbon\Carbon::parse($meetingData['start_time'])->toRfc3339String(),
+                'timeZone' => $meetingData['timezone'] ?? 'UTC',
+            ],
+            'end' => [
+                'dateTime' => \Carbon\Carbon::parse($meetingData['end_time'])->toRfc3339String(),
+                'timeZone' => $meetingData['timezone'] ?? 'UTC',
+            ],
+            'conferenceData' => [
+                'createRequest' => [
+                    'conferenceSolutionKey' => ['type' => 'hangoutsMeet'],
+                    'requestId' => 'classgo-' . uniqid(),
                 ],
             ],
         ]);

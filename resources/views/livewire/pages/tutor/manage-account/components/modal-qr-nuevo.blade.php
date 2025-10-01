@@ -16,31 +16,21 @@
             <!-- Body -->
             <div class="modal-body qr-modal-body">
                 <form wire:submit.prevent="updatePayout" enctype="multipart/form-data">
-                    
-                  
-
                     <!-- QR Actual (si existe) -->
                     @if($currentQRPath)
-                    <div class="current-qr-section">
-                        <h6 class="section-title">Código QR Actual</h6>
-                        <div class="current-qr-container">
-                            <div class="qr-image-wrapper">
-                                <img src="{{ asset('storage/' . $currentQRPath) }}" 
-                                     alt="QR Actual" 
-                                     class="current-qr-image">
-                                <div class="qr-image-overlay">
-                                    <i class="fas fa-eye"></i>
+                        <div class="current-qr-section">
+                            <h6 class="section-title">Código QR Actual</h6>
+                            <div class="current-qr-container">
+                                <div class="qr-image-wrapper">
+                                    <img src="{{ asset('storage/' . $currentQRPath) }}" alt="QR Actual"
+                                        class="current-qr-image">
+                                    <div class="qr-image-overlay">
+                                        <i class="fas fa-eye"></i>
+                                    </div>
                                 </div>
+                               
                             </div>
-                           {{--  <div class="qr-image-info">
-                                <span class="qr-status-badge active">
-                                    <i class="fas fa-check-circle"></i>
-                                    Activo
-                                </span>
-                                <p class="qr-description">qrale.jpg (152.28 KB)</p>
-                            </div> --}}
                         </div>
-                    </div>
                     @endif
 
                     <!-- Zona de Upload -->
@@ -52,27 +42,22 @@
                                 Subir Código QR
                             @endif
                         </h6>
-                        
-                        <div class="upload-zone" 
-                             onclick="document.getElementById('qrImageInput').click()"
-                             ondrop="dropHandler(event);" 
-                             ondragover="dragOverHandler(event);">
-                            
+
+                        <div class="upload-zone" onclick="document.getElementById('qrImageInput').click()"
+                            ondrop="dropHandler(event);" ondragover="dragOverHandler(event);">
+
                             @if($qrImage)
                                 <!-- Preview de nueva imagen -->
                                 <div class="new-image-preview">
-                                    <img src="{{ $qrImage->temporaryUrl() }}" 
-                                         alt="Nueva imagen QR" 
-                                         class="preview-image">
+                                    <img src="{{ $qrImage->temporaryUrl() }}" alt="Nueva imagen QR" class="preview-image">
                                     <div class="preview-overlay">
                                         <div class="preview-info">
                                             <i class="fas fa-image"></i>
                                             <span class="preview-filename">{{ $qrImage->getClientOriginalName() }}</span>
-                                            <span class="preview-size">{{ number_format($qrImage->getSize() / 1024, 2) }} KB</span>
+                                            <span class="preview-size">{{ number_format($qrImage->getSize() / 1024, 2) }}
+                                                KB</span>
                                         </div>
-                                        <button type="button" 
-                                                class="remove-preview-btn" 
-                                                wire:click="$set('qrImage', null)">
+                                        <button type="button" class="remove-preview-btn" wire:click="$set('qrImage', null)">
                                             <i class="fas fa-times"></i>
                                         </button>
                                     </div>
@@ -88,49 +73,37 @@
                                         <p>o <span class="upload-link">haz clic para seleccionar</span></p>
                                     </div>
                                     <div class="upload-requirements">
-                                        <small>PNG, JPG, GIF • Máximo 2MB</small>
+                                        <small>PNG, JPG, GIF • Máximo 5MB</small>
                                     </div>
                                 </div>
                             @endif
 
                             <!-- Input oculto -->
-                            <input wire:model="qrImage" 
-                                   id="qrImageInput" 
-                                   type="file" 
-                                   accept="image/*" 
-                                   class="d-none">
+                            <input wire:model="qrImage" id="qrImageInput" type="file" accept="image/*" class="d-none">
                         </div>
 
                         <!-- Error de validación -->
-                        @error('qrImage')
-                        <div class="alert alert-danger mt-3">
-                            <i class="fas fa-exclamation-triangle me-2"></i>
-                            {{ $message }}
-                        </div>
-                        @enderror
+                        @if($qrImageTypeError)
+                            <div class="alert alert-danger mt-3">
+                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                {{ $qrImageTypeError }}
+                            </div>
+                        @endif
                     </div>
-
                     <!-- Información adicional -->
-                
                 </form>
             </div>
 
             <!-- Footer -->
             <div class="modal-footer qr-modal-footer">
-                <button type="button" 
-                        class="btn btn-secondary qr-cancel-btn" 
-                        data-bs-dismiss="modal">
+                <button type="button" class="btn btn-secondary qr-cancel-btn" data-bs-dismiss="modal">
                     <i class="fas fa-times me-2"></i>
                     Cancelar
                 </button>
-                
-                <button type="button" 
-                        wire:click="updatePayout"
-                        wire:loading.attr="disabled"
-                        wire:target="updatePayout"
-                        class="btn btn-primary qr-save-btn"
-                        {{ !$qrImage && !$currentQRPath ? 'disabled' : '' }}>
-                    
+
+                <button type="button" wire:click="updatePayout" wire:loading.attr="disabled" wire:target="updatePayout"
+                    class="btn btn-primary qr-save-btn" {{ !$qrImage && !$currentQRPath ? 'disabled' : '' }}>
+
                     <!-- Icono y texto normal -->
                     <span wire:loading.remove wire:target="updatePayout">
                         @if($currentQRPath && $qrImage)
@@ -156,7 +129,6 @@
     </div>
 </div>
 
-<!-- Estilos del Modal QR -->
 <style>
     .qr-modal {
         border: none;
@@ -207,7 +179,8 @@
         font-weight: 600;
         color: #333;
         margin-bottom: 12px;
-        display: none; /* Ocultar títulos para diseño más limpio */
+        display: none;
+        /* Ocultar títulos para diseño más limpio */
     }
 
     .current-qr-section {
@@ -242,11 +215,13 @@
     }
 
     .qr-image-overlay {
-        display: none; /* Quitar overlay para diseño más limpio */
+        display: none;
+        /* Quitar overlay para diseño más limpio */
     }
 
     .qr-status-badge {
-        display: none; /* Quitar badge para diseño más limpio */
+        display: none;
+        /* Quitar badge para diseño más limpio */
     }
 
     .qr-description {
@@ -381,7 +356,7 @@
         justify-content: center;
         font-size: 10px;
         transition: all 0.2s ease;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
     .remove-preview-btn:hover {
@@ -398,7 +373,8 @@
         justify-content: flex-end;
     }
 
-    .qr-cancel-btn, .qr-save-btn {
+    .qr-cancel-btn,
+    .qr-save-btn {
         border-radius: 6px;
         font-weight: 500;
         padding: 10px 20px;
@@ -451,7 +427,8 @@
             flex-direction: column-reverse;
         }
 
-        .qr-cancel-btn, .qr-save-btn {
+        .qr-cancel-btn,
+        .qr-save-btn {
             width: 100%;
             margin-bottom: 8px;
         }
@@ -465,14 +442,13 @@
         display: none;
     }
 </style>
-
 <script>
     // Función para limpiar completamente el modal y backdrop
     function cleanupModal() {
         // Remover cualquier backdrop que pueda quedar
         const backdrops = document.querySelectorAll('.modal-backdrop');
         backdrops.forEach(backdrop => backdrop.remove());
-        
+
         // Limpiar clases del body
         document.body.classList.remove('modal-open');
         document.body.style.overflow = '';
@@ -488,7 +464,7 @@
     function dropHandler(ev) {
         ev.preventDefault();
         ev.currentTarget.classList.remove('drag-over');
-        
+
         if (ev.dataTransfer.items) {
             for (var i = 0; i < ev.dataTransfer.items.length; i++) {
                 if (ev.dataTransfer.items[i].kind === 'file') {
@@ -499,7 +475,7 @@
                         const dt = new DataTransfer();
                         dt.items.add(file);
                         input.files = dt.files;
-                        
+
                         // Disparar evento de change para Livewire
                         input.dispatchEvent(new Event('change', { bubbles: true }));
                     }
@@ -510,7 +486,7 @@
     }
 
     // Limpiar clase drag-over cuando se sale del área
-    document.addEventListener('dragleave', function(e) {
+    document.addEventListener('dragleave', function (e) {
         if (!e.relatedTarget || !e.currentTarget.contains(e.relatedTarget)) {
             document.querySelectorAll('.upload-zone').forEach(zone => {
                 zone.classList.remove('drag-over');
@@ -519,13 +495,13 @@
     });
 
     // Event listeners para el modal
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         const modalElement = document.getElementById('modalQR');
         if (modalElement) {
             // Cuando el modal se cierra completamente
             modalElement.addEventListener('hidden.bs.modal', function () {
                 cleanupModal();
-                
+
                 // Reset del formulario Livewire
                 if (window.Livewire) {
                     Livewire.dispatch('modalClosed');
@@ -547,7 +523,7 @@
     });
 
     // Listener específico para Livewire navigation
-    document.addEventListener('livewire:navigated', function() {
+    document.addEventListener('livewire:navigated', function () {
         cleanupModal();
     });
 </script>

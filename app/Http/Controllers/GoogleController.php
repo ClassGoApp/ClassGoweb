@@ -27,12 +27,13 @@ class GoogleController extends Controller
         ]);
         $callbackUrl = route('google.callback');
         $client->setRedirectUri($callbackUrl);
-        //dd("La URL que DEBES registrar en Google es:", $callbackUrl);
         $client->setAccessType('offline');
         $client->setPrompt('consent');
         $authUrl = $client->createAuthUrl();
         return redirect($authUrl);
     }
+
+
 
 
 
@@ -94,43 +95,42 @@ class GoogleController extends Controller
 
 
 
-    /*  public function callback(Request $request)
- {
-     $client = new Google_Client();
-     $client->setAuthConfig(base_path('app/credentials/credential.json'));
+    public function callback(Request $request)
+    {
+        $client = new Google_Client();
+        $client->setAuthConfig(base_path('app/credentials/credential.json'));
 
-     // Es importante que el redirect URI aquí sea el mismo que usaste en la función redirect()
-     $client->setRedirectUri(route('google.callback'));
+        // Es importante que el redirect URI aquí sea el mismo que usaste en la función redirect()
+        $client->setRedirectUri(route('google.callback'));
 
-     // Usamos fetchAccessTokenWithAuthCode que es más explícito y devuelve el token directamente.
-     $accessToken = $client->fetchAccessTokenWithAuthCode($request->input('code'));
+        // Usamos fetchAccessTokenWithAuthCode que es más explícito y devuelve el token directamente.
+        $accessToken = $client->fetchAccessTokenWithAuthCode($request->input('code'));
 
-     // --- Comprobación Robusta ---
-     // Verificamos si el array del token contiene la clave 'refresh_token'.
-     if (isset($accessToken['refresh_token'])) {
+        // --- Comprobación Robusta ---
+        // Verificamos si el array del token contiene la clave 'refresh_token'.
+        if (isset($accessToken['refresh_token'])) {
+            $refreshToken = $accessToken['refresh_token'];
 
-         $refreshToken = $accessToken['refresh_token'];
+            // Aquí puedes guardar el refresh token donde lo necesites.
+            // Por ejemplo, en el archivo .env o en la base de datos de un usuario.
+            // CUIDADO: La siguiente línea agrega el token al final del .env cada vez. 
+            // Es mejor para una configuración de una sola vez, no para cada login.
+            file_put_contents(base_path('.env'), "\nGOOGLE_ADMIN_REFRESH_TOKEN={$refreshToken}", FILE_APPEND);
 
-         // Aquí puedes guardar el refresh token donde lo necesites.
-         // Por ejemplo, en el archivo .env o en la base de datos de un usuario.
-         // CUIDADO: La siguiente línea agrega el token al final del .env cada vez. 
-         // Es mejor para una configuración de una sola vez, no para cada login.
-          file_put_contents(base_path('.env'), "\nGOOGLE_ADMIN_REFRESH_TOKEN={$refreshToken}", FILE_APPEND);
+            //dd("¡Éxito! Tu nuevo refresh token es:", $refreshToken);
 
-         //dd("¡Éxito! Tu nuevo refresh token es:", $refreshToken);
+            return redirect()->route('admin.tutorias.index')->with('success', 'Autenticación completada. Refresh token obtenido.');
 
-         return redirect()->route('admin.tutorias.index')->with('success', 'Autenticación completada. Refresh token obtenido.');
+        } else {
+            // Esto ocurrirá si el usuario ya había autorizado la app antes.
+            // El access_token es válido para usar ahora, pero no obtuvimos un nuevo refresh_token.
+            // dd("Autenticación exitosa, pero no se recibió un nuevo refresh token.", $accessToken);
 
-     } else {
-         // Esto ocurrirá si el usuario ya había autorizado la app antes.
-         // El access_token es válido para usar ahora, pero no obtuvimos un nuevo refresh_token.
-         // dd("Autenticación exitosa, pero no se recibió un nuevo refresh token.", $accessToken);
+            return redirect()->route('admin.tutorias.index')
+                ->with('error', 'No se recibió un nuevo refresh token. Si necesitas forzar la generación de uno, primero revoca el acceso desde tu cuenta de Google.');
+        }
+    }
 
-         return redirect()->route('admin.tutorias.index')
-             ->with('error', 'No se recibió un nuevo refresh token. Si necesitas forzar la generación de uno, primero revoca el acceso desde tu cuenta de Google.');
-     }
- }
-  */
 
 
 

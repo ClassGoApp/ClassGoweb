@@ -304,8 +304,29 @@
        border-radius: 6px;
        font-size: 12px;
        font-weight: 500;
+       text-transform: uppercase;
+       letter-spacing: 0.5px;
+   }
+
+   /* Estado: Pagado (status = 2) */
+   .transaction-status.pagado {
        background: #dcfce7;
        color: #059669;
+       border: 1px solid #bbf7d0;
+   }
+
+   /* Estado: Pendiente (status = 1) */
+   .transaction-status.pendiente {
+       background: #fef3c7;
+       color: #d97706;
+       border: 1px solid #fed7aa;
+   }
+
+   /* Estado: Desconocido (fallback) */
+   .transaction-status.desconocido {
+       background: #f1f5f9;
+       color: #64748b;
+       border: 1px solid #cbd5e1;
    }
 
    .policy-note {
