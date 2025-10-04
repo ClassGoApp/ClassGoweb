@@ -100,8 +100,9 @@ class SlotBookingService implements interfaces\ISlotBookingService
             \Log::error('Error al crear la reunión de Google Meet: ' . $e->getMessage());
             $link = null; // O manejar el error según sea necesario
         }
-        $mailService = new MailService();
-        $mailService->sendTutoriaNotification($tutoria, $link);
+        // COMENTADO: Se envían correos desde BookingNotificationService para evitar duplicados
+        // $mailService = new MailService();
+        // $mailService->sendTutoriaNotification($tutoria, $link);
         return $link;
     }
 
