@@ -14,6 +14,7 @@ use App\Services\IdentityService;
 use App\Services\NotificationService;
 use App\Services\TutorVerificationNotificationService;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Hash;
