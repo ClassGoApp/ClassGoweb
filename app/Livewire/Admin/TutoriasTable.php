@@ -113,6 +113,9 @@ class TutoriasTable extends Component
     {
         $tutoria = SlotBooking::find($this->modalTutoriaId);
         if ($tutoria) {
+            // Guardar el estado anterior para el evento
+            $oldStatus = $tutoria->status;
+            
             $estados = [
                 'aceptado' => 1,
                 'pendiente' => 2,
@@ -127,19 +130,25 @@ class TutoriasTable extends Component
             }
             $tutoria->status = $nuevoStatus;
             $link = null;
+            
             // Si el nuevo estado es 'Aceptada' (1), crear reunión Zoom y enviar correos
             if ($nuevoStatus == 1) {
                 $link = $this->tutoriaaceptada($tutoria);
                 $tutoria->meeting_link = $link;
             }
-            // Si se creó un enlace de Zoom, guardar la tutoría nuevamente
-            if ($tutoria->meeting_link) {
-                $tutoria->save();
-                Log::info('TutoriasTable: Enlace de Zoom guardado exitosamente', [
-                    'tutoria_id' => $tutoria->id,
-                    'meeting_link' => $link
-                ]);
-            }
+            
+            // Guardar el estado en la base de datos
+            $tutoria->save();
+            
+            // Emitir evento de broadcasting para la app móvil
+            event(new \App\Events\SlotBookingStatusChanged($tutoria->id, $nuevoStatus));
+            
+            Log::info('TutoriasTable: Estado actualizado y evento emitido', [
+                'tutoria_id' => $tutoria->id,
+                'old_status' => $oldStatus,
+                'new_status' => $nuevoStatus,
+                'meeting_link' => $link
+            ]);
         }
         $this->dispatch('cerrar-modal-tutoria');
     }
