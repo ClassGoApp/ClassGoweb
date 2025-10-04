@@ -140,6 +140,10 @@ class TutoriasTable extends Component
             // Guardar el estado en la base de datos
             $tutoria->save();
             
+            // Usar el servicio centralizado para manejar notificaciones
+            $notificationService = new \App\Services\BookingNotificationService();
+            $notificationService->handleStatusChangeNotification($tutoria, $oldStatus, $nuevoStatus);
+            
             // Emitir evento de broadcasting para la app móvil
             event(new \App\Events\SlotBookingStatusChanged($tutoria->id, $nuevoStatus));
             
