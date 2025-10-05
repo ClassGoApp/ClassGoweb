@@ -40,14 +40,38 @@ class TutorVerificationNotificationService
                 'subjects' => $tutorInfo['subjects']
             ]);
 
+            // Contadores para estadísticas
+            $successCount = 0;
+            $errorCount = 0;
+            $errors = [];
+
             // Notificar a cada estudiante
             foreach ($students as $student) {
-                $this->sendNotificationToStudent($student, $tutorInfo);
+                try {
+                    $this->sendNotificationToStudent($student, $tutorInfo);
+                    $successCount++;
+                } catch (\Exception $e) {
+                    $errorCount++;
+                    $errors[] = [
+                        'student_id' => $student->id,
+                        'student_email' => $student->email,
+                        'error' => $e->getMessage()
+                    ];
+                    Log::error('TutorVerificationNotificationService: Error al notificar estudiante individual', [
+                        'student_id' => $student->id,
+                        'student_email' => $student->email,
+                        'error' => $e->getMessage()
+                    ]);
+                }
             }
 
-            Log::info('TutorVerificationNotificationService: Notificaciones enviadas exitosamente', [
-                'students_notified' => $students->count(),
-                'tutor_id' => $verifiedTutor->id
+            Log::info('TutorVerificationNotificationService: Resumen de notificaciones', [
+                'total_students' => $students->count(),
+                'emails_sent_successfully' => $successCount,
+                'emails_failed' => $errorCount,
+                'success_rate' => $students->count() > 0 ? round(($successCount / $students->count()) * 100, 2) . '%' : '0%',
+                'tutor_id' => $verifiedTutor->id,
+                'errors' => $errors
             ]);
 
         } catch (\Exception $e) {
@@ -121,27 +145,19 @@ class TutorVerificationNotificationService
      */
     private function sendNotificationToStudent(User $student, array $tutorInfo): void
     {
-        try {
-            // Enviar correo electrónico
-            $this->sendEmailToStudent($student, $tutorInfo);
-            
-            // Enviar notificación push si tiene FCM token
-            if ($student->fcm_token) {
-                $this->sendPushNotificationToStudent($student, $tutorInfo);
-            }
-
-            Log::info('TutorVerificationNotificationService: Notificación enviada al estudiante', [
-                'student_id' => $student->id,
-                'student_email' => $student->email,
-                'has_fcm_token' => !empty($student->fcm_token)
-            ]);
-
-        } catch (\Exception $e) {
-            Log::error('TutorVerificationNotificationService: Error al notificar estudiante', [
-                'student_id' => $student->id,
-                'error' => $e->getMessage()
-            ]);
+        // Enviar correo electrónico
+        $this->sendEmailToStudent($student, $tutorInfo);
+        
+        // Enviar notificación push si tiene FCM token
+        if ($student->fcm_token) {
+            $this->sendPushNotificationToStudent($student, $tutorInfo);
         }
+
+        Log::info('TutorVerificationNotificationService: Notificación enviada al estudiante', [
+            'student_id' => $student->id,
+            'student_email' => $student->email,
+            'has_fcm_token' => !empty($student->fcm_token)
+        ]);
     }
 
     /**
