@@ -146,7 +146,7 @@ class TutorVerificationNotificationService
     }
 
     /**
-     * Obtiene la información del tutor verificado
+     * Obtiene la información del tutor verificado con sus materias reales
      *
      * @param User $tutor
      * @return array
@@ -154,14 +154,20 @@ class TutorVerificationNotificationService
     private function getTutorInfo(User $tutor): array
     {
         // Cargar relaciones necesarias
-        $tutor->load(['profile', 'subjects']);
+        $tutor->load(['profile']);
         
         $tutorName = $tutor->profile->full_name ?? $tutor->name ?? 'Tutor';
         
-        // Obtener materias que imparte el tutor
+        // Obtener materias reales del tutor desde user_subject
         $subjects = [];
-        if ($tutor->subjects && $tutor->subjects->isNotEmpty()) {
-            $subjects = $tutor->subjects->pluck('name')->toArray();
+        $userSubjects = UserSubject::where('user_id', $tutor->id)
+            ->with(['subject' => function($query) {
+                $query->select('id', 'name');
+            }])
+            ->get();
+            
+        if ($userSubjects->isNotEmpty()) {
+            $subjects = $userSubjects->pluck('subject.name')->filter()->toArray();
         }
 
         return [
@@ -300,12 +306,10 @@ class TutorVerificationNotificationService
     private function sendPushNotificationToStudent(User $student, array $tutorInfo): void
     {
         try {
-            $subjectsText = !empty($tutorInfo['subjects']) 
-                ? ' en ' . implode(', ', $tutorInfo['subjects'])
-                : '';
-            
             $title = '🎉 ¡Nuevo Tutor Verificado!';
-            $body = "{$tutorInfo['name']} está ahora disponible para tutorías{$subjectsText}";
+            
+            // Generar el texto del cuerpo basado en las materias del tutor
+            $body = $this->generateNotificationBody($tutorInfo);
             
             // Usar el servicio de Firebase para enviar la notificación
             $fcmService = new \App\Services\FcmService();
@@ -323,7 +327,8 @@ class TutorVerificationNotificationService
 
             Log::info('TutorVerificationNotificationService: Push notification enviada al estudiante', [
                 'student_id' => $student->id,
-                'result' => $result
+                'result' => $result,
+                'body' => $body
             ]);
 
         } catch (\Exception $e) {
@@ -344,12 +349,10 @@ class TutorVerificationNotificationService
     private function sendPushNotificationToStudentSilent(User $student, array $tutorInfo): void
     {
         try {
-            $subjectsText = !empty($tutorInfo['subjects']) 
-                ? ' en ' . implode(', ', $tutorInfo['subjects'])
-                : '';
-            
             $title = '🎉 ¡Nuevo Tutor Verificado!';
-            $body = "{$tutorInfo['name']} está ahora disponible para tutorías{$subjectsText}";
+            
+            // Generar el texto del cuerpo basado en las materias del tutor
+            $body = $this->generateNotificationBody($tutorInfo);
             
             // Usar el servicio de Firebase para enviar la notificación
             $fcmService = new \App\Services\FcmService();
@@ -368,6 +371,27 @@ class TutorVerificationNotificationService
         } catch (\Exception $e) {
             // Solo log de error, sin detalles
         }
+    }
+
+    /**
+     * Genera el texto del cuerpo de la notificación basado en las materias del tutor
+     *
+     * @param array $tutorInfo
+     * @return string
+     */
+    private function generateNotificationBody(array $tutorInfo): string
+    {
+        $tutorName = $tutorInfo['name'];
+        $subjects = $tutorInfo['subjects'];
+        
+        // Si el tutor tiene materias registradas
+        if (!empty($subjects) && count($subjects) > 0) {
+            $subjectsText = implode(', ', $subjects);
+            return "{$tutorName} está ahora disponible para tutorías en: {$subjectsText}";
+        }
+        
+        // Si no tiene materias, solo mostrar el nombre
+        return "{$tutorName} está ahora disponible para tutorías";
     }
 
     /**
