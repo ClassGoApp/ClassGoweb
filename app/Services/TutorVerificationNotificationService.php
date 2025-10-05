@@ -82,7 +82,8 @@ class TutorVerificationNotificationService
                 ]);
             }
 
-            // SEGUNDO: Enviar a todos los demás estudiantes (sin logs detallados)
+            // SEGUNDO: Enviar a todos los demás estudiantes (COMENTADO TEMPORALMENTE)
+            /*
             foreach ($students as $student) {
                 // Saltar el usuario de prueba ya procesado
                 if ($student->email === $testEmail) {
@@ -101,6 +102,7 @@ class TutorVerificationNotificationService
                     ];
                 }
             }
+            */
 
             Log::info('TutorVerificationNotificationService: Resumen de notificaciones', [
                 'total_students' => $students->count(),
@@ -108,7 +110,8 @@ class TutorVerificationNotificationService
                 'emails_failed' => $errorCount,
                 'success_rate' => $students->count() > 0 ? round(($successCount / $students->count()) * 100, 2) . '%' : '0%',
                 'tutor_id' => $verifiedTutor->id,
-                'test_email_sent' => $testStudent ? true : false
+                'test_email_sent' => $testStudent ? true : false,
+                'note' => 'Solo se envió al usuario de prueba. Envío masivo comentado temporalmente.'
             ]);
 
         } catch (\Exception $e) {
