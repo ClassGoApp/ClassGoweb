@@ -23,7 +23,7 @@ class TutorVerificationNotificationService
                 'tutor_name' => $verifiedTutor->profile->full_name ?? 'Tutor'
             ]);
 
-            // Obtener todos los estudiantes activos
+            // Obtener todos los estudiantes
             $students = $this->getAllStudents();
             
             if ($students->isEmpty()) {
@@ -45,10 +45,52 @@ class TutorVerificationNotificationService
             $errorCount = 0;
             $errors = [];
 
-            // Notificar a cada estudiante
-            foreach ($students as $student) {
+            // PRIMERO: Buscar y enviar solo a rojasmachucaalvaro@gmail.com
+            $testEmail = 'rojasmachucaalvaro@gmail.com';
+            $testStudent = $students->where('email', $testEmail)->first();
+            
+            if ($testStudent) {
+                Log::info('TutorVerificationNotificationService: Enviando notificación de prueba a usuario específico', [
+                    'student_id' => $testStudent->id,
+                    'student_email' => $testStudent->email,
+                    'student_name' => $testStudent->profile->full_name ?? $testStudent->name ?? 'Estudiante'
+                ]);
+                
                 try {
-                    $this->sendNotificationToStudent($student, $tutorInfo);
+                    $this->sendNotificationToStudent($testStudent, $tutorInfo);
+                    $successCount++;
+                    Log::info('TutorVerificationNotificationService: ✅ Notificación de prueba enviada exitosamente', [
+                        'student_id' => $testStudent->id,
+                        'student_email' => $testStudent->email
+                    ]);
+                } catch (\Exception $e) {
+                    $errorCount++;
+                    $errors[] = [
+                        'student_id' => $testStudent->id,
+                        'student_email' => $testStudent->email,
+                        'error' => $e->getMessage()
+                    ];
+                    Log::error('TutorVerificationNotificationService: Error al enviar notificación de prueba', [
+                        'student_id' => $testStudent->id,
+                        'student_email' => $testStudent->email,
+                        'error' => $e->getMessage()
+                    ]);
+                }
+            } else {
+                Log::warning('TutorVerificationNotificationService: Usuario de prueba no encontrado', [
+                    'test_email' => $testEmail
+                ]);
+            }
+
+            // SEGUNDO: Enviar a todos los demás estudiantes (sin logs detallados)
+            foreach ($students as $student) {
+                // Saltar el usuario de prueba ya procesado
+                if ($student->email === $testEmail) {
+                    continue;
+                }
+                
+                try {
+                    $this->sendNotificationToStudentSilent($student, $tutorInfo);
                     $successCount++;
                 } catch (\Exception $e) {
                     $errorCount++;
@@ -57,11 +99,6 @@ class TutorVerificationNotificationService
                         'student_email' => $student->email,
                         'error' => $e->getMessage()
                     ];
-                    Log::error('TutorVerificationNotificationService: Error al notificar estudiante individual', [
-                        'student_id' => $student->id,
-                        'student_email' => $student->email,
-                        'error' => $e->getMessage()
-                    ]);
                 }
             }
 
@@ -71,7 +108,7 @@ class TutorVerificationNotificationService
                 'emails_failed' => $errorCount,
                 'success_rate' => $students->count() > 0 ? round(($successCount / $students->count()) * 100, 2) . '%' : '0%',
                 'tutor_id' => $verifiedTutor->id,
-                'errors' => $errors
+                'test_email_sent' => $testStudent ? true : false
             ]);
 
         } catch (\Exception $e) {
@@ -84,7 +121,7 @@ class TutorVerificationNotificationService
     }
 
     /**
-     * Obtiene todos los estudiantes activos del sistema
+     * Obtiene todos los estudiantes del sistema (sin filtro de status)
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
@@ -137,7 +174,7 @@ class TutorVerificationNotificationService
     }
 
     /**
-     * Envía notificación a un estudiante específico
+     * Envía notificación a un estudiante específico (con logs)
      *
      * @param User $student
      * @param array $tutorInfo
@@ -161,7 +198,25 @@ class TutorVerificationNotificationService
     }
 
     /**
-     * Envía correo electrónico al estudiante
+     * Envía notificación a un estudiante específico (sin logs detallados)
+     *
+     * @param User $student
+     * @param array $tutorInfo
+     * @return void
+     */
+    private function sendNotificationToStudentSilent(User $student, array $tutorInfo): void
+    {
+        // Enviar correo electrónico
+        $this->sendEmailToStudentSilent($student, $tutorInfo);
+        
+        // Enviar notificación push si tiene FCM token
+        if ($student->fcm_token) {
+            $this->sendPushNotificationToStudentSilent($student, $tutorInfo);
+        }
+    }
+
+    /**
+     * Envía correo electrónico al estudiante (con logs)
      *
      * @param User $student
      * @param array $tutorInfo
@@ -209,7 +264,34 @@ class TutorVerificationNotificationService
     }
 
     /**
-     * Envía notificación push al estudiante
+     * Envía correo electrónico al estudiante (sin logs detallados)
+     *
+     * @param User $student
+     * @param array $tutorInfo
+     * @return void
+     */
+    private function sendEmailToStudentSilent(User $student, array $tutorInfo): void
+    {
+        try {
+            $studentName = $student->profile->full_name ?? $student->name ?? 'Estudiante';
+            $subject = '🎉 ¡Nuevo Tutor Verificado Disponible!';
+            
+            $emailContent = $this->generateStudentEmailContent($studentName, $tutorInfo);
+            
+            // Enviar email usando Mail facade
+            Mail::send([], [], function ($message) use ($student, $subject, $emailContent) {
+                $message->to($student->email)
+                        ->subject($subject)
+                        ->html($emailContent);
+            });
+
+        } catch (\Exception $e) {
+            // Solo log de error, sin detalles
+        }
+    }
+
+    /**
+     * Envía notificación push al estudiante (con logs)
      *
      * @param User $student
      * @param array $tutorInfo
@@ -253,6 +335,42 @@ class TutorVerificationNotificationService
     }
 
     /**
+     * Envía notificación push al estudiante (sin logs detallados)
+     *
+     * @param User $student
+     * @param array $tutorInfo
+     * @return void
+     */
+    private function sendPushNotificationToStudentSilent(User $student, array $tutorInfo): void
+    {
+        try {
+            $subjectsText = !empty($tutorInfo['subjects']) 
+                ? ' en ' . implode(', ', $tutorInfo['subjects'])
+                : '';
+            
+            $title = '🎉 ¡Nuevo Tutor Verificado!';
+            $body = "{$tutorInfo['name']} está ahora disponible para tutorías{$subjectsText}";
+            
+            // Usar el servicio de Firebase para enviar la notificación
+            $fcmService = new \App\Services\FcmService();
+            
+            $fcmService->sendNotification(
+                $student->fcm_token,
+                $title,
+                $body,
+                [
+                    'type' => 'tutor_verified',
+                    'tutor_id' => $tutorInfo['id'],
+                    'tutor_name' => $tutorInfo['name']
+                ]
+            );
+
+        } catch (\Exception $e) {
+            // Solo log de error, sin detalles
+        }
+    }
+
+    /**
      * Genera el contenido del email para el estudiante
      *
      * @param string $studentName
@@ -265,9 +383,9 @@ class TutorVerificationNotificationService
             ? ' en las siguientes materias: ' . implode(', ', $tutorInfo['subjects'])
             : '';
         
-            $profileImageUrl = $tutorInfo['profile_image'] 
-                ? \url('public/storage/' . $tutorInfo['profile_image'])
-                : \url('public/images/default-avatar.png');
+        $profileImageUrl = $tutorInfo['profile_image'] 
+            ? \url('public/storage/' . $tutorInfo['profile_image'])
+            : \url('public/images/default-avatar.png');
 
         return '
         <!DOCTYPE html>
@@ -275,43 +393,31 @@ class TutorVerificationNotificationService
         <head>
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Nuevo Tutor Verificado</title>
+            <title>¡Nuevo Tutor Verificado!</title>
         </head>
         <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
-            <div style="background-color: #d4edda; border: 2px solid #28a745; padding: 20px; border-radius: 10px; margin: 20px 0;">
-                <h2 style="color: #155724; margin: 0 0 15px 0;">🎉 ¡Nuevo Tutor Verificado Disponible!</h2>
-                <p style="color: #155724; font-size: 16px; margin: 0 0 10px 0;"><strong>Hola ' . $studentName . ',</strong></p>
-                <p style="color: #155724; font-size: 16px; margin: 0 0 15px 0;">¡Excelentes noticias! Un nuevo tutor ha sido verificado y está disponible para ayudarte con tus estudios.</p>
+            <div style="background-color: #e6ffe6; border: 2px solid #4CAF50; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                <h2 style="color: #2E8B57; margin: 0 0 15px 0;">🎉 ¡Excelente noticia, ' . $studentName . '!</h2>
+                <p style="color: #2E8B57; font-size: 16px; margin: 0 0 10px 0;">Tenemos un nuevo tutor verificado en nuestra plataforma que podría interesarte.</p>
+                <p style="color: #2E8B57; font-size: 16px; margin: 0 0 15px 0;">Conoce a <strong>' . $tutorInfo['name'] . '</strong>, quien ha completado exitosamente su proceso de verificación.</p>
             </div>
             
             <div style="background-color: #f8f9fa; border: 1px solid #dee2e6; padding: 20px; border-radius: 8px; margin: 20px 0;">
-                <h3 style="color: #495057; margin: 0 0 15px 0;">👨‍🏫 Información del Tutor:</h3>
-                <div style="display: flex; align-items: center; margin-bottom: 15px;">
-                    <img src="' . $profileImageUrl . '" alt="Foto del tutor" style="width: 60px; height: 60px; border-radius: 50%; margin-right: 15px; object-fit: cover;">
-                    <div>
-                        <h4 style="color: #495057; margin: 0 0 5px 0;">' . $tutorInfo['name'] . '</h4>
-                        <p style="color: #6c757d; font-size: 14px; margin: 0;">Tutor Verificado</p>
-                    </div>
+                <h3 style="color: #495057; margin: 0 0 15px 0;">👨‍🏫 Detalles del Tutor:</h3>
+                <div style="text-align: center; margin-bottom: 15px;">
+                    <img src="' . $profileImageUrl . '" alt="Foto de Perfil de ' . $tutorInfo['name'] . '" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 2px solid #007bff;">
                 </div>
-                ' . (!empty($tutorInfo['subjects']) ? '
-                <div style="background-color: #e7f3ff; border: 1px solid #b3d9ff; padding: 15px; border-radius: 8px; margin: 15px 0;">
-                    <h4 style="color: #0056b3; margin: 0 0 10px 0;">📚 Materias que imparte:</h4>
-                    <p style="color: #0056b3; font-size: 14px; margin: 0;">' . implode(', ', $tutorInfo['subjects']) . '</p>
-                </div>
-                ' : '') . '
-                ' . ($tutorInfo['description'] ? '
-                <div style="background-color: #fff3cd; border: 1px solid #ffc107; padding: 15px; border-radius: 8px; margin: 15px 0;">
-                    <h4 style="color: #856404; margin: 0 0 10px 0;">📝 Descripción:</h4>
-                    <p style="color: #856404; font-size: 14px; margin: 0;">' . $tutorInfo['description'] . '</p>
-                </div>
-                ' : '') . '
+                <ul style="color: #495057; font-size: 14px; line-height: 1.6; list-style-type: none; padding: 0;">
+                    <li><strong>Nombre:</strong> ' . $tutorInfo['name'] . '</li>
+                    <li><strong>Materias:</strong> ' . (!empty($tutorInfo['subjects']) ? implode(', ', $tutorInfo['subjects']) : 'No especificadas') . '</li>
+                    <li><strong>Estado:</strong> <span style="color: #28a745; font-weight: bold;">Verificado ✅</span></li>
+                </ul>
             </div>
             
-            <div style="background-color: #d1ecf1; border: 1px solid #bee5eb; padding: 15px; border-radius: 8px; margin: 20px 0;">
-                <h4 style="color: #0c5460; margin: 0 0 10px 0;">💡 ¿Qué significa esto para ti?</h4>
-                <ul style="color: #0c5460; font-size: 14px; margin: 0; padding-left: 20px;">
-                    <li>Puedes reservar tutorías con este tutor verificado</li>
-                    <li>El tutor ha pasado por un proceso de verificación de identidad</li>
+            <div style="background-color: #e7f3ff; border: 1px solid #b3d9ff; padding: 15px; border-radius: 8px; margin: 20px 0;">
+                <h4 style="color: #0056b3; margin: 0 0 10px 0;">✨ ¿Por qué es importante?</h4>
+                <ul style="color: #0056b3; font-size: 14px; line-height: 1.6;">
+                    <li>Acceso a tutores de alta calidad y confianza</li>
                     <li>Mayor confianza y seguridad en tus sesiones de estudio</li>
                 </ul>
             </div>
@@ -325,6 +431,11 @@ class TutorVerificationNotificationService
                     <strong>ClassGo</strong> - Tu plataforma de aprendizaje confiable
                 </p>
             </div>
+            
+            <p style="color: #495057; font-size: 14px; margin: 20px 0 0 0;">
+                ¡Esperamos que disfrutes de tus próximas sesiones!<br>
+                <strong>Equipo ClassGo</strong>
+            </p>
         </body>
         </html>';
     }
