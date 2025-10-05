@@ -187,20 +187,46 @@ class TutorVerificationNotificationService
         
         // Obtener materias reales del tutor desde user_subject
         $subjects = [];
+        
+        // MÉTODO 1: Usar la relación directa del modelo User
+        $subjectsViaRelation = $tutor->subjects;
+        Log::info('TutorVerificationNotificationService: Materias via relación directa', [
+            'tutor_id' => $tutor->id,
+            'subjects_count' => $subjectsViaRelation->count(),
+            'subjects' => $subjectsViaRelation->pluck('name')->toArray()
+        ]);
+        
+        // MÉTODO 2: Usar UserSubject directamente
         $userSubjects = UserSubject::where('user_id', $tutor->id)
             ->with(['subject' => function($query) {
                 $query->select('id', 'name');
             }])
             ->get();
             
-        Log::info('TutorVerificationNotificationService: Debugging subjects', [
+        Log::info('TutorVerificationNotificationService: Debugging subjects via UserSubject', [
             'tutor_id' => $tutor->id,
             'user_subjects_count' => $userSubjects->count(),
-            'user_subjects' => $userSubjects->toArray()
+            'user_subjects_raw' => $userSubjects->toArray(),
+            'subjects_from_relation' => $userSubjects->pluck('subject.name')->filter()->toArray()
         ]);
-            
-        if ($userSubjects->isNotEmpty()) {
+        
+        // Usar el método que funcione mejor
+        if ($subjectsViaRelation->isNotEmpty()) {
+            $subjects = $subjectsViaRelation->pluck('name')->toArray();
+            Log::info('TutorVerificationNotificationService: Usando relación directa', [
+                'subjects' => $subjects
+            ]);
+        } elseif ($userSubjects->isNotEmpty()) {
             $subjects = $userSubjects->pluck('subject.name')->filter()->toArray();
+            Log::info('TutorVerificationNotificationService: Usando UserSubject', [
+                'subjects' => $subjects
+            ]);
+        } else {
+            Log::warning('TutorVerificationNotificationService: No se encontraron materias para el tutor', [
+                'tutor_id' => $tutor->id,
+                'relation_count' => $subjectsViaRelation->count(),
+                'user_subject_count' => $userSubjects->count()
+            ]);
         }
 
         Log::info('TutorVerificationNotificationService: Final tutor info', [
