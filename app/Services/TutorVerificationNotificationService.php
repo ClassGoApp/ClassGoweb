@@ -156,7 +156,31 @@ class TutorVerificationNotificationService
         // Cargar relaciones necesarias
         $tutor->load(['profile']);
         
-        $tutorName = $tutor->profile->full_name ?? $tutor->name ?? 'Tutor';
+        // Debugging del nombre del tutor
+        Log::info('TutorVerificationNotificationService: Debugging tutor info', [
+            'tutor_id' => $tutor->id,
+            'tutor_email' => $tutor->email,
+            'tutor_name_field' => $tutor->name,
+            'profile_exists' => $tutor->profile ? true : false,
+            'profile_full_name' => $tutor->profile ? $tutor->profile->full_name : 'No profile',
+            'profile_first_name' => $tutor->profile ? $tutor->profile->first_name : 'No profile',
+            'profile_last_name' => $tutor->profile ? $tutor->profile->last_name : 'No profile'
+        ]);
+        
+        // Intentar obtener el nombre de diferentes maneras
+        $tutorName = 'Tutor'; // Default
+        
+        if ($tutor->profile && $tutor->profile->full_name) {
+            $tutorName = $tutor->profile->full_name;
+        } elseif ($tutor->profile && $tutor->profile->first_name && $tutor->profile->last_name) {
+            $tutorName = $tutor->profile->first_name . ' ' . $tutor->profile->last_name;
+        } elseif ($tutor->name) {
+            $tutorName = $tutor->name;
+        } elseif ($tutor->email) {
+            // Usar parte del email como nombre si no hay otro
+            $emailParts = explode('@', $tutor->email);
+            $tutorName = ucfirst($emailParts[0]);
+        }
         
         // Obtener materias reales del tutor desde user_subject
         $subjects = [];
@@ -166,9 +190,22 @@ class TutorVerificationNotificationService
             }])
             ->get();
             
+        Log::info('TutorVerificationNotificationService: Debugging subjects', [
+            'tutor_id' => $tutor->id,
+            'user_subjects_count' => $userSubjects->count(),
+            'user_subjects' => $userSubjects->toArray()
+        ]);
+            
         if ($userSubjects->isNotEmpty()) {
             $subjects = $userSubjects->pluck('subject.name')->filter()->toArray();
         }
+
+        Log::info('TutorVerificationNotificationService: Final tutor info', [
+            'tutor_id' => $tutor->id,
+            'final_name' => $tutorName,
+            'subjects' => $subjects,
+            'subjects_count' => count($subjects)
+        ]);
 
         return [
             'id' => $tutor->id,
@@ -384,14 +421,26 @@ class TutorVerificationNotificationService
         $tutorName = $tutorInfo['name'];
         $subjects = $tutorInfo['subjects'];
         
+        Log::info('TutorVerificationNotificationService: Generating notification body', [
+            'tutor_name' => $tutorName,
+            'subjects' => $subjects,
+            'subjects_count' => count($subjects)
+        ]);
+        
         // Si el tutor tiene materias registradas
         if (!empty($subjects) && count($subjects) > 0) {
             $subjectsText = implode(', ', $subjects);
-            return "{$tutorName} está ahora disponible para tutorías en: {$subjectsText}";
+            $body = "{$tutorName} está ahora disponible para tutorías en: {$subjectsText}";
+        } else {
+            // Si no tiene materias, solo mostrar el nombre
+            $body = "{$tutorName} está ahora disponible para tutorías";
         }
         
-        // Si no tiene materias, solo mostrar el nombre
-        return "{$tutorName} está ahora disponible para tutorías";
+        Log::info('TutorVerificationNotificationService: Final notification body', [
+            'body' => $body
+        ]);
+        
+        return $body;
     }
 
     /**
