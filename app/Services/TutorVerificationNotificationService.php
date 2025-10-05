@@ -82,27 +82,66 @@ class TutorVerificationNotificationService
                 ]);
             }
 
-            // SEGUNDO: Enviar a todos los demás estudiantes (COMENTADO TEMPORALMENTE)
-            /*
-            foreach ($students as $student) {
-                // Saltar el usuario de prueba ya procesado
-                if ($student->email === $testEmail) {
-                    continue;
+            // SEGUNDO: Enviar a todos los demás estudiantes (con control de saturación)
+            $remainingStudents = $students->where('email', '!=', $testEmail);
+            $totalRemaining = $remainingStudents->count();
+            
+            if ($totalRemaining > 0) {
+                Log::info('TutorVerificationNotificationService: Enviando a estudiantes restantes', [
+                    'total_remaining' => $totalRemaining,
+                    'batch_size' => 10,
+                    'delay_between_batches' => '2 segundos'
+                ]);
+                
+                // Procesar en lotes pequeños para evitar saturación
+                $batchSize = 10;
+                $delayBetweenBatches = 2; // segundos
+                $processed = 0;
+                
+                foreach ($remainingStudents->chunk($batchSize) as $batchIndex => $batch) {
+                    Log::info('TutorVerificationNotificationService: Procesando lote', [
+                        'batch_number' => $batchIndex + 1,
+                        'batch_size' => $batch->count(),
+                        'processed_so_far' => $processed,
+                        'total_remaining' => $totalRemaining
+                    ]);
+                    
+                    foreach ($batch as $student) {
+                        try {
+                            $this->sendNotificationToStudentSilent($student, $tutorInfo);
+                            $successCount++;
+                            $processed++;
+                            
+                            // Pequeña pausa entre emails individuales
+                            usleep(100000); // 0.1 segundos
+                            
+                        } catch (\Exception $e) {
+                            $errorCount++;
+                            $processed++;
+                            $errors[] = [
+                                'student_id' => $student->id,
+                                'student_email' => $student->email,
+                                'error' => $e->getMessage()
+                            ];
+                        }
+                    }
+                    
+                    // Pausa entre lotes para evitar saturación del servidor
+                    if ($batchIndex < $remainingStudents->chunk($batchSize)->count() - 1) {
+                        Log::info('TutorVerificationNotificationService: Pausa entre lotes', [
+                            'delay_seconds' => $delayBetweenBatches,
+                            'next_batch' => $batchIndex + 2
+                        ]);
+                        sleep($delayBetweenBatches);
+                    }
                 }
                 
-                try {
-                    $this->sendNotificationToStudentSilent($student, $tutorInfo);
-                    $successCount++;
-                } catch (\Exception $e) {
-                    $errorCount++;
-                    $errors[] = [
-                        'student_id' => $student->id,
-                        'student_email' => $student->email,
-                        'error' => $e->getMessage()
-                    ];
-                }
+                Log::info('TutorVerificationNotificationService: Procesamiento por lotes completado', [
+                    'total_processed' => $processed,
+                    'successful' => $successCount,
+                    'failed' => $errorCount
+                ]);
             }
-            */
 
             Log::info('TutorVerificationNotificationService: Resumen de notificaciones', [
                 'total_students' => $students->count(),
@@ -111,7 +150,10 @@ class TutorVerificationNotificationService
                 'success_rate' => $students->count() > 0 ? round(($successCount / $students->count()) * 100, 2) . '%' : '0%',
                 'tutor_id' => $verifiedTutor->id,
                 'test_email_sent' => $testStudent ? true : false,
-                'note' => 'Solo se envió al usuario de prueba. Envío masivo comentado temporalmente.'
+                'processing_method' => 'Envío por lotes con control de saturación',
+                'batch_size' => 10,
+                'delay_between_batches' => '2 segundos',
+                'delay_between_emails' => '0.1 segundos'
             ]);
 
         } catch (\Exception $e) {
