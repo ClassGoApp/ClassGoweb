@@ -66,12 +66,22 @@ class TutorVerificationNotificationService
      */
     private function getAllStudents()
     {
-        return User::whereHas('roles', function ($query) {
+        $students = User::whereHas('roles', function ($query) {
             $query->where('name', 'student');
         })
-        ->where('status', 'active')
         ->with('profile')
         ->get();
+        
+        Log::info('TutorVerificationNotificationService: Estudiantes encontrados', [
+            'total_students' => $students->count(),
+            'students_with_active_status' => $students->where('status', 'active')->count(),
+            'students_with_inactive_status' => $students->where('status', 'inactive')->count(),
+            'students_with_null_status' => $students->whereNull('status')->count(),
+            'student_emails' => $students->pluck('email')->toArray(),
+            'student_ids' => $students->pluck('id')->toArray()
+        ]);
+        
+        return $students;
     }
 
     /**
@@ -147,6 +157,13 @@ class TutorVerificationNotificationService
             $studentName = $student->profile->full_name ?? $student->name ?? 'Estudiante';
             $subject = '🎉 ¡Nuevo Tutor Verificado Disponible!';
             
+            Log::info('TutorVerificationNotificationService: Preparando email para estudiante', [
+                'student_id' => $student->id,
+                'student_email' => $student->email,
+                'student_name' => $studentName,
+                'tutor_name' => $tutorInfo['name']
+            ]);
+            
             $emailContent = $this->generateStudentEmailContent($studentName, $tutorInfo);
             
             // Enviar email usando Mail facade
@@ -155,6 +172,12 @@ class TutorVerificationNotificationService
                         ->subject($subject)
                         ->html($emailContent);
             });
+            
+            Log::info('TutorVerificationNotificationService: Email enviado exitosamente', [
+                'student_id' => $student->id,
+                'student_email' => $student->email,
+                'subject' => $subject
+            ]);
 
             Log::info('TutorVerificationNotificationService: Email enviado al estudiante', [
                 'student_id' => $student->id,
@@ -278,7 +301,7 @@ class TutorVerificationNotificationService
             </div>
             
             <div style="background-color: #fff; border: 1px solid #ddd; padding: 15px; border-radius: 8px; margin: 20px 0;">
-                <a href="' . \route('tutors') . '" style="background-color: #007bff; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block; font-weight: bold;">Ver Todos los Tutores</a>
+                <a href="' . \url('/tutors') . '" style="background-color: #007bff; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block; font-weight: bold;">Ver Todos los Tutores</a>
             </div>
             
             <div style="background-color: #f8f9fa; border: 1px solid #dee2e6; padding: 15px; border-radius: 8px; margin: 20px 0;">
