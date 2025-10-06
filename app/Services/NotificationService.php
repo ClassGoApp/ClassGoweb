@@ -72,6 +72,7 @@ class NotificationService
         foreach ($content as $key => &$value) {
             $content[$key] = Str::replace('{userName}', $data['userName'], $value);
             $content[$key] = Str::replace('{userEmail}', $data['userEmail'], $value);
+            $content[$key] = Str::replace('{userRole}', $data['userRole'] ?? 'unknown', $value);
         }
         $emailTemplate = $content;
         if (Str::contains($emailTemplate['content'], '{verificationLink}')) {
