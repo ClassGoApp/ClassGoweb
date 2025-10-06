@@ -30,6 +30,12 @@ class NotificationService
     {
         Log::info("📩 Buscando template", ['type' => $type, 'role' => $role]);
     
+        // Si es template de registro para admin, usar template manual
+        if ($type === 'registration' && $role === 'admin') {
+            Log::info("🎯 Usando template manual para admin");
+            return $this->getRegistrationEmail(null, $data);
+        }
+    
         $emailTemplate = array();
         $template = $this->getEmailTemplate($type, $role);
     
@@ -68,32 +74,30 @@ class NotificationService
 
     public function getRegistrationEmail($content, $data)
     {
-        // Determinar si es para admin o para el usuario
-        $isAdmin = !isset($data['key']); // Si no hay 'key', es para admin
-        
-        if ($isAdmin) {
-            // Template manual para admin con rol incluido
-            $emailTemplate = [
+        // Si no hay content, es para admin (template manual)
+        if ($content === null) {
+            Log::info("🎯 Generando template manual para admin");
+            return [
                 'subject' => 'Notificación de registro de nuevo usuario',
                 'greeting' => 'Estimado administrador,',
                 'content' => $this->generateAdminRegistrationContent($data),
                 'show_button' => false
             ];
-        } else {
-            // Template normal para el usuario con verificación
-            $emailTemplate = array();
-            foreach ($content as $key => &$value) {
-                $content[$key] = Str::replace('{userName}', $data['userName'], $value);
-                $content[$key] = Str::replace('{userEmail}', $data['userEmail'], $value);
-                $content[$key] = Str::replace('{userRole}', $data['userRole'] ?? 'unknown', $value);
-            }
-            $emailTemplate = $content;
-            if (Str::contains($emailTemplate['content'], '{verificationLink}')) {
-                // Enlace web universal para verificación (sirve para web y app)
-                $verifyUrl = 'https://classgoapp.com/verify?id=' . $data['key'] . '&hash=' . sha1($data['userEmail']);
-                $btnHtml = view('components.email.button', ['btnText' => 'Verificar cuenta', 'btnUrl' => $verifyUrl])->render();
-                $emailTemplate['content'] = Str::replace('{verificationLink}', $btnHtml, $emailTemplate['content']);
-            }
+        }
+        
+        // Template normal para el usuario con verificación
+        $emailTemplate = array();
+        foreach ($content as $key => &$value) {
+            $content[$key] = Str::replace('{userName}', $data['userName'], $value);
+            $content[$key] = Str::replace('{userEmail}', $data['userEmail'], $value);
+            $content[$key] = Str::replace('{userRole}', $data['userRole'] ?? 'unknown', $value);
+        }
+        $emailTemplate = $content;
+        if (Str::contains($emailTemplate['content'], '{verificationLink}')) {
+            // Enlace web universal para verificación (sirve para web y app)
+            $verifyUrl = 'https://classgoapp.com/verify?id=' . $data['key'] . '&hash=' . sha1($data['userEmail']);
+            $btnHtml = view('components.email.button', ['btnText' => 'Verificar cuenta', 'btnUrl' => $verifyUrl])->render();
+            $emailTemplate['content'] = Str::replace('{verificationLink}', $btnHtml, $emailTemplate['content']);
         }
         
         return $emailTemplate;
@@ -107,6 +111,12 @@ class NotificationService
         $userName = $data['userName'] ?? 'Usuario';
         $userEmail = $data['userEmail'] ?? 'No especificado';
         $userRole = $data['userRole'] ?? 'unknown';
+        
+        Log::info("🎯 Generando contenido manual para admin", [
+            'userName' => $userName,
+            'userEmail' => $userEmail,
+            'userRole' => $userRole
+        ]);
         
         // Traducir el rol a español
         $roleText = match($userRole) {
