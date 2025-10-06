@@ -31,23 +31,19 @@
   border-bottom-left-radius: 50px;
   border-bottom-right-radius: 50px;
   padding-bottom: 20px;
-  /* IMPORTANTE: Esto revela el fondo celeste en la parte de abajo */
   width: 100%;
 }
 
 
 .nosotros-header-content {
   background: var(--bg-gradient2);
-  /* Color azul oscuro */
   border-bottom-left-radius: 40px;
-  /* Un radio ligeramente menor para que encaje bien */
   border-bottom-right-radius: 40px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10rem 5rem 3rem 5rem;
   color: white;
-  /* Añadido para que el texto sea visible */
 }
 
 .nosotros-header-text {
@@ -111,7 +107,6 @@
   display: flex;
   width: 100%;
   justify-content: space-between;
-  /* Cambiar para que los elementos se distribuyan adecuadamente */
   background-color: none;
   padding: 3rem 3rem;
   align-items: center;
@@ -119,7 +114,6 @@
 
 .nosotros-mision-text {
   font-size: 0.9rem;
-  /* Aumento del tamaño para mayor legibilidad */
   line-height: 1.5;
   margin: 0 1rem;
   padding: 2rem 4rem;
@@ -139,7 +133,6 @@
   padding-right: 1rem;
   color: var(--primary-color);
   font-weight: bold;
-  /* Hacerlo más prominente */
 }
 
 .nosotros-mision-text-general2 {
@@ -159,7 +152,6 @@
   padding-right: 3rem;
   padding-top: 5rem;
   position: relative;
-  /* ¡Clave para posicionar el círculo! */
 }
 
 /* Circulo con porcentaje */
@@ -326,7 +318,6 @@
   text-align: center;
   font-weight: 500;
   font-size: 1.2rem;
-  /* Aumentar el tamaño para más claridad */
   color: #0a3643;
   margin-bottom: 0.6rem;
   margin-top: 0;
@@ -335,11 +326,9 @@
 .nosotros-convenios h2 {
   text-align: center;
   font-size: 2.5rem;
-  /* Ajustamos el tamaño para destacarlo más */
   color: #0a3643;
   font-weight: 700;
   margin: 0 0 1.5rem 0;
-  /* Mayor espacio debajo */
 }
 
 .nosotros-convenios p {
@@ -415,16 +404,13 @@
 /* ==================== 7 - Nosotros Equipo ==================== */
 /* Estilos base para dispositivos móviles (ancho < 768px) */
 /* -------------------------------------------------------- */
+ /* =============================*/
 
-.team-section {
-  padding: 2rem 1rem;
-  background-color: #f7f7f7;
-}
-
-.team-container {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0 1rem;
+ .team-section {
+    padding: 40px 20px;
+    max-width: 1300px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
 }
 
 .team-header {
@@ -446,66 +432,136 @@
   max-width: 48rem;
   margin: 0 auto;
 }
-
+/* Rejilla para los miembros del equipo */
 .team-grid {
-  display: grid;
-  gap: 1.5rem;
-  grid-template-columns: 1fr;
-  /* Una columna por defecto en móviles */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* 4 columnas en desktop, se ajusta automáticamente */
+    gap: 40px; /* Espacio entre los miembros */
+    justify-items: center; /* Centra los elementos en la rejilla */
 }
 
-.team-card {
-  background-color: #fff;
-  border-radius: 1.5rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  padding: 1.5rem;
+.team-member{
   text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
-.team-member-img {
-  width: 6rem;
-  /* Imagen más pequeña en móviles */
-  height: 6rem;
-  border-radius: 9999px;
-  object-fit: cover;
-  border: 4px solid #219EBC;
-  margin-bottom: 1rem;
+.member-item {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    margin: 0 auto 15px auto;
 }
 
-.team-member-name {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: #023047;
+.member-photo-wrapper {
+    /* Mantenemos el tamaño y la forma circular. */
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    overflow: hidden; /* Esto ahora solo recorta la imagen dentro del círculo. */
+    background-color: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #e0e0e0;
 }
 
-.team-member-role {
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #FB8500;
-  margin-bottom: 0.5rem;
+.member-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: grayscale(30%) contrast(1.1);
+    transition: filter 0.3s ease;
 }
 
-.team-member-rating {
-  display: flex;
-  justify-content: center;
-  color: #FACC15;
-  margin-bottom: 1rem;
+/* El enlace ahora se posiciona en relación con el nuevo padre. */
+.member-link {
+    position: absolute;
+    bottom:10px; /* Ajustado para que se muestre debajo del borde. */
+    right: 10px; /* Ajustado para que se muestre a un lado. */
+    background-color: #017ebc;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    transition: background-color 0.3s ease;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 10; /* Asegura que esté por encima de la foto. */
 }
 
-.rating-star {
-  width: 1rem;
-  height: 1rem;
+.arrow-icon {
+    width: 18px;
+    height: 18px;
+    color: white;
+    stroke: white;
 }
 
-.team-member-quote {
-  font-size: 0.875rem;
-  color: #666;
-  font-style: italic;
+.member-name {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #333;
 }
 
+/* Título/Cargo del miembro */
+.member-title {
+    font-size: 0.95em;
+    color: #666;
+    margin-top: 0;
+}
+
+/* El efecto de hover ahora se aplica al contenedor padre. */
+.member-item:hover .member-link {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.member-item:hover .member-photo {
+    filter: grayscale(0%) contrast(1);
+}
+
+/* Media Queries para Responsividad */
+@media (max-width: 1024px) {
+    .team-grid {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* 3 columnas en tabletas */
+        gap: 30px;
+    }
+    
+}
+
+@media (max-width: 768px) {
+    .team-grid {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* 2 columnas en tabletas más pequeñas */
+        gap: 25px;
+    }
+
+    .member-photo-wrapper {
+        width: 120px;
+        height: 120px;
+    }
+    .member-name {
+        font-size: 1.1em;
+    }
+    .member-title {
+        font-size: 0.9em;
+    }
+}
+
+@media (max-width: 480px) {
+    .team-grid {
+        grid-template-columns: 1fr; /* 1 columna en móviles */
+        gap: 20px;
+    }
+    .member-photo-wrapper {
+        width: 150px;
+        height: 150px;
+    }
+}
 /* -------------------------------------------------------- */
 /* Media Query para Tablets (ancho >= 768px) */
 /* -------------------------------------------------------- */
@@ -521,7 +577,6 @@
 
   .team-title {
     font-size: 3rem;
-    /* Tamaño de fuente para tablets y desktop */
   }
 
   .team-subtitle {
@@ -588,7 +643,7 @@
 /* =================== home-mobile.css =================== */
 /* home-mobile.css: Estilos responsivos para móvil (max-width: 768px) */
 
-@media (max-width: 767px) {
+@media (max-width: 768px) {
 
 
   .nosotros-card .card {

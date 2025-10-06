@@ -478,7 +478,7 @@
 /* ========================== Media Queries ===================== */
 
 /* Tablet */
-@media (min-width: 768px) and (max-width: 1024px) {
+@media (max-width: 1024px) {
   .navbar {
     padding: 0.8rem 1rem;
     margin: 1rem auto;
@@ -503,7 +503,7 @@
 }
 
 /* Tablet pequeña */
-@media (min-width: 320px) and (max-width: 767px) {
+@media (max-width: 768px) {
   .navbar {
     border-radius: 25px;
     height: 70px;
@@ -624,7 +624,7 @@
 /* Los estilos responsivos para tablet y móvil han sido movidos a archivos separados: navbar-tablet.css y navbar-mobile.css. */
 
 /* NAVBAR TRANSPARENTE EN VISTAS ESPECÍFICAS (TABLET Y MÓVIL) */
-@media (min-width: 768px) and (max-width: 1024px) {
+@media (max-width: 1024px) {
 
   .nosotros .navbar,
   .trabajamos .navbar,
@@ -634,7 +634,7 @@
   }
 }
 
-@media (min-width: 320px) and (max-width: 767px) {
+@media (max-width: 768px) {
 
   .nosotros .navbar,
   .trabajamos .navbar,
@@ -647,7 +647,7 @@
 /* =================== navbar-tablet.css =================== */
 /* navbar-tablet.css: Estilos responsivos para tablet (max-width: 1024px) */
 
-@media (min-width: 768px) and (max-width: 1024px) {
+@media (max-width: 1024px) {
 
   /* Ocultar botón 'Empezar' y botón blanco */
   .btn-outline,
@@ -691,7 +691,7 @@
 /* =================== navbar-mobile.css =================== */
 /* navbar-mobile.css: Estilos responsivos para móvil (max-width: 768px) */
 
-@media (min-width: 320px) and (max-width: 767px) {
+@media (max-width: 768px) {
 
   /* Ocultar botón 'Empezar' y botón blanco */
   .btn-outline,

@@ -2,7 +2,7 @@
     <div class="footer-container">
         <div class="container-info">
             <div class="footer-info"><!--ClassGo Logo + info-->
-                <img src="{{ asset('images/logoclassgo.png') }}" alt="Mascota">
+                <img src="{{ asset('images/logoclassgo.png') }}" alt="logo">
                 <div class="info-text">
                     <i class="fa-solid fa-envelope icon"></i>
                     <p>classgobol@gmail.com</p>
@@ -40,27 +40,20 @@
                     </a>
                 </div>
                 <div class="box">
-                    <h1 data-translate="blog">Blog</h1>
-                    <p data-translate="consejos_expertos_br">Consejos de <br>expertos</p>
+                    <h1>Leer Más</h1>
+                    <a href=" {{ route('terminos') }}"> <p>Términos y Condiciones</p> </a>
+                    
                 </div>
                 <div class="box">
-                    <h1 data-translate="obten_app">Opten la App</h1>
-                    <p data-translate="lleva_educacion_todas">¡Lleva tu educación a todas partes!</p>
-                    <a href="https://play.google.com/store/apps/details?id=com.neurasoft.classgo" target="_blank"><img src="{{ asset('images/googleplay.png')}}" alt="" style=" width: 150px; padding-top: 1rem;"></a>
+                    <h1>Opten la App</h1>
+                    <p>¡Lleva tu educación a todas partes!</p>
+                    <a href="https://play.google.com/store/apps/details?id=com.neurasoft.classgo" target="_blank"><img src="{{ asset('images/googleplay.png')}}" alt="" style=" width: 150px;"></a>
                 </div>
                 <div class="box">
-                    <a href="{{ route('nosotros')}}">
-                        <h1 data-translate="nosotros">Nosotros</h1>
-                    </a>
-                    <a href=" {{ route('nosotros')}}">
-                        <p data-translate="mision">Mision</p>
-                    </a>
-                    <a href=" {{ route('nosotros')}}">
-                        <p data-translate="vision">Vision</p>
-                    </a>
-                    <a href="{{ route('nosotros')}}">
-                        <p data-translate="logros_clave">Logros clave</p>
-                    </a>
+                    <a href="{{ route('nosotros')}}"><h1>Nosotros</h1></a>
+                    <a href=" {{ route('nosotros')}}#mision"><p>Mision</p></a>
+                    <a href=" {{ route('nosotros')}}#vision"><p>Vision</p></a>
+                    <a href="{{ route('nosotros')}}#team"><p>Desarrolladores</p></a>
                 </div>
                 <div class="box">
                     <h1 data-translate="preguntas">Preguntas</h1>

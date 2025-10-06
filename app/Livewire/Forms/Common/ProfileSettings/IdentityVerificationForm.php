@@ -40,13 +40,11 @@ class IdentityVerificationForm extends Form
 
     public function rules(): array
     {
-
         return $this->instructorRequest->rules();
     }
 
     public function messages(): array
     {
-
         return $this->instructorRequest->messages();
     }
 
@@ -59,11 +57,6 @@ class IdentityVerificationForm extends Form
 
         $this->beforeValidation(['image', 'transcript', 'identificationCard']);
         $this->validate($rules);
-
-
-
-
-
 
         if ($this->image instanceof \Livewire\Features\SupportFileUploads\TemporaryUploadedFile) {
             $filename = time() . '_' . $this->image->getClientOriginalName();

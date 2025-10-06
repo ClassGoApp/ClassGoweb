@@ -44,6 +44,8 @@ use App\Services\GoogleMeetService;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TutorPerfilController;
 
+
+
 Route::view('/e', 'vistas.view.pages.e')->name('e');
 Route::view('/traduccion', 'vistas.view.pages.traduccion')->name('traduccion');
 
@@ -109,13 +111,21 @@ Route::get('auth/{provider}/callback', [SocialController::class, 'callback'])->n
 Route::get('/pay-qr/{orderId}', [PaymentController::class, 'showQR'])->name('pay-qr');
 
 Route::get('/google/authenticate', [GoogleController::class, 'authenticate'])->name('google.authenticate');
-Route::get('/auth/api/google/callback', [GoogleController::class, 'callback'])->name('google.callback');
+Route::get('/auth/api/google/callback', [GoogleController::class, 'googlecallback'])->name('google.callback');
 
-Route::get('auth/{provider}', [SocialController::class, 'redirect'])->name('social.redirect');
+
+
+
+//Route::get('calendar/google/callback', [GoogleController::class, 'googleCallback'])->name('googlecal.callback');
+
+
+
+
+//Route::get('auth/{provider}', [Go::class, 'redirect'])->name('social.redirect');
 
 
 Route::middleware(['locale', 'maintenance'])->group(function () {
-    Route::get('find-tutors', [SearchController::class, 'findTutors'])->name('find-tutors');
+    //Route::get('find-tutors', [SearchController::class, 'findTutors'])->name('find-tutors');
     //Route::get('find-tutors', [SearchController::class, 'findTutors'])->name('find-tutors');
 
     Route::get('/blogs', Blogs::class)->name('blogs');
@@ -127,19 +137,24 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
     Route::get('/nosotros', [HomeController::class, 'nosotros'])->name('nosotros');
     Route::view('/como-trabajamos', 'vistas.view.pages.trabajamos')->name('como-trabajamos');
     Route::view('/preguntas', 'vistas.view.pages.preguntas')->name('preguntas');
-    Route::get('/tutors/{slug}', [HomeController::class, 'tutor'])->name('tutor');
+    Route::get('/tutores/{slug}', [HomeController::class, 'tutor'])->name('tutor');
     Route::view('/desarrolladores', 'vistas.view.pages.desarrolladores')->name('desarrolladores');
-    //Route::get('/tutors', [HomeController::class, 'buscarTutor'])->name('buscar.tutor');
+    Route::get('/tutors', [HomeController::class, 'buscarTutor'])->name('buscar.tutor');
     //<=== Kevin Pasante ===>
     Route::view('/terminos', 'vistas.view.pages.terminos')->name('terminos');
 
 
-    Route::get('/buscar-tutor', BuscarTutor::class)->name('buscar.tutor');
+    //Route::get('/buscar-tutor', BuscarTutor::class)->name('buscar.tutor');
     Route::get('/kkkk', BuscadorTutor::class)->name('buscador.tutor');
 
 
 
     Route::get('/promociones', [PromocionesController::class, 'index'])->name('promociones');
+    // routes/web.php
+    Route::post('/promociones/canjear', [PromocionesController::class, 'canjear'])
+        ->name('coupons.canjear')
+        ->middleware('auth');
+
     // promociones vista ejemplo    
     Route::post('tutor/favourite', [SearchController::class, 'favouriteTutor'])->name('tutor.favourite');
 
@@ -195,7 +210,7 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
             });
             Route::get('bookings', UserBooking::class)->name('bookings');
             Route::get('invoices', Invoices::class)->name('invoices');
-            Route::get('billing-detail', BillingDetail::class)->name('billing-detail');
+
             Route::get('favourites', Favourites::class)->name('favourites');
             Route::get('reschedule-session/{id}', RescheduleSession::class)->name('reschedule-session');
             Route::get('complete-booking/{id}', [SiteController::class, 'completeBooking'])->name('complete-booking');

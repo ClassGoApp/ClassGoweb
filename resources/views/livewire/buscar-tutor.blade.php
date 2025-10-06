@@ -1,64 +1,47 @@
-<div class="container-buscartutor">
+<div class="container-buscartuto">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 
-    <!-- Hero Section -->
-    <section class="buscartutor-hero-section">
-        <div class="buscartutor-container">
-             <div class="buscartutor-hero-grid">
-                <div>
-                    <p class="buscartutor-hero-label">Tutores / Encontrar tutor</p>
-                    <h1 class="buscartutor-hero-title">Descubra un tutor en línea capacitado para sus estudios</h1>
-                    <p class="buscartutor-hero-desc">Domina tus estudios con tutorías personalizadas en línea impartidas por educadores expertos. Nuestros tutores capacitados están aquí para ayudarlo a construir bases sólidas y alcanzar sus objetivos académicos.</p>
-                    <p class="mobile-only">
-                        Nuestros tutores capacitados están aquí para ayudarlo a construir bases sólidas y alcanzar sus objetivos académicos.
-                    </p>
-                </div>
-                <div class="buscartutor-hero-img-col">
-                     <img src="{{ asset('storage/optionbuilder/uploads/740102-17-2025_0859pmTugo-saludando.gif') }}" alt="Mascota de ClassGo" class="buscartutor-hero-img" onerror="this.onerror=null; this.src='https://placehold.co/300x300/ffffff/023047?text=ClassGo';">
+    
+    <!-- Componente de búsqueda y listado de tutores -->
+    <section class="buscartutor-search-section">
+        <div class="buscartutor-search-box">
+            <div class="buscartutor-search-grid">
+                <div class="buscartutor-search-keyword">
+                    <div class="buscartutor-search-input-wrap">
+                        <!-- BUSCADOR-->
+                        <!--desktop-->
+                        <div class="buscador-desktop">
+                            <input type="text"
+                            id="keyword-search"
+                            placeholder="¿Qué necesitas aprender? Busca por nombre del tutor o materia."
+                            class="buscartutor-search-input"
+                            wire:model.live.debounce.500ms="search">
+                            <span class="buscartutor-search-icon">
+                                <svg class="buscartutor-search-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd" /></svg>
+                            </span>
+                        </div>
+                        <!---movile-->
+                        <div class="buscador-mobile">
+                            <input type="text"
+                            id="keyword-search"
+                            placeholder="¿Qué necesitas aprender?"
+                            class="buscartutor-search-input"
+                            wire:model.live.debounce.500ms="search">
+                            <span class="buscartutor-search-icon">
+                                <svg class="buscartutor-search-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd" /></svg>
+                            </span>
+                        </div>
+                        
+                    </div>
                 </div>
             </div>
         </div>
     </section>
     
-    <!-- Componente de búsqueda y listado de tutores -->
-    <section class="buscartutor-search-section">
-    <div class="buscartutor-search-box">
-        <div class="buscartutor-search-grid">
-            <div class="buscartutor-search-keyword">
-                <div class="buscartutor-search-input-wrap">
-                    <!-- BUSCADOR-->
-                    <!--desktop-->
-                    <div class="buscador-desktop">
-                        <input type="text"
-                        id="keyword-search"
-                        placeholder="¿Qué necesitas aprender? Busca por nombre del tutor o materia."
-                        class="buscartutor-search-input"
-                        wire:model.live.debounce.500ms="search">
-                        <span class="buscartutor-search-icon">
-                            <svg class="buscartutor-search-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd" /></svg>
-                        </span>
-                    </div>
-                    <!---movile-->
-                    <div class="buscador-mobile">
-                        <input type="text"
-                        id="keyword-search"
-                        placeholder="¿Qué necesitas aprender?"
-                        class="buscartutor-search-input"
-                        wire:model.live.debounce.500ms="search">
-                        <span class="buscartutor-search-icon">
-                            <svg class="buscartutor-search-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd" /></svg>
-                        </span>
-                    </div>
-                    
-                </div>
-            </div>
-        </div>
-    </div>
-    </section>
     <section class="buscartutor-tutorlist-section">
         <div class="buscartutor-tutorlist-space">
             @forelse ($profiles as $profile)
-                <div class="buscartutor-tutor-card">
+                <div class="buscartutor-tutor-card" wire:key="tutor-{{ $profile['user_id'] }}">
                     <a href="{{ route('tutor', ['slug' => $profile['slug']]) }}">
                         <img 
                         src="{{ $profile['image'] ? asset('storage/' . $profile['image']) : asset('images/tutors/default.png') }}" 
@@ -71,17 +54,14 @@
                             <span>⭐ {{ $profile['avg_rating'] }}/5.0 ({{ $profile['total_reviews'] }} reseñas)</span>
                                 <div class="tutor-subjects-display">
                                     
-                                    {{-- CASO 1: Si la búsqueda coincidió con alguna materia, la mostramos --}}
                                     @if (!empty($profile['matched_subjects']))
                                         
                                         <span class="subjects-matched">
                                             <span>•</span> <strong>{{ implode(', ', $profile['matched_subjects']) }}</strong>
                                         </span>
 
-                                    {{-- CASO 2: Si no hubo coincidencias (o no hay búsqueda), mostramos el resumen --}}
                                     @else
                                         @php
-                                            // Usamos la colección de Laravel para un manejo más fácil
                                             $subjects = collect($profile['all_subjects']);
                                             $firstTwo = $subjects->take(2)->implode(', ');
                                             $moreCount = $subjects->count() > 2 ? $subjects->count() - 2 : 0;
@@ -104,14 +84,49 @@
                         </p>
                     </div>
                     <div class="buscartutor-tutor-actions">
-                        
                         <a href="{{ route('tutor', ['slug' => $profile['slug']]) }}" class="buscartutor-tutor-btn buscartutor-tutor-btn-blue">
                             Ver Perfil
                         </a>
                     </div>
                 </div>
             @empty
-                <div class="text-center py-8 text-gray-500">No se encontraron tutores para los criterios de búsqueda.</div>
+                <div id="no-results" class="no-results-card">
+                    <div class="no-results-icon-wrapper">
+                        {{-- <svg class="no-results-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                        </svg> --}}
+                        <img src="{{ asset('images/Tugo-rostro.png') }}" alt="">
+                    </div>
+
+                    <h2 class="no-results-title">
+                        ¡Vaya! No encontramos resultados.
+                    </h2>
+                    <p class="no-results-message">
+                        Pero no te preocupes, ¡estamos aquí para ayudarte! Es posible que el tutor o la materia que buscas no esté disponible, o que haya un error de escritura.
+                    </p>
+
+                    <div class="no-results-suggestions-box">
+                        <h3 class="no-results-suggestions-title">¿Qué puedes hacer?</h3>
+                        <ul class="no-results-suggestions-list">
+                            <li class="no-results-suggestion-item">
+                                <span class="no-results-check-icon">✓</span>
+                                <strong>Revisa si escribiste bien&nbsp;</strong> el nombre.
+                            </li>
+                            <li class="no-results-suggestion-item">
+                                <span class="no-results-check-icon">✓</span>
+                                    Prueba con una materia similar o &nbsp;<strong>más general</strong>.
+                            </li>
+                            <li class="no-results-suggestion-item">
+                                <span class="no-results-check-icon">✓</span>
+                                <strong>¡Ponte en contacto con nosotros!&nbsp;</strong> Dinos, necesitas alguna materia en específica?
+                            </li>
+                        </ul>
+                    </div>
+
+                    <a href="https://wa.link/8f8z6i" class="no-results-contact-btn" target="_blank">
+                        Contáctanos
+                    </a>
+                </div>
             @endforelse
         </div>
         <div class="buscartutor-pagination">

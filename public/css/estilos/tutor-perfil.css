@@ -56,7 +56,6 @@
 
 .tutor-main {
     max-width: 1200px;
-    /*Tamaño del main */
     margin: 0 auto;
     padding: 8rem 1rem;
 }
@@ -161,6 +160,7 @@
     border-bottom-right-radius: 30px;
 }
 
+/*--------- Imagen de perfil --------*/
 .tutor-profile-img {
     width: 128px;
     height: 128px;
@@ -173,6 +173,8 @@
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
     z-index: 10;
 }
+
+
 
 .tutor-profile-info {
     margin-left: 150px;
@@ -218,6 +220,40 @@
     text-align: center;
 }
 
+/*Añadir a favoritos*/
+.favorite-btn-blue {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease-in-out;
+}
+
+.heart-icon-blue {
+  width: 24px;
+  height: 24px;
+  fill: none; /* Relleno inicial transparente */
+  stroke: white; /* Color del borde del corazón (gris) */
+  stroke-width: 1.5; /* Grosor del borde */
+  transition: fill 0.3s ease-in-out, stroke 0.3s ease-in-out;
+}
+.favorite-btn-blue:hover .heart-icon-blue {
+  stroke: white; /* Borde azul al pasar el mouse */
+}
+
+.tutor-btn-favorito{
+    background: var(--primary-color) !important;
+    color: white;
+}
+
+.favorite-btn-blue.is-favorited-blue .heart-icon-blue{
+  fill: white; /* Relleno azul cuando se activa */
+  stroke: white; /* Borde azul cuando se activa */
+}
+
 /* ==================== 7 - Tutor Tabs ==================== */
 .tutor-tabs-card {
     background: #fff;
@@ -235,10 +271,8 @@
     gap: 2rem;
     padding: 0 2rem;
     overflow-x: auto;
-    scrollbar-width: none;
-    /* Firefox */
-    -ms-overflow-style: none;
-    /* IE y Edge */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE y Edge */
 }
 
 .tutor-tabs-list::-webkit-scrollbar {
@@ -384,15 +418,31 @@
 /* Estilos para los días del calendario */
 
 /* ==================== 8.1 - Dias-Horarios Disponibles ==================== */
-.tutor-calendar-day.has-availability {
+/* .tutor-calendar-day.has-availability {
     border: 2px solid var(--terciary-color2);
+} */
+.tutor-calendar-day.has-availability {
+    border: none;
+    position: relative;
+}
+.tutor-calendar-day.has-availability::after {
+    content: ''; /* Campo obligatorio para que el pseudo-elemento se muestre */
+    position: absolute; /* Permite posicionar el punto con precisión */
+    bottom: 5px; /* Ajusta la distancia desde la parte inferior del div */
+    left: 50%; /* Centra el punto horizontalmente */
+    transform: translateX(-50%); /* Ajuste final para un centrado perfecto */
+    
+    width: 6px; /* Tamaño del punto */
+    height: 6px; /* Tamaño del punto */
+    background-color: var(--terciary-color2); /* Color del punto */
+    border-radius: 50%; /* ¡Esto lo convierte en un círculo perfecto! */
 }
 
 /* ==================== 8.2 - Dias Seleccionados ==================== */
 .tutor-calendar-day.selected {
     background-color: var(--primary-color);
     color: white;
-    border-color: #3498db;
+    border-color: #db3434;
 }
 
 /* ==================== 8.3 - Btn De Ocupado ==================== */
@@ -432,7 +482,7 @@
 }
 
 .tutor-calendar-day:not(.past):hover {
-    background-color: #f0f0f0;
+    background-color: var(--terciary-color2);
 }
 
 /* ==================== 8.6 - Dias Pasado ==================== */
@@ -440,7 +490,9 @@
     color: #ccc;
     cursor: not-allowed;
 }
-
+.tutor-calendar-day.past.has-availability::after {
+    display: none;
+}
 /* ==================== 8.7 - Dias Reservados ==================== */
 .tutor-calendar-day.booked {
     background-color: #ffe8d6;
@@ -473,9 +525,10 @@
 }
 
 .tutor-time-slot-btn:hover {
-    border-color: #0c70b3;
-    color: var(--primary-color);
+    border-color: var(--terciary-color2);
+    color: white;
     font-weight: bold;
+    background-color: var(--terciary-color2);
 }
 
 .tutor-no-availability {
@@ -486,10 +539,18 @@
     border-radius: 8px;
 }
 
+.section-reserva{
+    display: flex;
+    flex-flow: column wrap;
+    height: auto;
+}
+
 .tutor-availability-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 2rem;
+    height: 100%;
+
 }
 
 .tutor-calendar-box {
@@ -561,17 +622,22 @@
     color: #fff;
     font-weight: bold;
 }
+.tutor-calendar-day.selected.has-availability::after {
+    display: none;
+}
 
 .tutor-time-selector-col {
-    display: block;
+    display: flex;
+    flex-flow: column nowrap;
+
 }
 
 .tutor-time-selector-box {
-    background: #fff;
+    background: white;
     padding: 1.5rem;
     border-radius: 1rem;
     border: 1px solid #e0e0e0;
-    height: 80%;
+    height: 100%;
 }
 
 .tutor-time-range {
@@ -584,6 +650,8 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 0.5rem;
+    justify-content: center;
+    height: auto;
 }
 
 .tutor-time-slot {
@@ -599,13 +667,13 @@
 .tutor-time-slot:hover {
     background: var(--secundary-color);
     color: #fff;
-    border-color: var(--secundary-color);
+    border-color: var(--terciary-color2);
 }
 
 .tutor-time-exact-btn {
     width: 100%;
     margin-top: 1rem;
-    background: var(--terciary-color2);
+    background: var(--secundary-color);
     color: #fff;
     font-weight: 600;
     padding: 0.7rem 0;
@@ -616,9 +684,12 @@
 }
 
 .tutor-pay-btn-box {
-    margin-top: 2rem;
+    display: flex;
     text-align: center;
+    padding: 2rem 4rem 0rem 4rem;
+    justify-content: center;
 }
+
 
 .tutor-pay-btn {
     background: var(--terciary-color2);
@@ -629,13 +700,15 @@
     font-size: 1.2rem;
     border: none;
     cursor: pointer;
-    transition: var(--transition);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: transform var(--button-transition-duration) ease-in-out, box-shadow var(--button-transition-duration) ease-in-out;
 }
 
 .tutor-pay-btn:hover {
-    opacity: 0.9;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    transform: scale(var(--button-hover-scale));
+    box-shadow: var(--button-hover-shadow);
+}
+.tutor.pay.btn:active{
+    transform: scale(var(--button-active-scale));
 }
 
 .tutor-subtabs-nav {
@@ -651,7 +724,7 @@
     font-weight: 600;
     font-size: 1rem;
     padding: 0.7rem 1.5rem;
-    border-radius: 0.7rem 0.7rem 0 0;
+    border-radius: 0.7rem;
     color: #888;
     cursor: pointer;
     transition: var(--transition);
@@ -767,7 +840,7 @@
     border: none;
     padding: 1rem 0;
     cursor: pointer;
-    transition: var(--transition);
+    transition: transform var(--button-transition-duration) ease-in-out, box-shadow var(--button-transition-duration) ease-in-out;
 }
 
 .tutor-btn-now {
@@ -780,10 +853,19 @@
     color: #fff;
 }
 
+
 .tutor-btn-share {
     background: #e0e0e0;
     color: #555;
 }
+
+.tutor-btn-reservar:hover,
+.tutor-btn-now:hover,
+.tutor-btn-share:hover {
+  transform: scale(var(--button-hover-scale));
+  box-shadow: var(--button-hover-shadow);
+}
+
 
 .tutor-btn-icon {
     width: 24px;
@@ -845,6 +927,87 @@ body.modal-open {
     overflow: hidden;
 }
 
+/*
+ * Clases CSS Base (para ambos tipos de alertas)
+ */
+.alert-box {
+  padding: 1.5rem; /* p-6 */
+  border-radius: 0.5rem; /* rounded-lg */
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm */
+  margin-top: 2rem;
+}
+
+.alert-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.alert-icon {
+  width: 2rem; /* w-8 */
+  height: 2rem; /* h-8 */
+  margin-bottom: 0.75rem; /* mb-3 */
+}
+
+.alert-title {
+  font-weight: 700; /* font-bold */
+  font-size: 1.125rem; /* text-lg */
+}
+
+.alert-text {
+  font-size: 0.875rem; /* text-sm */
+  margin-top: 0.25rem; /* mt-1 */
+}
+
+.alert-link {
+  font-weight: 600; /* font-semibold */
+  text-decoration: none;
+  transition: text-decoration 0.2s ease;
+}
+
+.alert-link:hover {
+  text-decoration: underline;
+}
+
+/*
+ * Clases Modificadoras (para estilos específicos de cada alerta)
+ */
+
+/* Alerta de Éxito o Información (bg-teal-50) */
+.alert-teal {
+  background-color: #f0fdfa; /* bg-teal-50 */
+  color: #0f766e; /* text-teal-800 */
+}
+
+.alert-teal .alert-icon {
+  color: #14b8a6; /* text-teal-500 */
+}
+
+.alert-teal .alert-link {
+  color: #0d9488; /* text-teal-600 */
+}
+
+/* Alerta de Advertencia (bg-amber-50) */
+.alert-amber {
+  background-color: #fffbeb; /* bg-amber-50 */
+  color: #92400e; /* text-amber-800 */
+}
+
+.alert-amber .alert-icon {
+  color: #f59e0b; /* text-amber-500 */
+}
+
+.alert-amber .alert-link {
+  color: #b45309; /* text-amber-700 */
+}
+
+.alert-amber .alert-subtext {
+  font-size: 0.75rem; /* text-xs */
+  margin-top: 0.5rem; /* mt-2 */
+  color: #b45309; /* text-amber-700 */
+}
+
 /* ==================== 9 - Tutor Modal ==================== */
 .modal-overlay {
     position: fixed;
@@ -873,7 +1036,7 @@ body.modal-open {
     border-radius: 1rem;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
     width: 100%;
-    max-width: 900px;
+    max-width: 800px;
     overflow: hidden;
     transform: scale(0.95);
     opacity: 0;
@@ -895,6 +1058,17 @@ body.modal-open {
 }
 
 /* ==================== 9.5 - Modal Qr ==================== */
+.modal-promocion-column {
+    background-color: white;
+    display: flex;
+    align-self: center;
+}
+
+.banner_agosto {
+    width: 100%;
+    height: 100%;
+    object-fit: fill; /* Esta es la línea clave */
+}
 .modal-qr-column {
     width: 100%;
     background-color: #f9fafb;
@@ -915,11 +1089,10 @@ body.modal-open {
 /* ==================== 9.6 - Modal Form ==================== */
 .modal-form-column {
     width: 100%;
-    padding: 2rem;
+    padding: 1rem 2rem;
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
-    /* Espacio entre los elementos del formulario */
+    gap: 0.3rem; /* Espacio entre los elementos del formulario */
 }
 
 /* ==================== 10 - Tutor Form ==================== */
@@ -934,13 +1107,13 @@ body.modal-open {
 .input-label {
     display: block;
     font-size: 0.875rem;
-    /* 14px */
     font-weight: 500;
     color: #4b5563;
     margin-bottom: 0.5rem;
 }
 
 /* ==================== 11.1 - Input De Archivo Personalizado ==================== */
+/* 
 .file-input-label {
     display: inline-flex;
     align-items: center;
@@ -961,7 +1134,6 @@ body.modal-open {
 
 .upload-icon {
     width: 1.25rem;
-    /* 20px */
     height: 1.25rem;
 }
 
@@ -971,11 +1143,48 @@ body.modal-open {
 
 .file-name-display {
     font-size: 0.875rem;
-    /* 14px */
     color: #6b7281;
     margin-top: 0.25rem;
 }
 
+.reserva-info-container{
+    display: flex;
+    flex-flow: row wrap;
+} */
+
+.file-upload-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 0.75rem 1rem; /* Combina py-3 y px-4 */
+    border: 2px dashed #d1d5db; /* border-2 border-dashed border-gray-300 */
+    border-radius: 0.5rem; /* rounded-lg */
+    cursor: pointer;
+    transition: background-color 0.15s ease-in-out; /* transition */
+}
+
+.file-upload-label:hover {
+    background-color: #f9fafb; /* hover:bg-gray-50 */
+}
+
+.file-upload-content {
+    text-align: center;
+}
+
+.file-upload-icon {
+    font-size: 1.5rem; /* text-2xl */
+}
+
+.file-upload-text {
+    margin-top: 0.25rem; /* mt-1 */
+    font-size: 0.875rem; /* text-sm */
+    color: #6b7280; /* text-gray-500 */
+    font-weight: 600; /* font-semibold */
+}
+.file-input-hidden {
+    display: none;
+}
 /* ==================== 12 - Turtor Select Personalisado ==================== */
 .select-input {
     width: 100%;
@@ -999,8 +1208,8 @@ body.modal-open {
     padding: 1rem;
     border-radius: 0.5rem;
     font-size: 0.875rem;
-    /* 14px */
     color: #4b5563;
+    margin-top: 0.4rem;
 }
 
 .info-box p+p {
@@ -1011,9 +1220,9 @@ body.modal-open {
 .action-buttons {
     display: flex;
     flex-direction: row;
-    /* Botones apilados en móvil */
+    flex-wrap: nowrap;
     gap: 1rem;
-    padding-top: 1rem;
+    padding-top: 0.5rem;
 }
 
 /* ==================== 15 - Tutor Btn Generic ==================== */
@@ -1034,19 +1243,182 @@ body.modal-open {
 .btn-primary {
     background-color: var(--terciary-color2);
     color: white;
+    transition: transform var(--button-transition-duration) ease-in-out, box-shadow var(--button-transition-duration) ease-in-out;
 }
 
 .btn-primary:hover {
     background-color: #ffa640;
+    transform: scale(var(--button-hover-scale));
+  box-shadow: var(--button-hover-shadow);
+}
+.btn-primary:active{
+  transform: scale(var(--button-active-scale));
 }
 
-.btn-secondary {
+.btn-primary[type="button"]{
     background-color: #e5e7eb;
     color: #1f2937;
 }
+.btn-primary[type="button"]:hover{
+    background-color: #c4c4c5;
 
-.btn-secondary:hover {
-    background-color: #d1d5db;
+}
+
+
+/*=================== 16 CUPONES ===============*/
+/* Base Styles */
+.coupon-section {
+  border-top: 1px solid #e5e7eb;
+}
+
+.coupon-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #4b5563;
+  margin-bottom: 0.5rem;
+}
+
+/* Coupon Input and Apply Button */
+.coupon-input-group {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.coupon-input {
+    padding: 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    background-color: #fff;
+    font-size: 1rem;
+    transition: all 0.15s ease-in-out;
+    
+}
+
+.coupon-input:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  border-color: var(--terciary-color2);
+  box-shadow: 0 0 0 2px var(--terciary-color2);
+}
+
+.apply-button {
+  padding: 0.5rem 1.25rem;
+  background-color: #e5e7eb;
+  color: #4b5563;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  transition: all 0.15s ease-in-out;
+}
+
+.apply-button:hover {
+  background-color: #d1d5db;
+}
+
+/* Applied Coupon Message */
+.applied-coupon-container {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #d1fae5;
+  border: 1px solid #6ee7b7;
+  color: #065f46;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  min-width: 318px;
+}
+
+.applied-coupon-text {
+  font-weight: 600;
+}
+
+.remove-button {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #4b5563; /* Default color, not specified in Tailwind */
+  cursor: pointer;
+}
+
+.remove-button:hover {
+  color: #dc2626;
+}
+
+
+/* Message */
+.coupon-message {
+  font-size: 0.775rem;
+  min-height: 1.25rem; /* Equivalent to h-5 */
+  color: rgb(255, 80, 80);
+}
+
+/* Estilos para el contenido del dropdown */
+.coupon-dropdown-content {
+    display: block; /* Oculto por defecto */
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 30% !important; /* Ocupa todo el ancho del contenedor */
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    border-radius: 4px;
+    margin-top: 5px; /* Pequeña separación del input */
+}
+
+/* Estilos para los elementos de la lista */
+.coupon-dropdown-content .list-cupon {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    cursor: pointer;
+}
+
+/* Cambia el color al pasar el ratón por encima */
+.coupon-dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+/* Clase para mostrar el dropdown con JavaScript */
+.show {
+    display: block;
+}
+
+/* Cuando el cupón se aplica */
+/* Contenedor del cupón aplicado */
+.applied-coupon-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #d1fae5; /* bg-green-100 */
+    border: 2px dashed #6ee7b7; /* border-green-300 */
+    color: #166534; /* text-green-800 */
+    padding: 0.5rem 1rem; /* py-2 px-4 */
+    border-radius: 0.5rem; /* rounded-lg */
+}
+
+/* Estilo del texto */
+.applied-coupon-text {
+    font-weight: 600; /* font-semibold */
+}
+
+/* Estilo del código del cupón */
+.applied-coupon-code {
+    /* Puedes añadir estilos adicionales para el código aquí si lo necesitas */
+}
+
+/* Botón para quitar el cupón */
+.remove-coupon-btn {
+    font-size: 0.875rem; /* text-sm */
+    font-weight: 700; /* font-bold */
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.15s ease-in-out;
+    color: #166534;
+}
+
+.remove-coupon-btn:hover {
+    color: #dc2626; /* hover:text-red-600 */
 }
 
 /* =================== RESPONSIVE DESIGN TABLETS=================== */
@@ -1325,6 +1697,8 @@ body.modal-open {
 
     .tutor-profile-quote {
         margin-top: 0rem;
+        padding: 1rem 1rem;
+        text-align: justify;
     }
 
     /* FIN REVERTIR estilos de .tutor-card-main */
@@ -1395,16 +1769,15 @@ body.modal-open {
         padding: 1rem;
         display: flex;
         justify-content: start;
-        gap: 10px;
+        gap: 5px;
     }
 
     .action-buttons {
         flex-direction: row;
-        /* Botones en la misma fila */
     }
 
     .form-title {
-        display: none;
+        text-align: centers;
     }
 
     /* Estilos para el input de archivo personalizado */
@@ -1417,7 +1790,6 @@ body.modal-open {
 
     .file-name-display {
         font-size: 0.675rem;
-        /* 14px */
         color: #6b7281;
         margin-top: 0.25rem;
         padding: 0rem;
@@ -1433,8 +1805,103 @@ body.modal-open {
 
     }
 
+    /* Cupones */
+    .coupon-input-group{
+        width: 100%;
+    }
+    .coupon-input{
+        width: 100%;
+    }
+    .btn btn-secondary{
+        width: 30%;
+    }
+
+    .coupon-dropdown-content {
+        min-width: 80% !important; /* Ocupa todo el ancho del contenedor */
+    }
+    .applied-coupon-container{
+        min-width: 100px;
+
+    }
+
+
 }
 
 .tutor-main-bg {
     background: #fff !important;
+}
+
+
+/* Cards para la informacion de los tutores*/
+.info-card {
+  background-color: #fff;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border: 1px solid #f3f4f6;
+  transition-property: box-shadow;
+  transition-duration: 0.15s;
+  margin-bottom: 1rem;
+}
+
+.info-card:hover {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Encabezado de la tarjeta */
+.info-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+/* Contenedor del título y metadatos */
+.info-card-content {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Título */
+.info-card-title {
+  font-weight: 700;
+  color: #1f2937;
+  font-size: 1rem;
+}
+
+/* Contenedor de los metadatos (íconos y texto) */
+.info-card-meta {
+  margin-top: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+/* Elemento de metadato individual */
+.info-card-meta-item {
+  display: flex;
+  align-items: center;
+}
+
+/* Íconos */
+.info-card-icon {
+  width: 1rem;
+  height: 1rem;
+  margin-right: 0.5rem;
+  color: #9ca3af;
+}
+
+/* Media Query para pantallas más grandes (sm) */
+@media (min-width: 640px) {
+  .info-card-title {
+    font-size: 1.125rem;
+  }
+
+  .info-card-meta {
+    flex-direction: row;
+    column-gap: 1.5rem;
+    row-gap: 0;
+    align-items: center;
+  }
 }

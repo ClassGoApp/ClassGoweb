@@ -5,168 +5,311 @@
 @section('content')
 
 @push('styles')
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Google Fonts: Inter -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">    
-    <link rel="stylesheet" href="{{ asset('css/promociones.css') }}">
-
-    <style>
-        :root {
-            --primary-color: #023047;
-            --secondary-color: #219EBC;
-            --secondary-color2: #CDD6DA;
-            --tertiary-color: #8ECAE6;
-            --tertiary-color2: #FB8500;
-            --bg-color: #f8f9fa;
-        }
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--panel-background);
-        }
-        .bg-primary { background-color: var(--primary-color); }
-        .text-primary { color: var(--primary-color); }
-        .text-secondary { color: var(--secondary-color); }
-        .bg-secondary { background-color: var(--secondary-color); }
-        .bg-tertiary-orange { background-color: var(--tertiary-color2); }
-        .text-tertiary-orange { color: var(--tertiary-color2); }
-        .border-tertiary-orange { border-color: var(--tertiary-color2); }
-        .ring-secondary {
-            --tw-ring-color: var(--secondary-color);
-        }
-        .sidebar-link.active {
-            background-color: var(--secondary-color);
-            color: white;
-            font-weight: 600;
-        }
-        .sidebar-link.active svg {
-            stroke: white;
-        }
-    </style>
+<link rel="stylesheet" href="{{ asset('css/promociones.css') }}">
+<link rel="stylesheet" href="{{ asset('css/estilos/variables.css') }}">
 @endpush
-<main class="flex-1 p-6 lg:p-8 overflow-y-auto">
-	<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-		<!-- Columna de Cupones -->
-		<div class="lg:col-span-2 bg-white p-6 rounded-2xl shadow-md">
-			<h3 class="text-xl font-bold mb-4 cupon-text-cupones">Mis cupones</h3>
-			<div class="space-y-4">
-                @if($cupones->isEmpty())
-                    <div class="border-2 border-dashed border-gray-300 rounded-lg p-12 text-center">
-					    <svg class="mx-auto h-12 w-12 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 010 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 010-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375z" /></svg>
-					    <p class="mt-2 text-sm text-gray-500">No tienes cupones activos en este momento.</p>
-				    </div>
-                
-                @else
-                    <div class="cupon-lista">
-                        @foreach($cupones as $cupon)
+
+    <main class="main-content">
+
+        
+        <div class="main-grid-container">
+            <div class="mobile">
+                @if (session('error'))
+                <p class="message-error" style="display: block; opacity: 1;">{{ session('error') }}</p>
+                @endif
+
+                @if (session('success'))
+                    <p class="message-success">{{ session('success') }}</p>
+                @endif
+
+            </div>
+            
+
+            <div class="coupons-section">
+                <h3 class="coupons-title">Mis cupones</h3>
+                <div class="coupons-list-container">
+
+                    @if ($cupones->isEmpty())
+                        <div class="empty-state-message">
+                            <svg class="empty-state-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 010 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 010-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375z" />
+                            </svg>
+                            <p class="empty-state-text">No tienes cupones activos en este momento.</p>
+                        </div>
+                    @else
+                        <div class="coupons-list-scroll">
+                            @foreach ($cupones as $cupon )
                             @php
                                 $vencido = $cupon->fecha_caducidad && $cupon->fecha_caducidad < now();
                                 $inactivo = isset($cupon->estado) && $cupon->estado === 'inactivo';
-                                $canjeado = isset($cupon->pivot->cantidad) && $cupon->pivot->cantidad == 0;
+                                $canjeado = isset($cupon->pivot->estado);
                             @endphp
-                            <!-- Cupón  -->
-                            <div class="{{ $vencido ? 'cupon-vencido' : '' }}">
-                                <div class="cupon-item border-2 border-dashed border-gray-200 rounded-lg p-4 flex flex-col sm:flex-row justify-between items-center sm:items-center gap-4">
-                                    <div class="item-text">
-                                        <p class="text-xs text-gray-500">Cupón válido hasta el 
+
+                            <div class="coupon-card">
+                                <div class="coupon-image-wrapper">
+                                    <img src="{{ asset('images/home/Tugo_With_Phone.webp') }}" alt="Tugo with Phone">
+                                </div>
+                                <div class="coupon-info-wrapper">
+                                    <div class="info-text">
+                                        <h2 class="coupon-value">{{ round($cupon->descuento) }}%</h2>
+                                        <p class="coupon-description">Tienes <strong>{{ round($cupon->descuento )}}% de descuento</strong> en tu próxima tutoría</p>
+                                        <p class="coupon-validity">Válido hasta el
                                             {{ $cupon->fecha_caducidad ? \Carbon\Carbon::parse($cupon->fecha_caducidad)->format('d/m/Y') : 'Sin fecha' }}
-                                            @if($vencido)
-                                                <span>(Vencido)</span>
-                                            @endif</p>
-                                        <h4 class="font-bold text-lg cupon-text">Obtubiste un descuento del {{ $cupon->descuento }}%</h4>
-                                        <p class="text-sm text-gray-600">en tu próxima tutoría - Cantidad: {{ $cupon->pivot->cantidad}}</p>
+                                            
+                                        </p>
+                                        
                                     </div>
-                                    @if($canjeado)
-                                        <span class="bg-gray-200 text-gray-800 font-semibold px-4 py-1 rounded-full text-sm">Canjeado</span>
-                                    @elseif($inactivo)
-                                        <span class="bg-red-100 text-red-800 font-semibold px-4 py-1 rounded-full text-sm">Inactivo</span>
-                                    @elseif($vencido)
-                                        <span class="bg-red-100 text-red-800 font-semibold px-4 py-1 rounded-full text-sm">Vencido</span>
-                                    @else
-                                        <a href="{{ route('find-tutors')}}"><button class="button-cupon text-white font-semibold px-6 py-2 rounded-lg hover:opacity-90 transition-all">Usar</button></a>
-                                    @endif
+                                    <div class="info-disponibilidad">
+                                        @if ($vencido) <span class="coupon-status-red">Vencido</span> 
+                                        @else <span class="coupon-status">Disponible</span>
+                                        @endif
+                                        <p class="coupon-amount">Cantidad:{{ $cupon->pivot->cantidad }} </p>
+                                    </div>
                                 </div>
                             </div>
-                        @endforeach
+
+                            @endforeach
+                            
+                        </div>
+                    @endif
+                </div>
+            </div>
+
+            <div class="redeem-invite-card">
+                <div class="tab-buttons-container">
+                    <button id="tabRedeem" class="tab-button ">Canjear Cupón</button>
+                    <button id="tabInvite" class="tab-button">Invitar</button>
+                </div>
+
+                <div id="redeemView" class="view-content view-content-redeem">
+                    <form action="{{ route('coupons.canjear') }}" class="formulario" method="POST">
+                        @csrf
+                        <h3 class="view-title">¿Tienes Código?</h3>
+                        <p class="view-subtitle">¡Ingrésalo y obtén descuentos!</p>
+                        <div class="input-wrapper">
+                            <input id="codigo" name="codigo" type="text" required placeholder="ABC12345" autocomplete="off" maxlength="8" spellcheck="false">  
+
+                        </div>
+                        <div class="action-buttons-wrapper">
+                            <button type="submit" id="btnCanjear" class="redeem-button">Canjear</button>
+                        </div>
+                        @if (session('error'))
+                            <p class="message-error" style="display: block; opacity: 1;">{{ session('error') }}</p>
+                        @endif
+
+                        @if (session('success'))
+                            <p class="message-success">{{ session('success') }}</p>
+                        @endif
+                    </form>
+                </div>
+                
+
+                <div id="inviteView" class="view-content view-content-invite hidden">
+                    <h3 class="view-title">Tu Código de Invitación</h3>
+                    <p class="view-subtitle">¡Comparte y obtén descuentos!</p>
+                    <div class="code-wrapper">
+                        <div id="inv-code" class="invitation-code">
+                            {{ $codigo ?? 'No Code' }}
+                        </div>
                     </div>
-                @endif
-				
-			</div>
-		</div>
+                    <div class="action-buttons-wrapper action-buttons-invite">
+                        <button id="btnCopiar" type="button" class="copy-button">
+                            Copiar
+                        </button>
+                        <button id="compartir-button" type="button" class="share-button">
+                            Compartir
+                        </button>
+                        <x-modal-compartir />
 
-		<!-- Columna de Código de Invitación -->
-		<div class="card-fondo text-white p-6 rounded-2xl shadow-lg flex flex-col items-center text-center">
-			<h3 class="text-xl font-bold">Tu Código de Invitación</h3>
-			<p class="text-tertiary-color mt-1 text-sm">¡Comparte y obtén descuentos!</p>
-			<div class="my-6">
-				<div id="inv-code" class="text-4xl font-extrabold tracking-widest bg-white/20 border-2 border-dashed border-tertiary-color p-4 rounded-lg {{ isset($codigo) && $codigo->estado !== 'activo' ? 'inactivo' : '' }}">
-					{{ $codigo->codigo ?? 'No Code' }}
-				</div>
-			</div>
-            
-			<div class="w-full space-y-3">
-				<button id="btnCopiar" type="button" class="w-full bg-white/90 text-primary font-bold py-3 rounded-lg hover:bg-white transition-all">Copiar Código</button>
-				<button id="compartir-button" type="button" class="w-full bg-tertiary-orange font-bold py-3 rounded-lg hover:opacity-90 transition-all">Compartir</button>
-				<x-modal-compartir />
-			</div>
-            <div id="copy-feedback" class="pt-3 transition-opacity" style="display:none;">¡Copiado!</div>
-		</div>
-	</div>
-    
-</main>
+                    </div>
+                    <div id="copy-feedback" class="copy-feedback-message">¡Copiado!</div>
+                </div>
+            </div>
+        </div>
+    </main>
 
+    @push('scripts')
 
-@push('scripts')
 <script>
+
+//======== Script para Cambiar Pestañas, Copiar Código de Invitación y Compartir ========//
+
 document.addEventListener('DOMContentLoaded', () => {
-    const btn = document.getElementById('btnCopiar');
-    const codigo = document.getElementById('inv-code');
-    const feedback = document.getElementById('copy-feedback');
 
-    if(btn && codigo && feedback) {
-        btn.addEventListener('click', () => {
-            const texto = codigo.textContent.trim();
-            navigator.clipboard.writeText(texto).then(() => {
-                feedback.style.display = 'block';
-                feedback.style.opacity = '1';
+	// --- Lógica para Cambiar Pestañas ---
+
+	const tabRedeem = document.getElementById('tabRedeem');
+
+	const tabInvite = document.getElementById('tabInvite');
+
+	const redeemView = document.getElementById('redeemView');
+
+	const inviteView = document.getElementById('inviteView');
+
+
+
+	function setActiveTab(activeTab, inactiveTab, activeView, inactiveView) {
+
+		// Estilos para la pestaña activa
+
+		activeTab.classList.remove('text-gray-400', 'border-transparent');
+
+		activeTab.classList.add('text-white', 'border-tertiary-orange');
+
+
+
+		// Estilos para la pestaña inactiva
+
+		inactiveTab.classList.remove('text-white', 'border-tertiary-orange');
+
+		inactiveTab.classList.add('text-gray-400', 'border-transparent');
+
+
+
+		// Mostrar la vista activa y ocultar la inactiva
+
+		activeView.classList.remove('hidden');
+
+		activeView.classList.add('flex');
+
+		inactiveView.classList.remove('flex');
+
+		inactiveView.classList.add('hidden');
+
+	}
+
+
+
+	// Eventos de clic para las pestañas
+
+	tabRedeem.addEventListener('click', () => {
+
+		setActiveTab(tabRedeem, tabInvite, redeemView, inviteView);
+
+	});
+
+
+
+	tabInvite.addEventListener('click', () => {
+
+		setActiveTab(tabInvite, tabRedeem, inviteView, redeemView);
+
+	});
+
+
+
+	// Inicializar la vista por defecto al cargar la página
+
+	setActiveTab(tabRedeem, tabInvite, redeemView, inviteView);
+
+
+
+	// --- Lógica para Copiar Código de Invitación ---
+
+	const btnCopiar = document.getElementById('btnCopiar');
+
+	const codigo = document.getElementById('inv-code');
+
+	const feedback = document.getElementById('copy-feedback');
+
+
+
+	if (btnCopiar && codigo && feedback) {
+
+		btnCopiar.addEventListener('click', () => {
+
+			const texto = codigo.textContent.trim();
+
+			navigator.clipboard.writeText(texto).then(() => {
+
+				feedback.style.display = 'block';
+
+				feedback.style.opacity = '1';
+
+				setTimeout(() => {
+
+					feedback.style.opacity = '0';
+
+					setTimeout(() => {
+
+						feedback.style.display = 'none';
+
+					}, 500); // Esperar a que la transición termine
+
+				}, 2000);
+
+			});
+
+		});
+
+	}
+
+
+
+	// --- Lógica para el Modal de Compartir ---
+
+	const abrirModalBtn = document.getElementById('compartir-button');
+
+	const modal = document.getElementById('modalCompartir');
+
+	const cerrarModalBtn = document.getElementById('cerrarModal');
+
+
+
+	if (abrirModalBtn && modal && cerrarModalBtn) {
+
+		abrirModalBtn.addEventListener('click', () => {
+
+			modal.style.display = 'flex';
+
+		});
+
+
+
+		cerrarModalBtn.addEventListener('click', () => {
+
+			modal.style.display = 'none';
+
+		});
+
+
+
+		modal.addEventListener('click', (e) => {
+
+			if (e.target === modal) {
+
+				modal.style.display = 'none';
+
+			}
+
+		});
+
+	}
+
+    // Lógica para mostrar y ocultar mensajes de sesión (éxito o error)
+    function handleSessionMessage(messageElement, displayDuration) {
+        if (messageElement) {
+            // El elemento ya se renderizó visible por Blade, solo necesitamos manejar la desaparición
+            setTimeout(() => {
+                messageElement.style.opacity = '0';
                 setTimeout(() => {
-                    feedback.style.opacity = '0';
-                    setTimeout(() => {
-                        feedback.style.display = 'none';
-                        feedback.style.opacity = '1';
-                    }, 500);
-                }, 2000);
-            });
-        });
+                    messageElement.style.display = 'none';
+                }, 500); // Esperar a que la transición termine
+            }, displayDuration);
+        }
     }
 
-    // Modal compartir
-    const abrir = document.getElementById('compartir-button');
-    const modal = document.getElementById('modalCompartir');
-    const cerrar = document.getElementById('cerrarModal');
+    const successMessage = document.querySelector('.message-success');
+    const errorMessage = document.querySelector('.message-error');
 
-    if(abrir && modal && cerrar) {
-        abrir.addEventListener('click', () => {
-            modal.style.display = 'flex';
-        });
-        cerrar.addEventListener('click', () => {
-            modal.style.display = 'none';
-        });
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                modal.style.display = 'none';
-            }
-        });
-    }
+    handleSessionMessage(successMessage, 2000); // Muestra el mensaje de éxito por 2 segundos
+    handleSessionMessage(errorMessage, 5000);   // Muestra el mensaje de error por 5 segundos
+
 });
+
+
+
 </script>
+
 @endpush
-
 @endsection
-
-
-
-

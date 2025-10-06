@@ -90,4 +90,20 @@
             font-size: 1rem;
             border-radius: 8px 8px 0 0;
         }
+        .am-booking-calander_header{
+            display: flex;
+            justify-content: center;
+        }
+        .am-booking-filters-wrapper{
+            display: flex;
+            justify-content: center;
+        }
+        .am-booking-calander_header h1{
+            color: #023047;
+        }
+
+        /* overflow para el calendario*/
+        .am-booking-calander_body {
+            overflow-x: auto !important;
+        }
     }

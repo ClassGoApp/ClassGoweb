@@ -19,6 +19,8 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use App\Models\Code;
 use App\Models\Coupon;
+
+use App\Models\AccountSetting;
 use Illuminate\Support\Str;
 use App\Models\UserCoupon;
 
@@ -80,10 +82,18 @@ class IdentityVerification extends Component
         $this->fileExt = fileValidationText($this->allowImgFileExt);
 
         // Si el perfil no está completo, redirige y muestra error
-        if (Auth::user()->profile?->created_at == Auth::user()->profile?->updated_at) {
-            Session::flash('error', __('general.incomplete_profile_error'));
-            return $this->redirect(route(Auth::user()->role . '.profile.personal-details'), navigate: true);
-        }
+        /*  if (Auth::user()->profile?->created_at == Auth::user()->profile?->updated_at) {
+             $redirectRoute = route(Auth::user()->role . '.profile.personal-details');
+             $message = __('general.incomplete_profile_error');
+
+             $this->dispatch('showConfirmAndRedirect', [
+                 'message' => $message,
+                 'url' => $redirectRoute,
+
+             ]);
+         } */
+
+
 
         $this->dispatch('initSelect2', target: '.am-select2');
     }
@@ -165,52 +175,56 @@ class IdentityVerification extends Component
     public function updateInfo()
     {
         $this->data = $this->form->updateInfo($this->hasStates);
-  
-        
-        //$response = isDemoSite();
-       /*  if ($response) {
-            $this->dispatch('showAlertMessage', type: 'error', title: __('general.demosite_res_title'), message: __('general.demosite_res_txt'));
-            return;
-        } */
-        try {
-            $this->data['address']['lat'] = 0.0;
-            $this->data['address']['long'] = 0.0;
-            DB::beginTransaction();
-            $this->data['identityInfo']['name'] = $this->user->profile->first_name . ' ' . $this->user->profile->last_name;
-           
-            $userIdentity = $this->userIdentity->setUserIdentityVerification($this->data['identityInfo']);
-           
-            $this->userIdentity->setUserAddress($userIdentity?->id, $this->data['address']);
-            DB::commit();
-            $this->Coupons();
+
+
+        $perfilcompleto = Auth::user()->profile?->created_at == Auth::user()->profile?->updated_at;
+        $googlecalendar = AccountSetting::where('user_id', Auth::user()->id)->first();
+
+        if ($perfilcompleto==false  && $googlecalendar==null) {
+            session()->flash('error', __('general.incomplete_profile_error'));
+            //return $this->redirect(route(Auth::user()->role . '.profile.personal-details'), navigate: true);
+        } else {
             try {
-                $adminEmail = env('MAIL_FROM_ADDRESS');
-                $user = Auth::user();
-                $contenido = "El usuario {$user->profile->first_name} - {$user->profile->last_name}  ({$user->email}) ha hecho una solicitud de verificación de identidad.";
-                \Mail::raw($contenido, function ($message) use ($adminEmail) {
-                    $message->to($adminEmail)
-                        ->subject('Nueva solicitud de verificación de identidad');
-                });
-            } catch (\Exception $e) {
-                \Log::error('Error al enviar correo de solicitud de verificación: ' . $e->getMessage());
+                $this->data['address']['lat'] = 0.0;
+                $this->data['address']['long'] = 0.0;
+                DB::beginTransaction();
+                $this->data['identityInfo']['name'] = $this->user->profile->first_name . ' ' . $this->user->profile->last_name;
+
+                $userIdentity = $this->userIdentity->setUserIdentityVerification($this->data['identityInfo']);
+
+                $this->userIdentity->setUserAddress($userIdentity?->id, $this->data['address']);
+                DB::commit();
+                $this->Coupons();
+                try {
+                    $adminEmail = config('mail.from.address');
+                    $user = Auth::user();
+                    $contenido = "El usuario {$user->profile->first_name} - {$user->profile->last_name}  ({$user->email}) ha hecho una solicitud de verificación de identidad.";
+                    \Mail::raw($contenido, function ($message) use ($adminEmail) {
+                        $message->to($adminEmail)
+                            ->subject('Nueva solicitud de verificación de identidad');
+                    });
+                } catch (\Exception $e) {
+                    \Log::error('Error al enviar correo de solicitud de verificación: ' . $e->getMessage());
+                }
+
+
+            } catch (\Illuminate\Validation\ValidationException $e) {
+
+                //dd($e->errors());
+                DB::rollBack();
+                //dd('errores');  
             }
-
-
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            
-            //dd($e->errors());
-            DB::rollBack();
-             //dd('errores');  
+            $this->data['identityInfo']['gender'] = $this->profile?->gender;
+            $this->data['identityInfo']['email'] = Auth::user()->email;
+            $this->data['identityInfo']['role'] = Auth::user()->role;
+            dispatch(new SendNotificationJob('identityVerificationRequest', User::admin(), $this->data));
+            if (Auth::user()->hasRole('student') && $this->emailTemplate?->status !== 'both') {
+                return;
+            }
+            dispatch(new SendNotificationJob('identityVerificationRequest', Auth::user(), $this->data));
         }
-        $this->data['identityInfo']['gender'] = $this->profile?->gender;
-        $this->data['identityInfo']['email'] = Auth::user()->email;
-        $this->data['identityInfo']['role'] = Auth::user()->role;
-        dispatch(new SendNotificationJob('identityVerificationRequest', User::admin(), $this->data));
-        if (Auth::user()->hasRole('student') && $this->emailTemplate?->status !== 'both') {
-            return;
-        }
-        dispatch(new SendNotificationJob('identityVerificationRequest', Auth::user(), $this->data));
     }
+
 
 
 
