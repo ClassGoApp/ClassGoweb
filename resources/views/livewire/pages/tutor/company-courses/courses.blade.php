@@ -15,7 +15,7 @@
             }
             @endphp
             <link rel="stylesheet" href="https://cdn.plyr.io/3.6.8/plyr.css" />
-            <div class="am-video-container">
+            <div class="am-video-container" wire:ignore>
                 <div class="plyr__video-embed" id="player">
                     <iframe src="{{ $videoUrl }}" allowfullscreen allowtransparency allow="autoplay"></iframe>
                 </div>
@@ -43,30 +43,44 @@
     <div class="am-alert am-alert-info">No tienes cursos pendientes o en progreso.</div>
     @endif
 
-    <script>
-        // Modal JS puro para abrir/cerrar
-        document.addEventListener('DOMContentLoaded', function() {
-            const modalBtn = document.querySelector('.am-open-exam-modal');
-            const modal = document.getElementById('examModal');
-            const closeBtn = modal.querySelector('.am-close');
-            if(modalBtn && modal && closeBtn) {
-                modalBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    modal.classList.add('am-show');
-                });
-                closeBtn.addEventListener('click', function() {
-                    modal.classList.remove('am-show');
-                });
-            }
-        });
-        // Cerrar modal desde Livewire
-        window.addEventListener('close-exam-modal', function() {
-            const modal = document.getElementById('examModal');
-            if(modal) {
+   <script>
+    // Función para inicializar Plyr
+    function initPlyr() {
+        if (document.getElementById('player')) {
+            const player = new Plyr('#player');
+        }
+    }
+
+    // Ejecutar al cargar la página
+    document.addEventListener('DOMContentLoaded', initPlyr);
+
+    // Ejecutar después de cada actualización de Livewire
+    document.addEventListener('livewire:updated', initPlyr);
+
+    // Modal JS puro para abrir/cerrar
+    document.addEventListener('DOMContentLoaded', function() {
+        const modalBtn = document.querySelector('.am-open-exam-modal');
+        const modal = document.getElementById('examModal');
+        const closeBtn = modal.querySelector('.am-close');
+        if(modalBtn && modal && closeBtn) {
+            modalBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                modal.classList.add('am-show');
+            });
+            closeBtn.addEventListener('click', function() {
                 modal.classList.remove('am-show');
-            }
-        });
-    </script>
+            });
+        }
+    });
+
+    // Cerrar modal desde Livewire
+    window.addEventListener('close-exam-modal', function() {
+        const modal = document.getElementById('examModal');
+        if(modal) {
+            modal.classList.remove('am-show');
+        }
+    });
+</script>
 </div>
 
 @push('styles')

@@ -146,16 +146,16 @@ class Navigation extends Component
                 'icon'  => '<i class="am-icon-invoices-01"></i>',
                 'accessibility' => ['student', 'tutor'],
             ],
-           /*  [
-                'tutorSortOrder' => 6,
-                'studentSortOrder' => 6,
+            /*  [
+                'tutorSortOrder' => 18,
+                'studentSortOrder' => 18,
                 'route' => 'laraguppy.messenger',
                 'onActiveRoute' => ['laraguppy.messenger'],
                 'title' => __('sidebar.messages'),
                 'icon'  => '<i class="am-icon-chat-03"></i>',
                 'accessibility' => ['student', 'tutor'],
                 'disableNavigate' => true,
-            ], */
+            ],   */
             
               [
                 'tutorSortOrder' => 10,

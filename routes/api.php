@@ -26,6 +26,8 @@ use App\Http\Controllers\Api\SubjectController;
 use App\Http\Controllers\Api\UserSubjectController;
 use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\BookingStatusController;
+use App\Http\Controllers\Api\GoogleAuthController;
+use App\Http\Controllers\Api\GoogleCalendarController;
 
 
 /*
@@ -154,6 +156,15 @@ Route::get('verify-email', [AuthController::class, 'verifyEmail']);
 // Ruta para cambiar disponibilidad de tutoría (solo para tutores)
 Route::post('tutor/availability', [AuthController::class, 'updateTutoringAvailability']);
 
+// Ruta para cambiar disponibilidad del tutor (available_for_tutoring)
+Route::put('user/{id}/tutoring-availability', [TutorController::class, 'updateTutoringAvailability']);
+
+// Ruta para obtener solo tutores disponibles (available_for_tutoring = 1)
+Route::get('available-tutors', [TutorController::class, 'getAvailableTutors']);
+
+// Ruta para obtener un tutor disponible para una materia específica
+Route::get('tutor-for-subject/{subject_id}', [TutorController::class, 'getTutorForSubject']);
+
 Route::get('user/{id}/profile-image', [ProfileController::class, 'getProfileImage']);
 Route::post('user/{id}/profile-image', [ProfileController::class, 'updateProfileImage']);
 
@@ -172,6 +183,26 @@ Route::get('tutor-subjects/available', [UserSubjectController::class, 'getAvaila
 
 // Ruta para eliminar materia del tutor (eliminar relación user_subject)
 Route::delete('tutor/{tutor_id}/subjects/{subject_id}', [UserSubjectController::class, 'removeTutorSubject']);
+
+// ===== GOOGLE AUTHENTICATION ROUTES =====
+Route::prefix('auth/google')->group(function () {
+    Route::get('url', [GoogleAuthController::class, 'getGoogleAuthUrl']);
+    Route::post('callback', [GoogleAuthController::class, 'handleGoogleCallback']);
+    Route::post('disconnect', [GoogleAuthController::class, 'disconnectGoogle'])->middleware('auth:sanctum');
+});
+
+// ===== GOOGLE CALENDAR ROUTES =====
+// Ruta pública para el callback de Google (sin middleware auth)
+Route::get('google-calendar/callback', [GoogleCalendarController::class, 'handleCallback']);
+
+Route::prefix('google-calendar')->middleware('auth:sanctum')->group(function () {
+    Route::get('auth-url', [GoogleCalendarController::class, 'getAuthUrl']);
+    Route::post('connect', [GoogleCalendarController::class, 'connectCalendar']);
+    Route::get('status', [GoogleCalendarController::class, 'getConnectionStatus']);
+    Route::post('events', [GoogleCalendarController::class, 'createEvent']);
+    Route::delete('events/{eventId}', [GoogleCalendarController::class, 'deleteEvent']);
+    Route::post('disconnect', [GoogleCalendarController::class, 'disconnect']);
+});
 
 Route::fallback(function () {
     return response()->json([
