@@ -15,9 +15,7 @@
             <h1 class="hero-title-abajo" data-translate="tutoring"></h1>
             <p class="hero-subtext" data-translate="reach_goals">
             </p>
-            <p class="hero-subtext mobile">
-                Conéctate con tutores dedicados para asegurar tu éxito.
-            </p>
+            
 
             <!-- 1.2 Buscador -->
             {{-- <div class="search-box">
@@ -41,15 +39,15 @@
                 @endguest
 
                 @auth
-                <a href=" {{ route('buscar.tutor')}}"><button class="button-explorar-tutores"><i class="fa-solid fa-compass"></i><span data-translate="search_tutors"></span></button></a>
-                <a href="https://play.google.com/store/apps/details?id=com.neurasoft.classgo" target="_blank"><button class="button-explorar-tutores"><i class="fa-solid fa-mobile"></i><span data-translate="get_app"></span></button></a>
+                <a href=" {{ route('buscar.tutor')}}"><button class="button-explorar-tutores"><i class="fa-solid fa-compass"></i></button></a>
+                <a href="https://play.google.com/store/apps/details?id=com.neurasoft.classgo" target="_blank"><button class="button-explorar-tutores"><i class="fa-solid fa-mobile"></i></></button></a>
                 @endauth
             </div>
 
         </div>
 
         <!-- 1.4 Hero Mascota -->
-       
+
         <img src="{{ asset(path: 'storage/optionbuilder/uploads/740102-17-2025_0859pmTugo-saludando.gif') }}" alt="Mascota ClassGo">
 
 
@@ -64,35 +62,37 @@
     <div class="counters">
         <div class="counter-box">
             <div class="counter-number" data-target="{{ $totalUsers }}">+0</div>
-            <h1 class="{{ $color ?? 'text-dark' }}">Usuarios registrados</h1>
+            <h1 class="{{ $color ?? 'text-dark' }}"><span data-translate="us_check"></span></h1>
         </div>
         <div class="box-sky"></div>
         <div class="counter-box">
             <div class="counter-number" data-target="{{ $totalTutores }}">+0</div>
-            <h1 class="{{ $color ?? 'text-dark' }}">Tutores disponibles</h1>
+            <h1 class="{{ $color ?? 'text-dark' }}"><span data-translate="tutor_ok"></span></h1>
         </div>
         <div class="box-sky"></div>
         <div class="counter-box">
             <div class="counter-number" data-target="{{ $totalEstudiantes }}">0</div>
-            <h1 class="{{ $color ?? 'text-dark' }}">Estudiantes registrados</h1>
+            <h1 class="{{ $color ?? 'text-dark' }}"><span data-translate="est_check"></span></h1>
         </div>
         <div class="box-sky"></div>
         <div class="counter-box">
             <div class="counter-numbe"><i class="fa fa-star"></i>4.5</div>
-            <h1 class="{{ $color ?? 'text-dark' }}">En Play Store</h1>
+            <h1 class="{{ $color ?? 'text-dark' }}"><span data-translate="play_s"></span></h1>
         </div>
-    </div> 
+    </div>
 
 </section>
 
 <!--TUTORES DESTACADOS-->
 
 <section class="tutors-container">
-    <h1 class="over-text"><div class="linea"></div>Tutores Destacados<div class="linea"></div></h1>
-    <h1>Encuentra tu Tutor Ideal</h1>
-    <p>Descubre una variedad de temáticas académicas y prácticas para potenciar tu experiencia de aprendizaje</p> 
+    <h1 class="over-text">
+        <div class="linea"></div><span data-translate="featured_tutors"></span><div class="linea"></div>
+    </h1>
+    <h1 data-translate="selected_tutors"></h1>
+    <p data-translate="academic_variety"></p>
 
-    
+
 
     <div class="carousel-container">
         <button id="prevBtn" class="carousel-btn prev-btn" aria-label="Anterior">&lt;</button>
@@ -100,98 +100,98 @@
             <div class="carousel-track" id="carouselTrack">
                 {{-- @foreach($featuredTutors as $tutor)
                     <div class="tutor-card" onclick="window.location.href='{{ route('tutor', ['slug' => $tutor->profile['slug']]) }}' ">
-                        <button class="favorite-btn" onclick="event.stopPropagation(); this.classList.toggle('active')">⭐</button>
-                        <div class="tutor-card-img">
-                            <video controls preload="auto"
-                                poster="https://via.placeholder.com/300x160"
-                                src="{{ $tutor->profile->intro_video ? asset( 'storage/' . $tutor->profile->intro_video) : asset('images/tutors/default.png') }}"
-                                onclick="event.stopPropagation()"></video>
-                        </div>
-                        <div class="tutor-card-content">
-                            <div class="tutor-card-header">
-                                <img src="{{ $tutor->profile->image ? asset('storage/' . $tutor->profile->image) : asset('images/tutors/default.png') }}" alt="Tutor">                                <h3>{{ $tutor->profile->first_name }} {{ $tutor->profile->last_name }}</h3> <!--NOMBRE DEL TUTOR-->
-                            </div>
-                            <p class="tutor-card-sub">Puedo enseñar: {{ $tutor->subjects->pluck('name')->implode(',')}}</p>
-                            <!--
+                <button class="favorite-btn" onclick="event.stopPropagation(); this.classList.toggle('active')">⭐</button>
+                <div class="tutor-card-img">
+                    <video controls preload="auto"
+                        poster="https://via.placeholder.com/300x160"
+                        src="{{ $tutor->profile->intro_video ? asset( 'storage/' . $tutor->profile->intro_video) : asset('images/tutors/default.png') }}"
+                        onclick="event.stopPropagation()"></video>
+                </div>
+                <div class="tutor-card-content">
+                    <div class="tutor-card-header">
+                        <img src="{{ $tutor->profile->image ? asset('storage/' . $tutor->profile->image) : asset('images/tutors/default.png') }}" alt="Tutor">
+                        <h3>{{ $tutor->profile->first_name }} {{ $tutor->profile->last_name }}</h3> <!--NOMBRE DEL TUTOR-->
+                    </div>
+                    <p class="tutor-card-sub">Puedo enseñar: {{ $tutor->subjects->pluck('name')->implode(',')}}</p>
+                    <!--
                             <div class="tutor-card-rating-row">
                                 <div><span class="star">⭐</span>{{ $tutor->avg_rating }}<span>(90 reseñas)</span></div> 
                                 <div><i class="fa-solid fa-book"></i><strong>{{ $tutor->completed_courses_count }}</strong> tutorías</div> 
                             </div>
                             -->
-                        </div>
-                    </div>
-                @endforeach --}}
-
-                @foreach($featuredTutors as $tutor)
-                <div class="tutor-card" onclick="window.location.href='{{ route('tutor', ['slug' => $tutor->profile['slug']]) }}'">
-                    <div class="tutor-card-content">
-                        <div class="tutor-avatar-container">
-                            <img src="{{ $tutor->profile->image ? asset('storage/' . $tutor->profile->image) : asset('images/tutors/default.png') }}" alt="Tutor" class="tutor-avatar">                               
-                            <span class="tutor-status-badge">
-                                <span class="tutor-status-star">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="star-icon" viewBox="0 0 20 20" fill="currentColor">
-                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                    </svg>
-                                </span>
-                            </span>
-                        </div>
-                        <h3 class="tutor-name">
-                            {{ explode(' ', $tutor->profile->first_name)[0] }}
-                            {{ explode(' ', $tutor->profile->last_name)[0] }}
-                        </h3> <!--NOMBRE DEL TUTOR-->
-
-                        @php
-                            // Accede a la colección de materias del tutor.
-                             $materia = 'Materias Generales'; // Valor por defecto si no hay datos
-                            $subjects = $tutor->subjects;
-
-                            // Si la colección de materias no está vacía...
-                            if ($subjects->isNotEmpty()) {
-                                // ...accede a la primera materia de la colección.
-                                $firstSubject = $subjects->first();
-                                
-                                // Si la primera materia tiene un grupo asociado...
-                                if ($firstSubject->group) {
-                                    // ...muestra el nombre del grupo.
-
-                                    $materia = $firstSubject->group->name;
-                                }
-                            }
-                        @endphp
-
-                        {{-- <p class="tutor-job">Tutor de Ciencias Sociales </p> --}}
-                        <p class="tutor-job">Tutor de {{$materia}} </p>
-                        <div class="tutor-subjects">
-                            @foreach ($tutor->subjects as $subject)
-                                <span class="subject-tag">{{ $subject->name }}</span>
-                            @endforeach
-                        </div>
-                        <button class="profile-btn">
-                            Ver Perfil
-                        </button>
-                    </div>
-                </div>
-
-
-                @endforeach
-                <!--Card buscar más tutores-->
-                <div class="card-buscarmas">
-                    <div class="icon-wrapper">
-                        <svg class="w-10 h-10 text-blue-800" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-                        </svg>
-                    </div>
-                    <h2>Buscar más tutores</h2>
-                    <p>
-                        Encuentra el tutor perfecto para tus necesidades y comienza a aprender hoy mismo.
-                    </p>
-                    <a href="{{ route('buscar.tutor') }}" class="btn-primary">
-                        Explorar ahora
-                    </a>
                 </div>
             </div>
+            @endforeach --}}
+
+            @foreach($featuredTutors as $tutor)
+            <div class="tutor-card" onclick="window.location.href='{{ route('tutor', ['slug' => $tutor->profile['slug']]) }}'">
+                <div class="tutor-card-content">
+                    <div class="tutor-avatar-container">
+                        <img src="{{ $tutor->profile->image ? asset('storage/' . $tutor->profile->image) : asset('images/tutors/default.png') }}" alt="Tutor" class="tutor-avatar">
+                        <span class="tutor-status-badge">
+                            <span class="tutor-status-star">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="star-icon" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                </svg>
+                            </span>
+                        </span>
+                    </div>
+                    <h3 class="tutor-name">
+                        {{ explode(' ', $tutor->profile->first_name)[0] }}
+                        {{ explode(' ', $tutor->profile->last_name)[0] }}
+                    </h3> <!--NOMBRE DEL TUTOR-->
+
+                    @php
+                    // Accede a la colección de materias del tutor.
+                    $materia = 'Materias Generales'; // Valor por defecto si no hay datos
+                    $subjects = $tutor->subjects;
+
+                    // Si la colección de materias no está vacía...
+                    if ($subjects->isNotEmpty()) {
+                    // ...accede a la primera materia de la colección.
+                    $firstSubject = $subjects->first();
+
+                    // Si la primera materia tiene un grupo asociado...
+                    if ($firstSubject->group) {
+                    // ...muestra el nombre del grupo.
+
+                    $materia = $firstSubject->group->name;
+                    }
+                    }
+                    @endphp
+
+                    {{-- <p class="tutor-job">Tutor de Ciencias Sociales </p> --}}
+                    <p class="tutor-job">Tutor de {{$materia}} </p>
+                    <div class="tutor-subjects">
+                        @foreach ($tutor->subjects as $subject)
+                        <span class="subject-tag">{{ $subject->name }}</span>
+                        @endforeach
+                    </div>
+                    <button class="profile-btn">
+                        Ver Perfil
+                    </button>
+                </div>
+            </div>
+
+
+            @endforeach
+            <!--Card buscar más tutores-->
+            <div class="card-buscarmas">
+                <div class="icon-wrapper">
+                    <svg class="w-10 h-10 text-blue-800" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                    </svg>
+                </div>
+                <h2 data-translate="seeks"></h2>
+                <p data-translate="finds">
+                </p>
+                <a href="{{ route('buscar.tutor') }}" class="btn-primary">
+                    <span data-translate="explore"></span>
+                </a>
+            </div>
         </div>
-        <button id="nextBtn" class="carousel-btn next-btn" aria-label="Siguiente">&gt;</button>
+    </div>
+    <button id="nextBtn" class="carousel-btn next-btn" aria-label="Siguiente">&gt;</button>
     </div>
 
 </section>
@@ -286,25 +286,17 @@
             <!-- Columna Derecha: Imagen -->
             <div class="image-app">
                 <img
-                    src="{{ asset('images/home/iphone.webp')}}"
+                    src="{{ asset('images/home/celular-ClassGo.png')}}"
                     alt="ClassGo"
                     onerror="this.onerror=null;this.src='https://placehold.co/400x800/023047/FFFFFF?text=App';">
             </div>
 
-        <!-- Botón -->
-        <div>
-          <a href="https://play.google.com/store/apps/details?id=com.neurasoft.classgo" target="_blank" class="btn-app">Descargar Ahora</a>
-        </div>
-      </div>
+            <!-- Botón -->
 
-      <!-- Columna Derecha: Imagen -->
-      <div class="image-app">
-        <img 
-          src="{{ asset('images/home/celular-ClassGo.png')}}" 
-          alt="ClassGo"
-          onerror="this.onerror=null;this.src='https://placehold.co/400x800/023047/FFFFFF?text=App';"
-        >
-      </div>
+        </div>
+
+        <!-- Columna Derecha: Imagen -->
+
 
     </div>
 </section>
@@ -334,7 +326,7 @@
     <!-- ALIANZAS-->
 
     @include('components.alianzas', ['alianzas' => $alianzas])
-    
+
 </section>
 
 
@@ -364,7 +356,7 @@
         const goToSlide = (index) => {
             const slidesPerView = getSlidesPerView();
             const maxIndex = slides.length - slidesPerView;
-            
+
             if (index < 0) {
                 currentIndex = maxIndex;
             } else if (index > maxIndex) {
@@ -438,7 +430,7 @@
         const track = document.getElementById('carouselTrack');
         const prevBtn = document.getElementById('prevBtn');
         const nextBtn = document.getElementById('nextBtn');
-        
+
         // Calcula la cantidad de tarjetas visibles en desktop
         const getCardsPerView = () => window.innerWidth > 768 ? 3 : 1;
         let cardsPerView = getCardsPerView();
@@ -509,15 +501,17 @@
 
         const observer = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
-                if(entry.isIntersecting) {
+                if (entry.isIntersecting) {
                     animateCounter(entry.target);
                     observer.unobserve(entry.target);
                 }
             });
-        }, { threshold: 0.6 });
+        }, {
+            threshold: 0.6
+        });
 
         counters.forEach(counter => observer.observe(counter));
     });
 </script>
-    <script src="{{ asset('js/translations.js') }}"></script>
+<script src="{{ asset('js/translations.js') }}"></script>
 @endsection

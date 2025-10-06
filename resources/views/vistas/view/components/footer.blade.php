@@ -14,10 +14,10 @@
                     </a>
                 </div>
                 @auth
-                <a href=" {{ route('buscar.tutor')}}"><button class="btn-registrate"><span data-translate="buscar_tutor">Buscar Tutor</span></button></a>
+                <a href=" {{ route('buscar.tutor')}}"><button class="btn-registrate"><span data-translate="buscar_tutor"></span></button></a>
                 @endauth
                 @guest
-                <a href=" {{ route('register')}}"><button class="btn-registrate"><span data-translate="registrate_gratis">Registrate Gratis</span></button></a>
+                <a href=" {{ route('register')}}"><button class="btn-registrate"><span data-translate="registrate_gratis"></span></button></a>
                 @endguest
 
             </div>
@@ -25,40 +25,40 @@
                 <div class="box">
                     <h1>Tutores</h1>
                     <a href=" {{ route('buscar.tutor')}}">
-                        <p data-translate="tutores_en_linea">Tutores en linea</p>
+                        <p data-translate="tutores_en_linea"></p>
                     </a>
 
                 </div>
                 <div class="box">
-                    <h1 data-translate="inicia_hoy">Inicia Hoy</h1>
+                    <h1 data-translate="inicia_hoy"></h1>
 
                     <a href=" {{ route('register')}}">
-                        <p data-translate="registrate">Registrate</p>
+                        <p data-translate="registrate"></p>
                     </a>
                     <a href="{{ route('buscar.tutor')}}">
-                        <p data-translate="encontrar_tutor">Encontrar Tutor</p>
+                        <p data-translate="encontrar_tutor"></p>
                     </a>
                 </div>
                 <div class="box">
-                    <h1>Leer Más</h1>
-                    <a href=" {{ route('terminos') }}"> <p>Términos y Condiciones</p> </a>
+                    <h1 data-translate="lee_ma"></h1>
+                    <a href=" {{ route('terminos') }}"> <p data-translate="terminos"></p> </a>
                     
                 </div>
                 <div class="box">
-                    <h1>Opten la App</h1>
-                    <p>¡Lleva tu educación a todas partes!</p>
+                    <h1 data-translate="get_app"></h1>
+                    <p data-translate="edu_world"></p>
                     <a href="https://play.google.com/store/apps/details?id=com.neurasoft.classgo" target="_blank"><img src="{{ asset('images/googleplay.png')}}" alt="" style=" width: 150px;"></a>
                 </div>
                 <div class="box">
-                    <a href="{{ route('nosotros')}}"><h1>Nosotros</h1></a>
-                    <a href=" {{ route('nosotros')}}#mision"><p>Mision</p></a>
-                    <a href=" {{ route('nosotros')}}#vision"><p>Vision</p></a>
-                    <a href="{{ route('nosotros')}}#team"><p>Desarrolladores</p></a>
+                    <a href="{{ route('nosotros')}}"><h1 data-translate="nosotros">Nosotros</h1></a>
+                    <a href=" {{ route('nosotros')}}#mision"><p data-translate="mision">Mision</p></a>
+                    <a href=" {{ route('nosotros')}}#vision"><p data-translate="vision">Vision</p></a>
+                    <a href="{{ route('nosotros')}}#team"><p data-translate="desarrolladores"></p></a>
                 </div>
                 <div class="box">
-                    <h1 data-translate="preguntas">Preguntas</h1>
+                    <h1 data-translate="preguntas"></h1>
                     <a href="preguntas">
-                        <p data-translate="preguntas_frecuentes">Preguntas frecuentes</p>
+                        <p data-translate="preguntas_frecuentes"></p>
                     </a>
                 </div>
             </div>
@@ -79,7 +79,7 @@
             </a>
         </div>
         <hr>
-        <p class="derechos-reservados">© 2025 classgobol. <span data-translate="todos_derechos">Todos los derechos reservados.</span></p>
+        <p class="derechos-reservados">© 2025 classgobol. <span data-translate="todos_derechos"></span></p>
 
     </div>
 </footer>

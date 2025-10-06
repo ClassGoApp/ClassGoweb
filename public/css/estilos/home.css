@@ -1367,7 +1367,7 @@ cursor: not-allowed;
 /* =================== home-mobile.css =================== */
 /* home-mobile.css: Estilos responsivos para móvil (max-width: 767px) */
 
-@media (max-width: 767px) {
+
 
 @media (max-width: 768px) {
 
@@ -1991,4 +1991,4 @@ cursor: not-allowed;
     .client-carousel-nav-btn {
         display: none;
     }
-  }}
+  }
