@@ -588,7 +588,7 @@
 /* =================== home-mobile.css =================== */
 /* home-mobile.css: Estilos responsivos para móvil (max-width: 768px) */
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
 
 
   .nosotros-card .card {

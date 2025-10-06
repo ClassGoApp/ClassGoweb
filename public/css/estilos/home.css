@@ -6,7 +6,7 @@
 
 1 - Hero Principal................................... 48-255
     1.1 - Hero Titular................................ 70-95
-    1.2 - Hero Buscador.............................. 97-198
+    1.2 - Hero Buscador.............................. 97-198FF
         1.2.1 - Contenedor principal................. 99-118
         1.2.2 - Icono de Lupa....................... 120-130
         1.2.3 - Campo de Búsqueda................... 132-151
@@ -931,7 +931,7 @@ i.fa-solid.fa-book.icon::before {
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .steps {
     gap: 0.7rem;
     padding: 1rem 0;
@@ -1193,7 +1193,7 @@ i.fa-solid.fa-book.icon::before {
 }
 
 /**---============ 5.5.4 - Aplicación Media Queries ============---**/
-@media (min-width: 768px) {
+@media (min-width: 767px) {
   .grid-app {
     grid-template-columns: 1fr 1fr;
   }
@@ -1204,7 +1204,7 @@ i.fa-solid.fa-book.icon::before {
   text-align: center;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 767px) {
   .text-app {
     text-align: left;
   }
@@ -1586,9 +1586,9 @@ i.fa-solid.fa-book.icon::before {
 }
 
 /* =================== home-mobile.css =================== */
-/* home-mobile.css: Estilos responsivos para móvil (max-width: 768px) */
+/* home-mobile.css: Estilos responsivos para móvil (max-width: 767px) */
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
 
   /* Navbar transparente */
   .navbar {

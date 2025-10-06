@@ -384,7 +384,7 @@
 /* Estilos para la Página Cómo Trabajamos en mobile */
 /* ------------------------------------------------------------ */
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .trabajamos-header-content {
     padding: 6rem 2rem 0rem 2rem;
   }

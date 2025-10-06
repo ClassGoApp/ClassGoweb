@@ -9,59 +9,84 @@
                 </div>
                 <div class="info-text">
                     <i class="fa-brands fa-whatsapp icon"></i>
-                    <a href="https://wa.link/yiegi5"><p>77573997</p>    </a>
+                    <a href="https://wa.link/yiegi5">
+                        <p>77573997</p>
+                    </a>
                 </div>
                 @auth
-                    <a href=" {{ route('buscar.tutor')}}"><button class="btn-registrate">Buscar Tutor</button></a>
+                <a href=" {{ route('buscar.tutor')}}"><button class="btn-registrate"><span data-translate="buscar_tutor">Buscar Tutor</span></button></a>
                 @endauth
                 @guest
-                    <a href=" {{ route('register')}}"><button class="btn-registrate">Registrate Gratis</button></a>
+                <a href=" {{ route('register')}}"><button class="btn-registrate"><span data-translate="registrate_gratis">Registrate Gratis</span></button></a>
                 @endguest
 
             </div>
             <div class="footer-about"> <!--List about-->
                 <div class="box">
                     <h1>Tutores</h1>
-                    <a href=" {{ route('buscar.tutor')}}"><p>Tutores en linea</p></a>
+                    <a href=" {{ route('buscar.tutor')}}">
+                        <p data-translate="tutores_en_linea">Tutores en linea</p>
+                    </a>
 
                 </div>
                 <div class="box">
-                    <h1>Inicia Hoy</h1>
-   
-                    <a href=" {{ route('register')}}"><p>Registrate</p></a>
-                    <a href="{{ route('buscar.tutor')}}"><p>Encontrar Tutor</p></a>
+                    <h1 data-translate="inicia_hoy">Inicia Hoy</h1>
+
+                    <a href=" {{ route('register')}}">
+                        <p data-translate="registrate">Registrate</p>
+                    </a>
+                    <a href="{{ route('buscar.tutor')}}">
+                        <p data-translate="encontrar_tutor">Encontrar Tutor</p>
+                    </a>
                 </div>
                 <div class="box">
-                    <h1>Blog</h1>
-                    <p>Consejos de <br>expertos</p>
+                    <h1 data-translate="blog">Blog</h1>
+                    <p data-translate="consejos_expertos_br">Consejos de <br>expertos</p>
                 </div>
                 <div class="box">
-                    <h1>Opten la App</h1>
-                    <p>¡Lleva tu educación a todas partes!</p>
+                    <h1 data-translate="obten_app">Opten la App</h1>
+                    <p data-translate="lleva_educacion_todas">¡Lleva tu educación a todas partes!</p>
                     <a href="https://play.google.com/store/apps/details?id=com.neurasoft.classgo" target="_blank"><img src="{{ asset('images/googleplay.png')}}" alt="" style=" width: 150px; padding-top: 1rem;"></a>
                 </div>
                 <div class="box">
-                    <a href="{{ route('nosotros')}}"><h1>Nosotros</h1></a>
-                    <a href=" {{ route('nosotros')}}"><p>Mision</p></a>
-                    <a href=" {{ route('nosotros')}}"><p>Vision</p></a>
-                    <a href="{{ route('nosotros')}}"><p>Logros clave</p></a>
+                    <a href="{{ route('nosotros')}}">
+                        <h1 data-translate="nosotros">Nosotros</h1>
+                    </a>
+                    <a href=" {{ route('nosotros')}}">
+                        <p data-translate="mision">Mision</p>
+                    </a>
+                    <a href=" {{ route('nosotros')}}">
+                        <p data-translate="vision">Vision</p>
+                    </a>
+                    <a href="{{ route('nosotros')}}">
+                        <p data-translate="logros_clave">Logros clave</p>
+                    </a>
                 </div>
                 <div class="box">
-                    <h1>Preguntas</h1>
-                    <a href="preguntas"><p>Preguntas frecuentes</p> </a>
+                    <h1 data-translate="preguntas">Preguntas</h1>
+                    <a href="preguntas">
+                        <p data-translate="preguntas_frecuentes">Preguntas frecuentes</p>
+                    </a>
                 </div>
             </div>
 
         </div>
         <div class="container-redes">
-            <a href="https://www.tiktok.com/@classgoapp" target="_blank"><div class="circle-icon"><i class="fa-brands fa-tiktok fa-2x"></i></div></a>
-            <a href="https://www.facebook.com/profile.php?id=61578383078347" target="_blank"><div class="circle-icon"><i class="fa-brands fa-facebook-f"></i></div></a>
-            <a href="https://www.instagram.com/classgo_app/" target="_blank"><div class="circle-icon"><i class="fa-brands fa-instagram"></i></div></a>
-            <a href="https://wa.link/yiegi5" target="_blank"><div class="circle-icon"><i class="fa-brands fa-whatsapp"></i></div></a>
+            <a href="https://www.tiktok.com/@classgoapp" target="_blank">
+                <div class="circle-icon"><i class="fa-brands fa-tiktok fa-2x"></i></div>
+            </a>
+            <a href="https://www.facebook.com/profile.php?id=61578383078347" target="_blank">
+                <div class="circle-icon"><i class="fa-brands fa-facebook-f"></i></div>
+            </a>
+            <a href="https://www.instagram.com/classgo_app/" target="_blank">
+                <div class="circle-icon"><i class="fa-brands fa-instagram"></i></div>
+            </a>
+            <a href="https://wa.link/yiegi5" target="_blank">
+                <div class="circle-icon"><i class="fa-brands fa-whatsapp"></i></div>
+            </a>
         </div>
         <hr>
-        <p class="derechos-reservados">© 2025 classgobol. Todos los derechos reservados.</p>
-        
+        <p class="derechos-reservados">© 2025 classgobol. <span data-translate="todos_derechos">Todos los derechos reservados.</span></p>
+
     </div>
 </footer>
-

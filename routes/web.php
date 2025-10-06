@@ -45,6 +45,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TutorPerfilController;
 
 Route::view('/e', 'vistas.view.pages.e')->name('e');
+Route::view('/traduccion', 'vistas.view.pages.traduccion')->name('traduccion');
 
 Route::get('/verify', function (\Illuminate\Http\Request $request) {
     $id = $request->query('id');
