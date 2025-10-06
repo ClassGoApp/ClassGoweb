@@ -68,20 +68,81 @@ class NotificationService
 
     public function getRegistrationEmail($content, $data)
     {
-        $emailTemplate = array();
-        foreach ($content as $key => &$value) {
-            $content[$key] = Str::replace('{userName}', $data['userName'], $value);
-            $content[$key] = Str::replace('{userEmail}', $data['userEmail'], $value);
-            $content[$key] = Str::replace('{userRole}', $data['userRole'] ?? 'unknown', $value);
+        // Determinar si es para admin o para el usuario
+        $isAdmin = !isset($data['key']); // Si no hay 'key', es para admin
+        
+        if ($isAdmin) {
+            // Template manual para admin con rol incluido
+            $emailTemplate = [
+                'subject' => 'Notificación de registro de nuevo usuario',
+                'greeting' => 'Estimado administrador,',
+                'content' => $this->generateAdminRegistrationContent($data),
+                'show_button' => false
+            ];
+        } else {
+            // Template normal para el usuario con verificación
+            $emailTemplate = array();
+            foreach ($content as $key => &$value) {
+                $content[$key] = Str::replace('{userName}', $data['userName'], $value);
+                $content[$key] = Str::replace('{userEmail}', $data['userEmail'], $value);
+                $content[$key] = Str::replace('{userRole}', $data['userRole'] ?? 'unknown', $value);
+            }
+            $emailTemplate = $content;
+            if (Str::contains($emailTemplate['content'], '{verificationLink}')) {
+                // Enlace web universal para verificación (sirve para web y app)
+                $verifyUrl = 'https://classgoapp.com/verify?id=' . $data['key'] . '&hash=' . sha1($data['userEmail']);
+                $btnHtml = view('components.email.button', ['btnText' => 'Verificar cuenta', 'btnUrl' => $verifyUrl])->render();
+                $emailTemplate['content'] = Str::replace('{verificationLink}', $btnHtml, $emailTemplate['content']);
+            }
         }
-        $emailTemplate = $content;
-        if (Str::contains($emailTemplate['content'], '{verificationLink}')) {
-            // Enlace web universal para verificación (sirve para web y app)
-            $verifyUrl = 'https://classgoapp.com/verify?id=' . $data['key'] . '&hash=' . sha1($data['userEmail']);
-            $btnHtml = view('components.email.button', ['btnText' => 'Verificar cuenta', 'btnUrl' => $verifyUrl])->render();
-            $emailTemplate['content'] = Str::replace('{verificationLink}', $btnHtml, $emailTemplate['content']);
-        }
+        
         return $emailTemplate;
+    }
+
+    /**
+     * Genera el contenido del email para admin con información detallada
+     */
+    private function generateAdminRegistrationContent($data)
+    {
+        $userName = $data['userName'] ?? 'Usuario';
+        $userEmail = $data['userEmail'] ?? 'No especificado';
+        $userRole = $data['userRole'] ?? 'unknown';
+        
+        // Traducir el rol a español
+        $roleText = match($userRole) {
+            'student' => 'Estudiante',
+            'tutor' => 'Tutor',
+            'admin' => 'Administrador',
+            default => ucfirst($userRole)
+        };
+        
+        return "
+        <div style='font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;'>
+            <div style='background-color: #f8f9fa; border: 1px solid #dee2e6; padding: 20px; border-radius: 8px; margin: 20px 0;'>
+                <h3 style='color: #495057; margin: 0 0 15px 0;'>👤 Información del Nuevo Usuario:</h3>
+                <ul style='color: #495057; font-size: 14px; line-height: 1.6; list-style-type: none; padding: 0;'>
+                    <li style='margin-bottom: 8px;'><strong>Nombre:</strong> {$userName}</li>
+                    <li style='margin-bottom: 8px;'><strong>Email:</strong> {$userEmail}</li>
+                    <li style='margin-bottom: 8px;'><strong>Rol:</strong> <span style='background-color: #007bff; color: white; padding: 2px 8px; border-radius: 4px; font-size: 12px;'>{$roleText}</span></li>
+                    <li style='margin-bottom: 8px;'><strong>Fecha de Registro:</strong> " . now()->format('d/m/Y H:i:s') . "</li>
+                </ul>
+            </div>
+            
+            <div style='background-color: #e7f3ff; border: 1px solid #b3d9ff; padding: 15px; border-radius: 8px; margin: 20px 0;'>
+                <h4 style='color: #0056b3; margin: 0 0 10px 0;'>📋 Acciones Recomendadas:</h4>
+                <ul style='color: #0056b3; font-size: 14px; line-height: 1.6;'>
+                    <li>Verificar los datos del usuario en el panel de administración</li>
+                    <li>Revisar si requiere verificación de identidad</li>
+                    <li>Confirmar que tenga una excelente experiencia en la plataforma</li>
+                </ul>
+            </div>
+            
+            <div style='background-color: #f8f9fa; border: 1px solid #dee2e6; padding: 15px; border-radius: 8px; margin: 20px 0;'>
+                <p style='color: #6c757d; font-size: 12px; margin: 0; text-align: center;'>
+                    <strong>ClassGo</strong> - Sistema de Notificaciones Automáticas
+                </p>
+            </div>
+        </div>";
     }
 
     public function getWelcomeEmail($content, $data)
