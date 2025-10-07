@@ -22,8 +22,6 @@
     
     <!-- Componente de búsqueda y listado de tutores -->
     <livewire:buscar-tutor /> 
-
-    <livewire:buscar-tutor />
 </div>
 
 <!-- Scripts -->

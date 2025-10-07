@@ -286,7 +286,7 @@
 		dropdown.style.display = dropdown.style.display === "flex" ? "none" : "flex";
 	}
 
-	function selectLanguage(lang) {
+	function selectLanguage(lang, isInitialLoad = false) {
 		const selectedOption = document.querySelector(".selected-option");
 		const flagImg = selectedOption.querySelector("img");
 		const langText = selectedOption.querySelector("span");
@@ -314,7 +314,9 @@
 		// Guardar selección en localStorage (para recordar en otras páginas)
 		localStorage.setItem("selectedLanguage", lang);
 
-		toggleDropdown();
+		if (!isInitialization) {
+        	toggleDropdown(); 
+    	}
 	}
 
 	// Cierra el dropdown si se hace clic fuera
@@ -328,7 +330,9 @@
 	// Restaurar selección al cargar la página
 	document.addEventListener("DOMContentLoaded", function() {
 		const savedLang = localStorage.getItem("selectedLanguage") || "es";
-		selectLanguage(savedLang); // Aplica el idioma guardado
+		selectLanguage(savedLang, true); // Aplica el idioma guardado
+		document.getElementById("languageDropdown").style.display = "none";
+
 	});
 
 	// Funcionalidad del menú hamburguesa

@@ -149,6 +149,7 @@
 
 /* Dropdown de opciones */
 .options-dropdown {
+  display: none;
   position: absolute;
   top: 110%;
   left: 0;
@@ -157,7 +158,6 @@
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  display: none;
   flex-direction: column;
   animation: slideDown 0.3s ease forwards;
   z-index: 1000;
