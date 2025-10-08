@@ -1,0 +1,649 @@
+@import 'variables.css';
+
+/* 1. CONFIGURACIÓN GLOBAL */
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #F9FAFB;
+    /* gray-50 */
+    color: #1F2937;
+    /* gray-800 */
+    line-height: 1.5;
+    margin: 0;
+}
+
+.container {
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    margin-top: 7rem;
+}
+
+
+/* 2. ESTILOS DE LA CABECERA (Header) */
+
+.header-main {
+    background: var(--bg-gradient);
+    color: white;
+    text-align: center;
+    padding-top: 3rem;
+    padding-bottom: 0rem;
+}
+
+.header-main__title {
+    font-size: 2.25rem;
+    font-weight: 700;
+    line-height: 1.25;
+}
+
+.header-main__subtitle {
+    font-size: 1.125rem;
+    color: #DBEAFE;
+    /* blue-100 */
+    margin-top: 1rem;
+    max-width: 48rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+/* 3. ESTILOS DE BÚSQUEDA (Ajustado a más grande y responsive) */
+
+.search-module {
+    margin-top: 1.5rem;
+    max-width: 48rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.search-field__wrapper {
+    position: relative;
+}
+
+.search-field__icon {
+    position: absolute;
+    right: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9CA3AF;
+    /* gray-400 */
+    z-index: 10;
+}
+
+.search-field__input {
+    padding-left: 1.5rem;
+    /* Se mantiene un padding izquierdo estándar */
+    padding-right: 4rem;
+    /* Nuevo padding para el icono a la derecha */
+    width: 100%;
+    height: 4rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    border-radius: 9999px;
+    color: #1F2937;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    border: none;
+    outline: none;
+    transition: box-shadow 0.3s ease;
+    font-size: 1rem;
+}
+
+.search-field__input:focus {
+    box-shadow: var(--secundary-color) 0 0 0 5px, 0 10px 15px -3px rgba(255, 255, 255, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+
+/* 4. ESTILOS DE FILTROS (Botones más grandes y responsive) */
+
+.filter-controls__list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+}
+
+.filter-btn {
+    padding: 0.75rem 1.5rem;
+    /* Aumentado: botones más grandes */
+    background-color: white;
+    border-radius: 9999px;
+    font-weight: 600;
+    color: #374151;
+    /* gray-700 */
+    transition: all 0.3s ease;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    font-size: 1rem;
+    /* Aumentado el tamaño de fuente */
+    white-space: nowrap;
+    border: none;
+    cursor: pointer;
+}
+
+.filter-btn:hover {
+    background-color: var(--secundary-color);
+    /* blue-500 */
+    color: white;
+}
+
+.filter-btn--active {
+    background-color: var(--primary-color);
+    /* blue-500 */
+    color: white;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+}
+
+
+/* 5. ESTILOS DE LA CUADRÍCULA Y TARJETAS */
+
+.main-content {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+.tutor-grid-buscar {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 1.5rem;
+    padding: 0 3rem 3rem 3em;
+}
+
+
+/*=======================================================*/
+
+
+/* Colores usados (Hexadecimales) */
+
+
+/* #2563EB = blue-600 */
+
+
+/* #3B82F6 = blue-500 */
+
+
+/* #93C5FD = blue-300 (Transparente en panel detallado) */
+
+
+/* #DBEAFE = blue-100 */
+
+
+/* #1E40AF = blue-800 */
+
+
+/* #374151 = gray-700 */
+
+
+/* #4B5563 = gray-600 */
+
+
+/* #6B7280 = gray-500 */
+
+
+/* #F9FAFB = gray-50 */
+
+
+/* #10B981 = green-600 */
+
+
+/* #D1FAE5 = green-100 */
+
+
+/* #065F46 = green-800 (ajustado para legibilidad) */
+
+
+/* #F59E0B = yellow-500 (icono estrella) */
+
+
+/* ======================================================= */
+
+
+/* ESTILOS DE LA CARD MODIFICADA */
+
+
+/* ======================================================= */
+
+.card-tutor {
+    /* Manteniendo estilos base */
+    background-color: #FFFFFF;
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    transform: scale(1);
+    transition: transform 0.3s ease-in-out;
+    position: relative;
+    /* ¡CLAVE para el panel absoluto! */
+}
+
+.card-tutor:hover {
+    transform: scale(1.05);
+}
+
+.card-tutor__content {
+    padding: 1.5rem;
+    /* p-6 */
+}
+
+.card-tutor__price {
+    font-size: 1rem;
+    /* text-md */
+    font-weight: 600;
+    /* font-semibold */
+    color: var(--primary-color);
+    /* text-green-600 */
+}
+
+.card-tutor__price-duration {
+    font-size: 0.875rem;
+    /* text-sm */
+    font-weight: 400;
+    /* font-normal */
+    color: #6B7280;
+    /* text-gray-500 */
+}
+
+
+/* ------------------------------------------------ */
+
+
+/* ESTILOS DEL TRUNCAMIENTO Y "VER MÁS" */
+
+
+/* ------------------------------------------------ */
+
+.card-tutor__tags-wrapper {
+    /* mt-4 */
+    display: flex;
+    /* flex */
+    align-items: center;
+    /* items-center */
+    justify-content: space-between;
+    /* justify-between */
+}
+
+.card-tutor__tags {
+    /* Truncamiento clásico, pero dentro de un flex container para el botón */
+    color: #6B7280;
+    font-size: 0.75rem;
+    font-weight: 600;
+    /* Configuración para forzar una línea y limitar el ancho */
+    white-space: nowrap;
+    overflow: hidden;
+    /* Quité el text-overflow: ellipsis para que el botón lo reemplace */
+    /* Permite que el contenedor de tags tome el espacio restante antes del botón */
+    flex-grow: 1;
+    margin-right: 0.5rem;
+    /* Espacio antes del botón */
+}
+
+.tags-more-btn {
+    /* Estilo del botón "+ Ver más" */
+    font-size: 0.75rem;
+    /* text-xs */
+    font-weight: 600;
+    /* font-semibold */
+    color: #2563EB;
+    /* text-blue-600 */
+    background: none;
+    border: none;
+    cursor: pointer;
+    white-space: nowrap;
+    /* Asegura que el botón no se rompa */
+    padding: 0;
+    transition: color 0.2s ease;
+}
+
+.tags-more-btn:hover {
+    color: #1E40AF;
+    /* hover:text-blue-800 */
+}
+
+
+/* Estilos de los tags (mantener espaciado simple) */
+
+.tag {
+    /* Asegura que los tags tengan espacio entre sí */
+    margin-right: 0.25rem;
+    /* ml-1 convertido a margin-right */
+}
+
+.tag--blue {
+    background-color: #DBEAFE;
+    /* bg-blue-100 */
+    color: #1E40AF;
+    /* text-blue-800 */
+    border-radius: 9999px;
+    /* rounded-full */
+    padding: 0.25rem 0.5rem;
+    /* px-2 py-1 */
+    display: inline-block;
+}
+
+.tag--green {
+    background-color: #D1FAE5;
+    /* bg-green-100 */
+    color: #065F46;
+    /* text-green-800 */
+    border-radius: 9999px;
+    padding: 0.25rem 0.5rem;
+    display: inline-block;
+}
+
+
+/* ------------------------------------------------ */
+
+
+/* ESTILOS DEL PANEL DETALLADO (Overlay) */
+
+
+/* ------------------------------------------------ */
+
+.card-tutor__detail-panel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: var(--bg-gradient4);
+    /* blue-600 */
+    color: white;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    /* CLAVE 1: Asegura que el panel esté por encima del contenido normal */
+    z-index: 20;
+}
+
+.detail-panel__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.detail-panel__title {
+    /* text-xl font-bold mb-2 */
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.detail-panel__close-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #BFDBFE;
+    /* blue-200 */
+    transition: color 0.2s ease;
+    padding: 0;
+}
+
+.detail-panel__close-btn svg {
+    width: 1.5rem;
+    /* Equivalente a w-6 */
+    height: 1.5rem;
+    /* Equivalente a h-6 */
+    display: block;
+    /* Asegura que no haya espacio extra debajo */
+}
+
+.detail-panel__close-btn:hover {
+    color: white;
+}
+
+.detail-panel__subtitle {
+    /* text-sm font-semibold text-blue-200 mb-2 */
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #BFDBFE;
+    /* blue-200 */
+    margin-bottom: 0.5rem;
+}
+
+.detail-panel__tags-container {
+    /* flex-grow h-32 pr-2 overflow-y-auto hide-scrollbar flex flex-wrap gap-2 text-xs mb-4 content-start */
+    flex-grow: 1;
+    height: 8rem;
+    /* h-32 */
+    padding-right: 0.5rem;
+    /* pr-2 */
+    overflow-y: auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    /* gap-2 */
+    font-size: 0.75rem;
+    /* text-xs */
+    margin-bottom: 1rem;
+    /* mb-4 */
+    align-content: flex-start;
+    /* content-start */
+}
+
+.detail-panel__tags-container::-webkit-scrollbar {
+    /* Ocultar scrollbar (hide-scrollbar) */
+    display: none;
+}
+
+.tag--detail {
+    /* bg-white/20 rounded-full px-3 py-1 */
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 9999px;
+    padding: 0.25rem 0.75rem;
+    display: inline-block;
+    white-space: nowrap;
+}
+
+.detail-panel__footer {
+    /* mt-auto pt-2 */
+    margin-top: auto;
+    padding-top: 0.5rem;
+}
+
+.detail-panel__review-box {
+    /* bg-white/10 rounded-lg p-2 text-center */
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    text-align: center;
+}
+
+.detail-panel__review-content {
+    /* flex items-center justify-center text-sm font-semibold */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.star-icon {
+    /* w-5 h-5 text-yellow-400 mr-1 */
+    width: 1.25rem;
+    height: 1.25rem;
+    color: #F59E0B;
+    /* yellow-400 */
+    margin-right: 0.25rem;
+}
+
+
+/*=======================================================*/
+
+
+/*---- Card tutor-----*/
+
+.card-tutor {
+    background-color: white;
+    /* Tarjetas blancas */
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+.card-tutor:hover {
+    transform: scale(1.05);
+}
+
+.card-tutor.is-hidden {
+    opacity: 0;
+    transform: scale(0.95);
+    display: none;
+}
+
+.card-tutor__content {
+    padding: 1.5rem;
+}
+
+.card-tutor__header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.card-tutor__avatar {
+    height: 4rem;
+    width: 4rem;
+    border-radius: 9999px;
+}
+
+.card-tutor__name {
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.card-tutor__review-count {
+    color: #4B5563;
+    /* gray-600 */
+    font-size: 0.875rem;
+    margin-left: 0.25rem;
+}
+
+.card-tutor__tags {
+    color: #6B7280;
+    /* gray-500 */
+    margin-top: 1rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    /* Nuevas propiedades clave para truncar el contenido */
+    white-space: nowrap;
+    /* 1. Fuerza que todo el contenido (los <span>) se quede en una sola línea */
+    overflow: hidden;
+    /* 2. Oculta todo lo que sobrepase el ancho del contenedor */
+    text-overflow: ellipsis;
+    /* 3. Reemplaza el contenido cortado con puntos suspensivos (...) */
+}
+
+.tag {
+    display: inline-block;
+    border-radius: 9999px;
+    padding: 0.125rem 0.5rem;
+    margin-right: 0.25rem;
+}
+
+.tag--blue {
+    background-color: #DBEAFE;
+    /* blue-100 */
+    color: #1E40AF;
+    /* blue-800, ajustado para contraste */
+}
+
+.tag--green {
+    background-color: #D1FAE5;
+    /* green-100 */
+    color: #065F46;
+    /* green-800 */
+}
+
+.card-tutor__description {
+    color: #374151;
+    /* gray-700 */
+    margin-top: 0.75rem;
+    font-size: 0.875rem;
+}
+
+.card-tutor__footer {
+    background-color: #F9FAFB;
+    /* gray-50 */
+    padding: 0.75rem 1.5rem;
+}
+
+.card-tutor__button {
+    width: 100%;
+    background: var(--tertiary-color2);
+    /* blue-500 */
+    color: white;
+    font-weight: 700;
+    padding: 0.625rem 1rem;
+    border-radius: 0.5rem;
+    transition: background-color 0.2s ease;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+}
+
+.card-tutor__button:hover {
+    background: var(--secundary-color);
+    /* blue-600 */
+}
+
+.filter-controls__list {
+    margin-top: 1.4rem;
+}
+
+
+/* ======================================================= */
+
+
+/* 6. MEDIA QUERIES PARA RESPONSIVIDAD (Tablet y Desktop) */
+
+
+/* ======================================================= */
+
+
+/* Vista de Móvil Grande / Tablet Pequeña (sm: ~ 640px) */
+
+@media (min-width: 640px) {
+    .tutor-grid-buscar {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 2rem;
+    }
+}
+
+
+/* Vista de Tablet (md: ~ 768px) */
+
+@media (min-width: 768px) {
+    .header-main {
+        padding-top: 5rem;
+        padding-bottom: 2rem;
+    }
+    .header-main__title {
+        font-size: 3rem;
+    }
+    .header-main__subtitle {
+        font-size: 1.25rem;
+    }
+    .search-module {
+        margin-top: 2.5rem;
+    }
+    .filter-controls__list {
+        gap: 1rem;
+    }
+    /* Se mantiene el tamaño de las tarjetas y buscador grande */
+    .tutor-grid-buscar {
+        gap: 2rem;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        /* 3 columnas en tablet */
+    }
+}
+
+
+/* Vista de Desktop (lg: ~ 1024px) */
+
+@media (min-width: 1024px) {
+    .tutor-grid-buscar {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        /* 4 columnas en desktop */
+    }
+}

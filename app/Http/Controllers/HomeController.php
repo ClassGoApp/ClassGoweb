@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\DB;
 use App\Models\UserSubject;
 use App\Services\SiteService;
 use App\Services\CountUserService;
+use App\Repositories\TutorRepository;
+
 
 
 
@@ -16,10 +18,13 @@ class HomeController extends Controller
     protected $siteService;
     protected $countUserService;
 
-    public function __construct(SiteService $siteService,  CountUserService $countUserService)
+    protected $tutorRepository;
+
+    public function __construct(SiteService $siteService,  CountUserService $countUserService, TutorRepository $tutorRepository)
     {
         $this->siteService = $siteService;
         $this->countUserService = $countUserService;
+        $this->tutorRepository = $tutorRepository;
     }
 
     public function index(){
@@ -80,5 +85,22 @@ class HomeController extends Controller
 
     public function buscarTutor(){
         return view('vistas.view.pages.buscartutor');
+    }
+
+    public function buscar(Request $request){
+
+        //Obtener parámetros de la URL (incluído 'page' automáticamente por Laravel)
+        $search = $request->input('search');
+        $perPage = 12;
+
+        $tutors = $this->tutorRepository->getFeaturedTutors($perPage, $search);
+        $topSubjects = $this->tutorRepository->getTopSevenSubjects(); //lOS SIETE GRUPOS CON MÁS TUTORES
+
+        // Pasar la colección paginada a la vista
+        return view('vistas.view.pages.buscar', [
+            'tutors' => $tutors,
+            'searchTerm' => $search,
+            'topSubjects' => $topSubjects,
+        ]);
     }
 }
