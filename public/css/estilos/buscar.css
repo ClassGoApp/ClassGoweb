@@ -141,6 +141,7 @@ body {
 .main-content {
     padding-top: 2rem;
     padding-bottom: 2rem;
+    display: block;
 }
 
 .tutor-grid-buscar {
@@ -148,6 +149,35 @@ body {
     grid-template-columns: repeat(1, minmax(0, 1fr));
     gap: 1.5rem;
     padding: 0 3rem 3rem 3em;
+}
+
+.loading-indicator {
+    width: 100vw;
+    height: 30vh;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    /* opcional: fondo semitransparente */
+}
+
+.loader {
+    width: 48px;
+    height: 48px;
+    border: 5px solid #FFF;
+    border-bottom-color: var(--tertiary-color2);
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 
