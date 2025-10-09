@@ -167,11 +167,16 @@
   height: 130px;
   text-align: center;
   padding: 0.75rem;
-  position: absolute;      /* ¡Clave! */
-  top: 70px;              /* Ajusta según lo que necesites */
-  left: -40px;             /* Ajusta según lo que necesites */
-  z-index: 2;              /* Asegura que esté encima de la imagen */
-  box-shadow: 0 4px 16px rgba(0,0,0,0.08); /* Opcional: sombra para destacar */
+  position: absolute;
+  /* ¡Clave! */
+  top: 70px;
+  /* Ajusta según lo que necesites */
+  left: -40px;
+  /* Ajusta según lo que necesites */
+  z-index: 2;
+  /* Asegura que esté encima de la imagen */
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  /* Sombra para destacar */
 }
 
 .nosotros-mision-porcentaje .nosotros-mision-porcentaje-text {
@@ -204,10 +209,11 @@
 .nosotros-vision {
   display: flex;
   width: 100%;
-  justify-content: space-between; /* Asegura que el texto y la imagen estén distribuidos correctamente */
+  justify-content: space-between;
+  /* Asegura que el texto y la imagen estén distribuidos correctamente */
   background-color: white;
-  padding: 3rem 5rem; /* Aumentamos el relleno superior para dar más espacio */
-  /*align-items: center; /* Alinea los elementos verticalmente */
+  padding: 3rem 5rem;
+  /* Aumentamos el relleno superior para dar más espacio */
 }
 
 .nosotros-vision-text {
@@ -268,8 +274,10 @@
   background-color: var(--primary-color);
   color: white !important;
   width: 100%;
-  padding: 4rem 2rem; /* Ajustamos el relleno para dar más espacio */
-  margin-bottom: 6rem; /* Espacio debajo del bloque de logros */
+  padding: 4rem 2rem;
+  /* Ajustamos el relleno para dar más espacio */
+  margin-bottom: 6rem;
+  /* Espacio debajo del bloque de logros */
 }
 
 .nosotros-logros-text {

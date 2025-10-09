@@ -51,7 +51,6 @@
 .navbar-container {
     position: sticky;
     top: 1px;
-    ;
     z-index: 1000;
 }
 
@@ -1026,7 +1025,8 @@ body.modal-open {
 
 /* ==================== 9.1 - Modal Mostrar ==================== */
 .modal-overlay.is-visible {
-    display: flex; /* Cambiar a flex para centrar el contenido */
+    display: flex;
+    /* Cambiar a flex para centrar el contenido */
     z-index: 999999999;
 }
 

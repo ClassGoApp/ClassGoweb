@@ -1,0 +1,169 @@
+/* ==================== terminos.css ==================== */
+@import "./variables.css";
+
+/** TABLE OF CONTENTS PC
+------------------------------------------------------------/
+
+1 - Terminos Principal................................ 15-23
+2 - Terminos Contenedor............................... 25-34
+3 - Terminos Header................................... 36-55
+4 - Terminos Titulos.................................. 57-72
+  4.1 - Subtitulos.................................... 66-72
+5 - Terminos Generic................................. 74-105
+6 - Btn Descargar................................... 107-157
+  6.1 - Btn Hover................................... 134-157
+    
+/// END TABLE OF CONTENTS PC
+------------------------------------------------------------*/
+
+/* ==================== 1 - Terminos Principal ==================== */
+.terminos {
+
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* ==================== 2 - Terminos Contenedor ==================== */
+.terminos-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  background: var(--bg-gradient4);
+  color: var(--white);
+}
+
+/* ==================== 3 - Terminos Header ==================== */
+.terminos-header {
+  padding-bottom: 20px;
+  width: 100%;
+}
+
+.terminos-header-content {
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10rem 5rem 3rem 5rem;
+}
+
+.terminos-header-text {
+  flex: 1.2;
+  font-family: 'Didact Gothic', sans-serif;
+  font-size: var(--h1);
+  text-align: center;
+}
+
+/* ==================== 4 - Terminos Titulos ==================== */
+.terminos-titulos {
+  font-family: 'Orbitron Bold', sans-serif;
+  font-size: var(--h1);
+  font-weight: bold;
+  text-align: left;
+  margin-bottom: 1rem;
+}
+
+/* ==================== 4.1 - Subtitulos ==================== */
+.terminos-subtitulos {
+  font-family: 'Zen Dots', sans-serif;
+  font-size: var(--h1-regular);
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* ==================== 5 - Terminos Generic ==================== */
+.terminos-generic {
+  max-width: 800px;
+  padding: 2rem;
+  text-align: left;
+}
+
+.terminos-ul {
+  text-indent: 19px;
+  padding: 2rem;
+  list-style-position: inside;
+}
+
+/*se usa para que el contenido no rebalse*/
+.terminos-generic,
+.terminos-ul {
+  box-sizing: border-box;
+  /* el padding ya cuenta dentro del ancho */
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  /* centra en escritorio */
+  overflow-x: hidden;
+  /* evita que sobresalga algo */
+}
+
+.terminos-mont-text {
+  font-family: 'Montserrat', sans-serif;
+  font-size: var(--p);
+  line-height: 1.5;
+  color: var(--white);
+}
+
+/* ==================== 6 - Btn Descargar ==================== */
+.terminos-descarga {
+  text-align: center;
+  /* centra el contenido */
+  padding: 2rem;
+  border-radius: 10px;
+}
+
+.terminos-descarga-texto {
+  color: var(--white);
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  /* espacio entre el texto y el botón */
+}
+
+.terminos-descarga-boton {
+  position: relative;
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+  color: var(--white);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background: var(--bg-gradient2);
+  overflow: hidden;
+}
+
+/* ==================== 6.1 - Btn Hover ==================== */
+.terminos-descarga-boton::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--bg-gradient3);
+  opacity: 0;
+  transition: opacity 0.5s;
+  border-radius: 5px;
+  z-index: 0;
+}
+
+.terminos-descarga-boton:hover::before {
+  opacity: 1;
+}
+
+/* Para que el texto quede encima del pseudo-elemento */
+.terminos-descarga-boton span {
+  position: relative;
+  z-index: 1;
+}
+
+/*----- Media Queries -----*/
+@media (max-width: 768px) {
+
+  .terminos-ul,
+  .terminos-generic {
+    padding: 1rem;
+    max-width: 100%;
+  }
+}

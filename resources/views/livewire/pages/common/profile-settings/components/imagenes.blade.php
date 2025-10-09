@@ -20,10 +20,10 @@
                 <input id="image-upload" type="file" class="d-none" wire:model="image" wire:loading.attr="disabled">
             </label>
             @if($image)
-            <button type="button" class="profile-photo-btn profile-photo-btn-remove" style="background-color: red !important;color:white;" wire:click="removeMedia('image')">
+          {{--   <button type="button" class="profile-photo-btn profile-photo-btn-remove" style="background-color: red !important;color:white;" wire:click="removeMedia('image')">
                {{ __('profile.remove') }}
                 <i class="bi bi-trash"></i>
-            </button>
+            </button> --}}
             @endif
         </div>
         @error('image')

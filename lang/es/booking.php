@@ -26,4 +26,6 @@ return [
     'courses_count' => ':count cursos',
     'start_date' => 'Fecha de inicio',
     'end_date' => 'Fecha de finalización',
+    
+    
 ];

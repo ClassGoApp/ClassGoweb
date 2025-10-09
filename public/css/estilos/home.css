@@ -736,7 +736,7 @@ cursor: not-allowed;
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .steps {
     gap: 0.7rem;
     padding: 1rem 0;
@@ -965,7 +965,7 @@ cursor: not-allowed;
 
 /**---============ 5.5 - Instala Nuestra Aplicación ============---**/
 .section-app {
-  min-height: 100vh;
+  min-height: 40vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -977,7 +977,7 @@ cursor: not-allowed;
 
 /**---============ Contenedor Interno ============---**/
 .container-app {
-  max-width: 1200px;
+  max-width: 1300px;
   margin: 0 auto;
   width: 100%;
   padding: 1.5rem;
@@ -993,7 +993,12 @@ cursor: not-allowed;
   align-items: center;
 }
 
-@media (min-width: 768px) {
+.grid-app .text-app p {
+  margin-bottom: 0.8rem !important;
+}
+
+/**---============ 5.5.4 - Aplicación Media Queries ============---**/
+@media (min-width: 767px) {
   .grid-app {
     grid-template-columns: 1fr 1fr;
   }
@@ -1010,7 +1015,7 @@ cursor: not-allowed;
   padding: 1.5rem 2rem
 }
 
-@media (min-width: 768px) {
+@media (min-width: 767px) {
   .text-app {
     text-align: center;
   }
@@ -1065,7 +1070,7 @@ cursor: not-allowed;
 /**---============ Botón ============---**/
 .btn-app {
   margin-top: 2rem;
-  background-color: var(--custom-orange);
+  background-color: var(--custom-orange)  ;
   color: white;
   font-weight: bold;
   padding: 0.9rem 2.4rem;
@@ -1086,16 +1091,17 @@ cursor: not-allowed;
 .image-app {
   display: flex;
   justify-content: flex-end;
-  align-items: center; /* opcional, para centrar verticalmente */
-  width: 100%; /* asegúrate de que la columna ocupe todo su espacio */
+  align-items: center;
+  width: 106%; /* asegúrate de que la columna ocupe todo su espacio */
+  overflow: hidden;
 }
 
 .image-app img {
   border-radius: 2rem;
-  width: 100%;        /* la imagen se ajusta al ancho del contenedor */
-  height: auto;       /* mantiene proporciones */
-  max-width: none;    /* elimina el límite máximo */
-  object-fit: cover;  /* recorta si es necesario para llenar el área */
+  width: 100%;        
+  height: auto;       
+  max-width: none;    
+  object-fit: cover;  
 }
 
 
@@ -1170,7 +1176,6 @@ cursor: not-allowed;
   margin: 0rem;
   padding: 0rem;
 }
-
 
 @media (max-width: 1200px) {
 
@@ -1369,7 +1374,9 @@ cursor: not-allowed;
 }
 
 /* =================== home-mobile.css =================== */
-/* home-mobile.css: Estilos responsivos para móvil (max-width: 768px) */
+/* home-mobile.css: Estilos responsivos para móvil (max-width: 767px) */
+
+
 
 @media (max-width: 768px) {
 
@@ -1516,7 +1523,6 @@ cursor: not-allowed;
   }
 
   /* =============== SECCION TUTORES ======== */
-
 
 
 
@@ -1994,4 +2000,4 @@ cursor: not-allowed;
     .client-carousel-nav-btn {
         display: none;
     }
-}
+  }
