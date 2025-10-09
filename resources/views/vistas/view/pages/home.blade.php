@@ -251,7 +251,7 @@
       <div class="text-app">
         <p>Fácil, simple y rápido</p>
         <h1>Instala nuestra App</h1>
-        <p>Comienza tu viaje educativo con nosotros. ¡Instalate hoy mismo nuestra app!</p>
+        <p>Comienza tu viaje educativo con nosotros. <br>¡Instálate hoy mismo nuestra app!</p>
 
         <!-- Lista de características -->
         <ul class="list-app">
@@ -277,22 +277,24 @@
 
         <!-- Botón -->
         <div>
-          <a href="https://play.google.com/store/apps/details?id=com.neurasoft.classgo" target="_blank" class="btn-app">Descargar Ahora</a>
+          <a href="https://play.google.com/store/apps/details?id=com.neurasoft.classgo" target="_blank" class="btn-app">
+            Descargar Ahora
+          </a>
         </div>
       </div>
 
       <!-- Columna Derecha: Imagen -->
       <div class="image-app">
         <img 
-          src="{{ asset('images/home/celular-ClassGo.png')}}" 
+          src="{{ asset('images/home/tugo-cel.gif') }}" 
           alt="ClassGo"
           onerror="this.onerror=null;this.src='https://placehold.co/400x800/023047/FFFFFF?text=App';"
         >
-      </div>
 
     </div>
   </div>
 </section>
+
 
 
 <!--HERO TUTORIAS Y ALIANZAS-->

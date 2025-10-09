@@ -963,26 +963,29 @@ cursor: not-allowed;
   border-radius: 20px;
 }
 
-/**---============ 5.5 - Instala Nuestra Aplicacion ============---**/
-/**---============ 5.5.1 - Aplicación Contenedor ============---**/
+/**---============ 5.5 - Instala Nuestra Aplicación ============---**/
 .section-app {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 3rem 10rem;
+  padding: 3rem 8rem;
   background: white;
+  position: relative;
+  overflow: hidden;
 }
 
-/**---============ 5.5.2 - Aplicación Contenedor Interno ============---**/
+/**---============ Contenedor Interno ============---**/
 .container-app {
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
   padding: 1.5rem;
+  position: relative;
+  z-index: 2;
 }
 
-/**---============ 5.5.3 - Aplicación Grid ============---**/
+/**---============ Grid ============---**/
 .grid-app {
   display: grid;
   grid-template-columns: 1fr;
@@ -990,48 +993,51 @@ cursor: not-allowed;
   align-items: center;
 }
 
-.grid-app .text-app p {
-  margin-bottom: 0.8rem !important;
-}
-
-/**---============ 5.5.4 - Aplicación Media Queries ============---**/
 @media (min-width: 768px) {
   .grid-app {
     grid-template-columns: 1fr 1fr;
   }
 }
 
-/**---============ 5.5.5 - Aplicación Columnas ============---**/
+/**---============ Texto ============---**/
 .text-app {
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  background: color var(--primary-color);
+  border-radius: 10%;
+  padding: 1.5rem 2rem
 }
 
 @media (min-width: 768px) {
   .text-app {
-    text-align: left;
+    text-align: center;
   }
 }
 
 .text-app h1 {
-  font-size: 2.5rem;
+  font-size: 2.8rem;
   font-weight: 800;
   color: var(--primary-color);
   margin-bottom: 1rem;
-  line-height: 1.2;
+  gap: 0.3rem;
 }
 
 .text-app p {
   font-size: 1.1rem;
   color: var(--primary-color);
   margin-bottom: 2rem;
+  gap: 0.2rem;
 }
 
+/**---============ Lista de Beneficios ============---**/
 .list-app {
   list-style: none;
   padding: 0;
   margin: 0 auto;
   max-width: 300px;
-  text-align: left;
+  text-align: center;
 }
 
 .list-app li {
@@ -1041,88 +1047,85 @@ cursor: not-allowed;
   margin-bottom: 1rem;
   color: var(--primary-color);
   font-size: 1rem;
+  font-weight: 500;
 }
 
 .list-app svg {
   width: 24px;
   height: 24px;
-  fill: var(--terciary-color2);
+  fill: #1B89A6;
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
 }
 
+.list-app li:hover svg {
+  transform: scale(1.2);
+}
+
+/**---============ Botón ============---**/
 .btn-app {
   margin-top: 2rem;
-  background-color: var(--secundary-color);
+  background-color: var(--custom-orange);
   color: white;
   font-weight: bold;
-  padding: 0.75rem 2rem;
+  padding: 0.9rem 2.4rem;
   border-radius: 9999px;
   font-size: 1.125rem;
   text-decoration: none;
   display: inline-block;
-  transition: opacity 0.3s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
 }
 
 .btn-app:hover {
-  opacity: 0.9;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
 }
 
-/**---============ 5.5.6 - Aplicación Imagen ============---**/
+/**---============ Imagen ============---**/
 .image-app {
   display: flex;
   justify-content: flex-end;
-  background: transparent;
-}
-.image-app img {
-  border-radius: 2rem;
-  transition: transform 0.5s ease;
-  transform: rotate(6deg);
-  max-width: 450px;
-  width: 270px;
-  background-color: transparent;
-  height: auto;
+  align-items: center; /* opcional, para centrar verticalmente */
+  width: 100%; /* asegúrate de que la columna ocupe todo su espacio */
 }
 
-.image-app img:hover {
-  transform: rotate(0deg) scale(1.05);
+.image-app img {
+  border-radius: 2rem;
+  width: 100%;        /* la imagen se ajusta al ancho del contenedor */
+  height: auto;       /* mantiene proporciones */
+  max-width: none;    /* elimina el límite máximo */
+  object-fit: cover;  /* recorta si es necesario para llenar el área */
 }
-/**---============ 5.5.7 - Aplicación Media Queries ============---**/
-/* Tablets */
+
+
+
+/**---============ Responsive ============---**/
 @media (max-width: 1024px) {
-  .tutores-text h1 {
-    font-size: 2rem;
+  .section-app {
+    padding: 3rem 4rem;
+  }
+  .text-app h1 {
+    font-size: 2.2rem;
   }
 }
 
-/**---============ 6 - Alianzas ============---**/
-/**---============ 6.1 - Alianzas Container ============---**/
-.alianzas {
-  text-align: center;
-  padding: 5rem 1rem 1rem 1rem;
+@media (max-width: 768px) {
+  .section-app {
+    padding: 3rem 2rem;
+  }
+  .grid-app {
+    text-align: center;
+  }
+  .list-app {
+    text-align: center;
+  }
+  .image-app {
+    justify-content: center;
+  }
 }
 
-.linea {
-  display: inline-block;
-  width: 40px;
-  height: 3px;
-  background-color: var(--secundary-color);
-  margin: 0 10px;
-  vertical-align: middle;
-}
 
-/**---============ 6.2 - Alianzas Títulos ============---**/
-.alianzas h1 {
-  font-size: 2rem;
-  margin-bottom: 1rem;
-  color: var(--primary-color);
-}
-
-.alianzas p {
-  font-size: 1rem;
-  max-width: 800px;
-  margin: 0 auto 2rem;
-  line-height: 1.5;
-  color: var(--primary-color);
-}
 
 /**---============ 6.3 - Alianzas Cards ============---**/
 
