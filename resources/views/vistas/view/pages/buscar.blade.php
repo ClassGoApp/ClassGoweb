@@ -14,8 +14,10 @@
     <div class="loading-indicator">
         <span class="loader"></span>
     </div>
-    
+
+
     <main class="main-content container--center" id="mainContent">
+        
         <!-- Filtros de materias -->
         <div id="filterControls" class="filter-controls__list">
             <button class="filter-btn filter-btn--active" data-subject-id="all">Todos</button>
@@ -113,8 +115,24 @@
         <div class="paginacion">
             {{ $tutors->links()}}
         </div>
-        
     </main>
+
+    <div class="course-grid">
+
+        <div class="card-filtro">
+            
+            <div class="card-filtro__image-container">
+                <img src="{{ asset('images/filtros/contabilidadFiltro.png') }}" alt="Ilustración de Contabilidad" class="card-filtro__image">
+            </div>
+            
+            <div class="card-filtro__content">
+                <h3 class="card-filtro__title">CONTABILIDAD</h3>
+            </div>
+            
+        </div>
+    
+    </div>
+
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -198,6 +216,64 @@
         
         // Ejecutar el filtrado inicial al cargar la página
         filterAndSearchTutors();
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        // 1. CONFIGURACIÓN
+        const inputElement = document.getElementById('searchInput'); // Asegúrate de que este ID sea correcto
+        if (!inputElement) return; // Salir si no se encuentra el input
+
+        const texts = [
+            "¿Qué necesitas aprender hoy?",
+            "Busca por nombre del tutor...",
+            "Busca por materia: Matemáticas, Contabilidad...",
+            "o por tema: Álgebra, Cálculo..."
+            ,
+        ];
+
+        const typingSpeed = 70;    // Velocidad de escritura (milisegundos por letra)
+        const erasingSpeed = 40;    // Velocidad de borrado
+        const newTextDelay = 500;  // Pausa antes de empezar a escribir el siguiente texto (en milisegundos)
+        
+        let textIndex = 0;
+        let charIndex = 0;
+
+        // 2. FUNCIÓN PRINCIPAL DE ESCRITURA
+        function type() {
+            // Si no se ha terminado de escribir el texto actual
+            if (charIndex < texts[textIndex].length) {
+                // Añadir la siguiente letra al placeholder
+                inputElement.placeholder += texts[textIndex].charAt(charIndex);
+                charIndex++;
+                setTimeout(type, typingSpeed);
+            } else {
+                // Pausa antes de empezar a borrar
+                setTimeout(erase, newTextDelay);
+            }
+        }
+
+        // 3. FUNCIÓN DE BORRADO
+        function erase() {
+            // Si aún quedan letras
+            if (charIndex > 0) {
+                // Quitar la última letra del placeholder
+                inputElement.placeholder = texts[textIndex].substring(0, charIndex - 1);
+                charIndex--;
+                setTimeout(erase, erasingSpeed);
+            } else {
+                // Pasar al siguiente texto
+                textIndex++;
+                if (textIndex >= texts.length) {
+                    textIndex = 0; // Volver al inicio del array
+                }
+                // Empezar a escribir el nuevo texto
+                setTimeout(type, typingSpeed);
+            }
+        }
+
+        // 4. INICIO DEL EFECTO
+        // Iniciar el ciclo llamando a la función 'type'
+        setTimeout(type, newTextDelay); 
     });
         
     </script>

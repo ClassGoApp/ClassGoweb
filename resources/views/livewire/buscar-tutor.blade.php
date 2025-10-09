@@ -39,17 +39,17 @@
     </section> --}}
 
     <div class="search-module">
-                <div class="search-field__wrapper">
-                    <div class="search-field__icon">
-                        <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                    </div>
-                    <input id="searchInput" 
-                    type="text" 
-                    placeholder="¿Qué necesitas aprender? Puedes buscar por materia o nombre del tutor." 
-                    wire:model.live.debounce.500ms="search"
-                    class="search-field__input">
-                </div>
+        <div class="search-field__wrapper">
+            <div class="search-field__icon">
+                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
             </div>
+            <input id="searchInput" 
+            type="text" 
+            placeholder="" 
+            wire:model.live.debounce.500ms="search"
+            class="search-field__input">
+        </div>
+    </div>
 
     @if (strlen($search) > 0)
     
