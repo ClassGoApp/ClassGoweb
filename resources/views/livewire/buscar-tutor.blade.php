@@ -51,42 +51,52 @@
         </div>
     </div>
 
-    @if (strlen($search) > 0)
+    @if (strlen($search) > 0) <!--Verifica si no hay resutados--->
     
     <section class="buscartutor-tutorlist-section">
         <div class="buscartutor-tutorlist-space">
             @forelse ($profiles as $profile)
                 <div class="buscartutor-tutor-card" wire:key="tutor-{{ $profile['user_id'] }}">
-                    <a href="{{ route('tutor', ['slug' => $profile['slug']]) }}">
+                    <a href="{{ route(  'tutor', ['slug' => $profile['slug']]) }}">
                         <img 
                         src="{{ $profile['image'] ? asset('storage/' . $profile['image']) : asset('images/tutors/default.png') }}" 
                         alt="Foto de {{ $profile['full_name'] }}" 
                         class="buscartutor-tutor-img">
                     </a>
                     <div class="buscartutor-tutor-info">
-                        <a href="{{ route('tutor', ['slug' => $profile['slug']]) }}"><h3 class="buscartutor-tutor-name">{{ $profile['full_name'] }}</h3></a>
+                        <a href="{{ route('tutor', ['slug' => $profile['slug']]) }}">
+                            <h3 class="buscartutor-tutor-name">{{ $profile['full_name'] }}
+                                <div class="infor-tutor card-tutor__price-duration">
+                                    <p class="card-tutor__price">💸 15 Bs. <span class="card-tutor__price-duration">/ 20 min</span></p>
+                                    <span class="">⭐ {{ $profile['avg_rating'] }}/5 ( {{ $profile['total_reviews'] }} reseñas)</span>
+                                    <span>🌐 Idioma: {{ $profile['native_language'] ?? 'N/A' }}</span> 
+                                </div>
+                            </h3>
+                                        
+                        </a>
                         <div class="buscartutor-tutor-meta">
-                            <span>⭐ {{ $profile['avg_rating'] }}/5.0 ({{ $profile['total_reviews'] }} reseñas)</span>
                                 <div class="tutor-subjects-display">
-                                    
+
                                     @if (!empty($profile['matched_subjects']))
                                         
                                         <span class="subjects-matched">
+                                            {{-- Muestra solo los sujetos que coincidieron con la búsqueda --}}
                                             <span>•</span> <strong>{{ implode(', ', $profile['matched_subjects']) }}</strong>
                                         </span>
 
                                     @else
+                                        {{-- Muestra TODOS los sujetos del tutor, separados por comas --}}
+                                        
                                         @php
-                                            $subjects = collect($profile['all_subjects']);
-                                            $firstTwo = $subjects->take(2)->implode(', ');
-                                            $moreCount = $subjects->count() > 2 ? $subjects->count() - 2 : 0;
+                                            // Aseguramos que 'all_subjects' sea un array (aunque ya lo es por tu mapeo)
+                                            $allSubjects = $profile['all_subjects'];
+                                            
+                                            // Implode junta todos los elementos del array con ', '
+                                            $subjectList = implode(', ', $allSubjects);
                                         @endphp
                                         
                                         <span class="subjects-summary">
-                                            <span>• </span>{{ $firstTwo }}
-                                            @if ($moreCount > 0)
-                                                <span class="more-subjects">+{{ $moreCount }} más</span>
-                                            @endif
+                                            <span>• </span>{{ $subjectList }}
                                         </span>
 
                                     @endif
@@ -94,9 +104,9 @@
                                 </div>
                             {{-- <span>Idioma: {{ $profile['native_language'] ?? 'N/A' }}</span> --}}
                         </div>
-                        <p class="buscartutor-tutor-desc">
+                        {{-- <p class="buscartutor-tutor-desc">
                             {{ $profile['description'] }}
-                        </p>
+                        </p> --}}
                     </div>
                     <div class="buscartutor-tutor-actions">
                         <a href="{{ route('tutor', ['slug' => $profile['slug']]) }}" class="buscartutor-tutor-btn buscartutor-tutor-btn-blue">
