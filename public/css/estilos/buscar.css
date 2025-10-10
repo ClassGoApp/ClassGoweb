@@ -1,14 +1,28 @@
     @import 'variables.css';
     /* 1. CONFIGURACIÓN GLOBAL */
     
-    body {
-        font-family: 'Inter', sans-serif;
-        background-color: #F9FAFB;
-        /* gray-50 */
-        color: #1F2937;
-        /* gray-800 */
-        line-height: 1.5;
-        margin: 0;
+    .buscar-section {
+        background: var(--panel-background);
+    }
+    /* ==================== buscar header ==================== */
+    
+    .buscar-header {
+        background: var(--secundary-color);
+        border-bottom-left-radius: 50px;
+        border-bottom-right-radius: 50px;
+        padding-bottom: 20px;
+        width: 100%;
+    }
+    
+    .buscar-header-content {
+        background: var(--bg-gradient4);
+        border-bottom-left-radius: 40px;
+        border-bottom-right-radius: 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 5rem 5rem 3rem 5rem;
+        color: white;
     }
     
     .container {
@@ -17,7 +31,7 @@
         margin-right: auto;
         padding-left: 1rem;
         padding-right: 1rem;
-        margin-top: 7rem;
+        margin-top: 6rem;
     }
     /* 2. ESTILOS DE LA CABECERA (Header) */
     
@@ -29,10 +43,21 @@
         padding-bottom: 0rem;
     }
     
+    .img-container {
+        display: flex;
+        justify-content: center;
+    }
+    
+    .header_img {
+        width: auto;
+        height: 8rem;
+    }
+    
     .header-main__title {
         font-size: 2.25rem;
         font-weight: 700;
         line-height: 1.25;
+        text-align: center;
     }
     
     .header-main__subtitle {
@@ -43,6 +68,7 @@
         max-width: 48rem;
         margin-left: auto;
         margin-right: auto;
+        text-align: center;
     }
     /* 3. ESTILOS DE BÚSQUEDA (Ajustado a más grande y responsive) */
     
@@ -86,7 +112,7 @@
     }
     
     .search-field__input:focus {
-        box-shadow: var(--tertiary-color2) 0 0 0 5px, 0 10px 15px -3px rgba(238, 139, 9, 0.692), 0 4px 6px -2px rgba(245, 150, 7, 0.534);
+        box-shadow: var(--tertiary-color2) 0 0 0 5px, 0 10px 15px -3px rgba(255, 145, 1, 0.281), 0 4px 6px -2px rgba(255, 158, 12, 0.932);
     }
     /*============================*/
     /* ======================================================= */
@@ -199,7 +225,7 @@
     
     .card-filtro:hover {
         box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
-        background: rgba(0, 0, 0, 0.486);
+        background: var(--bg-gradient3);
     }
     /* Efecto 1: La imagen se mueve ligeramente hacia arriba */
     
@@ -210,7 +236,6 @@
     
     .course-grid {
         display: grid;
-        /* gap: Espacio entre las tarjetas */
         gap: 1.5rem;
         padding: 1rem;
         width: 100%;
@@ -220,6 +245,7 @@
         grid-template-columns: repeat(2, 1fr);
         /* Centrar las tarjetas dentro de sus celdas si no ocupan todo el ancho */
         justify-items: center;
+        padding-top: 4rem;
     }
     /* MEDIA QUERY: Tabletas (Ej. 768px+) - Tres columnas */
     
@@ -244,6 +270,7 @@
         justify-content: center;
         gap: 0.75rem;
         margin-bottom: 2rem;
+        padding: 0rem 5rem;
     }
     
     .filter-btn {
@@ -291,7 +318,7 @@
     }
     
     .loading-indicator {
-        width: 100vw;
+        max-width: 1200px;
         height: 30vh;
         display: none;
         align-items: center;
@@ -704,6 +731,192 @@
     
     .filter-controls__list {
         margin-top: 1.4rem;
+    }
+    /* ======================================================= */
+    /* VARIABLES (Opcional, pero recomendado) */
+    /* ======================================================= */
+    
+     :root {
+        --primary-color: #2563EB;
+        /* Azul de Tailwind blue-600 */
+        --text-white: #FFFFFF;
+        --text-dark: #1F2937;
+        /* gray-900 */
+        --text-light: #D1D5DB;
+        /* gray-300 */
+        --text-note: #9CA3AF;
+        /* gray-400 */
+        --bg-light-hover: #F3F4F6;
+        /* gray-100 */
+    }
+    /* ======================================================= */
+    /* 1. WRAPPER Y RESPONSIVIDAD (w-full max-w-6xl mx-auto) */
+    /* ======================================================= */
+    
+    .cta-section-wrapper {
+        display: block;
+        /* w-full */
+        width: 100%;
+        /* max-w-6xl: max-width: 72rem; (1152px) */
+        /* mx-auto */
+        margin-left: auto;
+        margin-right: auto;
+        /* px-4 py-16 */
+        padding-left: 1rem;
+        padding-right: 1rem;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+        box-sizing: border-box;
+    }
+    /* MEDIA QUERY: sm:px-6 lg:px-8 */
+    
+    @media (min-width: 640px) {
+        .cta-section-wrapper {
+            padding-left: 1.5rem;
+            /* sm:px-6 */
+            padding-right: 1.5rem;
+            /* sm:px-6 */
+        }
+    }
+    
+    @media (min-width: 1024px) {
+        .cta-section-wrapper {
+            padding-left: 2rem;
+            /* lg:px-8 */
+            padding-right: 2rem;
+            /* lg:px-8 */
+        }
+    }
+    /* ======================================================= */
+    /* 2. CARD PRINCIPAL (pattern-background rounded-2xl shadow-2xl) */
+    /* ======================================================= */
+    
+    .cta-card {
+        /* rounded-2xl: border-radius: 1rem; */
+        border-radius: 1rem;
+        /* shadow-2xl */
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        /* overflow-hidden */
+        overflow: hidden;
+        /* Simulación de fondo con patrón (reemplaza 'pattern-background' con tu estilo real) */
+        background: var(--bg-gradient2);
+    }
+    /* Contenido Interno (text-center px-8 py-20 md:py-28) */
+    
+    .cta-card__content {
+        text-align: center;
+        padding-left: 2rem;
+        padding-right: 2rem;
+        padding-top: 1rem;
+        /* py-20 */
+        padding-bottom: 1rem;
+        /* py-20 */
+    }
+    /* MEDIA QUERY: md:py-28 */
+    
+    @media (min-width: 768px) {
+        .cta-card__content {
+            padding-top: 2rem;
+            /* md:py-28 */
+            padding-bottom: 2rem;
+            /* md:py-28 */
+        }
+    }
+    /* ======================================================= */
+    /* 3. TIPOGRAFÍA */
+    /* ======================================================= */
+    
+    .cta-card__title {
+        /* text-4xl font-extrabold text-white tracking-tight */
+        font-size: 2.25rem;
+        /* text-4xl */
+        font-weight: 800;
+        /* font-extrabold */
+        color: var(--text-white);
+        letter-spacing: -0.025em;
+        /* tracking-tight */
+    }
+    /* MEDIA QUERY: md:text-5xl */
+    
+    @media (min-width: 768px) {
+        .cta-card__title {
+            font-size: 3rem;
+            /* md:text-5xl */
+        }
+    }
+    
+    .cta-card__subtitle {
+        /* mt-6 max-w-2xl mx-auto text-lg text-gray-300 */
+        margin-top: 1.5rem;
+        max-width: 42rem;
+        /* max-w-2xl */
+        margin-left: auto;
+        margin-right: auto;
+        font-size: 1.125rem;
+        /* text-lg */
+        color: var(--text-light);
+    }
+    /* MEDIA QUERY: md:text-xl */
+    
+    @media (min-width: 768px) {
+        .cta-card__subtitle {
+            font-size: 1.25rem;
+            /* md:text-xl */
+        }
+    }
+    /* ======================================================= */
+    /* 4. BOTÓN (cta-card__button) */
+    /* ======================================================= */
+    
+    .cta-card__action {
+        /* mt-10 */
+        margin-top: 2.5rem;
+    }
+    
+    .cta-card__button {
+        /* inline-block bg-white text-gray-900 font-bold text-lg */
+        display: inline-block;
+        background-color: var(--text-white);
+        color: var(--text-dark);
+        font-weight: 700;
+        font-size: 1.125rem;
+        /* text-lg */
+        text-decoration: none;
+        /* px-8 py-4 rounded-lg shadow-lg */
+        padding: 1rem 2rem;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+        border: none;
+        cursor: pointer;
+        /* transform transition-transform duration-300 */
+        transform: scale(1);
+        /* Base scale */
+        transition: all 0.3s ease;
+    }
+    /* Efectos de Hover y Focus */
+    
+    .cta-card__button:hover {
+        /* hover:scale-105 hover:bg-gray-100 */
+        transform: scale(1.05);
+        background-color: var(--bg-light-hover);
+    }
+    
+    .cta-card__button:focus {
+        /* focus:outline-none focus:ring-4 focus:ring-blue-300 */
+        outline: none;
+        box-shadow: 0 0 0 4px rgba(147, 197, 253, 0.7);
+        /* Simula el ring-4 con color azul */
+    }
+    /* ======================================================= */
+    /* 5. NOTA ADICIONAL */
+    /* ======================================================= */
+    
+    .cta-card__note {
+        /* mt-6 text-sm text-gray-400 */
+        margin-top: 1.5rem;
+        font-size: 0.875rem;
+        /* text-sm */
+        color: var(--text-note);
     }
     /* ======================================================= */
     /* 6. MEDIA QUERIES PARA RESPONSIVIDAD (Tablet y Desktop) */

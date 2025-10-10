@@ -120,8 +120,11 @@
                         Pero no te preocupes, ¡estamos aquí para ayudarte! Es posible que el tutor o la materia que buscas no esté disponible, o que haya un error de escritura.
                     </p>
 
-                    <div class="no-results-suggestions-box">
-                        <h3 class="no-results-suggestions-title">¿Qué puedes hacer?</h3>
+                    <button id="toggleSuggestions" class="no-results-suggestions-title toggle-btn" aria-expanded="false">
+                        ¿Qué puedes hacer?
+                    </button>
+
+                    <div id="suggestionsBox" class="no-results-suggestions-box">
                         <ul class="no-results-suggestions-list">
                             <li class="no-results-suggestion-item">
                                 <span class="no-results-check-icon">✓</span>
@@ -133,17 +136,23 @@
                             </li>
                             <li class="no-results-suggestion-item">
                                 <span class="no-results-check-icon">✓</span>
-                                <strong>¡Ponte en contacto con nosotros!&nbsp;</strong> Dinos, necesitas alguna materia en específica?
+                                <strong>¡Ponte en contacto con nosotros!&nbsp;</strong> ¿Necesitas alguna materia en específica?
                             </li>
+
+                            <div class="contactanos-btn">
+                                <a href="https://wa.link/8f8z6i" class="no-results-contact-btn" target="_blank">
+                                    Contáctanos
+                                </a>
+                            </div>
                         </ul>
                     </div>
 
-                    <a href="https://wa.link/8f8z6i" class="no-results-contact-btn" target="_blank">
-                        Contáctanos
-                    </a>
+                    
                 </div>
             @endforelse
         </div>
+        
+
         <div class="buscartutor-pagination">
             <style>
                 .buscartutor-pagination nav {
@@ -193,4 +202,23 @@
     </section>
 
     @endif
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        const toggleButton = document.getElementById('toggleSuggestions');
+        const suggestionsBox = document.getElementById('suggestionsBox');
+
+        if (toggleButton && suggestionsBox) {
+            toggleButton.addEventListener('click', function() {
+                // 1. Alterna la clase para mostrar/ocultar el div
+                suggestionsBox.classList.toggle('is-visible');
+
+                // 2. Alterna el atributo ARIA para accesibilidad
+                const isExpanded = toggleButton.getAttribute('aria-expanded') === 'true';
+                toggleButton.setAttribute('aria-expanded', !isExpanded);
+            });
+        }
+    });
+
+    </script>
 </div>

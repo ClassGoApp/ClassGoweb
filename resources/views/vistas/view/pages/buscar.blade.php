@@ -2,21 +2,42 @@
 
 @section('content')
 
-    <header class="header-main">
-        <div class="container container--center">
-            <h1 class="header-main__title">Descubre un Tutor en Línea para tus Estudios</h1>
-            <p class="header-main__subtitle">
-                Domina cualquier materia con la ayuda de nuestros tutores expertos y alcanza tus metas académicas.
-            </p>
-            <livewire:buscar-tutor>
+<section class="buscar-section">
+    <div class="buscar-header">
+        <div class="buscar-header-content">
+            <div class="container container--center">
+                
+                <h1 class="header-main__title">Descubre un Tutor en Línea para tus Estudios</h1>
+                <p class="header-main__subtitle">
+                    Domina cualquier materia con la ayuda de nuestros tutores expertos y alcanza tus metas académicas.
+                </p>
+                <livewire:buscar-tutor>
+                <p class="header-main__subtitle" id="texto">
+                    ¿Que deseas aprender?
+                </p>
+                <div class="loading-indicator">
+                    <span class="loader"></span>
+                </div>
+                
+            </div>
         </div>
-    </header>
-    <div class="loading-indicator">
-        <span class="loader"></span>
     </div>
 
-
     <main class="main-content container--center" id="mainContent">
+
+        {{-- <div class="course-grid">
+            @foreach ($topSubjects as $item)
+                <div class="card-filtro">
+                    <div class="card-filtro__image-container">
+                        <img src="{{ asset('images/filtros/contabilidadFiltro.png') }}" alt="Ilustración de Contabilidad" class="card-filtro__image">
+                    </div>
+                    <div class="card-filtro__content">
+                        <h3 class="card-filtro__title">{{ $item->subject->name }}</h3>
+                    </div>
+                </div>
+            @endforeach
+        
+        </div> --}}
         
         <!-- Filtros de materias -->
         <div id="filterControls" class="filter-controls__list">
@@ -85,7 +106,7 @@
                         class="card-tutor__detail-panel">
                         
                         <div class="detail-panel__header">
-                            <h3 class="detail-panel__title">José López</h3>
+                            <h3 class="detail-panel__title">{{ $tutor->profile->full_name }}</h3>
                             <button @click="expanded = false" class="detail-panel__close-btn">
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                             </button>
@@ -115,25 +136,36 @@
         <div class="paginacion">
             {{ $tutors->links()}}
         </div>
+
+        <div class="cta-section-wrapper" id="cta-section">
+            <div class="cta-card">
+                <div class="cta-card__content">
+                    
+                    <h2 class="cta-card__title">
+                        Comparte tu conocimiento. Transforma el futuro.
+                    </h2>
+                    
+                    <p class="cta-card__subtitle">
+                        Ayuda a estudiantes a alcanzar sus metas, genera un ingreso extra y sé parte de esta comunidad de aprendizaje. Tu pasión por enseñar puede marcar la diferencia.
+                    </p>
+                    
+                    <div class="cta-card__action">
+                        <a href="#" class="cta-card__button">
+                            ¿Deseas dar tutorías?
+                        </a>
+                    </div>
+
+                    <p class="cta-card__note">
+                        Regístrate como tutor y comienza a enseñar
+                    </p>
+                    
+                </div>
+            </div>
+        </div>
     </main>
 
-    <div class="course-grid">
-
-        <div class="card-filtro">
-            
-            <div class="card-filtro__image-container">
-                <img src="{{ asset('images/filtros/contabilidadFiltro.png') }}" alt="Ilustración de Contabilidad" class="card-filtro__image">
-            </div>
-            
-            <div class="card-filtro__content">
-                <h3 class="card-filtro__title">CONTABILIDAD</h3>
-            </div>
-            
-        </div>
+</section>
     
-    </div>
-
-
     <script>
         document.addEventListener('DOMContentLoaded', () => {
         // 1. SELECTORES DE ELEMENTOS
@@ -143,6 +175,9 @@
         const tutorCards = document.querySelectorAll('.card-tutor');
         const menuContainer = document.getElementById('mainContent');
         const loadingIndicator = document.querySelector('.loading-indicator');
+        const filtrosContainer = document.querySelector('#filterControls');
+        const ctaSection = document.querySelector('#cta-section');
+        const subtitleElement = document.querySelector('#texto');
 
         /**
          * @description Filtra y busca los tutores basándose en el ID de materia activo y el término de búsqueda.
@@ -161,14 +196,20 @@
             if(searchTerm){
                 loadingIndicator.style.display = 'flex';
                 menuContainer.style.display = 'none';
+                filtrosContainer.style.display = 'none';
+                subtitleElement.textContent = 'Buscando...'
                 
                 setTimeout(() => {
                     loadingIndicator.style.display = 'none';
+                    subtitleElement.style.display= 'none';
                 }, "1000");
                  
             }
             else{
                 menuContainer.style.display = 'block';
+                filtrosContainer.style.display = 'flex';
+                subtitleElement.style.display= 'block';
+                subtitleElement.textContent = '¿Qué deseas aprender?'
                 tutorCards.forEach(card => {
                     // Obtenemos la cadena de IDs de materias del tutor (ej: "101,105,112")
                     const tutorSubjectIdsString = card.dataset.materiasIds || '';
@@ -224,10 +265,9 @@
         if (!inputElement) return; // Salir si no se encuentra el input
 
         const texts = [
-            "¿Qué necesitas aprender hoy?",
-            "Busca por nombre del tutor...",
+            "Busca por nombre del tutor: Gariel Alpiry...",
             "Busca por materia: Matemáticas, Contabilidad...",
-            "o por tema: Álgebra, Cálculo..."
+            "Buscar por temas: Álgebra, Cálculo..."
             ,
         ];
 

@@ -91,7 +91,7 @@ class HomeController extends Controller
 
         //Obtener parámetros de la URL (incluído 'page' automáticamente por Laravel)
         $search = $request->input('search');
-        $perPage = 12;
+        $perPage = 50;
 
         $tutors = $this->tutorRepository->getFeaturedTutors($perPage, $search);
         $topSubjects = $this->tutorRepository->getTopSevenSubjects(); //lOS SIETE GRUPOS CON MÁS TUTORES
