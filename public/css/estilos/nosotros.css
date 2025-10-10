@@ -404,13 +404,13 @@
 /* ==================== 7 - Nosotros Equipo ==================== */
 /* Estilos base para dispositivos móviles (ancho < 768px) */
 /* -------------------------------------------------------- */
- /* =============================*/
+/* =============================*/
 
- .team-section {
-    padding: 40px 20px;
-    max-width: 1300px;
-    margin: 0 auto;
-    font-family: Arial, sans-serif;
+.team-section {
+  padding: 40px 20px;
+  max-width: 1300px;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
 }
 
 .team-header {
@@ -432,136 +432,171 @@
   max-width: 48rem;
   margin: 0 auto;
 }
+
 /* Rejilla para los miembros del equipo */
 .team-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* 4 columnas en desktop, se ajusta automáticamente */
-    gap: 40px; /* Espacio entre los miembros */
-    justify-items: center; /* Centra los elementos en la rejilla */
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 40px;
+  justify-items: center;
 }
 
-.team-member{
+.team-member {
   text-align: center;
 }
 
+/* 🔹 Centrar la primera card en PC y tablets */
+.team-member.first-card {
+  grid-column: 1 / -1;
+  /* ocupa toda la fila */
+  justify-self: center;
+  /* la centra horizontalmente */
+}
+
+/* 🔹 En pantallas pequeñas vuelve al flujo normal */
+@media (max-width: 768px) {
+  .team-member.first-card {
+    grid-column: auto;
+    justify-self: center;
+  }
+}
+
+/* Resto del estilo (sin cambios) */
 .member-item {
-    position: relative;
-    width: 150px;
-    height: 150px;
-    margin: 0 auto 15px auto;
+  position: relative;
+  width: 150px;
+  height: 150px;
+  margin: 0 auto 15px auto;
 }
 
 .member-photo-wrapper {
-    /* Mantenemos el tamaño y la forma circular. */
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    overflow: hidden; /* Esto ahora solo recorta la imagen dentro del círculo. */
-    background-color: #f0f0f0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid #e0e0e0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #e0e0e0;
 }
 
 .member-photo {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    filter: grayscale(30%) contrast(1.1);
-    transition: filter 0.3s ease;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: grayscale(30%) contrast(1.1);
+  transition: filter 0.3s ease;
 }
 
-/* El enlace ahora se posiciona en relación con el nuevo padre. */
 .member-link {
-    position: absolute;
-    bottom:10px; /* Ajustado para que se muestre debajo del borde. */
-    right: 10px; /* Ajustado para que se muestre a un lado. */
-    background-color: #017ebc;
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    text-decoration: none;
-    font-size: 18px;
-    transition: background-color 0.3s ease;
-    opacity: 0;
-    transform: scale(0.8);
-    transition: opacity 0.3s ease, transform 0.3s ease;
-    z-index: 10; /* Asegura que esté por encima de la foto. */
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background-color: #017ebc;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  opacity: 0;
+  transform: scale(0.8);
+  z-index: 10;
 }
 
 .arrow-icon {
-    width: 18px;
-    height: 18px;
-    color: white;
-    stroke: white;
+  width: 18px;
+  height: 18px;
+  color: white;
+  stroke: white;
 }
 
 .member-name {
-    font-size: 1.2em;
-    font-weight: bold;
-    color: #333;
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #333;
 }
 
-/* Título/Cargo del miembro */
 .member-title {
-    font-size: 0.95em;
-    color: #666;
-    margin-top: 0;
+  font-size: 0.95em;
+  color: #666;
+  margin-top: 0;
 }
 
-/* El efecto de hover ahora se aplica al contenedor padre. */
 .member-item:hover .member-link {
-    opacity: 1;
-    transform: scale(1);
+  opacity: 1;
+  transform: scale(1);
 }
 
 .member-item:hover .member-photo {
-    filter: grayscale(0%) contrast(1);
+  filter: grayscale(0%) contrast(1);
 }
+
 
 /* Media Queries para Responsividad */
 @media (max-width: 1024px) {
-    .team-grid {
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* 3 columnas en tabletas */
-        gap: 30px;
-    }
-    
+  .nosotros-header-content {
+    padding-top: 10rem !important;
+    /* fuerza que el padding-top aumente en tablets */
+  }
+
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    /* 2 columnas para el resto */
+    gap: 30px;
+    justify-items: center;
+  }
+
+  /* La primera card ocupa toda la fila y se centra */
+  .team-member.first-card {
+    grid-column: 1 / -1;
+    /* ocupa toda la fila */
+    justify-self: center;
+  }
 }
 
-@media (max-width: 768px) {
-    .team-grid {
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* 2 columnas en tabletas más pequeñas */
-        gap: 25px;
-    }
 
-    .member-photo-wrapper {
-        width: 120px;
-        height: 120px;
-    }
-    .member-name {
-        font-size: 1.1em;
-    }
-    .member-title {
-        font-size: 0.9em;
-    }
+@media (max-width: 767px) {
+  .team-grid {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    /* 2 columnas en tabletas más pequeñas */
+    gap: 25px;
+  }
+
+  .member-photo-wrapper {
+    width: 120px;
+    height: 120px;
+  }
+
+  .member-name {
+    font-size: 1.1em;
+  }
+
+  .member-title {
+    font-size: 0.9em;
+  }
 }
 
 @media (max-width: 480px) {
-    .team-grid {
-        grid-template-columns: 1fr; /* 1 columna en móviles */
-        gap: 20px;
-    }
-    .member-photo-wrapper {
-        width: 150px;
-        height: 150px;
-    }
+  .team-grid {
+    grid-template-columns: 1fr;
+    /* 1 columna en móviles */
+    gap: 20px;
+  }
+
+  .member-photo-wrapper {
+    width: 150px;
+    height: 150px;
+  }
 }
+
 /* -------------------------------------------------------- */
 /* Media Query para Tablets (ancho >= 768px) */
 /* -------------------------------------------------------- */
@@ -616,7 +651,7 @@
 /* Media Query para Escritorio (ancho >= 1024px)  personal*/
 /* -------------------------------------------------------- */
 
-@media (min-width: 1024px) {
+@media (min-width: 1025px) {
   .team-grid {
     grid-template-columns: repeat(3, 1fr);
     /* Tres columnas en escritorio */
@@ -643,7 +678,7 @@
 /* =================== home-mobile.css =================== */
 /* home-mobile.css: Estilos responsivos para móvil (max-width: 768px) */
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
 
 
   .nosotros-card .card {
@@ -756,6 +791,44 @@
   .nosotros-vision-subtext2 {
     padding: 0rem;
     text-align: center;
+  }
+
+  .nosotros-mision,
+  .nosotros-vision {
+    width: 100vw;
+    /* ocupa todo el ancho del móvil */
+    margin: 0;
+    padding: 1.5rem 0;
+    /* agrega espacio arriba y abajo */
+  }
+
+  .nosotros-mision-text,
+  .nosotros-vision-text {
+    width: 100%;
+    padding: 0 0.8rem;
+    /* pequeño espacio lateral */
+    margin: 0;
+    text-align: left !important;
+  }
+
+  .nosotros-mision-title,
+  .nosotros-mision-text-general1,
+  .nosotros-mision-text-general2,
+  .nosotros-vision-title,
+  .nosotros-vision-subtext,
+  .nosotros-vision-subtext2 {
+    text-align: left !important;
+    margin: 0.6rem 0;
+    /* espacio entre líneas y títulos */
+    padding: 0 0.8rem;
+    line-height: 1.4em;
+    word-break: break-word;
+  }
+
+  /* Permite que los textos respiren dentro del flex */
+  .nosotros-mision-text,
+  .nosotros-vision-text {
+    flex: 1 1 auto;
   }
 
   /* ====== LOGROS ===== */

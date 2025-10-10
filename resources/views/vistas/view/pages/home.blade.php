@@ -250,11 +250,11 @@
         <!-- Grid responsivo -->
         <div class="grid-app">
 
-            <!-- Columna Izquierda: Contenido de texto -->
-            <div class="text-app">
-                <p data-translate="facil_simple_rapido"></p>
-                <h1 data-translate="instala_app"></h1>
-                <p data-translate="comienza_viaje_educativo"></p>
+      <!-- Columna Izquierda: Contenido de texto -->
+      <div class="text-app">
+        <p>Fácil, simple y rápido</p>
+        <h1>Instala nuestra App</h1>
+        <p>Comienza tu viaje educativo con nosotros. <br>¡Instálate hoy mismo nuestra app!</p>
 
                 <!-- Lista de características -->
                 <ul class="list-app">
@@ -277,30 +277,25 @@
                         <span data-translate="tarifas_asequibles"></span>
                     </li>
                 </ul>
-
-                <!-- Botón -->
-                <div>
-                    <a href="https://play.google.com/store/apps/details?id=com.neurasoft.classgo" class="btn-app"><span data-translate="descargar_ahora"></span></a>
-                </div>
-            </div>
-
-            <!-- Columna Derecha: Imagen -->
-            <div class="image-app">
-                <img
-                    src="{{ asset('images/home/celular-ClassGo.png')}}"
-                    alt="ClassGo"
-                    onerror="this.onerror=null;this.src='https://placehold.co/400x800/023047/FFFFFF?text=App';">
-            </div>
-
             <!-- Botón -->
-
+            <div>
+            <a href="https://play.google.com/store/apps/details?id=com.neurasoft.classgo" target="_blank" class="btn-app">
+                Descargar Ahora
+            </a>
+            </div>
+      </div>
+      <!-- Columna Derecha: Imagen -->
+                        
+        <div class="image-app">
+                    <img
+                        src="{{ asset('images/home/tugo-cel.gif')}}"
+                        alt="ClassGo"onerror="this.onerror=null;this.src='https://placehold.co/400x800/023047/FFFFFF?text=App';">
         </div>
-
-        <!-- Columna Derecha: Imagen -->
-
-
+        </div>
     </div>
+    
 </section>
+
 
 
 <!--HERO TUTORIAS Y ALIANZAS-->
