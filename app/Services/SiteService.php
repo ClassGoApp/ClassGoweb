@@ -152,6 +152,9 @@ public function getTutors($data = array()) {
         return User::with([
             'languages:id,name',
             'userSubjects.subject',
+            'educations.country',
+            'experiences',
+            'certificates'
         ])
         ->when(\Nwidart\Modules\Facades\Module::has('starup') && \Nwidart\Modules\Facades\Module::isEnabled('starup'), function ($query) {
             $query->with('badges:id,name,image');
@@ -310,14 +313,17 @@ public function getTutors($data = array()) {
             ->whereHas('profile', function ($query) {
                 $query->whereNotNull('verified_at');
             })
+            
             // Solo tutores con al menos un registro en companyCourseUsers
-            //->whereHas('companyCourseUsers')
+            ->whereHas( 'companyCourseUsers')
+            ->whereHas('subjects.group')
+
             ->with([
                 'profile:id,user_id,slug,tagline,verified_at,first_name,last_name,image,intro_video,description',
                 'address.state',
                 'address.country',
                 'educations',
-                'subjects:id,name',
+                'subjects:id,subject_group_id,name',
                 'userSubjectSlots'
             ])
             ->withCount([
@@ -561,7 +567,16 @@ public function getTutors($data = array()) {
                 });
             });
         }
-        // 4. Cargamos las relaciones y realizamos los cálculos.
+
+        // 4. Aplicamos la lógica de ordenamiento personalizado aquí.
+        // Esto ordena a 'Gabriel Alpiry Hurtado' primero si su nombre coincide,
+        // y luego continúa con el resto de la consulta.
+        $tutorsQuery->orderByRaw(
+            "CASE WHEN EXISTS (\n            SELECT 1 FROM profiles p WHERE p.user_id = users.id AND p.first_name = ? AND p.last_name = ?\n        ) THEN 0 ELSE 1 END",
+            ['Gabriel', 'Alpiry Hurtado']
+        );
+
+        // 5. Cargamos las relaciones y realizamos los cálculos.
         $tutors = $tutorsQuery->with([
                 'profile:id,user_id,first_name,last_name,slug,image,description,native_language',
                 'languages:id,name',
@@ -572,19 +587,19 @@ public function getTutors($data = array()) {
             ->orderByDesc('avg_rating')
             ->paginate($perPage);
 
-        // 5. Mapeamos los resultados para darles el formato deseado.
+        // 6. Mapeamos los resultados para darles el formato deseado. Esto no cambia.
         $profiles = $tutors->map(function ($tutor) use ($search) {
             $profile = $tutor->profile;
             $materias = [];
             $grupos = [];
-
             $allSubjects = [];
-            $matchedSubjects = []; 
+            $matchedSubjects = [];
+
             foreach ($tutor->userSubjects as $userSubject) {
                 if ($userSubject->subject) {
                     $subjectName = $userSubject->subject->name;
                     $allSubjects[] = $subjectName;
-                    
+
                     // Si hay una búsqueda, revisamos si esta materia coincide
                     if ($search && Str::contains(strtolower($subjectName), strtolower($search))) {
                         $matchedSubjects[] = $subjectName;
@@ -619,7 +634,7 @@ public function getTutors($data = array()) {
             ];
         });
 
-        // 6. Devolvemos la colección paginada con los datos formateados. Esto no cambia.
+        // 7. Devolvemos la colección paginada con los datos formateados. Esto no cambia.
         $result = $tutors;
         $result->setCollection($profiles);
         return $result;
@@ -628,69 +643,81 @@ public function getTutors($data = array()) {
 
     //=========================== HOME BUSCADOR ========================00
     public function getTutorBuscador($search = null)
-{
-    $tutorIds = \DB::table('model_has_roles')
-        ->join('roles', 'roles.id', '=', 'model_has_roles.role_id')
-        ->where('roles.name', 'tutor')
-        ->pluck('model_has_roles.model_id');
+    {
+        $tutorIds = \DB::table('model_has_roles')
+            ->join('roles', 'roles.id', '=', 'model_has_roles.role_id')
+            ->where('roles.name', 'tutor')
+            ->pluck('model_has_roles.model_id');
 
-    $tutors = User::whereIn('id', $tutorIds)
-        ->whereHas('profile', function ($q) use ($search) {
-            $q->whereNotNull('verified_at')
-              ->whereNotNull('first_name')
-              ->whereNotNull('last_name');
-            if ($search) {
-                $q->where(function($query) use ($search) {
-                    $query->where('first_name', 'like', "%$search%")
-                          ->orWhere('last_name', 'like', "%$search%")
-                          ->orWhereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ["%$search%"])
-                          ->orWhereRaw("CONCAT(last_name, ' ', first_name) LIKE ?", ["%$search%"]);
-                });
-            }
-        })
-        ->whereHas('userSubjects.subject.group')
-        ->with([
-            'profile:id,user_id,first_name,last_name,slug,image,description,native_language',
-            'languages:id,name',
-            'userSubjects.subject.group',
-        ])
-        ->withAvg('ratings as avg_rating', 'rating')
-        ->withCount('ratings as total_reviews')
-        ->orderByDesc('avg_rating')
-        ->limit(5) // 👈 importante para autocompletado
-        ->get();
+        $tutors = User::whereIn('id', $tutorIds)
+            // INICIO DE LA CLÁUSULA WHERE
+            ->where(function ($userQuery) use ($search) {
+                if ($search) {
+                    // 1. Búsqueda por Nombres (mantenemos tu lógica existente)
+                    $userQuery->whereHas('profile', function ($q) use ($search) {
+                        $q->whereNotNull('verified_at')
+                        ->whereNotNull('first_name')
+                        ->whereNotNull('last_name')
+                        ->where(function($query) use ($search) {
+                                $query->where('first_name', 'like', "%$search%")
+                                    ->orWhere('last_name', 'like', "%$search%")
+                                    ->orWhereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ["%$search%"])
+                                    ->orWhereRaw("CONCAT(last_name, ' ', first_name) LIKE ?", ["%$search%"]);
+                            });
+                    });
 
-    // Transforma la colección a un array plano
-    $profiles = $tutors->map(function ($tutor) {
-        $profile = $tutor->profile;
-        $materias = [];
-        $grupos = [];
+                    // 2. O Búsqueda por Materias (NUEVA LÓGICA)
+                    $userQuery->orWhereHas('userSubjects.subject', function($q) use ($search) {
+                        $q->where('name', 'like', "%$search%");
+                    });
+                }
+            })
+            // FIN DE LA CLÁUSULA WHERE
 
-        foreach ($tutor->userSubjects as $userSubject) {
-            if ($userSubject->subject) {
-                $materias[] = $userSubject->subject->name;
-                if ($userSubject->subject->group) {
-                    $grupos[] = $userSubject->subject->group->name;
+            ->whereHas('userSubjects.subject.group')
+            ->with([
+                'profile:id,user_id,first_name,last_name,slug,image,description,native_language',
+                'languages:id,name',
+                'userSubjects.subject.group',
+            ])
+            ->withAvg('ratings as avg_rating', 'rating')
+            ->withCount('ratings as total_reviews')
+            ->orderByDesc('avg_rating')
+            ->limit(5)
+            ->get();
+
+        // ... (El resto del código para transformar el array se mantiene) ...
+
+        $profiles = $tutors->map(function ($tutor) {
+            $profile = $tutor->profile;
+            $materias = [];
+            $grupos = [];
+
+            foreach ($tutor->userSubjects as $userSubject) {
+                if ($userSubject->subject) {
+                    $materias[] = $userSubject->subject->name;
+                    if ($userSubject->subject->group) {
+                        $grupos[] = $userSubject->subject->group->name;
+                    }
                 }
             }
-        }
 
-        return [
-            'user_id' => $tutor->id,
-            'full_name' => trim("{$profile->first_name} {$profile->last_name}"),
-            'slug' => $profile->slug,
-            'image' => $profile->image,
-            'description' => $profile->description,
-            'native_language' => $profile->native_language,
-            'languages' => $tutor->languages->pluck('name'),
-            'avg_rating' => round($tutor->avg_rating ?? 0, 2),
-            'total_reviews' => $tutor->total_reviews ?? 0,
-            'materias' => array_unique($materias),
-            'grupos' => array_unique($grupos),
-        ];
-    });
+            return [
+                'user_id' => $tutor->id,
+                'full_name' => trim("{$profile->first_name} {$profile->last_name}"),
+                'slug' => $profile->slug,
+                'image' => $profile->image,
+                'description' => $profile->description,
+                'native_language' => $profile->native_language,
+                'languages' => $tutor->languages->pluck('name'),
+                'avg_rating' => round($tutor->avg_rating ?? 0, 2),
+                'total_reviews' => $tutor->total_reviews ?? 0,
+                'materias' => array_unique($materias),
+                'grupos' => array_unique($grupos),
+            ];
+        });
 
-    return $profiles; // ✅ Ahora es una colección simple
+        return $profiles;
     }
 
 

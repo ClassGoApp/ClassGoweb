@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\DB;
 use App\Models\UserSubject;
 use App\Services\SiteService;
 use App\Services\CountUserService;
+use App\Repositories\TutorRepository;
+
 
 
 
@@ -19,10 +21,13 @@ class HomeController extends Controller
     protected $siteService;
     protected $countUserService;
 
-    public function __construct(SiteService $siteService,  CountUserService $countUserService)
+    protected $tutorRepository;
+
+    public function __construct(SiteService $siteService,  CountUserService $countUserService, TutorRepository $tutorRepository)
     {
         $this->siteService = $siteService;
         $this->countUserService = $countUserService;
+        $this->tutorRepository = $tutorRepository;
     }
 
     public function index()
@@ -92,44 +97,21 @@ class HomeController extends Controller
     {
         return view('vistas.view.pages.buscartutor');
     }
-    public function enrollStudent(  $conferenceId, $studentId)
-    {        
-        return DB::transaction(function () use ($conferenceId, $studentId) {
-            $conference = Conferences::lockForUpdate()->findOrFail($conferenceId);
-            $student    = User::where('role', 'student')->findOrFail($studentId);
 
-            // Verificar si ya está inscrito
-            $already = DB::table('conference_student')
-                ->where('conference_id', $conference->id)
-                ->where('student_id', $student->id)
-                ->exists();
+    public function buscar(Request $request){
 
-            if ($already) {
-                return ['ok' => true, 'message' => 'El estudiante ya está inscrito.'];
-            }
+        //Obtener parámetros de la URL (incluído 'page' automáticamente por Laravel)
+        $search = $request->input('search');
+        $perPage = 50;
 
-            // **Asegurar cupo atómicamente**
-            // Intento incrementar solo si aún hay cupo
-            $updated = DB::table('conferences')
-                ->where('id', $conference->id)
-                ->whereColumn('enrolled_students', '<', 'ability')
-                ->update([
-                    'enrolled_students' => DB::raw('enrolled_students + 1'),
-                ]);
+        $tutors = $this->tutorRepository->getFeaturedTutors($perPage, $search);
+        $topSubjects = $this->tutorRepository->getTopSevenSubjects(); //lOS SIETE GRUPOS CON MÁS TUTORES
 
-            if ($updated === 0) {
-                return ['ok' => false, 'message' => 'No hay cupos disponibles.'];
-            }
-
-            // Crear la inscripción en el pivot
-            DB::table('conference_student')->insert([
-                'conference_id' => $conference->id,
-                'student_id'    => $student->id,
-                'created_at'    => now(),
-                'updated_at'    => now(),
-            ]);
-
-            return ['ok' => true, 'message' => 'Inscripción exitosa.'];
-        });
+        // Pasar la colección paginada a la vista
+        return view('vistas.view.pages.buscar', [
+            'tutors' => $tutors,
+            'searchTerm' => $search,
+            'topSubjects' => $topSubjects,
+        ]);
     }
 }

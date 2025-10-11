@@ -14,15 +14,15 @@ class CountUserService {
     }
 
     public function getUserCounts() {
-        $totalUsers = User::whereDoesntHave('roles', function ($query) {
-            $query->where('name', 'admin');
-        })->count();
+        
         $studentCount = User::whereHas('roles', function ($query) {
             $query->where('name', 'student');
         })->count();
         $tutorCount = User::whereHas('roles', function ($query) {
             $query->where('name', 'tutor');
         })->count();
+
+        $totalUsers = $studentCount + $tutorCount;
         return compact('totalUsers', 'studentCount', 'tutorCount');
     }
 }

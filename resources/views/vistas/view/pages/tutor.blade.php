@@ -1,7 +1,7 @@
 @extends('vistas.view.layouts.app')
 
 @section('content')
-
+{{-- tutor-perfil.css --}}
 <div class="tutor-bg">
     <!-- Contenido Principal -->
     <main class="tutor-main">
@@ -12,6 +12,7 @@
             <span class="tutor-breadcrumb-current">{{ $tutor->profile->first_name ?? '' }} {{ $tutor->profile->last_name ?? '' }}</span>
         </div>
         <div class="tutor-grid">
+
             <!-- Columna Izquierda (Información del Tutor) -->
             <div class="tutor-col tutor-col-main">
                 <!-- Card Principal del Tutor -->
@@ -72,7 +73,7 @@
                     </div>
                 </div>
                 <!-- SECCIÓN DE PESTAÑAS PRINCIPAL -->
-                <div class="tutor-tabs-card">
+                <div class="tutor-tabs-card" id="reservar">
                     <div class="tutor-tabs-nav">
                         <nav class="tutor-tabs-list" aria-label="Tabs">
                             <button onclick="changeTab(event, 'introduccion')" class="tutor-tab-btn active">Tutoría</button>                            
@@ -81,6 +82,7 @@
                             <button onclick="changeTab(event, 'resenas')" class="tutor-tab-btn">Reseñas</button>
                         </nav>
                     </div>
+                    
                     <div class="tutor-tabs-content">
                         <div id="introduccion" class="tutor-tab-content">
                             {{-- <div>
@@ -141,6 +143,7 @@
                                 @endif
                             </div>
                         </div>
+                        
                         <div id="disponibilidad" class="tutor-tab-content hidden">
                             <h3 class="tutor-section-title-lg">Reserva una sesión</h3>
                             {{-- <<<<======LOGICA PARA RESERVAR=======>>>>>>--}}
@@ -149,34 +152,151 @@
                         </div>
                         <div id="curriculum" class="tutor-tab-content hidden">
                            <nav class="tutor-subtabs-nav"><button onclick="changeSubTab(event, 'educacion')" class="tutor-subtab-btn active">Educación</button><button onclick="changeSubTab(event, 'experiencia')" class="tutor-subtab-btn">Experiencia</button><button onclick="changeSubTab(event, 'certificaciones')" class="tutor-subtab-btn">Certificación</button></nav>
+
                             <div id="educacion" class="tutor-subtab-content">
+                                @if($tutor->educations->isNotEmpty())
+
+                                    @foreach ($tutor->educations as $education)
+                                    <div class="info-card">
+                                        <div class="info-card-header">
+                                            <div class="info-card-content">
+                                                <h3 class="info-card-title">{{ $education->course_title}}</h3>
+                                                <div class="info-card-meta">
+
+                                                    <div class="info-card-meta-item">
+                                                        <svg class="info-card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                                                        <span>{{ $education->institute_name}}</span>
+                                                    </div>
+                                                    <div class="info-card-meta-item">
+                                                        <svg class="info-card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                                        <span> {{ $education->city }}, {{ $education->country->short_code}}</span>
+                                                    </div>
+                                                    <?php
+                                                        $fechaInicial = $education->start_date;
+                                                        $fechaInicioFormateada = date("d/m/Y", strtotime($fechaInicial));
+
+                                                        $fechaFinal = $education->end_date;
+                                                        $fechaEndFormateada = date("d/m/Y", strtotime($fechaFinal));
+                                                    ?>
+                                                    <div class="info-card-meta-item">
+                                                        <svg class="info-card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                                        <span>{{ $fechaInicioFormateada}} - {{ $fechaEndFormateada}}</span>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>   
+                                    @endforeach
+                                    
+                                @else
+                                
                                 <div class="tutor-empty-box">
-                                    {{-- LOGICA PARA MOSTRAR DE BASE DE DATOS --}}
                                     <div class="am-norecord">
-                                        @include('livewire.components.no-record')
+                                        @include('livewire.components.no-record') 
                                     </div>
                                 </div>
+                                @endif 
                             </div>
+
+
                             <div id="experiencia" class="tutor-subtab-content hidden">
-                                <div class="tutor-empty-box">
-                                    {{-- LOGICA PARA MOSTRAR DE BASE DE DATOS --}}
-                                    <div class="am-norecord">
-                                        @include('livewire.components.no-record')
+
+                                @if($tutor->experiences->isNotEmpty())
+                                    @foreach ($tutor->experiences as $experience)
+                                    <div class="info-card">
+                                        <div class="info-card-header">
+                                            <div class="info-card-content">
+                                                <h3 class="info-card-title">{{ $experience->title}}</h3>
+                                                <span style="color: #9ca3af;">{{ $experience->description}}</span>
+                                                <div class="info-card-meta">
+                                                    <div class="info-card-meta-item">
+                                                        <svg class="info-card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                                                        <span>{{ $experience->company}}</span>
+                                                    </div>
+                                                    <div class="info-card-meta-item">
+                                                        <svg class="info-card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                                        <span>{{ $experience->employment_type}}</span>
+                                                    </div>
+                                                    <div class="info-card-meta-item">
+                                                        <svg class="info-card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2h8a2 2 0 002-2v-1a2 2 0 012-2h1.945M7.707 4.293a1 1 0 010 1.414L4.414 9H19.586l-3.293-3.293a1 1 0 010-1.414a1 1 0 011.414 0l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414-1.414L19.586 15H4.414l3.293 3.293a1 1 0 01-1.414 1.414l-5-5a1 1 0 010-1.414l5-5a1 1 0 011.414 0z"></path></svg>
+                                                        <span>{{ $experience->location}}</span>
+                                                    </div>
+                                                    <?php 
+                                                        $fechaInicial = $experience->start_date;
+                                                        $fechaInicialFormateada = date('d/m/Y', strtotime($fechaFinal));
+
+                                                        $fechaFinal = $experience->end_date;
+                                                        $fechaFinalFormateada = date('d/m/Y', strtotime($fechaFinal));
+                                                    ?>
+                                                    <div class="info-card-meta-item">
+                                                        <svg class="info-card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                                        <span>{{ $fechaInicialFormateada}} - {{ $fechaFinalFormateada}}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>       
+                                    @endforeach
+                                @else
+                                     <!--En caso de estar vacio-->
+                                    <div class="tutor-empty-box">
+                                        <div class="am-norecord">
+                                            @include('livewire.components.no-record')
+                                        </div>
                                     </div>
-                                </div>
+                                @endif
+
+                                
                             </div>
+
                             <div id="certificaciones" class="tutor-subtab-content hidden">
+                                @if($tutor->certificates->isNotEmpty())
+                                    @foreach ($tutor->certificates as $certificate )
+                                    <div class="info-card">
+                                        <div class="info-card-header">
+                                            <div class="info-card-content">
+                                                <h3 class="info-card-title">{{ $certificate->title}}</h3>
+                                                <div class="info-card-meta">
+                                                    <div class="info-card-meta-item"">
+                                                        <svg class="info-card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg>
+                                                        <span>{{ $certificate->institute_name}}</span>
+                                                    </div>
+
+                                                    <?php
+                                                        $fechaInicial = $certificate->issue_date;
+                                                        $fechaInicialFormateado = date('d/m/Y', strtotime($fechaInicial)) ;
+                                                        $fechaFinal = $certificate->expiry_date;
+                                                        $fechaFinalFormateado = date('d/m/Y', strtotime($fechaFinal));
+                                                    ?>
+                                                    <div class="info-card-meta-item"">
+                                                        <svg class="info-card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                                        <span>{{ $fechaInicialFormateado}}</span>
+                                                    </div>
+                                                    <div class="info-card-meta-item"">
+                                                        <svg class="info-card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                                        <span>{{ $fechaFinalFormateado}}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @endforeach
+                                @else
+                                <!--En caso de estar vacio-->
                                 <div class="tutor-empty-box">
-                                    {{-- LOGICA PARA MOSTRAR DE BASE DE DATOS --}}
                                     <div class="am-norecord">
                                         @include('livewire.components.no-record')
                                     </div>
                                 </div>
+                                @endif
+
                             </div>
                         </div>
+
                         <div id="resenas" class="tutor-tab-content hidden">
                             <h3 class="tutor-section-title" style="margin-bottom: 1.5rem;">Reseñas de estudiantes</h3>
-                            <div class="tutor-reviews-box">
+                            {{-- <div class="tutor-reviews-box">
                                 <!-- Resumen de calificación -->
                                 <div class="tutor-reviews-summary">
                                     <div class="tutor-reviews-score" style="font-size:2.5rem;">0.0</div>
@@ -204,7 +324,7 @@
                                     </div>
                                     @endfor
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="tutor-empty-box tutor-reviews-empty" style="text-align:center;margin-top:2rem;padding-top:2rem;border-top:1px solid #e0e0e0;">
                                 {{-- LOGICA PARA MOSTRAR DE BASE DE DATOS --}}
                                 <div class="am-norecord">
@@ -229,10 +349,20 @@
                     </div>
                     <div class="tutor-actions-btns">
                         @role('student')
-                            <button onclick="changeTab(event, 'disponibilidad')" class="tutor-btn tutor-btn-now" id="btn-go-disponibilidad">
-                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tutor-btn-icon"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect><line x1="16" x2="16" y1="2" y2="6"></line><line x1="8" x2="8" y1="2" y2="6"></line><line x1="3" x2="21" y1="10" y2="10"></line></svg>
-                            <span>Reservar</span></button>
-                        
+                            <a href="#reservar">
+                                <button onclick="goToTab('disponibilidad')" class="tutor-btn tutor-btn-now" id="btn-go-disponibilidad">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tutor-btn-icon"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect><line x1="16" x2="16" y1="2" y2="6"></line><line x1="8" x2="8" y1="2" y2="6"></line><line x1="3" x2="21" y1="10" y2="10"></line></svg>
+                                    <span>Reservar</span>
+                                </button>
+                            </a>
+
+                           <button id="favorite-btn-blue" class="favorite-btn-blue tutor-btn tutor-btn-reservar" aria-label="Agregar a favoritos">
+                                <svg class="heart-icon-blue" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                                </svg>
+                                <span id="text-favorito">Añadir a Favoritos</span>
+                            </button>
+                       
                         @elserole('tutor')
                         <a href="{{ route('tutor.dashboard')}}">
                             <button class="tutor-btn tutor-btn-now">
@@ -246,7 +376,7 @@
                             <span>Compartir perfil</span>
                         </button>
 
-                        <a href="{{ route('buscar.tutor')}}">
+                        {{-- <a href="{{ route('buscar.tutor')}}">
                             <button class="tutor-btn tutor-btn-reservar" >
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="11" cy="11" r="8"></circle>
@@ -254,11 +384,13 @@
                             </svg>
                             <span>Buscar más Tutores</span>
                             </button>
-                        </a>
+                        </a> --}}
                     </div>
                 </div>
             </div>
         </div>
+        
+
     </main>
 
     <!-- Modal Compartir -->
@@ -267,7 +399,7 @@
             <button id="close-modal-share" style="position:absolute;top:10px;right:15px;background:none;border:none;font-size:1.5rem;cursor:pointer;">&times;</button>
             <img src="{{ asset('images/Tugo_With_Phone.png') }}" style="width: 300px; ">
             <h3 style="margin-bottom:1rem;">Compartir perfil</h3>
-            <p style="margin-bottom:1.2rem;">Hecha un vistazo a mi perfil en ClassGo!</p>
+            <p style="margin-bottom:1.2rem;">Hecha un vistazo a este perfil en ClassGo!</p>
             <div style="display:flex;flex-direction:column;gap:1rem;">
                 <button id="btn-share-whatsapp" style="background:#25D366;color:#fff;font-weight:600;padding:0.7rem 1rem;border:none;border-radius:0.7rem;display:flex;align-items:center;gap:0.7rem;cursor:pointer;justify-content:center;">
                     <svg width="20" height="20" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 3C9.373 3 4 8.373 4 15c0 2.385.832 4.58 2.236 6.364L4 29l7.818-2.236A12.94 12.94 0 0 0 16 27c6.627 0 12-5.373 12-12S22.627 3 16 3Zm0 22c-1.77 0-3.484-.463-4.98-1.34l-.355-.21-4.646 1.33 1.33-4.646-.21-.355A9.956 9.956 0 0 1 6 15c0-5.514 4.486-10 10-10s10 4.486 10 10-4.486 10-10 10Zm5.29-7.29c-.29-.145-1.71-.84-1.975-.935-.265-.095-.46-.145-.655.145-.195.29-.75.935-.92 1.13-.17.195-.34.22-.63.075-.29-.145-1.225-.45-2.335-1.435-.863-.77-1.445-1.72-1.615-2.01-.17-.29-.018-.447.127-.592.13-.13.29-.34.435-.51.145-.17.193-.29.29-.485.097-.195.048-.365-.024-.51-.073-.145-.655-1.58-.9-2.165-.237-.57-.48-.492-.655-.5-.17-.007-.365-.01-.56-.01-.195 0-.51.073-.78.365-.27.29-1.03 1.01-1.03 2.465 0 1.455 1.055 2.86 1.202 3.055.145.195 2.08 3.18 5.04 4.33.705.242 1.255.386 1.685.494.708.18 1.35.155 1.86.094.567-.067 1.71-.698 1.95-1.372.24-.673.24-1.25.17-1.372-.07-.122-.265-.195-.555-.34Z" fill="#fff"/></svg>
@@ -278,60 +410,48 @@
                     Compartir en Facebook
                 </button>
             </div>
-
-            
         </div>
     </div>
-    {{-- <!-- Modal Reserva -->
-    <div id="reservationModal" class="modal-overlay">
-        <div id="modalContent" class="modal-content">
-            <div class="modal-body">
-                <div class="modal-qr-column">
-                    <img src="{{ asset('storage/qr/77b1a7da.jpg')}}" alt="Código QR de Notion" class="qr-image">
-                </div>
 
-                <div class="modal-form-column">
-                    <h2 class="form-title">Selecciona la materia</h2>
-
-                    <div>
-                        <label for="comprobante" class="input-label">Comprobante de pago</label>
-                        <label for="comprobante" class="file-input-label">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="upload-icon" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clip-rule="evenodd" />
-                            </svg>
-                            Subir archivo
-                        </label>
-                        <input type="file" id="comprobante" class="file-input-hidden">
-                        <p id="fileName" class="file-name-display">Ningún archivo seleccionado</p>
-                    </div>
-
-                    <div>
-                        <label for="materia" class="input-label">Materia</label>
-                        <select id="materia" name="materia" class="select-input">
-                            <option value="">-- Elige una materia --</option>
-                            <option value="calculo1">Cálculo I</option>
-                            <option value="algebra">Álgebra Lineal</option>
-                            <option value="fisica2">Física II</option>
-                            <option value="programacion">Programación Avanzada</option>
-                            <option value="basedatos">Bases de Datos</option>
-                        </select>
-                    </div>
-
-                    <div class="info-box">
-                        <p><strong>Fecha:</strong> <span id="currentDate"></span></p>
-                        <p><strong>Hora:</strong> <span id="currentTime"></span></p>
-                    </div>
-
-                    <div class="action-buttons">
-                        <button id="cancelBtn" class="btn btn-secondary">Cancelar</button>
-                        <button class="btn btn-primary">Reservar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> --}}
 
     <script>
+        //Para los botones de favoritos
+        document.addEventListener('DOMContentLoaded', () => {
+            const favoriteBtn = document.getElementById('favorite-btn-blue');
+            const localStorageKey = 'isFavoriteBlue'; // Clave para el almacenamiento local
+            const textFavorito = document.getElementById('text-favorito');
+            const estiloFavorito = document.querySelector('.tutor-btn-reservar');
+
+            if (favoriteBtn) {
+                // Cargar el estado guardado al iniciar
+                const isFavorited = localStorage.getItem(localStorageKey) === 'true';
+                if (isFavorited) {
+                    favoriteBtn.classList.add('is-favorited-blue');
+                }
+
+
+                favoriteBtn.addEventListener('click', () => {
+                    // Alternar la clase en el botón
+                    const newFavoriteState = !favoriteBtn.classList.toggle('is-favorited-blue');
+
+                    // Guardar el nuevo estado en el almacenamiento local
+                    localStorage.setItem(localStorageKey, newFavoriteState);
+
+                    // Puedes añadir aquí la lógica para interactuar con el servidor
+                    console.log(estiloFavorito);
+
+                    if (newFavoriteState) {
+                        textFavorito.textContent = 'Añadir a Favoritos';
+                        
+                    } else {
+                        console.log('Botón con corazón azul desactivado.');
+                        textFavorito.textContent = 'En tus Favoritos';
+                    }
+
+                    
+                });
+            }
+        });
         // --- SCRIPT PARA PESTAÑAS ---
         
         function changeTab(event, tabID) {
@@ -349,6 +469,16 @@
             subTabButtons.forEach(button => button.classList.remove('active'));
             document.getElementById(tabID).classList.remove('hidden');
             event.currentTarget.classList.add('active');
+        }
+
+        function goToTab(tabID) {
+            // 1. Encontrar el botón de la pestaña con el tabID correspondiente.
+            const targetButton = document.querySelector(`.tutor-tab-btn[onclick*="'${tabID}'"]`);
+
+            // 2. Si el botón existe, simular un clic en él.
+            if (targetButton) {
+                targetButton.click();
+            }
         }
         // --- SCRIPT PARA CALENDARIO Y HORA ---
         document.addEventListener('DOMContentLoaded', function() {

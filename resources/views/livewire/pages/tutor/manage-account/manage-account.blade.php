@@ -111,13 +111,13 @@
         </div>
 
         <!-- Transaction History -->
-       {{-- <div class="transaction-history">
+        <div class="transaction-history">
             <div class="section-header">
                 <h2 class="section-title">Historial de Transacciones</h2>
             </div>
 
             <div style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
-                <table class="transaction-table">
+                <table class="transaction-table" >
                     <thead>
                         <tr>
                             <th>Fecha</th>
@@ -127,19 +127,56 @@
                         </tr>
                     </thead>
                     <tbody>
-                         <tr>
-                            <td>10 Jun, 2025</td>
-                            <td class="transaction-amount">150.00 Bs</td>
-                            <td class="transaction-method">Pago con QR</td>
-                            <td><span class="transaction-status">Completado</span></td>
-                        </tr> 
                         
+                        @if($pagos && $pagos->count() > 0)
+                           
+                            @foreach($pagos as $pago)
+                                <tr>
+                                    <td>{{ $pago->payment_date ? \Carbon\Carbon::parse($pago->payment_date)->format('d M, Y') : 'N/A' }}</td>
+                                    <td class="transaction-amount">{{ number_format($pago->amount, 2) }} Bs</td>
+                                    <td class="transaction-method">{{ $pago->payment_method ?? 'N/A' }}</td>
+                                    <td>
+                                        @php
+                                            $statusText = '';
+                                            $statusClass = '';
+                                            switch($pago->status) {
+                                                case 1:
+                                                    $statusText = 'Pendiente';
+                                                    $statusClass = 'pendiente';
+                                                    break;
+                                                case 2:
+                                                    $statusText = 'Pagado';
+                                                    $statusClass = 'pagado';
+                                                    break;
+                                                default:
+                                                    $statusText = 'Desconocido';
+                                                    $statusClass = 'desconocido';
+                                            }
+                                        @endphp
+                                        <span class="transaction-status {{ $statusClass }}">
+                                            {{ $statusText }}
+                                        </span>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @else
+                            <tr>
+                                <td colspan="4" style="text-align: center; padding: 2rem; font-style: italic; color: #6b7280;">
+                                    No hay transacciones registradas
+                                </td>
+                            </tr>
+                        @endif
                     </tbody>
                     
                 </table>
-                <p style="display: flex; justify-content: center; align-items: center; font-weight: bold;padding:2rem">Muy pronto...</p>
+                
+                
             </div>
-        </div>  --}}
+               <div class="pagination-wrapper" style="padding: 10px">
+                {{ $pagos->links('livewire::simple-bootstrap') }}
+            </div>
+            
+        </div>  
         @include('livewire.pages.tutor.manage-account.components.modal-por-definir')
         @include('livewire.pages.tutor.manage-account.components.modal-cuenta-bancaria')
         @include('livewire.pages.tutor.manage-account.components.modal-qr-nuevo')
@@ -270,3 +307,65 @@
     });
 </script>
 @endpush
+
+@push('styles')
+        <style>
+            /* Paginación */
+            .pagination-wrapper {
+                margin-top: 18px;
+                text-align: center;
+            }
+
+            .pagination {
+                display: inline-flex;
+                gap: 4px;
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+
+            .pagination li {
+                display: inline;
+            }
+
+            .pagination .active span,
+            .pagination li a {
+                padding: 6px 12px;
+                border-radius: 6px;
+                background: #f7f7f7;
+                color: #333;
+                text-decoration: none;
+                font-weight: 500;
+                transition: background 0.2s;
+            }
+
+            .pagination .active span {
+                background: #e38705ff;
+                color: #fff;
+            }
+
+            .pagination li a:hover {
+                background: #e3f2fd;
+                color: #1976d2;
+            }
+
+            .pagination .disabled span {
+                background: #eee;
+                color: #aaa;
+                cursor: not-allowed;
+            }
+
+
+            .page-link {
+                background: #FB8500;
+                color:white;
+            }
+
+            .page-link:hover  {
+                background: #e57b02ff !important;
+                color: white;
+            }
+        </style>
+
+
+    @endpush

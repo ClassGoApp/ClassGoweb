@@ -21,6 +21,7 @@ use App\Models\Code;
 use App\Models\Coupon;
 
 use App\Models\AccountSetting;
+use App\Models\UserPayoutMethod;
 use Illuminate\Support\Str;
 use App\Models\UserCoupon;
 
@@ -55,6 +56,10 @@ class IdentityVerification extends Component
     public $activeRoute;
     private ?IdentityService $userIdentity = null;
     private ?ProfileService $profileService = null;
+
+    
+
+
     public function boot()
     {
         $this->userIdentity = new IdentityService(Auth::user());
@@ -174,13 +179,20 @@ class IdentityVerification extends Component
      */
     public function updateInfo()
     {
+       
         $this->data = $this->form->updateInfo($this->hasStates);
 
 
-        $perfilcompleto = Auth::user()->profile?->created_at == Auth::user()->profile?->updated_at;
-        $googlecalendar = AccountSetting::where('user_id', Auth::user()->id)->first();
+        $perfil= Auth::user()->profile;
+        $perfilcompleto = ($perfil->image != null ) && ($perfil->intro_video !=null) && ($perfil->gender != null);
+        //dd($perfilcompleto);
 
-        if ($perfilcompleto==false  && $googlecalendar==null) {
+        $googlecalendar = AccountSetting::where('user_id', Auth::user()->id)->first();
+        $cuentatutor=UserPayoutMethod::where('user_id', Auth::user()->id)->first();      
+ 
+
+
+        if ($perfilcompleto==false  || $googlecalendar==null || $cuentatutor==null) {
             session()->flash('error', __('general.incomplete_profile_error'));
             //return $this->redirect(route(Auth::user()->role . '.profile.personal-details'), navigate: true);
         } else {

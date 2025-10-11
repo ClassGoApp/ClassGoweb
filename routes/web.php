@@ -48,6 +48,7 @@ use App\Http\Controllers\TutorPerfilController;
 
 
 Route::view('/e', 'vistas.view.pages.e')->name('e');
+Route::view('/traduccion', 'vistas.view.pages.traduccion')->name('traduccion');
 
 Route::get('/verify', function (\Illuminate\Http\Request $request) {
     $id = $request->query('id');
@@ -138,7 +139,9 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
     Route::view('/preguntas', 'vistas.view.pages.preguntas')->name('preguntas');
     Route::get('/tutores/{slug}', [HomeController::class, 'tutor'])->name('tutor');
     Route::view('/desarrolladores', 'vistas.view.pages.desarrolladores')->name('desarrolladores');
-    Route::get('/tutors', [HomeController::class, 'buscarTutor'])->name('buscar.tutor');
+    Route::get('/tutors', [HomeController::class, 'buscarTutor'])->name('buscar.tutor'); //<---ojo
+    Route::get('/buscar', [HomeController::class, 'buscar'])->name('buscar');
+
     //<=== Kevin Pasante ===>
     Route::view('/terminos', 'vistas.view.pages.terminos')->name('terminos');
 

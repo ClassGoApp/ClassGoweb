@@ -2,6 +2,8 @@
 
 namespace App\Console\Commands;
 
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
@@ -28,7 +30,7 @@ class CompleteSlotBookings extends Command
      */
     public function handle()
     {
-        Log::info('Comando CompleteSlotBookings ejecutado');
+        //Log::info('Comando CompleteSlotBookings ejecutado');
         $now = Carbon::now();
         $bookings = SlotBooking::where('status', 1) // 1 = Active
             ->whereNotNull('end_time')
@@ -37,7 +39,24 @@ class CompleteSlotBookings extends Command
         foreach ($bookings as $booking) {
             $booking->status = 5; // 5 = Completed
             $booking->save();
-            Log::info("Reserva {$booking->id} completada");
+
+            $tutor_id = $booking->tutor_id;
+            $tutor = User::find($tutor_id);
+
+            $adminEmail = config('mail.from.admin');
+            $user = Auth::user();
+            $contenido = "tutoria completada para el tutor {$tutor->profile->first_name} - {$tutor->profile->last_name}  ({$tutor->email}) de fecha {$booking->end_time}";
+
+            try {
+                \Mail::raw($contenido, function ($message) use ($adminEmail) {
+                    $message->to($adminEmail)
+                        ->subject('Tutoria Completada, Pago Pendiente');
+                });
+               
+            } catch (\Exception $e) {
+                Log::error("Error al enviar correo para la reserva {$booking->id}: " . $e->getMessage());
+            }
+            //Log::info("Reserva {$booking->id} completada");
         }
         $this->info('Proceso de completar reservas finalizado');
     }

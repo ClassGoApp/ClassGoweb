@@ -46,8 +46,8 @@ class BookingNotificationService
             $this->sendCursandoNotificationToStudent($booking);
         }
 
-        // Siempre emitir evento de broadcasting para la app móvil
-        $this->emitBroadcastingEvent($booking, $newStatus);
+        // // Siempre emitir evento de broadcasting para la app móvil
+        // $this->emitBroadcastingEvent($booking, $newStatus);
     }
 
     /**
