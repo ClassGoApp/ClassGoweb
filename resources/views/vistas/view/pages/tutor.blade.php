@@ -76,10 +76,46 @@
                 <!-- SECCION DE MATERIAS-->
                 <div class="subjects-card">
                     <h2 class="subjects-card__title">Materias que enseño</h2>
-                    
                     <div class="subjects-list">
+                        @php
+                            // Agrupar materias por grupo (asumiendo que $tutor->userSubjects está disponible)
+                            $materiasPorGrupo = [];
+                            if(isset($tutor->userSubjects)) {
+                                foreach($tutor->userSubjects as $userSubject) {
+                                    $grupo = $userSubject->subject->group->name ?? 'Otros';
+                                    $materia = $userSubject->subject->name ?? null;
+                                    if($materia) {
+                                        $materiasPorGrupo[$grupo][] = $materia;
+                                    }
+                                }
+                            }
+                            // Definir los 3 bloques SVG completos que quieres alternar.
+                            $icons = [
+                                '<span class="subject-item__icon subject-item__icon--math"><svg xmlns="http://www.w3.org/2000/svg" class="subject-item__svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v11.494m-9-5.747h18" /></svg></span>',
+                                '<span class="subject-item__icon subject-item__icon--design"><svg xmlns="http://www.w3.org/2000/svg" class="subject-item__svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg></span>',
+                                '<span class="subject-item__icon subject-item__icon--mechanics"><svg xmlns="http://www.w3.org/2000/svg" class="subject-item__svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg></span>',
+                            ];
+                        @endphp
+
+                        @foreach($materiasPorGrupo as $grupo => $materiasGrupo)
+                            <div class="subject-item">
+                                <div class="subject-item__header">
+                                    {{-- <span class="subject-item__icon subject-item__icon--math">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="subject-item__svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v11.494m-9-5.747h18" /></svg>
+                                    </span> --}}
+                                    {!! $icons[$loop->index % count($icons)] !!}
+                                    <h3 class="subject-item__name">{{ $grupo }}</h3>
+                                </div>
+                                
+                                <div class="subject-item__topics">
+                                    @foreach($materiasGrupo as $materia)
+                                        <span class="topic-tag">{{ $materia }}</span>
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endforeach
                         
-                        <div class="subject-item">
+                        {{-- <div class="subject-item">
                             <div class="subject-item__header">
                                 <span class="subject-item__icon subject-item__icon--math">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="subject-item__svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v11.494m-9-5.747h18" /></svg>
@@ -116,7 +152,7 @@
                             <div class="subject-item__topics">
                                 <span class="topic-tag">Mantenimiento de Motocicletas</span>
                             </div>
-                        </div>
+                        </div> --}}
                         
                     </div>
                 </div>
@@ -134,7 +170,7 @@
                     <div class="tutor-tabs-content">
                         <div id="introduccion" class="tutor-tab-content">
                             <div>
-                                <h3 class="tutor-section-title">Hola👋 Me llamo {{ $tutor->profile->first_name ?? '' }}</h3>
+                                <h3 class="tutor-section-title">Hola👋 Soy {{ $tutor->profile->first_name ?? '' }}</h3>
                                 <p class="tutor-section-text">{{ $tutor->profile->description ?? '" Soy un Tutor verificado y aprobado por ClassGo! Listo para responder tus dudas."' }}</p>                            </div>
                             {{-- <div>
                                 <h3 class="tutor-section-title">Puedo enseñar</h3>
