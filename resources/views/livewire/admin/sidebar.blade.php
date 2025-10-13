@@ -113,6 +113,14 @@ new class extends Component {
 
                 ],
             ],
+            [
+                'title' => __('sidebar.manage_cupones'),
+                'icon' => 'icon-user',
+                'routes' => [
+                    'admin.cupones.index' => __('sidebar.cupones'),
+
+                ],
+            ],
         ];
         if (\Nwidart\Modules\Facades\Module::has('subscriptions') && \Nwidart\Modules\Facades\Module::isEnabled('subscriptions')) {
             $this->menuItems[] = [

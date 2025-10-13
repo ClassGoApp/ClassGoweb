@@ -10,8 +10,8 @@
 			<nav class="navbar-links">
 				<ul>
 					<li>
-						<a href="{{ route('buscar.tutor')}}"
-							class="{{ (request()->is('tutores*') || request()->is('tutors*') || request()->routeIs('buscar.tutor')) ? 'active' : '' }}"
+						<a href="{{ route('buscar')}}"
+							class="{{ (request()->is('tutores*') || request()->is('tutors*') || request()->routeIs('buscar')) ? 'active' : '' }}"
 							data-translate="tutors">
 
 						</a>
@@ -197,7 +197,7 @@
 								</a>
 							</li>
 							<li>
-								<a href="{{ route('buscar.tutor') }}" class="user-menu__link">
+								<a href="{{ route('buscar') }}" class="user-menu__link">
 									<i class="user-menu__icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 											<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
 											<circle cx="9" cy="7" r="4"></circle>
@@ -254,7 +254,7 @@
 		<!-- Menú Móvil -->
 		<nav class="navbar-mobile" id="navbar-mobile">
 			<ul>
-				<li><a href="{{ route('buscar.tutor')}}" class="{{ (request()->is('tutores*') || request()->is('tutors*') || request()->routeIs('buscar.tutor')) ? 'active' : '' }}">Buscar Tutores</a></li>
+				<li><a href="{{ route('buscar')}}" class="{{ (request()->is('tutores*') || request()->is('tutors*') || request()->routeIs('buscar')) ? 'active' : '' }}">Buscar Tutores</a></li>
 				<li><a href="{{ route('nosotros')}}" class="{{ request()->is('nosotros*') ? 'active' : '' }}">Nosotros</a></li>
 				<li><a href="{{ route('como-trabajamos')}}" class="{{ request()->is('como-trabajamos*') ? 'active' : '' }}">Cómo trabajamos</a></li>
 				<li><a href="{{ route('preguntas')}}" class="{{ request()->is('preguntas*') ? 'active' : '' }}">Preguntas</a></li>

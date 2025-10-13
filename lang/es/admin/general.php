@@ -168,4 +168,6 @@ return [
     'error' => 'Error',
     'cache_cleared' => 'Caché borrado exitosamente',
     'impersonate_user' => 'Suplantar usuario',
+    'add_new_cupon' => 'Agregar nuevo cupón',
+    
 ];

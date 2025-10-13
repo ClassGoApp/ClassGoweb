@@ -130,19 +130,6 @@
                     <h3 class="member-name">Jhonny Durán</h3>
                     <p class="member-title" data-translate="jefi_Bdeveloper_rol"></p>
                 </div>
-
-                <div class="team-member">
-                    <div class="member-item">
-                        <div class="member-photo-wrapper">
-                            <img src="{{ asset('images/team/micaela.webp')}}" alt="Foto de Mikaela Leon" class="member-photo">
-                        </div>
-                        <a href="http://www.linkedin.com/in/micaela-leon-77b518380" class="member-link">
-                            <img class="arrow-icon" src="{{ asset('images/team/linkedin.png') }}" alt="">
-                        </a>
-                    </div>
-                    <h3 class="member-name">Mikaela Leon</h3>
-                    <p class="member-title" data-translate="jefi_diseño_rol"></p>
-                </div>
             </div>
 
         </div>

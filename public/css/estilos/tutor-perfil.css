@@ -1,4 +1,5 @@
 /* ==================== tutor-perfil.css ==================== */
+
 @import 'variables.css';
 
 /** TABLE OF CONTENTS PC
@@ -40,7 +41,9 @@
 /// END TABLE OF CONTENTS PC
 ------------------------------------------------------------*/
 
+
 /* ==================== 1 - Tutor Principal ==================== */
+
 .tutor-bg {
     margin: 0;
     padding: 0;
@@ -60,7 +63,9 @@
     padding: 8rem 1rem;
 }
 
+
 /* ==================== 2 - Tutor BreadCrumb ==================== */
+
 .tutor-breadcrumbs {
     color: white;
     font-size: 1rem;
@@ -82,7 +87,9 @@
     font-weight: bold;
 }
 
+
 /* ==================== 3 - Tutor Grid ==================== */
+
 .tutor-grid {
     display: grid;
     grid-template-columns: 2fr 1fr;
@@ -95,14 +102,18 @@
     gap: 2rem;
 }
 
+
 /* ==================== 4 - Tutor Card ==================== */
+
 .tutor-card-main {
     border-radius: 1.5rem;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
     overflow: hidden;
 }
 
+
 /* ==================== 5 - Tutor Banner ==================== */
+
 .tutor-banner {
     position: relative;
     width: 100%;
@@ -111,7 +122,9 @@
     background: #000;
 }
 
+
 /* ==================== 5.1 - Banner Video ==================== */
+
 .tutor-banner-video {
     left: 0;
     top: 0;
@@ -150,17 +163,21 @@
     color: #fff;
 }
 
+
 /* ==================== 6 - Tutor Perfil ==================== */
+
 .tutor-card-main-content {
     background: #ffffff;
     z-index: 5;
     position: relative;
-    padding: 2rem;
+    padding: 1rem 2rem 2rem 2rem;
     border-bottom-left-radius: 30px;
     border-bottom-right-radius: 30px;
 }
 
+
 /*--------- Imagen de perfil --------*/
+
 .tutor-profile-img {
     width: 128px;
     height: 128px;
@@ -173,8 +190,6 @@
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
     z-index: 10;
 }
-
-
 
 .tutor-profile-info {
     margin-left: 150px;
@@ -191,7 +206,6 @@
     display: flex;
     gap: 2rem;
     color: #666;
-    margin-top: 0.5rem;
 }
 
 .tutor-profile-rating,
@@ -220,41 +234,251 @@
     text-align: center;
 }
 
+
 /*Añadir a favoritos*/
+
 .favorite-btn-blue {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.2s ease-in-out;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease-in-out;
 }
 
 .heart-icon-blue {
-  width: 24px;
-  height: 24px;
-  fill: none; /* Relleno inicial transparente */
-  stroke: white; /* Color del borde del corazón (gris) */
-  stroke-width: 1.5; /* Grosor del borde */
-  transition: fill 0.3s ease-in-out, stroke 0.3s ease-in-out;
-}
-.favorite-btn-blue:hover .heart-icon-blue {
-  stroke: white; /* Borde azul al pasar el mouse */
+    width: 24px;
+    height: 24px;
+    fill: none;
+    /* Relleno inicial transparente */
+    stroke: white;
+    /* Color del borde del corazón (gris) */
+    stroke-width: 1.5;
+    /* Grosor del borde */
+    transition: fill 0.3s ease-in-out, stroke 0.3s ease-in-out;
 }
 
-.tutor-btn-favorito{
+.favorite-btn-blue:hover .heart-icon-blue {
+    stroke: white;
+    /* Borde azul al pasar el mouse */
+}
+
+.tutor-btn-favorito {
     background: var(--primary-color) !important;
     color: white;
 }
 
-.favorite-btn-blue.is-favorited-blue .heart-icon-blue{
-  fill: white; /* Relleno azul cuando se activa */
-  stroke: white; /* Borde azul cuando se activa */
+.favorite-btn-blue.is-favorited-blue .heart-icon-blue {
+    fill: white;
+    /* Relleno azul cuando se activa */
+    stroke: white;
+    /* Borde azul cuando se activa */
 }
 
+
+/*======================7 MATERIAS */
+
+
+/* ======================================================= */
+
+
+/* VARIABLES DE COLOR (Recomendado para consistencia) */
+
+
+/* ======================================================= */
+
+:root {
+    --color-white: #FFFFFF;
+    --color-gray-50: #F9FAFB;
+    --color-gray-200: #E5E7EB;
+    --color-gray-700: #4B5563;
+    --color-gray-800: #1F2937;
+    --color-blue-100: #DBEAFE;
+    /* blue-100 */
+    --color-blue-800: #1E40AF;
+    /* blue-800 */
+    --color-purple-100: #EDE9FE;
+    /* purple-100 */
+    --color-purple-800: #5B21B6;
+    /* purple-800 */
+    --color-green-100: #D1FAE5;
+    /* green-100 */
+    --color-green-800: #065F46;
+    /* green-800 */
+}
+
+
+/* ======================================================= */
+
+
+/* 1. CARD PRINCIPAL (subjects-card) */
+
+
+/* ======================================================= */
+
+.subjects-card {
+    /* bg-white rounded-2xl shadow-sm */
+    background-color: var(--color-white);
+    border-radius: 1rem;
+    /* rounded-2xl */
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    /* shadow-sm */
+    /* p-6: padding: 1.5rem; */
+    padding: 1.5rem;
+}
+
+
+/* MEDIA QUERY: md:p-8 */
+
+@media (min-width: 768px) {
+    .subjects-card {
+        padding: 2rem;
+    }
+}
+
+.subjects-card__title {
+    /* text-2xl font-bold text-gray-800 mb-6 */
+    font-size: 1.5rem;
+    /* text-2xl */
+    font-weight: 700;
+    /* font-bold */
+    color: var(--color-gray-800);
+    margin-bottom: 1.5rem;
+    /* mb-6 */
+    margin-top: 0;
+}
+
+
+/* ======================================================= */
+
+
+/* 2. LISTA DE MATERIAS (subjects-list) */
+
+
+/* ======================================================= */
+
+.subjects-list {
+    /* space-y-6 */
+    /* Crea espacio entre los divs de cada materia */
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    /* space-y-6 */
+}
+
+
+/* ======================================================= */
+
+
+/* 3. ÍTEM INDIVIDUAL DE MATERIA (subject-item) */
+
+
+/* ======================================================= */
+
+.subject-item {
+    /* Contenedor de una materia completa */
+}
+
+.subject-item__header {
+    /* flex items-center gap-3 */
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    /* gap-3 */
+}
+
+.subject-item__icon {
+    /* p-2 rounded-lg */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    /* p-2 */
+    border-radius: 0.5rem;
+    /* rounded-lg */
+    flex-shrink: 0;
+    /* Evita que el icono se encoja */
+}
+
+.subject-item__svg {
+    /* h-6 w-6 */
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+
+/* Colores Modificadores para los Íconos */
+
+.subject-item__icon--math {
+    /* bg-blue-100 text-blue-800 */
+    background-color: var(--color-blue-100);
+    color: var(--color-blue-800);
+}
+
+.subject-item__icon--design {
+    /* bg-purple-100 text-purple-800 */
+    background-color: var(--color-purple-100);
+    color: var(--color-purple-800);
+}
+
+.subject-item__icon--mechanics {
+    /* bg-green-100 text-green-800 */
+    background-color: var(--color-green-100);
+    color: var(--color-green-800);
+}
+
+.subject-item__name {
+    /* text-lg font-semibold text-gray-700 */
+    font-size: 1.125rem;
+    /* text-lg */
+    font-weight: 600;
+    /* font-semibold */
+    color: var(--color-gray-700);
+    margin: 0;
+}
+
+
+/* ======================================================= */
+
+
+/* 4. LISTA DE TEMAS (subject-item__topics) */
+
+
+/* ======================================================= */
+
+.subject-item__topics {
+    /* mt-3 ml-12 flex flex-wrap gap-2 */
+    margin-top: 0.75rem;
+    /* mt-3 */
+    margin-left: 3rem;
+    /* ml-12 (Alineado con el texto, 3rem = 1.5rem del ícono + 0.75rem de gap + 0.75rem del ícono) */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    /* gap-2 */
+}
+
+.topic-tag {
+    /* bg-gray-200 text-gray-800 text-sm font-medium px-3 py-1 rounded-full */
+    background-color: var(--color-gray-200);
+    color: var(--color-gray-800);
+    font-size: 0.875rem;
+    /* text-sm */
+    font-weight: 500;
+    /* font-medium */
+    padding: 0.25rem 0.75rem;
+    /* py-1 px-3 */
+    border-radius: 9999px;
+    /* rounded-full */
+    /* Pequeño ajuste para asegurar la línea base */
+    line-height: 1;
+}
+
+
 /* ==================== 7 - Tutor Tabs ==================== */
+
 .tutor-tabs-card {
     background: #fff;
     border-radius: 1.5rem;
@@ -271,8 +495,10 @@
     gap: 2rem;
     padding: 0 2rem;
     overflow-x: auto;
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE y Edge */
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE y Edge */
 }
 
 .tutor-tabs-list::-webkit-scrollbar {
@@ -358,7 +584,6 @@
     margin-top: 1.5rem;
 }
 
-
 .tutor-skill-item {
     display: flex;
     align-items: flex-start;
@@ -414,38 +639,58 @@
     border-radius: 1rem;
 }
 
+
 /* ==================== 8 - Tutor Calendario-Horario ==================== */
+
+
 /* Estilos para los días del calendario */
 
+
 /* ==================== 8.1 - Dias-Horarios Disponibles ==================== */
+
+
 /* .tutor-calendar-day.has-availability {
     border: 2px solid var(--terciary-color2);
 } */
+
 .tutor-calendar-day.has-availability {
     border: none;
     position: relative;
 }
+
 .tutor-calendar-day.has-availability::after {
-    content: ''; /* Campo obligatorio para que el pseudo-elemento se muestre */
-    position: absolute; /* Permite posicionar el punto con precisión */
-    bottom: 5px; /* Ajusta la distancia desde la parte inferior del div */
-    left: 50%; /* Centra el punto horizontalmente */
-    transform: translateX(-50%); /* Ajuste final para un centrado perfecto */
-    
-    width: 6px; /* Tamaño del punto */
-    height: 6px; /* Tamaño del punto */
-    background-color: var(--terciary-color2); /* Color del punto */
-    border-radius: 50%; /* ¡Esto lo convierte en un círculo perfecto! */
+    content: '';
+    /* Campo obligatorio para que el pseudo-elemento se muestre */
+    position: absolute;
+    /* Permite posicionar el punto con precisión */
+    bottom: 5px;
+    /* Ajusta la distancia desde la parte inferior del div */
+    left: 50%;
+    /* Centra el punto horizontalmente */
+    transform: translateX(-50%);
+    /* Ajuste final para un centrado perfecto */
+    width: 6px;
+    /* Tamaño del punto */
+    height: 6px;
+    /* Tamaño del punto */
+    background-color: var(--terciary-color2);
+    /* Color del punto */
+    border-radius: 50%;
+    /* ¡Esto lo convierte en un círculo perfecto! */
 }
 
+
 /* ==================== 8.2 - Dias Seleccionados ==================== */
+
 .tutor-calendar-day.selected {
     background-color: var(--primary-color);
     color: white;
     border-color: #db3434;
 }
 
+
 /* ==================== 8.3 - Btn De Ocupado ==================== */
+
 .tutor-time-slot-btn.occupied {
     background-color: #e74c3c;
     color: white;
@@ -454,14 +699,18 @@
     border-color: #e74c3c;
 }
 
+
 /* ==================== 8.4 - Btn De Seleccionado ==================== */
+
 .tutor-time-slot-btn.selected {
     background-color: #3498db;
     color: white;
     border-color: #2980b9;
 }
 
+
 /* ==================== 8.5 - Mensaje De Exito ==================== */
+
 .alert-success {
     background-color: #2ecc71;
     color: white;
@@ -485,29 +734,39 @@
     background-color: var(--terciary-color2);
 }
 
+
 /* ==================== 8.6 - Dias Pasado ==================== */
+
 .tutor-calendar-day.past {
     color: #ccc;
     cursor: not-allowed;
 }
+
 .tutor-calendar-day.past.has-availability::after {
     display: none;
 }
+
+
 /* ==================== 8.7 - Dias Reservados ==================== */
+
 .tutor-calendar-day.booked {
     background-color: #ffe8d6;
     color: #d9534f;
     font-weight: bold;
 }
 
+
 /* ==================== 8.8 - Dias Seleccionados Del Usuario ==================== */
+
 .tutor-calendar-day.selected {
     background-color: #3498db;
     color: var(--primary-color);
     font-weight: bold;
 }
 
+
 /* ==================== 8.9 - Content Horas ==================== */
+
 .tutor-time-slots {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
@@ -539,7 +798,7 @@
     border-radius: 8px;
 }
 
-.section-reserva{
+.section-reserva {
     display: flex;
     flex-flow: column wrap;
     height: auto;
@@ -550,7 +809,6 @@
     grid-template-columns: 1fr 1fr;
     gap: 2rem;
     height: 100%;
-
 }
 
 .tutor-calendar-box {
@@ -622,6 +880,7 @@
     color: #fff;
     font-weight: bold;
 }
+
 .tutor-calendar-day.selected.has-availability::after {
     display: none;
 }
@@ -629,7 +888,6 @@
 .tutor-time-selector-col {
     display: flex;
     flex-flow: column nowrap;
-
 }
 
 .tutor-time-selector-box {
@@ -690,7 +948,6 @@
     justify-content: center;
 }
 
-
 .tutor-pay-btn {
     background: var(--terciary-color2);
     color: #fff;
@@ -707,7 +964,8 @@
     transform: scale(var(--button-hover-scale));
     box-shadow: var(--button-hover-shadow);
 }
-.tutor.pay.btn:active{
+
+.tutor.pay.btn:active {
     transform: scale(var(--button-active-scale));
 }
 
@@ -775,7 +1033,7 @@
     background: #fff;
     border-radius: 1.5rem;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-    padding: 2rem 2rem 2rem 2rem;
+    padding: 1.5rem 2rem 1.5rem 2rem;
     position: sticky;
     top: 30px;
 }
@@ -853,7 +1111,6 @@
     color: #fff;
 }
 
-
 .tutor-btn-share {
     background: #e0e0e0;
     color: #555;
@@ -862,10 +1119,9 @@
 .tutor-btn-reservar:hover,
 .tutor-btn-now:hover,
 .tutor-btn-share:hover {
-  transform: scale(var(--button-hover-scale));
-  box-shadow: var(--button-hover-shadow);
+    transform: scale(var(--button-hover-scale));
+    box-shadow: var(--button-hover-shadow);
 }
-
 
 .tutor-btn-icon {
     width: 24px;
@@ -927,88 +1183,119 @@ body.modal-open {
     overflow: hidden;
 }
 
+
 /*
  * Clases CSS Base (para ambos tipos de alertas)
  */
+
 .alert-box {
-  padding: 1.5rem; /* p-6 */
-  border-radius: 0.5rem; /* rounded-lg */
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm */
-  margin-top: 2rem;
+    padding: 1.5rem;
+    /* p-6 */
+    border-radius: 0.5rem;
+    /* rounded-lg */
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    /* shadow-sm */
+    margin-top: 2rem;
 }
 
 .alert-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
 }
 
 .alert-icon {
-  width: 2rem; /* w-8 */
-  height: 2rem; /* h-8 */
-  margin-bottom: 0.75rem; /* mb-3 */
+    width: 2rem;
+    /* w-8 */
+    height: 2rem;
+    /* h-8 */
+    margin-bottom: 0.75rem;
+    /* mb-3 */
 }
 
 .alert-title {
-  font-weight: 700; /* font-bold */
-  font-size: 1.125rem; /* text-lg */
+    font-weight: 700;
+    /* font-bold */
+    font-size: 1.125rem;
+    /* text-lg */
 }
 
 .alert-text {
-  font-size: 0.875rem; /* text-sm */
-  margin-top: 0.25rem; /* mt-1 */
+    font-size: 0.875rem;
+    /* text-sm */
+    margin-top: 0.25rem;
+    /* mt-1 */
 }
 
 .alert-link {
-  font-weight: 600; /* font-semibold */
-  text-decoration: none;
-  transition: text-decoration 0.2s ease;
+    font-weight: 600;
+    /* font-semibold */
+    text-decoration: none;
+    transition: text-decoration 0.2s ease;
 }
 
 .alert-link:hover {
-  text-decoration: underline;
+    text-decoration: underline;
 }
+
 
 /*
  * Clases Modificadoras (para estilos específicos de cada alerta)
  */
 
+
 /* Alerta de Éxito o Información (bg-teal-50) */
+
 .alert-teal {
-  background-color: #f0fdfa; /* bg-teal-50 */
-  color: #0f766e; /* text-teal-800 */
+    background-color: #f0fdfa;
+    /* bg-teal-50 */
+    color: #0f766e;
+    /* text-teal-800 */
 }
 
 .alert-teal .alert-icon {
-  color: #14b8a6; /* text-teal-500 */
+    color: #14b8a6;
+    /* text-teal-500 */
 }
 
 .alert-teal .alert-link {
-  color: #0d9488; /* text-teal-600 */
+    color: #0d9488;
+    /* text-teal-600 */
 }
 
+
 /* Alerta de Advertencia (bg-amber-50) */
+
 .alert-amber {
-  background-color: #fffbeb; /* bg-amber-50 */
-  color: #92400e; /* text-amber-800 */
+    background-color: #fffbeb;
+    /* bg-amber-50 */
+    color: #92400e;
+    /* text-amber-800 */
 }
 
 .alert-amber .alert-icon {
-  color: #f59e0b; /* text-amber-500 */
+    color: #f59e0b;
+    /* text-amber-500 */
 }
 
 .alert-amber .alert-link {
-  color: #b45309; /* text-amber-700 */
+    color: #b45309;
+    /* text-amber-700 */
 }
 
 .alert-amber .alert-subtext {
-  font-size: 0.75rem; /* text-xs */
-  margin-top: 0.5rem; /* mt-2 */
-  color: #b45309; /* text-amber-700 */
+    font-size: 0.75rem;
+    /* text-xs */
+    margin-top: 0.5rem;
+    /* mt-2 */
+    color: #b45309;
+    /* text-amber-700 */
 }
 
+
 /* ==================== 9 - Tutor Modal ==================== */
+
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -1023,14 +1310,18 @@ body.modal-open {
     padding: 1rem;
 }
 
+
 /* ==================== 9.1 - Modal Mostrar ==================== */
+
 .modal-overlay.is-visible {
     display: flex;
     /* Cambiar a flex para centrar el contenido */
     z-index: 999999999;
 }
 
+
 /* ==================== 9.2 - Modal Content ==================== */
+
 .modal-content {
     background-color: white;
     border-radius: 1rem;
@@ -1044,20 +1335,26 @@ body.modal-open {
     display: block;
 }
 
+
 /* ==================== 9.3 - Modal Aparecer ==================== */
+
 .modal-overlay.is-visible .modal-content {
     transform: scale(1);
     opacity: 1;
 }
 
+
 /* ==================== 9.4 - Modal Body ==================== */
+
 .modal-body {
     display: flex;
     flex-direction: row;
     /* Diseño horizontal por defecto */
 }
 
+
 /* ==================== 9.5 - Modal Qr ==================== */
+
 .modal-promocion-column {
     background-color: white;
     display: flex;
@@ -1067,8 +1364,10 @@ body.modal-open {
 .banner_agosto {
     width: 100%;
     height: 100%;
-    object-fit: fill; /* Esta es la línea clave */
+    object-fit: fill;
+    /* Esta es la línea clave */
 }
+
 .modal-qr-column {
     width: 100%;
     background-color: #f9fafb;
@@ -1086,16 +1385,21 @@ body.modal-open {
     object-fit: contain;
 }
 
+
 /* ==================== 9.6 - Modal Form ==================== */
+
 .modal-form-column {
     width: 100%;
     padding: 1rem 2rem;
     display: flex;
     flex-direction: column;
-    gap: 0.3rem; /* Espacio entre los elementos del formulario */
+    gap: 0.3rem;
+    /* Espacio entre los elementos del formulario */
 }
 
+
 /* ==================== 10 - Tutor Form ==================== */
+
 .form-title {
     font-size: 1.5rem;
     /* 24px */
@@ -1103,7 +1407,9 @@ body.modal-open {
     color: #1f2937;
 }
 
+
 /* ==================== 11 - Tutor Input ==================== */
+
 .input-label {
     display: block;
     font-size: 0.875rem;
@@ -1112,7 +1418,10 @@ body.modal-open {
     margin-bottom: 0.5rem;
 }
 
+
 /* ==================== 11.1 - Input De Archivo Personalizado ==================== */
+
+
 /* 
 .file-input-label {
     display: inline-flex;
@@ -1157,15 +1466,20 @@ body.modal-open {
     align-items: center;
     justify-content: center;
     width: 100%;
-    padding: 0.75rem 1rem; /* Combina py-3 y px-4 */
-    border: 2px dashed #d1d5db; /* border-2 border-dashed border-gray-300 */
-    border-radius: 0.5rem; /* rounded-lg */
+    padding: 0.75rem 1rem;
+    /* Combina py-3 y px-4 */
+    border: 2px dashed #d1d5db;
+    /* border-2 border-dashed border-gray-300 */
+    border-radius: 0.5rem;
+    /* rounded-lg */
     cursor: pointer;
-    transition: background-color 0.15s ease-in-out; /* transition */
+    transition: background-color 0.15s ease-in-out;
+    /* transition */
 }
 
 .file-upload-label:hover {
-    background-color: #f9fafb; /* hover:bg-gray-50 */
+    background-color: #f9fafb;
+    /* hover:bg-gray-50 */
 }
 
 .file-upload-content {
@@ -1173,19 +1487,28 @@ body.modal-open {
 }
 
 .file-upload-icon {
-    font-size: 1.5rem; /* text-2xl */
+    font-size: 1.5rem;
+    /* text-2xl */
 }
 
 .file-upload-text {
-    margin-top: 0.25rem; /* mt-1 */
-    font-size: 0.875rem; /* text-sm */
-    color: #6b7280; /* text-gray-500 */
-    font-weight: 600; /* font-semibold */
+    margin-top: 0.25rem;
+    /* mt-1 */
+    font-size: 0.875rem;
+    /* text-sm */
+    color: #6b7280;
+    /* text-gray-500 */
+    font-weight: 600;
+    /* font-semibold */
 }
+
 .file-input-hidden {
     display: none;
 }
+
+
 /* ==================== 12 - Turtor Select Personalisado ==================== */
+
 .select-input {
     width: 100%;
     padding: 0.75rem;
@@ -1202,7 +1525,9 @@ body.modal-open {
     box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
 }
 
+
 /* ==================== 13 - Tutor Info Box Horario ==================== */
+
 .info-box {
     background-color: #f3f4f6;
     padding: 1rem;
@@ -1216,7 +1541,9 @@ body.modal-open {
     margin-top: 0.25rem;
 }
 
+
 /* ==================== 14 - Tutor Btn Action ==================== */
+
 .action-buttons {
     display: flex;
     flex-direction: row;
@@ -1225,7 +1552,9 @@ body.modal-open {
     padding-top: 0.5rem;
 }
 
+
 /* ==================== 15 - Tutor Btn Generic ==================== */
+
 .btn {
     width: 100%;
     font-weight: bold;
@@ -1249,40 +1578,46 @@ body.modal-open {
 .btn-primary:hover {
     background-color: #ffa640;
     transform: scale(var(--button-hover-scale));
-  box-shadow: var(--button-hover-shadow);
-}
-.btn-primary:active{
-  transform: scale(var(--button-active-scale));
+    box-shadow: var(--button-hover-shadow);
 }
 
-.btn-primary[type="button"]{
+.btn-primary:active {
+    transform: scale(var(--button-active-scale));
+}
+
+.btn-primary[type="button"] {
     background-color: #e5e7eb;
     color: #1f2937;
 }
-.btn-primary[type="button"]:hover{
-    background-color: #c4c4c5;
 
+.btn-primary[type="button"]:hover {
+    background-color: #c4c4c5;
 }
 
 
 /*=================== 16 CUPONES ===============*/
+
+
 /* Base Styles */
+
 .coupon-section {
-  border-top: 1px solid #e5e7eb;
+    border-top: 1px solid #e5e7eb;
 }
 
 .coupon-label {
-  display: block;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #4b5563;
-  margin-bottom: 0.5rem;
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #4b5563;
+    margin-bottom: 0.5rem;
 }
 
+
 /* Coupon Input and Apply Button */
+
 .coupon-input-group {
-  display: flex;
-  gap: 0.5rem;
+    display: flex;
+    gap: 0.5rem;
 }
 
 .coupon-input {
@@ -1293,78 +1628,89 @@ body.modal-open {
     background-color: #fff;
     font-size: 1rem;
     transition: all 0.15s ease-in-out;
-    
 }
 
 .coupon-input:focus {
-  outline: 2px solid transparent;
-  outline-offset: 2px;
-  border-color: var(--terciary-color2);
-  box-shadow: 0 0 0 2px var(--terciary-color2);
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    border-color: var(--terciary-color2);
+    box-shadow: 0 0 0 2px var(--terciary-color2);
 }
 
 .apply-button {
-  padding: 0.5rem 1.25rem;
-  background-color: #e5e7eb;
-  color: #4b5563;
-  font-weight: 600;
-  border-radius: 0.5rem;
-  transition: all 0.15s ease-in-out;
+    padding: 0.5rem 1.25rem;
+    background-color: #e5e7eb;
+    color: #4b5563;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    transition: all 0.15s ease-in-out;
 }
 
 .apply-button:hover {
-  background-color: #d1d5db;
+    background-color: #d1d5db;
 }
 
+
 /* Applied Coupon Message */
+
 .applied-coupon-container {
-  display: none;
-  align-items: center;
-  justify-content: space-between;
-  background-color: #d1fae5;
-  border: 1px solid #6ee7b7;
-  color: #065f46;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  min-width: 318px;
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #d1fae5;
+    border: 1px solid #6ee7b7;
+    color: #065f46;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    min-width: 318px;
 }
 
 .applied-coupon-text {
-  font-weight: 600;
+    font-weight: 600;
 }
 
 .remove-button {
-  font-size: 0.875rem;
-  font-weight: 700;
-  color: #4b5563; /* Default color, not specified in Tailwind */
-  cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: #4b5563;
+    /* Default color, not specified in Tailwind */
+    cursor: pointer;
 }
 
 .remove-button:hover {
-  color: #dc2626;
+    color: #dc2626;
 }
 
 
 /* Message */
+
 .coupon-message {
-  font-size: 0.775rem;
-  min-height: 1.25rem; /* Equivalent to h-5 */
-  color: rgb(255, 80, 80);
+    font-size: 0.775rem;
+    min-height: 1.25rem;
+    /* Equivalent to h-5 */
+    color: rgb(255, 80, 80);
 }
+
 
 /* Estilos para el contenido del dropdown */
+
 .coupon-dropdown-content {
-    display: block; /* Oculto por defecto */
+    display: block;
+    /* Oculto por defecto */
     position: absolute;
     background-color: #f9f9f9;
-    min-width: 30% !important; /* Ocupa todo el ancho del contenedor */
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    min-width: 30% !important;
+    /* Ocupa todo el ancho del contenedor */
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
     border-radius: 4px;
-    margin-top: 5px; /* Pequeña separación del input */
+    margin-top: 5px;
+    /* Pequeña separación del input */
 }
 
+
 /* Estilos para los elementos de la lista */
+
 .coupon-dropdown-content .list-cupon {
     color: black;
     padding: 12px 16px;
@@ -1373,43 +1719,65 @@ body.modal-open {
     cursor: pointer;
 }
 
+
 /* Cambia el color al pasar el ratón por encima */
+
 .coupon-dropdown-content a:hover {
     background-color: #f1f1f1;
 }
 
+
 /* Clase para mostrar el dropdown con JavaScript */
+
 .show {
     display: block;
 }
 
+
 /* Cuando el cupón se aplica */
+
+
 /* Contenedor del cupón aplicado */
+
 .applied-coupon-container {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: #d1fae5; /* bg-green-100 */
-    border: 2px dashed #6ee7b7; /* border-green-300 */
-    color: #166534; /* text-green-800 */
-    padding: 0.5rem 1rem; /* py-2 px-4 */
-    border-radius: 0.5rem; /* rounded-lg */
+    background-color: #d1fae5;
+    /* bg-green-100 */
+    border: 2px dashed #6ee7b7;
+    /* border-green-300 */
+    color: #166534;
+    /* text-green-800 */
+    padding: 0.5rem 1rem;
+    /* py-2 px-4 */
+    border-radius: 0.5rem;
+    /* rounded-lg */
 }
+
 
 /* Estilo del texto */
+
 .applied-coupon-text {
-    font-weight: 600; /* font-semibold */
+    font-weight: 600;
+    /* font-semibold */
 }
 
+
 /* Estilo del código del cupón */
+
 .applied-coupon-code {
     /* Puedes añadir estilos adicionales para el código aquí si lo necesitas */
 }
 
+
 /* Botón para quitar el cupón */
+
 .remove-coupon-btn {
-    font-size: 0.875rem; /* text-sm */
-    font-weight: 700; /* font-bold */
+    font-size: 0.875rem;
+    /* text-sm */
+    font-weight: 700;
+    /* font-bold */
     background: none;
     border: none;
     cursor: pointer;
@@ -1418,52 +1786,47 @@ body.modal-open {
 }
 
 .remove-coupon-btn:hover {
-    color: #dc2626; /* hover:text-red-600 */
+    color: #dc2626;
+    /* hover:text-red-600 */
 }
 
-/* =================== RESPONSIVE DESIGN TABLETS=================== */
-@media (max-width: 900px) {
 
+/* =================== RESPONSIVE DESIGN TABLETS=================== */
+
+@media (max-width: 900px) {
     .tutor-main {
         padding: 1.5rem 0.5rem;
         max-width: 100vw;
         box-sizing: border-box;
     }
-
     .tutor-grid {
         grid-template-columns: 1fr;
         gap: 1.5rem;
     }
-
     .tutor-col-actions {
         margin-top: 2rem;
     }
-
     .tutor-profile-info {
         margin-left: 0;
         padding-left: 0;
         margin-top: 80px;
     }
-
     .tutor-card-main-content {
         padding: 1.2rem;
     }
-
     .tutor-tabs-list {
         gap: 1rem;
         padding: 0 0.5rem;
     }
-
     .tutor-actions-card {
         padding: 1.2rem;
     }
 }
 
+
 /* =================== RESPONSIVE DESIGN MOBILE=================== */
 
-
 @media (max-width: 600px) {
-
     html,
     body {
         width: 100vw !important;
@@ -1471,15 +1834,12 @@ body.modal-open {
         margin: 0 !important;
         padding: 0 !important;
     }
-
     body.modal-open {
         overflow: hidden;
     }
-
     .tutor-breadcrumbs {
         display: none;
     }
-
     .tutor-bg {
         width: 100vw !important;
         max-width: 100vw !important;
@@ -1489,7 +1849,6 @@ body.modal-open {
         padding: 0 !important;
         box-sizing: border-box !important;
     }
-
     .tutor-main {
         width: 100vw !important;
         max-width: 100vw !important;
@@ -1499,7 +1858,6 @@ body.modal-open {
         box-sizing: border-box !important;
         overflow-x: hidden !important;
     }
-
     .tutor-grid {
         width: 100vw !important;
         max-width: 100vw !important;
@@ -1508,7 +1866,6 @@ body.modal-open {
         box-sizing: border-box !important;
         overflow-x: hidden !important;
     }
-
     .tutor-tabs-card {
         width: 100vw !important;
         max-width: 100vw !important;
@@ -1519,7 +1876,6 @@ body.modal-open {
         overflow-x: hidden !important;
         padding: 0 !important;
     }
-
     .tutor-tabs-nav {
         width: 100vw !important;
         max-width: 100vw !important;
@@ -1531,7 +1887,6 @@ body.modal-open {
         scrollbar-width: none !important;
         -ms-overflow-style: none !important;
     }
-
     .tutor-tabs-list {
         display: flex !important;
         flex-direction: row !important;
@@ -1544,17 +1899,14 @@ body.modal-open {
         scrollbar-width: none !important;
         -ms-overflow-style: none !important;
     }
-
     .tutor-tabs-list::-webkit-scrollbar {
         height: 4px !important;
         background: #eee !important;
     }
-
     .tutor-tabs-list::-webkit-scrollbar-thumb {
         background: #ccc !important;
         border-radius: 2px !important;
     }
-
     .tutor-tabs-content {
         padding: 1.2rem 0.5rem 1.2rem 0.5rem !important;
         width: 100vw !important;
@@ -1567,7 +1919,6 @@ body.modal-open {
         align-items: center !important;
         justify-content: center !important;
     }
-
     .tutor-tab-content {
         width: 100%;
         max-width: 400px;
@@ -1577,13 +1928,11 @@ body.modal-open {
         flex-direction: column;
         align-items: center;
     }
-
     .tutor-section-title-lg,
     .tutor-section-title {
         text-align: center !important;
         width: 100%;
     }
-
     .tutor-availability-grid {
         display: flex !important;
         flex-direction: column !important;
@@ -1595,7 +1944,6 @@ body.modal-open {
         padding: 0 0.5rem !important;
         overflow-x: hidden !important;
     }
-
     .tutor-calendar-box,
     .tutor-time-selector-box {
         margin: 0 auto !important;
@@ -1611,7 +1959,6 @@ body.modal-open {
         padding-right: 0.5rem !important;
         overflow-x: hidden !important;
     }
-
     .tutor-time-selector-col {
         display: block !important;
         width: 100% !important;
@@ -1619,7 +1966,6 @@ body.modal-open {
         box-sizing: border-box !important;
         overflow-x: hidden !important;
     }
-
     .tutor-subtab-content {
         width: 100%;
         max-width: 400px;
@@ -1629,7 +1975,6 @@ body.modal-open {
         flex-direction: column;
         align-items: center;
     }
-
     .tutor-reviews-box {
         flex-direction: column !important;
         gap: 1rem !important;
@@ -1638,7 +1983,6 @@ body.modal-open {
         max-width: 400px !important;
         margin: 0 auto !important;
     }
-
     .tutor-reviews-summary,
     .tutor-reviews-details {
         width: 100% !important;
@@ -1646,12 +1990,10 @@ body.modal-open {
         box-sizing: border-box !important;
         margin: 0 auto !important;
     }
-
     /* REVERTIR estilos de .tutor-card-main y sus hijos a como estaban antes */
     .tutor-card-main {
         border-radius: 0rem;
     }
-
     .tutor-banner {
         position: relative;
         overflow: hidden;
@@ -1659,7 +2001,6 @@ body.modal-open {
         height: 280px;
         background: #000;
     }
-
     .tutor-banner::before {
         content: '';
         position: absolute;
@@ -1671,7 +2012,6 @@ body.modal-open {
         background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), transparent);
         pointer-events: none;
     }
-
     .tutor-profile-img {
         left: 50% !important;
         transform: translateX(-50%) !important;
@@ -1679,14 +2019,12 @@ body.modal-open {
         top: 0 !important;
         margin-top: -5rem !important;
     }
-
     .tutor-profile-info {
         margin-left: 0 !important;
         padding-left: 0 !important;
         margin-top: 0.5rem !important;
         text-align: center !important;
     }
-
     .tutor-profile-meta {
         display: flex;
         flex-flow: column wrap;
@@ -1694,13 +2032,11 @@ body.modal-open {
         align-items: center;
         gap: 1px;
     }
-
     .tutor-profile-quote {
         margin-top: 0rem;
         padding: 1rem 1rem;
         text-align: justify;
     }
-
     /* FIN REVERTIR estilos de .tutor-card-main */
     /* Ajuste para que los textos largos en skills/materias hagan salto de línea */
     .tutor-section-skills-grupos {
@@ -1709,7 +2045,6 @@ body.modal-open {
         overflow-x: hidden !important;
         word-break: break-word !important;
     }
-
     .tutor-section-skills-materias {
         display: flex !important;
         flex-wrap: wrap !important;
@@ -1721,7 +2056,6 @@ body.modal-open {
         overflow-x: hidden !important;
         word-break: break-word !important;
     }
-
     .tutor-skill-materia {
         word-break: break-word !important;
         white-space: normal !important;
@@ -1729,12 +2063,10 @@ body.modal-open {
         min-width: 0 !important;
         box-sizing: border-box !important;
     }
-
     .tutor-subtab-btn {
         width: 100px;
         padding: 0.7rem 0.4rem;
     }
-
     /*---------- modal reservar -------------*/
     .modal-content {
         width: 90%;
@@ -1742,28 +2074,22 @@ body.modal-open {
         padding: 0rem;
         margin: 0rem;
         overflow: scroll;
-
     }
-
     .modal-body {
         display: flex;
         flex-direction: column;
         /* QR a la izquierda, form a la derecha */
     }
-
     .modal-qr-column {
         height: auto;
         display: flex;
         justify-content: center;
         padding: 0.6rem 0.6rem 0rem 0.6rem;
-
     }
-
     .qr-image {
         width: 100%;
         height: auto;
     }
-
     .modal-form-column {
         width: 100%;
         padding: 1rem;
@@ -1771,15 +2097,12 @@ body.modal-open {
         justify-content: start;
         gap: 5px;
     }
-
     .action-buttons {
         flex-direction: row;
     }
-
     .form-title {
         text-align: centers;
     }
-
     /* Estilos para el input de archivo personalizado */
     .file-input-label {
         gap: 0.2rem;
@@ -1787,44 +2110,36 @@ body.modal-open {
         font-weight: 500;
         width: 100%;
     }
-
     .file-name-display {
         font-size: 0.675rem;
         color: #6b7281;
         margin-top: 0.25rem;
         padding: 0rem;
     }
-
     .info-box p {
         margin-top: 0.25rem;
         padding: 0.4rem 1rem;
     }
-
     .select-input {
         font-weight: 500;
-
     }
-
     /* Cupones */
-    .coupon-input-group{
+    .coupon-input-group {
         width: 100%;
     }
-    .coupon-input{
+    .coupon-input {
         width: 100%;
     }
-    .btn btn-secondary{
+    .btn btn-secondary {
         width: 30%;
     }
-
     .coupon-dropdown-content {
-        min-width: 80% !important; /* Ocupa todo el ancho del contenedor */
+        min-width: 80% !important;
+        /* Ocupa todo el ancho del contenedor */
     }
-    .applied-coupon-container{
+    .applied-coupon-container {
         min-width: 100px;
-
     }
-
-
 }
 
 .tutor-main-bg {
@@ -1833,75 +2148,89 @@ body.modal-open {
 
 
 /* Cards para la informacion de los tutores*/
+
 .info-card {
-  background-color: #fff;
-  border-radius: 0.75rem;
-  padding: 1rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  border: 1px solid #f3f4f6;
-  transition-property: box-shadow;
-  transition-duration: 0.15s;
-  margin-bottom: 1rem;
+    background-color: #fff;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border: 1px solid #f3f4f6;
+    transition-property: box-shadow;
+    transition-duration: 0.15s;
+    margin-bottom: 1rem;
 }
 
 .info-card:hover {
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
+
 
 /* Encabezado de la tarjeta */
+
 .info-card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
 }
+
 
 /* Contenedor del título y metadatos */
+
 .info-card-content {
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
 }
+
 
 /* Título */
+
 .info-card-title {
-  font-weight: 700;
-  color: #1f2937;
-  font-size: 1rem;
+    font-weight: 700;
+    color: #1f2937;
+    font-size: 1rem;
 }
+
 
 /* Contenedor de los metadatos (íconos y texto) */
+
 .info-card-meta {
-  margin-top: 0.75rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  font-size: 0.875rem;
-  color: #6b7280;
+    margin-top: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: #6b7280;
 }
+
 
 /* Elemento de metadato individual */
+
 .info-card-meta-item {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
 }
+
 
 /* Íconos */
+
 .info-card-icon {
-  width: 1rem;
-  height: 1rem;
-  margin-right: 0.5rem;
-  color: #9ca3af;
+    width: 1rem;
+    height: 1rem;
+    margin-right: 0.5rem;
+    color: #9ca3af;
 }
 
-/* Media Query para pantallas más grandes (sm) */
-@media (min-width: 640px) {
-  .info-card-title {
-    font-size: 1.125rem;
-  }
 
-  .info-card-meta {
-    flex-direction: row;
-    column-gap: 1.5rem;
-    row-gap: 0;
-    align-items: center;
-  }
+/* Media Query para pantallas más grandes (sm) */
+
+@media (min-width: 640px) {
+    .info-card-title {
+        font-size: 1.125rem;
+    }
+    .info-card-meta {
+        flex-direction: row;
+        column-gap: 1.5rem;
+        row-gap: 0;
+        align-items: center;
+    }
 }

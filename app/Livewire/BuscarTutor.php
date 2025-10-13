@@ -29,8 +29,15 @@ class BuscarTutor extends Component
         $this->resetPage();
     }
 
+   // class BuscarTutor extends Component
+
     public function getFilteredProfiles(SiteService $siteService)
     {
+        // Si la búsqueda está vacía, devuelve un paginador vacío para ahorrar recursos
+        if (empty($this->search)) {
+            return new \Illuminate\Pagination\LengthAwarePaginator([], 0, $this->perPage, 1);
+        }
+        
         \Log::info('Buscando tutores con search:', ['search' => $this->search]);
         $result = $siteService->getTutorDato($this->perPage, $this->search);
         

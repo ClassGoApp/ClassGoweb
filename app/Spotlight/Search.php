@@ -16,7 +16,7 @@ class Search extends SpotlightCommand
     /**
      * This is the name of the command that will be shown in the Spotlight component.
      */
-    protected string $name = 'Buscar por nombre del tutor o materia';
+    protected string $name = 'Buscar por nombre del tutor';
 
     /**
      * This is the description of your command which will be shown besides the command name.
@@ -33,12 +33,12 @@ class Search extends SpotlightCommand
      * Defining dependencies is optional. If you don't have any dependencies you can remove this method.
      * Dependencies are asked from your user in the order you add the dependencies.
      */
-    public function dependencies(): ?SpotlightCommandDependencies
+    public function dependencies(): ?SpotlightCommandDependencies 
     {
         return SpotlightCommandDependencies::collection()
             ->add(
                 SpotlightCommandDependency::make('tutor')
-                ->setPlaceholder('Introduzca una palabra clave para buscar un tutor por nombre o materia que enseña')
+                ->setPlaceholder('Introduzca una palabra clave para buscar un tutor por nombre')
             );
     }
 
@@ -63,7 +63,7 @@ class Search extends SpotlightCommand
      */
     public function execute(Spotlight $spotlight, User $tutor)
     {
-        $spotlight->redirectRoute('tutor-detail', ['slug' => $tutor->profile->slug]);
+        $spotlight->redirectRoute('tutor', ['slug' => $tutor->profile->slug]);
     }
 
     /**
