@@ -314,8 +314,45 @@
 
         </div>
         <!-- Imagen -->
-        <div class="tutores-img">
-            <img src="{{ asset('images/home/img2.webp') }}" alt="Mascota">
+        <div class="carousel-3D">
+            <div class="img-container-3D">
+                <div class="box-3D">
+                    <img
+                    src="images/home/img1.webp"
+                    alt=""
+                    />
+                </div>
+                <div class="box-3D">
+                    <img
+                    src="images/home/img3.webp"
+                    alt=""
+                    />
+                </div>
+                <div class="box-3D">
+                    <img
+                    src="images/home/img22.webp"
+                    alt=""
+                    />
+                </div>
+                <div class="box-3D">
+                    <img
+                    src="images/home/img1.webp"
+                    alt=""
+                    />
+                </div>
+                <div class="box-3D">
+                    <img
+                    src="images/home/img3.webp"
+                    alt=""
+                    />
+                </div>
+                <div class="box-3D">
+                    <img
+                    src="images/home/img22.webp"
+                    alt=""
+                    />
+                </div>
+            </div>
         </div>
     </div>
 
@@ -324,6 +361,16 @@
     @include('components.alianzas', ['alianzas' => $alianzas])
 
 </section>
+
+<script>
+    const imgContainer = document.querySelector(".img-container-3D");
+
+setInterval(() => {
+  const first = imgContainer.firstElementChild;
+  imgContainer.appendChild(first);
+}, 1500);
+
+</script>
 
 
 
@@ -510,4 +557,5 @@
     });
 </script>
 <script src="{{ asset('js/translations.js') }}"></script>
+
 @endsection
