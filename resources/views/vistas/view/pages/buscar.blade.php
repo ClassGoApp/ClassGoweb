@@ -150,7 +150,7 @@
                     </p>
                     
                     <div class="cta-card__action">
-                        <a href="#" class="cta-card__button">
+                        <a href="{{ route('register') }}" class="cta-card__button">
                             ¿Deseas dar tutorías?
                         </a>
                     </div>

@@ -13,7 +13,7 @@
         <div class="tutor-availability-grid">
             {{-- CALENDARIO --}}
             <div>
-                <h4 class="tutor-section-title">Selecciona un día</h4>
+                <h4 class="tutor-section-title">Mis días disponibles</h4>
             {{--  <div>
                     <p>ID del tutor: {{ $this->tutorId }}</p>
                 </div> --}}

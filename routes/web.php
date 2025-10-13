@@ -141,6 +141,8 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
     Route::view('/desarrolladores', 'vistas.view.pages.desarrolladores')->name('desarrolladores');
     Route::get('/tutors', [HomeController::class, 'buscarTutor'])->name('buscar.tutor'); //<---ojo
     Route::get('/buscar', [HomeController::class, 'buscar'])->name('buscar');
+    Route::view('/modal', 'vistas.view.pages.modals.modal-reserva')->name('modal');
+
 
     //<=== Kevin Pasante ===>
     Route::view('/terminos', 'vistas.view.pages.terminos')->name('terminos');
