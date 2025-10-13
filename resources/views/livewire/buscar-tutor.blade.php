@@ -81,7 +81,7 @@
                                         
                                         <span class="subjects-matched">
                                             {{-- Muestra solo los sujetos que coincidieron con la búsqueda --}}
-                                            <span>•</span> <strong>{{ implode(', ', $profile['matched_subjects']) }}</strong>
+                                            <span>Puedo enseñar:</span> <strong>{{ implode(', ', $profile['matched_subjects']) }}</strong>
                                         </span>
 
                                     @else
@@ -96,7 +96,7 @@
                                         @endphp
                                         
                                         <span class="subjects-summary">
-                                            <span>• </span>{{ $subjectList }}
+                                            <span><strong>Puedo enseñar:</strong> {{ $subjectList }}</span>
                                         </span>
 
                                     @endif
@@ -130,34 +130,11 @@
                         Pero no te preocupes, ¡estamos aquí para ayudarte! Es posible que el tutor o la materia que buscas no esté disponible, o que haya un error de escritura.
                     </p>
 
-                    <button id="toggleSuggestions" class="no-results-suggestions-title toggle-btn" aria-expanded="false">
-                        ¿Qué puedes hacer?
-                    </button>
-
-                    <div id="suggestionsBox" class="no-results-suggestions-box">
-                        <ul class="no-results-suggestions-list">
-                            <li class="no-results-suggestion-item">
-                                <span class="no-results-check-icon">✓</span>
-                                <strong>Revisa si escribiste bien&nbsp;</strong> el nombre.
-                            </li>
-                            <li class="no-results-suggestion-item">
-                                <span class="no-results-check-icon">✓</span>
-                                    Prueba con una materia similar o &nbsp;<strong>más general</strong>.
-                            </li>
-                            <li class="no-results-suggestion-item">
-                                <span class="no-results-check-icon">✓</span>
-                                <strong>¡Ponte en contacto con nosotros!&nbsp;</strong> ¿Necesitas alguna materia en específica?
-                            </li>
-
-                            <div class="contactanos-btn">
-                                <a href="https://wa.link/8f8z6i" class="no-results-contact-btn" target="_blank">
-                                    Contáctanos
-                                </a>
-                            </div>
-                        </ul>
+                    <div class="contactanos-btn">
+                        <a href="https://wa.link/8f8z6i" class="no-results-contact-btn" target="_blank">
+                            Contáctanos
+                        </a>
                     </div>
-
-                    
                 </div>
             @endforelse
         </div>
@@ -212,23 +189,4 @@
     </section>
 
     @endif
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-        const toggleButton = document.getElementById('toggleSuggestions');
-        const suggestionsBox = document.getElementById('suggestionsBox');
-
-        if (toggleButton && suggestionsBox) {
-            toggleButton.addEventListener('click', function() {
-                // 1. Alterna la clase para mostrar/ocultar el div
-                suggestionsBox.classList.toggle('is-visible');
-
-                // 2. Alterna el atributo ARIA para accesibilidad
-                const isExpanded = toggleButton.getAttribute('aria-expanded') === 'true';
-                toggleButton.setAttribute('aria-expanded', !isExpanded);
-            });
-        }
-    });
-
-    </script>
 </div>

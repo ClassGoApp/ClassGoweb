@@ -69,14 +69,62 @@
                             </div>
                             
                          </div>
-                         <p class="tutor-profile-quote">{{ $tutor->profile->description ?? '" Tutor verificado y aprobado por ClassGo!"' }}</p>
+                         {{-- <p class="tutor-profile-quote">{{ $tutor->profile->description ?? '" Tutor verificado y aprobado por ClassGo!"' }}</p> --}}
+                         <p class="tutor-profile-quote">"Especialista en Matemáticas Avanzadas y Además apasionado."</p> <!--Frase de BD-->
+                    </div>
+                </div>
+                <!-- SECCION DE MATERIAS-->
+                <div class="subjects-card">
+                    <h2 class="subjects-card__title">Materias que enseño</h2>
+                    
+                    <div class="subjects-list">
+                        
+                        <div class="subject-item">
+                            <div class="subject-item__header">
+                                <span class="subject-item__icon subject-item__icon--math">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="subject-item__svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v11.494m-9-5.747h18" /></svg>
+                                </span>
+                                <h3 class="subject-item__name">Matemáticas Avanzadas</h3>
+                            </div>
+                            
+                            <div class="subject-item__topics">
+                                <span class="topic-tag">Cálculo Diferencial e Integral</span>
+                                <span class="topic-tag">Álgebra Lineal</span>
+                            </div>
+                        </div>
+
+                        <div class="subject-item">
+                            <div class="subject-item__header">
+                                <span class="subject-item__icon subject-item__icon--design">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="subject-item__svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
+                                </span>
+                                <h3 class="subject-item__name">Diseño y Comunicación Visual</h3>
+                            </div>
+                            <div class="subject-item__topics">
+                                <span class="topic-tag">Creación de Contenido con Canva</span>
+                                <span class="topic-tag">Fundamentos de Photoshop</span>
+                            </div>
+                        </div>
+
+                        <div class="subject-item">
+                            <div class="subject-item__header">
+                                <span class="subject-item__icon subject-item__icon--mechanics">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="subject-item__svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+                                </span>
+                                <h3 class="subject-item__name">Mecánica y Reparaciones</h3>
+                            </div>
+                            <div class="subject-item__topics">
+                                <span class="topic-tag">Mantenimiento de Motocicletas</span>
+                            </div>
+                        </div>
+                        
                     </div>
                 </div>
                 <!-- SECCIÓN DE PESTAÑAS PRINCIPAL -->
                 <div class="tutor-tabs-card" id="reservar">
                     <div class="tutor-tabs-nav">
                         <nav class="tutor-tabs-list" aria-label="Tabs">
-                            <button onclick="changeTab(event, 'introduccion')" class="tutor-tab-btn active">Tutoría</button>                            
+                            <button onclick="changeTab(event, 'introduccion')" class="tutor-tab-btn active">Sobre mí</button>                            
                             <button onclick="changeTab(event, 'disponibilidad')" class="tutor-tab-btn">Disponibilidad</button>
                             <button onclick="changeTab(event, 'curriculum')" class="tutor-tab-btn">Aspectos Destacados</button>
                             <button onclick="changeTab(event, 'resenas')" class="tutor-tab-btn">Reseñas</button>
@@ -85,11 +133,10 @@
                     
                     <div class="tutor-tabs-content">
                         <div id="introduccion" class="tutor-tab-content">
-                            {{-- <div>
-                                <h3 class="tutor-section-title">Acerca de mí</h3>
-                                <p class="tutor-section-text">{{ $tutor->profile->description ?? 'Sin descripción.' }}</p>                            </div>
-                            <hr class="tutor-section-divider"> --}}
                             <div>
+                                <h3 class="tutor-section-title">Hola👋 Me llamo {{ $tutor->profile->first_name ?? '' }}</h3>
+                                <p class="tutor-section-text">{{ $tutor->profile->description ?? '" Soy un Tutor verificado y aprobado por ClassGo! Listo para responder tus dudas."' }}</p>                            </div>
+                            {{-- <div>
                                 <h3 class="tutor-section-title">Puedo enseñar</h3>
                                 @php
                                     // Agrupar materias por grupo (asumiendo que $tutor->userSubjects está disponible)
@@ -130,7 +177,7 @@
                                         </div>
                                     @endforeach
                                 </div>
-                            </div>
+                            </div> --}}
                             <hr class="tutor-section-divider">
                              <div>
                                 <h3 class="tutor-section-title">Puedo hablar</h3>
@@ -145,7 +192,7 @@
                         </div>
                         
                         <div id="disponibilidad" class="tutor-tab-content hidden">
-                            <h3 class="tutor-section-title-lg">Reserva una sesión</h3>
+                            {{-- <h3 class="tutor-section-title-lg">Reserva una sesión</h3> --}}
                             {{-- <<<<======LOGICA PARA RESERVAR=======>>>>>>--}}
                             <livewire:reserva :tutorId="$tutor->id" />
                             
@@ -339,7 +386,7 @@
             <div class="tutor-col tutor-col-actions">
                 <div class="tutor-actions-card">
                     <div class="tutor-actions-price-box">
-                        <p class="tutor-actions-price">10 <span class="tutor-actions-price-unit">/ tutorías realizadas</span></p>
+                        <p class="tutor-actions-price">💸 15 Bs.</p>
                         <div class="tutor-actions-meta">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tutor-actions-meta-icon"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
                             <span>20 min</span>

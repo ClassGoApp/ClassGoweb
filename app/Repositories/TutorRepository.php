@@ -71,8 +71,10 @@ class TutorRepository
         $query->orderByRaw(
             "CASE WHEN EXISTS (\n            SELECT 1 FROM profiles p WHERE p.user_id = users.id AND p.first_name = ? AND p.last_name = ?\n        ) THEN 0 ELSE 1 END",
             ['Gabriel', 'Alpiry Hurtado']
-        )
-        ->orderByDesc('avg_rating');
+        );
+        $query->inRandomOrder(); 
+        
+        // ->orderByDesc('avg_rating');
 
         // 5. Paginación y Obtención
         return $query->paginate($perPage);
