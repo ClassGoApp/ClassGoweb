@@ -202,7 +202,7 @@
                 setTimeout(() => {
                     loadingIndicator.style.display = 'none';
                     subtitleElement.style.display= 'none';
-                }, "1000");
+                }, "1500");
                  
             }
             else{

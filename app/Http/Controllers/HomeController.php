@@ -81,15 +81,15 @@ class HomeController extends Controller
                 }
             }
         }
-        $conferencias = Conferences::where('user_id', $tutor->id)->get();
+        // $conferencias = Conferences::where('user_id', $tutor->id)->get();
         $materias = array_unique($materias);
         $grupos = array_unique($grupos);
 
         return view('vistas.view.pages.tutor', [
             'tutor' => $tutor,
             'materias' => $materias,
-            'grupos' => $grupos,
-            'conferencias' => $conferencias
+            'grupos' => $grupos
+            // 'conferencias' => $conferencias
         ]);
     }
 
