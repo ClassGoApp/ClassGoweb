@@ -111,7 +111,7 @@
         </div>
 
         <!-- Transaction History -->
-        <div class="transaction-history">
+        {{-- <div class="transaction-history">
             <div class="section-header">
                 <h2 class="section-title">Historial de Transacciones</h2>
             </div>
@@ -176,7 +176,7 @@
                 {{ $pagos->links('livewire::simple-bootstrap') }}
             </div>
             
-        </div>  
+        </div>   --}}
         @include('livewire.pages.tutor.manage-account.components.modal-por-definir')
         @include('livewire.pages.tutor.manage-account.components.modal-cuenta-bancaria')
         @include('livewire.pages.tutor.manage-account.components.modal-qr-nuevo')
