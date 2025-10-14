@@ -60,7 +60,7 @@ class TutorRepository
 
         // 3. Carga de Relaciones y Agregaciones (with, withAvg, withCount)
         $query->with([
-            'profile:id,user_id,first_name,last_name,slug,image,description,native_language',
+            'profile:id,user_id,first_name,last_name,price,slug,image,description,native_language,tagline',
             'languages:id,name',
             'userSubjects.subject.group:id,name', // Solo cargamos el nombre del grupo
         ])

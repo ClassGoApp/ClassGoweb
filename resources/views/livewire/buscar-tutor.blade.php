@@ -67,7 +67,7 @@
                         <a href="{{ route('tutor', ['slug' => $profile['slug']]) }}">
                             <h3 class="buscartutor-tutor-name">{{ $profile['full_name'] }}
                                 <div class="infor-tutor card-tutor__price-duration">
-                                    <p class="card-tutor__price">💸 15 Bs. <span class="card-tutor__price-duration">/ 20 min</span></p>
+                                    <p class="card-tutor__price">💸 {{ $profile['price'] ?? '15.00'}} Bs. <span class="card-tutor__price-duration">/ 20 min</span></p>
                                     <span class="">⭐ {{ $profile['avg_rating'] }}/5 ( {{ $profile['total_reviews'] }} reseñas)</span>
                                     <span>🌐 Idioma: {{ $profile['native_language'] ?? 'N/A' }}</span> 
                                 </div>

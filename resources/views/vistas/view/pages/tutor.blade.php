@@ -70,12 +70,12 @@
                             
                          </div>
                          {{-- <p class="tutor-profile-quote">{{ $tutor->profile->description ?? '" Tutor verificado y aprobado por ClassGo!"' }}</p> --}}
-                         <p class="tutor-profile-quote">"Especialista en Matemáticas Avanzadas y Además apasionado."</p> <!--Frase de BD-->
+                         <p class="tutor-profile-quote">"{{ $tutor->profile->tagline ?? ' Tutor verificado y aprobado por Classgo! '}}"</p> <!--Frase de BD-->
                     </div>
                 </div>
                 <!-- SECCION DE MATERIAS-->
                 <div class="subjects-card">
-                    <h2 class="subjects-card__title">Materias que enseño</h2>
+                    <h2 class="subjects-card__title">Mis Tutorías</h2>
                     <div class="subjects-list">
                         @php
                             // Agrupar materias por grupo (asumiendo que $tutor->userSubjects está disponible)
@@ -291,7 +291,7 @@
                                         <div class="info-card-header">
                                             <div class="info-card-content">
                                                 <h3 class="info-card-title">{{ $experience->title}}</h3>
-                                                <span style="color: #9ca3af;">{{ $experience->description}}</span>
+                                                <span style="color: #9ca3af; margin-left: 1rem;">{!! $experience->description!!}</span>
                                                 <div class="info-card-meta">
                                                     <div class="info-card-meta-item">
                                                         <svg class="info-card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
@@ -379,17 +379,17 @@
 
                         <div id="resenas" class="tutor-tab-content hidden">
                             <h3 class="tutor-section-title" style="margin-bottom: 1.5rem;">Reseñas de estudiantes</h3>
-                            {{-- <div class="tutor-reviews-box">
+                            <div class="tutor-reviews-box">
                                 <!-- Resumen de calificación -->
                                 <div class="tutor-reviews-summary">
                                     <div class="tutor-reviews-score" style="font-size:2.5rem;">0.0</div>
-                                    <div class="tutor-reviews-stars" style="margin:1rem 0;">
-                                        @for($i=0; $i<5; $i++)
-                                            <svg class="tutor-star-icon" width="24" height="24" fill="#ccc" viewBox="0 0 20 20">
-                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                                            </svg>
-                                        @endfor
-                                    </div>
+                                        <div class="tutor-reviews-stars" style="margin:1rem 0;">
+                                            @for($i=0; $i<5; $i++)
+                                                <svg class="tutor-star-icon" width="24" height="24" fill="#ccc" viewBox="0 0 20 20">
+                                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                                </svg>
+                                            @endfor
+                                        </div>
                                     <div class="tutor-reviews-count" style="color:#888;">Basado en 0 calificaciones</div>
                                 </div>
                                 <!-- Detalle de barras -->
@@ -407,13 +407,108 @@
                                     </div>
                                     @endfor
                                 </div>
-                            </div> --}}
-                            <div class="tutor-empty-box tutor-reviews-empty" style="text-align:center;margin-top:2rem;padding-top:2rem;border-top:1px solid #e0e0e0;">
-                                {{-- LOGICA PARA MOSTRAR DE BASE DE DATOS --}}
+                            </div>
+
+                            <!--CONTENIDO DE COMENTARIO Y CALIFICACIONES-->
+
+                            <div class="review-section-wrapper">
+                                @role('student')
+                                <section class="review-form">
+                                    <h2 class="review-form__title">Deja tu reseña</h2>
+                                    <div class="review-form__container">
+                                        <div class="review-form__rating-bar">
+                                            <span class="review-form__rating-label">Tu calificación:</span>
+                                            <div id="star-rating" class="review-form__star-wrapper" title="Selecciona una calificación">
+                                                <svg class="review-form__star-icon" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                                <svg class="review-form__star-icon" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                                <svg class="review-form__star-icon" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                                <svg class="review-form__star-icon" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                                <svg class="review-form__star-icon" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                            </div>
+                                        </div>
+                                        
+                                        <textarea
+                                            id="comment-input"
+                                            rows="4"
+                                            class="review-form__textarea"
+                                            placeholder="Comparte tu experiencia con este docente, qué te gustó o qué podría mejorar..."
+                                        ></textarea>
+                                        
+                                        <button class="review-form__button review-form__button--disabled">
+                                            Publicar reseña
+                                        </button>
+                                    </div>
+                                </section>
+                                @endrole
+
+                                <div class="review-list">
+                                    
+                                    <article class="review-card">
+                                        <div class="review-card__header">
+                                            <div class="review-card__user-info">
+                                                <img src="https://placehold.co/48x48/E2E8F0/4A5568?text=AG" alt="Avatar de Ana Gómez" class="review-card__avatar">
+                                                <div class="review-card__meta">
+                                                    <p class="review-card__name">Ana Gómez</p>
+                                                    <p class="review-card__date">hace 2 días</p>
+                                                </div>
+                                            </div>
+                                            <div class="review-card__rating">
+                                                <span class="review-card__score">5.0</span>
+                                                <svg class="review-card__star-icon--filled" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                            </div>
+                                        </div>
+                                        <p class="review-card__text">
+                                            ¡Una de las mejores clases que he tenido! El profesor explica los temas complejos de una manera muy clara y siempre está dispuesto a resolver dudas. El material de estudio es excelente y muy bien organizado.
+                                        </p>
+                                        
+                                    </article>
+
+                                    <article class="review-card">
+                                        <div class="review-card__header">
+                                            <div class="review-card__user-info">
+                                                <img src="https://placehold.co/48x48/A0AEC0/FFFFFF?text=JP" alt="Avatar de Juan Pérez" class="review-card__avatar">
+                                                <div class="review-card__meta">
+                                                    <p class="review-card__name">Juan Pérez</p>
+                                                    <p class="review-card__date">hace 1 semana</p>
+                                                </div>
+                                            </div>
+                                            <div class="review-card__rating">
+                                                <span class="review-card__score">5.0</span>
+                                                <svg class="review-card__star-icon--filled" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                            </div>
+                                        </div>
+                                        <p class="review-card__text">
+                                            Muy buen docente. Las clases son dinámicas y participativas. Me gustó mucho que utilizara ejemplos prácticos para ilustrar la teoría. Totalmente recomendado.
+                                        </p>
+                                    </article>
+
+                                    <article class="review-card">
+                                        <div class="review-card__header">
+                                            <div class="review-card__user-info">
+                                                <img src="https://placehold.co/48x48/ECC94B/4A5568?text=MS" alt="Avatar de María Sánchez" class="review-card__avatar">
+                                                <div class="review-card__meta">
+                                                    <p class="review-card__name">María Sánchez</p>
+                                                    <p class="review-card__date">hace 3 semanas</p>
+                                                </div>
+                                            </div>
+                                            <div class="review-card__rating">
+                                                <span class="review-card__score">4.0</span>
+                                                <svg class="review-card__star-icon--filled" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                            </div>
+                                        </div>
+                                        <p class="review-card__text">
+                                            El contenido es bueno, aunque a veces la clase avanza un poco rápido para mi gusto. Aún así, se nota el dominio del tema por parte del profesor.
+                                        </p>
+                                    </article>
+                                    
+                                </div>
+                            </div>
+
+                            {{-- <div class="tutor-empty-box tutor-reviews-empty" style="text-align:center;margin-top:2rem;padding-top:2rem;border-top:1px solid #e0e0e0;">
                                 <div class="am-norecord">
                                     @include('livewire.components.no-record')
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>
@@ -422,7 +517,7 @@
             <div class="tutor-col tutor-col-actions">
                 <div class="tutor-actions-card">
                     <div class="tutor-actions-price-box">
-                        <p class="tutor-actions-price">💸 15 Bs.</p>
+                        <p class="tutor-actions-price">💸 {{ $tutor->profile->price ?? '15.00' }} Bs.</p>
                         <div class="tutor-actions-meta">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tutor-actions-meta-icon"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
                             <span>20 min</span>

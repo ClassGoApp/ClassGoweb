@@ -702,6 +702,9 @@
         /* gray-700 */
         margin-top: 0.75rem;
         font-size: 0.875rem;
+        line-height: 1.3rem;
+        min-height: 2.45rem;
+        text-align: center;
     }
     
     .card-tutor__footer {

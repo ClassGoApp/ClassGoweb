@@ -70,7 +70,7 @@
                                     <h2 class="card-tutor__name">{{ explode(' ', $tutor->profile->first_name)[0] }}
                                         {{ explode(' ', $tutor->profile->last_name)[0] }}</h2>
                                         <!-- Aquí extreaeremos el precio de la base de datos -->
-                                    <p class="card-tutor__price">💸 15 Bs. <span class="card-tutor__price-duration">/ 20 min</span></p>
+                                    <p class="card-tutor__price">💸 {{  $tutor->profile->price ?? '15.00' }} Bs. <span class="card-tutor__price-duration">/ 20 min</span></p>
                                 </div>
                             </div>
                             <div class="card-tutor__tags-wrapper">
@@ -88,7 +88,7 @@
                                 <button @click="expanded = true" class="tags-more-btn">+ Ver más</button>
                             </div>
                             
-                            <p class="card-tutor__description">Especialista en Matemáticas Avanzadas y Además apasionado.</p>
+                            <p class="card-tutor__description">{{ $tutor->profile->tagline ?? ' Tutor verificado y aprobado por Classgo! '}}</p>
                         </div>
                         
                         <div class="card-tutor__footer">
@@ -202,7 +202,7 @@
                 setTimeout(() => {
                     loadingIndicator.style.display = 'none';
                     subtitleElement.style.display= 'none';
-                }, "1000");
+                }, "1500");
                  
             }
             else{
