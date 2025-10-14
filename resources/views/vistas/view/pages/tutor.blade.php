@@ -382,36 +382,37 @@
                             <div class="tutor-reviews-box">
                                 <!-- Resumen de calificación -->
                                 <div class="tutor-reviews-summary">
-                                    <div class="tutor-reviews-score" style="font-size:2.5rem;">0.0</div>
-                                        <div class="tutor-reviews-stars" style="margin:1rem 0;">
-                                            @for($i=0; $i<5; $i++)
-                                                <svg class="tutor-star-icon" width="24" height="24" fill="#ccc" viewBox="0 0 20 20">
-                                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                                                </svg>
-                                            @endfor
-                                        </div>
-                                    <div class="tutor-reviews-count" style="color:#888;">Basado en 0 calificaciones</div>
+                                    <div class="tutor-reviews-score" style="font-size:2.5rem;">{{ $avgRating }}</div>
+                                    <div class="tutor-reviews-stars" style="margin:1rem 0;">
+                                        @for($i = 0; $i < 5; $i++)
+                                            <svg class="tutor-star-icon" width="24" height="24" fill="{{ $i < floor($avgRating) ? '#FB8500' : '#ccc' }}" viewBox="0 0 20 20">
+                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                            </svg>
+                                        @endfor
+                                    </div>
+                                    <div class="tutor-reviews-count" style="color:#888;">Basado en {{ $totalReviews }} calificaciones</div>
                                 </div>
+
                                 <!-- Detalle de barras -->
                                 <div class="tutor-reviews-details" style="width:67%;">
-                                    @for($i=5; $i>=1; $i--)
+                                    @foreach($ratingDistribution as $stars => $count)
                                     <div class="tutor-review-bar-row" style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.5rem;">
-                                        <span style="color:#888;">{{ $i }}</span>
+                                        <span style="color:#888;">{{ $stars }}</span>
                                         <svg class="tutor-star-icon" width="18" height="18" fill="#FB8500" viewBox="0 0 20 20">
                                             <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
                                         </svg>
                                         <div class="tutor-review-bar-bg" style="flex:1;background:#e0e0e0;border-radius:1rem;height:8px;">
-                                            <div class="tutor-review-bar-fill" style="background:#FB8500;height:8px;border-radius:1rem;width:0%;"></div>
+                                            <div class="tutor-review-bar-fill" style="background:#FB8500;height:8px;border-radius:1rem;width:{{ $totalReviews > 0 ? ($count/$totalReviews*100) : 0 }}%;"></div>
                                         </div>
-                                        <span style="color:#888;font-weight:600;">0</span>
+                                        <span style="color:#888;font-weight:600;">{{ $count }}</span>
                                     </div>
-                                    @endfor
+                                    @endforeach
                                 </div>
                             </div>
 
-                            <!--CONTENIDO DE COMENTARIO Y CALIFICACIONES-->
+                            <!--CONTENIDO DE COMENTARIOS Y CALIFICACIONES-->
 
-                            <div class="review-section-wrapper">
+                            <div class="review-section-wrapper"> 
                                 @role('student')
                                 <section class="review-form">
                                     <h2 class="review-form__title">Deja tu reseña</h2>
@@ -441,66 +442,40 @@
                                 </section>
                                 @endrole
 
+                                <!-- Lista de reseñas -->
                                 <div class="review-list">
-                                    
-                                    <article class="review-card">
-                                        <div class="review-card__header">
-                                            <div class="review-card__user-info">
-                                                <img src="https://placehold.co/48x48/E2E8F0/4A5568?text=AG" alt="Avatar de Ana Gómez" class="review-card__avatar">
-                                                <div class="review-card__meta">
-                                                    <p class="review-card__name">Ana Gómez</p>
-                                                    <p class="review-card__date">hace 2 días</p>
+                                    @forelse($reviews as $review)
+                                        <article class="review-card">
+                                            <div class="review-card__header">
+                                                <div class="review-card__user-info">
+                                                    @if($review['reviewer']['image'])
+                                                        <img src="{{ asset('storage/' . $review['reviewer']['image']) }}" alt="Avatar de {{ $review['reviewer']['name'] }}" class="review-card__avatar">
+                                                    @else
+                                                        <div class="review-card__avatar-placeholder">
+                                                            {{ substr($review['reviewer']['name'], 0, 2) }}
+                                                        </div>
+                                                    @endif
+                                                    <div class="review-card__meta">
+                                                        <p class="review-card__name">{{ $review['reviewer']['name'] }}</p>
+                                                        <p class="review-card__date">{{ $review['created_at']->diffForHumans() }}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="review-card__rating">
+                                                    <span class="review-card__score">{{ number_format($review['rating'], 1) }}</span>
+                                                    <svg class="review-card__star-icon--filled" fill="currentColor" viewBox="0 0 20 20">
+                                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                                    </svg>
                                                 </div>
                                             </div>
-                                            <div class="review-card__rating">
-                                                <span class="review-card__score">5.0</span>
-                                                <svg class="review-card__star-icon--filled" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                            <p class="review-card__text">{{ $review['comment'] }}</p>
+                                        </article>
+                                    @empty
+                                        <div class="tutor-empty-box">
+                                            <div class="am-norecord">
+                                                @include('livewire.components.no-record')
                                             </div>
                                         </div>
-                                        <p class="review-card__text">
-                                            ¡Una de las mejores clases que he tenido! El profesor explica los temas complejos de una manera muy clara y siempre está dispuesto a resolver dudas. El material de estudio es excelente y muy bien organizado.
-                                        </p>
-                                        
-                                    </article>
-
-                                    <article class="review-card">
-                                        <div class="review-card__header">
-                                            <div class="review-card__user-info">
-                                                <img src="https://placehold.co/48x48/A0AEC0/FFFFFF?text=JP" alt="Avatar de Juan Pérez" class="review-card__avatar">
-                                                <div class="review-card__meta">
-                                                    <p class="review-card__name">Juan Pérez</p>
-                                                    <p class="review-card__date">hace 1 semana</p>
-                                                </div>
-                                            </div>
-                                            <div class="review-card__rating">
-                                                <span class="review-card__score">5.0</span>
-                                                <svg class="review-card__star-icon--filled" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                                            </div>
-                                        </div>
-                                        <p class="review-card__text">
-                                            Muy buen docente. Las clases son dinámicas y participativas. Me gustó mucho que utilizara ejemplos prácticos para ilustrar la teoría. Totalmente recomendado.
-                                        </p>
-                                    </article>
-
-                                    <article class="review-card">
-                                        <div class="review-card__header">
-                                            <div class="review-card__user-info">
-                                                <img src="https://placehold.co/48x48/ECC94B/4A5568?text=MS" alt="Avatar de María Sánchez" class="review-card__avatar">
-                                                <div class="review-card__meta">
-                                                    <p class="review-card__name">María Sánchez</p>
-                                                    <p class="review-card__date">hace 3 semanas</p>
-                                                </div>
-                                            </div>
-                                            <div class="review-card__rating">
-                                                <span class="review-card__score">4.0</span>
-                                                <svg class="review-card__star-icon--filled" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                                            </div>
-                                        </div>
-                                        <p class="review-card__text">
-                                            El contenido es bueno, aunque a veces la clase avanza un poco rápido para mi gusto. Aún así, se nota el dominio del tema por parte del profesor.
-                                        </p>
-                                    </article>
-                                    
+                                    @endforelse
                                 </div>
                             </div>
 
@@ -517,7 +492,10 @@
             <div class="tutor-col tutor-col-actions">
                 <div class="tutor-actions-card">
                     <div class="tutor-actions-price-box">
-                        <p class="tutor-actions-price">💸 {{ $tutor->profile->price ?? '15.00' }} Bs.</p>
+                        <div class="price-container">
+                            <p class="tutor-actions-price">💸 {{ $tutor->profile->price ?? '15.00' }} Bs.</p> 
+                            <p class="tutor-actions-price-text"> / tutoría</p>
+                        </div>
                         <div class="tutor-actions-meta">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tutor-actions-meta-icon"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
                             <span>20 min</span>

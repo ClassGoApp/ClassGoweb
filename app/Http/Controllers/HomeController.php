@@ -85,10 +85,31 @@ class HomeController extends Controller
         $materias = array_unique($materias);
         $grupos = array_unique($grupos);
 
+        //Obtener Reseñas
+        $reviews = $this->tutorRepository->getTutorReviews($tutor->id);
+        // Calcular promedio de calificaciones
+        $avgRating = $reviews->avg('rating');
+        $totalReviews = $reviews->count();
+        
+        // Calcular distribución de estrellas
+        $ratingDistribution = [
+            5 => $reviews->where('rating', 5)->count(),
+            4 => $reviews->where('rating', 4)->count(),
+            3 => $reviews->where('rating', 3)->count(),
+            2 => $reviews->where('rating', 2)->count(),
+            1 => $reviews->where('rating', 1)->count(),
+        ];
+
+
         return view('vistas.view.pages.tutor', [
             'tutor' => $tutor,
             'materias' => $materias,
-            'grupos' => $grupos
+            'grupos' => $grupos,
+            'reviews' => $reviews,
+            'avgRating' => number_format($avgRating, 1),
+            'totalReviews' => $totalReviews,
+            'ratingDistribution' => $ratingDistribution
+
             // 'conferencias' => $conferencias
         ]);
     }

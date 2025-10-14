@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\User;
 use App\Models\UserSubject;
+use App\Models\UserReview;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -95,5 +96,29 @@ class TutorRepository
             ->with('subject:id,name') // Cargar la relación de materia para obtener el nombre
             // Ejecutar la consulta y obtener la colección
             ->get();
+    }
+
+    //Obtención de comentarios del tutor
+    public function getTutorReviews($tutorId)
+    {
+        return UserReview::where('user_id', $tutorId)
+            ->with(['review', 'reviewer.profile'])
+            ->whereHas('review', function($q) {
+                $q->where('status', 'active');
+            })
+            ->latest()
+            ->get()
+            ->map(function($userReview) {
+                return [
+                    'id' => $userReview->id,
+                    'rating' => $userReview->review->rating,
+                    'comment' => $userReview->review->comment,
+                    'created_at' => $userReview->created_at,
+                    'reviewer' => [
+                        'name' => $userReview->reviewer->profile->first_name . ' ' . $userReview->reviewer->profile->last_name,
+                        'image' => $userReview->reviewer->profile->image ?? null
+                    ]
+                ];
+            });
     }
 }
