@@ -36,7 +36,12 @@ class RegisterService
 
         $this->assignExistingCourses($user);
 
-        $emailData = ['userName' => $user->profile->full_name, 'userEmail' => $user->email, 'key' => $user->getKey()];
+        $emailData = [
+            'userName' => $user->profile->full_name, 
+            'userEmail' => $user->email, 
+            'key' => $user->getKey(),
+            'userRole' => $user->role ?? 'unknown'
+        ];
         dispatch(new SendNotificationJob('registration', $user, $emailData));
         dispatch(new SendNotificationJob('registration', User::admin(), $emailData));
         $user->token = $user->createToken('learnen')->plainTextToken;
