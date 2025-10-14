@@ -847,6 +847,7 @@ body {
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 3;
+  line-clamp: 3;
   -webkit-box-orient: vertical;
 }
 
@@ -907,9 +908,10 @@ body {
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  margin: 0rem;
-  padding: 0rem 4rem;
-  height: 40vw;
+  margin: 0rem auto;
+  max-width: 1250px;
+  padding: 0rem 1rem;
+  height: 35vw;
   gap: 2rem;
   color: var(--primary-color);
   background: var(--panel-background);
@@ -967,18 +969,78 @@ body {
 }
 
 /**---============ 5.4 - Buscador Imagen Derecha ============---**/
-.tutores-img {
-  flex: 1 1 350px;
+.carousel-3D {
+  flex: 1 1 400px;
   display: flex;
-  justify-content: center;
+  justify-content: end;
+  align-items: center;
   padding: 1rem;
 }
 
-.tutores-img img {
-  max-width: 100%;
+.img-container-3D {
+  transform: translateX(70px);
+  position: relative;
+  height: 350px;
+  width: 550px;
+  perspective: 450px;
+  transform-style: preserve-3d;
+}
+
+.box-3D {
+  box-shadow: 0 0 10px rgb(0 0 0 / 30%);
+  width: 480px;
   height: 360px;
-  width: 800px;
-  border-radius: 20px;
+  border-radius: 25px;
+  overflow: hidden;
+  border: 1px solid #bbb;
+  position: absolute;
+  top: 50%;
+  transition: 800ms ease-in-out;
+}
+
+.box-3D img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 25px;
+}
+
+/* Efectos de profundidad */
+.box-3D:first-of-type {
+  z-index: 5;
+  opacity: 0;
+  left: 15%;
+  transform: translate(-50%, -50%) rotateY(-10deg);
+}
+.box-3D:nth-of-type(2) {
+  opacity: 1;
+  left: 20%;
+  z-index: 5;
+  transform: translate(-50%, -50%) rotateY(-10deg);
+}
+.box-3D:nth-of-type(3) {
+  left: 25%;
+  opacity: 0.75;
+  z-index: 10;
+  transform: translate(-50%, -50%) rotateY(-10deg) translateZ(-50px);
+}
+.box-3D:nth-of-type(4) {
+  z-index: 5;
+  opacity: 0.5;
+  left: 30%;
+  transform: translate(-50%, -50%) rotateY(-10deg) translateZ(-100px);
+}
+.box-3D:nth-of-type(5) {
+  z-index: 2;
+  opacity: 0.25;
+  left: 35%;
+  transform: translate(-50%, -50%) rotateY(-10deg) translateZ(-150px);
+}
+.box-3D:nth-of-type(6) {
+  z-index: 1;
+  opacity: 0;
+  left: 40%;
+  transform: translate(-50%, -50%) rotateY(-10deg) translateZ(-200px);
 }
 
 /**---============ 5.5 - Instala Nuestra Aplicación ============---**/
@@ -1812,10 +1874,6 @@ body {
     max-width: 600px;
     margin-bottom: 0rem;
   }
-
-  .card-buscarmas {}
-
-
 }
 
 
