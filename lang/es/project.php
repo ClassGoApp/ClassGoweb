@@ -145,4 +145,5 @@ return [
     'inv_subtotal' => 'Subtotal:',
     'inv_sales_tax' => 'Impuesto sobre las ventas:',
     'inv_tatal' => 'Total  :',
+    'general.add_new_cupon' => 'Agregar nuevo cupón',
 ];

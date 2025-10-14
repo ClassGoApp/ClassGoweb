@@ -29,6 +29,7 @@ use App\Http\Controllers\Admin\AlianzaController;
 use App\Http\Controllers\Admin\SlotBookingAdminController;
 use App\Http\Controllers\Admin\TutorController;
 use App\Livewire\Admin\Tutors\Tutors;
+use App\Livewire\Promociones\Cupones;
 use Illuminate\Support\Facades\Route;
 
 
@@ -93,4 +94,9 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     
     Route::get('/tutors', Tutors::class)->name('tutors.index');
     Route::get('/tutors{tutor}', Tutors::class)->name('tutors.show');
+
+    /**
+     * rutas para la gestion de cupones cupones
+     */
+    Route::get('cupones', Cupones::class)->name('cupones.index');
 });

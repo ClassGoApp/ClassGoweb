@@ -98,6 +98,26 @@
                             </div>
                             {{-- Documentos adicionales según rol (tutor/estudiante) --}}
                             @if($user->hasRole('tutor'))
+                            {{-- Campo: Precio del tutor --}}
+                                <div class="form-group">
+                                    <x-input-label style="color: black" class="am-important" for="price" :value="__('profile.tutor_price')" />
+                                    <div class="form-group-two-wrap">
+                                        <div @class(['form-control_wrap', 'am-invalid' => $errors->has('form.price')])>
+                                            <x-text-input 
+                                                id="price" 
+                                                type="number" 
+                                                step="0.01" 
+                                                min="0" 
+                                                placeholder="{{ __('profile.enter_tutor_price') }}" 
+                                                wire:model.defer="form.price" 
+                                                autofocus
+                                            />
+                                            <x-input-error field_name="form.price" />
+                                        </div>
+                                        <small style="color: gray">{{ __('profile.price_help') ?? 'Ingrese el precio por hora o sesión en USD.' }}</small>
+                                    </div>
+                                </div>
+
                                 {{-- Documento: Identificación tutor --}}
                                 <div class="form-group">
                                     <x-input-label style="color: black" for="coverphoto1" class="am-important" :value="__('profile.identification_card')" />

@@ -1,6 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Models\Conferences;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
 use App\Models\UserSubject;
@@ -27,11 +30,12 @@ class HomeController extends Controller
         $this->tutorRepository = $tutorRepository;
     }
 
-    public function index(){
+    public function index()
+    {
         //Obtener un counter de los usuarios
         $counts = $this->countUserService->getUserCounts();
 
-       // Obtener tutores destacados
+        // Obtener tutores destacados
         $featuredTutors = $this->siteService->featuredTutors();
 
 
@@ -44,19 +48,22 @@ class HomeController extends Controller
             'totalUsers' => $counts['totalUsers'],
             'totalEstudiantes' => $counts['studentCount'],
             'totalTutores' => $counts['tutorCount']
+
         ]);
     }
 
-    public function nosotros() {
-    // Obtener alianzas
-    $alianzas = $this->siteService->getAlliances();
+    public function nosotros()
+    {
+        // Obtener alianzas
+        $alianzas = $this->siteService->getAlliances();
 
-    return view('vistas.view.pages.nosotros', [
-        'alianzas' => $alianzas
-    ]);
+        return view('vistas.view.pages.nosotros', [
+            'alianzas' => $alianzas
+        ]);
     }
 
-    public function tutor($slug){
+    public function tutor($slug)
+    {
         $tutor = $this->siteService->getTutorDetail($slug);
         if (!$tutor) {
             abort(404, 'Tutor no encontrado');
@@ -74,16 +81,20 @@ class HomeController extends Controller
                 }
             }
         }
+        // $conferencias = Conferences::where('user_id', $tutor->id)->get();
         $materias = array_unique($materias);
         $grupos = array_unique($grupos);
+
         return view('vistas.view.pages.tutor', [
             'tutor' => $tutor,
             'materias' => $materias,
-            'grupos' => $grupos,
+            'grupos' => $grupos
+            // 'conferencias' => $conferencias
         ]);
     }
 
-    public function buscarTutor(){
+    public function buscarTutor()
+    {
         return view('vistas.view.pages.buscartutor');
     }
 
