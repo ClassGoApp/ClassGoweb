@@ -451,10 +451,9 @@
                                                     @if($review['reviewer']['image'])
                                                         <img src="{{ asset('storage/' . $review['reviewer']['image']) }}" alt="Avatar de {{ $review['reviewer']['name'] }}" class="review-card__avatar">
                                                     @else
-                                                        <div class="review-card__avatar-placeholder">
-                                                            {{ substr($review['reviewer']['name'], 0, 2) }}
-                                                        </div>
+                                                        <img src="{{ asset('images/tutors/default.png') }}" class="review-card__avatar">
                                                     @endif
+
                                                     <div class="review-card__meta">
                                                         <p class="review-card__name">{{ $review['reviewer']['name'] }}</p>
                                                         <p class="review-card__date">{{ $review['created_at']->diffForHumans() }}</p>
@@ -467,7 +466,7 @@
                                                     </svg>
                                                 </div>
                                             </div>
-                                            <p class="review-card__text">{{ $review['comment'] }}</p>
+                                            <p class="review-card__text">"{{ $review['comment'] }}"</p>
                                         </article>
                                     @empty
                                         <div class="tutor-empty-box">
