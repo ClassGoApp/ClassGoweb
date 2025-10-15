@@ -47,14 +47,36 @@
 
 /**---============ 1 - Hero Principal ============---**/
 body {
-  background-color: rgba(33, 158, 188, 1) !important;
+  background: white !important;
 }
-
+.contadores-hero {
+min-height: 60vh;
+  position: relative;
+  /* Tu paleta */
+  background-image: linear-gradient(
+    180deg,
+    rgba(7,59,76,1) 64%,
+    rgba(24,77,94,1) 77%,
+    rgba(33,158,188,1) 100%
+  );
+  background-size: 100% 300%;         /* clave: hacemos el lienzo más alto */
+  animation: gradientMove 6s ease-in-out infinite;
+}
+@keyframes gradientMove{
+  0%   { background-position: 50% 0%; }
+  50%  { background-position: 50% 100%; }
+  100% { background-position: 50% 0%; }
+}
+@keyframes salto {
+  0% { transform: translateY(0); }
+  40% { transform: translateY(-10px); }
+  60% { transform: translateY(5px); }
+  80% { transform: translateY(-3px); }
+  100% { transform: translateY(0); }
+}
 .hero {
   height: 100vh;
   width: 100%;
-  background: var(--primary-color);
-  background: linear-gradient(180deg, rgba(7, 59, 76, 1) 64%, rgba(24, 77, 94, 1) 77%, rgba(33, 158, 188, 1) 100%);
 }
 
 .hero-container {
@@ -79,11 +101,13 @@ body {
   font-size: 3em !important;
   font-weight: var(--font-light);
   color: white;
+    text-shadow: 0 0 3px #00e6ff, 0 0 15px #0099cc;
 }
 
 .hero-title-abajo {
   font-size: 4em !important;
   font-weight: var(--font-bold);
+  text-shadow: 0 0 4px #00e6ff, 0 0 15px #0099cc;
 }
 
 .hero-subtext {
@@ -92,6 +116,7 @@ body {
   margin-bottom: 2rem;
   color: #e0f7fa;
   line-height: var(--line-height);
+    text-shadow: 0 0 3px #00e6ff, 0 0 15px #0099cc;
 }
 
 .mobile {
@@ -160,6 +185,11 @@ body {
   border-radius: 9999px;
   font-size: 1rem;
   transition: box-shadow 150ms, border-color 150ms;
+}
+.search-box:hover {
+  box-shadow: #00e6ff;
+  color: #0d1b2a;
+  box-shadow: 0 0 20px #00e6ff, 0 0 40px #00b3ff;
 }
 
 /* Estilo para cuando el input está seleccionado (focus) */
@@ -278,7 +308,7 @@ body {
 /**---============ 2 - Contadores ============---**/
 /**---============ 2.1 - Fondo ============---**/
 .info-container {
-  background-color: var(--panel-background);
+  background-color: var(--primary-white);
   border-top-left-radius: 5rem;
   border-top-right-radius: 5rem;
   display: flex;
@@ -1261,6 +1291,56 @@ body {
   height: 100;
   margin: 0rem;
   padding: 0rem;
+}
+
+/*====Animación de aparición desde abajo====*/
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Estado inicial antes de aparecer */
+.fade-up {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.8s ease-out;
+}
+
+/* Cuando el elemento es visible */
+.fade-up.show {
+  opacity: 1;
+  transform: translateY(0);
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+/*==Estado inicial: oculto y desplazado==*/
+.fade-left,
+.fade-right {
+  opacity: 0;
+  transition: all 0.8s ease-out;
+}
+
+/* Desde la izquierda */
+.fade-left {
+  transform: translateX(-80px);
+}
+
+/* Desde la derecha */
+.fade-right {
+  transform: translateX(80px);
+}
+
+/* Estado visible */
+.fade-left.show,
+.fade-right.show {
+  opacity: 1;
+  transform: translateX(0);
 }
 
 @media (max-width: 1200px) {

@@ -4,89 +4,91 @@
 
 @section('content')
 
+<section class="contadores-hero">
+    <!-- 1 - HERO -->
+    <div class="hero">
+        <div class="hero-container">
 
-<!-- 1 - HERO -->
-<section class="hero">
-    <div class="hero-container">
+            <!-- 1.1 Hero Titular -->
+            <div class="hero-text fade-left">
+                <h1 class="hero-title-arriba" data-translate="learn"></h1>
+                <h1 class="hero-title-abajo" data-translate="tutoring"></h1>
+                <p class="hero-subtext" data-translate="reach_goals">
+                </p>
+                
 
-        <!-- 1.1 Hero Titular -->
-        <div class="hero-text">
-            <h1 class="hero-title-arriba" data-translate="learn"></h1>
-            <h1 class="hero-title-abajo" data-translate="tutoring"></h1>
-            <p class="hero-subtext" data-translate="reach_goals">
-            </p>
-            
+                <!-- 1.2 Buscador -->
+                {{-- <div class="search-box">
+                    <input type="text" placeholder="Buscar tutor...">
+                    <button>
+                        <i class="fa-solid fa-magnifying-glass icon-search"></i>
+                    </button>
+                </div> --}}
+                <div class="buscador-home">
+                    @livewire('buscador-tutor')
+                </div>
 
-            <!-- 1.2 Buscador -->
-            {{-- <div class="search-box">
-                <input type="text" placeholder="Buscar tutor...">
-                <button>
-                    <i class="fa-solid fa-magnifying-glass icon-search"></i>
-                </button>
-            </div> --}}
-            <div class="buscador-home">
-                @livewire('buscador-tutor')
+
+                <!-- 1.3 Botones-->
+
+                <div class="hero-buttons">
+                    @guest
+                    <a href=" {{ route('buscar.tutor')}}"><button class="button-explorar-tutores"><i class="fa-solid fa-compass"></i><span data-translate="tutores"></span></button></a>
+                    <a href=" {{ route(name: 'register')}}"><button class="button-explorar-tutores"><i class="fa-solid fa-user"></i><span data-translate="registrate"></span></button></a>
+                    <a href=" {{ route(name: 'login')}}"><button class="button-explorar-tutores"><i class="fa-solid fa-right-to-bracket"></i><span data-translate="ingresa"></span></button></a>
+                    @endguest
+
+                    @auth
+                    <a href=" {{ route('buscar.tutor')}}"><button class="button-explorar-tutores"><i class="fa-solid fa-compass"></i> <span data-translate="buscar_tutor"></span> </button></a>
+                    <a href="https://play.google.com/store/apps/details?id=com.neurasoft.classgo" target="_blank"><button class="button-explorar-tutores"><i class="fa-solid fa-mobile"></i> <span data-translate="nuestra_app"></span> </button></a>
+                    @endauth
+
+                </div>
+
             </div>
 
+            <!-- 1.4 Hero Mascota -->
 
-            <!-- 1.3 Botones-->
+            <img src="{{ asset(path: 'storage/optionbuilder/uploads/740102-17-2025_0859pmTugo-saludando.gif') }}" alt="Mascota ClassGo">
 
-            <div class="hero-buttons">
-                @guest
-                <a href=" {{ route('buscar.tutor')}}"><button class="button-explorar-tutores"><i class="fa-solid fa-compass"></i><span data-translate="tutores"></span></button></a>
-                <a href=" {{ route(name: 'register')}}"><button class="button-explorar-tutores"><i class="fa-solid fa-user"></i><span data-translate="registrate"></span></button></a>
-                <a href=" {{ route(name: 'login')}}"><button class="button-explorar-tutores"><i class="fa-solid fa-right-to-bracket"></i><span data-translate="ingresa"></span></button></a>
-                @endguest
 
-                @auth
-                <a href=" {{ route('buscar.tutor')}}"><button class="button-explorar-tutores"><i class="fa-solid fa-compass"></i> <span data-translate="buscar_tutor"></span> </button></a>
-                <a href="https://play.google.com/store/apps/details?id=com.neurasoft.classgo" target="_blank"><button class="button-explorar-tutores"><i class="fa-solid fa-mobile"></i> <span data-translate="nuestra_app"></span> </button></a>
-                @endauth
-
-            </div>
 
         </div>
-
-        <!-- 1.4 Hero Mascota -->
-
-        <img src="{{ asset(path: 'storage/optionbuilder/uploads/740102-17-2025_0859pmTugo-saludando.gif') }}" alt="Mascota ClassGo">
+    </div>
 
 
+    <!-- CONTADORES INFO -->
+    <div class="info-container fade-up" id="logros">
+        <!-- CONTADORES -->
+        <div class="counters">
+            <div class="counter-box">
+                <div class="counter-number" data-target="{{ $totalUsers }}">+0</div>
+                <h1 class="{{ $color ?? 'text-dark' }}"><span data-translate="us_check"></span></h1>
+            </div>
+            <div class="box-sky"></div>
+            <div class="counter-box">
+                <div class="counter-number" data-target="{{ $totalTutores }}">+0</div>
+                <h1 class="{{ $color ?? 'text-dark' }}"><span data-translate="tutor_ok"></span></h1>
+            </div>
+            <div class="box-sky"></div>
+            <div class="counter-box">
+                <div class="counter-number" data-target="{{ $totalEstudiantes }}">0</div>
+                <h1 class="{{ $color ?? 'text-dark' }}"><span data-translate="est_check"></span></h1>
+            </div>
+            <div class="box-sky"></div>
+            <div class="counter-box">
+                <div class="counter-numbe"><i class="fa fa-star"></i>4.5</div>
+                <h1 class="{{ $color ?? 'text-dark' }}"><span data-translate="play_s"></span></h1>
+            </div>
+        </div>
 
     </div>
 </section>
 
-
-<!-- CONTADORES INFO -->
-<section class="info-container" id="logros">
-    <!-- CONTADORES -->
-    <div class="counters">
-        <div class="counter-box">
-            <div class="counter-number" data-target="{{ $totalUsers }}">+0</div>
-            <h1 class="{{ $color ?? 'text-dark' }}"><span data-translate="us_check"></span></h1>
-        </div>
-        <div class="box-sky"></div>
-        <div class="counter-box">
-            <div class="counter-number" data-target="{{ $totalTutores }}">+0</div>
-            <h1 class="{{ $color ?? 'text-dark' }}"><span data-translate="tutor_ok"></span></h1>
-        </div>
-        <div class="box-sky"></div>
-        <div class="counter-box">
-            <div class="counter-number" data-target="{{ $totalEstudiantes }}">0</div>
-            <h1 class="{{ $color ?? 'text-dark' }}"><span data-translate="est_check"></span></h1>
-        </div>
-        <div class="box-sky"></div>
-        <div class="counter-box">
-            <div class="counter-numbe"><i class="fa fa-star"></i>4.5</div>
-            <h1 class="{{ $color ?? 'text-dark' }}"><span data-translate="play_s"></span></h1>
-        </div>
-    </div>
-
-</section>
 
 <!--TUTORES DESTACADOS-->
 
-<section class="tutors-container">
+<section class="tutors-container fade-up">
     <h1 class="over-text">
         <div class="linea"></div><span data-translate="featured_tutors"></span><div class="linea"></div>
     </h1>
@@ -199,8 +201,8 @@
 
 
 <!--GUIA PASO A PASO-->
-<section class="potencial-container">
-    <h1 class="over-text">
+<section class="potencial-container fade-up">
+    <h1 class="over-text ">
         <div class="linea"></div><span data-translate="guide"></span>
         <div class="linea"></div>
     </h1>
@@ -245,13 +247,13 @@
 </section>
 
 <!-- Contenedor principal de la sección -->
-<section class="section-app">
+<section class="section-app fade-up">
     <div class="container-app">
         <!-- Grid responsivo -->
         <div class="grid-app">
 
       <!-- Columna Izquierda: Contenido de texto -->
-      <div class="text-app">
+      <div class="text-app fade-left">
         <p>Fácil, simple y rápido</p>
         <h1>Instala nuestra App</h1>
         <p>Comienza tu viaje educativo con nosotros. <br>¡Instálate hoy mismo nuestra app!</p>
@@ -299,10 +301,10 @@
 
 
 <!--HERO TUTORIAS Y ALIANZAS-->
-<section class="tutorias-container">
+<section class="tutorias-container fade-up">
     <div class="tutorias">
         <!-- Texto -->
-        <div class="tutores-text">
+        <div class="tutores-text fade-left">
             <p class="tutores-text-encima" data-translate="buscas_tutorias"></p>
             <h1 data-translate="conectamos_tutores"></h1>
             <p data-translate="sesiones_cortas"></p>
@@ -357,12 +359,27 @@
     </div>
 
     <!-- ALIANZAS-->
-
+    <div class="fade-up">
     @include('components.alianzas', ['alianzas' => $alianzas])
+    </div>
 
 </section>
 
 <script>
+//-----Animaciones al hacer scroll section  
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('show');
+      }
+    });
+  }, { threshold: 0.2 }); // 0.2 = cuando el 20% del div esté visible
+
+  document.querySelectorAll('.fade-up, .fade-left, .fade-righ').forEach(el => observer.observe(el));
+</script>
+
+<script>
+//-----Carrusel 3D
     const imgContainer = document.querySelector(".img-container-3D");
 
 setInterval(() => {
@@ -370,7 +387,23 @@ setInterval(() => {
   imgContainer.appendChild(first);
 }, 1500);
 
+//---salto
+const textos = document.querySelectorAll('.texto-animado');
+
+const observer = new IntersectionObserver((entradas) => {
+  entradas.forEach((entrada) => {
+    if (entrada.isIntersecting) {
+      entrada.target.classList.add('visible');
+      // Si quieres que solo salte una vez:
+      observer.unobserve(entrada.target);
+    }
+  });
+});
+
+textos.forEach((texto) => observer.observe(texto));
+
 </script>
+
 
 
 
