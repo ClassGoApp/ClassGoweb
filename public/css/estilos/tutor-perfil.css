@@ -686,117 +686,188 @@
 
 /* ======================================================= */
 
-.review-form {
-    margin-bottom: 2.5rem;
-    /* mb-10 */
+:root {
+    --color-white: #FFFFFF;
+    --color-slate-200: #E2E8F0;
+    --color-slate-800: #1E293B;
+    --color-custom-blue: #0f3a5d;
+    /* Color del título */
+    --color-cyan-600: #0891B2;
+    --color-cyan-700: #0E7490;
+    --color-amber-500: #F59E0B;
+    /* Color de foco/estrella */
 }
+
+
+/* ======================================================= */
+
+
+/* I. CONTENEDOR PRINCIPAL (bg-white p-6 sm:p-8 rounded-xl shadow-sm border) */
+
+
+/* ======================================================= */
+
+.review-form-container {
+    background-color: var(--color-white);
+    /* rounded-xl */
+    border-radius: 0.75rem;
+    /* shadow-sm */
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    /* border border-slate-200 */
+    border: 1px solid var(--color-slate-200);
+    /* p-6 */
+    padding: 1.5rem;
+}
+
+
+/* MEDIA QUERY: sm:p-8 */
+
+@media (min-width: 640px) {
+    .review-form-container {
+        padding: 2rem;
+    }
+}
+
+
+/* ======================================================= */
+
+
+/* II. TÍTULO Y TIPOGRAFÍA */
+
+
+/* ======================================================= */
 
 .review-form__title {
-    /* text-xl font-bold text-gray-800 mb-4 */
+    /* text-xl font-bold text-slate-800 mb-5 */
     font-size: 1.25rem;
     font-weight: 700;
-    color: var(--color-gray-800);
-    margin-bottom: 1rem;
+    color: var(--color-slate-800);
+    margin-bottom: 1.25rem;
     margin-top: 0;
+    /* style="color: #0f3a5d;" (Color personalizado) */
+    color: var(--color-custom-blue);
 }
 
-.review-form__container {
-    /* bg-white border border-gray-200 rounded-lg p-5 */
-    background-color: var(--color-white);
-    border: 1px solid var(--color-gray-200);
-    border-radius: 0.5rem;
-    padding: 1.25rem;
-}
 
-.review-form__rating-bar {
-    /* flex items-center mb-4 */
+/* ======================================================= */
+
+
+/* III. ESTRELLAS (RATING) */
+
+
+/* ======================================================= */
+
+.review-form__rating-wrapper {
+    /* flex justify-between items-center mb-6 */
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
+    /* Añadir un margen general para que las estrellas no toquen los bordes */
+    padding: 0 0.5rem;
 }
 
-.review-form__rating-label {
-    /* text-gray-700 mr-4 font-medium */
-    color: var(--color-gray-700);
-    margin-right: 1rem;
-    font-weight: 500;
-}
-
-.review-form__star-wrapper {
-    /* flex items-center cursor-pointer */
-    display: flex;
-    align-items: center;
+.review-form__star {
+    /* w-12 h-12 */
+    width: 3rem;
+    height: 3rem;
+    /* Color por defecto (puede ser gris claro) */
+    color: var(--color-slate-200);
     cursor: pointer;
+    transition: color 0.2s ease-in-out;
 }
 
-.review-form__star-icon {
-    /* Estilos de una estrella (se generaría con JS o se repetiría el SVG) */
-    width: 1.25rem;
-    height: 1.25rem;
-    color: var(--color-yellow-400);
-    /* Color de la estrella */
-    margin-right: 0.125rem;
+
+/* MEDIA QUERY: sm:w-16 sm:h-16 */
+
+@media (min-width: 640px) {
+    .review-form__star {
+        width: 4rem;
+        height: 4rem;
+    }
+}
+
+
+/* Clases que serán añadidas por JavaScript para interactividad */
+
+.review-form__star.hovered,
+.review-form__star.selected {
+    fill: var(--color-amber-500);
+    color: var(--color-amber-500);
+}
+
+
+/* ======================================================= */
+
+
+/* IV. TEXTAREA (Campo de Comentario) */
+
+
+/* ======================================================= */
+
+.review-form__textarea-wrapper {
+    /* Div contenedor si necesitas aplicar un margen (aunque la clase w-full no lo necesita) */
 }
 
 .review-form__textarea {
-    /* w-full p-3 border border-gray-300 rounded-md ... */
+    /* w-full p-3 border border-slate-300 rounded-lg */
     width: 100%;
     padding: 0.75rem;
-    border: 1px solid #D1D5DB;
-    border-radius: 0.375rem;
-    /* focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition */
-    transition: all 0.2s ease-in-out;
+    border: 1px solid #CBD5E1;
+    /* border-slate-300 */
+    border-radius: 0.5rem;
+    /* rounded-lg */
     resize: vertical;
+    /* focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition */
+    transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .review-form__textarea:focus {
     outline: none;
-    border-color: var(--terciary-color2);
-    box-shadow: 0 0 0 4px rgba(255, 218, 10, 0.192);
+    border-color: var(--color-amber-500);
     /* Simula focus:ring-2 */
+    box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.5);
+}
+
+
+/* ======================================================= */
+
+
+/* V. BOTÓN DE ENVÍO */
+
+
+/* ======================================================= */
+
+.review-form__button-wrapper {
+    /* mt-4 flex justify-end */
+    margin-top: 1rem;
+    display: flex;
+    justify-content: flex-end;
 }
 
 .review-form__button {
-    /* mt-4 w-full sm:w-auto bg-indigo-600 text-white font-semibold py-2 px-6 rounded-lg ... */
-    margin-top: 1rem;
-    width: 100%;
-    /* w-full */
-    background: var(--tertiary-color2);
-    color: white;
-    font-weight: 700;
-    padding: 0.625rem 1rem;
+    /* bg-cyan-600 text-white font-semibold py-2.5 px-6 rounded-lg */
+    background-color: var(--color-cyan-600);
+    color: var(--color-white);
+    font-weight: 600;
+    padding: 0.625rem 1.5rem;
+    /* py-2.5 px-6 */
     border-radius: 0.5rem;
-    transition: background-color 0.2s ease;
-    font-size: 1rem;
+    /* rounded-lg */
     border: none;
     cursor: pointer;
-    transition: background-color 0.2s, box-shadow 0.2s;
+    /* hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 transition-colors duration-300 */
+    transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
-
-/* MEDIA QUERY: sm:w-auto */
-
-@media (min-width: 640px) {
-    .review-form__button {
-        width: auto;
-    }
-}
-
-.review-form__button:hover:not(:disabled) {
-    background-color: var(--terciary-color2);
+.review-form__button:hover {
+    background-color: var(--color-cyan-700);
 }
 
 .review-form__button:focus {
     outline: none;
-    box-shadow: 0 0 0 2px white, 0 0 0 4px var(--terciary-color2);
-    /* focus:ring-2 focus:ring-offset-2 */
-}
-
-.review-form__button--disabled {
-    /* disabled:bg-indigo-300 disabled:cursor-not-allowed */
-    background-color: var(--terciary-color2);
-    /* Simulación de indigo-300 */
-    cursor: not-allowed;
+    /* Simula focus:ring-2 focus:ring-offset-2 */
+    box-shadow: 0 0 0 2px var(--color-white), 0 0 0 4px var(--color-amber-500);
 }
 
 
@@ -813,6 +884,7 @@
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+    margin-top: 2rem;
 }
 
 .review-card {
