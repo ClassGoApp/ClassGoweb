@@ -86,32 +86,48 @@ class HomeController extends Controller
         $grupos = array_unique($grupos);
 
         //Obtener Reseñas
-        $reviews = $this->tutorRepository->getTutorReviews($tutor->id);
-        // Calcular promedio de calificaciones
-        $avgRating = $reviews->avg('rating');
-        $totalReviews = $reviews->count();
-        
-        // Calcular distribución de estrellas
-        $ratingDistribution = [
-            5 => $reviews->where('rating', 5)->count(),
-            4 => $reviews->where('rating', 4)->count(),
-            3 => $reviews->where('rating', 3)->count(),
-            2 => $reviews->where('rating', 2)->count(),
-            1 => $reviews->where('rating', 1)->count(),
-        ];
+        $reviewData = $this->tutorRepository->getTutorReviewsWithStats($tutor->id);
 
 
         return view('vistas.view.pages.tutor', [
             'tutor' => $tutor,
-            'materias' => $materias,
-            'grupos' => $grupos,
-            'reviews' => $reviews,
-            'avgRating' => number_format($avgRating, 1),
-            'totalReviews' => $totalReviews,
-            'ratingDistribution' => $ratingDistribution
-
-            // 'conferencias' => $conferencias
+            'materias' => array_unique($materias),
+            'grupos' => array_unique($grupos),
+            'reviews' => $reviewData['reviews'],
+            'avgRating' => $reviewData['stats']['avgRating'],
+            'totalReviews' => $reviewData['stats']['totalReviews'],
+            'ratingDistribution' => $reviewData['stats']['distribution'],
+            'canReview' => auth()->check() ? 
+                $this->tutorRepository->canUserReviewTutor(auth()->id(), $tutor->id) : 
+                false
         ]);
+    }
+
+    /**
+     * Almacena una nueva reseña
+     */
+    public function storeReview(Request $request, $tutorId)
+    {
+        $request->validate([
+            'rating' => 'required|numeric|min:1|max:5',
+            'comment' => 'nullable|string|max:1000'
+        ]);
+
+        if (!$this->tutorRepository->canUserReviewTutor(auth()->id(), $tutorId)) {
+            return back()->with('error', 'No puedes reseñar a este tutor nuevamente.');
+        }
+
+        $result = $this->tutorRepository->createReview([
+            'rating' => $request->rating,
+            'comment' => $request->comment,
+            'tutor_id' => $tutorId,
+            'reviewer_id' => auth()->id()
+        ]);
+
+        return back()->with(
+            $result['success'] ? 'success' : 'error',
+            $result['message']
+        );
     }
 
     public function buscarTutor()

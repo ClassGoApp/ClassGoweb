@@ -413,29 +413,47 @@
                             <!--CONTENIDO DE COMENTARIOS Y CALIFICACIONES-->
 
                             <div class="review-section-wrapper"> 
+                               
                                 @role('student')
-                                <div class="review-form-container">
+                                    <div class="review-form-container">
+                                        <h2 class="review-form__title">Deja tu reseña</h2>
+                                        
+                                        <form action="{{ route('tutor.review.store', $tutor->id) }}" method="POST" id="review-form">
+                                            @csrf
+                                            <input type="hidden" name="rating" id="rating-input" value="">
 
-                                    <h2 class="review-form__title">Deja tu reseña</h2>
+                                            <div id="star-rating" class="review-form__rating-wrapper">
+                                                @for($i = 1; $i <= 5; $i++)
+                                                    <svg data-value="{{ $i }}" class="review-form__star" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                                        <path d="M12.0006 18.26L4.94715 22.2082L6.52248 14.2799L0.587891 8.7918L8.61493 7.84006L12.0006 0.5L15.3862 7.84006L23.4132 8.7918L17.4787 14.2799L19.054 22.2082L12.0006 18.26Z"></path>
+                                                    </svg>
+                                                @endfor
+                                            </div>
 
-                                    <div id="star-rating" class="review-form__rating-wrapper">
-                                        <svg data-value="1" class="star review-form__star" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12.0006 18.26L4.94715 22.2082L6.52248 14.2799L0.587891 8.7918L8.61493 7.84006L12.0006 0.5L15.3862 7.84006L23.4132 8.7918L17.4787 14.2799L19.054 22.2082L12.0006 18.26Z"></path></svg>
-                                        <svg data-value="2" class="star review-form__star" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12.0006 18.26L4.94715 22.2082L6.52248 14.2799L0.587891 8.7918L8.61493 7.84006L12.0006 0.5L15.3862 7.84006L23.4132 8.7918L17.4787 14.2799L19.054 22.2082L12.0006 18.26Z"></path></svg>
-                                        <svg data-value="3" class="star review-form__star" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12.0006 18.26L4.94715 22.2082L6.52248 14.2799L0.587891 8.7918L8.61493 7.84006L12.0006 0.5L15.3862 7.84006L23.4132 8.7918L17.4787 14.2799L19.054 22.2082L12.0006 18.26Z"></path></svg>
-                                        <svg data-value="4" class="star review-form__star" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12.0006 18.26L4.94715 22.2082L6.52248 14.2799L0.587891 8.7918L8.61493 7.84006L12.0006 0.5L15.3862 7.84006L23.4132 8.7918L17.4787 14.2799L19.054 22.2082L12.0006 18.26Z"></path></svg>
-                                        <svg data-value="5" class="star review-form__star" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12.0006 18.26L4.94715 22.2082L6.52248 14.2799L0.587891 8.7918L8.61493 7.84006L12.0006 0.5L15.3862 7.84006L23.4132 8.7918L17.4787 14.2799L19.054 22.2082L12.0006 18.26Z"></path></svg>
+                                            <div class="review-form__textarea-wrapper">
+                                                <textarea name="comment" id="comment" rows="5" class="review-form__textarea" 
+                                                    placeholder="Escribe tu reseña aquí (opcional)..."></textarea>
+                                            </div>
+
+                                            <div class="review-form__button-wrapper">
+                                                <button type="submit" class="review-form__button" id="submit-review">
+                                                    Enviar reseña
+                                                </button>
+                                            </div>
+                                        </form>
+
+                                        @if(session('error'))
+                                            <div class="alert alert-danger">
+                                                {{ session('error') }}
+                                            </div>
+                                        @endif
+
+                                        @if(session('success'))
+                                            <div class="alert alert-success">
+                                                {{ session('success') }}
+                                            </div>
+                                        @endif
                                     </div>
-
-                                    <div class="review-form__textarea-wrapper">
-                                        <textarea id="comment" rows="5" class="review-form__textarea" placeholder="Escribe tu reseña aquí..."></textarea>
-                                    </div>
-
-                                    <div class="review-form__button-wrapper">
-                                        <button class="review-form__button">
-                                            Enviar reseña
-                                        </button>
-                                    </div>
-                                </div>
                                 @endrole
 
                                 <!-- Lista de reseñas -->
@@ -785,6 +803,44 @@
             btnFacebook.addEventListener('click', function() {
                 const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${encodeURIComponent(shareMsg)}`;
                 window.open(url, '_blank');
+            });
+        });
+
+        //============== Calificaciones y reseñas =========================
+        document.addEventListener('DOMContentLoaded', function() {
+            const starRating = document.getElementById('star-rating');
+            const stars = starRating.getElementsByClassName('review-form__star');
+            const ratingInput = document.getElementById('rating-input');
+            const form = document.getElementById('review-form');
+            let currentRating = 0;
+
+            function updateStars(rating) {
+                Array.from(stars).forEach((star, index) => {
+                    star.style.color = index < rating ? '#FB8500' : '#E5E7EB';
+                });
+            }
+
+            Array.from(stars).forEach((star, index) => {
+                star.addEventListener('mouseover', () => {
+                    updateStars(index + 1);
+                });
+
+                star.addEventListener('click', () => {
+                    currentRating = index + 1;
+                    ratingInput.value = currentRating;
+                    updateStars(currentRating);
+                });
+            });
+
+            starRating.addEventListener('mouseleave', () => {
+                updateStars(currentRating);
+            });
+
+            form.addEventListener('submit', function(e) {
+                if (!currentRating) {
+                    e.preventDefault();
+                    alert('Por favor, selecciona una calificación');
+                }
             });
         });
 

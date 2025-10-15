@@ -142,6 +142,10 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
     Route::get('/tutors', [HomeController::class, 'buscarTutor'])->name('buscar.tutor'); //<---ojo
     Route::get('/buscar', [HomeController::class, 'buscar'])->name('buscar');
     Route::view('/modal', 'vistas.view.pages.modals.modal-reserva')->name('modal');
+    
+    Route::post('/tutor/{tutorId}/review', [HomeController::class, 'storeReview'])
+    ->name('tutor.review.store')
+    ->middleware(['auth', 'role:student']);
 
 
     //<=== Kevin Pasante ===>
