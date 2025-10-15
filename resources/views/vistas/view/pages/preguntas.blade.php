@@ -12,12 +12,25 @@
             <div class="preguntas-header-content">
                 <div class="preguntas-header-text align-left">
                     <nav class="breadcrumb">
-                        <a href="{{ route('home') }}" class="breadcrumb-link" data-translate="inicio"></a> / <span class="breadcrumb-current" data-translate="preguntas"></span>
+                        <a href="{{ route('home') }}" class="breadcrumb-link">Inicio</a> / <span class="breadcrumb-current">Preguntas</span>
                     </nav>
-                    <h1 data-translate="encuentra_respuesta"></h1>
-                    <p data-translate="empoderando_estudiantes"></p>
+                    <h1>Encuentra tu respuesta</h1>
+                    <p>Empoderando a los estudiantes en todo el mundo</p>
+                </div>
+                <div class="preguntas-tabs tabs-centered">
+                    <div class="tab-buttons">
+                        <button class="tab-button active" data-tab="estudiantes">
+                            <i class="fa-solid fa-book"></i>
+                            Para estudiantes
+                        </button>
+                        <button class="tab-button" data-tab="tutores">
+                            <i class="fa-solid fa-briefcase"></i>
+                            Para tutores
+                        </button>
+                    </div>
                 </div>
             </div>
+        </div>
 
             <!-- Estudiantes Tab Content -->
             <div class="tab-content active" id="estudiantes-content">
@@ -32,7 +45,7 @@
                                     </div>
                                 </div>
                                 <div class="faq-answer">
-                                    <p>Utilice la barra de búsqueda y los filtros de la página "Buscar un tutor por materia, disponibilidad, calificación y más.</p>
+                                    <p>Utilice la barra de búsqueda para encontrar tutores disponibles según la materia o tema que necesites</p>
                                 </div>
                             </div>
 
@@ -44,7 +57,7 @@
                                     </div>
                                 </div>
                                 <div class="faq-answer">
-                                    <p>Una vez que encuentres un tutor, consulta su perfil y selecciona un horario disponible que te convenga. Haz clic "Reservar ahora" y sigue las instrucciones para confirmar tu sesión.</p>
+                                    <p>Una vez que encuentres un tutor, consulta su perfil y selecciona un horario disponible que te convenga. Haz clic en “Pagar y Reservar” y sigue las instrucciones para confirmar tu sesión.</p>
                                 </div>
                             </div>
 
@@ -56,7 +69,7 @@
                                     </div>
                                 </div>
                                 <div class="faq-answer">
-                                    <p>Puedes cancelar o reprogramar una sesión hasta 24 horas antes de la hora programada sin penalización. Las cancelaciones dentro de las 24 horas pueden generar un cargo.</p>
+                                    <p>Las tutorías no pueden cancelarse una vez reservadas. Si ocurrió algún inconveniente, contactanos y con gusto te ayudaremos </p>
                                 </div>
                             </div>
 
@@ -92,7 +105,7 @@
                                     </div>
                                 </div>
                                 <div class="faq-answer">
-                                    <p>Después de la sesión, recibirás un correo electrónico en el que se te solicitará que califiques a tu tutor y le des tu opinión. También puedes hacerlo desde el panel de tu cuenta.</p>
+                                    <p>Entra al perfil del tutor, desliza hacia abajo y dirígete a la sección de reseñas, donde podrás ver las calificaciones y comentarios de los estudiantes.</p>
                                 </div>
                             </div>
                         </div>
@@ -140,7 +153,7 @@
                                     </div>
                                 </div>
                                 <div class="faq-answer">
-                                    <p>Inicia sesión en tu cuenta, ve a la sección "Disponibilidad" y actualiza tu calendario con tus franjas horarias disponibles.</p>
+                                    <p>Inicia sesión en tu cuenta, accede a la sección “Administrar tiempo disponible” y actualiza tu calendario con tus franjas horarias disponibles.</p>
                                 </div>
                             </div>
 
@@ -152,7 +165,7 @@
                                     </div>
                                 </div>
                                 <div class="faq-answer">
-                                    <p>Si un estudiante cancela una sesion dentro de 24 horas posteriores a las horas programada, es posible que tenga derecho a una tarifa de cancelacion. Consulta la politica de cancelacion de la plataforma para más detalles.</p>
+                                    <p>Los estudiantes no tienen la opción de cancelar una sesión después de reservarla. Si el alumno te informa de algún problema, recomiéndale escribir a nuestro contacto para recibir ayuda.</p>
                                 </div>
                             </div>
                         </div>
