@@ -618,6 +618,7 @@ public function getTutors($data = array()) {
             return [
                 'user_id' => $tutor->id,
                 'full_name' => trim("{$profile->first_name} {$profile->last_name}"),
+                'price' => $profile->price,
                 'slug' => $profile->slug,
                 'image' => $profile->image,
                 'description' => $profile->description,

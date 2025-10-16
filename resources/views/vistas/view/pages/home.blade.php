@@ -33,13 +33,13 @@
 
             <div class="hero-buttons">
                 @guest
-                <a href=" {{ route('buscar.tutor')}}"><button class="button-explorar-tutores"><i class="fa-solid fa-compass"></i><span data-translate="tutores"></span></button></a>
+                <a href=" {{ route('buscar')}}"><button class="button-explorar-tutores"><i class="fa-solid fa-compass"></i><span data-translate="tutores"></span></button></a>
                 <a href=" {{ route(name: 'register')}}"><button class="button-explorar-tutores"><i class="fa-solid fa-user"></i><span data-translate="registrate"></span></button></a>
                 <a href=" {{ route(name: 'login')}}"><button class="button-explorar-tutores"><i class="fa-solid fa-right-to-bracket"></i><span data-translate="ingresa"></span></button></a>
                 @endguest
 
                 @auth
-                <a href=" {{ route('buscar.tutor')}}"><button class="button-explorar-tutores"><i class="fa-solid fa-compass"></i> <span data-translate="buscar_tutor"></span> </button></a>
+                <a href=" {{ route('buscar')}}"><button class="button-explorar-tutores"><i class="fa-solid fa-compass"></i> <span data-translate="buscar_tutor"></span> </button></a>
                 <a href="https://play.google.com/store/apps/details?id=com.neurasoft.classgo" target="_blank"><button class="button-explorar-tutores"><i class="fa-solid fa-mobile"></i> <span data-translate="nuestra_app"></span> </button></a>
                 @endauth
 
@@ -186,7 +186,7 @@
                 <h2 data-translate="seeks"></h2>
                 <p data-translate="finds">
                 </p>
-                <a href="{{ route('buscar.tutor') }}" class="btn-primary">
+                <a href="{{ route('buscar') }}" class="btn-primary">
                     <span data-translate="explore"></span>
                 </a>
             </div>
@@ -221,7 +221,7 @@
             <img src="{{ asset('images/home/img22.webp') }}" alt="Pasos">
             <h1 data-translate="find_tutor"></h1>
             <p data-translate="tutores_calificados"></p>
-            <a href=" {{ route('buscar.tutor')}}"><button><span data-translate="buscar_ahora"></span></button></a>
+            <a href=" {{ route('buscar')}}"><button><span data-translate="buscar_ahora"></span></button></a>
         </div> <!--FIN CARD-->
         <!--CARD-->
         <div class="steps-card">
@@ -239,7 +239,7 @@
             </div>
             <h1 data-translate="comenzar_jornada"></h1>
             <p data-translate="comenzar_viaje"></p>
-            <a href="{{ route('buscar.tutor')}}"><button class="button-go"><span data-translate="empezar_ahora"></span></button></a>
+            <a href="{{ route('buscar')}}"><button class="button-go"><span data-translate="empezar_ahora"></span></button></a>
         </div>
     </div>
 </section>

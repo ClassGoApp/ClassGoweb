@@ -8,7 +8,7 @@
         <!-- Breadcrumbs -->
         <div class="tutor-breadcrumbs">
             <a href="#" class="tutor-breadcrumb-link">Tutores</a> / 
-            <a href="{{ route('buscar.tutor')}}" class="tutor-breadcrumb-link">Encontrar tutor</a> / 
+            <a href="{{ route('buscar')}}" class="tutor-breadcrumb-link">Encontrar tutor</a> / 
             <span class="tutor-breadcrumb-current">{{ $tutor->profile->first_name ?? '' }} {{ $tutor->profile->last_name ?? '' }}</span>
         </div>
         <div class="tutor-grid">
@@ -545,7 +545,7 @@
                             <span>Compartir perfil</span>
                         </button>
 
-                        {{-- <a href="{{ route('buscar.tutor')}}">
+                        {{-- <a href="{{ route('buscar')}}">
                             <button class="tutor-btn tutor-btn-reservar" >
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="11" cy="11" r="8"></circle>
