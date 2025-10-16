@@ -7,8 +7,10 @@
     <ul>
         @forelse($results as $tutor)
             <li>
-                <a href=" {{ route('tutor', $tutor['slug']) }}"><strong>{{ $tutor['full_name'] }}</strong><br></a>
-                <small>{{ implode(', ', $tutor['materias']) }}</small>
+                <a href=" {{ route('tutor', $tutor['slug']) }}">
+                    <strong>{{ $tutor['full_name'] }}</strong><br>
+                    <small>{{ implode(', ', $tutor['materias']) }}</small>
+                </a>
             </li>
         @empty
             {{-- EL MENSAJE DE NO RESULTADOS --}}
