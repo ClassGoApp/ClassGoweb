@@ -12,7 +12,7 @@
 					<li><a href="{{ route('buscar.tutor')}}" class="{{ (request()->is('tutores*') || request()->is('tutors*') || request()->routeIs('buscar.tutor')) ? 'active' : '' }}">Tutores</a></li>					<li><a href="{{ route('nosotros')}}" class="{{ request()->is('nosotros*') ? 'active' : '' }}">Nosotros</a></li>
 					<li><a href="{{ route('como-trabajamos')}}" class="{{ request()->is('como-trabajamos*') ? 'active' : '' }}">Cómo trabajamos</a></li>
 					<li><a href="{{ route('preguntas')}}" class="{{ request()->is('preguntas*') ? 'active' : '' }}">Preguntas</a></li>
-					{{-- <li><a href="#" class="{{ request()->is('blog*') ? 'active' : '' }}">Blog</a></li> --}}
+					<li><a href="{{ route('blogs.index')}}" class="{{ request()->is('blog*') ? 'active' : '' }}">Blog</a></li> 
 				</ul>
 			</nav>
 		</div>

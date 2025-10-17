@@ -43,6 +43,7 @@ use App\Http\Controllers\GoogleMeetController;
 use App\Services\GoogleMeetService;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TutorPerfilController;
+use App\Http\Controllers\BeforeBlogsController;
 
 
 
@@ -127,8 +128,8 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
     //Route::get('find-tutors', [SearchController::class, 'findTutors'])->name('find-tutors');
     //Route::get('find-tutors', [SearchController::class, 'findTutors'])->name('find-tutors');
 
-    Route::get('/blogs', Blogs::class)->name('blogs');
-    Route::get('/blog/{slug}', BlogDetails::class)->name('blog-details');
+   // Route::get('/blogs', Blogs::class)->name('blogs');
+   // Route::get('/blog/{slug}', BlogDetails::class)->name('blog-details');
     Route::view('/subscriptions-page', 'subscriptions-page');
 
     // <==== Grillo kkk ===>
@@ -142,6 +143,16 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
     //<=== Kevin Pasante ===>
     Route::view('/terminos', 'vistas.view.pages.terminos')->name('terminos');
 
+/////////////////////////////////////////////////////////////////////
+    //<=== Oscar Pasante ===>
+// Route::view('/blogs','vistas.view.pages.blog')->name('blogs');
+Route::get('/blogs', [BeforeBlogsController::class, 'index'])->name('blogs.index');
+// Ruta genérica para cuando hagan clic en una card
+Route::get('/blogs/{slug}', function ($slug) {
+    return "Vista del blog con slug: " . $slug;
+})->name('blogs.show');
+
+//<===//////////////////////////////////////////===>
 
     //Route::get('/buscar-tutor', BuscarTutor::class)->name('buscar.tutor');
     Route::get('/kkkk', BuscadorTutor::class)->name('buscador.tutor');

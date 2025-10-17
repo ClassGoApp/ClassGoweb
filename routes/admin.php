@@ -37,10 +37,12 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     Route::get('/insights', Insights::class)->name('insights');
     Route::get('/profile', AdminProfile::class)->name('profile');
     Route::get('/manage-menus', ManageMenu::class)->name('manage-menus');
+    
     Route::get('/blogs', Blogs::class)->name('blog-listing');
     Route::get('/blogs/create', CreateBlog::class)->name('create-blog');
     Route::get('/blogs/update/{id}', UpdateBlog::class)->name('update-blog');
     Route::get('/blog-categories', BlogCategories::class)->name('blog-categories');
+
     
     
     Route::prefix('taxonomies')->name('taxonomy.')->group(function () {

@@ -275,10 +275,7 @@
           </li>
         </ul>
 
-        <!-- Botón -->
-        <div>
-          <a href="https://play.google.com/store/apps/details?id=com.neurasoft.classgo" target="_blank" class="btn-app">Descargar Ahora</a>
-        </div>
+        
       </div>
 
       <!-- Columna Derecha: Imagen -->
