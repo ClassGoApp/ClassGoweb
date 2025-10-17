@@ -50,9 +50,9 @@
                     <a href="https://play.google.com/store/apps/details?id=com.neurasoft.classgo" target="_blank"><img src="{{ asset('images/googleplay.png')}}" alt="" style=" width: 150px;"></a>
                 </div>
                 <div class="box">
-                    <a href="{{ route('nosotros')}}"><h1 data-translate="nosotros">Nosotros</h1></a>
-                    <a href=" {{ route('nosotros')}}#mision"><p data-translate="mision">Mision</p></a>
-                    <a href=" {{ route('nosotros')}}#vision"><p data-translate="vision">Vision</p></a>
+                    <a href="{{ route('nosotros')}}"><h1 data-translate="nosotros"></h1></a>
+                    <a href=" {{ route('nosotros')}}#mision"><p data-translate="mision"></p></a>
+                    <a href=" {{ route('nosotros')}}#vision"><p data-translate="vision"></p></a>
                     <a href="{{ route('nosotros')}}#team"><p data-translate="desarrolladores"></p></a>
                 </div>
                 <div class="box">
