@@ -215,7 +215,7 @@
                                 </div>
                             </div> --}}
                             <hr class="tutor-section-divider">
-                             <div>
+                            <div>
                                 <h3 class="tutor-section-title">Puedo hablar</h3>
                                 @if($tutor->languages && count($tutor->languages))
                                     @foreach($tutor->languages as $lang)
@@ -234,7 +234,7 @@
                             
                         </div>
                         <div id="curriculum" class="tutor-tab-content hidden">
-                           <nav class="tutor-subtabs-nav"><button onclick="changeSubTab(event, 'educacion')" class="tutor-subtab-btn active">Educación</button><button onclick="changeSubTab(event, 'experiencia')" class="tutor-subtab-btn">Experiencia</button><button onclick="changeSubTab(event, 'certificaciones')" class="tutor-subtab-btn">Certificación</button></nav>
+                            <nav class="tutor-subtabs-nav"><button onclick="changeSubTab(event, 'educacion')" class="tutor-subtab-btn active">Educación</button><button onclick="changeSubTab(event, 'experiencia')" class="tutor-subtab-btn">Experiencia</button><button onclick="changeSubTab(event, 'certificaciones')" class="tutor-subtab-btn">Certificación</button></nav>
 
                             <div id="educacion" class="tutor-subtab-content">
                                 @if($tutor->educations->isNotEmpty())
@@ -322,7 +322,7 @@
                                     </div>       
                                     @endforeach
                                 @else
-                                     <!--En caso de estar vacio-->
+                                    <!--En caso de estar vacio-->
                                     <div class="tutor-empty-box">
                                         <div class="am-norecord">
                                             @include('livewire.components.no-record')
@@ -341,7 +341,7 @@
                                             <div class="info-card-content">
                                                 <h3 class="info-card-title">{{ $certificate->title}}</h3>
                                                 <div class="info-card-meta">
-                                                    <div class="info-card-meta-item"">
+                                                    <div class="info-card-meta-item">
                                                         <svg class="info-card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg>
                                                         <span>{{ $certificate->institute_name}}</span>
                                                     </div>
@@ -352,11 +352,11 @@
                                                         $fechaFinal = $certificate->expiry_date;
                                                         $fechaFinalFormateado = date('d/m/Y', strtotime($fechaFinal));
                                                     ?>
-                                                    <div class="info-card-meta-item"">
+                                                    <div class="info-card-meta-item">
                                                         <svg class="info-card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                                                         <span>{{ $fechaInicialFormateado}}</span>
                                                     </div>
-                                                    <div class="info-card-meta-item"">
+                                                    <div class="info-card-meta-item">
                                                         <svg class="info-card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                                                         <span>{{ $fechaFinalFormateado}}</span>
                                                     </div>
@@ -542,10 +542,7 @@
                             </button>
                         </a>
                         @endrole    
-                        <button class="tutor-btn tutor-btn-share" id="btn-share-profile">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tutor-btn-icon"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"></line><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"></line></svg>
-                            <span>Compartir perfil</span>
-                        </button>
+                        
 
                         @auth
                         
@@ -570,25 +567,7 @@
 
     </main>
 
-    <!-- Modal Compartir -->
-    <div id="modal-share-profile" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.4);z-index:9999;align-items:center;justify-content:center;">
-        <div style="position: absolute; background:#fff;padding:2rem 1.5rem;border-radius:1rem;max-width:350px;width:90%; display:flex; justify-content:center; flex-flow: column wrap;">
-            <button id="close-modal-share" style="position:absolute;top:10px;right:15px;background:none;border:none;font-size:1.5rem;cursor:pointer;">&times;</button>
-            <img src="{{ asset('images/Tugo_With_Phone.png') }}" style="width: 300px; ">
-            <h3 style="margin-bottom:1rem;">Compartir perfil</h3>
-            <p style="margin-bottom:1.2rem;">Hecha un vistazo a este perfil en ClassGo!</p>
-            <div style="display:flex;flex-direction:column;gap:1rem;">
-                <button id="btn-share-whatsapp" style="background:#25D366;color:#fff;font-weight:600;padding:0.7rem 1rem;border:none;border-radius:0.7rem;display:flex;align-items:center;gap:0.7rem;cursor:pointer;justify-content:center;">
-                    <svg width="20" height="20" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 3C9.373 3 4 8.373 4 15c0 2.385.832 4.58 2.236 6.364L4 29l7.818-2.236A12.94 12.94 0 0 0 16 27c6.627 0 12-5.373 12-12S22.627 3 16 3Zm0 22c-1.77 0-3.484-.463-4.98-1.34l-.355-.21-4.646 1.33 1.33-4.646-.21-.355A9.956 9.956 0 0 1 6 15c0-5.514 4.486-10 10-10s10 4.486 10 10-4.486 10-10 10Zm5.29-7.29c-.29-.145-1.71-.84-1.975-.935-.265-.095-.46-.145-.655.145-.195.29-.75.935-.92 1.13-.17.195-.34.22-.63.075-.29-.145-1.225-.45-2.335-1.435-.863-.77-1.445-1.72-1.615-2.01-.17-.29-.018-.447.127-.592.13-.13.29-.34.435-.51.145-.17.193-.29.29-.485.097-.195.048-.365-.024-.51-.073-.145-.655-1.58-.9-2.165-.237-.57-.48-.492-.655-.5-.17-.007-.365-.01-.56-.01-.195 0-.51.073-.78.365-.27.29-1.03 1.01-1.03 2.465 0 1.455 1.055 2.86 1.202 3.055.145.195 2.08 3.18 5.04 4.33.705.242 1.255.386 1.685.494.708.18 1.35.155 1.86.094.567-.067 1.71-.698 1.95-1.372.24-.673.24-1.25.17-1.372-.07-.122-.265-.195-.555-.34Z" fill="#fff"/></svg>
-                    Compartir en WhatsApp
-                </button>
-                <button id="btn-share-facebook" style="background:#1877F3;color:#fff;font-weight:600;padding:0.7rem 1rem;border:none;border-radius:0.7rem;display:flex;align-items:center;gap:0.7rem;cursor:pointer;justify-content:center;">
-                    <svg width="20" height="20" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M29 16C29 8.82 23.18 3 16 3S3 8.82 3 16c0 6.29 4.61 11.48 10.63 12.79v-9.05h-3.2V16h3.2v-2.27c0-3.16 1.88-4.89 4.76-4.89 1.38 0 2.82.25 2.82.25v3.1h-1.59c-1.57 0-2.06.98-2.06 1.98V16h3.5l-.56 3.74h-2.94v9.05C24.39 27.48 29 22.29 29 16Z" fill="#fff"/></svg>
-                    Compartir en Facebook
-                </button>
-            </div>
-        </div>
-    </div>
+    
 
 
     <script>
@@ -1062,9 +1041,23 @@
         console.log('Modal JavaScript initialized successfully');
     });
 
-    
-    
-    
+    let lastScroll = 0;
+const actionBar = document.querySelector('.tutor-col-actions');
+
+window.addEventListener('scroll', () => {
+    const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+    if (currentScroll > lastScroll) {
+        // Scroll hacia abajo → ocultar
+        actionBar.classList.remove('hidden');
+    } else {
+        // Scroll hacia arriba → mostrar
+        actionBar.classList.add('hidden');
+    }
+    lastScroll = currentScroll <= 0 ? 0 : currentScroll; // Evita valores negativos
+});
+
+
+
     </script>
 </div>
 @endsection
