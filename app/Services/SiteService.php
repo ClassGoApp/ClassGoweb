@@ -129,7 +129,7 @@ public function getTutors($data = array()) {
         $tutors->withWhereHas('profile', function ($query) {
             $query->whereNotNull('verified_at');
             $query->whereNotNull('intro_video');
-            $query->select('id', 'user_id', 'first_name', 'last_name', 'image','slug','verified_at');
+            $query->select('id', 'user_id', 'first_name', 'last_name', 'price', 'image','slug','verified_at');
         });
 
         if(!empty($filters['order_by']) && $filters['order_by'] == 'ratings'){
@@ -170,7 +170,7 @@ public function getTutors($data = array()) {
                 $query->whereNotNull('verified_at');
             }
             $query->whereSlug($slug);
-            $query->select('id', 'user_id', 'verified_at', 'first_name', 'tagline', 'keywords', 'last_name', 'slug', 'image', 'intro_video', 'description');
+            $query->select('id', 'user_id', 'verified_at', 'first_name','price', 'tagline', 'keywords', 'last_name', 'slug', 'image', 'intro_video', 'description');
         })
         ->withAvg('reviews as avg_rating', 'rating')
         ->withCount('reviews as total_reviews')
@@ -578,7 +578,7 @@ public function getTutors($data = array()) {
 
         // 5. Cargamos las relaciones y realizamos los cálculos.
         $tutors = $tutorsQuery->with([
-                'profile:id,user_id,first_name,last_name,slug,image,description,native_language',
+                'profile:id,user_id,first_name,last_name,price,slug,image,description,native_language',
                 'languages:id,name',
                 'userSubjects.subject.group',
             ])
@@ -618,6 +618,7 @@ public function getTutors($data = array()) {
             return [
                 'user_id' => $tutor->id,
                 'full_name' => trim("{$profile->first_name} {$profile->last_name}"),
+                'price' => $profile->price,
                 'slug' => $profile->slug,
                 'image' => $profile->image,
                 'description' => $profile->description,

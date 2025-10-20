@@ -8,7 +8,7 @@
         <!-- Breadcrumbs -->
         <div class="tutor-breadcrumbs">
             <a href="#" class="tutor-breadcrumb-link">Tutores</a> / 
-            <a href="{{ route('buscar.tutor')}}" class="tutor-breadcrumb-link">Encontrar tutor</a> / 
+            <a href="{{ route('buscar')}}" class="tutor-breadcrumb-link">Encontrar tutor</a> / 
             <span class="tutor-breadcrumb-current">{{ $tutor->profile->first_name ?? '' }} {{ $tutor->profile->last_name ?? '' }}</span>
         </div>
         <div class="tutor-grid">
@@ -67,18 +67,55 @@
                                     <span>{{$tutor->email}}</span>
                                 </div>
                             </div>
-                            </div>
-                            {{-- <p class="tutor-profile-quote">{{ $tutor->profile->description ?? '" Tutor verificado y aprobado por ClassGo!"' }}</p> --}}
-                            <p class="tutor-profile-quote">"Especialista en Matemáticas Avanzadas y Además apasionado."</p> <!--Frase de BD-->
+                            
+                         </div>
+                         {{-- <p class="tutor-profile-quote">{{ $tutor->profile->description ?? '" Tutor verificado y aprobado por ClassGo!"' }}</p> --}}
+                         <p class="tutor-profile-quote">"{{ $tutor->profile->tagline ?? ' Tutor verificado y aprobado por Classgo! '}}"</p> <!--Frase de BD-->
                     </div>
                 </div>
                 <!-- SECCION DE MATERIAS-->
                 <div class="subjects-card">
-                    <h2 class="subjects-card__title">Materias que enseño</h2>
-                    
+                    <h2 class="subjects-card__title">Mis Tutorías</h2>
                     <div class="subjects-list">
+                        @php
+                            // Agrupar materias por grupo (asumiendo que $tutor->userSubjects está disponible)
+                            $materiasPorGrupo = [];
+                            if(isset($tutor->userSubjects)) {
+                                foreach($tutor->userSubjects as $userSubject) {
+                                    $grupo = $userSubject->subject->group->name ?? 'Otros';
+                                    $materia = $userSubject->subject->name ?? null;
+                                    if($materia) {
+                                        $materiasPorGrupo[$grupo][] = $materia;
+                                    }
+                                }
+                            }
+                            // Definir los 3 bloques SVG completos que quieres alternar.
+                            $icons = [
+                                '<span class="subject-item__icon subject-item__icon--math"><svg xmlns="http://www.w3.org/2000/svg" class="subject-item__svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v11.494m-9-5.747h18" /></svg></span>',
+                                '<span class="subject-item__icon subject-item__icon--design"><svg xmlns="http://www.w3.org/2000/svg" class="subject-item__svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg></span>',
+                                '<span class="subject-item__icon subject-item__icon--mechanics"><svg xmlns="http://www.w3.org/2000/svg" class="subject-item__svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg></span>',
+                            ];
+                        @endphp
+
+                        @foreach($materiasPorGrupo as $grupo => $materiasGrupo)
+                            <div class="subject-item">
+                                <div class="subject-item__header">
+                                    {{-- <span class="subject-item__icon subject-item__icon--math">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="subject-item__svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v11.494m-9-5.747h18" /></svg>
+                                    </span> --}}
+                                    {!! $icons[$loop->index % count($icons)] !!}
+                                    <h3 class="subject-item__name">{{ $grupo }}</h3>
+                                </div>
+                                
+                                <div class="subject-item__topics">
+                                    @foreach($materiasGrupo as $materia)
+                                        <span class="topic-tag">{{ $materia }}</span>
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endforeach
                         
-                        <div class="subject-item">
+                        {{-- <div class="subject-item">
                             <div class="subject-item__header">
                                 <span class="subject-item__icon subject-item__icon--math">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="subject-item__svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v11.494m-9-5.747h18" /></svg>
@@ -115,7 +152,7 @@
                             <div class="subject-item__topics">
                                 <span class="topic-tag">Mantenimiento de Motocicletas</span>
                             </div>
-                        </div>
+                        </div> --}}
                         
                     </div>
                 </div>
@@ -133,7 +170,7 @@
                     <div class="tutor-tabs-content">
                         <div id="introduccion" class="tutor-tab-content">
                             <div>
-                                <h3 class="tutor-section-title">Hola👋 Me llamo {{ $tutor->profile->first_name ?? '' }}</h3>
+                                <h3 class="tutor-section-title">Hola👋 Soy {{ $tutor->profile->first_name ?? '' }}</h3>
                                 <p class="tutor-section-text">{{ $tutor->profile->description ?? '" Soy un Tutor verificado y aprobado por ClassGo! Listo para responder tus dudas."' }}</p>                            </div>
                             {{-- <div>
                                 <h3 class="tutor-section-title">Puedo enseñar</h3>
@@ -254,7 +291,7 @@
                                         <div class="info-card-header">
                                             <div class="info-card-content">
                                                 <h3 class="info-card-title">{{ $experience->title}}</h3>
-                                                <span style="color: #9ca3af;">{{ $experience->description}}</span>
+                                                <span style="color: #9ca3af; margin-left: 1rem;">{!! $experience->description!!}</span>
                                                 <div class="info-card-meta">
                                                     <div class="info-card-meta-item">
                                                         <svg class="info-card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
@@ -342,41 +379,124 @@
 
                         <div id="resenas" class="tutor-tab-content hidden">
                             <h3 class="tutor-section-title" style="margin-bottom: 1.5rem;">Reseñas de estudiantes</h3>
-                            {{-- <div class="tutor-reviews-box">
+                            <div class="tutor-reviews-box">
                                 <!-- Resumen de calificación -->
                                 <div class="tutor-reviews-summary">
-                                    <div class="tutor-reviews-score" style="font-size:2.5rem;">0.0</div>
+                                    <div class="tutor-reviews-score" style="font-size:2.5rem;">{{ $avgRating }}</div>
                                     <div class="tutor-reviews-stars" style="margin:1rem 0;">
-                                        @for($i=0; $i<5; $i++)
-                                            <svg class="tutor-star-icon" width="24" height="24" fill="#ccc" viewBox="0 0 20 20">
+                                        @for($i = 0; $i < 5; $i++)
+                                            <svg class="tutor-star-icon" width="24" height="24" fill="{{ $i < floor($avgRating) ? '#FB8500' : '#ccc' }}" viewBox="0 0 20 20">
                                                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
                                             </svg>
                                         @endfor
                                     </div>
-                                    <div class="tutor-reviews-count" style="color:#888;">Basado en 0 calificaciones</div>
+                                    <div class="tutor-reviews-count" style="color:#888;">Basado en {{ $totalReviews }} calificaciones</div>
                                 </div>
+
                                 <!-- Detalle de barras -->
                                 <div class="tutor-reviews-details" style="width:67%;">
-                                    @for($i=5; $i>=1; $i--)
+                                    @foreach($ratingDistribution as $stars => $count)
                                     <div class="tutor-review-bar-row" style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.5rem;">
-                                        <span style="color:#888;">{{ $i }}</span>
+                                        <span style="color:#888;">{{ $stars }}</span>
                                         <svg class="tutor-star-icon" width="18" height="18" fill="#FB8500" viewBox="0 0 20 20">
                                             <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
                                         </svg>
                                         <div class="tutor-review-bar-bg" style="flex:1;background:#e0e0e0;border-radius:1rem;height:8px;">
-                                            <div class="tutor-review-bar-fill" style="background:#FB8500;height:8px;border-radius:1rem;width:0%;"></div>
+                                            <div class="tutor-review-bar-fill" style="background:#FB8500;height:8px;border-radius:1rem;width:{{ $totalReviews > 0 ? ($count/$totalReviews*100) : 0 }}%;"></div>
                                         </div>
-                                        <span style="color:#888;font-weight:600;">0</span>
+                                        <span style="color:#888;font-weight:600;">{{ $count }}</span>
                                     </div>
-                                    @endfor
+                                    @endforeach
                                 </div>
-                            </div> --}}
-                            <div class="tutor-empty-box tutor-reviews-empty" style="text-align:center;margin-top:2rem;padding-top:2rem;border-top:1px solid #e0e0e0;">
-                                {{-- LOGICA PARA MOSTRAR DE BASE DE DATOS --}}
+                            </div>
+
+                            <!--CONTENIDO DE COMENTARIOS Y CALIFICACIONES-->
+
+                            <div class="review-section-wrapper"> 
+                               
+                                @role('student')
+                                    <div class="review-form-container">
+                                        <h2 class="review-form__title">Deja tu reseña</h2>
+                                        
+                                        <form action="{{ route('tutor.review.store', $tutor->id) }}" method="POST" id="review-form">
+                                            @csrf
+                                            <input type="hidden" name="rating" id="rating-input" value="">
+
+                                            <div id="star-rating" class="review-form__rating-wrapper">
+                                                @for($i = 1; $i <= 5; $i++)
+                                                    <svg data-value="{{ $i }}" class="review-form__star" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                                        <path d="M12.0006 18.26L4.94715 22.2082L6.52248 14.2799L0.587891 8.7918L8.61493 7.84006L12.0006 0.5L15.3862 7.84006L23.4132 8.7918L17.4787 14.2799L19.054 22.2082L12.0006 18.26Z"></path>
+                                                    </svg>
+                                                @endfor
+                                            </div>
+
+                                            <div class="review-form__textarea-wrapper">
+                                                <textarea name="comment" id="comment" rows="5" class="review-form__textarea" 
+                                                    placeholder="Escribe tu reseña aquí (opcional)..."></textarea>
+                                            </div>
+
+                                            <div class="review-form__button-wrapper">
+                                                <button type="submit" class="review-form__button" id="submit-review">
+                                                    Enviar reseña
+                                                </button>
+                                            </div>
+                                        </form>
+
+                                        @if(session('error'))
+                                            <div class="alert alert-danger">
+                                                {{ session('error') }}
+                                            </div>
+                                        @endif
+
+                                        @if(session('success'))
+                                            <div class="alert alert-success">
+                                                {{ session('success') }}
+                                            </div>
+                                        @endif
+                                    </div>
+                                @endrole
+
+                                <!-- Lista de reseñas -->
+                                <div class="review-list">
+                                    @forelse($reviews as $review)
+                                        <article class="review-card">
+                                            <div class="review-card__header">
+                                                <div class="review-card__user-info">
+                                                    @if($review['reviewer']['image'])
+                                                        <img src="{{ asset('storage/' . $review['reviewer']['image']) }}" alt="Avatar de {{ $review['reviewer']['name'] }}" class="review-card__avatar">
+                                                    @else
+                                                        <img src="{{ asset('images/tutors/default.png') }}" class="review-card__avatar">
+                                                    @endif
+
+                                                    <div class="review-card__meta">
+                                                        <p class="review-card__name">{{ $review['reviewer']['name'] }}</p>
+                                                        <p class="review-card__date">{{ $review['created_at']->diffForHumans() }}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="review-card__rating">
+                                                    <span class="review-card__score">{{ number_format($review['rating'], 1) }}</span>
+                                                    <svg class="review-card__star-icon--filled" fill="currentColor" viewBox="0 0 20 20">
+                                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            <p class="review-card__text">"{{ $review['comment'] }}"</p>
+                                        </article>
+                                    @empty
+                                        <div class="tutor-empty-box">
+                                            <div class="am-norecord">
+                                                @include('livewire.components.no-record')
+                                            </div>
+                                        </div>
+                                    @endforelse
+                                </div>
+                            </div>
+
+                            {{-- <div class="tutor-empty-box tutor-reviews-empty" style="text-align:center;margin-top:2rem;padding-top:2rem;border-top:1px solid #e0e0e0;">
                                 <div class="am-norecord">
                                     @include('livewire.components.no-record')
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>
@@ -385,7 +505,10 @@
             <div class="tutor-col tutor-col-actions">
                 <div class="tutor-actions-card">
                     <div class="tutor-actions-price-box">
-                        <p class="tutor-actions-price">💸 15 Bs.</p>
+                        <div class="price-container">
+                            <p class="tutor-actions-price">💸 {{ $tutor->profile->price ?? '15.00' }} Bs.</p> 
+                            <p class="tutor-actions-price-text"> / tutoría</p>
+                        </div>
                         <div class="tutor-actions-meta">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tutor-actions-meta-icon"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
                             <span>20 min</span>
@@ -401,14 +524,16 @@
                                     <span>Reservar</span>
                                 </button>
                             </a>
-                            
-                            <button id="favorite-btn-blue" class="favorite-btn-blue tutor-btn tutor-btn-reservar" aria-label="Agregar a favoritos">
+
+                           {{-- <button id="favorite-btn-blue" class="favorite-btn-blue tutor-btn tutor-btn-reservar" aria-label="Agregar a favoritos">
                                 <svg class="heart-icon-blue" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                                 </svg>
                                 <span id="text-favorito">Añadir a Favoritos</span>
-                            </button>
+                            </button> --}}
 
+                            <livewire:favourite-button :tutorId="$tutor->id" />
+                       
                         @elserole('tutor')
                         <a href="{{ route('tutor.dashboard')}}">
                             <button class="tutor-btn tutor-btn-now">
@@ -419,15 +544,21 @@
                         @endrole    
                         
 
-                        {{-- <a href="{{ route('buscar.tutor')}}">
-                            <button class="tutor-btn tutor-btn-reservar" >
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="11" cy="11" r="8"></circle>
-                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                            </svg>
-                            <span>Buscar más Tutores</span>
-                            </button>
-                        </a> --}}
+                        @auth
+                        
+                        @else
+                            <a href="{{ route('buscar')}}">
+                                <button class="tutor-btn tutor-btn-reservar" >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                </svg>
+                                <span>Buscar más Tutores</span>
+                                </button>
+                            </a>
+                        @endauth
+
+                        
                     </div>
                 </div>
             </div>
@@ -659,6 +790,44 @@
             btnFacebook.addEventListener('click', function() {
                 const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${encodeURIComponent(shareMsg)}`;
                 window.open(url, '_blank');
+            });
+        });
+
+        //============== Calificaciones y reseñas =========================
+        document.addEventListener('DOMContentLoaded', function() {
+            const starRating = document.getElementById('star-rating');
+            const stars = starRating.getElementsByClassName('review-form__star');
+            const ratingInput = document.getElementById('rating-input');
+            const form = document.getElementById('review-form');
+            let currentRating = 0;
+
+            function updateStars(rating) {
+                Array.from(stars).forEach((star, index) => {
+                    star.style.color = index < rating ? '#FB8500' : '#E5E7EB';
+                });
+            }
+
+            Array.from(stars).forEach((star, index) => {
+                star.addEventListener('mouseover', () => {
+                    updateStars(index + 1);
+                });
+
+                star.addEventListener('click', () => {
+                    currentRating = index + 1;
+                    ratingInput.value = currentRating;
+                    updateStars(currentRating);
+                });
+            });
+
+            starRating.addEventListener('mouseleave', () => {
+                updateStars(currentRating);
+            });
+
+            form.addEventListener('submit', function(e) {
+                if (!currentRating) {
+                    e.preventDefault();
+                    alert('Por favor, selecciona una calificación');
+                }
             });
         });
 
