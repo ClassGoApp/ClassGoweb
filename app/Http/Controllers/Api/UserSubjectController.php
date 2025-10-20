@@ -127,6 +127,13 @@ class UserSubjectController extends Controller
      */
     public function store(Request $request)
     {
+        Log::info('UserSubjectController::store - Iniciando', [
+            'request_data' => $request->all(),
+            'user_authenticated' => Auth::check(),
+            'user_id' => Auth::id(),
+            'route_public' => true
+        ]);
+
         $validated = $request->validate([
             'user_id' => 'required|integer|exists:users,id',
             'subject_id' => 'required|integer|exists:subjects,id',
