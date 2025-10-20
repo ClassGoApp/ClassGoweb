@@ -50,7 +50,7 @@ body {
   background: white !important;
 }
 .contadores-hero {
-min-height: 60vh;
+min-height: 55vh;
   position: relative;
   /* Tu paleta */
   background-image: linear-gradient(
@@ -62,17 +62,38 @@ min-height: 60vh;
   background-size: 100% 300%;         /* clave: hacemos el lienzo más alto */
   animation: gradientMove 6s ease-in-out infinite;
 }
+/*animación del fondo*/
 @keyframes gradientMove{
   0%   { background-position: 50% 0%; }
   50%  { background-position: 50% 100%; }
   100% { background-position: 50% 0%; }
 }
+/*animación de salto*/
 @keyframes salto {
   0% { transform: translateY(0); }
   40% { transform: translateY(-10px); }
   60% { transform: translateY(5px); }
   80% { transform: translateY(-3px); }
   100% { transform: translateY(0); }
+}
+/*animación de palpitar*/
+@keyframes palpitar {
+    0%   { transform: scale(1); opacity: 1; }
+    5%   { transform: scale(1.05); opacity: 1; }   /* primer latido */
+    10%  { transform: scale(1); opacity: 0.9; }
+    15%  { transform: scale(1.05); opacity: 1; }  /* segundo latido */
+    20%  { transform: scale(1); opacity: 0.9; }
+    100% { transform: scale(1); opacity: 1; }     /* pausa larga */
+  }
+/*animación de sombra celeste*/
+
+@keyframes sombraCeleste {
+  0%, 100% {
+    text-shadow: 0 0 3px #00FFFF, 0 0 10px #00CED1, 0 0 25px #00CED1;
+  }
+  50% {
+    text-shadow: 0 0 15px #00FFFF, 0 0 25px #00CED1, 0 0 35px #00CED1;
+  }
 }
 .hero {
   height: 100vh;
@@ -101,13 +122,15 @@ min-height: 60vh;
   font-size: 3em !important;
   font-weight: var(--font-light);
   color: white;
-    text-shadow: 0 0 3px #00e6ff, 0 0 15px #0099cc;
+  text-shadow: 0 0 3px #00e6ff, 0 0 15px #0099cc;
+  animation: palpitar 3s ease-out;
 }
 
 .hero-title-abajo {
   font-size: 4em !important;
   font-weight: var(--font-bold);
-  text-shadow: 0 0 4px #00e6ff, 0 0 15px #0099cc;
+
+  animation: palpitar 2.5s infinite ease-in-out, sombraCeleste 3s infinite ease-in-out;
 }
 
 .hero-subtext {
@@ -186,19 +209,20 @@ min-height: 60vh;
   font-size: 1rem;
   transition: box-shadow 150ms, border-color 150ms;
 }
+
+
+/* Estilo para cuando el input está seleccionado (focus) */
+.search-box .form-control:focus {
+  border-color: var(--terciary-color2);
+  /* focus:border-blue-500 */
+  box-shadow: 0 0 0 3px var(--terciary-color2);
+  /* focus:ring-2 focus:ring-blue-500 */
+  outline: none;
+}
 .search-box:hover {
   box-shadow: #00e6ff;
   color: #0d1b2a;
   box-shadow: 0 0 20px #00e6ff, 0 0 40px #00b3ff;
-}
-
-/* Estilo para cuando el input está seleccionado (focus) */
-.search-box .form-control:focus {
-  border-color: #3b82f6;
-  /* focus:border-blue-500 */
-  box-shadow: 0 0 0 2px #3b82f6;
-  /* focus:ring-2 focus:ring-blue-500 */
-  outline: none;
 }
 
 /**---============ 1.2.4 - Lista de Resultados ============---**/
@@ -412,6 +436,15 @@ min-height: 60vh;
   justify-content: center;
   align-items: center;
   gap: 12px;
+  
+  
+}
+.tutors-container h1.tutor.ideal {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  animation: palpitar 3s infinite ease-in-out;
 }
 
 .linea {
@@ -697,6 +730,14 @@ min-height: 60vh;
   width: 100%;
   text-align: center;
 }
+.potencial-container h1.unlock-potencial {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  animation: palpitar 3s infinite ease-in-out;
+}
 
 .potencial-container>p {
   text-align: center;
@@ -768,6 +809,13 @@ min-height: 60vh;
 .steps {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+.steps-card  button:hover {
+
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(23, 38, 241, 0.596);
+  transition: all 0.4s ease;
+
 }
 
 @media (max-width: 1024px) {
@@ -925,6 +973,11 @@ min-height: 60vh;
 .go .numero-paso i {
   font-size: 2rem;
 }
+.button-go:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(23, 38, 241, 0.596);
+  transition: all 0.4s ease;
+}
 
 /**---============ 5 - Busca Tutorías ============---**/
 .tutorias-container {
@@ -945,6 +998,7 @@ min-height: 60vh;
   gap: 2rem;
   color: var(--primary-color);
   background: var(--panel-background);
+  border-radius: 10px;
 }
 
 /**---============ 5.2 - Buscador Texto Izquierdo ============---**/
@@ -996,28 +1050,31 @@ min-height: 60vh;
 
 .button-comienza:hover {
   background-color: var(--primary-color);
+  box-shadow: 0 6px 20px rgba(23, 37, 241, 0.836);
+  transition: all 0.4s ease;
 }
 
 /**---============ 5.4 - Buscador Imagen Derecha ============---**/
 .carousel-3D {
-  flex: 1 1 400px;
+  flex: 0  600px;
   display: flex;
   justify-content: end;
   align-items: center;
-  padding: 1rem;
+  padding: 0.5rem;
 }
 
 .img-container-3D {
-  transform: translateX(70px);
+  justify-content: end;
+  align-items: center;
   position: relative;
-  height: 350px;
-  width: 550px;
-  perspective: 450px;
+  height: 300px;
+  width: 420px;
+  perspective: 400px;
   transform-style: preserve-3d;
 }
 
 .box-3D {
-  box-shadow: 0 0 10px rgb(0 0 0 / 30%);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.63);
   width: 480px;
   height: 360px;
   border-radius: 25px;
@@ -1066,12 +1123,7 @@ min-height: 60vh;
   left: 35%;
   transform: translate(-50%, -50%) rotateY(-10deg) translateZ(-150px);
 }
-.box-3D:nth-of-type(6) {
-  z-index: 1;
-  opacity: 0;
-  left: 40%;
-  transform: translate(-50%, -50%) rotateY(-10deg) translateZ(-200px);
-}
+
 
 /**---============ 5.5 - Instala Nuestra Aplicación ============---**/
 .section-app {
@@ -1079,7 +1131,7 @@ min-height: 60vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 3rem 8rem;
+  padding: 2rem 8rem;
   background: white;
   position: relative;
   overflow: hidden;
@@ -1090,7 +1142,7 @@ min-height: 60vh;
   max-width: 1300px;
   margin: 0 auto;
   width: 100%;
-  padding: 1.5rem;
+  padding: 1.3rem;
   position: relative;
   z-index: 2;
 }
@@ -1122,7 +1174,7 @@ min-height: 60vh;
   gap: 0.3rem;
   background: color var(--primary-color);
   border-radius: 10%;
-  padding: 1.5rem 2rem
+  padding: 1.5rem 2rem;
 }
 
 @media (min-width: 767px) {
@@ -1136,14 +1188,15 @@ min-height: 60vh;
   font-weight: 800;
   color: var(--primary-color);
   margin-bottom: 1rem;
-  gap: 0.3rem;
+  gap: 0.1rem;
+    animation: palpitar 3s ease-in-out infinite;
 }
 
 .text-app p {
   font-size: 1.1rem;
   color: var(--primary-color);
   margin-bottom: 2rem;
-  gap: 0.2rem;
+  gap: 0.1rem;
 }
 
 /**---============ Lista de Beneficios ============---**/
@@ -1189,12 +1242,12 @@ min-height: 60vh;
   text-decoration: none;
   display: inline-block;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 15px rgba(230, 94, 4, 0.15);
 }
 
 .btn-app:hover {
   transform: translateY(-3px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 6px 20px rgba(23, 37, 241, 0.829);
 }
 
 /**---============ Imagen ============---**/
@@ -1319,7 +1372,7 @@ min-height: 60vh;
   animation: fadeInUp 0.8s ease-out forwards;
 }
 
-/*==Estado inicial: oculto y desplazado==*/
+/*==Estado inicial: oculto y desplazado de extremos==*/
 .fade-left,
 .fade-right {
   opacity: 0;
@@ -1479,6 +1532,18 @@ min-height: 60vh;
     align-items: center;
     text-align: center;
   }
+  .img-container-3D {
+  width: 100%;
+  height: auto;
+}
+
+  .box-3D {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotateY(-10deg);
+  opacity: 0.9;
+}
 
   .tutores-img {
     order: 2;
@@ -1561,16 +1626,18 @@ min-height: 60vh;
 
   /* Hero: centrar gif y texto debajo */
   .hero {
-    height: auto;
-    min-height: 100vh;
+    height: 40vh;
+    min-height: 90vh;
     padding-bottom: 2rem;
     display: flex;
     align-items: center;
+    justify-content: center;
   }
 
   .hero-container {
     flex-direction: column;
     padding-top: 2rem;
+    height: auto;
 
   }
 
@@ -1630,6 +1697,7 @@ min-height: 60vh;
     display: flex;
     justify-content: center;
     margin: 0;
+    gap: 0.3rem;
   }
 
   .hero-buttons button {
@@ -1783,7 +1851,7 @@ min-height: 60vh;
   .tutorias {
     flex-direction: column-reverse;
     text-align: center;
-    display: none;
+    display: block;
   }
 
   .tutores-text {
@@ -1809,6 +1877,26 @@ min-height: 60vh;
 
   .tutores-img {
     padding: 0;
+  }
+  .carousel-3D {
+    justify-content: end;
+    align-items: center;
+    padding: 1rem 10rem;
+    overflow: hidden; /* evita desbordes horizontales */
+  }
+
+  .img-container-3D {
+    justify-content: center;
+    width: 310px;
+    height: 210px;
+    perspective: 310px;
+  }
+
+  .box-3D {
+    width: 290px;
+    height: 190px;
+    border-radius: 25px;
+    justify-content: center;
   }
 
 
