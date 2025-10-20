@@ -67,16 +67,10 @@
                                     <span>{{$tutor->email}}</span>
                                 </div>
                             </div>
-<<<<<<< HEAD
                             
                          </div>
                          {{-- <p class="tutor-profile-quote">{{ $tutor->profile->description ?? '" Tutor verificado y aprobado por ClassGo!"' }}</p> --}}
                          <p class="tutor-profile-quote">"{{ $tutor->profile->tagline ?? ' Tutor verificado y aprobado por Classgo! '}}"</p> <!--Frase de BD-->
-=======
-                            </div>
-                            {{-- <p class="tutor-profile-quote">{{ $tutor->profile->description ?? '" Tutor verificado y aprobado por ClassGo!"' }}</p> --}}
-                            <p class="tutor-profile-quote">"Especialista en Matemáticas Avanzadas y Además apasionado."</p> <!--Frase de BD-->
->>>>>>> develops
                     </div>
                 </div>
                 <!-- SECCION DE MATERIAS-->
