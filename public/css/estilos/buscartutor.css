@@ -49,6 +49,14 @@
 
 /* 1. Estilos generales de la página de búsqueda */
 
+.desk {
+    display: block;
+}
+
+.mobile {
+    display: none;
+}
+
 .container-buscartutor {
     margin: 0;
     padding: 0;
@@ -695,5 +703,24 @@
         background-color: white;
         height: 5rem;
         width: 5rem;
+    }
+    .infor-tutor {
+        padding-top: 0.6rem;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+    .card-tutor__price {
+        text-align: center;
+    }
+    .desk {
+        display: none;
+    }
+    .mobile {
+        display: block;
+    }
+    .card-tutor-info {
+        display: flex;
+        flex-flow: row;
     }
 }

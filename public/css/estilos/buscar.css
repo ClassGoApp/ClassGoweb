@@ -2,27 +2,18 @@
     /* 1. CONFIGURACIÓN GLOBAL */
     
     .buscar-section {
-        background: var(--panel-background);
+        background: rgba(7, 59, 76, 1);
     }
     /* ==================== buscar header ==================== */
     
-    .buscar-header {
-        background: var(--secundary-color);
-        border-bottom-left-radius: 50px;
-        border-bottom-right-radius: 50px;
-        padding-bottom: 20px;
-        width: 100%;
-    }
-    
     .buscar-header-content {
         background: var(--bg-gradient4);
-        border-bottom-left-radius: 40px;
-        border-bottom-right-radius: 40px;
         display: flex;
         justify-content: space-between;
         align-items: center;
         padding: 5rem 5rem 3rem 5rem;
         color: white;
+        min-height: 100vh;
     }
     
     .container {
@@ -247,20 +238,6 @@
         justify-items: center;
         padding-top: 4rem;
     }
-    /* MEDIA QUERY: Tabletas (Ej. 768px+) - Tres columnas */
-    
-    @media (min-width: 600px) {
-        .course-grid {
-            grid-template-columns: repeat(3, 1fr);
-        }
-    }
-    /* MEDIA QUERY: Escritorio (Ej. 1024px+) - Cuatro columnas */
-    
-    @media (min-width: 900px) {
-        .course-grid {
-            grid-template-columns: repeat(4, 1fr);
-        }
-    }
     /*============================*/
     /* 4. ESTILOS DE FILTROS (Botones más grandes y responsive) */
     
@@ -270,7 +247,7 @@
         justify-content: center;
         gap: 0.75rem;
         margin-bottom: 2rem;
-        padding: 0rem 5rem;
+        padding: 2rem 5rem;
     }
     
     .filter-btn {
@@ -304,10 +281,20 @@
     }
     /* 5. ESTILOS DE LA CUADRÍCULA Y TARJETAS */
     
-    .main-content {
-        padding-top: 2rem;
-        padding-bottom: 2rem;
+    .main-border {
+        border-top-left-radius: 5rem;
+        border-top-right-radius: 5rem;
+        background: var(--secundary-color);
+        padding-top: 1.2rem;
         display: block;
+    }
+    
+    .main-content {
+        padding-bottom: 5rem;
+        display: block;
+        background: var(--panel-background);
+        border-top-left-radius: 5rem;
+        border-top-right-radius: 5rem;
     }
     
     .tutor-grid-buscar {
@@ -702,6 +689,9 @@
         /* gray-700 */
         margin-top: 0.75rem;
         font-size: 0.875rem;
+        line-height: 1.3rem;
+        min-height: 2.45rem;
+        text-align: center;
     }
     
     .card-tutor__footer {
@@ -768,25 +758,6 @@
         padding-bottom: 1rem;
         box-sizing: border-box;
     }
-    /* MEDIA QUERY: sm:px-6 lg:px-8 */
-    
-    @media (min-width: 640px) {
-        .cta-section-wrapper {
-            padding-left: 1.5rem;
-            /* sm:px-6 */
-            padding-right: 1.5rem;
-            /* sm:px-6 */
-        }
-    }
-    
-    @media (min-width: 1024px) {
-        .cta-section-wrapper {
-            padding-left: 2rem;
-            /* lg:px-8 */
-            padding-right: 2rem;
-            /* lg:px-8 */
-        }
-    }
     /* ======================================================= */
     /* 2. CARD PRINCIPAL (pattern-background rounded-2xl shadow-2xl) */
     /* ======================================================= */
@@ -813,15 +784,6 @@
         /* py-20 */
     }
     /* MEDIA QUERY: md:py-28 */
-    
-    @media (min-width: 768px) {
-        .cta-card__content {
-            padding-top: 2rem;
-            /* md:py-28 */
-            padding-bottom: 2rem;
-            /* md:py-28 */
-        }
-    }
     /* ======================================================= */
     /* 3. TIPOGRAFÍA */
     /* ======================================================= */
@@ -838,13 +800,6 @@
     }
     /* MEDIA QUERY: md:text-5xl */
     
-    @media (min-width: 768px) {
-        .cta-card__title {
-            font-size: 3rem;
-            /* md:text-5xl */
-        }
-    }
-    
     .cta-card__subtitle {
         /* mt-6 max-w-2xl mx-auto text-lg text-gray-300 */
         margin-top: 1.5rem;
@@ -857,13 +812,6 @@
         color: var(--text-light);
     }
     /* MEDIA QUERY: md:text-xl */
-    
-    @media (min-width: 768px) {
-        .cta-card__subtitle {
-            font-size: 1.25rem;
-            /* md:text-xl */
-        }
-    }
     /* ======================================================= */
     /* 4. BOTÓN (cta-card__button) */
     /* ======================================================= */
@@ -921,9 +869,58 @@
     /* ======================================================= */
     /* 6. MEDIA QUERIES PARA RESPONSIVIDAD (Tablet y Desktop) */
     /* ======================================================= */
+    /* Vista de 600px y superior */
+    
+    @media (max-width: 600px) {
+        .course-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+        .buscar-header-content {
+            padding: 0rem;
+            min-height: 80vh;
+        }
+        .main-border {
+            border-top-left-radius: 2rem;
+            border-top-right-radius: 2rem;
+            padding-top: 1rem;
+        }
+        .main-content {
+            border-top-left-radius: 2rem;
+            border-top-right-radius: 2rem;
+        }
+        .filter-controls__list {
+            display: flex;
+            flex-flow: row nowrap;
+            overflow-x: auto;
+            width: 100%;
+            padding: 0.5rem 0.25rem;
+            white-space: nowrap;
+            gap: 0.5rem;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            justify-content: flex-start;
+            margin-top: 1.5rem;
+        }
+        .filter-controls__list .filter-btn:first-child {
+            margin-left: 0.25rem;
+        }
+        .filter-controls__list .filter-btn:last-child {
+            margin-right: 0.25rem;
+        }
+        .cta-card__title {
+            line-height: 40px;
+            padding-top: 2rem;
+        }
+    }
     /* Vista de Móvil Grande / Tablet Pequeña (sm: ~ 640px) */
     
     @media (min-width: 640px) {
+        .cta-section-wrapper {
+            padding-left: 1.5rem;
+            /* sm:px-6 */
+            padding-right: 1.5rem;
+            /* sm:px-6 */
+        }
         .tutor-grid-buscar {
             grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 2rem;
@@ -932,6 +929,20 @@
     /* Vista de Tablet (md: ~ 768px) */
     
     @media (min-width: 768px) {
+        .cta-card__content {
+            padding-top: 2rem;
+            /* md:py-28 */
+            padding-bottom: 2rem;
+            /* md:py-28 */
+        }
+        .cta-card__subtitle {
+            font-size: 1.25rem;
+            /* md:text-xl */
+        }
+        .cta-card__title {
+            font-size: 3rem;
+            /* md:text-5xl */
+        }
         .header-main {
             padding-top: 5rem;
             padding-bottom: 2rem;
@@ -948,16 +959,28 @@
         .filter-controls__list {
             gap: 1rem;
         }
-        /* Se mantiene el tamaño de las tarjetas y buscador grande */
         .tutor-grid-buscar {
             gap: 2rem;
             grid-template-columns: repeat(3, minmax(0, 1fr));
             /* 3 columnas en tablet */
         }
     }
+    /* MEDIA QUERY: Pantallas de 900px+ */
+    
+    @media (min-width: 900px) {
+        .course-grid {
+            grid-template-columns: repeat(4, 1fr);
+        }
+    }
     /* Vista de Desktop (lg: ~ 1024px) */
     
     @media (min-width: 1024px) {
+        .cta-section-wrapper {
+            padding-left: 2rem;
+            /* lg:px-8 */
+            padding-right: 2rem;
+            /* lg:px-8 */
+        }
         .tutor-grid-buscar {
             grid-template-columns: repeat(4, minmax(0, 1fr));
             /* 4 columnas en desktop */

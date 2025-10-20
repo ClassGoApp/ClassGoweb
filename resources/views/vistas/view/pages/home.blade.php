@@ -92,7 +92,7 @@
     <h1 class="over-text">
         <div class="linea"></div><span data-translate="featured_tutors"></span><div class="linea"></div>
     </h1>
-    <h1 data-translate="selected_tutors"></h1>
+    <h1 class ="tutor ideal" data-translate="selected_tutors"></h1>
     <p data-translate="academic_variety"></p>
 
 
@@ -188,7 +188,7 @@
                 <h2 data-translate="seeks"></h2>
                 <p data-translate="finds">
                 </p>
-                <a href="{{ route('buscar.tutor') }}" class="btn-primary">
+                <a href="{{ route('buscar') }}" class="btn-primary">
                     <span data-translate="explore"></span>
                 </a>
             </div>
@@ -206,7 +206,7 @@
         <div class="linea"></div><span data-translate="guide"></span>
         <div class="linea"></div>
     </h1>
-    <h1 data-translate="unlock_potential"></h1>
+    <h1 class="unlock-potencial" data-translate="unlock_potential"></h1>
     <p data-translate="improve_skills"></p>
     <div class="steps">
         <!--CARD-->
@@ -223,7 +223,7 @@
             <img src="{{ asset('images/home/img22.webp') }}" alt="Pasos">
             <h1 data-translate="find_tutor"></h1>
             <p data-translate="tutores_calificados"></p>
-            <a href=" {{ route('buscar.tutor')}}"><button><span data-translate="buscar_ahora"></span></button></a>
+            <a href=" {{ route('buscar')}}"><button><span data-translate="buscar_ahora"></span></button></a>
         </div> <!--FIN CARD-->
         <!--CARD-->
         <div class="steps-card">
@@ -241,7 +241,7 @@
             </div>
             <h1 data-translate="comenzar_jornada"></h1>
             <p data-translate="comenzar_viaje"></p>
-            <a href="{{ route('buscar.tutor')}}"><button class="button-go"><span data-translate="empezar_ahora"></span></button></a>
+            <a href="{{ route('buscar')}}"><button class="button-go"><span data-translate="empezar_ahora"></span></button></a>
         </div>
     </div>
 </section>
@@ -253,7 +253,7 @@
         <div class="grid-app">
 
       <!-- Columna Izquierda: Contenido de texto -->
-      <div class="text-app fade-left">
+      <div class="text-app">
         <p>Fácil, simple y rápido</p>
         <h1>Instala nuestra App</h1>
         <p>Comienza tu viaje educativo con nosotros. <br>¡Instálate hoy mismo nuestra app!</p>
@@ -300,7 +300,7 @@
 <section class="tutorias-container fade-up">
     <div class="tutorias">
         <!-- Texto -->
-        <div class="tutores-text fade-left">
+        <div class="tutores-text">
             <p class="tutores-text-encima" data-translate="buscas_tutorias"></p>
             <h1 data-translate="conectamos_tutores"></h1>
             <p data-translate="sesiones_cortas"></p>
@@ -344,12 +344,6 @@
                     alt=""
                     />
                 </div>
-                <div class="box-3D">
-                    <img
-                    src="images/home/img22.webp"
-                    alt=""
-                    />
-                </div>
             </div>
         </div>
     </div>
@@ -383,7 +377,10 @@ setInterval(() => {
   imgContainer.appendChild(first);
 }, 1500);
 
-//---salto
+
+</script>
+<script>
+    //---salto
 const textos = document.querySelectorAll('.texto-animado');
 
 const observer = new IntersectionObserver((entradas) => {
