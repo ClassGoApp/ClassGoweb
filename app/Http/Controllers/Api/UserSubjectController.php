@@ -75,6 +75,7 @@ class UserSubjectController extends Controller
                 'subject_id' => $userSubject->subject_id,
                 'description' => $userSubject->description,
                 'image' => $userSubject->image,
+                'price' => $userSubject->price,
                 'status' => $userSubject->status,
                 'subject' => $userSubject->subject ? [
                     'id' => $userSubject->subject->id,
@@ -131,6 +132,7 @@ class UserSubjectController extends Controller
             'subject_id' => 'required|integer|exists:subjects,id',
             'description' => 'nullable|string|max:1000',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:3072', // 3MB max
+            'price' => 'nullable|numeric|min:0|max:999999.99', // Precio opcional, máximo 6 dígitos enteros y 2 decimales
         ]);
 
         // Verificar que la materia no esté ya asignada al usuario
@@ -157,6 +159,7 @@ class UserSubjectController extends Controller
             'subject_id' => $validated['subject_id'],
             'description' => $validated['description'] ?? null,
             'image' => $imagePath,
+            'price' => $validated['price'] ?? null,
             'status' => 'active'
         ];
 
@@ -196,6 +199,7 @@ class UserSubjectController extends Controller
         $validated = $request->validate([
             'description' => 'nullable|string|max:1000',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:3072', // 3MB max
+            'price' => 'nullable|numeric|min:0|max:999999.99', // Precio opcional, máximo 6 dígitos enteros y 2 decimales
             'status' => 'nullable|in:active,inactive'
         ]);
 

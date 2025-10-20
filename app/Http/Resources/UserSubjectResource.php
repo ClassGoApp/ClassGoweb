@@ -22,6 +22,9 @@ class UserSubjectResource extends JsonResource
             'hour_rate'                 => $this->whenHas('hour_rate', function ($hour_rate) {
                 return formatAmount($hour_rate);
             }),
+            'price'                     => $this->whenHas('price', function ($price) {
+                return $price ? formatAmount($price) : null;
+            }),
             'description'               => $this->whenHas('description'),
             'image'                     => !empty($this->image) ? url(Storage::url($this->image)) : url(Storage::url('placeholder.png')),
             'sessions'                  => $this->whenHas('sessions'),
