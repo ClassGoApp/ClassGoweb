@@ -78,6 +78,9 @@ Route::post('test-api', function() {
 // Ruta de prueba para el controlador UserSubjectController
 Route::post('test-controller', [UserSubjectController::class, 'test']);
 
+// Ruta de prueba para simular el store
+Route::post('test-store', [UserSubjectController::class, 'testStore']);
+
 Route::get('countries',                                     [TaxonomiesController::class,'getCountries']);
 Route::get('languages',                                     [TaxonomiesController::class,'getLanguages']);
 Route::get('states',                                        [TaxonomiesController::class,'getStates']);
