@@ -26,6 +26,19 @@ class UserSubjectController extends Controller
     }
 
     /**
+     * Método de prueba para verificar que el controlador funciona
+     */
+    public function test()
+    {
+        return response()->json([
+            'success' => true,
+            'message' => 'UserSubjectController funcionando correctamente',
+            'timestamp' => now(),
+            'controller' => 'UserSubjectController'
+        ]);
+    }
+
+    /**
      * Obtener todas las materias del tutor autenticado
      *
      * @return \Illuminate\Http\Response

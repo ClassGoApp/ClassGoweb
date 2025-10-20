@@ -58,6 +58,26 @@ Route::apiResource('tutor-experience',                          ExperienceContro
 Route::apiResource('tutor-certification',                       CertificationController::class)->only(['show','store','destroy']);
 Route::apiResource('tutor-subjects',                            UserSubjectController::class)->only(['index','show','store','update','destroy']);
 
+// Rutas adicionales para gestión de materias de tutores
+Route::get('tutor-subjects/groups', [UserSubjectController::class, 'getSubjectGroups']);
+Route::get('tutor-subjects/groups/{groupId}/subjects', [UserSubjectController::class, 'getSubjectsByGroup']);
+Route::get('tutor-subjects/available', [UserSubjectController::class, 'getAvailableSubjects']);
+
+// Ruta para eliminar materia del tutor (eliminar relación user_subject)
+Route::delete('tutor/{tutor_id}/subjects/{subject_id}', [UserSubjectController::class, 'removeTutorSubject']);
+
+// Ruta de prueba para verificar que las rutas API funcionan
+Route::post('test-api', function() {
+    return response()->json([
+        'success' => true,
+        'message' => 'API funcionando correctamente',
+        'timestamp' => now()
+    ]);
+});
+
+// Ruta de prueba para el controlador UserSubjectController
+Route::post('test-controller', [UserSubjectController::class, 'test']);
+
 Route::get('countries',                                     [TaxonomiesController::class,'getCountries']);
 Route::get('languages',                                     [TaxonomiesController::class,'getLanguages']);
 Route::get('states',                                        [TaxonomiesController::class,'getStates']);
@@ -176,13 +196,6 @@ Route::put('user/{id}/profile', [ProfileController::class, 'updateUserProfile'])
 
 Route::get('subject/{id}/name', [SubjectController::class, 'getSubjectName']);
 
-// Rutas adicionales para gestión de materias de tutores
-Route::get('tutor-subjects/groups', [UserSubjectController::class, 'getSubjectGroups']);
-Route::get('tutor-subjects/groups/{groupId}/subjects', [UserSubjectController::class, 'getSubjectsByGroup']);
-Route::get('tutor-subjects/available', [UserSubjectController::class, 'getAvailableSubjects']);
-
-// Ruta para eliminar materia del tutor (eliminar relación user_subject)
-Route::delete('tutor/{tutor_id}/subjects/{subject_id}', [UserSubjectController::class, 'removeTutorSubject']);
 
 // ===== GOOGLE AUTHENTICATION ROUTES =====
 Route::prefix('auth/google')->group(function () {
