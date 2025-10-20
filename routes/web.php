@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\TutorController;
 use App\Http\Controllers\Auth\SocialController;
+use App\Http\Controllers\ConferencesController;
 use App\Http\Controllers\Frontend\SearchController;
 use App\Http\Controllers\GoogleController;
 
@@ -48,6 +49,7 @@ use App\Http\Controllers\BeforeBlogsController;
 
 
 Route::view('/e', 'vistas.view.pages.e')->name('e');
+Route::view('/traduccion', 'vistas.view.pages.traduccion')->name('traduccion');
 
 Route::get('/verify', function (\Illuminate\Http\Request $request) {
     $id = $request->query('id');
@@ -123,7 +125,9 @@ Route::get('/auth/api/google/callback', [GoogleController::class, 'googlecallbac
 
 //Route::get('auth/{provider}', [Go::class, 'redirect'])->name('social.redirect');
 
-
+Route::get('/conferences', [ConferencesController::class, 'index'])
+        ->name('conferences.index');
+        
 Route::middleware(['locale', 'maintenance'])->group(function () {
     //Route::get('find-tutors', [SearchController::class, 'findTutors'])->name('find-tutors');
     //Route::get('find-tutors', [SearchController::class, 'findTutors'])->name('find-tutors');
@@ -139,7 +143,11 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
     Route::view('/preguntas', 'vistas.view.pages.preguntas')->name('preguntas');
     Route::get('/tutores/{slug}', [HomeController::class, 'tutor'])->name('tutor');
     Route::view('/desarrolladores', 'vistas.view.pages.desarrolladores')->name('desarrolladores');
-    Route::get('/tutors', [HomeController::class, 'buscarTutor'])->name('buscar.tutor');
+    Route::get('/tutors', [HomeController::class, 'buscarTutor'])->name('buscar.tutor'); //<---ojo
+    Route::get('/buscar', [HomeController::class, 'buscar'])->name('buscar');
+    Route::view('/modal', 'vistas.view.pages.modals.modal-reserva')->name('modal');
+
+
     //<=== Kevin Pasante ===>
     Route::view('/terminos', 'vistas.view.pages.terminos')->name('terminos');
 
@@ -249,6 +257,10 @@ Route::get('/blogs/{slug}', function ($slug) {
     if (!request()->is('api/*')) {
         require __DIR__ . '/pagebuilder.php';
     }
+
+
+    // routes/web.php
+    
 });
 
 Route::get('/tutor/{id}', [TutorPerfilController::class, 'show'])->name('tutor.perfil');

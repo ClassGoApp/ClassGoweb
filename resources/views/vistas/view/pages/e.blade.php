@@ -1,288 +1,568 @@
-{{-- <!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil de Tutor | ClassGo</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        /* Usamos una fuente más profesional y moderna */
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #00838F; /* Tono de verde azulado del diseño original */
-        }
-        /* Estilos personalizados para el banner de la conferencia */
-        .conference-banner {
-            background-color: #E0F7FA; /* Un celeste muy claro para destacar sutilmente */
-            border: 1px solid #4DD0E1; /* Borde en un tono cian brillante */
-            color: #006064; /* Texto en un tono oscuro del color principal */
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-        }
-        .conference-banner:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.1);
-        }
-        .cta-button {
-            background-color: #0097A7; /* Un tono cian más brillante para el botón */
-            color: white;
-            transition: background-color 0.3s ease;
-        }
-        .cta-button:hover {
-            background-color: #00ACC1; /* Un poco más claro al pasar el mouse */
-        }
-    </style>
-</head>
-<body class="p-4 sm:p-8">
-
-    <div class="max-w-6xl mx-auto">
-        <!-- Breadcrumbs / Navegación -->
-        <nav class="text-white text-sm mb-4">
-            <a href="#" class="hover:underline">Tutores</a> / 
-            <a href="#" class="hover:underline">Encontrar tutor</a> / 
-            <span class="font-semibold">Gabriel Alpiry Hurtado</span>
-        </nav>
-
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <!-- Columna principal del perfil -->
-            <div class="lg:col-span-2 space-y-6">
-                <!-- Tarjeta de Perfil Principal -->
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
-                    <div class="h-40 bg-cover bg-center" style="background-image: url('https://placehold.co/800x200/0097A7/FFFFFF?text=ClassGo!')">
-                        <!-- Imagen de banner del tutor -->
-                    </div>
-                    <div class="p-6">
-                        <div class="flex items-start -mt-20">
-                            <img class="h-24 w-24 rounded-full border-4 border-white" src="https://placehold.co/100x100/FFFFFF/00838F?text=G" alt="Foto de Gabriel Alpiry Hurtado">
-                            <div class="ml-4 pt-12">
-                                <h1 class="text-2xl font-bold text-gray-800">Gabriel Alpiry Hurtado</h1>
-                                <div class="flex items-center text-sm text-gray-500 mt-1">
-                                    <span class="text-yellow-400">⭐</span>
-                                    <span class="ml-1">0.0 (0 reseñas)</span>
-                                    <span class="mx-2">|</span>
-                                    <span>juan.perez@example.com</span>
-                                </div>
-                            </div>
-                        </div>
-                        <p class="mt-4 text-gray-600">Experienced tutor specializing in Mathematics and Physics.</p>
-                    </div>
-                </div>
-
-                <!-- ========== INICIO: Banner de Conferencia Gratuita ========== -->
-                <!-- Este es el nuevo bloque que puedes agregar dinámicamente -->
-                <!-- cuando un tutor tenga una conferencia. -->
-                <div class="conference-banner rounded-xl p-6 text-center">
-                    <h3 class="text-xl font-bold mb-2">📣 ¡Próxima Conferencia Gratuita!</h3>
-                    <h4 class="text-2xl font-semibold text-cyan-800 mb-4">Matemáticas para el Examen de Admisión</h4>
-                    <div class="flex flex-col sm:flex-row justify-center items-center gap-x-6 gap-y-2 text-md mb-6">
-                        <span>🗓️ <strong>Fecha:</strong> 25 de Septiembre, 2025</span>
-                        <span>⏰ <strong>Hora:</strong> 18:00 (BOT)</span>
-                    </div>
-                    <a href="#" class="cta-button font-bold py-3 px-8 rounded-lg inline-block">
-                        ¡Inscríbete aquí, es gratis!
-                    </a>
-                </div>
-                <!-- ========== FIN: Banner de Conferencia Gratuita ========== -->
-
-
-                <!-- Pestañas de Información Detallada -->
-                <div class="bg-white rounded-xl shadow-lg p-6">
-                    <div class="border-b border-gray-200">
-                        <nav class="-mb-px flex space-x-6">
-                            <a href="#" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm text-cyan-600 border-cyan-500">
-                                Tutoría
-                            </a>
-                            <a href="#" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300">
-                                Disponibilidad
-                            </a>
-                            <a href="#" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300">
-                                Aspectos Destacados
-                            </a>
-                            <a href="#" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300">
-                                Reseñas
-                            </a>
-                        </nav>
-                    </div>
-                    <div class="pt-6">
-                        <h3 class="text-lg font-semibold text-gray-800">Puedo enseñar</h3>
-                        <p class="mt-2 text-gray-600">Contenido de la pestaña tutoría...</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Columna Lateral -->
-            <div class="space-y-6">
-                <div class="bg-white rounded-xl shadow-lg p-6">
-                    <div class="flex items-center justify-between">
-                       <p><span class="text-2xl font-bold">10</span> tutorías realizadas</p>
-                    </div>
-                     <div class="flex items-center text-green-600 mt-2">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
-                        <span class="ml-2 font-semibold">Tutor verificado</span>
-                    </div>
-                    <button class="w-full mt-4 py-2 px-4 border border-gray-300 rounded-lg text-gray-700 font-semibold hover:bg-gray-50">
-                        Compartir perfil
-                    </button>
-                    <button class="w-full mt-2 py-2 px-4 bg-cyan-700 text-white rounded-lg font-semibold hover:bg-cyan-800">
-                        Buscar más Tutores
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-</body>
-</html> --}}
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Encuentra tu Tutor Ideal</title>
-    <!-- Tailwind CSS para un diseño rápido y responsivo -->
+    <title>Modal de Reserva de Clases</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts para una tipografía más atractiva -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Estilos personalizados y definición de la paleta de colores */
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #023047; /* Azul oscuro de fondo */
         }
-        .text-custom-orange {
-            color: #FB8500;
+        /* Estilos para el scrollbar en webkit */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
         }
-        .bg-custom-orange {
-            background-color: #FB8500;
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
         }
-        .bg-custom-orange:hover {
-            background-color: #e67800; /* Un tono más oscuro para el hover */
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #d1d5db;
+            border-radius: 10px;
         }
-        .text-custom-blue-light {
-            color: #219EBC;
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #9ca3af;
         }
-        .border-custom-blue-light {
-            border-color: #219EBC;
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
         }
-        .tag {
-            background-color: #219ebc20; /* Azul claro con opacidad */
-            color: #219EBC;
-        }
-        .card-shadow {
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(255, 255, 255, 0.05);
+        .shake {
+            animation: shake 0.5s ease-in-out;
         }
     </style>
 </head>
-<body class="antialiased text-white">
-    <div class="min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8">
-        <div class="w-full max-w-6xl mx-auto">
-            <!-- Encabezado de la sección -->
-            <div class="text-center mb-12">
-                <span class="text-custom-blue-light font-semibold uppercase tracking-wider text-sm">Tutores Destacados</span>
-                <h1 class="text-4xl md:text-5xl font-extrabold mt-2">Encuentra tu Tutor Ideal</h1>
-                <p class="text-slate-300 mt-4 max-w-2xl mx-auto">
-                    Descubre una variedad de temáticas académicas y prácticas para potenciar tu experiencia de aprendizaje.
-                </p>
-            </div>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
 
-            <!-- Contenedor principal con flechas de navegación -->
-            <div class="relative">
-                <!-- Flecha Izquierda -->
-                <button class="absolute top-1/2 -left-4 md:-left-6 lg:-left-12 transform -translate-y-1/2 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full p-3 transition-all z-10">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+    <!-- Botón para abrir el modal -->
+    <button id="openModalBtn" class="bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:bg-blue-700 transition-all duration-300">
+        Reservar una Clase
+    </button>
+
+    <!-- Contenedor del Modal -->
+    <div id="bookingModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
+        
+        <!-- Contenido del Modal -->
+        <div id="modalContent" class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl transform transition-all duration-300 scale-95 opacity-0">
+            <div class="p-6 sm:p-8 relative">
+                <button id="closeModalBtn" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
+                <h2 class="text-2xl font-bold text-gray-800 text-center mb-6">Proceso de Reserva</h2>
 
-                <!-- Grid para las tarjetas de tutores -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    
-                    <!-- Tarjeta de Tutor 1 -->
-                    <div class="bg-[#073b57] rounded-2xl p-6 flex flex-col text-center items-center card-shadow transform hover:-translate-y-2 transition-transform duration-300">
-                        <div class="relative">
-                            <img src="https://placehold.co/100x100/FB8500/023047?text=GA" alt="Avatar de Gabriel Alpiry Hurtado" class="w-24 h-24 rounded-full border-4 border-custom-blue-light object-cover">
-                            <span class="absolute -top-1 -right-1 flex h-6 w-6">
-                                <span class="relative inline-flex rounded-full h-6 w-6 bg-custom-orange items-center justify-center">
-                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor">
-                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                    </svg>
-                                </span>
-                            </span>
+                <!-- Stepper -->
+                <div class="flex items-center justify-center mb-8">
+                    <div class="flex items-center w-full max-w-md">
+                        <div id="step-1" class="step active flex-1 text-center">
+                            <div class="step-icon mx-auto bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg">1</div>
+                            <p class="text-sm mt-2 text-gray-600">Materia</p>
                         </div>
-                        <h3 class="font-bold text-xl mt-4">Gabriel Alpiry Hurtado</h3>
-                        <p class="text-slate-300 text-sm mt-1">Tutor de Ciencias Sociales</p>
-                        <div class="mt-4 flex flex-wrap gap-2 justify-center">
-                            <span class="tag font-medium py-1 px-3 rounded-full text-xs">Estudios Sociales</span>
-                            <span class="tag font-medium py-1 px-3 rounded-full text-xs">Historia</span>
-                            <span class="tag font-medium py-1 px-3 rounded-full text-xs">Geografía</span>
+                        <div class="flex-1 border-t-2 border-gray-200 transition-all duration-500 step-line"></div>
+                        <div id="step-2" class="step flex-1 text-center">
+                            <div class="step-icon mx-auto bg-gray-200 text-gray-500 w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg">2</div>
+                            <p class="text-sm mt-2 text-gray-500">Horario</p>
                         </div>
-                        <button class="bg-custom-orange text-white font-bold py-2 px-6 rounded-lg mt-6 w-full transition-colors">
-                            Ver Perfil
-                        </button>
+                        <div class="flex-1 border-t-2 border-gray-200 transition-all duration-500 step-line"></div>
+                        <div id="step-3" class="step flex-1 text-center">
+                            <div class="step-icon mx-auto bg-gray-200 text-gray-500 w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg">3</div>
+                            <p class="text-sm mt-2 text-gray-500">Pago</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contenido de los Pasos -->
+                <div class="min-h-[400px]">
+                    <!-- Paso 1: Selección de Materia -->
+                    <div id="content-step-1" class="step-content">
+                        <div class="max-w-md mx-auto">
+                           <h3 class="text-xl font-semibold text-gray-700 mb-2 text-center">Selecciona una materia</h3>
+                           <p class="text-gray-500 mb-6 text-center">¿Qué te gustaría aprender o reforzar hoy?</p>
+                           <div class="space-y-4">
+                               <label for="subject" class="block text-sm font-medium text-gray-700">Materia</label>
+                               <select id="subject" name="subject" class="mt-1 block w-full pl-3 pr-10 py-3 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md shadow-sm">
+                                   <option>Matemáticas Avanzadas</option>
+                                   <option>Física Cuántica</option>
+                                   <option>Química Orgánica</option>
+                                   <option>Programación en Python</option>
+                                   <option>Historia del Arte</option>
+                               </select>
+                           </div>
+                        </div>
                     </div>
 
-                    <!-- Tarjeta de Tutor 2 -->
-                    <div class="bg-[#073b57] rounded-2xl p-6 flex flex-col text-center items-center card-shadow transform hover:-translate-y-2 transition-transform duration-300">
-                         <div class="relative">
-                            <img src="https://placehold.co/100x100/219EBC/FFFFFF?text=JR" alt="Avatar de Johana Rocha Rodriguez" class="w-24 h-24 rounded-full border-4 border-custom-blue-light object-cover">
-                            <span class="absolute -top-1 -right-1 flex h-6 w-6">
-                                <span class="relative inline-flex rounded-full h-6 w-6 bg-custom-orange items-center justify-center">
-                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor">
-                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                    </svg>
-                                </span>
-                            </span>
+                    <!-- Paso 2: Selección de Fecha y Hora -->
+                    <div id="content-step-2" class="step-content hidden">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                            <!-- Calendario -->
+                            <div class="w-full">
+                                <h3 class="text-xl font-semibold text-gray-700 mb-4 text-center">Selecciona un día</h3>
+                                <div id="calendar-container" class="bg-white rounded-lg p-4">
+                                    <div class="flex justify-between items-center mb-4">
+                                        <button id="prev-month" class="p-2 rounded-full hover:bg-gray-100"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
+                                        <h4 id="month-year" class="font-semibold text-gray-800"></h4>
+                                        <button id="next-month" class="p-2 rounded-full hover:bg-gray-100"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></button>
+                                    </div>
+                                    <div id="calendar-days" class="grid grid-cols-7 gap-2 text-center"></div>
+                                </div>
+                            </div>
+                            <!-- Horarios -->
+                            <div class="w-full">
+                                <h3 class="text-xl font-semibold text-gray-700 mb-4 text-center">Selecciona una hora</h3>
+                                <div id="time-slots-container" class="max-h-80 overflow-y-auto custom-scrollbar pr-2 grid grid-cols-2 sm:grid-cols-3 gap-3">
+                                    <!-- Horarios se generan dinámicamente -->
+                                </div>
+                            </div>
                         </div>
-                        <h3 class="font-bold text-xl mt-4">Johana Rocha Rodriguez</h3>
-                        <p class="text-slate-300 text-sm mt-1">Especialista en Psicología</p>
-                        <div class="mt-4 flex flex-wrap gap-2 justify-center">
-                            <span class="tag font-medium py-1 px-3 rounded-full text-xs">Psicología</span>
-                             <span class="tag font-medium py-1 px-3 rounded-full text-xs">Desarrollo Personal</span>
-                        </div>
-                        <button class="bg-custom-orange text-white font-bold py-2 px-6 rounded-lg mt-6 w-full transition-colors">
-                            Ver Perfil
-                        </button>
                     </div>
 
-                    <!-- Tarjeta de Tutor 3 -->
-                    <div class="bg-[#073b57] rounded-2xl p-6 flex flex-col text-center items-center card-shadow transform hover:-translate-y-2 transition-transform duration-300">
-                        <div class="relative">
-                            <img src="https://placehold.co/100x100/FFFFFF/023047?text=AR" alt="Avatar de Alvaro rojas machuca" class="w-24 h-24 rounded-full border-4 border-custom-blue-light object-cover">
-                            <span class="absolute -top-1 -right-1 flex h-6 w-6">
-                                <span class="relative inline-flex rounded-full h-6 w-6 bg-custom-orange items-center justify-center">
-                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor">
-                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                    </svg>
-                                </span>
-                            </span>
+                    <!-- Paso 3: Pago -->
+                    <div id="content-step-3" class="step-content hidden">
+                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                            <div class="lg:order-2">
+                                <h3 class="text-xl font-semibold text-gray-700 mb-4">Resumen de la Reserva</h3>
+                                <div class="bg-gray-50 rounded-lg p-6 space-y-4">
+                                    <div class="space-y-3 text-gray-600">
+                                        <div class="flex justify-between">
+                                            <span class="font-medium">Materia:</span>
+                                            <span id="summary-subject" class="font-semibold text-gray-800"></span>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span class="font-medium">Fecha:</span>
+                                            <span id="summary-date" class="font-semibold text-gray-800"></span>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span class="font-medium">Hora:</span>
+                                            <span id="summary-time" class="font-semibold text-gray-800"></span>
+                                        </div>
+                                    </div>
+                                    <div class="border-t"></div>
+                                    <div>
+                                        <label for="coupon-input" class="block text-sm font-medium text-gray-700 mb-1">¿Tienes un cupón?</label>
+                                        <div class="flex items-center gap-2">
+                                            <input id="coupon-input" type="text" placeholder="Ej. PROMO25" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                                            <button id="apply-coupon-btn" class="bg-gray-200 text-gray-700 font-semibold px-4 py-2 rounded-md hover:bg-gray-300">Aplicar</button>
+                                        </div>
+                                        <p id="coupon-message" class="text-sm mt-2 h-5"></p>
+                                    </div>
+                                    
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Comprobante de pago</label>
+                                        <label for="file-upload" class="cursor-pointer mt-2 flex justify-center items-center w-full px-6 py-4 border-2 border-gray-300 border-dashed rounded-md">
+                                            <div class="text-center">
+                                                <svg class="mx-auto h-10 w-10 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                                                <p class="mt-1 text-sm text-gray-600">Subir archivo</p>
+                                            </div>
+                                            <input id="file-upload" name="file-upload" type="file" class="sr-only">
+                                        </label>
+                                    </div>
+                                    <div class="border-t"></div>
+                                     <div class="flex justify-between items-center text-xl font-bold text-gray-800">
+                                        <span>Total a pagar:</span>
+                                        <span id="summary-total">$50.00</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="lg:order-1">
+                                <h3 class="text-xl font-semibold text-gray-700 mb-4">Método de Pago</h3>
+                                <div>
+                                    <div class="flex border-b">
+                                        <button class="payment-tab active-tab flex-1 py-2 text-center font-medium text-blue-600 border-b-2 border-blue-600" data-target="qr-payment">QR</button>
+                                        <button class="payment-tab flex-1 py-2 text-center font-medium text-gray-500" data-target="transfer-payment">Transferencia</button>
+                                    </div>
+                                    <div id="qr-payment" class="payment-content mt-6 text-center">
+                                        <p class="text-gray-600 mb-4">Escanea el código para pagar</p>
+                                        <img src="https://placehold.co/200x200/ffffff/000000?text=QR+Code" alt="Código QR de pago" class="mx-auto rounded-lg shadow-md">
+                                        <p class="text-xs text-gray-400 mt-2">Válido hasta: 14 de mayo de 2026</p>
+                                    </div>
+                                    <div id="transfer-payment" class="payment-content hidden mt-6">
+                                        <p class="text-gray-600 mb-4">Realiza la transferencia a la siguiente cuenta:</p>
+                                        <div class="bg-gray-50 p-4 rounded-lg space-y-2">
+                                            <p><span class="font-semibold">Banco:</span> Banco Nacional de Bolivia</p>
+                                            <p><span class="font-semibold">N° de Cuenta:</span> 2502661143</p>
+                                            <p><span class="font-semibold">Titular:</span> Jane Doe</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <h3 class="font-bold text-xl mt-4">Alvaro rojas machuca</h3>
-                        <p class="text-slate-300 text-sm mt-1">Experto en Ciencias Exactas</p>
-                        <div class="mt-4 flex flex-wrap gap-2 justify-center">
-                            <span class="tag font-medium py-1 px-3 rounded-full text-xs">Matemáticas</span>
-                            <span class="tag font-medium py-1 px-3 rounded-full text-xs">Lenguaje</span>
-                            <span class="tag font-medium py-1 px-3 rounded-full text-xs">Literatura</span>
-                        </div>
-                        <button class="bg-custom-orange text-white font-bold py-2 px-6 rounded-lg mt-6 w-full transition-colors">
-                            Ver Perfil
-                        </button>
+                    </div>
+
+                    <!-- Loader -->
+                    <div id="loader" class="hidden absolute inset-0 bg-white bg-opacity-80 flex flex-col items-center justify-center space-y-4">
+                        <div class="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                        <p class="text-gray-600 font-medium">Procesando tu reserva...</p>
+                    </div>
+
+                    <!-- Confirmación -->
+                    <div id="confirmation" class="hidden absolute inset-0 bg-white flex flex-col items-center justify-center text-center p-8">
+                         <div class="bg-green-100 rounded-full p-4">
+                            <svg class="w-16 h-16 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                         </div>
+                         <h3 class="text-2xl font-bold text-gray-800 mt-6">¡Reservado correctamente!</h3>
+                         <p class="text-gray-600 mt-2 max-w-sm">Tu reserva está en proceso de revisión. Recibirás una confirmación por correo electrónico pronto.</p>
+                         <button id="acceptBtn" class="mt-8 bg-blue-600 text-white font-semibold py-3 px-8 rounded-lg shadow-md hover:bg-blue-700 transition-all">
+                             Aceptar
+                         </button>
                     </div>
 
                 </div>
 
-                <!-- Flecha Derecha -->
-                <button class="absolute top-1/2 -right-4 md:-right-6 lg:-right-12 transform -translate-y-1/2 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full p-3 transition-all z-10">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                    </svg>
-                </button>
+                <!-- Botones de Navegación -->
+                <div id="navigation-buttons" class="flex justify-between pt-6 border-t mt-8">
+                    <button id="backBtn" class="bg-gray-200 text-gray-700 font-semibold py-2 px-6 rounded-lg hover:bg-gray-300 transition-all disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                        Atrás
+                    </button>
+                    <button id="nextBtn" class="bg-blue-600 text-white font-semibold py-2 px-6 rounded-lg hover:bg-blue-700 transition-all">
+                        Siguiente
+                    </button>
+                </div>
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Elementos del DOM
+            const openModalBtn = document.getElementById('openModalBtn');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+            const bookingModal = document.getElementById('bookingModal');
+            const modalContent = document.getElementById('modalContent');
+            const backBtn = document.getElementById('backBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const acceptBtn = document.getElementById('acceptBtn');
+            const steps = document.querySelectorAll('.step');
+            const stepContents = document.querySelectorAll('.step-content');
+            const stepLines = document.querySelectorAll('.step-line');
+            const navigationButtons = document.getElementById('navigation-buttons');
+            const couponInput = document.getElementById('coupon-input');
+            const applyCouponBtn = document.getElementById('apply-coupon-btn');
+            const couponMessage = document.getElementById('coupon-message');
+            const summaryTotal = document.getElementById('summary-total');
+
+            // Estado del modal
+            let currentStep = 1;
+            const totalSteps = 3;
+            
+            // Lógica de precios y cupones
+            const basePrice = 50.00;
+            let currentPrice = basePrice;
+            const validCoupons = {
+                'PROMO25': 0.25, // 25% de descuento
+                'AHORRA10': 0.1, // 10% de descuento
+            };
+
+            // Estado de la reserva
+            const bookingDetails = {
+                subject: '',
+                date: null,
+                time: ''
+            };
+
+            // --- Control del Modal ---
+            const openModal = () => {
+                bookingModal.classList.remove('hidden');
+                bookingModal.classList.add('flex');
+                setTimeout(() => {
+                    modalContent.classList.remove('scale-95', 'opacity-0');
+                    modalContent.classList.add('scale-100', 'opacity-100');
+                }, 50);
+            };
+
+            const closeModal = () => {
+                modalContent.classList.add('scale-95', 'opacity-0');
+                modalContent.classList.remove('scale-100', 'opacity-100');
+                setTimeout(() => {
+                    bookingModal.classList.add('hidden');
+                    bookingModal.classList.remove('flex');
+                    resetModal();
+                }, 300);
+            };
+
+            openModalBtn.addEventListener('click', openModal);
+            closeModalBtn.addEventListener('click', closeModal);
+            acceptBtn.addEventListener('click', closeModal);
+            bookingModal.addEventListener('click', (e) => {
+                if (e.target === bookingModal) {
+                    closeModal();
+                }
+            });
+            
+            const resetModal = () => {
+                currentStep = 1;
+                updateStepUI();
+                updateContent();
+                updateNavButtons();
+                document.getElementById('loader').classList.add('hidden');
+                document.getElementById('confirmation').classList.add('hidden');
+                navigationButtons.classList.remove('hidden');
+                // Limpiar selecciones
+                bookingDetails.date = null;
+                bookingDetails.time = '';
+                const selectedDateEl = document.querySelector('.calendar-day.selected');
+                if(selectedDateEl) selectedDateEl.classList.remove('selected', 'bg-blue-600', 'text-white');
+                const selectedTimeEl = document.querySelector('.time-slot.selected');
+                if(selectedTimeEl) selectedTimeEl.classList.remove('selected', 'bg-blue-600', 'text-white');
+                // Limpiar cupón
+                couponInput.value = '';
+                couponMessage.textContent = '';
+                currentPrice = basePrice;
+                summaryTotal.textContent = `$${basePrice.toFixed(2)}`;
+            }
+            
+            // Función para mostrar un error visual
+            const showError = (element) => {
+                element.classList.add('shake');
+                element.style.border = '1px solid red';
+                setTimeout(() => {
+                    element.classList.remove('shake');
+                    element.style.border = '';
+                }, 600);
+            };
+
+            // --- Navegación entre pasos ---
+            nextBtn.addEventListener('click', () => {
+                if(currentStep === 2) {
+                    if (!bookingDetails.date) {
+                         showError(document.getElementById('calendar-container'));
+                         return;
+                    }
+                    if (!bookingDetails.time) {
+                        showError(document.getElementById('time-slots-container'));
+                        return;
+                    }
+                    updateSummary();
+                }
+
+                if (currentStep < totalSteps) {
+                    currentStep++;
+                    updateStepUI();
+                    updateContent();
+                    updateNavButtons();
+                } else if (currentStep === totalSteps) {
+                    // Lógica de finalización
+                    navigationButtons.classList.add('hidden');
+                    const loader = document.getElementById('loader');
+                    loader.classList.remove('hidden');
+                    
+                    setTimeout(() => {
+                        loader.classList.add('hidden');
+                        document.getElementById('confirmation').classList.remove('hidden');
+                    }, 2500); // Simula una llamada a la API
+                }
+            });
+
+            backBtn.addEventListener('click', () => {
+                if (currentStep > 1) {
+                    currentStep--;
+                    updateStepUI();
+                    updateContent();
+                    updateNavButtons();
+                }
+            });
+
+            const updateStepUI = () => {
+                steps.forEach((step, index) => {
+                    const stepIcon = step.querySelector('.step-icon');
+                    const stepText = step.querySelector('p');
+                    const stepNumber = index + 1;
+
+                    if (stepNumber < currentStep) {
+                        stepIcon.classList.add('bg-blue-600', 'text-white');
+                        stepIcon.classList.remove('bg-gray-200', 'text-gray-500');
+                        stepText.classList.remove('text-gray-500');
+                        stepText.classList.add('text-gray-600');
+                    } else if (stepNumber === currentStep) {
+                        stepIcon.classList.add('bg-blue-600', 'text-white');
+                        stepIcon.classList.remove('bg-gray-200', 'text-gray-500');
+                        stepText.classList.remove('text-gray-500');
+                        stepText.classList.add('text-gray-600');
+                    } else {
+                        stepIcon.classList.remove('bg-blue-600', 'text-white');
+                        stepIcon.classList.add('bg-gray-200', 'text-gray-500');
+                        stepText.classList.add('text-gray-500');
+                        stepText.classList.remove('text-gray-600');
+                    }
+                });
+                
+                stepLines.forEach((line, index) => {
+                    if (index < currentStep - 1) {
+                        line.classList.add('border-blue-600');
+                        line.classList.remove('border-gray-200');
+                    } else {
+                        line.classList.remove('border-blue-600');
+                        line.classList.add('border-gray-200');
+                    }
+                });
+            };
+
+            const updateContent = () => {
+                stepContents.forEach((content) => content.classList.add('hidden'));
+                document.getElementById(`content-step-${currentStep}`).classList.remove('hidden');
+            };
+
+            const updateNavButtons = () => {
+                backBtn.disabled = currentStep === 1;
+                if (currentStep === totalSteps) {
+                    nextBtn.textContent = 'Finalizar Reserva';
+                } else {
+                    nextBtn.textContent = 'Siguiente';
+                }
+            };
+            
+            const updateSummary = () => {
+                 document.getElementById('summary-subject').textContent = document.getElementById('subject').value;
+                 document.getElementById('summary-date').textContent = bookingDetails.date.toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
+                 document.getElementById('summary-time').textContent = bookingDetails.time;
+                 summaryTotal.textContent = `$${currentPrice.toFixed(2)}`;
+            };
+
+            // --- Lógica del Cupón (Paso 3) ---
+            applyCouponBtn.addEventListener('click', () => {
+                const code = couponInput.value.toUpperCase();
+                if (validCoupons[code]) {
+                    const discount = validCoupons[code];
+                    currentPrice = basePrice * (1 - discount);
+                    summaryTotal.textContent = `$${currentPrice.toFixed(2)}`;
+                    couponMessage.textContent = '¡Cupón aplicado correctamente!';
+                    couponMessage.className = 'text-sm mt-2 h-5 text-green-600';
+                } else {
+                    currentPrice = basePrice;
+                    summaryTotal.textContent = `$${basePrice.toFixed(2)}`;
+                    couponMessage.textContent = 'El cupón no es válido.';
+                    couponMessage.className = 'text-sm mt-2 h-5 text-red-600';
+                }
+            });
+
+
+            // --- Lógica del Calendario y Horarios (Paso 2) ---
+            const monthYearEl = document.getElementById('month-year');
+            const calendarDaysEl = document.getElementById('calendar-days');
+            const timeSlotsEl = document.getElementById('time-slots-container');
+            const prevMonthBtn = document.getElementById('prev-month');
+            const nextMonthBtn = document.getElementById('next-month');
+            
+            let currentDate = new Date();
+
+            const renderCalendar = () => {
+                const year = currentDate.getFullYear();
+                const month = currentDate.getMonth();
+                monthYearEl.textContent = `${currentDate.toLocaleDateString('es-ES', { month: 'long' })} ${year}`;
+
+                calendarDaysEl.innerHTML = '';
+                const weekDays = ['D', 'L', 'M', 'M', 'J', 'V', 'S'];
+                weekDays.forEach(day => {
+                    calendarDaysEl.innerHTML += `<div class="font-semibold text-gray-500 text-sm">${day}</div>`;
+                });
+
+                const firstDayOfMonth = new Date(year, month, 1).getDay();
+                const daysInMonth = new Date(year, month + 1, 0).getDate();
+                const today = new Date();
+
+                for (let i = 0; i < firstDayOfMonth; i++) {
+                    calendarDaysEl.innerHTML += `<div></div>`;
+                }
+
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const dayDate = new Date(year, month, day);
+                    let classes = 'calendar-day cursor-pointer p-2 rounded-full hover:bg-blue-100 transition-colors relative';
+                    
+                    const isPast = dayDate < new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
+                    if (isPast) {
+                        classes += ' text-gray-300 cursor-not-allowed';
+                    }
+                    
+                    if (bookingDetails.date && dayDate.getTime() === bookingDetails.date.getTime()) {
+                        classes += ' selected bg-blue-600 text-white';
+                    }
+
+                    let dayHtml = `<div class="${classes}" data-date="${dayDate.toISOString()}">
+                        ${day}
+                        ${!isPast && Math.random() > 0.5 ? '<span class="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-orange-400 rounded-full"></span>' : ''}
+                    </div>`;
+                    calendarDaysEl.innerHTML += dayHtml;
+                }
+            };
+
+            calendarDaysEl.addEventListener('click', (e) => {
+                const target = e.target.closest('.calendar-day');
+                if (target && !target.classList.contains('cursor-not-allowed')) {
+                    document.querySelectorAll('.calendar-day.selected').forEach(el => el.classList.remove('selected', 'bg-blue-600', 'text-white'));
+                    target.classList.add('selected', 'bg-blue-600', 'text-white');
+                    bookingDetails.date = new Date(target.dataset.date);
+                    renderTimeSlots();
+                }
+            });
+
+            prevMonthBtn.addEventListener('click', () => {
+                currentDate.setMonth(currentDate.getMonth() - 1);
+                renderCalendar();
+            });
+
+            nextMonthBtn.addEventListener('click', () => {
+                currentDate.setMonth(currentDate.getMonth() + 1);
+                renderCalendar();
+            });
+
+            const renderTimeSlots = () => {
+                timeSlotsEl.innerHTML = '';
+                for (let hour = 12; hour <= 20; hour++) {
+                    for (let minute = 0; minute < 60; minute += 20) {
+                        const time = `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;
+                        let classes = 'time-slot cursor-pointer p-2 border rounded-md text-center hover:bg-blue-100 transition-colors';
+                        if (bookingDetails.time === time) {
+                           classes += ' selected bg-blue-600 text-white';
+                        }
+                        timeSlotsEl.innerHTML += `<div class="${classes}">${time}</div>`;
+                    }
+                }
+            };
+
+            timeSlotsEl.addEventListener('click', (e) => {
+                const target = e.target.closest('.time-slot');
+                if (target) {
+                    document.querySelectorAll('.time-slot.selected').forEach(el => el.classList.remove('selected', 'bg-blue-600', 'text-white'));
+                    target.classList.add('selected', 'bg-blue-600', 'text-white');
+                    bookingDetails.time = target.textContent;
+                }
+            });
+
+
+            // --- Lógica de Pestañas de Pago (Paso 3) ---
+            const paymentTabs = document.querySelectorAll('.payment-tab');
+            const paymentContents = document.querySelectorAll('.payment-content');
+
+            paymentTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    paymentTabs.forEach(t => {
+                        t.classList.remove('active-tab', 'text-blue-600', 'border-blue-600');
+                        t.classList.add('text-gray-500');
+                    });
+                    tab.classList.add('active-tab', 'text-blue-600', 'border-blue-600');
+                    tab.classList.remove('text-gray-500');
+
+                    const targetId = tab.dataset.target;
+                    paymentContents.forEach(content => {
+                        if (content.id === targetId) {
+                            content.classList.remove('hidden');
+                        } else {
+                            content.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+
+            // Inicialización
+            renderCalendar();
+            renderTimeSlots();
+            updateStepUI();
+        });
+    </script>
 </body>
 </html>
 

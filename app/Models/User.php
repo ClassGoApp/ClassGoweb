@@ -436,5 +436,19 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPasswordC
         return $this->hasMany(Rating::class, 'tutor_id'); // El campo que referencia al tutor
     }
     
+     // Conferencias creadas (si es tutor)
+    public function conferencesCreated(): HasMany
+    {
+        return $this->hasMany(Conferences::class, 'user_id');
+    }
+
+    // Conferencias donde está inscrito (si es estudiante)
+    public function conferencesEnrolled(): BelongsToMany
+    {
+        return $this->belongsToMany(Conferences::class, 'conference_student', 'student_id', 'conference_id');
+    }
+
+    public function scopeTutors($q)   { return $q->where('role', 'tutor'); }
+    public function scopeStudents($q) { return $q->where('role', 'student'); }
 
 }

@@ -60,15 +60,15 @@
                 </div>
             </fieldset>
         </form> --}}
-      
 
-       @role('tutor')
-         <div class="am-title_wrap">
+     <div style="margin: 20px 0;"></div>
+      @role('tutor')
+       {{--   <div class="am-title_wrap">
             <div class="am-title">
                 <h2>{{ __('passwords.link_google_calendar') }}</h2>
                 <p>{{ __('passwords.link__google_calendar_schedule') }}</p>
             </div>
-        </div> 
+        </div>  --}}
         <div class="am-linkaccount">
             @if(!empty($getAccountSetting['google_access_token']))
             <div class="am-linkaccount_option">

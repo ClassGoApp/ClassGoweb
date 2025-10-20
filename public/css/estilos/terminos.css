@@ -1,96 +1,145 @@
+/* ==================== terminos-nosotros.css ==================== */
 @import "./variables.css";
 
-.terminos{
-  
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden;
-}
+/* ==================== 1 - Terminos Principal ==================== */
 .terminos-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 100%;
-  background: var(--bg-gradient4);
-  color: var(--white);
+  background-color: white;
+  color: var(--primary-color);
 }
+
+/* ==================== 2 - Terminos Header ==================== */
 .terminos-header {
+  background: var(--secundary-color);
+  border-bottom-left-radius: 50px;
+  border-bottom-right-radius: 50px;
   padding-bottom: 20px;
   width: 100%;
 }
+
+/* ==================== Terminos Header con Imagen ==================== */
 .terminos-header-content {
-  
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  padding: 10rem 5rem 3rem 5rem ;
+  padding: 8rem 5rem 3rem 5rem;
+  flex-wrap: wrap;
+  background: var(--bg-gradient2);
+  border-bottom-left-radius: 40px;
+  border-bottom-right-radius: 40px;
+  color: var(--white);
 }
+
 .terminos-header-text {
-  flex: 1.2;
+  flex: 1;
   font-family: 'Didact Gothic', sans-serif;
-  font-size: var(--h1);
-  text-align: center;
+  text-align: left;
+  min-width: 280px;
 }
+
+.terminos-header-text h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+  color: var(--white);
+}
+
+.terminos-header-text h2.terminos-subtitulos {
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: var(--white);
+}
+
+/* Imagen estilo Nosotros */
+.tugo-image {
+  width: 500px;
+  height: auto;
+  max-width: 100%;
+  display: block;
+  border-radius: 1rem;
+  object-fit: contain;
+  margin-left: 2rem;
+}
+
+/* ==================== 3 - Terminos Titulos y Subtitulos ==================== */
 .terminos-titulos {
   font-family: 'Orbitron Bold', sans-serif;
-  font-size: var(--h1);
+  font-size: 2rem;
   font-weight: bold;
   text-align: left;
+  color: var(--primary-color);
   margin-bottom: 1rem;
 }
+
 .terminos-subtitulos {
   font-family: 'Zen Dots', sans-serif;
-  font-size: var(--h1-regular);
+  font-size: 1.2rem;
   margin-top: 1.5rem;
   margin-bottom: 0.5rem;
+  color: var(--primary-color);
 }
+
+/* ==================== 4 - Terminos Contenido ==================== */
 .terminos-generic {
-  max-width: 800px;
-  padding: 2rem;
+  max-width: 900px;
+  padding: 3rem;
   text-align: left;
+  font-family: var(--font-family);
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--primary-color);
+  margin: 2rem auto;
+  background: #f7f7f7;
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(16, 50, 68, 0.07);
 }
-.terminos-ul{
-    text-indent: 19px;
-    padding: 2rem;
-    list-style-position: inside;
-}
-.terminos-generic,
+
 .terminos-ul {
-   box-sizing: border-box; /* el padding ya cuenta dentro del ancho */
-  width: 100%;
-  max-width: 800px;
-  margin: 0 auto; /* centra en escritorio */
-  overflow-x: hidden; /* evita que sobresalga algo */
+  list-style-position: inside;
+  padding-left: 1rem;
+  margin-top: 1rem;
 }
-.terminos-mont-text{
-    font-family: 'Montserrat', sans-serif;
-    font-size: var(--p);
-    line-height: 1.5;
-    color: var(--white);
+
+.terminos-mont-text {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--primary-color);
 }
+
+/* ==================== 5 - Botón Descargar ==================== */
 .terminos-descarga {
-  text-align: center;      /* centra el contenido */
-  padding: 2rem;
-  border-radius: 10px;
+  text-align: center;
+  padding: 3rem 0;
 }
 
 .terminos-descarga-texto {
-  color: var(--white);
-  font-size: 1rem;
-  margin-bottom: 1rem;     /* espacio entre el texto y el botón */
+  color: var(--primary-color);
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
 }
 
 .terminos-descarga-boton {
   position: relative;
-  padding: 0.8rem 1.5rem;
+  padding: 0.8rem 2rem;
   font-size: 1rem;
-  color: var(--white);
+  color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
-  background: var(--bg-gradient2);
+  background: var(--secundary-color);
   overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.terminos-descarga-boton:hover {
+  box-shadow: 0 8px 20px rgba(16, 50, 68, 0.14);
+  transform: translateY(-2px);
 }
 
 .terminos-descarga-boton::before {
@@ -103,7 +152,7 @@
   background: var(--bg-gradient3);
   opacity: 0;
   transition: opacity 0.5s;
-  border-radius: 5px;
+  border-radius: 8px;
   z-index: 0;
 }
 
@@ -111,17 +160,195 @@
   opacity: 1;
 }
 
-/* Para que el texto quede encima del pseudo-elemento */
 .terminos-descarga-boton span {
   position: relative;
   z-index: 1;
 }
 
+/* ==================== 7 - Botón de WhatsApp ==================== */
+.whatsapp-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background-color: #25D366;
+  /* verde oficial */
+  color: white;
+  font-weight: bold;
+  font-size: 1.1rem;
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
 
-@media (max-width: 768px) {
-  .terminos-ul,
+.whatsapp-btn:hover {
+  background-color: #1ebe57;
+}
+
+.whatsapp-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+/* ==================== Responsividad ==================== */
+
+/* ==================== Responsividad ==================== */
+
+/* Tablets (768px–1024px) */
+@media (min-width: 767px) and (max-width: 1024px) {
+  .terminos-header-content {
+    flex-direction: row;
+    /* imagen a la derecha */
+    justify-content: space-between;
+    align-items: center;
+    padding: 6rem 2.5rem 2rem 2.5rem;
+    /* MÁS padding-top para bajar el header */
+    text-align: left;
+  }
+
+  .terminos-header-text {
+    flex: 1;
+    margin-bottom: 0;
+  }
+
+  .terminos-header-text h1 {
+    font-size: 2.1rem;
+  }
+
+  .terminos-header-text h2.terminos-subtitulos {
+    font-size: 1.05rem;
+  }
+
+  .tugo-image {
+    width: 270px;
+    margin-left: 2rem;
+  }
+
+  .terminos-generic {
+    padding: 2rem;
+    max-width: 90%;
+  }
+}
+
+@media (max-width: 767px) {
+  .terminos-header-content {
+    flex-direction: column;
+    padding: 6rem 1rem 1rem 1rem;
+    /* aumenta el padding-top para bajar el header */
+    text-align: center;
+  }
+
+  .terminos-header-text h1 {
+    font-size: 1.8rem;
+  }
+
+  .terminos-header-text h2.terminos-subtitulos {
+    font-size: 1rem;
+  }
+
+  .terminos-generic {
+    padding: 1.5rem;
+    /* padding interno para que no toque los bordes */
+    max-width: 100%;
+    /* ocupar todo el ancho disponible */
+    margin: 1rem auto;
+    /* centrado horizontal con un pequeño margen superior e inferior */
+    box-sizing: border-box;
+    text-align: left;
+    /* alineado de texto a la izquierda para mejor lectura */
+  }
+
+  .terminos-ul {
+    padding-left: 1rem;
+    /* evitar que el contenido se corte a la derecha */
+    margin: 1rem 0;
+    list-style-position: inside;
+  }
+
+  .terminos-header-text {
+    width: 100%;
+    /* asegurar que el texto ocupe todo el ancho */
+  }
+
+  .terminos-descarga {
+    padding: 2rem 0;
+    /* ajustar espacio del botón */
+  }
+
+  .whatsapp-btn {
+    width: 100%;
+    justify-content: center;
+    font-size: 1rem;
+    padding: 0.7rem 1rem;
+  }
+
+  .whatsapp-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* Ocultar imagen en móviles */
+  .tugo-image {
+    display: none;
+  }
+}
+
+/* Ajustes para móviles muy pequeños (width <= 375px) */
+@media (max-width: 375px) {
+
+  body,
+  html {
+    overflow-x: hidden;
+  }
+
+  .terminos-container {
+    padding: 0;
+    /* eliminamos margen lateral */
+  }
+
+  .terminos-header-content {
+    padding: 6rem 0 2rem 0;
+    /* padding-top para bajar, lateral 0 para pegar a los bordes */
+    text-align: center;
+    /* centramos el contenido */
+  }
+
+  .terminos-header-text {
+    flex: unset;
+    /* elimina flex-grow para centrar correctamente */
+    min-width: auto;
+  }
+
+  .terminos-header-text h1 {
+    font-size: 1.5rem;
+    line-height: 1.2;
+    margin: 0 auto;
+  }
+
+  .terminos-header-text h2.terminos-subtitulos {
+    font-size: 0.9rem;
+    margin: 0.5rem auto 0 auto;
+  }
+
+  .tugo-image {
+    display: none;
+  }
+
   .terminos-generic {
     padding: 1rem;
     max-width: 100%;
+    margin: 1rem auto;
+  }
+
+  .terminos-ul {
+    padding-left: 0.5rem;
+    margin: 0.5rem 0;
+  }
+
+  .whatsapp-btn {
+    font-size: 0.95rem;
+    padding: 0.6rem 1rem;
   }
 }

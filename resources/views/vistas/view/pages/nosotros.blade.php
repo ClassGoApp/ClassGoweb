@@ -5,193 +5,137 @@
 @section('body-class', 'nosotros')
 
 @section('content')
-    <!--NOSOTROS-->
-    <section class="nosotros">
-        <div class="nosotros-container">
-            <div class="nosotros-header">
-                <div class="nosotros-header-content">
-                    <div class="nosotros-header-text">
-                        <nav class="breadcrumb">
-                            <a href="{{ route('home') }}" class="breadcrumb-link">Inicio</a> / <span class="breadcrumb-current">Nosotros</span>
-                        </nav>
-                        <h1>¿Quiénes Somos?</h1>
-                        <p>
-                            Somos una plataforma de tutorías en línea que conecta a estudiantes de todas las edades con
-                            tutores expertos.
-                            Te proporcionamos una experiencia accesible y de calidad, independientemente de tu ubicación u
-                            horario.
-                        </p>
-                    </div>
-                    <div class="nosotros-header-image">
-                        <img src="{{ asset('images/home/tugo2.webp') }}"
-                            alt="Misión ClassGo" class="tugo-image">
-                    </div>
+<!--NOSOTROS-->
+<section class="nosotros">
+    <div class="nosotros-container">
+        <div class="nosotros-header">
+            <div class="nosotros-header-content">
+                <div class="nosotros-header-text">
+                    <nav class="breadcrumb">
+                        <a href="{{ route('home') }}" class="breadcrumb-link"><span data-translate="ini_n"></span></a> / <span class="breadcrumb-current" data-translate="i_nos"></span>
+                    </nav>
+                    <h1 data-translate="who"></h1>
+                    <p data-translate="plataforma_d_tutoria">
+                    </p>
+                </div>
+                <div class="nosotros-header-image">
+                    <img src="{{ asset('images/home/tugo2.webp') }}"
+                        alt="Misión ClassGo" class="tugo-image">
                 </div>
             </div>
+        </div>
 
+        <div class="nosotros-mision" id="mision">
+            <div class="nosotros-mision-text">
+                <h2 class="nosotros-mision-title" data-translate="mision"></h2>
+                <p class="nosotros-mision-text-general1" data-translate="plataforma_d_educacion">
+                </p>
+                <p class="nosotros-mision-text-general2" data-translate="proporcionamos_educacion">
+                </p>
+            </div>
+            <div class="nosotros-mision-image">
+                <p class="nosotros-mision-porcentaje">
+                    <span class="nosotros-mision-porcentaje-text">
+                        +200 <!-- Porcentaje de Tutores Disponibles -->
+                    </span>
+                    <span class="nosotros-porcentaje-subtext" data-translate="tutorias_disponibles">
+                    </span>
+                </p>
+                <img src="{{ asset('images/home/mision.webp') }}" alt="Misión ClassGo" class="tugo-image">
+            </div>
+        </div>
 
-            <div class="nosotros-mision" id="mision">
-                <div class="nosotros-mision-text">
-                    <h2 class="nosotros-mision-title">Misión</h2>
-                    <p class="nosotros-mision-text-general1">
-                        Plataforma educativa de tutorías virtuales para compartir conocimientos.
-                    </p>
-                    <p class="nosotros-mision-text-general2">
-                        Proporcionamos una plataforma educativa de tutorías virtuales accesibles las 24 horas, dirigida a
-                        toda
-                        persona que quiera compartir su conocimiento, con contenido que abarca desde nivel universitario
-                        hasta
-                        habilidades técnicas.
-                    </p>
-                </div>
-                <div class="nosotros-mision-image">
-                    <p class="nosotros-mision-porcentaje">
-                        <span class="nosotros-mision-porcentaje-text">
-                            +200 <!-- Porcentaje de Tutores Disponibles -->
-                        </span>
-                        <span class="nosotros-porcentaje-subtext">
-                            Tutorías disponibles
-                        </span>
-                    </p>
-                    <img src="{{ asset('images/home/mision.webp') }}" alt="Misión ClassGo" class="tugo-image">
-                </div>
+        <div class="nosotros-vision" id="vision">
+            <div class="vision-image">
+                <img src="{{ asset('images/home/vision.webp') }}"
+                    alt="Visión ClassGo" class="tugo-image">
+            </div>
+            <div class="nosotros-vision-text">
+                <h2 class="nosotros-vision-title" data-translate="vision"></h2>
+                <p class="nosotros-vision-subtext" data-translate="ser_plataforma_lider">
+                </p>
+                <p class="nosotros-vision-subtext2" data-translate="fomentar_aprendizaje">
+                </p>
+            </div>
+        </div>
+
+        <div class="team-section">
+            <div class="team-header">
+                <h1 class="team-title" data-translate="team"></h1>
+                <p class="team-subtitle" data-translate="creadores_classgo"></p>
             </div>
 
-            <div class="nosotros-vision" id="vision">
-                <div class="vision-image">
-                    <img src="{{ asset('images/home/vision.webp') }}"
-                        alt="Visión ClassGo" class="tugo-image">
-                </div>
-                <div class="nosotros-vision-text">
-                    <h2 class="nosotros-vision-title">Visión</h2>
-                    <p class="nosotros-vision-subtext">
-                       Impulsar el crecimiento del aprendizaje.
-                    </p>
-                    <p class="nosotros-vision-subtext2">
-                        Ser la plataforma líder en tutorías virtuales, fomentando el aprendizaje continuo y la accesibilidad
-                        educativa en todas las áreas del conocimiento.
-                    </p>
-                </div>
-            </div>
-
-            <div class="team-section">
-                <div class="team-header">
-                    <h1 class="team-title">Nuestro Equipo</h1>
-                    <p class="team-subtitle">Los creadores de la página y app de ClassGo, dedicados a revolucionar la educación.</p>
+            <div class="team-grid">
+                <div class="team-member first-card">
+                    <div class="member-item">
+                        <div class="member-photo-wrapper">
+                            <img src="{{ asset('images/team/gabriel.jpeg')}}" alt="Foto de Gabriel Alpiry Hurtado" class="member-photo">
+                        </div>
+                        <a href="https://www.linkedin.com/in/gabriel-alpiry-hurtado-1a6083a5/" class="member-link">
+                            <img class="arrow-icon" src="{{ asset('images/team/linkedin.png') }}" alt="">
+                        </a>
+                    </div>
+                    <h3 class="member-name">Gabriel Alpiry Hurtado</h3>
+                    <p class="member-title">CEO ClassGo</p>
                 </div>
 
-                <div class="team-grid">
-                    <div></div>
-                    <div class="team-member">
-                        <div class="member-item">
-                            <div class="member-photo-wrapper">
-                                <img src="{{ asset('images/team/gabriel.jpeg')}}" alt="Foto de Gabriel Alpiry Hurtado" class="member-photo">
-                            </div>
-                            <a href="https://www.linkedin.com/in/gabriel-alpiry-hurtado-1a6083a5/" class="member-link">
-                                <img class="arrow-icon" src="{{ asset('images/team/linkedin.png') }}" alt="">
-                            </a>
+                <div class="team-member">
+                    <div class="member-item">
+                        <div class="member-photo-wrapper">
+                            <img src="{{ asset('images/team/daniel.webp')}}" alt="Foto de Edward Rojas" class="member-photo">
                         </div>
-                        <h3 class="member-name">Gabriel Alpiry Hurtado</h3>
-                        <p class="member-title">CEO ClassGo</p>
+                        <a href="https://www.linkedin.com/in/jose-daniel-aguirre-antelo-193119187/" class="member-link">
+                            <img class="arrow-icon" src="{{ asset('images/team/linkedin.png') }}" alt="">
+                        </a>
                     </div>
-                    <div></div>
+                    <h3 class="member-name">Jose Aguirre Antelo</h3>
+                    <p class="member-title" data-translate="jefi_rol"></p>
+                </div>
 
-                    <div class="team-member">
-                        <div class="member-item">
-                            <div class="member-photo-wrapper">
-                                <img src="{{ asset('images/team/edwar.webp')}}" alt="Foto de Edward Rojas" class="member-photo">
-                            </div>
-                            <a href="https://www.linkedin.com/in/edward-rojas-cespedes-b7a4a61a2/" class="member-link">
-                                <img class="arrow-icon" src="{{ asset('images/team/linkedin.png') }}" alt="">
-                            </a>
+                <div class="team-member">
+                    <div class="member-item">
+                        <div class="member-photo-wrapper">
+                            <img src="{{ asset('images/team/alvaro.webp')}}" alt="Foto de Alvaro Rojas" class="member-photo">
                         </div>
-                        <h3 class="member-name">Edward Rojas</h3>
-                        <p class="member-title">Coordinador General</p>
+                        <a href="https://www.linkedin.com/in/alvaro-rojas-machuca/" class="member-link">
+                            <img class="arrow-icon" src="{{ asset('images/team/linkedin.png') }}" alt="">
+                        </a>
                     </div>
+                    <h3 class="member-name">Alvaro Rojas</h3>
+                    <p class="member-title" data-translate="jefi_movil_rol"></p>
+                </div>
 
-                    <div class="team-member">
-                        <div class="member-item">
-                            <div class="member-photo-wrapper">
-                                <img src="{{ asset('images/team/antonio.webp')}}" alt="Foto de Antonio Sandoval Flores" class="member-photo">
-                            </div>
-                            <a href="https://www.linkedin.com/in/sandoval-flores-antonio-alexander-17a5aa335/" class="member-link">
-                                <img class="arrow-icon" src="{{ asset('images/team/linkedin.png') }}" alt="">
-                            </a>
+                <div class="team-member">
+                    <div class="member-item">
+                        <div class="member-photo-wrapper">
+                            <img src="{{ asset('images/team/carlos.webp')}}" alt="Foto de Carlos Mamani Torrez" class="member-photo">
                         </div>
-                        <h3 class="member-name">Antonio Sandoval Flores</h3>
-                        <p class="member-title">Encargado de Operaciones</p>
+                        <a href="www.linkedin.com/in/carlosenriquemamani" class="member-link">
+                            <img class="arrow-icon" src="{{ asset('images/team/linkedin.png') }}" alt="">
+                        </a>
                     </div>
+                    <h3 class="member-name">Carlos Mamani Torrez</h3>
+                    <p class="member-title" data-translate="jefi_Fdeveloper_rol"></p>
+                </div>
 
-                    <div class="team-member">
-                        <div class="member-item">
-                            <div class="member-photo-wrapper">
-                                <img src="{{ asset('images/team/alvaro.webp')}}" alt="Foto de Alvaro Rojas" class="member-photo">
-                            </div>
-                            <a href="https://www.linkedin.com/in/alvaro-rojas-machuca/" class="member-link">
-                                <img class="arrow-icon" src="{{ asset('images/team/linkedin.png') }}" alt="">
-                            </a>
+                <div class="team-member">
+                    <div class="member-item">
+                        <div class="member-photo-wrapper">
+                            <img src="{{ asset('images/team/jhonny.webp')}}" alt="Foto de Jhonny Durán" class="member-photo">
                         </div>
-                        <h3 class="member-name">Alvaro Rojas</h3>
-                        <p class="member-title">Desarrollador Mobile</p>
+                        <a href="http://www.linkedin.com/in/jhonny-alfredo-duran-marin-804618376" class="member-link">
+                            <img class="arrow-icon" src="{{ asset('images/team/linkedin.png') }}" alt="">
+                        </a>
                     </div>
-
-                    <div class="team-member">
-                        <div class="member-item">
-                            <div class="member-photo-wrapper">
-                                <img src="{{ asset('images/team/alejandro.webp')}}" alt="Foto de Alejandro Calzadilla Nogales" class="member-photo">
-                            </div>
-                            <a href="http://www.linkedin.com/in/alejandro-calzadilla-nogales-79b362198" class="member-link">
-                                <img class="arrow-icon" src="{{ asset('images/team/linkedin.png') }}" alt="">
-                            </a>
-                        </div>
-                        <h3 class="member-name">Alejandro Calzadilla</h3>
-                        <p class="member-title">Backend Developer</p>
-                    </div>
-
-                    <div class="team-member">
-                        <div class="member-item">
-                            <div class="member-photo-wrapper">
-                                <img src="{{ asset('images/team/carlos.webp')}}" alt="Foto de Carlos Mamani Torrez" class="member-photo">
-                            </div>
-                            <a href="www.linkedin.com/in/carlosenriquemamani" class="member-link">
-                                <img class="arrow-icon" src="{{ asset('images/team/linkedin.png') }}" alt="">
-                            </a>
-                        </div>
-                        <h3 class="member-name">Carlos Mamani Torrez</h3>
-                        <p class="member-title">Frontend Developer</p>
-                    </div>
-
-                    <div class="team-member">
-                        <div class="member-item">
-                            <div class="member-photo-wrapper">
-                                <img src="{{ asset('images/team/jhonny.webp')}}" alt="Foto de Jhonny Durán" class="member-photo">
-                            </div>
-                            <a href="http://www.linkedin.com/in/jhonny-alfredo-duran-marin-804618376" class="member-link">
-                                <img class="arrow-icon" src="{{ asset('images/team/linkedin.png') }}" alt="">
-                            </a>
-                        </div>
-                        <h3 class="member-name">Jhonny Durán</h3>
-                        <p class="member-title">Software Architecture</p>
-                    </div>
-
-                    <div class="team-member">
-                        <div class="member-item">
-                            <div class="member-photo-wrapper">
-                                <img src="{{ asset('images/team/micaela.webp')}}" alt="Foto de Jhonny Durán" class="member-photo">
-                            </div>
-                            <a href="http://www.linkedin.com/in/micaela-leon-77b518380" class="member-link">
-                                <img class="arrow-icon" src="{{ asset('images/team/linkedin.png') }}" alt="">
-                            </a>
-                        </div>
-                        <h3 class="member-name">Mikaela Leon</h3>
-                        <p class="member-title">Diseñadora Gráfica</p>
-                    </div>
-
+                    <h3 class="member-name">Jhonny Durán</h3>
+                    <p class="member-title" data-translate="jefi_Bdeveloper_rol"></p>
                 </div>
             </div>
 
         </div>
 
-        
-    </section>
+    </div>
+
+
+</section>
 @endsection

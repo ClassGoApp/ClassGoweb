@@ -2,11 +2,11 @@
 <section class="client-testimonials-section">
     <div class="section-header">
         <span class="section-tagline"></span>
-        <h1 class="over-text"><div class="linea"></div>Nuestras Alianzas<div class="linea"></div></h1>
+        <h1 class="over-text"><div class="linea"></div><span data-translate="alianzas"></span><div class="linea"></div></h1>
 
-        <h1 class="section-title">Alianzas que potencian la educación</h1>
+        <h1 class="section-title"><span data-translate="alianzas_edu"></span></h1>
         <p class="section-description">
-            En ClassGo creemos en el poder de la colaboración para transformar el aprendizaje. Por eso, trabajamos junto a instituciones educativas, clubes y organizaciones comprometidas con la formación académica y el desarrollo personal.
+            <span data-translate="alianzas_Classgo"></span>
         </p>
     </div>
 

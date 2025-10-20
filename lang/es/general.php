@@ -356,7 +356,11 @@ return [
     'sending' => 'Envío...',
     'waiting' => 'Espera...',
     'pro' => 'PRO',
-    'incomplete_profile_error' => 'Primero complete los detalles de su perfil y Acceso a Google Calendar(ingrese a  configuraciones de la cuenta)',
+    'incomplete_profile_error' => "
+      Complete los siguientes requermientos para continuar:
+      1  detalles de su perfil:\n- 
+      2 Datos personales\n- * Acceso a Google Calendar (ingrese a configuraciones de la cuenta) \n 
+      3 Datos de su cuenta bancaria en \"Panel\" de preferencia \"QR\",",
     'drop_file_here' => 'Suelte el archivo aquí',
     'copied' => '¡Copiado!',
     'unable_to_delete_subject_group' => '¡No puedes eliminar este grupo de temas ya que este grupo tiene espacios para sesiones!',
@@ -478,4 +482,103 @@ return [
     'previous' => 'anterior',
     'next' => 'siguiente',
     'reset_filters' => 'Reiniciar filtros',
+    'add_new_cupon' => 'Agregar nuevo cupón',
+    "All" => "Todo",
+    'Active'=>'Activo',
+    'Inactive'=> 'Inactivo',
+    'search_cupon' => 'Buscar cupón',
+    'Name'=> 'Nombre del cupón',
+    'Code'=>'Código del cupón',
+    'Discount'=>'Descuento',
+    'Status'=>'Estado',
+    'Expiration_date'=>'Fecha de caducidad',
+    'Amount'=>'Cantidad',
+    'References'=>'Referencias',
+    'name' => 'Nombre del cupón',
+    'nombre_placeholder' => 'Ingrese el nombre del cupón',
+    'codigo'=>'Código del cupón',
+    'codigo_placeholder'=>'Ingrese el código del cupón',
+    "fecha_caducidad" => "Fecha de caducidad",
+    'estado' => 'Estado',
+    'select_option' => 'Seleccione una opción',
+    'activo' => 'Activar',
+    'inactivo'=>'Inactivo',
+    'descuento'=>'Descuento',
+    'descuento_placeholder'=>'Ingrese el descuento',
+    'cantidad'=>'Cantidad',
+    'cantidad_placeholder'=> 'Ingrese la cantidad',
+    'referencia' => 'Referencia',
+    'referencia_placeholder' => 'Ingrese la referencia',
+    'save_cupon' => 'Guardar cupón',
+    'cancelar' => 'Cancelar',
+    
+     // Botones generales
+    'add_new_cupon'              => 'Agregar nuevo cupón',
+    'save_cupon'                 => 'Guardar cupón',
+    'save_changes'               => 'Guardar cambios',
+    'cancel'                     => 'Cancelar',
+    'yes'                        => 'Sí',
+    'no'                         => 'No',
+
+    // Campos
+    'Name'                       => 'Nombre',
+    'name'                       => 'Nombre',
+    'nombre_placeholder'         => 'Ingrese el nombre del cupón',
+
+    'Code'                       => 'Código',
+    'codigo'                     => 'Código',
+    'codigo_placeholder'         => 'Ingrese el código del cupón',
+
+    'Expiration_date'            => 'Fecha de caducidad',
+    'fecha_caducidad'            => 'Fecha de caducidad',
+    'fecha_caducidad_placeholder'=> 'Seleccione la fecha de caducidad',
+
+    'Status'                     => 'Estado',
+    'estado'                     => 'Estado',
+    'activo'                     => 'Activo',
+    'inactivo'                   => 'Inactivo',
+    'select_option'              => 'Seleccione una opción',
+
+    'Discount'                   => 'Descuento',
+    'descuento'                  => 'Descuento',
+    'descuento_placeholder'      => 'Ingrese el descuento en %',
+
+    'Amount'                     => 'Cantidad',
+    'cantidad'                   => 'Cantidad',
+    'cantidad_placeholder'       => 'Ingrese la cantidad disponible',
+
+    'References'                 => 'Referencia',
+    'referencia'                 => 'Referencia',
+    'referencia_placeholder'     => 'Ingrese la referencia',
+
+    'sin_referencia'             => 'Sin referencia',
+
+    // Estados de verificación
+    'All'                        => 'Todos',
+    'Active'                     => 'Activos',
+    'Inactive'                   => 'Inactivos',
+
+    // Acciones
+    'Actions'                    => 'Acciones',
+    'activate'                   => 'Activar',
+    'deactivate'                 => 'Desactivar',
+    'delete'                     => 'Eliminar',
+    'change_expiration'          => 'Cambiar fecha de caducidad',
+
+    // Confirmaciones
+    'confirm_title'              => '¡Confirmar!',
+    'confirm_delete_coupon'      => '¿Estás seguro de que deseas eliminar este cupón? Esta acción no se puede deshacer.',
+    'confirm_toggle_coupon'      => '¿Quieres cambiar el estado de este cupón?',
+
+    // Mensajes de resultado
+    'saved_ok'                   => 'Cupón guardado correctamente.',
+    'updated_ok'                 => 'Cupón actualizado correctamente.',
+    'deleted_ok'                 => 'Cupón eliminado correctamente.',
+
+    // Placeholders extra
+    'search_cupon'               => 'Buscar cupón...',
+    'no_record_title'            => 'No se encontraron registros.',
+
+    // Expiración
+    'leave_empty_no_expiration'  => 'Deje vacío si no desea fecha de vencimiento.',
 ];

@@ -67,16 +67,63 @@
                                     <span>{{$tutor->email}}</span>
                                 </div>
                             </div>
+                            </div>
+                            {{-- <p class="tutor-profile-quote">{{ $tutor->profile->description ?? '" Tutor verificado y aprobado por ClassGo!"' }}</p> --}}
+                            <p class="tutor-profile-quote">"Especialista en Matemáticas Avanzadas y Además apasionado."</p> <!--Frase de BD-->
+                    </div>
+                </div>
+                <!-- SECCION DE MATERIAS-->
+                <div class="subjects-card">
+                    <h2 class="subjects-card__title">Materias que enseño</h2>
+                    
+                    <div class="subjects-list">
+                        
+                        <div class="subject-item">
+                            <div class="subject-item__header">
+                                <span class="subject-item__icon subject-item__icon--math">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="subject-item__svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v11.494m-9-5.747h18" /></svg>
+                                </span>
+                                <h3 class="subject-item__name">Matemáticas Avanzadas</h3>
+                            </div>
                             
-                         </div>
-                         <p class="tutor-profile-quote">{{ $tutor->profile->description ?? '" Tutor verificado y aprobado por ClassGo!"' }}</p>
+                            <div class="subject-item__topics">
+                                <span class="topic-tag">Cálculo Diferencial e Integral</span>
+                                <span class="topic-tag">Álgebra Lineal</span>
+                            </div>
+                        </div>
+
+                        <div class="subject-item">
+                            <div class="subject-item__header">
+                                <span class="subject-item__icon subject-item__icon--design">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="subject-item__svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
+                                </span>
+                                <h3 class="subject-item__name">Diseño y Comunicación Visual</h3>
+                            </div>
+                            <div class="subject-item__topics">
+                                <span class="topic-tag">Creación de Contenido con Canva</span>
+                                <span class="topic-tag">Fundamentos de Photoshop</span>
+                            </div>
+                        </div>
+
+                        <div class="subject-item">
+                            <div class="subject-item__header">
+                                <span class="subject-item__icon subject-item__icon--mechanics">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="subject-item__svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+                                </span>
+                                <h3 class="subject-item__name">Mecánica y Reparaciones</h3>
+                            </div>
+                            <div class="subject-item__topics">
+                                <span class="topic-tag">Mantenimiento de Motocicletas</span>
+                            </div>
+                        </div>
+                        
                     </div>
                 </div>
                 <!-- SECCIÓN DE PESTAÑAS PRINCIPAL -->
                 <div class="tutor-tabs-card" id="reservar">
                     <div class="tutor-tabs-nav">
                         <nav class="tutor-tabs-list" aria-label="Tabs">
-                            <button onclick="changeTab(event, 'introduccion')" class="tutor-tab-btn active">Tutoría</button>                            
+                            <button onclick="changeTab(event, 'introduccion')" class="tutor-tab-btn active">Sobre mí</button>                            
                             <button onclick="changeTab(event, 'disponibilidad')" class="tutor-tab-btn">Disponibilidad</button>
                             <button onclick="changeTab(event, 'curriculum')" class="tutor-tab-btn">Aspectos Destacados</button>
                             <button onclick="changeTab(event, 'resenas')" class="tutor-tab-btn">Reseñas</button>
@@ -85,11 +132,10 @@
                     
                     <div class="tutor-tabs-content">
                         <div id="introduccion" class="tutor-tab-content">
-                            {{-- <div>
-                                <h3 class="tutor-section-title">Acerca de mí</h3>
-                                <p class="tutor-section-text">{{ $tutor->profile->description ?? 'Sin descripción.' }}</p>                            </div>
-                            <hr class="tutor-section-divider"> --}}
                             <div>
+                                <h3 class="tutor-section-title">Hola👋 Me llamo {{ $tutor->profile->first_name ?? '' }}</h3>
+                                <p class="tutor-section-text">{{ $tutor->profile->description ?? '" Soy un Tutor verificado y aprobado por ClassGo! Listo para responder tus dudas."' }}</p>                            </div>
+                            {{-- <div>
                                 <h3 class="tutor-section-title">Puedo enseñar</h3>
                                 @php
                                     // Agrupar materias por grupo (asumiendo que $tutor->userSubjects está disponible)
@@ -130,9 +176,9 @@
                                         </div>
                                     @endforeach
                                 </div>
-                            </div>
+                            </div> --}}
                             <hr class="tutor-section-divider">
-                             <div>
+                            <div>
                                 <h3 class="tutor-section-title">Puedo hablar</h3>
                                 @if($tutor->languages && count($tutor->languages))
                                     @foreach($tutor->languages as $lang)
@@ -145,13 +191,13 @@
                         </div>
                         
                         <div id="disponibilidad" class="tutor-tab-content hidden">
-                            <h3 class="tutor-section-title-lg">Reserva una sesión</h3>
+                            {{-- <h3 class="tutor-section-title-lg">Reserva una sesión</h3> --}}
                             {{-- <<<<======LOGICA PARA RESERVAR=======>>>>>>--}}
                             <livewire:reserva :tutorId="$tutor->id" />
                             
                         </div>
                         <div id="curriculum" class="tutor-tab-content hidden">
-                           <nav class="tutor-subtabs-nav"><button onclick="changeSubTab(event, 'educacion')" class="tutor-subtab-btn active">Educación</button><button onclick="changeSubTab(event, 'experiencia')" class="tutor-subtab-btn">Experiencia</button><button onclick="changeSubTab(event, 'certificaciones')" class="tutor-subtab-btn">Certificación</button></nav>
+                            <nav class="tutor-subtabs-nav"><button onclick="changeSubTab(event, 'educacion')" class="tutor-subtab-btn active">Educación</button><button onclick="changeSubTab(event, 'experiencia')" class="tutor-subtab-btn">Experiencia</button><button onclick="changeSubTab(event, 'certificaciones')" class="tutor-subtab-btn">Certificación</button></nav>
 
                             <div id="educacion" class="tutor-subtab-content">
                                 @if($tutor->educations->isNotEmpty())
@@ -239,7 +285,7 @@
                                     </div>       
                                     @endforeach
                                 @else
-                                     <!--En caso de estar vacio-->
+                                    <!--En caso de estar vacio-->
                                     <div class="tutor-empty-box">
                                         <div class="am-norecord">
                                             @include('livewire.components.no-record')
@@ -258,7 +304,7 @@
                                             <div class="info-card-content">
                                                 <h3 class="info-card-title">{{ $certificate->title}}</h3>
                                                 <div class="info-card-meta">
-                                                    <div class="info-card-meta-item"">
+                                                    <div class="info-card-meta-item">
                                                         <svg class="info-card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg>
                                                         <span>{{ $certificate->institute_name}}</span>
                                                     </div>
@@ -269,11 +315,11 @@
                                                         $fechaFinal = $certificate->expiry_date;
                                                         $fechaFinalFormateado = date('d/m/Y', strtotime($fechaFinal));
                                                     ?>
-                                                    <div class="info-card-meta-item"">
+                                                    <div class="info-card-meta-item">
                                                         <svg class="info-card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                                                         <span>{{ $fechaInicialFormateado}}</span>
                                                     </div>
-                                                    <div class="info-card-meta-item"">
+                                                    <div class="info-card-meta-item">
                                                         <svg class="info-card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                                                         <span>{{ $fechaFinalFormateado}}</span>
                                                     </div>
@@ -339,7 +385,7 @@
             <div class="tutor-col tutor-col-actions">
                 <div class="tutor-actions-card">
                     <div class="tutor-actions-price-box">
-                        <p class="tutor-actions-price">10 <span class="tutor-actions-price-unit">/ tutorías realizadas</span></p>
+                        <p class="tutor-actions-price">💸 15 Bs.</p>
                         <div class="tutor-actions-meta">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tutor-actions-meta-icon"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
                             <span>20 min</span>
@@ -355,14 +401,14 @@
                                     <span>Reservar</span>
                                 </button>
                             </a>
-
-                           <button id="favorite-btn-blue" class="favorite-btn-blue tutor-btn tutor-btn-reservar" aria-label="Agregar a favoritos">
+                            
+                            <button id="favorite-btn-blue" class="favorite-btn-blue tutor-btn tutor-btn-reservar" aria-label="Agregar a favoritos">
                                 <svg class="heart-icon-blue" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                                 </svg>
                                 <span id="text-favorito">Añadir a Favoritos</span>
                             </button>
-                       
+
                         @elserole('tutor')
                         <a href="{{ route('tutor.dashboard')}}">
                             <button class="tutor-btn tutor-btn-now">
@@ -371,10 +417,7 @@
                             </button>
                         </a>
                         @endrole    
-                        <button class="tutor-btn tutor-btn-share" id="btn-share-profile">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tutor-btn-icon"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"></line><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"></line></svg>
-                            <span>Compartir perfil</span>
-                        </button>
+                        
 
                         {{-- <a href="{{ route('buscar.tutor')}}">
                             <button class="tutor-btn tutor-btn-reservar" >
@@ -393,25 +436,7 @@
 
     </main>
 
-    <!-- Modal Compartir -->
-    <div id="modal-share-profile" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.4);z-index:9999;align-items:center;justify-content:center;">
-        <div style="position: absolute; background:#fff;padding:2rem 1.5rem;border-radius:1rem;max-width:350px;width:90%; display:flex; justify-content:center; flex-flow: column wrap;">
-            <button id="close-modal-share" style="position:absolute;top:10px;right:15px;background:none;border:none;font-size:1.5rem;cursor:pointer;">&times;</button>
-            <img src="{{ asset('images/Tugo_With_Phone.png') }}" style="width: 300px; ">
-            <h3 style="margin-bottom:1rem;">Compartir perfil</h3>
-            <p style="margin-bottom:1.2rem;">Hecha un vistazo a este perfil en ClassGo!</p>
-            <div style="display:flex;flex-direction:column;gap:1rem;">
-                <button id="btn-share-whatsapp" style="background:#25D366;color:#fff;font-weight:600;padding:0.7rem 1rem;border:none;border-radius:0.7rem;display:flex;align-items:center;gap:0.7rem;cursor:pointer;justify-content:center;">
-                    <svg width="20" height="20" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 3C9.373 3 4 8.373 4 15c0 2.385.832 4.58 2.236 6.364L4 29l7.818-2.236A12.94 12.94 0 0 0 16 27c6.627 0 12-5.373 12-12S22.627 3 16 3Zm0 22c-1.77 0-3.484-.463-4.98-1.34l-.355-.21-4.646 1.33 1.33-4.646-.21-.355A9.956 9.956 0 0 1 6 15c0-5.514 4.486-10 10-10s10 4.486 10 10-4.486 10-10 10Zm5.29-7.29c-.29-.145-1.71-.84-1.975-.935-.265-.095-.46-.145-.655.145-.195.29-.75.935-.92 1.13-.17.195-.34.22-.63.075-.29-.145-1.225-.45-2.335-1.435-.863-.77-1.445-1.72-1.615-2.01-.17-.29-.018-.447.127-.592.13-.13.29-.34.435-.51.145-.17.193-.29.29-.485.097-.195.048-.365-.024-.51-.073-.145-.655-1.58-.9-2.165-.237-.57-.48-.492-.655-.5-.17-.007-.365-.01-.56-.01-.195 0-.51.073-.78.365-.27.29-1.03 1.01-1.03 2.465 0 1.455 1.055 2.86 1.202 3.055.145.195 2.08 3.18 5.04 4.33.705.242 1.255.386 1.685.494.708.18 1.35.155 1.86.094.567-.067 1.71-.698 1.95-1.372.24-.673.24-1.25.17-1.372-.07-.122-.265-.195-.555-.34Z" fill="#fff"/></svg>
-                    Compartir en WhatsApp
-                </button>
-                <button id="btn-share-facebook" style="background:#1877F3;color:#fff;font-weight:600;padding:0.7rem 1rem;border:none;border-radius:0.7rem;display:flex;align-items:center;gap:0.7rem;cursor:pointer;justify-content:center;">
-                    <svg width="20" height="20" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M29 16C29 8.82 23.18 3 16 3S3 8.82 3 16c0 6.29 4.61 11.48 10.63 12.79v-9.05h-3.2V16h3.2v-2.27c0-3.16 1.88-4.89 4.76-4.89 1.38 0 2.82.25 2.82.25v3.1h-1.59c-1.57 0-2.06.98-2.06 1.98V16h3.5l-.56 3.74h-2.94v9.05C24.39 27.48 29 22.29 29 16Z" fill="#fff"/></svg>
-                    Compartir en Facebook
-                </button>
-            </div>
-        </div>
-    </div>
+    
 
 
     <script>
@@ -847,9 +872,23 @@
         console.log('Modal JavaScript initialized successfully');
     });
 
-    
-    
-    
+    let lastScroll = 0;
+const actionBar = document.querySelector('.tutor-col-actions');
+
+window.addEventListener('scroll', () => {
+    const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+    if (currentScroll > lastScroll) {
+        // Scroll hacia abajo → ocultar
+        actionBar.classList.remove('hidden');
+    } else {
+        // Scroll hacia arriba → mostrar
+        actionBar.classList.add('hidden');
+    }
+    lastScroll = currentScroll <= 0 ? 0 : currentScroll; // Evita valores negativos
+});
+
+
+
     </script>
 </div>
 @endsection
