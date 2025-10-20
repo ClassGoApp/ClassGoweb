@@ -77,6 +77,19 @@ class Profile extends Model {
     }
 
     /**
+     * El primer nombre y el primer apellido los convierte en Mayúsculas
+     */
+    public function setFirstNameAttribute($value)
+    {
+        $this->attributes['first_name'] = ucwords($value);
+    }
+
+    public function setLastNameAttribute($value)
+    {
+        $this->attributes['last_name'] = ucwords($value);
+    }
+
+    /**
      * Getter of short name
      */
     protected function shortName(): Attribute {

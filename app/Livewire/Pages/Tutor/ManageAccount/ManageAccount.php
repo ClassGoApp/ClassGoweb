@@ -2,6 +2,7 @@
 namespace App\Livewire\Pages\Tutor\ManageAccount;
 
 
+use App\Models\Profile;
 use App\Models\SlotPayment;
 use App\Services\PayoutService;
 use Illuminate\Support\Facades\Auth;
@@ -33,6 +34,7 @@ class ManageAccount extends Component
     public $bankName = '';
     public $bankRoutingNumber = '';
     public $qrImageTypeError = '';
+    public $price = null;
 
     public PayoutForm $form;
     private ?PayoutService $payoutService = null;
@@ -98,10 +100,12 @@ class ManageAccount extends Component
         $this->isLoading = true;
         $this->payoutStatus = $this->payoutService->getPayoutStatus(Auth::user()->id);
 
-
-
         $this->dispatch('initSelect2', target: '.am-select2');
         $this->isLoading = false;
+
+        // Cargar el precio si existe en profiles
+        $profile = Profile::where('user_id', Auth::id())->first();
+        $this->price = $profile ? $profile->price : null;
     }
 
 
@@ -189,6 +193,31 @@ class ManageAccount extends Component
         }
 
 
+    }
+
+    //Añadir precio del tutor
+    public function savePrice()
+    {
+        $this->validate([
+            'price' => 'nullable|numeric|min:0',
+        ], [
+            'price.numeric' => 'El precio debe ser un número válido.',
+            'price.min' => 'El precio no puede ser negativo.',
+        ]);
+
+        try {
+            Profile::updateOrCreate(
+                ['user_id' => Auth::id()],
+                ['price' => $this->price]
+            );
+
+            $this->showSuccessMessage('Precio guardado correctamente.');
+            // recargar data por si hace falta
+            $this->loadData();
+        } catch (\Exception $e) {
+            \Log::error('Error saving profile price: ' . $e->getMessage());
+            $this->showErrorMessage('Ocurrió un error al guardar el precio. Inténtalo de nuevo.');
+        }
     }
 
     private function validateQRImage(): bool

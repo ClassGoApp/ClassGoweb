@@ -129,28 +129,28 @@ const translations = {
         para_tutores: "Para tutores",
         completa_datos: "Completa tus datos y establece tus preferencias de aprendizaje",
         completa_datos_desc: "Proporciona tus datos personales y establece tus preferencias de aprendizaje para crear un perfil adaptado a tus necesidades educativas.<br>Esto te ayudará a encontrar los tutores más adecuados y optimizar tu experiencia de aprendizaje.",
-        utiliza_filtros: "Utiliza filtros para refinar tu búsqueda y ver perfiles detallados de tutores",
-        utiliza_filtros_desc: "Usa filtros para limitar tu búsqueda de tutores según materia, nivel, precio, ubicación y disponibilidad.<br>Esto te permite ver perfiles detallados de los tutores que mejor se ajusten a tus necesidades.",
-        elige_horario: "Elige un horario conveniente y reserva tu lección al instante",
+        utiliza_filtros: "Utiliza el buscador para ver perfiles detallados de tutores",
+        utiliza_filtros_desc: "Use la barra de búsqueda para descubrir tutores según el nombre del tutor, la materia o el tema que te interesa.¡Empiece a escribir y vea cómo aparecen los perfiles que mejor se adaptan a sus necesidades de aprendizaje!",
+        elige_horario: "Elige un horario conveniente y reserva tu tutoría",
         pasos_reservar: "Pasos para reservar una sesión de tutoría",
-        paso_select_time: "Selecciona un horario disponible",
-        paso_click_slot: "Haz clic en el horario deseado",
-        paso_choose_type: "Elige el tipo de sesión",
-        paso_confirm_booking: "Confirma los detalles de la reserva",
+        paso_select_time: "Selecciona un horario disponible y la hora que disponga el tutor",
+        paso_click_slot: "Haz clic en e botón de reservar",
+        paso_choose_type: "Elige la materia, y si tienes cupón lo puedes canjear",
+        paso_confirm_booking: "Confirma los detalles de la reserva como ser pago qr, sube tu comprobante",
         paso_payment: "Procede al pago",
-        paso_receive_confirmation: "Recibe la confirmación",
-        asiste_leccion_login: "Asiste a la lección",
-        asiste_login_desc: "Inicia sesión a la hora programada y comienza a aprender",
-        asiste_presen: "Inicia sesión a la hora programada y únete a la sesión para comenzar a aprender.<br>Conéctate con tu tutor a través de Zoom para disfrutar de una lección interactiva y atractiva.",
-        completa_form: "Rellena un formulario de comentarios rápido después de tu lección",
-        feedback_desc: "Después de tu lección, completa un formulario rápido de feedback para compartir tus opiniones y calificar tu experiencia.<br>Tu feedback nos ayuda a mejorar y garantizar el mejor entorno de aprendizaje para todos.",
+        paso_receive_confirmation: "Recibe la confirmación por correo",
+        asiste_leccion_login: "Asiste a la tutoría",
+        asiste_login_desc: "Inicia tu tutoría a la hora programada y comienza a aprender",
+        asiste_presen: "Inicia tu tutoría a la hora programada y únete a la sesión para comenzar a aprender.<br>Conéctate con tu tutor a través de Meet para disfrutar de una tutoría interactiva y atractiva.",
+        completa_form: "Rellena un formulario de comentarios rápido después de tu tutoría",
+        feedback_desc: "Después de tu tutoría, completa un formulario rápido de feedback para compartir tus opiniones y calificar tu experiencia.<br>Tu feedback nos ayuda a mejorar y garantizar el mejor entorno de aprendizaje para todos.",
         crea_perfil: "Crea tu perfil y enumera tus calificaciones",
         crea_perfil_cont: "Crea tu perfil para mostrar tus calificaciones, habilidades y experiencia. Destaca tu formación, experiencia y las materias que enseñas para atraer estudiantes potenciales y generar credibilidad en la plataforma.",
         gestiona_horario: "Gestiona tu horario para mostrar cuándo estás disponible para enseñar",
         gestiona_horario_desc: "Administra fácilmente tu disponibilidad actualizando tu horario con los momentos en los que estás disponible para enseñar. Esto ayuda a los estudiantes a saber cuándo pueden reservar sesiones contigo y mantiene tu calendario organizado.",
-        revisar_solicitudes: "Revisa las solicitudes de los estudiantes y acepta reservas",
-        revisar_solicitudes_desc: "Revisa las solicitudes entrantes de los estudiantes y gestiona tus reservas aceptando lecciones que se ajusten a tu disponibilidad. Confirma las reservas para conectarte con los estudiantes y comenzar a enseñar según lo programado.",
-        dirige_clase: "Dirige tu clase con Meet",
+        revisar_solicitudes: "Revisa tus reservas .",
+        revisar_solicitudes_desc: "Revisa tu reservas de estudiantes que decidieron tener una tutoría con tigo",
+        dirige_clase: "Dirige tu clase con Google Meet",
         dirige_clase_desc: "Conéctate a la hora programada y comienza a impartir tu sesión. Usa la herramienta de videoconferencia integrada en la plataforma para interactuar con tus alumnos y ofrecer una experiencia de aprendizaje atractiva.",
         proceso_calidad: "Garantizamos un proceso de calidad",
         unete_comunidad_repetido: "Únase a nuestra comunidad hoy",
@@ -165,7 +165,7 @@ const translations = {
         faq_encontrar_tutor: "¿Cómo encontrar un tutor?",
         faq_encontrar_tutor_desc: "Utilice la barra de búsqueda y los filtros de la página 'Buscar un tutor' por materia, disponibilidad, calificación y más.",
         faq_reservar_sesion: "¿Cómo reservo una sesión?",
-        faq_reservar_sesion_desc: "Una vez que encuentres un tutor, consulta su perfil y selecciona un horario disponible que te convenga. Haz clic en 'Reservar ahora' y sigue las instrucciones para confirmar tu sesión.",
+        faq_reservar_sesion_desc: "Una vez que encuentres un tutor, consulta su perfil y selecciona un horario disponible que te convenga. Haz clic en 'Reservar' y sigue las instrucciones para confirmar tu sesión.",
         faq_cancelar_reprogramar: "¿Qué pasa si necesito cancelar o reprogramar una sesión?",
         faq_cancelar_reprogramar_desc: "Puedes cancelar o reprogramar una sesión hasta 24 horas antes de la hora programada sin penalización. Las cancelaciones dentro de las 24 horas pueden generar un cargo.",
         faq_pagos: "¿Cómo pago las sesiones?",
@@ -1208,17 +1208,17 @@ function selectLanguage(lang, closeDropdown = true) {
 // ===========================
 // Inicialización al cargar la página
 // ===========================
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function() {
     const savedLang = localStorage.getItem("selectedLanguage") || "es";
     selectLanguage(savedLang, false);
 });
 
-document.addEventListener("livewire:load", function () {
+document.addEventListener("livewire:load", function() {
     const savedLang = localStorage.getItem("selectedLanguage") || "es";
     selectLanguage(savedLang, false);
 });
 
-document.addEventListener("livewire:update", function () {
+document.addEventListener("livewire:update", function() {
     const savedLang = localStorage.getItem("selectedLanguage") || "es";
     selectLanguage(savedLang, false);
 });
