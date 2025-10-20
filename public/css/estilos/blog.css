@@ -357,8 +357,34 @@ background-color: var(--bg-color);
   }
 }
  /************************************************************************/
-@media (max-width: 768px) { 
+@media (max-width: 755px) { 
+.content-cards {
+ 
+    /* grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); */
+    grid-template-columns: 1fr;
+    padding: 2rem;
+ 
+  }
+.cards {
+    width: 350px;
+    height: auto;
+    margin: auto;
+  }
+.blog-section select {
+    width: 100%; /* 🔹 ocupa todo el ancho */
+    max-width: none; /* 🔹 elimina la restricción de ancho */
+  }
+  .blog-section {
+    flex-direction: column; /* 🔹 coloca los elementos uno debajo del otro */
 
+    gap: 10px;
+  }
+  .todos-blogs {
+    width: 100%;
+  }
+  .blog-filters {
+    width: 100%;
+  }
 }
 /*************************************************************************/
 @media (max-width: 576px) { 
@@ -403,5 +429,3 @@ background-color: var(--bg-color);
 }
 
 
-
- 

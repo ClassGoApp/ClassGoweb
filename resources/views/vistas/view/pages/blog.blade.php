@@ -15,7 +15,7 @@
                     <div class="information">
                         <h1>Ideas y consejos de expertos para estudiantes de por vida</h1>
                         <h2>Acceda a informacion valiosa,
-                            consejos de expertos y sugerencias d nuestra activacomunidad de tutores.
+                            consejos de expertos y sugerencias de nuestra activa comunidad de tutores.
                         </h2>
                         <div class="filtro">
                             <span class=filtro-blog-icon>
