@@ -133,7 +133,7 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
     //Route::get('find-tutors', [SearchController::class, 'findTutors'])->name('find-tutors');
 
    // Route::get('/blogs', Blogs::class)->name('blogs');
-   // Route::get('/blog/{slug}', BlogDetails::class)->name('blog-details');
+    Route::get('/blog/{slug}', BlogDetails::class)->name('blog-details');
     Route::view('/subscriptions-page', 'subscriptions-page');
 
     // <==== Grillo kkk ===>
