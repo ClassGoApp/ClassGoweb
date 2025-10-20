@@ -28,6 +28,7 @@ use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\BookingStatusController;
 use App\Http\Controllers\Api\GoogleAuthController;
 use App\Http\Controllers\Api\GoogleCalendarController;
+use App\Http\Controllers\Api\UserCouponController;
 
 
 /*
@@ -80,6 +81,10 @@ Route::post('test-controller', [UserSubjectController::class, 'test']);
 
 // Ruta de prueba para simular el store
 Route::post('test-store', [UserSubjectController::class, 'testStore']);
+
+// ===== USER COUPONS ROUTES =====
+Route::get('user-coupons', [UserCouponController::class, 'getUserCoupons']);
+Route::get('user-coupons/{id}', [UserCouponController::class, 'getUserCoupon']);
 
 Route::get('countries',                                     [TaxonomiesController::class,'getCountries']);
 Route::get('languages',                                     [TaxonomiesController::class,'getLanguages']);
