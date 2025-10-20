@@ -165,11 +165,7 @@ const translations = {
         faq_encontrar_tutor: "¿Cómo encontrar un tutor?",
         faq_encontrar_tutor_desc: "Utilice la barra de búsqueda para encontrar tutores disponibles según la materia o tema que necesites",
         faq_reservar_sesion: "¿Cómo reservo una sesión?",
-<<<<<<< HEAD
         faq_reservar_sesion_desc: 'Una vez que encuentres un tutor, consulta su perfil y selecciona un horario disponible que te convenga. Haz clic en "Reservar” y sigue las instrucciones para confirmar tu sesión.',
-=======
-        faq_reservar_sesion_desc: "Una vez que encuentres un tutor, consulta su perfil y selecciona un horario disponible que te convenga. Haz clic en 'Reservar' y sigue las instrucciones para confirmar tu sesión.",
->>>>>>> develops
         faq_cancelar_reprogramar: "¿Qué pasa si necesito cancelar o reprogramar una sesión?",
         faq_cancelar_reprogramar_desc: "Las tutorías no pueden cancelarse una vez reservadas. Si ocurrió algún inconveniente, contactanos y con gusto te ayudaremos.",
         faq_pagos: "¿Cómo pago las sesiones?",
