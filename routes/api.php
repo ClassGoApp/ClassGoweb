@@ -85,6 +85,7 @@ Route::post('test-store', [UserSubjectController::class, 'testStore']);
 // ===== USER COUPONS ROUTES =====
 Route::get('user-coupons', [UserCouponController::class, 'getUserCoupons']);
 Route::get('user-coupons/{id}', [UserCouponController::class, 'getUserCoupon']);
+Route::put('user-coupons/update-quantity', [UserCouponController::class, 'updateUserCouponQuantity']);
 
 Route::get('countries',                                     [TaxonomiesController::class,'getCountries']);
 Route::get('languages',                                     [TaxonomiesController::class,'getLanguages']);
