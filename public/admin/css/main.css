@@ -14431,7 +14431,7 @@ span.comboTreeItemTitle,
 }
 .am-skeleton-row .am-status-tag {
   display: flex;
-  gap: 8px;
+  gap: 10px;
   align-items: flex-start;
 }
 .am-skeleton-row .am-status-tag .am-status {
@@ -14610,7 +14610,7 @@ span.comboTreeItemTitle,
   background: transparent;
 }
 .am-disputelist table tbody .am-status-tag {
-  gap: 10px;
+  gap: 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -14642,7 +14642,7 @@ span.comboTreeItemTitle,
 }
 .am-disputelist table tbody .am-status-tag .tk-project-tag-two::after {
   left: 6px;
-  width: 6px;
+  width: 9px;
   height: 6px;
 }
 .am-disputelist table > thead {

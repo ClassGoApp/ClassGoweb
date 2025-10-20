@@ -35,25 +35,33 @@
                                 </div>
                                 <div class="tb-themeform-tags">
                                     <div class="form-group @error('category_ids') tk-invalid @enderror">
-                                        <div class="form-group fw-forms-group" wire:ignore>
+                                        <div class="form-group fw-forms-group">
                                             <label class="tb-label tb-label-star">{{ __('blogs.categories') }}</label>
-                                            <select data-placeholder='Select category' data-componentid="@this" data-disable_onchange="true" class="categories form-control tk-select2 tk-select2_disable" data-searchable="true" id="category_ids" multiple>
-                                                <option value="" disabled >{{ __('Select category') }}</option>
+                                            <select 
+                                                class="categories form-control" 
+                                                id="category_ids" 
+                                                multiple
+                                                wire:ignore
+                                            >
+                                            <option value="" disabled>{{ __('blogs.select_category') }}</option>
                                                 @foreach ( $categories as $id => $category)
                                                     <option value="{{ $id }}" @if( in_array( $id, $selectedCategories) ) selected @endif>{{ $category }}</option>
                                                 @endforeach
                                             </select>
                                             <div class="categoryList">
-                                                @if (!empty($blog->categories))
-                                                <div class="tb-form-tag">
-                                                    @foreach ($blog->categories as $category)
-                                                        <span class="tb-tag">
-                                                            <span>{{ $category->name }}</span>
-                                                            <i class="icon-x removeSelectedCategory" data-id="{{ $category->id }}"></i>
-                                                        </span>
+                                                {{-- Display selected categories --}}
+                                            @if (!empty($selectedCategories))
+                                                <div class="tb-form-tag mt-2">
+                                                    @foreach ($selectedCategories as $categoryId)
+                                                        @if(isset($categories[$categoryId]))
+                                                            <span class="tb-tag">
+                                                                <span>{{ $categories[$categoryId] }}</span>
+                                                                <i class="icon-x removeSelectedCategory" data-id="{{ $categoryId }}"></i>
+                                                            </span>
+                                                        @endif
                                                     @endforeach
-                                                    </div>
-                                                @endif
+                                                </div>
+                                            @endif
                                             </div>
                                         </div>
                                         @error('category_ids')
@@ -219,13 +227,44 @@
         document.addEventListener('livewire:navigated', function() {
             component = @this;
 
+            // Initialize Select2 when categories are loaded
+            window.addEventListener('initSelect2Categories', function(event) {
+                setTimeout(function() {
+                    initializeCategoriesSelect();
+                }, 100);
+            });
+
             document.addEventListener('loadPageJs', (event) => {
                 jQuery('#blog_desc').summernote(summernoteConfigs('#blog_desc','.characters-count'));
             
+                // Initialize categories select after a short delay
                 setTimeout(function() {
-                    jQuery('.categories').removeClass('tk-select2_disable');
+                    initializeCategoriesSelect();
                 }, 500);
             });
+
+            function initializeCategoriesSelect() {
+                if (jQuery('#category_ids').length) {
+                    // Destroy existing Select2 if it exists
+                    if (jQuery('#category_ids').hasClass('select2-hidden-accessible')) {
+                        jQuery('#category_ids').select2('destroy');
+                    }
+
+                    // Initialize Select2
+                    jQuery('#category_ids').select2({
+                        placeholder: '{{ __("blogs.select_category") }}',
+                        allowClear: true,
+                        multiple: true,
+                        width: '100%'
+                    });
+
+                    // Set initial values
+                    var selectedCategories = @json($selectedCategories ?? []);
+                    if (selectedCategories.length > 0) {
+                        jQuery('#category_ids').val(selectedCategories).trigger('change.select2');
+                    }
+                }
+            }
 
             jQuery('#blog_desc').on('summernote.paste', function(we, e) {
                 var bufferText = ((e.originalEvent || e).clipboardData || window.clipboardData).getData('Text');
@@ -237,46 +276,54 @@
                 component.set("description", contents, false);
             });
 
-            $(document).on("change", ".categories", function(e){
-                var previousCategories = component.get('selectedCategories');
-                var newCategories = $(this).select2("val");
-                var updatedCategories = previousCategories.concat(newCategories.filter(item => !previousCategories.includes(item)));
-                component.set('selectedCategories', updatedCategories);
-                populateCategoryList();
+            // Handle category selection changes
+            jQuery(document).on("change", "#category_ids", function(e){
+                var selectedCategories = $(this).val() || [];
+                component.set('category_ids', selectedCategories);
+                component.set('selectedCategories', selectedCategories);
+            });
+
+            // Handle category removal from visual display
+            jQuery(document).delegate(".removeSelectedCategory", "click", function() {
+                let id = jQuery(this).attr('data-id');
+                let currentValues = jQuery('#category_ids').val() || [];
+                let newValues = currentValues.filter(value => value !== id);
+                
+                jQuery('#category_ids').val(newValues).trigger('change');
+            });
+
+            document.addEventListener('livewire:initialized', function() {
+                jQuery('#status').on('change', function(e) {
+                    var status = $(this).val();
+                });
             });
 
             function populateCategoryList(){
-                let categories = $('.categories').select2('data');
+                let categories = jQuery('#category_ids').select2('data');
                 var category_html = '<div class="tb-form-tag">';
-                jQuery.each(categories,function(index,elem){
-                    category_html += `<span class="tb-tag">
-                                        <span>${elem.text}</span>
-                                        <i class="icon-x removeSelectedCategory" data-id="${elem.id}"></i>
-                                    </span>`;
+                jQuery.each(categories, function(index, elem){
+                    if (elem.id && elem.text) {
+                        category_html += `<span class="tb-tag">
+                                            <span>${elem.text}</span>
+                                            <i class="icon-x removeSelectedCategory" data-id="${elem.id}"></i>
+                                        </span>`;
+                    }
                 });
                 category_html += '</div>';
                 jQuery('.categoryList').html(category_html);
             }
 
-            jQuery(document).delegate( ".removeSelectedCategory", "click", function() {
+            // Handle category removal
+            jQuery(document).delegate(".removeSelectedCategory", "click", function() {
                 let id = jQuery(this).attr('data-id');
-                var newArray = [];
-                jQuery.grep($('.categories').select2('data'), function (value) {
-                    if(value['id'] !== id)
-                        newArray.push(value['id']);
-                });
-                jQuery('.categories').val(newArray).trigger('change');
-                component.set('category_ids', newArray);
+                let currentValues = jQuery('#category_ids').val() || [];
+                let newValues = currentValues.filter(value => value !== id);
+                
+                jQuery('#category_ids').val(newValues).trigger('change');
+                component.set('category_ids', newValues);
                 populateCategoryList();
             });
 
-            jQuery(document).on('change', '#category_ids', function(e) {
-                var selectedCategoryIds = $(this).val();
-                setTimeout(function() {
-                    jQuery('.categories').removeClass('tk-select2_disable');
-                }, 500);
-                component.set('category_ids', selectedCategoryIds);
-            });
 
             document.addEventListener('livewire:initialized', function() {
             
