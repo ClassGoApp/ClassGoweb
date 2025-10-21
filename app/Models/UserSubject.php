@@ -19,7 +19,7 @@ class UserSubject extends Model {
     protected $table = 'user_subject';
 
     public $fillable  = [
-        'id', 'user_id', 'subject_id', 'description', 'image', 'status', 'created_at', 'updated_at'
+        'id', 'user_id', 'subject_id', 'description', 'image', 'price', 'status', 'created_at', 'updated_at'
     ];
 
     public function user()
