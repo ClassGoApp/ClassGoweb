@@ -300,8 +300,8 @@
     .tutor-grid-buscar {
         display: grid;
         grid-template-columns: repeat(1, minmax(0, 1fr));
-        gap: 1.5rem;
-        padding: 0 3rem 3rem 3em;
+        gap: 1rem;
+        padding: 0 5rem 3rem 5em;
     }
     
     .loading-indicator {
@@ -613,6 +613,7 @@
         display: flex;
         align-items: center;
         gap: 1rem;
+        justify-content: space-between  ;
     }
     
     .card-tutor__avatar {
@@ -624,6 +625,8 @@
     .card-tutor__name {
         font-size: 1.25rem;
         font-weight: 700;
+        line-height: 24px;
+
     }
     
     .card-tutor__review-count {
@@ -862,7 +865,7 @@
         }
         .buscar-header-content {
             padding: 0rem;
-            min-height: 80vh;
+            min-height: 100vh;
         }
         .main-border {
             border-top-left-radius: 2rem;
@@ -895,6 +898,13 @@
         .cta-card__title {
             line-height: 40px;
             padding-top: 2rem;
+        }
+        .tutor-grid-buscar {
+            padding: 0 2rem 3rem 2em;
+            gap: 2rem;
+        }
+        .card-tutor__header{
+            justify-content: start;
         }
     }
     /* Vista de Móvil Grande / Tablet Pequeña (sm: ~ 640px) */
@@ -949,6 +959,13 @@
             grid-template-columns: repeat(3, minmax(0, 1fr));
             /* 3 columnas en tablet */
         }
+        .card-tutor__tags {
+            margin-top: 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            
+           
+        }
     }
     /* MEDIA QUERY: Pantallas de 900px+ */
     
@@ -969,5 +986,33 @@
         .tutor-grid-buscar {
             grid-template-columns: repeat(4, minmax(0, 1fr));
             /* 4 columnas en desktop */
+        }
+    }
+
+        /* Estilos adicionales para mobile */
+    @media (max-width: 768px) {
+        .tags-more-btn {
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+            min-height: 44px; /* Tamaño mínimo recomendado para touch */
+            min-width: 44px;
+            cursor: pointer;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        
+        .detail-panel__close-btn {
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+            min-height: 44px;
+            min-width: 44px;
+            cursor: pointer;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        
+        .card-tutor__detail-panel {
+            position: relative;
+            z-index: 10;
         }
     }
