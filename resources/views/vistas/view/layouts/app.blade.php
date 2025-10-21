@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="{{ asset('css/estilos/buscartutor.css') }}">
     <link rel="stylesheet" href="{{ asset('css/estilos/tutor-perfil.css') }}">
     <link rel="stylesheet" href="{{ asset('css/estilos/terminos.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/estilos/buscar.css') }}">
     <link rel="stylesheet" href="{{ asset('css/estilos/error404.css') }}">
     <link rel="stylesheet" href="{{ asset('css/promociones.css') }}">   
     <link rel="stylesheet" href="{{ asset('css/estilos/blog.css') }}">
