@@ -115,6 +115,7 @@ class ProfileController extends Controller
             'profile_image_db_path' => $rutaBD,
             'name' => $user->name ?? $user->profile->full_name ?? null,
             'email' => $user->email,
+            'price' => $user->profile->price ?? null,
             'calendar_connected' => $isCalendarConnected,
             'calendar_info' => $googleCalendarInfo ? $googleCalendarInfo->meta_value : null
         ]);
@@ -362,6 +363,73 @@ class ProfileController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Error al actualizar el perfil',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Actualizar el precio del perfil del usuario
+     * @param Request $request
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateProfilePrice(Request $request, $id)
+    {
+        try {
+            // Validar los datos de entrada
+            $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
+                'price' => 'required|numeric|min:0|max:999999.99',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Error de validación',
+                    'errors' => $validator->errors()
+                ], 422);
+            }
+
+            // Buscar el usuario
+            $user = User::find($id);
+            if (!$user) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Usuario no encontrado'
+                ], 404);
+            }
+
+            // Obtener o crear el perfil
+            $profile = $user->profile;
+            if (!$profile) {
+                $profile = new \App\Models\Profile();
+                $profile->user_id = $user->id;
+            }
+
+            // Actualizar el precio
+            $profile->price = $request->price;
+            $profile->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Precio actualizado exitosamente',
+                'data' => [
+                    'user_id' => $user->id,
+                    'profile_id' => $profile->id,
+                    'price' => $profile->price
+                ]
+            ], 200);
+
+        } catch (\Exception $e) {
+            Log::error('Error al actualizar el precio del perfil:', [
+                'user_id' => $id,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Error interno del servidor',
                 'error' => $e->getMessage()
             ], 500);
         }

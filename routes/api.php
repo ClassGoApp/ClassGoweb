@@ -203,6 +203,9 @@ Route::post('user/{id}/profile-files', [ProfileController::class, 'updateUserPro
 // Ruta para actualizar datos del perfil del usuario
 Route::put('user/{id}/profile', [ProfileController::class, 'updateUserProfile']);
 
+// Ruta para actualizar el precio del perfil del usuario
+Route::post('user/{id}/profile-price', [ProfileController::class, 'updateProfilePrice']);
+
 Route::get('subject/{id}/name', [SubjectController::class, 'getSubjectName']);
 
 
