@@ -403,21 +403,6 @@
         /* justify-between */
     }
     
-    .card-tutor__tags {
-        /* Truncamiento clásico, pero dentro de un flex container para el botón */
-        color: #6B7280;
-        font-size: 0.75rem;
-        font-weight: 600;
-        /* Configuración para forzar una línea y limitar el ancho */
-        white-space: nowrap;
-        overflow: hidden;
-        /* Quité el text-overflow: ellipsis para que el botón lo reemplace */
-        /* Permite que el contenedor de tags tome el espacio restante antes del botón */
-        flex-grow: 1;
-        margin-right: 0.5rem;
-        /* Espacio antes del botón */
-    }
-    
     .tags-more-btn {
         /* Estilo del botón "+ Ver más" */
         font-size: 0.75rem;
@@ -662,7 +647,7 @@
         text-overflow: ellipsis;
         /* 3. Reemplaza el contenido cortado con puntos suspensivos (...) */
     }
-    
+
     .tag {
         display: inline-block;
         border-radius: 9999px;
