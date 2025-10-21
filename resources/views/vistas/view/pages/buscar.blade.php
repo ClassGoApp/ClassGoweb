@@ -79,7 +79,7 @@
                                                 $colorClass = ($index % 2 == 0) ? 'tag--blue' : 'tag--green';
                                             @endphp
                                             
-                                            <span class="tag {{ $colorClass }}">
+                                            <span class="{{ $colorClass }}">
                                                 {{ $userSubject->subject->name }}
                                             </span>
                                         @endforeach

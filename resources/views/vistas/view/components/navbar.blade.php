@@ -39,7 +39,7 @@
 
 						</a>
 					</li>
-					{{-- <li><a href="#" class="{{ request()->is('blog*') ? 'active' : '' }}">Blog</a></li> --}}
+					<li><a href="{{  route('blogs.index') }}" class="{{ request()->is('blog*') ? 'active' : '' }}">Blog</a></li>
 				</ul>
 			</nav>
 		</div>
