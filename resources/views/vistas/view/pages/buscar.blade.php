@@ -84,7 +84,7 @@
                                             </span>
                                         @endforeach
                                     </p>
-                                    <button @click="expanded = true" class="tags-more-btn">+ Ver más</button>
+                                    <button @click="expanded = true" class="tags-more-btn">+Más</button>
                                 </div>
                                 
                                 <p class="card-tutor__description">{{ $tutor->profile->tagline ?? ' Tutor verificado y aprobado por Classgo! '}}</p>

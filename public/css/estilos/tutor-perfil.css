@@ -467,7 +467,7 @@
     /* text-sm */
     font-weight: 500;
     /* font-medium */
-    padding: 0.25rem 0.75rem;
+    padding: 0.6rem 0.75rem;
     /* py-1 px-3 */
     border-radius: 9999px;
     /* rounded-full */
@@ -552,6 +552,7 @@
 .tutor-section-text {
     color: #666;
     line-height: 1.7;
+    padding-left: 1rem;
 }
 
 .tutor-section-more {
@@ -1360,7 +1361,7 @@
 
 .tutor-actions-card {
     background: #fff;
-    border-radius: 1.5rem;
+    border-radius: 2rem;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
     padding: 1.5rem 2rem 1.5rem 2rem;
     position: sticky;
@@ -2410,7 +2411,7 @@ body.modal-open {
     .tutor-profile-quote {
         margin-top: 0rem;
         padding: 1rem 1rem;
-        text-align: justify;
+        text-align: center;
     }
 
     /* FIN REVERTIR estilos de .tutor-card-main */
@@ -2656,14 +2657,20 @@ body.modal-open {
         padding: 0.75rem 1rem;
     }
 
-    .tutor-actions-btns {
-        flex-direction: row;
-        gap: 0.5rem;
-        justify-content: center;
+    .tutor-actions-price-box{
+        margin-bottom: 0.5rem;
     }
 
-    footer {
-        display: none !important;
+    .tutor-actions-btns {
+        flex-direction: row;
+        gap: 0.3rem;
+        justify-content: space-around;
+        margin-top: 0rem;
+    }
+
+    .tutor-btn {
+        gap: 0.2rem;
+        padding: 0.8rem 0.8rem;
     }
 
     .tutor-col-actions {
@@ -2676,9 +2683,26 @@ body.modal-open {
         /* coincide con el contenedor */
     }
 
-    .main-content {
-        padding-bottom: 5000px;
-        z-index: 1001;
-        /* igual a la altura de la barra */
+    /* Agregar padding al contenido principal para evitar que se tape */
+    .tutor-col-main {
+        padding-bottom: 80px; /* Altura aproximada de la barra fija */
+        z-index: 1; /* Asegurar que esté por debajo de la barra */
+    }
+
+    /* Asegurar que el contenido principal tenga un z-index menor */
+    .tutor-tabs-card {
+        position: relative;
+        z-index: 1;
+    }
+
+    /* Alternativamente, puedes aplicar el padding a todo el main */
+    .tutor-main {
+        padding-bottom: 120px !important;
+    }
+
+    .tutor-bg ~ footer,
+    .tutor-bg footer,
+    body:has(.tutor-bg) footer {
+        display: none !important;
     }
 }

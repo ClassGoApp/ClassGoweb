@@ -76,7 +76,7 @@
                         </a>
                     </div>
                     <h3 class="member-name">Gabriel Alpiry Hurtado</h3>
-                    <p class="member-title">CEO ClassGo</p>
+                    <p class="member-title">CEO & Founder</p>
                 </div>
 
                 <div class="team-member">

@@ -541,6 +541,16 @@
                             <span>Mi Panel</span>
                             </button>
                         </a>
+
+                        <a href="{{ route('buscar')}}">
+                                <button class="tutor-btn tutor-btn-reservar" >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                </svg>
+                                <span>Buscar más Tutores</span>
+                                </button>
+                            </a>
                         @endrole    
                         
 
@@ -1042,19 +1052,19 @@
     });
 
     let lastScroll = 0;
-const actionBar = document.querySelector('.tutor-col-actions');
+    const actionBar = document.querySelector('.tutor-col-actions');
 
-window.addEventListener('scroll', () => {
-    const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
-    if (currentScroll > lastScroll) {
-        // Scroll hacia abajo → ocultar
-        actionBar.classList.remove('hidden');
-    } else {
-        // Scroll hacia arriba → mostrar
-        actionBar.classList.add('hidden');
-    }
-    lastScroll = currentScroll <= 0 ? 0 : currentScroll; // Evita valores negativos
-});
+    window.addEventListener('scroll', () => {
+        const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+        if (currentScroll > lastScroll) {
+            // Scroll hacia abajo → ocultar
+            actionBar.classList.remove('hidden');
+        } else {
+            // Scroll hacia arriba → mostrar
+            actionBar.classList.add('hidden');
+        }
+        lastScroll = currentScroll <= 0 ? 0 : currentScroll; // Evita valores negativos
+    });
 
 
 
