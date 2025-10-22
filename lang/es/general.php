@@ -513,7 +513,7 @@ return [
     'cancelar' => 'Cancelar',
     
      // Botones generales
-    'add_new_cupon'              => 'Agregar nuevo cupón',
+    'add_new_cupon'             => 'Agregar nuevo cupón',
     'save_cupon'                 => 'Guardar cupón',
     'save_changes'               => 'Guardar cambios',
     'cancel'                     => 'Cancelar',
