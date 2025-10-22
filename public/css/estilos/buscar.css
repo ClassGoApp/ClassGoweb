@@ -300,8 +300,8 @@
     .tutor-grid-buscar {
         display: grid;
         grid-template-columns: repeat(1, minmax(0, 1fr));
-        gap: 1.5rem;
-        padding: 0 3rem 3rem 3em;
+        gap: 1rem;
+        padding: 0 5rem 3rem 5em;
     }
     
     .loading-indicator {
@@ -401,21 +401,6 @@
         /* items-center */
         justify-content: space-between;
         /* justify-between */
-    }
-    
-    .card-tutor__tags {
-        /* Truncamiento clásico, pero dentro de un flex container para el botón */
-        color: #6B7280;
-        font-size: 0.75rem;
-        font-weight: 600;
-        /* Configuración para forzar una línea y limitar el ancho */
-        white-space: nowrap;
-        overflow: hidden;
-        /* Quité el text-overflow: ellipsis para que el botón lo reemplace */
-        /* Permite que el contenedor de tags tome el espacio restante antes del botón */
-        flex-grow: 1;
-        margin-right: 0.5rem;
-        /* Espacio antes del botón */
     }
     
     .tags-more-btn {
@@ -628,6 +613,7 @@
         display: flex;
         align-items: center;
         gap: 1rem;
+        justify-content: space-between  ;
     }
     
     .card-tutor__avatar {
@@ -639,6 +625,8 @@
     .card-tutor__name {
         font-size: 1.25rem;
         font-weight: 700;
+        line-height: 24px;
+
     }
     
     .card-tutor__review-count {
@@ -649,10 +637,10 @@
     }
     
     .card-tutor__tags {
-        color: #6B7280;
+       
         /* gray-500 */
         margin-top: 1rem;
-        font-size: 0.75rem;
+        font-size: 0.70rem;
         font-weight: 600;
         /* Nuevas propiedades clave para truncar el contenido */
         white-space: nowrap;
@@ -662,7 +650,7 @@
         text-overflow: ellipsis;
         /* 3. Reemplaza el contenido cortado con puntos suspensivos (...) */
     }
-    
+
     .tag {
         display: inline-block;
         border-radius: 9999px;
@@ -877,7 +865,7 @@
         }
         .buscar-header-content {
             padding: 0rem;
-            min-height: 80vh;
+            min-height: 100vh;
         }
         .main-border {
             border-top-left-radius: 2rem;
@@ -910,6 +898,13 @@
         .cta-card__title {
             line-height: 40px;
             padding-top: 2rem;
+        }
+        .tutor-grid-buscar {
+            padding: 0 2rem 3rem 2em;
+            gap: 2rem;
+        }
+        .card-tutor__header{
+            justify-content: start;
         }
     }
     /* Vista de Móvil Grande / Tablet Pequeña (sm: ~ 640px) */
@@ -985,4 +980,103 @@
             grid-template-columns: repeat(4, minmax(0, 1fr));
             /* 4 columnas en desktop */
         }
+    }
+
+    /* Mejoras para animaciones en mobile */
+@media (max-width: 768px) {
+    .card-tutor--interactive {
+        transform-style: preserve-3d;
+        backface-visibility: hidden;
+    }
+    
+    .card-tutor__primary-content,
+    .card-tutor__detail-panel {
+        transform: translateZ(0);
+        will-change: transform, opacity;
+        -webkit-transform: translateZ(0);
+        -webkit-backface-visibility: hidden;
+    }
+    
+    .tags-more-btn,
+    .detail-panel__close-btn {
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+        min-height: 48px;
+        min-width: 48px;
+        cursor: pointer;
+        user-select: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        position: relative;
+        z-index: 10;
+        transition: all 0.2s ease;
+    }
+    
+    .tags-more-btn:active,
+    .detail-panel__close-btn:active {
+        transform: scale(0.95);
+    }
+    
+    .card-tutor__detail-panel {
+        position: relative;
+        z-index: 5;
+        overflow: hidden;
+    }
+    
+    /* Fuerza aceleración por hardware */
+    .card-tutor--interactive * {
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+    }
+}
+
+    /* Animaciones más suaves globalmente */
+    .transition-all {
+        transition-property: all;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .ease-out {
+        transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    }
+
+    .ease-in {
+        transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
+    }
+
+    .duration-300 {
+        transition-duration: 300ms;
+    }
+
+    .duration-200 {
+        transition-duration: 200ms;
+    }
+
+    .transform {
+        --tw-translate-x: 0;
+        --tw-translate-y: 0;
+        --tw-rotate: 0;
+        --tw-skew-x: 0;
+        --tw-skew-y: 0;
+        --tw-scale-x: 1;
+        --tw-scale-y: 1;
+        transform: translateX(var(--tw-translate-x)) translateY(var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+    }
+
+    .translate-y-4 {
+        --tw-translate-y: 1rem;
+    }
+
+    .translate-y-0 {
+        --tw-translate-y: 0px;
+    }
+
+    .scale-95 {
+        --tw-scale-x: .95;
+        --tw-scale-y: .95;
+    }
+
+    .scale-100 {
+        --tw-scale-x: 1;
+        --tw-scale-y: 1;
     }

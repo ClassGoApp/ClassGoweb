@@ -17,9 +17,11 @@
     <link rel="stylesheet" href="{{ asset('css/estilos/buscartutor.css') }}">
     <link rel="stylesheet" href="{{ asset('css/estilos/tutor-perfil.css') }}">
     <link rel="stylesheet" href="{{ asset('css/estilos/terminos.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/estilos/error404.css') }}">
     <link rel="stylesheet" href="{{ asset('css/estilos/buscar.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/promociones.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/estilos/error404.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/promociones.css') }}">   
+    <link rel="stylesheet" href="{{ asset('css/estilos/blog.css') }}">
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet"></head>

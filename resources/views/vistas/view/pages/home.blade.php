@@ -33,13 +33,13 @@
 
                 <div class="hero-buttons">
                     @guest
-                    <a href=" {{ route('buscar.tutor')}}"><button class="button-explorar-tutores"><i class="fa-solid fa-compass"></i><span data-translate="tutores"></span></button></a>
+                    <a href=" {{ route('buscar')}}"><button class="button-explorar-tutores"><i class="fa-solid fa-compass"></i><span data-translate="tutores"></span></button></a>
                     <a href=" {{ route(name: 'register')}}"><button class="button-explorar-tutores"><i class="fa-solid fa-user"></i><span data-translate="registrate"></span></button></a>
                     <a href=" {{ route(name: 'login')}}"><button class="button-explorar-tutores"><i class="fa-solid fa-right-to-bracket"></i><span data-translate="ingresa"></span></button></a>
                     @endguest
 
                     @auth
-                    <a href=" {{ route('buscar.tutor')}}"><button class="button-explorar-tutores"><i class="fa-solid fa-compass"></i> <span data-translate="buscar_tutor"></span> </button></a>
+                    <a href=" {{ route('buscar')}}"><button class="button-explorar-tutores"><i class="fa-solid fa-compass"></i> <span data-translate="buscar_tutor"></span> </button></a>
                     <a href="https://play.google.com/store/apps/details?id=com.neurasoft.classgo" target="_blank"><button class="button-explorar-tutores"><i class="fa-solid fa-mobile"></i> <span data-translate="nuestra_app"></span> </button></a>
                     @endauth
 
@@ -92,7 +92,7 @@
     <h1 class="over-text">
         <div class="linea"></div><span data-translate="featured_tutors"></span><div class="linea"></div>
     </h1>
-    <h1 data-translate="selected_tutors"></h1>
+    <h1 class ="tutor ideal" data-translate="selected_tutors"></h1>
     <p data-translate="academic_variety"></p>
 
 
@@ -206,7 +206,7 @@
         <div class="linea"></div><span data-translate="guide"></span>
         <div class="linea"></div>
     </h1>
-    <h1 data-translate="unlock_potential"></h1>
+    <h1 class="unlock-potencial" data-translate="unlock_potential"></h1>
     <p data-translate="improve_skills"></p>
     <div class="steps">
         <!--CARD-->
@@ -253,38 +253,34 @@
         <div class="grid-app">
 
       <!-- Columna Izquierda: Contenido de texto -->
-      <div class="text-app fade-left">
+      <div class="text-app">
         <p>Fácil, simple y rápido</p>
         <h1>Instala nuestra App</h1>
         <p>Comienza tu viaje educativo con nosotros. <br>¡Instálate hoy mismo nuestra app!</p>
 
-                <!-- Lista de características -->
-                <ul class="list-app">
-                    <li>
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
-                        </svg>
-                        <span data-translate="acceso"></span>
-                    </li>
-                    <li>
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
-                        </svg>
-                        <span data-translate="tutores_expertos"></span>
-                    </li>
-                    <li>
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
-                        </svg>
-                        <span data-translate="tarifas_asequibles"></span>
-                    </li>
-                </ul>
-            <!-- Botón -->
-            <div>
-            <a href="https://play.google.com/store/apps/details?id=com.neurasoft.classgo" target="_blank" class="btn-app">
-                Descargar Ahora
-            </a>
-            </div>
+        <!-- Lista de características -->
+        <ul class="list-app">
+          <li>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+            </svg>
+            <span>Acceso 24/7</span>
+          </li>
+          <li>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+            </svg>
+            <span>Tutores Expertos</span>
+          </li>
+          <li>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+            </svg>
+            <span>Tarifas Asequibles</span>
+          </li>
+        </ul>
+
+        
       </div>
       <!-- Columna Derecha: Imagen -->
                         
@@ -304,7 +300,7 @@
 <section class="tutorias-container fade-up">
     <div class="tutorias">
         <!-- Texto -->
-        <div class="tutores-text fade-left">
+        <div class="tutores-text">
             <p class="tutores-text-encima" data-translate="buscas_tutorias"></p>
             <h1 data-translate="conectamos_tutores"></h1>
             <p data-translate="sesiones_cortas"></p>
@@ -348,12 +344,6 @@
                     alt=""
                     />
                 </div>
-                <div class="box-3D">
-                    <img
-                    src="images/home/img22.webp"
-                    alt=""
-                    />
-                </div>
             </div>
         </div>
     </div>
@@ -387,7 +377,10 @@ setInterval(() => {
   imgContainer.appendChild(first);
 }, 1500);
 
-//---salto
+
+</script>
+<script>
+    //---salto
 const textos = document.querySelectorAll('.texto-animado');
 
 const observer = new IntersectionObserver((entradas) => {

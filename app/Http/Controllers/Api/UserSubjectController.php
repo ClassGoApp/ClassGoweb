@@ -26,6 +26,64 @@ class UserSubjectController extends Controller
     }
 
     /**
+     * Método de prueba para verificar que el controlador funciona
+     */
+    public function test()
+    {
+        return response()->json([
+            'success' => true,
+            'message' => 'UserSubjectController funcionando correctamente',
+            'timestamp' => now(),
+            'controller' => 'UserSubjectController'
+        ]);
+    }
+
+    /**
+     * Método de prueba para simular el store
+     */
+    public function testStore(Request $request)
+    {
+        Log::info('UserSubjectController::testStore - Iniciando', [
+            'request_data' => $request->all(),
+            'method' => $request->method(),
+            'url' => $request->url(),
+            'headers' => $request->headers->all()
+        ]);
+
+        try {
+            $validated = $request->validate([
+                'user_id' => 'required|integer|exists:users,id',
+                'subject_id' => 'required|integer|exists:subjects,id',
+                'description' => 'nullable|string|max:1000',
+                'price' => 'nullable|numeric|min:0|max:999999.99',
+            ]);
+
+            Log::info('UserSubjectController::testStore - Validación exitosa', [
+                'validated_data' => $validated
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Test store funcionando correctamente',
+                'data' => $validated,
+                'timestamp' => now()
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('UserSubjectController::testStore - Error', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Error en test store: ' . $e->getMessage(),
+                'timestamp' => now()
+            ], 500);
+        }
+    }
+
+    /**
      * Obtener todas las materias del tutor autenticado
      *
      * @return \Illuminate\Http\Response
@@ -75,6 +133,7 @@ class UserSubjectController extends Controller
                 'subject_id' => $userSubject->subject_id,
                 'description' => $userSubject->description,
                 'image' => $userSubject->image,
+                'price' => $userSubject->price,
                 'status' => $userSubject->status,
                 'subject' => $userSubject->subject ? [
                     'id' => $userSubject->subject->id,
@@ -126,52 +185,94 @@ class UserSubjectController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'user_id' => 'required|integer|exists:users,id',
-            'subject_id' => 'required|integer|exists:subjects,id',
-            'description' => 'nullable|string|max:1000',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:3072', // 3MB max
+        Log::info('UserSubjectController::store - Iniciando', [
+            'request_data' => $request->all(),
+            'user_authenticated' => Auth::check(),
+            'user_id' => Auth::id(),
+            'route_public' => true,
+            'method' => $request->method(),
+            'url' => $request->url()
         ]);
 
-        // Verificar que la materia no esté ya asignada al usuario
-        $existingSubject = UserSubject::where('user_id', $validated['user_id'])
-            ->where('subject_id', $validated['subject_id'])
-            ->first();
+        try {
+            $validated = $request->validate([
+                'user_id' => 'required|integer|exists:users,id',
+                'subject_id' => 'required|integer|exists:subjects,id',
+                'description' => 'nullable|string|max:1000',
+                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:3072', // 3MB max
+                'price' => 'nullable|numeric|min:0|max:999999.99', // Precio opcional, máximo 6 dígitos enteros y 2 decimales
+            ]);
 
-        if ($existingSubject) {
+            Log::info('UserSubjectController::store - Validación exitosa', [
+                'validated_data' => $validated
+            ]);
+
+            // Verificar que la materia no esté ya asignada al usuario
+            $existingSubject = UserSubject::where('user_id', $validated['user_id'])
+                ->where('subject_id', $validated['subject_id'])
+                ->first();
+
+            if ($existingSubject) {
+                Log::warning('UserSubjectController::store - Materia ya existe', [
+                    'user_id' => $validated['user_id'],
+                    'subject_id' => $validated['subject_id']
+                ]);
+                
+                return $this->error(
+                    message: 'El usuario ya tiene esta materia asignada',
+                    data: null,
+                    code: Response::HTTP_CONFLICT
+                );
+            }
+
+            // Procesar imagen si se proporciona
+            $imagePath = null;
+            if ($request->hasFile('image')) {
+                $imagePath = $request->file('image')->store('subjects', 'public');
+            }
+
+            $userSubjectData = [
+                'user_id' => $validated['user_id'],
+                'subject_id' => $validated['subject_id'],
+                'description' => $validated['description'] ?? null,
+                'image' => $imagePath,
+                'price' => $validated['price'] ?? null,
+                'status' => 'active'
+            ];
+
+            Log::info('UserSubjectController::store - Creando registro', [
+                'userSubjectData' => $userSubjectData
+            ]);
+
+            $userSubject = UserSubject::create($userSubjectData);
+
+            Log::info('UserSubjectController::store - Registro creado', [
+                'userSubject_id' => $userSubject->id
+            ]);
+
+            // Cargar la relación con la materia para la respuesta
+            $userSubject->load(['subject' => function($query) {
+                $query->select('id', 'name', 'subject_group_id');
+            }]);
+
+            return $this->success(
+                data: $userSubject,
+                message: 'Materia agregada exitosamente',
+                code: Response::HTTP_CREATED
+            );
+
+        } catch (\Exception $e) {
+            Log::error('UserSubjectController::store - Error', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
             return $this->error(
+                message: 'Error al crear materia: ' . $e->getMessage(),
                 data: null,
-                message: 'El usuario ya tiene esta materia asignada',
-                code: Response::HTTP_CONFLICT
+                code: Response::HTTP_INTERNAL_SERVER_ERROR
             );
         }
-
-        // Procesar imagen si se proporciona
-        $imagePath = null;
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('subjects', 'public');
-        }
-
-        $userSubjectData = [
-            'user_id' => $validated['user_id'],
-            'subject_id' => $validated['subject_id'],
-            'description' => $validated['description'] ?? null,
-            'image' => $imagePath,
-            'status' => 'active'
-        ];
-
-        $userSubject = UserSubject::create($userSubjectData);
-
-        // Cargar la relación con la materia para la respuesta
-        $userSubject->load(['subject' => function($query) {
-            $query->select('id', 'name', 'subject_group_id');
-        }]);
-
-        return $this->success(
-            data: $userSubject,
-            message: 'Materia agregada exitosamente',
-            code: Response::HTTP_CREATED
-        );
     }
 
     /**
@@ -196,6 +297,7 @@ class UserSubjectController extends Controller
         $validated = $request->validate([
             'description' => 'nullable|string|max:1000',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:3072', // 3MB max
+            'price' => 'nullable|numeric|min:0|max:999999.99', // Precio opcional, máximo 6 dígitos enteros y 2 decimales
             'status' => 'nullable|in:active,inactive'
         ]);
 
