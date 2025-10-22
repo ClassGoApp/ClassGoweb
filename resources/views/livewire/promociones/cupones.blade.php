@@ -37,7 +37,8 @@
             <div class="am-disputelist_wrap">
                 <div class="am-disputelist am-custom-scrollbar-y">
                     @if (!$cupones->isEmpty())
-                        <table class="tb-table @if (setting('_general.table_responsive') == 'yes') tb-table-responsive @endif">
+                        <table
+                            class="tb-table @if (setting('_general.table_responsive') == 'yes') tb-table-responsive @endif">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -207,8 +208,7 @@
                                         <label class="tb-label">{{ __('general.referencia') }}</label>
                                         <input class="form-control @error('form.referencia') tk-invalid @enderror"
                                             wire:model.defer="form.referencia"
-                                            placeholder="{{ __('general.referencia_placeholder') }}"
-                                            rows="3"></input>
+                                            placeholder="{{ __('general.referencia_placeholder') }}" rows="3"></input>
                                         @error('form.referencia')
                                             <div class="tk-errormsg"><span>{{ $message }}</span></div>
                                         @enderror
@@ -269,8 +269,7 @@
                 <div class="modal-content">
                     <div class="tb-popuptitle d-flex justify-content-between align-items-center px-4 pt-3">
                         <h5 class="m-0">{{ __('general.change_expiration') }}</h5>
-                        <a href="javascript:void(0);" class="close"><i class="icon-x"
-                                data-bs-dismiss="modal"></i></a>
+                        <a href="javascript:void(0);" class="close"><i class="icon-x" data-bs-dismiss="modal"></i></a>
                     </div>
                     <div class="modal-body">
                         <form wire:submit.prevent="saveFecha">
@@ -299,6 +298,100 @@
 
     </div>
 </main>
+
+@push('styles')
+    <style>
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .tb-table td,
+        .tb-table th {
+            white-space: nowrap;
+            padding: 12px 8px;
+        }
+
+        .tb-table .btn {
+            padding: 4px 8px;
+            font-size: 12px;
+        }
+
+        /* Asegurar que los botones no se compriman */
+        .tb-table td:last-child {
+            min-width: 180px !important;
+        }
+
+        /* Mejorar la visualización en dispositivos móviles */
+        @media (max-width: 768px) {
+            .tb-table {
+                font-size: 14px;
+            }
+
+            .tb-table .btn {
+                padding: 2px 6px;
+                font-size: 11px;
+            }
+        }
+
+        /* Ajustar la altura del contenedor de la tabla */
+        .am-disputelist_wrap {
+            height: auto !important;
+            min-height: 400px;
+        }
+
+        .am-disputelist {
+            height: auto !important;
+            max-height: 70vh;
+            /* Máximo 70% de la altura de la pantalla */
+            overflow-y: auto;
+            overflow-x: auto;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .tb-table td,
+        .tb-table th {
+            white-space: nowrap;
+            padding: 12px 8px;
+        }
+
+        .tb-table .btn {
+            padding: 4px 8px;
+            font-size: 12px;
+        }
+
+        /* Asegurar que los botones no se compriman */
+        .tb-table td:last-child {
+            min-width: 180px !important;
+        }
+
+        /* Remover restricciones de altura que puedan estar causando el overflow */
+        .am-custom-scrollbar-y {
+            height: auto !important;
+            max-height: 430px !important;
+        }
+
+        /* Mejorar la visualización en dispositivos móviles */
+        @media (max-width: 768px) {
+            .tb-table {
+                font-size: 14px;
+            }
+
+            .tb-table .btn {
+                padding: 2px 6px;
+                font-size: 11px;
+            }
+
+            .am-disputelist {
+                max-height: 60vh;
+            }
+        }
+    </style>
+@endpush
 @push('scripts')
     <script>
         document.addEventListener('livewire:initialized', () => {
@@ -331,6 +424,15 @@
                 console.log(type?.toUpperCase() + ': ' + message);
                 // Si usas algún plugin de notificaciones, llámalo aquí.
             });
-        });
+
+
+            // Inicializar el select de filtro
+            const filterSelect = document.getElementById('filter_user');
+            if (filterSelect) {
+                filterSelect.addEventListener('change', function() {
+                    @this.set('filterUser', this.value);
+                });
+            }
+            });
     </script>
 @endpush
