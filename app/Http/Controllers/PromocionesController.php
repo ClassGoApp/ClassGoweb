@@ -15,14 +15,20 @@ class PromocionesController extends Controller
         $user = Auth::user();
         if (!$user) {
             // Redirigir al login o mostrar un error si no hay sesión iniciada
-            return redirect()->route('login');
+            return redirect()->route('login');  
         }
 
         // Inicializar la variable $codigo con un valor por defecto
         $codigo = null;
 
         $cupon = Coupon::where('referencia', $user->id)->latest()->first();
-        $codigo = $cupon->codigo;
+        
+        // Validar si el cupón existe antes de acceder a su propiedad
+        if ($cupon) {
+            $codigo = $cupon->codigo;
+        }
+        // Si no existe cupón, $codigo permanece como null
+
         $cuponservice = new \App\Services\CuponesService();
         $cupones = $cuponservice->todosLosCupones($user);
         return view('livewire.pages.student.promociones', compact('codigo', 'cupones'));
