@@ -142,9 +142,7 @@ class HomeController extends Controller
         $search = null;
         $perPage = 50;
 
-        // $tutors = $this->tutorRepository->getFeaturedTutors($perPage, $search);
-        $tutors = $this->tutorRepository->getFeaturedTutors($perPage);
-
+        $tutors = $this->tutorRepository->getFeaturedTutors($perPage, $search);
         $topSubjects = $this->tutorRepository->getTopSevenSubjects(); //lOS SIETE GRUPOS CON MÁS TUTORES
 
         // Pasar la colección paginada a la vista

@@ -54,7 +54,8 @@
                                         <path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
                                     </svg>
                                     <span>{{ number_format($tutor->avg_rating ?? 0, 1) }}</span>
-                                    <span class="rating-count">( {{ $tutor->total_reviews }} reseñas)</span>
+                                    <span class="rating-count">({{ $tutor->total_reviews }} 
+                                        {{ $tutor->total_reviews == 1 ? 'reseña' : 'reseñas' }})</span>
                                 </div>
                                 <div class="tutor-profile-students">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"

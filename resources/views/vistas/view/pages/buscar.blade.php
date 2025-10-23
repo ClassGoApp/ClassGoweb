@@ -75,13 +75,13 @@
                                             </span>
                                         @endforeach
                                     </p>
-                                    <button @click="expandedCard = {{ $tutorId }}" class="tags-more-btn">+Más</button>
                                 </div>
                                 
                                 <p class="card-tutor__description">{{ $tutor->profile->tagline ?? ' Tutor verificado y aprobado por Classgo! '}}</p>
                             </div>
                             
                             <div class="card-tutor__footer">
+                                <button @click="expandedCard = {{ $tutorId }}" class="card-tutor__button-materias">Ver Materias</button>
                                 <button class="card-tutor__button" onclick="window.location.href='{{ route('tutor', ['slug' => $tutor->profile['slug']]) }}'">Ver Perfil</button>
                             </div>
                         </div>
@@ -109,6 +109,19 @@
                                 @foreach ($tutor->userSubjects as $index => $userSubject)
                                     <span class="tag--detail">{{ $userSubject->subject->name }}</span>
                                 @endforeach
+                            </div>
+
+                            <div class="rating-info-wrapper">
+                                <div class="rating-info">
+                                    <div class="rating-info__content">
+                                        <svg class="rating-info__star" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                        </svg>
+                                        <span class="rating-info__text">{{ number_format($tutor->avg_rating ?? 0, 1) }} 
+                                            ({{ $tutor->total_reviews }} {{ $tutor->total_reviews == 1 ? 'reseña' : 'reseñas' }})
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

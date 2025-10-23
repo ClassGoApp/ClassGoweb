@@ -66,8 +66,19 @@ class TutorRepository
             'languages:id,name',
             'userSubjects.subject.group:id,name', // Solo cargamos el nombre del grupo
         ])
-        ->withAvg('ratings as avg_rating', 'rating')
-        ->withCount('ratings as total_reviews');
+        ->withCount([
+            'userReviews as total_reviews' => function($query) {
+                $query->whereHas('review', function($q) {
+                    $q->where('status', 'active');
+                });
+            }
+        ])
+        ->withAvg([
+            'userReviews as avg_rating' => function($query) {
+                $query->join('reviews', 'reviews.id', '=', 'user_reviews.review_id')
+                      ->where('reviews.status', 'active');
+            }
+        ], 'reviews.rating');
 
         // 4. Lógica de Ordenamiento
         $query->orderByRaw(
