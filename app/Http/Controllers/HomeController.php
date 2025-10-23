@@ -138,10 +138,13 @@ class HomeController extends Controller
     public function buscar(Request $request){
 
         //Obtener parámetros de la URL (incluído 'page' automáticamente por Laravel)
-        $search = $request->input('search');
+        // $search = $request->input('search');
+        $search = null;
         $perPage = 50;
 
-        $tutors = $this->tutorRepository->getFeaturedTutors($perPage, $search);
+        // $tutors = $this->tutorRepository->getFeaturedTutors($perPage, $search);
+        $tutors = $this->tutorRepository->getFeaturedTutors($perPage);
+
         $topSubjects = $this->tutorRepository->getTopSevenSubjects(); //lOS SIETE GRUPOS CON MÁS TUTORES
 
         // Pasar la colección paginada a la vista

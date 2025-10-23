@@ -182,6 +182,7 @@
          * @description Filtra y busca los tutores basándose en el ID de materia activo y el término de búsqueda.
          */
 
+
         function filterAndSearchTutors() {
             // Obtenemos el ID de la materia seleccionada
             const activeFilterButton = document.querySelector('.filter-btn--active');
@@ -193,6 +194,7 @@
             const searchTerm = searchInput.value.toLowerCase().trim();
 
             if(searchTerm){
+                
                 loadingIndicator.style.display = 'flex';
                 menuContainer.style.display = 'none';
                 filtrosContainer.style.display = 'none';
