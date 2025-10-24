@@ -13,9 +13,8 @@
             <div class="blog-header">
                 <div class="blog-header-content">
                     <div class="information">
-                        <h1>Ideas y consejos de expertos para estudiantes de por vida</h1>
-                        <h2>Acceda a informacion valiosa,
-                            consejos de expertos y sugerencias de nuestra activa comunidad de tutores.
+                        <h1 data-translate="ideas">Ideas y consejos de expertos para estudiantes de por vida</h1>
+                        <h2 data-translate="Acceda">Acceda a informacion valiosa, consejos de expertos y sugerencias de nuestra activa comunidad de tutores.
                         </h2>
                         <div class="filtro">
                             <span class=filtro-blog-icon>
@@ -30,7 +29,7 @@
                                 </svg>
                             </span>
                             <input class="filtro-blog-input" type="text" placeholder="Buscar por palabra clave">
-                            <button class="button-buscar">Buscar</button>
+                            <button class="button-buscar"><span data-translate="bus">Buscar</span></button>
                         </div>
                     </div>
                     <div class="logo-tugo-megafono">
@@ -40,20 +39,20 @@
                 </div>
             </div>
             <header class="blog-section">
-                <h2 class="todos-blogs">Todos los blogs</h2>
+                <h2 class="todos-blogs" data-translate="td_bl">Todos los blogs</h2>
 
                 <div class="blog-filters">
                     <select>
-                        <option value="">Seleccionar categoría</option>
-                        <option value="negocios">Negocios</option>
-                        <option value="tecnologia">Tecnología</option>
-                        <option value="educacion">Educación</option>
+                        <option value=""><span data-translate="sel">Seleccionar categoría</span></option>
+                        <option value="negocios"><span data-translate="neg">Negocios</span></option>
+                        <option value="tecnologia"><span data-translate="tec">Tecnología</span></option>
+                        <option value="educacion"><span data-translate="edu">Educación</span></option>
                     </select>
 
                     <select>
-                        <option value="">Ordenar por</option>
-                        <option value="recientes">Más recientes</option>
-                        <option value="populares">Más populares</option>
+                        <option value=""><span data-translate="ord">Ordenar por</span></option>
+                        <option value="recientes"><span data-translate="ma_rec">Más recientes</span></option>
+                        <option value="populares"><span data-translate="ma_pop">Más populares</span></option>
                     </select>
                 </div>
             </header>
@@ -95,17 +94,17 @@
                         <div class="tags">
                             <div class="tags-track">
                                 @for ($j = 0; $j < 9; $j++)
-                                    <span class="tag">Ciberseguridad</span>
+                                    <span class="tag"><span data-translate="ciberseguridad">Ciberseguridad</span></span>
                                 @endfor
                                 @for ($j = 0; $j < 9; $j++)
-                                    <span class="tag">Ciberseguridad</span>
+                                    <span class="tag"><span data-translate="ciberseguridad">Ciberseguridad</span></span>
                                 @endfor
 
                             </div>
                         </div> --}}
                     </a>
                 @empty
-                    <p>No hay blogs disponibles.</p>
+                    <p data-translate="no_blog">No hay blogs disponibles.</p>
                 @endforelse
             </div>
         </div>

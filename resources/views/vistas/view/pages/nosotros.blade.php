@@ -82,7 +82,7 @@
                 <div class="team-member">
                     <div class="member-item">
                         <div class="member-photo-wrapper">
-                            <img src="{{ asset('images/team/daniel.webp')}}" alt="Foto de Edward Rojas" class="member-photo">
+                            <img src="{{ asset('images/team/daniel.webp')}}" alt="Foto de Daniel" class="member-photo">
                         </div>
                         <a href="https://www.linkedin.com/in/jose-daniel-aguirre-antelo-193119187/" class="member-link">
                             <img class="arrow-icon" src="{{ asset('images/team/linkedin.png') }}" alt="">

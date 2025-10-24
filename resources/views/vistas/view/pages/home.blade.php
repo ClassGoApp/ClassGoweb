@@ -254,9 +254,9 @@
 
       <!-- Columna Izquierda: Contenido de texto -->
       <div class="text-app">
-        <p>Fácil, simple y rápido</p>
-        <h1>Instala nuestra App</h1>
-        <p>Comienza tu viaje educativo con nosotros. <br>¡Instálate hoy mismo nuestra app!</p>
+        <p data-translate="facil_simple_rapido"></p>
+        <h1 data-translate="instala_app"></h1>
+        <p data-translate="comienza_viaje_educativo"></p>
 
         <!-- Lista de características -->
         <ul class="list-app">
@@ -264,19 +264,19 @@
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
               <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
             </svg>
-            <span>Acceso 24/7</span>
+            <span data-translate="acceso"></span>
           </li>
           <li>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
               <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
             </svg>
-            <span>Tutores Expertos</span>
+            <span data-translate="tutores_expertos"></span>
           </li>
           <li>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
               <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
             </svg>
-            <span>Tarifas Asequibles</span>
+            <span data-translate="tarifas_asequibles"></span>
           </li>
         </ul>
 

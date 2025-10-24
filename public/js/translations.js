@@ -1,7 +1,7 @@
 // ===========================
 // translations.js
 // ===========================
-
+//REGLAS DE USO DE LA TRADUCCION: hola me presento soy un pasante que a duras pena duerme para usar esto es tan simple como apretar ctrl + F buscar la linea de texto que buscas y cambiarla, recuerda que tambien tiene que cambiar su version en ingles y Portugues
 // Diccionario de traducciones
 const translations = {
     es: {
@@ -18,10 +18,6 @@ const translations = {
         inicia_hoy: "Inicia hoy",
         registrate: "Regístrate",
         encontrar_tutor: "Encontrar tutor",
-        blog: "Blog",
-        consejos_expertos_br: "Consejos de <br>expertos",
-        obten_app: "Obtén la App",
-        lleva_educacion_todas: "¡Lleva tu educación a todas partes!",
         nosotros: "Nosotros",
         mision: "Misión",
         vision: "Visión",
@@ -73,10 +69,10 @@ const translations = {
         empezar_ahora: "Empieza ahora",
         facil_simple_rapido: "Fácil, simple y rápido",
         instala_app: "Instala nuestra App",
-        comienza_viaje_educativo: "Comienza tu viaje educativo con nosotros. ¡Instala hoy mismo nuestra app!",
+        comienza_viaje_educativo: "Comienza tu viaje educativo con nosotros. <br>¡Instálate hoy mismo nuestra app!",
         acceso: "Acceso 24/7",
-        tutores_expertos: "Tutores expertos",
-        tarifas_asequibles: "Tarifas asequibles",
+        tutores_expertos: "Tutores Expertos",
+        tarifas_asequibles: "Tarifas Asequibles",
         descargar_ahora: "Descargar Ahora",
         buscas_tutorias: "¿Buscas tutorías personalizadas?",
         conectamos_tutores: "En Classgo, te conectamos con los mejores tutores",
@@ -107,7 +103,7 @@ const translations = {
         team: "Nuestro equipo",
         creadores_classgo: "Los creadores de la página y app de ClassGo, dedicados a revolucionar la educación.",
         lic_presentacion: "¡Hola! Soy Gabriel, apasionado por compartir conocimiento y ayudarte a alcanzar tus metas académicas. Con años de experiencia en docencia y finanzas, mi objetivo es guiar tu aprendizaje de manera clara y efectiva.",
-        jefi_rol: "Coordinador general",
+        jefi_rol: "General Coordinador",
         jefi_presentacion: "Preparado para los desafíos del mundo empresarial digital, con mentalidad ágil y soluciones orientadas a resultados.",
         opjefi_rol: "Gerente de operaciones",
         opjefi_presentacion: "Apasionado por compartir conocimientos de manera clara y práctica. Mi objetivo es ayudarte a aprender de forma sencilla y efectiva.",
@@ -391,6 +387,20 @@ const translations = {
         conflictos_legales_viabilidad: "Conflictos legales que afecten la viabilidad del servicio",
         descarga_terminos_pdf: "Descarga términos y condiciones en PDF",
         boton_descargar_pdf: "Descargar PDF",
+        //Blogs
+        ideas: "Ideas y consejos de expertos para estudiantes de por vida",
+        Acceda: "Acceda a información valiosa, consejos de expertos y sugerencias de nuestra activa comunidad de tutores.",
+        bus: "Buscar",
+        td_bl: "Todos los blogs",
+        sel: "Seleccionar categoría",
+        neg: "Negocios",
+        tec: "Tecnología",
+        edu: "Educación",
+        ord: "Ordenar por",
+        ma_rec: "Más recientes",
+        ma_pop: "Más populares",
+        ciberseguridad: "Ciberseguridad",
+        no_blog: "No hay blogs disponibles."
     },
     en: {
         // Navbar
@@ -406,10 +416,6 @@ const translations = {
         inicia_hoy: "Start Today",
         registrate: "Sign Up",
         encontrar_tutor: "Find a Tutor",
-        blog: "Blog",
-        consejos_expertos_br: "Expert Advice",
-        obten_app: "Get the App",
-        lleva_educacion_todas: "Take your education everywhere!",
         nosotros: "About Us",
         mision: "Mission",
         vision: "Vision",
@@ -779,7 +785,21 @@ const translations = {
         barreras_regulatorias_insalvables: "insurmountable regulatory barriers",
         conflictos_legales_viabilidad: "legal conflicts affecting service viability",
         descarga_terminos_pdf: "Download terms and conditions in PDF",
-        boton_descargar_pdf: "Download PDF"
+        boton_descargar_pdf: "Download PDF",
+        //Blogs
+        ideas: "Expert Ideas and Tips for Lifelong Learners",
+        Acceda: "Access valuable information, expert advice, and suggestions from our active tutor community.",
+        bus: "Search",
+        td_bl: "All Blogs",
+        sel: "Select Category",
+        neg: "Business",
+        tec: "Technology",
+        edu: "Education",
+        ord: "Sort By",
+        ma_rec: "Most Recent",
+        ma_pop: "Most Popular",
+        ciberseguridad: "Cybersecurity",
+        no_blog: "No blogs available."
 
     },
     pt: {
@@ -796,10 +816,6 @@ const translations = {
         inicia_hoy: "Comece hoje",
         registrate: "Registre-se",
         encontrar_tutor: "Encontrar tutor",
-        blog: "Blog",
-        consejos_expertos_br: "Conselhos de especialistas",
-        obten_app: "Baixe o App",
-        lleva_educacion_todas: "Leve sua educação para todos os lugares!",
         nosotros: "Sobre Nós",
         mision: "Missão",
         vision: "Visão",
@@ -887,7 +903,7 @@ const translations = {
         team: "Nossa equipe",
         creadores_classgo: "Os criadores do site e do app ClassGo, dedicados a revolucionar a educação.",
         lic_presentacion: "Olá! Sou Gabriel, apaixonado por compartilhar conhecimento e ajudar você a alcançar seus objetivos acadêmicos. Com anos de experiência em ensino e finanças, meu objetivo é orientar seu aprendizado de maneira clara e eficaz.",
-        jefi_rol: "Coordenador-geral",
+        jefi_rol: "Coordenador Geral",
         jefi_presentacion: "Preparado para os desafios do mundo empresarial digital, com uma mentalidade ágil e soluções orientadas para resultados.",
         opjefi_rol: "Gerente de operações",
         opjefi_presentacion: "Apaixonado por compartilhar conhecimento de maneira clara e prática. Meu objetivo é ajudar você a aprender de forma simples e eficaz.",
@@ -1170,8 +1186,21 @@ const translations = {
         barreras_regulatorias_insalvables: "Barreiras regulatórias intransponíveis",
         conflictos_legales_viabilidad: "Conflitos legais que afetem a viabilidade do serviço",
         descarga_terminos_pdf: "Baixar termos e condições em PDF",
-        boton_descargar_pdf: "Baixar PDF"
-
+        boton_descargar_pdf: "Baixar PDF",
+        //Blogs
+        ideas: "Ideias e dicas de especialistas para estudantes ao longo da vida",
+        Acceda: "Acesse informações valiosas, conselhos de especialistas e sugestões da nossa comunidade ativa de tutores.",
+        bus: "Buscar",
+        td_bl: "Todos os blogs",
+        sel: "Selecionar categoria",
+        neg: "Negócios",
+        tec: "Tecnologia",
+        edu: "Educação",
+        ord: "Ordenar por",
+        ma_rec: "Mais recentes",
+        ma_pop: "Mais populares",
+        ciberseguridad: "Cibersegurança",
+        no_blog: "Nenhum blog disponível."
     }
 };
 
@@ -1214,17 +1243,17 @@ function selectLanguage(lang, closeDropdown = true) {
 // ===========================
 // Inicialización al cargar la página
 // ===========================
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     const savedLang = localStorage.getItem("selectedLanguage") || "es";
     selectLanguage(savedLang, false);
 });
 
-document.addEventListener("livewire:load", function() {
+document.addEventListener("livewire:load", function () {
     const savedLang = localStorage.getItem("selectedLanguage") || "es";
     selectLanguage(savedLang, false);
 });
 
-document.addEventListener("livewire:update", function() {
+document.addEventListener("livewire:update", function () {
     const savedLang = localStorage.getItem("selectedLanguage") || "es";
     selectLanguage(savedLang, false);
 });

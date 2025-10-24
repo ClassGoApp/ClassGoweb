@@ -23,7 +23,7 @@
             </div>
             <div class="footer-about"> <!--List about-->
                 <div class="box">
-                    <h1>Tutores</h1>
+                    <h1 data-translate="tutors"></h1>
                     <a href=" {{ route('buscar.tutor')}}">
                         <p data-translate="tutores_en_linea"></p>
                     </a>
