@@ -16,6 +16,7 @@ use App\Http\Controllers\Api\CartController;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Controllers\Api\InvoiceController;
 use App\Http\Controllers\Api\PayoutController;
+use App\Http\Controllers\Api\QrPayoutController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\StudentController;
 use App\Http\Controllers\Api\TutorController;
@@ -119,6 +120,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('payout-status',                                [PayoutController::class,'updateStatus']);
     Route::post('payout-method',                                [PayoutController::class,'addPayoutMethod']);
     Route::Delete('payout-method',                              [PayoutController::class,'removePayoutMethod']);
+    
+    // Rutas para métodos de pago QR
+    Route::get('qr-payout-methods',                             [QrPayoutController::class,'getQrPayoutMethods']);
+    Route::post('qr-payout-methods',                            [QrPayoutController::class,'storeQrPayoutMethod']);
+    Route::get('qr-payout-methods/{id}',                        [QrPayoutController::class,'getQrPayoutMethod']);
+    Route::put('qr-payout-methods/{id}',                        [QrPayoutController::class,'updateQrPayoutMethod']);
+    Route::delete('qr-payout-methods/{id}',                     [QrPayoutController::class,'deleteQrPayoutMethod']);
     Route::apiResource('booking-cart',                          CartController::class);
     Route::post('checkout',                                     [CheckoutController::class,'addCheckoutDetails']);
 
