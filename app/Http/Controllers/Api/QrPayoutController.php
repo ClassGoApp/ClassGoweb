@@ -26,7 +26,6 @@ class QrPayoutController extends Controller
         try {
             $qrPayoutMethods = UserPayoutMethod::where('user_id', $user_id)
                 ->where('payout_method', 'QR')
-                ->whereNull('deleted_at')
                 ->get();
 
             $data = $qrPayoutMethods->map(function ($method) {
@@ -66,35 +65,55 @@ class QrPayoutController extends Controller
     public function storeQrPayoutMethod(Request $request)
     {
         try {
+            Log::info('Iniciando storeQrPayoutMethod', [
+                'user_id' => $request->user_id,
+                'has_img_qr' => $request->hasFile('img_qr'),
+                'all_data' => $request->all()
+            ]);
+
             $request->validate([
                 'user_id' => 'required|integer|exists:users,id',
                 'img_qr' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:4096',
             ]);
 
             $user_id = $request->user_id;
+            Log::info('Validación pasada, user_id: ' . $user_id);
 
             // Verificar si el usuario ya tiene un método QR activo
             $existingQr = UserPayoutMethod::where('user_id', $user_id)
                 ->where('payout_method', 'QR')
-                ->whereNull('deleted_at')
                 ->first();
 
+            Log::info('Búsqueda de QR existente', [
+                'user_id' => $user_id,
+                'existing_qr_found' => $existingQr ? true : false,
+                'existing_qr_id' => $existingQr ? $existingQr->id : null
+            ]);
+
             if ($existingQr) {
+                Log::info('Actualizando QR existente', ['qr_id' => $existingQr->id]);
+                
                 // Eliminar la imagen anterior si existe
                 if ($existingQr->img_qr && file_exists(public_path('storage/' . $existingQr->img_qr))) {
+                    Log::info('Eliminando imagen anterior', ['path' => $existingQr->img_qr]);
                     unlink(public_path('storage/' . $existingQr->img_qr));
                 }
                 
                 // Actualizar el registro existente
                 $fileName = uniqid() . '_' . $request->file('img_qr')->getClientOriginalName();
+                Log::info('Nombre de archivo generado', ['fileName' => $fileName]);
                 
                 // Crear directorio si no existe
                 $destinationPath = public_path('storage/qr_codes');
+                Log::info('Ruta de destino', ['destinationPath' => $destinationPath]);
+                
                 if (!file_exists($destinationPath)) {
+                    Log::info('Creando directorio', ['path' => $destinationPath]);
                     mkdir($destinationPath, 0777, true);
                 }
                 
                 // Mover la imagen al directorio correcto
+                Log::info('Moviendo archivo', ['from' => $request->file('img_qr')->getPathname(), 'to' => $destinationPath . '/' . $fileName]);
                 $request->file('img_qr')->move($destinationPath, $fileName);
                 
                 // Actualizar el registro existente
@@ -103,20 +122,34 @@ class QrPayoutController extends Controller
                 $existingQr->save();
                 
                 $qrPayoutMethod = $existingQr;
+                Log::info('QR actualizado exitosamente', ['qr_id' => $qrPayoutMethod->id]);
             } else {
+                Log::info('Creando nuevo QR');
+                
                 // Crear nuevo registro
                 $fileName = uniqid() . '_' . $request->file('img_qr')->getClientOriginalName();
+                Log::info('Nombre de archivo generado', ['fileName' => $fileName]);
                 
                 // Crear directorio si no existe
                 $destinationPath = public_path('storage/qr_codes');
+                Log::info('Ruta de destino', ['destinationPath' => $destinationPath]);
+                
                 if (!file_exists($destinationPath)) {
+                    Log::info('Creando directorio', ['path' => $destinationPath]);
                     mkdir($destinationPath, 0777, true);
                 }
                 
                 // Mover la imagen al directorio correcto
+                Log::info('Moviendo archivo', ['from' => $request->file('img_qr')->getPathname(), 'to' => $destinationPath . '/' . $fileName]);
                 $request->file('img_qr')->move($destinationPath, $fileName);
                 
                 // Crear el método de pago QR
+                Log::info('Creando registro en BD', [
+                    'user_id' => $user_id,
+                    'payout_method' => 'QR',
+                    'img_qr' => 'qr_codes/' . $fileName
+                ]);
+                
                 $qrPayoutMethod = UserPayoutMethod::create([
                     'user_id' => $user_id,
                     'payout_method' => 'QR',
@@ -124,6 +157,8 @@ class QrPayoutController extends Controller
                     'payout_details' => null,
                     'status' => 'active',
                 ]);
+                
+                Log::info('QR creado exitosamente', ['qr_id' => $qrPayoutMethod->id]);
             }
 
             $data = [
@@ -138,22 +173,33 @@ class QrPayoutController extends Controller
                 'updated_at' => $qrPayoutMethod->updated_at,
             ];
 
+            Log::info('Respuesta exitosa preparada', $data);
+
             return $this->success(
                 message: 'Imagen QR guardada exitosamente',
                 data: $data
             );
 
         } catch (\Illuminate\Validation\ValidationException $e) {
+            Log::error('Error de validación en storeQrPayoutMethod', [
+                'errors' => $e->errors(),
+                'user_id' => $request->user_id ?? 'no_provided'
+            ]);
             return $this->error(
                 data: null,
                 message: 'Error de validación: ' . implode(', ', $e->errors()),
                 code: Response::HTTP_UNPROCESSABLE_ENTITY
             );
         } catch (\Exception $e) {
-            Log::error('Error al guardar imagen QR: ' . $e->getMessage());
+            Log::error('Error al guardar imagen QR: ' . $e->getMessage(), [
+                'trace' => $e->getTraceAsString(),
+                'user_id' => $request->user_id ?? 'no_provided',
+                'file' => $e->getFile(),
+                'line' => $e->getLine()
+            ]);
             return $this->error(
                 data: null,
-                message: 'Error al guardar imagen QR',
+                message: 'Error al guardar imagen QR: ' . $e->getMessage(),
                 code: Response::HTTP_INTERNAL_SERVER_ERROR
             );
         }
@@ -170,7 +216,6 @@ class QrPayoutController extends Controller
         try {
             $qrPayoutMethod = UserPayoutMethod::where('user_id', $user_id)
                 ->where('payout_method', 'QR')
-                ->whereNull('deleted_at')
                 ->first();
 
             if (!$qrPayoutMethod) {
@@ -250,7 +295,6 @@ class QrPayoutController extends Controller
         try {
             $qrPayoutMethod = UserPayoutMethod::where('user_id', $user_id)
                 ->where('payout_method', 'QR')
-                ->whereNull('deleted_at')
                 ->first();
 
             if (!$qrPayoutMethod) {
