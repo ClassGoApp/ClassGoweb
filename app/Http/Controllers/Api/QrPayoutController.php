@@ -310,8 +310,8 @@ class QrPayoutController extends Controller
                 unlink(public_path('storage/' . $qrPayoutMethod->img_qr));
             }
 
-            // Eliminar el registro (soft delete)
-            $qrPayoutMethod->delete();
+            // Eliminar el registro físicamente de la base de datos
+            $qrPayoutMethod->forceDelete();
 
             return $this->success(
                 message: 'Imagen QR eliminada exitosamente',
