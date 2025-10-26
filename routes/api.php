@@ -163,8 +163,8 @@ Route::get('all-subjects', [SubjectController::class, 'index']);
 Route::get('qr-payout-methods/{user_id}',                      [QrPayoutController::class,'getQrPayoutMethods']);
 Route::post('qr-payout-methods',                                [QrPayoutController::class,'storeQrPayoutMethod']);
 Route::get('qr-payout-methods/{user_id}/{id}',                  [QrPayoutController::class,'getQrPayoutMethod']);
-Route::put('qr-payout-methods/{user_id}/{id}',                  [QrPayoutController::class,'updateQrPayoutMethod']);
-Route::delete('qr-payout-methods/{user_id}/{id}',               [QrPayoutController::class,'deleteQrPayoutMethod']);
+Route::put('qr-payout-methods/{user_id}',                      [QrPayoutController::class,'updateQrPayoutMethod']);
+Route::delete('qr-payout-methods/{user_id}',                   [QrPayoutController::class,'deleteQrPayoutMethod']);
 Route::get('verified-tutors-photos', [\App\Http\Controllers\Api\TutorController::class, 'getVerifiedTutorsPhotos']);
 Route::get('tutor/{id}/instant-slots', [\App\Http\Controllers\Api\TutorController::class, 'getInstantSlots']);
 

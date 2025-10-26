@@ -160,17 +160,15 @@ class QrPayoutController extends Controller
     }
 
     /**
-     * Actualizar imagen QR del tutor
+     * Actualizar imagen QR del tutor (reemplaza la existente)
      * @param Request $request
      * @param int $user_id
-     * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateQrPayoutMethod(Request $request, $user_id, $id)
+    public function updateQrPayoutMethod(Request $request, $user_id)
     {
         try {
-            $qrPayoutMethod = UserPayoutMethod::where('id', $id)
-                ->where('user_id', $user_id)
+            $qrPayoutMethod = UserPayoutMethod::where('user_id', $user_id)
                 ->where('payout_method', 'QR')
                 ->whereNull('deleted_at')
                 ->first();
@@ -178,7 +176,7 @@ class QrPayoutController extends Controller
             if (!$qrPayoutMethod) {
                 return $this->error(
                     data: null,
-                    message: 'Imagen QR no encontrada',
+                    message: 'No se encontró imagen QR para este usuario',
                     code: Response::HTTP_NOT_FOUND
                 );
             }
@@ -242,17 +240,15 @@ class QrPayoutController extends Controller
     }
 
     /**
-     * Eliminar imagen QR del tutor
+     * Eliminar imagen QR del tutor (elimina el único registro del usuario)
      * @param Request $request
      * @param int $user_id
-     * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function deleteQrPayoutMethod(Request $request, $user_id, $id)
+    public function deleteQrPayoutMethod(Request $request, $user_id)
     {
         try {
-            $qrPayoutMethod = UserPayoutMethod::where('id', $id)
-                ->where('user_id', $user_id)
+            $qrPayoutMethod = UserPayoutMethod::where('user_id', $user_id)
                 ->where('payout_method', 'QR')
                 ->whereNull('deleted_at')
                 ->first();
@@ -260,7 +256,7 @@ class QrPayoutController extends Controller
             if (!$qrPayoutMethod) {
                 return $this->error(
                     data: null,
-                    message: 'Imagen QR no encontrada',
+                    message: 'No se encontró imagen QR para este usuario',
                     code: Response::HTTP_NOT_FOUND
                 );
             }
