@@ -16,16 +16,15 @@ class QrPayoutController extends Controller
     use ApiResponser;
 
     /**
-     * Obtener métodos de pago QR del usuario autenticado
+     * Obtener métodos de pago QR del usuario
      * @param Request $request
+     * @param int $user_id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getQrPayoutMethods(Request $request)
+    public function getQrPayoutMethods(Request $request, $user_id)
     {
         try {
-            $user = Auth::user();
-            
-            $qrPayoutMethods = UserPayoutMethod::where('user_id', $user->id)
+            $qrPayoutMethods = UserPayoutMethod::where('user_id', $user_id)
                 ->where('payout_method', 'QR')
                 ->whereNull('deleted_at')
                 ->get();
@@ -68,13 +67,14 @@ class QrPayoutController extends Controller
     {
         try {
             $request->validate([
+                'user_id' => 'required|integer|exists:users,id',
                 'img_qr' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:4096',
             ]);
 
-            $user = Auth::user();
+            $user_id = $request->user_id;
 
             // Verificar si el usuario ya tiene un método QR activo
-            $existingQr = UserPayoutMethod::where('user_id', $user->id)
+            $existingQr = UserPayoutMethod::where('user_id', $user_id)
                 ->where('payout_method', 'QR')
                 ->whereNull('deleted_at')
                 ->first();
@@ -118,7 +118,7 @@ class QrPayoutController extends Controller
                 
                 // Crear el método de pago QR
                 $qrPayoutMethod = UserPayoutMethod::create([
-                    'user_id' => $user->id,
+                    'user_id' => $user_id,
                     'payout_method' => 'QR',
                     'img_qr' => 'qr_codes/' . $fileName,
                     'payout_details' => null,
@@ -146,7 +146,7 @@ class QrPayoutController extends Controller
         } catch (\Illuminate\Validation\ValidationException $e) {
             return $this->error(
                 data: null,
-                message: 'Error de validación: La imagen QR es obligatoria',
+                message: 'Error de validación: ' . implode(', ', $e->errors()),
                 code: Response::HTTP_UNPROCESSABLE_ENTITY
             );
         } catch (\Exception $e) {
@@ -162,16 +162,15 @@ class QrPayoutController extends Controller
     /**
      * Actualizar imagen QR del tutor
      * @param Request $request
+     * @param int $user_id
      * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateQrPayoutMethod(Request $request, $id)
+    public function updateQrPayoutMethod(Request $request, $user_id, $id)
     {
         try {
-            $user = Auth::user();
-            
             $qrPayoutMethod = UserPayoutMethod::where('id', $id)
-                ->where('user_id', $user->id)
+                ->where('user_id', $user_id)
                 ->where('payout_method', 'QR')
                 ->whereNull('deleted_at')
                 ->first();
@@ -245,16 +244,15 @@ class QrPayoutController extends Controller
     /**
      * Eliminar imagen QR del tutor
      * @param Request $request
+     * @param int $user_id
      * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function deleteQrPayoutMethod(Request $request, $id)
+    public function deleteQrPayoutMethod(Request $request, $user_id, $id)
     {
         try {
-            $user = Auth::user();
-            
             $qrPayoutMethod = UserPayoutMethod::where('id', $id)
-                ->where('user_id', $user->id)
+                ->where('user_id', $user_id)
                 ->where('payout_method', 'QR')
                 ->whereNull('deleted_at')
                 ->first();
@@ -293,16 +291,15 @@ class QrPayoutController extends Controller
     /**
      * Obtener imagen QR específica del tutor
      * @param Request $request
+     * @param int $user_id
      * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getQrPayoutMethod(Request $request, $id)
+    public function getQrPayoutMethod(Request $request, $user_id, $id)
     {
         try {
-            $user = Auth::user();
-            
             $qrPayoutMethod = UserPayoutMethod::where('id', $id)
-                ->where('user_id', $user->id)
+                ->where('user_id', $user_id)
                 ->where('payout_method', 'QR')
                 ->whereNull('deleted_at')
                 ->first();

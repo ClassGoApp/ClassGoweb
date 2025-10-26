@@ -120,13 +120,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('payout-status',                                [PayoutController::class,'updateStatus']);
     Route::post('payout-method',                                [PayoutController::class,'addPayoutMethod']);
     Route::Delete('payout-method',                              [PayoutController::class,'removePayoutMethod']);
-    
-    // Rutas para métodos de pago QR
-    Route::get('qr-payout-methods',                             [QrPayoutController::class,'getQrPayoutMethods']);
-    Route::post('qr-payout-methods',                            [QrPayoutController::class,'storeQrPayoutMethod']);
-    Route::get('qr-payout-methods/{id}',                        [QrPayoutController::class,'getQrPayoutMethod']);
-    Route::put('qr-payout-methods/{id}',                        [QrPayoutController::class,'updateQrPayoutMethod']);
-    Route::delete('qr-payout-methods/{id}',                     [QrPayoutController::class,'deleteQrPayoutMethod']);
     Route::apiResource('booking-cart',                          CartController::class);
     Route::post('checkout',                                     [CheckoutController::class,'addCheckoutDetails']);
 
@@ -165,6 +158,13 @@ Route::get('subjects',                                         [BookingControlle
 Route::get('settings',                                         [OptionBuilderController::class, 'getOpSettings']);
 Route::get('alianzas',                                          [AlianzaController::class, 'index']);
 Route::get('all-subjects', [SubjectController::class, 'index']);
+
+// Rutas para métodos de pago QR (sin autenticación)
+Route::get('qr-payout-methods/{user_id}',                      [QrPayoutController::class,'getQrPayoutMethods']);
+Route::post('qr-payout-methods',                                [QrPayoutController::class,'storeQrPayoutMethod']);
+Route::get('qr-payout-methods/{user_id}/{id}',                  [QrPayoutController::class,'getQrPayoutMethod']);
+Route::put('qr-payout-methods/{user_id}/{id}',                  [QrPayoutController::class,'updateQrPayoutMethod']);
+Route::delete('qr-payout-methods/{user_id}/{id}',               [QrPayoutController::class,'deleteQrPayoutMethod']);
 Route::get('verified-tutors-photos', [\App\Http\Controllers\Api\TutorController::class, 'getVerifiedTutorsPhotos']);
 Route::get('tutor/{id}/instant-slots', [\App\Http\Controllers\Api\TutorController::class, 'getInstantSlots']);
 
