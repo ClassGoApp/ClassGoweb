@@ -214,6 +214,15 @@ class QrPayoutController extends Controller
     public function updateQrPayoutMethod(Request $request, $user_id)
     {
         try {
+            // Debug: verificar qué está llegando en la request
+            Log::info('Debug updateQrPayoutMethod', [
+                'user_id' => $user_id,
+                'has_img_qr' => $request->hasFile('img_qr'),
+                'all_files' => $request->allFiles(),
+                'all_data' => $request->all(),
+                'content_type' => $request->header('Content-Type')
+            ]);
+
             $qrPayoutMethod = UserPayoutMethod::where('user_id', $user_id)
                 ->where('payout_method', 'QR')
                 ->first();
@@ -223,6 +232,15 @@ class QrPayoutController extends Controller
                     data: null,
                     message: 'No se encontró imagen QR para este usuario',
                     code: Response::HTTP_NOT_FOUND
+                );
+            }
+
+            // Verificar si hay archivo antes de validar
+            if (!$request->hasFile('img_qr')) {
+                return $this->error(
+                    data: null,
+                    message: 'No se detectó archivo de imagen en la petición',
+                    code: Response::HTTP_UNPROCESSABLE_ENTITY
                 );
             }
 
@@ -271,7 +289,7 @@ class QrPayoutController extends Controller
         } catch (\Illuminate\Validation\ValidationException $e) {
             return $this->error(
                 data: null,
-                message: 'Error de validación: La imagen QR es obligatoria',
+                message: 'Error de validación: ' . implode(', ', $e->errors()),
                 code: Response::HTTP_UNPROCESSABLE_ENTITY
             );
         } catch (\Exception $e) {
