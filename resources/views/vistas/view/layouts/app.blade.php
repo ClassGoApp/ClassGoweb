@@ -52,7 +52,3 @@
 
 </body>
 </html>
-
-@push('scripts')
-            <script src="{{ asset('js/components/floating-button.js') }}"></script>
-        @endpush

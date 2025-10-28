@@ -8,7 +8,10 @@
             return 0;
         }
     });
+
+
 @endphp
+
 <div class="fab-container">
     <button id="fab-option-tutorials" class="fab-option fab-option--tutorials">
         <i class="fas fa-chalkboard-teacher"></i>
