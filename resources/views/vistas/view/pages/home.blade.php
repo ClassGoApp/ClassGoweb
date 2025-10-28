@@ -49,7 +49,7 @@
 
             <!-- 1.4 Hero Mascota -->
 
-            <img src="{{ asset(path: 'storage/optionbuilder/uploads/740102-17-2025_0859pmTugo-saludando.gif') }}" alt="Mascota ClassGo">
+            <img src="{{ asset(path: 'storage/optionbuilder/uploads/740102-17-2025_0859pmTugo-saludando.webp') }}" alt="Mascota ClassGo">
 
 
 
@@ -84,6 +84,8 @@
 
     </div>
 </section>
+
+
 
 
 <!--TUTORES DESTACADOS-->
@@ -198,7 +200,19 @@
     </div>
 
 </section>
+<!--CARRUSEL ANIMADO TUGO-->
+<section class="tugo-carousel fade-up">
+  <div class="tugo-container">
+    <div class="text-zone">
+      <p class="intro-text">Con ClassGo aprendes...</p>
+      <div class="animated-word" id="animatedWord">Idiomas</div>
+    </div>
 
+    <div class="mascot-panel">
+      <img id="mascot" class="mascot" src="/images/tugos-skin/Interpretación-y-Traducción-de-Idiomas.webp" alt="Tugo">
+    </div>
+  </div>
+</section>
 
 <!--GUIA PASO A PASO-->
 <section class="potencial-container fade-up">
@@ -290,7 +304,7 @@
                         
         <div class="image-app">
                     <img
-                        src="{{ asset('images/home/tugo-cel.gif')}}"
+                        src="{{ asset('images/home/tugo-cel-optimizado.webp')}}"
                         alt="ClassGo"onerror="this.onerror=null;this.src='https://placehold.co/400x800/023047/FFFFFF?text=App';">
         </div>
         </div>
@@ -358,50 +372,87 @@
     </div>
 
 </section>
-
+<!--------animacion skin----->
 <script>
-//-----Animaciones al hacer scroll section  
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('show');
-      }
-    });
-  }, { threshold: 0.2 }); // 0.2 = cuando el 20% del div esté visible
+const words = [
+  
+  {text: "Química", img: "/images/tugos-skin/Química-General.webp"},
+  {text: "Física", img: "/images/tugos-skin/Física-Aplicada.webp"},
+  {text: "Matemáticas", img: "/images/tugos-skin/Cálculo.webp"},
+  {text: "Programación", img: "/images/tugos-skin/Inteligencia-de-Software-26.webp"},
+  {text: "Arte y edición", img: "/images/tugos-skin/Producción-Audiovisual-Para-Plataformas-Digitales.webp"},
+  {text: "Electricidad y Electromecánica", img: "/images/tugos-skin/Robótica-y-Automatización.webp"},
+  {text: "Idiomas", img: "/images/tugos-skin/Interpretación-y-Traducción-de-Idiomas.webp"},
+  {text: "Creación de Contenidos", img: "/images/tugos-skin/Tugo-influencer.webp"},
+  {text: "Mecánica Automotriz", img: "/images/tugos-skin/Mecánica-Automotriz-Básica.webp"},
+  {text: "Contabilidad", img: "/images/tugos-skin/Modelación-Financiera.webp"},
+];
 
-  document.querySelectorAll('.fade-up, .fade-left, .fade-righ').forEach(el => observer.observe(el));
+const animatedWord = document.getElementById("animatedWord");
+const mascot = document.getElementById("mascot");
+let i = 0;
+
+function changeWord() {
+  animatedWord.classList.remove("fade-in");
+  animatedWord.style.opacity = 0;
+  mascot.classList.add("fade");
+
+  setTimeout(() => {
+    animatedWord.textContent = words[i].text;
+    mascot.src = words[i].img;
+
+    animatedWord.style.animation = "none";
+    void animatedWord.offsetWidth; // reinicia la animación
+    animatedWord.style.animation = "fadeSlide 1s forwards";
+
+    mascot.classList.remove("fade");
+
+    i = (i + 1) % words.length;
+  }, 500);
+}
+
+setInterval(changeWord, 2500);
 </script>
-
+<!-- ====== Scripts animacion de scroll,carrusel ====== -->
 <script>
-//-----Carrusel 3D
-    const imgContainer = document.querySelector(".img-container-3D");
+// ===== Animaciones al hacer scroll =====
+const observerAnimaciones = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('show');
+    }
+  });
+}, { threshold: 0.2 }); // Cuando el 20% del div esté visible
 
-setInterval(() => {
-  const first = imgContainer.firstElementChild;
-  imgContainer.appendChild(first);
-}, 1500);
+document.querySelectorAll('.fade-up, .fade-left, .fade-right')
+  .forEach(el => observerAnimaciones.observe(el));
 
 
-</script>
-<script>
-    //---salto
+// ===== Carrusel 3D =====
+const imgContainer = document.querySelector(".img-container-3D");
+if (imgContainer) {
+  setInterval(() => {
+    const first = imgContainer.firstElementChild;
+    if (first) imgContainer.appendChild(first);
+  }, 1500);
+}
+
+
+// ===== Animación de salto =====
 const textos = document.querySelectorAll('.texto-animado');
 
-const observer = new IntersectionObserver((entradas) => {
+const observerTextos = new IntersectionObserver((entradas) => {
   entradas.forEach((entrada) => {
     if (entrada.isIntersecting) {
       entrada.target.classList.add('visible');
-      // Si quieres que solo salte una vez:
-      observer.unobserve(entrada.target);
+      // Para que solo se ejecute una vez
+      observerTextos.unobserve(entrada.target);
     }
   });
 });
 
-textos.forEach((texto) => observer.observe(texto));
-
+textos.forEach((texto) => observerTextos.observe(texto));
 </script>
-
-
 
 
 
