@@ -126,7 +126,7 @@ class RegisterService
         if ($request['user_role'] == 'student') {
             $cuponservice = new CuponesService();
             // agrega el cupon de bienvenida
-            $cuponservice->asignacionCuponBienvenida($user);
+            //$cuponservice->asignacionCuponBienvenida($user);
             // genera su cupon de invitacion del ususario registrado
             $cuponservice->generaCuponInvitacion($user);
             if (!empty($request['codigo'])) {

@@ -299,6 +299,11 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPasswordC
         return $this->hasMany(SocialProfile::class);
     }
 
+    public function userReviews()
+{
+    return $this->hasMany(UserReview::class, 'user_id');
+}
+
     /**
      * Get the badges that the user has.
      *

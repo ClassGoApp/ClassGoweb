@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="{{ asset('css/estilos/terminos.css') }}">
     <link rel="stylesheet" href="{{ asset('css/estilos/buscar.css') }}">
     <link rel="stylesheet" href="{{ asset('css/estilos/error404.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/estilos/floating-button.css') }}">
     <link rel="stylesheet" href="{{ asset('css/promociones.css') }}">   
     <link rel="stylesheet" href="{{ asset('css/estilos/blog.css') }}">
     
@@ -39,11 +40,19 @@
         @else
             {{ $slot ?? '' }}
         @endif
+
+        @include('components.floating-button.index')
     </main>
 
-    @include('vistas.view.components.footer')
+        
+        @include('vistas.view.components.footer')
+    
         @livewireScripts
         {{-- <script src="//unpkg.com/alpinejs" defer></script> --}}
 
 </body>
 </html>
+
+@push('scripts')
+            <script src="{{ asset('js/components/floating-button.js') }}"></script>
+        @endpush

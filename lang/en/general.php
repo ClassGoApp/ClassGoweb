@@ -479,4 +479,64 @@ return [
     'previous' => 'Previous',
     'next' => 'Next',
      'reset_filters' => 'Reset Filters',
+     'add_new_cupon' => 'Add New Cupon',
+     'All' => 'All',
+     'Active'=>'Active',
+     'Inactive' => 'Inactive',
+     'search_cupon' => 'Search Cupon',
+     'Name' => 'Name',
+
+     'save_cupon'                 => 'Guardar cupón',
+    'save_changes'               => 'Guardar cambios',
+    'nombre_placeholder'         => 'Ingrese el nombre del cupón',
+
+    'Code'                       => 'Código',
+    'codigo'                     => 'Código',
+    'codigo_placeholder'         => 'Ingrese el código del cupón',
+
+    'Expiration_date'            => 'Fecha de caducidad',
+    'fecha_caducidad'            => 'Fecha de caducidad',
+    'fecha_caducidad_placeholder'=> 'Seleccione la fecha de caducidad',
+
+    'Status'                     => 'Estado',
+    'estado'                     => 'Estado',
+    'activo'                     => 'Activo',
+    'inactivo'                   => 'Inactivo',
+    'select_option'              => 'Seleccione una opción',
+
+    'Discount'                   => 'Descuento',
+    'descuento'                  => 'Descuento',
+    'descuento_placeholder'      => 'Ingrese el descuento en %',
+
+    'Amount'                     => 'Cantidad',
+    'cantidad'                   => 'Cantidad',
+    'cantidad_placeholder'       => 'Ingrese la cantidad disponible',
+
+    'References'                 => 'Referencia',
+    'referencia'                 => 'Referencia',
+    'referencia_placeholder'     => 'Ingrese la referencia',
+
+    'sin_referencia'             => 'Sin referencia',
+
+    // Acciones
+    'Actions'                    => 'Acciones',
+    'activate'                   => 'Activar',
+    'deactivate'                 => 'Desactivar',
+    'change_expiration'          => 'Cambiar fecha de caducidad',
+
+    // Confirmaciones
+    'confirm_title'              => '¡Confirmar!',
+    'confirm_delete_coupon'      => '¿Estás seguro de que deseas eliminar este cupón? Esta acción no se puede deshacer.',
+    'confirm_toggle_coupon'      => '¿Quieres cambiar el estado de este cupón?',
+
+    // Mensajes de resultado
+    'saved_ok'                   => 'Cupón guardado correctamente.',
+    'updated_ok'                 => 'Cupón actualizado correctamente.',
+    'deleted_ok'                 => 'Cupón eliminado correctamente.',
+
+   
+
+    // Expiración
+    'leave_empty_no_expiration'  => 'Deje vacío si no desea fecha de vencimiento.'
+
 ];
