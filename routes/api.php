@@ -16,6 +16,7 @@ use App\Http\Controllers\Api\CartController;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Controllers\Api\InvoiceController;
 use App\Http\Controllers\Api\PayoutController;
+use App\Http\Controllers\Api\QrPayoutController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\StudentController;
 use App\Http\Controllers\Api\TutorController;
@@ -28,6 +29,7 @@ use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\BookingStatusController;
 use App\Http\Controllers\Api\GoogleAuthController;
 use App\Http\Controllers\Api\GoogleCalendarController;
+use App\Http\Controllers\Api\UserCouponController;
 
 
 /*
@@ -57,6 +59,34 @@ Route::apiResource('tutor-education',                           EducationControl
 Route::apiResource('tutor-experience',                          ExperienceController::class)->only(['show','store','update','destroy']);
 Route::apiResource('tutor-certification',                       CertificationController::class)->only(['show','store','destroy']);
 Route::apiResource('tutor-subjects',                            UserSubjectController::class)->only(['index','show','store','update','destroy']);
+
+// Rutas adicionales para gestión de materias de tutores
+Route::get('tutor-subjects/groups', [UserSubjectController::class, 'getSubjectGroups']);
+Route::get('tutor-subjects/groups/{groupId}/subjects', [UserSubjectController::class, 'getSubjectsByGroup']);
+Route::get('tutor-subjects/available', [UserSubjectController::class, 'getAvailableSubjects']);
+
+// Ruta para eliminar materia del tutor (eliminar relación user_subject)
+Route::delete('tutor/{tutor_id}/subjects/{subject_id}', [UserSubjectController::class, 'removeTutorSubject']);
+
+// Ruta de prueba para verificar que las rutas API funcionan
+Route::post('test-api', function() {
+    return response()->json([
+        'success' => true,
+        'message' => 'API funcionando correctamente',
+        'timestamp' => now()
+    ]);
+});
+
+// Ruta de prueba para el controlador UserSubjectController
+Route::post('test-controller', [UserSubjectController::class, 'test']);
+
+// Ruta de prueba para simular el store
+Route::post('test-store', [UserSubjectController::class, 'testStore']);
+
+// ===== USER COUPONS ROUTES =====
+Route::get('user-coupons', [UserCouponController::class, 'getUserCoupons']);
+Route::get('user-coupons/{id}', [UserCouponController::class, 'getUserCoupon']);
+Route::put('user-coupons/update-quantity', [UserCouponController::class, 'updateUserCouponQuantity']);
 
 Route::get('countries',                                     [TaxonomiesController::class,'getCountries']);
 Route::get('languages',                                     [TaxonomiesController::class,'getLanguages']);
@@ -128,6 +158,13 @@ Route::get('subjects',                                         [BookingControlle
 Route::get('settings',                                         [OptionBuilderController::class, 'getOpSettings']);
 Route::get('alianzas',                                          [AlianzaController::class, 'index']);
 Route::get('all-subjects', [SubjectController::class, 'index']);
+
+// Rutas para métodos de pago QR (sin autenticación)
+Route::get('qr-payout-methods/{user_id}',                      [QrPayoutController::class,'getQrPayoutMethods']);
+Route::post('qr-payout-methods',                                [QrPayoutController::class,'storeQrPayoutMethod']);
+Route::get('qr-payout-methods/{user_id}/{id}',                  [QrPayoutController::class,'getQrPayoutMethod']);
+Route::post('qr-payout-methods/{user_id}/update',              [QrPayoutController::class,'updateQrPayoutMethod']);
+Route::delete('qr-payout-methods/{user_id}',                   [QrPayoutController::class,'deleteQrPayoutMethod']);
 Route::get('verified-tutors-photos', [\App\Http\Controllers\Api\TutorController::class, 'getVerifiedTutorsPhotos']);
 Route::get('tutor/{id}/instant-slots', [\App\Http\Controllers\Api\TutorController::class, 'getInstantSlots']);
 
@@ -174,15 +211,11 @@ Route::post('user/{id}/profile-files', [ProfileController::class, 'updateUserPro
 // Ruta para actualizar datos del perfil del usuario
 Route::put('user/{id}/profile', [ProfileController::class, 'updateUserProfile']);
 
+// Ruta para actualizar el precio del perfil del usuario
+Route::post('user/{id}/profile-price', [ProfileController::class, 'updateProfilePrice']);
+
 Route::get('subject/{id}/name', [SubjectController::class, 'getSubjectName']);
 
-// Rutas adicionales para gestión de materias de tutores
-Route::get('tutor-subjects/groups', [UserSubjectController::class, 'getSubjectGroups']);
-Route::get('tutor-subjects/groups/{groupId}/subjects', [UserSubjectController::class, 'getSubjectsByGroup']);
-Route::get('tutor-subjects/available', [UserSubjectController::class, 'getAvailableSubjects']);
-
-// Ruta para eliminar materia del tutor (eliminar relación user_subject)
-Route::delete('tutor/{tutor_id}/subjects/{subject_id}', [UserSubjectController::class, 'removeTutorSubject']);
 
 // ===== GOOGLE AUTHENTICATION ROUTES =====
 Route::prefix('auth/google')->group(function () {

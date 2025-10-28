@@ -177,89 +177,6 @@
             </div>
         </div>
 
-        <!-- Estudiantes Tab Content -->
-        <div class="tab-content active" id="estudiantes-content">
-            <div class="preguntas-section">
-                <div class="preguntas-content">
-                    <div class="preguntas-faq">
-                        <div class="faq-item active">
-                            <div class="faq-question" onclick="toggleFaq(this)">
-                                <h3 data-translate="faq_encontrar_tutor"></h3>
-                                <div class="faq-toggle">
-                                    <i class="fa-solid fa-chevron-up"></i>
-                                </div>
-                            </div>
-                            <div class="faq-answer">
-                                <p data-translate="faq_encontrar_tutor_desc"></p>
-                            </div>
-                        </div>
-
-                        <div class="faq-item">
-                            <div class="faq-question" onclick="toggleFaq(this)">
-                                <h3 data-translate="faq_encontrar_tutor_desc"></h3>
-                                <div class="faq-toggle">
-                                    <i class="fa-solid fa-chevron-down"></i>
-                                </div>
-                            </div>
-                            <div class="faq-answer">
-                                <p data-translate="faq_reservar_sesion_desc"></p>
-                            </div>
-                        </div>
-
-                        <div class="faq-item">
-                            <div class="faq-question" onclick="toggleFaq(this)">
-                                <h3 data-translate="faq_cancelar_reprogramar"></h3>
-                                <div class="faq-toggle">
-                                    <i class="fa-solid fa-chevron-down"></i>
-                                </div>
-                            </div>
-                            <div class="faq-answer">
-                                <p data-translate="faq_cancelar_reprogramar_desc"></p>
-                            </div>
-                        </div>
-
-                        <div class="faq-item">
-                            <div class="faq-question" onclick="toggleFaq(this)">
-                                <h3 data-translate="faq_pagos"></h3>
-                                <div class="faq-toggle">
-                                    <i class="fa-solid fa-chevron-down"></i>
-                                </div>
-                            </div>
-                            <div class="faq-answer">
-                                <p data-translate="faq_pagos_desc"></p>
-                            </div>
-                        </div>
-
-                        <div class="faq-item">
-                            <div class="faq-question" onclick="toggleFaq(this)">
-                                <h3 data-translate="faq_tutor_no_presente"></h3>
-                                <div class="faq-toggle">
-                                    <i class="fa-solid fa-chevron-down"></i>
-                                </div>
-                            </div>
-                            <div class="faq-answer">
-                                <p data-translate="faq_tutor_no_presente_desc"></p>
-                            </div>
-                        </div>
-
-                        <div class="faq-item">
-                            <div class="faq-question" onclick="toggleFaq(this)">
-                                <h3 data-translate="faq_comentarios_tutor"></h3>
-                                <div class="faq-toggle">
-                                    <i class="fa-solid fa-chevron-down"></i>
-                                </div>
-                            </div>
-                            <div class="faq-answer">
-                                <p data-translate="faq_comentarios_tutor_desc"></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="preguntas-image">
-                        <img src="{{ asset('images/home/TugoUniversitario.webp') }}" alt="Estudiante con preguntas">
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </section>
 
@@ -311,4 +228,5 @@
         }
     }
 </script>
+
 @endsection

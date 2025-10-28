@@ -300,9 +300,10 @@
     .tutor-grid-buscar {
         display: grid;
         grid-template-columns: repeat(1, minmax(0, 1fr));
-        gap: 1.5rem;
-        padding: 0 3rem 3rem 3em;
+        gap: 1rem;
+        padding: 0 9rem 3rem 9em;
     }
+    
     
     .loading-indicator {
         max-width: 1200px;
@@ -373,12 +374,11 @@
     }
     
     .card-tutor__price {
+        text-align: end;
         font-size: 1rem;
-        /* text-md */
         font-weight: 600;
-        /* font-semibold */
         color: var(--primary-color);
-        /* text-green-600 */
+
     }
     
     .card-tutor__price-duration {
@@ -401,50 +401,65 @@
         /* items-center */
         justify-content: space-between;
         /* justify-between */
-    }
-    
-    .card-tutor__tags {
-        /* Truncamiento clásico, pero dentro de un flex container para el botón */
-        color: #6B7280;
-        font-size: 0.75rem;
-        font-weight: 600;
-        /* Configuración para forzar una línea y limitar el ancho */
-        white-space: nowrap;
         overflow: hidden;
-        /* Quité el text-overflow: ellipsis para que el botón lo reemplace */
-        /* Permite que el contenedor de tags tome el espacio restante antes del botón */
-        flex-grow: 1;
-        margin-right: 0.5rem;
-        /* Espacio antes del botón */
+        position: relative;
+        width: 100%;
+        /* Limitar el ancho para mostrar solo una materia */
     }
     
-    .tags-more-btn {
-        /* Estilo del botón "+ Ver más" */
-        font-size: 0.75rem;
-        /* text-xs */
-        font-weight: 600;
-        /* font-semibold */
-        color: #2563EB;
-        /* text-blue-600 */
-        background: none;
-        border: none;
-        cursor: pointer;
+    /* Contenedor específico para los tags con ancho limitado */
+    .card-tutor__tags-container {
+        width: 280px; /* Ancho para mostrar aproximadamente 3 tags */
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        position: relative;
+    }
+    
+    /* Efecto carrusel para los tags con fondo */
+    .card-tutor__tags {
+        display: flex;
+        align-items: center;
         white-space: nowrap;
-        /* Asegura que el botón no se rompa */
-        padding: 0;
-        transition: color 0.2s ease;
+        animation: scroll-tags-carousel 12s linear infinite;
+        animation-play-state: paused;
+        transition: transform 0.3s ease;
     }
     
-    .tags-more-btn:hover {
-        color: #1E40AF;
-        /* hover:text-blue-800 */
+    /* Activar animación al hacer hover en la card */
+    .card-tutor:hover .card-tutor__tags {
+        animation-play-state: running;
     }
-    /* Estilos de los tags (mantener espaciado simple) */
     
+    @keyframes scroll-tags-carousel {
+    0% {
+        transform: translateX(0);
+    }
+    10% {
+        transform: translateX(0);
+    }
+    50% {
+        transform: translateX(-120px); /* Desplazar para mostrar los siguientes 3 tags */
+    }
+    75% {
+        transform: translateX(-120px);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
     .tag {
         /* Asegura que los tags tengan espacio entre sí */
         margin-right: 0.25rem;
         /* ml-1 convertido a margin-right */
+        white-space: nowrap;
+        /* Evita que el texto del tag se rompa */
+        flex-shrink: 0;
+        /* Evita que los tags se compriman */
+        min-width: 80px;
+        /* Ancho mínimo para consistencia */
+        text-align: center;
     }
     
     .tag--blue {
@@ -567,37 +582,72 @@
         white-space: nowrap;
     }
     
-    .detail-panel__footer {
-        /* mt-auto pt-2 */
-        margin-top: auto;
-        padding-top: 0.5rem;
-    }
+    /* ======================================================= */
+/* VARIABLES DE DISEÑO */
+/* ======================================================= */
+:root {
+    --color-white: #FFFFFF;
+    --color-yellow-400: #FBBF24;
+    --color-text: #1F2937; /* Asumiendo un color oscuro para el texto */
+}
+
+/* ======================================================= */
+/* I. WRAPPER Y POSICIONAMIENTO */
+/* ======================================================= */
+
+.rating-info-wrapper {
+    /* mt-auto pt-2 (Se asume que va dentro de un flex container vertical) */
+    margin-top: auto; /* Empuja el elemento hacia abajo */
     
-    .detail-panel__review-box {
-        /* bg-white/10 rounded-lg p-2 text-center */
-        background-color: rgba(255, 255, 255, 0.1);
-        border-radius: 0.5rem;
-        padding: 0.5rem;
-        text-align: center;
-    }
+}
+
+/* ======================================================= */
+/* II. BLOQUE PRINCIPAL DE RATING */
+/* ======================================================= */
+
+.rating-info {
+    /* bg-white/10 rounded-lg p-2 text-center */
     
-    .detail-panel__review-content {
-        /* flex items-center justify-center text-sm font-semibold */
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 0.875rem;
-        font-weight: 600;
-    }
+    /* bg-white/10 (Fondo blanco con 10% de opacidad) */
+    background-color: rgba(255, 255, 255, 0.1); 
     
-    .star-icon {
-        /* w-5 h-5 text-yellow-400 mr-1 */
-        width: 1.25rem;
-        height: 1.25rem;
-        color: #F59E0B;
-        /* yellow-400 */
-        margin-right: 0.25rem;
-    }
+    border-radius: 0.5rem; /* rounded-lg */
+    padding: 0.5rem; /* p-2 */
+    text-align: center; /* text-center */
+    
+    /* Color de texto por defecto (asumimos que está sobre un fondo oscuro, por eso el texto no se especificó y usaremos blanco para que contraste con el fondo base del contenedor) */
+    color: var(--color-white); 
+}
+
+.rating-info__content {
+    /* flex items-center justify-center text-sm font-semibold */
+    display: flex;
+    align-items: center; /* items-center */
+    justify-content: center; /* justify-center */
+    
+    font-size: 0.875rem; /* text-sm */
+    font-weight: 600; /* font-semibold */
+}
+
+/* ======================================================= */
+/* III. ESTRELLA Y TEXTO */
+/* ======================================================= */
+
+.rating-info__star {
+    /* w-5 h-5 text-yellow-400 mr-1 */
+    width: 1.25rem; /* w-5 */
+    height: 1.25rem; /* h-5 */
+    color: var(--color-yellow-400); /* text-yellow-400 */
+    margin-right: 0.25rem; /* mr-1 */
+    
+    /* Asegurar que el SVG se muestre correctamente */
+    flex-shrink: 0;
+}
+
+.rating-info__text {
+    /* Asegurar que el texto sea blanco o un color claro para el contraste */
+    color: inherit; /* Hereda el color del padre (que se definió como blanco en .rating-info) */
+}
     /*=======================================================*/
     /*---- Card tutor-----*/
     
@@ -628,6 +678,7 @@
         display: flex;
         align-items: center;
         gap: 1rem;
+        justify-content: space-between  ;
     }
     
     .card-tutor__avatar {
@@ -637,8 +688,11 @@
     }
     
     .card-tutor__name {
-        font-size: 1.25rem;
+        text-align: end;
+        font-size: 1.3rem;
         font-weight: 700;
+        line-height: 24px;
+
     }
     
     .card-tutor__review-count {
@@ -649,20 +703,21 @@
     }
     
     .card-tutor__tags {
-        color: #6B7280;
         /* gray-500 */
         margin-top: 1rem;
-        font-size: 0.75rem;
+        font-size: 0.70rem;
         font-weight: 600;
-        /* Nuevas propiedades clave para truncar el contenido */
+        /* Configuración para el carrusel */
+        display: flex;
+        align-items: center;
         white-space: nowrap;
-        /* 1. Fuerza que todo el contenido (los <span>) se quede en una sola línea */
-        overflow: hidden;
-        /* 2. Oculta todo lo que sobrepase el ancho del contenedor */
-        text-overflow: ellipsis;
-        /* 3. Reemplaza el contenido cortado con puntos suspensivos (...) */
+        animation: scroll-tags-carousel 12s linear infinite;
+        animation-play-state: paused;
+        transition: transform 0.3s ease;
+        justify-content: center;
+        /* Centra los tags cuando no hay animación */
     }
-    
+
     .tag {
         display: inline-block;
         border-radius: 9999px;
@@ -698,11 +753,13 @@
         background-color: #F9FAFB;
         /* gray-50 */
         padding: 0.75rem 1.5rem;
+        display: flex;
+        flex-flow: row nowrap;
     }
     
-    .card-tutor__button {
+    .card-tutor__button{
         width: 100%;
-        background: var(--tertiary-color2);
+        background: var(--primary-color);
         /* blue-500 */
         color: white;
         font-weight: 700;
@@ -713,6 +770,20 @@
         border: none;
         cursor: pointer;
     }
+    .card-tutor__button-materias{
+        width: 100%;
+        /* blue-500 */
+        color: var(--primary-color);
+        font-weight: 700;
+        padding: 0.625rem 1rem;
+        border-radius: 0.5rem;
+        transition: background-color 0.2s ease;
+        font-size: 1rem;
+        border: none;
+        cursor: pointer;
+
+    }
+    
     
     .card-tutor__button:hover {
         background: var(--secundary-color);
@@ -877,7 +948,7 @@
         }
         .buscar-header-content {
             padding: 0rem;
-            min-height: 80vh;
+            min-height: 100vh;
         }
         .main-border {
             border-top-left-radius: 2rem;
@@ -910,6 +981,13 @@
         .cta-card__title {
             line-height: 40px;
             padding-top: 2rem;
+        }
+        .tutor-grid-buscar {
+            padding: 0 2rem 3rem 2em;
+            gap: 2rem;
+        }
+        .card-tutor__header{
+            justify-content: start;
         }
     }
     /* Vista de Móvil Grande / Tablet Pequeña (sm: ~ 640px) */
@@ -982,7 +1060,113 @@
             /* lg:px-8 */
         }
         .tutor-grid-buscar {
-            grid-template-columns: repeat(4, minmax(0, 1fr));
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 2.4rem;
             /* 4 columnas en desktop */
         }
+    }
+
+    @media(min-width: 1920px){
+        .tutor-grid-buscar{
+            padding: 2rem 15rem;
+        }
+    }
+
+    /* Mejoras para animaciones en mobile */
+@media (max-width: 768px) {
+    .card-tutor--interactive {
+        transform-style: preserve-3d;
+        backface-visibility: hidden;
+    }
+    
+    .card-tutor__primary-content,
+    .card-tutor__detail-panel {
+        transform: translateZ(0);
+        will-change: transform, opacity;
+        -webkit-transform: translateZ(0);
+        -webkit-backface-visibility: hidden;
+    }
+    
+    .tags-more-btn,
+    .detail-panel__close-btn {
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+        min-height: 48px;
+        min-width: 48px;
+        cursor: pointer;
+        user-select: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        position: relative;
+        z-index: 10;
+        transition: all 0.2s ease;
+    }
+    
+    .tags-more-btn:active,
+    .detail-panel__close-btn:active {
+        transform: scale(0.95);
+    }
+    
+    .card-tutor__detail-panel {
+        position: relative;
+        z-index: 5;
+        overflow: hidden;
+    }
+    
+    /* Fuerza aceleración por hardware */
+    .card-tutor--interactive * {
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+    }
+}
+
+    /* Animaciones más suaves globalmente */
+    .transition-all {
+        transition-property: all;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .ease-out {
+        transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    }
+
+    .ease-in {
+        transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
+    }
+
+    .duration-300 {
+        transition-duration: 300ms;
+    }
+
+    .duration-200 {
+        transition-duration: 200ms;
+    }
+
+    .transform {
+        --tw-translate-x: 0;
+        --tw-translate-y: 0;
+        --tw-rotate: 0;
+        --tw-skew-x: 0;
+        --tw-skew-y: 0;
+        --tw-scale-x: 1;
+        --tw-scale-y: 1;
+        transform: translateX(var(--tw-translate-x)) translateY(var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+    }
+
+    .translate-y-4 {
+        --tw-translate-y: 1rem;
+    }
+
+    .translate-y-0 {
+        --tw-translate-y: 0px;
+    }
+
+    .scale-95 {
+        --tw-scale-x: .95;
+        --tw-scale-y: .95;
+    }
+
+    .scale-100 {
+        --tw-scale-x: 1;
+        --tw-scale-y: 1;
     }
