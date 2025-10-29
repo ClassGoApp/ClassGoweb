@@ -2,7 +2,9 @@
     @if(auth()->user()->hasRole('tutor')) <!--Si es tutor-->
         @include('components.floating-button.tutor')
     @elseif(auth()->user()->hasRole('student')) <!--Si es estudiante-->
-        @include('components.floating-button.student')
+        {{-- @include('components.floating-button.student') --}}
+        @include('components.floating-button.guest') <!--NO autenticado-->
+
     @else
         @include('components.floating-button.guest') <!--NO autenticado-->
     @endif
