@@ -33,7 +33,7 @@
 
 
 <body class="@yield('body-class')">
-    @include('vistas.view.components.navbar')
+    @include('vistas.view.partials.navbar')
     <main>
         @hasSection('content')
             @yield('content')
@@ -45,7 +45,7 @@
     </main>
 
         
-        @include('vistas.view.components.footer')
+        @include('vistas.view.partials.footer')
     
         @livewireScripts
         {{-- <script src="//unpkg.com/alpinejs" defer></script> --}}
