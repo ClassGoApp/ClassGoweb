@@ -75,24 +75,15 @@
 
         <div id="resenas" class="tutor-tab-content hidden">
             <h3 class="tutor-section-title" style="margin-bottom: 1.5rem;">Reseñas de estudiantes</h3>
-            <!-- Resumen de calificación -->
-            @include('vistas.view.pages.components.perfil-tutor.rating-stars', [
-                'avgRating' => $avgRating,
-                'totalReviews' => $totalReviews,
-                'ratingDistribution' => $ratingDistribution
-            ])
 
             <!--CONTENIDO DE COMENTARIOS Y CALIFICACIONES-->
             @include('vistas.view.pages.components.perfil-tutor.coments', [
                 'tutor' => $tutor,
-                'reviews' => $reviews
+                'reviews' => $reviews,
+                'avgRating' => $avgRating,
+                'totalReviews' => $totalReviews,
+                'ratingDistribution' => $ratingDistribution
             ])
-
-            {{-- <div class="tutor-empty-box tutor-reviews-empty" style="text-align:center;margin-top:2rem;padding-top:2rem;border-top:1px solid #e0e0e0;">
-                <div class="am-norecord">
-                    @include('livewire.components.no-record')
-                </div>
-            </div> --}}
         </div>
     </div>
 </div>

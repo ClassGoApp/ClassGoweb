@@ -41,10 +41,13 @@
             {{ $slot ?? '' }}
         @endif
 
-        @include('components.floating-button.index')
+        {{-- Solo mostrar floating button si NO estamos en la vista del tutor --}}
+        @unless(request()->routeIs('tutor') || request()->is('tutores/*'))
+            @include('components.floating-button.index')
+        @endunless
+
     </main>
 
-        
         @include('vistas.view.partials.footer')
     
         @livewireScripts

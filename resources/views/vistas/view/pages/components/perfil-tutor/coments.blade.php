@@ -1,5 +1,14 @@
-<div class="review-section-wrapper">                       
-    @role('student')
+<div class="review-section-wrapper">   
+    
+    @livewire('tutor-reviews', [
+        'tutor' => $tutor, 
+        'reviews' => $reviews,
+        'avgRating' => $avgRating ?? 0,
+        'totalReviews' => $totalReviews ?? 0,
+        'ratingDistribution' => $ratingDistribution ?? []
+    ])
+
+    {{-- @role('student')
         <div class="review-form-container">
             <h2 class="review-form__title">Deja tu reseña</h2>
             
@@ -74,5 +83,6 @@
                 </div>
             </div>
         @endforelse
-    </div>
+    </div> --}}
+
 </div>

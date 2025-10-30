@@ -25,7 +25,7 @@
 
                 ])
             </div>
-            
+
             <!-- Columna Derecha (Acciones) -->
             <div class="tutor-col tutor-col-actions">
                 @include('vistas.view.pages.components.perfil-tutor.actions', [
@@ -35,9 +35,6 @@
         </div>
 
     </main>
-
-    
-
 
     <script>
         //Para los botones de favoritos
@@ -299,112 +296,6 @@
                 }
             });
         });
-
-        //===================== Modal para reserva ===================
-        // document.addEventListener('DOMContentLoaded', () => {
-        //     // --- Selección de Elementos del DOM ---
-        //     const openModalBtn = document.getElementById('openModalBtn');
-        //     const reservationModal = document.getElementById('reservationModal');
-        //     const modalContent = document.getElementById('modalContent');
-        //     const cancelBtn = document.getElementById('cancelBtn');
-        //     const body = document.body; // Seleccionamos el body para manipularlo
-
-        //     // Elementos del formulario
-        //     const fileInput = document.getElementById('comprobante');
-        //     const fileNameDisplay = document.getElementById('fileName');
-        //     const dateSpan = document.getElementById('currentDate');
-        //     const timeSpan = document.getElementById('currentTime');
-
-        //     // --- Funciones ---
-
-        //     /**
-        //      * Actualiza la fecha y la hora en el modal.
-        //      */
-        //     const updateDateTime = () => {
-        //         const now = new Date();
-        //         const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
-        //         // He ajustado las opciones de hora para usar la de Santa Cruz, Bolivia (GMT-4)
-        //         const timeOptions = { hour: '2-digit', minute: '2-digit', hour12: true, timeZone: 'America/La_Paz' };
-                
-        //         // Usamos 'es-BO' para el formato de Bolivia
-        //         dateSpan.textContent = now.toLocaleDateString('es-BO', dateOptions);
-        //         timeSpan.textContent = now.toLocaleTimeString('es-BO', timeOptions);
-        //     };
-
-        //     /**
-        //      * Abre el modal y bloquea el scroll del fondo.
-        //      */
-        //     const openModal = () => {
-        //         updateDateTime(); // Actualiza la fecha y hora
-
-        //         // 1. Calcula el ancho de la barra de scroll
-        //         const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
-
-        //         // 2. Aplica el padding-right al body para compensar el espacio de la barra
-        //         body.style.paddingRight = `${scrollbarWidth}px`;
-
-        //         // 3. Añade la clase que oculta el overflow (bloquea el scroll)
-        //         body.classList.add('modal-open');
-                
-        //         // 4. Muestra el modal
-        //         reservationModal.classList.add('is-visible');
-        //     };
-
-        //     /**
-        //      * Cierra el modal y restaura el scroll del fondo.
-        //      */
-        //     const closeModal = () => {
-        //         // 1. Oculta el modal
-        //         reservationModal.classList.remove('is-visible');
-
-        //         // 2. Elimina la clase que bloquea el scroll
-        //         body.classList.remove('modal-open');
-                
-        //         // 3. Restaura el padding-right del body a su estado original
-        //         body.style.paddingRight = '';
-        //     };
-
-        //     /**
-        //      * Actualiza el nombre del archivo seleccionado.
-        //      */
-        //     const handleFileChange = (event) => {
-        //         const file = event.target.files[0];
-        //         if (file) {
-        //             fileNameDisplay.textContent = file.name;
-        //         } else {
-        //             fileNameDisplay.textContent = 'Ningún archivo seleccionado';
-        //         }
-        //     };
-
-        //     // --- Asignación de Eventos (sin cambios aquí) ---
-
-        //     if (openModalBtn) {
-        //         openModalBtn.addEventListener('click', openModal);
-        //     }
-            
-        //     if (cancelBtn) {
-        //         cancelBtn.addEventListener('click', closeModal);
-        //     }
-
-        //     if (reservationModal) {
-        //         reservationModal.addEventListener('click', (event) => {
-        //             if (event.target === reservationModal) {
-        //                 closeModal();
-        //             }
-        //         });
-        //     }
-
-        //     document.addEventListener('keydown', (event) => {
-        //         if (event.key === 'Escape' && reservationModal.classList.contains('is-visible')) {
-        //             closeModal();
-        //         }
-        //     });
-
-        //     if (fileInput) {
-        //         fileInput.addEventListener('change', handleFileChange);
-        //     }
-        // });
-
 
     document.addEventListener('livewire:initialized', () => {
         // --- Selección de Elementos del DOM ---
