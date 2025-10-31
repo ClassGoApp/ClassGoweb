@@ -29,6 +29,7 @@
     --bg-gradient2: linear-gradient(135deg, #023047 0%, #219EBC 100%);
     --bg-gradient3: linear-gradient(135deg, #219EBC 0%, #023047 100%);
     --bg-gradient4: linear-gradient(180deg, rgb(16, 90, 109) 64%, rgb(37, 119, 146) 77%, rgba(7, 59, 76, 1) 100%);
+    --bg-gradient5: linear-gradient(90deg,rgba(14, 94, 121, 1) 9%, rgba(9, 74, 99, 1) 94%);
     /**-------FUENTES------*/
     --h1: 2.3rem;
     --h1-regular: 1rem;

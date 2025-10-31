@@ -11,26 +11,17 @@
 
             <!-- 1.1 Hero Titular -->
             <div class="hero-text fade-left">
+                
                 <h1 class="hero-title-arriba" data-translate="learn"></h1>
                 <h1 class="hero-title-abajo" data-translate="tutoring"></h1>
                 <p class="hero-subtext" data-translate="reach_goals">
                 </p>
-                
 
-                <!-- 1.2 Buscador -->
-                {{-- <div class="search-box">
-                    <input type="text" placeholder="Buscar tutor...">
-                    <button>
-                        <i class="fa-solid fa-magnifying-glass icon-search"></i>
-                    </button>
-                </div> --}}
                 <div class="buscador-home">
                     @livewire('buscador-tutor')
                 </div>
 
-
                 <!-- 1.3 Botones-->
-
                 <div class="hero-buttons">
                     @guest
                     <a href=" {{ route('buscar')}}"><button class="button-explorar-tutores"><i class="fa-solid fa-compass"></i><span data-translate="tutores"></span></button></a>
@@ -42,42 +33,36 @@
                     <a href=" {{ route('buscar')}}"><button class="button-explorar-tutores"><i class="fa-solid fa-compass"></i> <span data-translate="buscar_tutor"></span> </button></a>
                     <a href="https://play.google.com/store/apps/details?id=com.neurasoft.classgo" target="_blank"><button class="button-explorar-tutores"><i class="fa-solid fa-mobile"></i> <span data-translate="nuestra_app"></span> </button></a>
                     @endauth
-
                 </div>
-
             </div>
 
             <!-- 1.4 Hero Mascota -->
-
             <img src="{{ asset(path: 'storage/optionbuilder/uploads/740102-17-2025_0859pmTugo-saludando.gif') }}" alt="Mascota ClassGo">
-
-
-
         </div>
     </div>
 
 
     <!-- CONTADORES INFO -->
-    <div class="info-container fade-up" id="logros">
+    <div class="info-container " id="logros">
         <!-- CONTADORES -->
         <div class="counters">
             <div class="counter-box">
-                <div class="counter-number" data-target="{{ $totalUsers }}">+0</div>
+                <div class="counter-number fade-up" data-target="{{ $totalUsers }}">+0</div>
                 <h1 class="{{ $color ?? 'text-dark' }}"><span data-translate="us_check"></span></h1>
             </div>
-            <div class="box-sky"></div>
+            <div class="box-sky fade-up"></div>
             <div class="counter-box">
-                <div class="counter-number" data-target="{{ $totalTutores }}">+0</div>
+                <div class="counter-number fade-up" data-target="{{ $totalTutores }}">+0</div>
                 <h1 class="{{ $color ?? 'text-dark' }}"><span data-translate="tutor_ok"></span></h1>
             </div>
-            <div class="box-sky"></div>
+            <div class="box-sky fade-up"></div>
             <div class="counter-box">
-                <div class="counter-number" data-target="{{ $totalEstudiantes }}">0</div>
+                <div class="counter-number fade-up" data-target="{{ $totalEstudiantes }}">0</div>
                 <h1 class="{{ $color ?? 'text-dark' }}"><span data-translate="est_check"></span></h1>
             </div>
-            <div class="box-sky"></div>
+            <div class="box-sky fade-up"></div>
             <div class="counter-box">
-                <div class="counter-numbe"><i class="fa fa-star"></i>4.5</div>
+                <div class="counter-numbe fade-up"><i class="fa fa-star"></i>4.5</div>
                 <h1 class="{{ $color ?? 'text-dark' }}"><span data-translate="play_s"></span></h1>
             </div>
         </div>
@@ -94,8 +79,6 @@
     </h1>
     <h1 class ="tutor ideal" data-translate="selected_tutors"></h1>
     <p data-translate="academic_variety"></p>
-
-
 
     <div class="carousel-container">
         <button id="prevBtn" class="carousel-btn prev-btn" aria-label="Anterior">&lt;</button>
@@ -356,63 +339,186 @@
 </section>
 
 <script>
-//-----Animaciones al hacer scroll section  
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('show');
-      }
+document.addEventListener('DOMContentLoaded', function() {
+    'use strict';
+
+    // ===========================
+    // 1. ANIMACIONES AL HACER SCROLL
+    // ===========================
+    const scrollObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('show');
+            }
+        });
+    }, { threshold: 0.2 });
+
+    // Observar elementos con clases de animación
+    document.querySelectorAll('.fade-up, .fade-left, .fade-right').forEach(el => {
+        scrollObserver.observe(el);
     });
-  }, { threshold: 0.2 }); // 0.2 = cuando el 20% del div esté visible
 
-  document.querySelectorAll('.fade-up, .fade-left, .fade-righ').forEach(el => observer.observe(el));
-</script>
+    // ===========================
+    // 2. CARRUSEL 3D
+    // ===========================
+    const initCarousel3D = () => {
+        const imgContainer = document.querySelector(".img-container-3D");
+        
+        if (imgContainer && imgContainer.children.length > 0) {
+            setInterval(() => {
+                const first = imgContainer.firstElementChild;
+                if (first) {
+                    imgContainer.appendChild(first);
+                }
+            }, 1500);
+        }
+    };
 
-<script>
-//-----Carrusel 3D
-    const imgContainer = document.querySelector(".img-container-3D");
+    // ===========================
+    // 3. ANIMACIÓN TEXTO-ANIMADO
+    // ===========================
+    const initTextAnimation = () => {
+        const textos = document.querySelectorAll('.texto-animado');
 
-setInterval(() => {
-  const first = imgContainer.firstElementChild;
-  imgContainer.appendChild(first);
-}, 1500);
+        if (textos.length > 0) {
+            const textObserver = new IntersectionObserver((entradas) => {
+                entradas.forEach((entrada) => {
+                    if (entrada.isIntersecting) {
+                        entrada.target.classList.add('visible');
+                        textObserver.unobserve(entrada.target);
+                    }
+                });
+            });
 
+            textos.forEach((texto) => textObserver.observe(texto));
+        }
+    };
 
-</script>
-<script>
-    //---salto
-const textos = document.querySelectorAll('.texto-animado');
+    // ===========================
+    // 4. CARRUSEL DE TUTORES
+    // ===========================
+    const initTutorCarousel = () => {
+        const track = document.getElementById('carouselTrack');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
 
-const observer = new IntersectionObserver((entradas) => {
-  entradas.forEach((entrada) => {
-    if (entrada.isIntersecting) {
-      entrada.target.classList.add('visible');
-      // Si quieres que solo salte una vez:
-      observer.unobserve(entrada.target);
-    }
-  });
-});
+        // Verificar que los elementos existen
+        if (!track || !prevBtn || !nextBtn || track.children.length === 0) {
+            console.warn('Elementos del carrusel de tutores no encontrados');
+            return;
+        }
 
-textos.forEach((texto) => observer.observe(texto));
+        // Variables del carrusel
+        const getCardsPerView = () => window.innerWidth > 768 ? 3 : 1;
+        let cardsPerView = getCardsPerView();
+        let cardIndex = 0;
 
-</script>
+        const updateButtons = () => {
+            prevBtn.disabled = cardIndex <= 0;
+            nextBtn.disabled = cardIndex >= (track.children.length - cardsPerView);
+        };
 
+        const moveToSlide = (index) => {
+            if (track.children.length === 0) return;
+            
+            const cardWidth = track.children[0].offsetWidth;
+            const offset = -index * (cardWidth + 20);
+            track.style.transform = `translateX(${offset}px)`;
+            updateButtons();
+        };
 
+        // Event listeners
+        nextBtn.addEventListener('click', () => {
+            cardIndex += cardsPerView;
+            if (cardIndex > track.children.length - cardsPerView) {
+                cardIndex = track.children.length - cardsPerView;
+            }
+            moveToSlide(cardIndex);
+        });
 
+        prevBtn.addEventListener('click', () => {
+            cardIndex -= cardsPerView;
+            if (cardIndex < 0) {
+                cardIndex = 0;
+            }
+            moveToSlide(cardIndex);
+        });
 
+        // Redimensionamiento de ventana
+        window.addEventListener('resize', () => {
+            cardsPerView = getCardsPerView();
+            cardIndex = 0;
+            moveToSlide(cardIndex);
+        });
 
+        // Inicializar
+        moveToSlide(cardIndex);
+    };
 
-<script>
-    //-----Carrusel de Alianzas
-    document.addEventListener('DOMContentLoaded', function() {
+    // ===========================
+    // 5. CONTADORES DE USUARIOS
+    // ===========================
+    const initCounters = () => {
+        const counters = document.querySelectorAll('.counter-number');
+
+        if (counters.length === 0) return;
+
+        const animateCounter = (el) => {
+            const target = +el.getAttribute('data-target');
+            const isDecimal = el.getAttribute('data-decimal') === 'true';
+            let count = 0;
+            const step = isDecimal ? 0.1 : Math.ceil(target / 100);
+
+            const updateCounter = () => {
+                count += step;
+                if (count < target) {
+                    el.innerHTML = isDecimal ? 
+                        `<i class="fa fa-star"></i> ${count.toFixed(1)}` : 
+                        `+${Math.floor(count)}`;
+                    requestAnimationFrame(updateCounter);
+                } else {
+                    el.innerHTML = isDecimal ? 
+                        `<i class="fa fa-star"></i> ${target.toFixed(1)}` : 
+                        `+${target}`;
+                }
+            };
+
+            updateCounter();
+        };
+
+        const counterObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCounter(entry.target);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.6
+        });
+
+        counters.forEach(counter => counterObserver.observe(counter));
+    };
+
+    // ===========================
+    // 6. CARRUSEL DE ALIANZAS (OPCIONAL)
+    // ===========================
+    const initAllianceCarousel = () => {
         const track = document.getElementById('client-carousel-track');
         const dotsContainer = document.getElementById('client-pagination-dots');
-        const slides = Array.from(track.children);
-        const dots = Array.from(dotsContainer.children);
         const nextButton = document.getElementById('client-next-button');
         const prevButton = document.getElementById('client-prev-button');
 
-        // Mueve la lógica del carrusel aquí
+        // Solo ejecutar si los elementos existen (para páginas que lo tienen)
+        if (!track || !nextButton || !prevButton) {
+            return; // Salir silenciosamente si no existe
+        }
+
+        const slides = Array.from(track.children);
+        const dots = dotsContainer ? Array.from(dotsContainer.children) : [];
+
+        if (slides.length === 0) return;
+
         const getSlidesPerView = () => {
             if (window.innerWidth >= 1024) return 3;
             if (window.innerWidth >= 768) return 2;
@@ -442,13 +548,15 @@ textos.forEach((texto) => observer.observe(texto));
             const slideWidth = slides[0].offsetWidth;
             track.style.transform = 'translateX(' + (-slideWidth * currentIndex) + 'px)';
 
-            // Actualizar puntos de paginación
-            dots.forEach((dot, index) => {
-                dot.classList.remove('active');
-                if (index === currentIndex) {
-                    dot.classList.add('active');
-                }
-            });
+            // Actualizar puntos si existen
+            if (dots.length > 0) {
+                dots.forEach((dot, index) => {
+                    dot.classList.remove('active');
+                    if (index === currentIndex) {
+                        dot.classList.add('active');
+                    }
+                });
+            }
         };
 
         const startInterval = () => {
@@ -462,6 +570,7 @@ textos.forEach((texto) => observer.observe(texto));
             startInterval();
         };
 
+        // Event listeners
         nextButton.addEventListener('click', () => {
             goToSlide(currentIndex + 1);
             resetInterval();
@@ -472,7 +581,7 @@ textos.forEach((texto) => observer.observe(texto));
             resetInterval();
         });
 
-        // Event listeners para los puntos de paginación
+        // Puntos de paginación
         dots.forEach((dot, index) => {
             dot.addEventListener('click', () => {
                 goToSlide(index);
@@ -480,8 +589,8 @@ textos.forEach((texto) => observer.observe(texto));
             });
         });
 
+        // Redimensionamiento
         window.addEventListener('resize', () => {
-            // Al redimensionar, recalcular todo y mantener en la misma posición relativa
             const newSlidesPerView = getSlidesPerView();
             const maxIndex = slides.length - newSlidesPerView;
             if (currentIndex > maxIndex) {
@@ -490,98 +599,42 @@ textos.forEach((texto) => observer.observe(texto));
             updateCarousel();
         });
 
-        // Inicializar carrusel
+        // Inicializar
         updateCarousel();
         startInterval();
-    });
+    };
 
-    document.addEventListener('DOMContentLoaded', () => {
-        const track = document.getElementById('carouselTrack');
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
+    // ===========================
+    // 7. INICIALIZACIÓN PRINCIPAL
+    // ===========================
+    try {
+        // Ejecutar todas las inicializaciones
+        initCarousel3D();
+        initTextAnimation();
+        initTutorCarousel();
+        initCounters();
+        initAllianceCarousel();
+        
+        console.log('✅ Scripts de Home inicializados correctamente');
+    } catch (error) {
+        console.error('❌ Error al inicializar scripts:', error);
+    }
 
-        // Calcula la cantidad de tarjetas visibles en desktop
-        const getCardsPerView = () => window.innerWidth > 768 ? 3 : 1;
-        let cardsPerView = getCardsPerView();
-        let cardIndex = 0;
-
-        const updateButtons = () => {
-            prevBtn.disabled = cardIndex <= 0;
-            nextBtn.disabled = cardIndex >= (track.children.length - cardsPerView);
-        };
-
-        const moveToSlide = (index) => {
-            const cardWidth = track.children[0].offsetWidth;
-            const offset = -index * (cardWidth + 20); // 20px para el margen
-            track.style.transform = `translateX(${offset}px)`;
-            updateButtons();
-        };
-
-        nextBtn.addEventListener('click', () => {
-            cardIndex += cardsPerView;
-            if (cardIndex > track.children.length - cardsPerView) {
-                cardIndex = track.children.length - cardsPerView;
-            }
-            moveToSlide(cardIndex);
+    // ===========================
+    // 8. COMPATIBILIDAD CON LIVEWIRE
+    // ===========================
+    // Si estás usando Livewire, reinicializar cuando se actualice
+    if (typeof Livewire !== 'undefined') {
+        Livewire.hook('message.processed', () => {
+            // Reinicializar solo lo necesario después de updates de Livewire
+            initTutorCarousel();
+            initCounters();
         });
-
-        prevBtn.addEventListener('click', () => {
-            cardIndex -= cardsPerView;
-            if (cardIndex < 0) {
-                cardIndex = 0;
-            }
-            moveToSlide(cardIndex);
-        });
-
-        // Maneja el redimensionamiento de la ventana
-        window.addEventListener('resize', () => {
-            cardsPerView = getCardsPerView();
-            cardIndex = 0; // Resetea el carrusel
-            moveToSlide(cardIndex);
-        });
-
-        // Inicializa el carrusel
-        moveToSlide(cardIndex);
-    });
-
-
-    //Contadores de usuarios
-    document.addEventListener("DOMContentLoaded", () => {
-        const counters = document.querySelectorAll('.counter-number');
-
-        const animateCounter = (el) => {
-            const target = +el.getAttribute('data-target');
-            const isDecimal = el.getAttribute('data-decimal') === 'true';
-            let count = 0;
-            const step = isDecimal ? 0.1 : Math.ceil(target / 100);
-
-            const updateCounter = () => {
-                count += step;
-                if (count < target) {
-                    el.innerHTML = isDecimal ? `<i class="fa fa-star"></i> ${count.toFixed(1)}` : `+${Math.floor(count)}`;
-                    requestAnimationFrame(updateCounter);
-                } else {
-                    el.innerHTML = isDecimal ? `<i class="fa fa-star"></i> ${target.toFixed(1)}` : `+${target}`;
-                }
-            };
-
-            updateCounter();
-        };
-
-        const observer = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    animateCounter(entry.target);
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, {
-            threshold: 0.6
-        });
-
-        counters.forEach(counter => observer.observe(counter));
-    });
+    }
+});
 </script>
-<script src="{{ asset('js/translations.js') }}"></script>
+
+
+
 
 @endsection
