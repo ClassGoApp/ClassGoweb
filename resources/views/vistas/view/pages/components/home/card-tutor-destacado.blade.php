@@ -71,7 +71,7 @@
     flex-flow: row wrap;
     justify-content: center;
     gap: 1.3rem;
-    padding: 1rem;
+    padding: 1rem 5rem;
 }
 
 .profile-card {
@@ -80,7 +80,7 @@
     border-radius: 2rem; /* rounded-xl (asumo 1rem) */
     overflow: hidden; /* Importante para que la imagen respete el redondeo */
     width: 100%;
-    max-width: 250px; /* Ancho típico de una tarjeta */
+    max-width: 280px; /* Ancho típico de una tarjeta */
     
     /* shadow-xl shadow-gray-300/60 */
     box-shadow: 0 20px 25px -5px rgba(209, 213, 219, 0.6), 

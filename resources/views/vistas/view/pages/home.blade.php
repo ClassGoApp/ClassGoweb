@@ -70,9 +70,39 @@
     </div>
 </section>
 
+<section class="visual-section">
+    
+    <img class="visual-phone" src="{{ asset('images/celular-ClassGo.png') }}" alt="">
+
+    <div class="visual-wrapper" >
+    </div>
+
+    <div class="whats-new-card">
+    
+    <div class="whats-new-card__header">
+        <svg class="whats-new-card__icon" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 0L11.755 8.245L20 10L11.755 11.755L10 20L8.245 11.755L0 10L8.245 8.245L10 0Z"/>
+        </svg>
+        <h2 class="whats-new-card__title">What's new today?</h2>
+    </div>
+    
+    <ol class="whats-new-card__list">
+        <li class="whats-new-card__list-item">Discovering market trends...</li>
+        <li class="whats-new-card__list-item">Optimizes your investment strategy...</li>
+        <li class="whats-new-card__list-item">Receiving tailored advice...</li>
+    </ol>
+    
+    <div class="whats-new-card__button-wrapper">
+        <button class="whats-new-card__button">
+            Apply insights
+        </button>
+    </div>
+    
+</div>
+
+</section>
 
 <!--TUTORES DESTACADOS-->
-
 <section class="tutors-container fade-up">
     <h1 class="over-text">
         <div class="linea"></div><span data-translate="featured_tutors"></span><div class="linea"></div>
@@ -82,6 +112,9 @@
 
     @include('vistas.view.pages.components.home.card-tutor-destacado')
 </section>
+
+
+
 
 
 <!--GUIA PASO A PASO-->
