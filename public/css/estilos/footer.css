@@ -111,15 +111,32 @@ footer {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  color: black;
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
+  transition: all 0.3s ease;
 }
 
-.circle-icon i {
-  font-size: 20px;
+.circle-icon img.icon-img {
+  width: 60%;
+  height: 60%;
+  object-fit: contain;
+  transition: transform 0.3s ease;
 }
+
+/* Efecto hover */
+.circle-icon:hover {
+  background-color: #f2f2f2;
+  /* Puedes ajustar a otro color si quieres */
+  transform: scale(1.08);
+  /* agranda suavemente el círculo */
+}
+
+.circle-icon:hover .icon-img {
+  transform: scale(1.1);
+  /* agranda un poquito el icono */
+} 
 
 hr {
   height: 0.4px;
