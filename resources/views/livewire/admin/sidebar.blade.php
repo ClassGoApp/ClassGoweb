@@ -141,7 +141,7 @@ new class extends Component {
                 'admin.blog-categories' => __('blogs.blog_categories'),
             ],
         ];
-       
+
 
         if (\Nwidart\Modules\Facades\Module::has('forumwise') && \Nwidart\Modules\Facades\Module::isEnabled('forumwise')) {
             $this->menuItems[] = [
@@ -256,7 +256,7 @@ new class extends Component {
 </div>
 @push('scripts')
     <script>
-        document.addEventListener('livewire:initialized', function() {
+        document.addEventListener('livewire:initialized', function () {
             document.addEventListener('update_image', (event) => {
                 $('#adminImage img').attr('src', event.detail.image);
             });

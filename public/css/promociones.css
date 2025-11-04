@@ -174,8 +174,14 @@
 .coupon-value {
     font-size: 3rem; /* text-5xl */
     font-weight: bold;
-    color: #4b5563; /* gray-800 */
+    color: white; /* gray-800 */
     line-height: 3rem;
+}
+.coupon-title {
+    font-size: 1.5rem; /* text-5xl */
+    font-weight: bold;
+    color: #4b5563;
+    line-height: 2rem;
 }
 
 .coupon-status {
@@ -208,7 +214,7 @@
 .coupon-description {
     font-size: 0.875rem; /* text-sm */
     font-weight: bold;
-    color: #4b5563; /* gray-700 */
+    color: #677385; /* gray-700 */
     line-height: 1rem;
     
 }
@@ -563,7 +569,7 @@
         text-align: center;
     }
     .coupon-image-wrapper{
-        width: 35%;
+        width: 15%;
         display: flex;
         justify-content: start;
         padding: 0rem;
@@ -591,8 +597,7 @@
         align-items: center;
     }
     .coupon-value{
-        font-size: 2.4rem;
-        line-height: 40px;
+        display: none;
     }
     .coupon-description{
         font-size: 0.8rem;
@@ -609,8 +614,8 @@
     .coupon-info-wrapper{
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
-        padding: 1rem 0.5rem;
+        justify-content: center;
+        padding: 0.3rem 0.2rem;
     }
 
     .redeem-invite-card{

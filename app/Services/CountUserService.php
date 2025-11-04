@@ -13,6 +13,10 @@ class CountUserService {
 
     }
 
+    /**
+     * Servicio para el conteo de usuario Totales registrados en el sistema
+     */
+
     public function getUserCounts() {
         
         $studentCount = User::whereHas('roles', function ($query) {

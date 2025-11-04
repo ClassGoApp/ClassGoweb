@@ -49,26 +49,6 @@
 body {
   background: white !important;
 }
-.contadores-hero {
-min-height: 55vh;
-  position: relative;
-  /* Tu paleta */
-  background-image: linear-gradient(
-    180deg,
-    rgba(7,59,76,1) 64%,
-    rgba(24,77,94,1) 77%,
-    rgba(33,158,188,1) 100%
-  );
-  background-size: 100% 300%;         /* clave: hacemos el lienzo más alto */
-  animation: gradientMove 6s ease-in-out infinite;
-}
-/*animación del fondo*/
-@keyframes gradientMove{
-  0%   { background-position: 50% 0%; }
-  50%  { background-position: 50% 100%; }
-  100% { background-position: 50% 0%; }
-}
-/*animación de salto*/
 @keyframes salto {
   0% { transform: translateY(0); }
   40% { transform: translateY(-10px); }
@@ -76,7 +56,7 @@ min-height: 55vh;
   80% { transform: translateY(-3px); }
   100% { transform: translateY(0); }
 }
-/*animación de palpitar*/
+
 @keyframes palpitar {
     0%   { transform: scale(1); opacity: 1; }
     5%   { transform: scale(1.05); opacity: 1; }   /* primer latido */
@@ -85,8 +65,6 @@ min-height: 55vh;
     20%  { transform: scale(1); opacity: 0.9; }
     100% { transform: scale(1); opacity: 1; }     /* pausa larga */
   }
-/*animación de sombra celeste*/
-
 @keyframes sombraCeleste {
   0%, 100% {
     text-shadow: 0 0 3px #00FFFF, 0 0 10px #00CED1, 0 0 25px #00CED1;
@@ -98,6 +76,15 @@ min-height: 55vh;
 .hero {
   height: 100vh;
   width: 100%;
+}
+
+.contadores-hero{
+  background-color: var(--primary-color);
+  background-image: url('/images/home/Elipse.png');
+  background-repeat: no-repeat;
+  background-position: center calc(100% + 250px);
+  background-size: 100% auto;
+  
 }
 
 .hero-container {
@@ -113,7 +100,7 @@ min-height: 55vh;
 /**---============ 1.1 - Hero Titular ============---**/
 .hero-text {
   flex: 1;
-  padding: 4rem 0rem 4rem 4rem;
+  padding: 4rem 0rem 4rem 6rem;
   line-height: 1;
   color: white;
 }
@@ -138,8 +125,7 @@ min-height: 55vh;
   margin-top: 2rem;
   margin-bottom: 2rem;
   color: #e0f7fa;
-  line-height: var(--line-height);
-    text-shadow: 0 0 3px #00e6ff, 0 0 15px #0099cc;
+  
 }
 
 .mobile {
@@ -159,6 +145,11 @@ min-height: 55vh;
   width: 100%;
   height: auto;
   padding-right: 2rem;
+  background-image: url('/images/home/sombraTugo.png');
+  background-repeat: no-repeat;
+  background-position: center calc(100% + -30px);
+  background-size: 100% auto;
+
   /*box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); Sombra suave y moderna */
 }
 
@@ -187,42 +178,35 @@ min-height: 55vh;
 }
 
 /**---============ 1.2.2 - Icono de Lupa ============---**/
-/* Lo posicionamos de forma absoluta DENTRO del .search-box */
 .search-box .icon-search {
   position: absolute;
   top: 50%;
   left: 1rem;
-  /* 16px desde la izquierda */
   transform: translateY(-50%);
-  /* Truco para centrarlo verticalmente a la perfección */
   color: #9ca3af;
 }
 
 /**---============ 1.2.3 - Campo de Búsqueda ============---**/
-/* Le damos el estilo de píldora redondeada */
 .search-box .form-control {
   width: 100%;
   padding: 0.75rem 1rem 0.75rem 2.75rem;
-  /* Padding para dejar espacio al icono */
-  border: 1px solid #d1d5db;
+  border: 1px solid #ffffff;
   border-radius: 9999px;
   font-size: 1rem;
   transition: box-shadow 150ms, border-color 150ms;
+  /* AÑADIR ESTAS LÍNEAS PARA ELIMINAR OUTLINE */
+  outline: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
-
 
 /* Estilo para cuando el input está seleccionado (focus) */
-.search-box .form-control:focus {
-  border-color: var(--terciary-color2);
-  /* focus:border-blue-500 */
-  box-shadow: 0 0 0 3px var(--terciary-color2);
-  /* focus:ring-2 focus:ring-blue-500 */
-  outline: none;
-}
-.search-box:hover {
-  box-shadow: #00e6ff;
-  color: #0d1b2a;
-  box-shadow: 0 0 20px #00e6ff, 0 0 40px #00b3ff;
+.form-control:focus {
+  box-shadow: var(--tertiary-color2) 0 0 0 5px, 0 10px 15px -3px rgba(255, 145, 1, 0.281), 0 4px 6px -2px rgba(255, 158, 12, 0.932);
+  box-shadow: var(--tertiary-color2) 0 0 0 5px, 
+              0 10px 15px -3px rgba(255, 145, 1, 0.281), 
+              0 4px 6px -2px rgba(255, 158, 12, 0.932);
 }
 
 /**---============ 1.2.4 - Lista de Resultados ============---**/
@@ -380,6 +364,10 @@ min-height: 55vh;
   background-color: var(--secundary-color);
   height: 70px;
   width: 5px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 
 .counter-number {
@@ -415,6 +403,7 @@ min-height: 55vh;
   overflow-x: hidden;
   text-align: center;
   background: var(--panel-background) !important;
+  line-height: 35px;
 }
 
 
@@ -1624,10 +1613,13 @@ min-height: 55vh;
     width: 100px;
   }
 
+  .contadores-hero{
+    background: var(--bg-gradient2)
+  }
   /* Hero: centrar gif y texto debajo */
   .hero {
     height: 40vh;
-    min-height: 90vh;
+    min-height: 100vh;
     padding-bottom: 2rem;
     display: flex;
     align-items: center;
@@ -1650,7 +1642,7 @@ min-height: 55vh;
   .hero-container img {
     margin: 0 auto;
     display: block;
-    max-width: 70vw;
+    max-width: 80vw;
     min-width: 150px;
     padding: 3rem 0rem 0rem 0rem;
   }
@@ -1665,6 +1657,7 @@ min-height: 55vh;
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-top: -30px;
   }
 
   .hero-subtext {
@@ -1675,10 +1668,12 @@ min-height: 55vh;
     display: block;
   }
 
+  .hero-title-arriba{
+    font-size: 1.5em !important;
+  }
 
-  .hero-title-arriba,
   .hero-title-abajo {
-    font-size: 2.0em !important;
+    font-size: 2.2em !important;
   }
 
   .hero-subtext {
@@ -2001,6 +1996,7 @@ min-height: 55vh;
 /* ============ MEDIA QUERIES PARA ADAPTAR A DISPOSITIVOS PEQUEÑOS ============ */
 
 @media (max-width: 768px) {
+  
   .carousel-container {
     width: 100%;
     margin: 20px auto;
@@ -2042,6 +2038,8 @@ min-height: 55vh;
     max-width: 600px;
     margin-bottom: 0rem;
   }
+
+
 }
 
 
@@ -2254,6 +2252,8 @@ min-height: 55vh;
 /* --- Media Queries --- */
 
 @media (min-width: 768px) {
+
+  
   .client-card-slide {
     flex-basis: 50%;
   }
@@ -2285,6 +2285,7 @@ min-height: 55vh;
   .client-carousel-nav-btn {
     display: none;
   }
+  
 }
 
 /* Pantallas muy grandes: 1500px en adelante */
@@ -2360,5 +2361,6 @@ min-height: 55vh;
     max-width: 800px;
     /* imagen más grande */
     padding-right: 4rem;
+    
   }
 }

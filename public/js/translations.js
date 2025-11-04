@@ -45,7 +45,7 @@ const translations = {
         play_s: "En Play Store",
         featured_tutors: "Tutores Destacados",
         selected_tutors: "Encuentra tu Tutor Ideal",
-        academic_variety: "Descubre una variedad de temáticas académicas y prácticas para potenciar tu experiencia de aprendizaje",
+        academic_variety: "Explora diversas temáticas para potenciar tu aprendizaje.",
         seeks: "Buscar más tutores",
         finds: "Encuentra el tutor perfecto para tus necesidades y comienza a aprender hoy mismo.",
         explore: "Explorar ahora",

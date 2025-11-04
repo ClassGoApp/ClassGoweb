@@ -16,6 +16,7 @@ use App\Http\Controllers\Api\CartController;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Controllers\Api\InvoiceController;
 use App\Http\Controllers\Api\PayoutController;
+use App\Http\Controllers\Api\QrPayoutController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\StudentController;
 use App\Http\Controllers\Api\TutorController;
@@ -157,6 +158,13 @@ Route::get('subjects',                                         [BookingControlle
 Route::get('settings',                                         [OptionBuilderController::class, 'getOpSettings']);
 Route::get('alianzas',                                          [AlianzaController::class, 'index']);
 Route::get('all-subjects', [SubjectController::class, 'index']);
+
+// Rutas para métodos de pago QR (sin autenticación)
+Route::get('qr-payout-methods/{user_id}',                      [QrPayoutController::class,'getQrPayoutMethods']);
+Route::post('qr-payout-methods',                                [QrPayoutController::class,'storeQrPayoutMethod']);
+Route::get('qr-payout-methods/{user_id}/{id}',                  [QrPayoutController::class,'getQrPayoutMethod']);
+Route::post('qr-payout-methods/{user_id}/update',              [QrPayoutController::class,'updateQrPayoutMethod']);
+Route::delete('qr-payout-methods/{user_id}',                   [QrPayoutController::class,'deleteQrPayoutMethod']);
 Route::get('verified-tutors-photos', [\App\Http\Controllers\Api\TutorController::class, 'getVerifiedTutorsPhotos']);
 Route::get('tutor/{id}/instant-slots', [\App\Http\Controllers\Api\TutorController::class, 'getInstantSlots']);
 
@@ -202,6 +210,9 @@ Route::post('user/{id}/profile-files', [ProfileController::class, 'updateUserPro
 
 // Ruta para actualizar datos del perfil del usuario
 Route::put('user/{id}/profile', [ProfileController::class, 'updateUserProfile']);
+
+// Ruta para actualizar el precio del perfil del usuario
+Route::post('user/{id}/profile-price', [ProfileController::class, 'updateProfilePrice']);
 
 Route::get('subject/{id}/name', [SubjectController::class, 'getSubjectName']);
 

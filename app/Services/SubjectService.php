@@ -67,7 +67,8 @@ class SubjectService
             ->groupBy('subject.subject_group_id')
             ->map(function ($group) {
                 return [
-                    'group_name' => $group->first()->subject->group ? $group->first()->subject->group->name : null,
+                    // 'group_name' => $group->first()->subject->group ? $group->first()->subject->group->name : null,
+                    'group_name' => $group->first()?->subject?->group?->name,
                     'subjects' => $group->map(function ($item) {
                         return [
                             'id'           => $item->id,

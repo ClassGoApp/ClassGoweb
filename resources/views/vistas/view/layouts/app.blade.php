@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="{{ asset('css/estilos/terminos.css') }}">
     <link rel="stylesheet" href="{{ asset('css/estilos/buscar.css') }}">
     <link rel="stylesheet" href="{{ asset('css/estilos/error404.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/estilos/floating-button.css') }}">
     <link rel="stylesheet" href="{{ asset('css/promociones.css') }}">   
     <link rel="stylesheet" href="{{ asset('css/estilos/blog.css') }}">
     
@@ -26,24 +27,33 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet"></head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
     
     @livewireStyles
 
 
 <body class="@yield('body-class')">
-    @include('vistas.view.components.navbar')
+    @include('vistas.view.partials.navbar')
     <main>
         @hasSection('content')
             @yield('content')
         @else
             {{ $slot ?? '' }}
         @endif
+
+        {{-- Solo mostrar floating button si NO estamos en la vista del tutor --}}
+        @unless(request()->routeIs('tutor') || request()->is('tutores/*'))
+            @include('components.floating-button.index')
+        @endunless
+
     </main>
 
-    @include('vistas.view.components.footer')
+        @include('vistas.view.partials.footer')
+    
         @livewireScripts
         {{-- <script src="//unpkg.com/alpinejs" defer></script> --}}
+
+        <script src="{{ asset('js/translations.js') }}"></script>
 
 </body>
 </html>

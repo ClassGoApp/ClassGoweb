@@ -47,15 +47,20 @@
 
                             <div class="coupon-card">
                                 <div class="coupon-image-wrapper">
-                                    <img src="{{ asset('images/home/Tugo_With_Phone.webp') }}" alt="Tugo with Phone">
+                                    {{-- <img src="{{ asset('images/home/Tugo_With_Phone.webp') }}" alt="Tugo with Phone"> --}}
+                                    <h2 class="coupon-value">{{ round($cupon->descuento) }}%</h2>
                                 </div>
                                 <div class="coupon-info-wrapper">
                                     <div class="info-text">
-                                        <h2 class="coupon-value">{{ round($cupon->descuento) }}%</h2>
+                                        {{-- <h2 class="coupon-value">{{ round($cupon->descuento) }}%</h2> --}}
+                                        <h2 class="coupon-title">{{ $cupon->nombre }}</h2>
                                         <p class="coupon-description">Tienes <strong>{{ round($cupon->descuento )}}% de descuento</strong> en tu próxima tutoría</p>
-                                        <p class="coupon-validity">Válido hasta el
-                                            {{ $cupon->fecha_caducidad ? \Carbon\Carbon::parse($cupon->fecha_caducidad)->format('d/m/Y') : 'Sin fecha' }}
-                                            
+                                        <p class="coupon-validity">
+                                            @if($cupon->fecha_caducidad )
+                                                Válido hasta el {{ \Carbon\Carbon::parse($cupon->fecha_caducidad)->format('d/m/Y')  }}
+                                            @else
+                                                Sin fecha de vencimiento
+                                            @endif                                            
                                         </p>
                                         
                                     </div>
