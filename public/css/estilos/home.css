@@ -403,6 +403,7 @@ body {
   overflow-x: hidden;
   text-align: center;
   background: var(--panel-background) !important;
+  line-height: 35px;
 }
 
 
