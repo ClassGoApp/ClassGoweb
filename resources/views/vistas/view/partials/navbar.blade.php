@@ -258,11 +258,11 @@
 		<!-- Menú Móvil -->
 		<nav class="navbar-mobile" id="navbar-mobile">
 			<ul>
-				<li><a href="{{ route('buscar')}}" class="{{ (request()->is('tutores*') || request()->is('tutors*') || request()->routeIs('buscar')) ? 'active' : '' }}">Buscar Tutores</a></li>
+				{{-- <li><a href="{{ route('buscar')}}" class="{{ (request()->is('tutores*') || request()->is('tutors*') || request()->routeIs('buscar')) ? 'active' : '' }}">Buscar Tutores</a></li> --}}
 				<li><a href="{{ route('nosotros')}}" class="{{ request()->is('nosotros*') ? 'active' : '' }}">Nosotros</a></li>
 				<li><a href="{{ route('como-trabajamos')}}" class="{{ request()->is('como-trabajamos*') ? 'active' : '' }}">Cómo trabajamos</a></li>
 				<li><a href="{{ route('preguntas')}}" class="{{ request()->is('preguntas*') ? 'active' : '' }}">Preguntas</a></li>
-				{{-- <li><a href="{{ route('')}}" class="{{ request()->is('blog*') ? 'active' : '' }}">Blog</a></li> --}}
+				<li><a href="{{ route('blogs.index')}}" class="{{ request()->is('blog*') ? 'active' : '' }}">Blog</a></li>
 				@auth
 				@role('tutor')
 				<li><a href="{{ route('tutor.dashboard')}}" class="{{ request()->is('tutor-dashboard*') ? 'active' : '' }}">Panel</a></li>
