@@ -14,7 +14,14 @@ class Blog extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'description', 'status', 'image', 'author_id', 'slug', 'meta_title', 'meta_description'];
+    protected $fillable = ['title',
+                             'description', 
+                             'status', 
+                             'image', 
+                             'author_id', 
+                             'slug', 
+                             'meta_title', 
+                             'meta_description'];
 
     public const STATUSES = [
         'draft'             => 0,
