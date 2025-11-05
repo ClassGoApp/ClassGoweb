@@ -10,6 +10,8 @@ use Google_Service_Calendar_Event;
 use App\Models\User;
 use App\Models\AccountSetting;
 use Carbon\Carbon;
+use Exception; 
+
 
 class GoogleMeetService
 {

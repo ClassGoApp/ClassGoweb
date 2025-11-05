@@ -1,4 +1,4 @@
-@php
+{{-- @php
     $readyTutorials = auth()->user()->enrolledTutorials()->where('status', 'ready')->count();
 @endphp
 
@@ -25,4 +25,4 @@
             Cerrar
         </span>
     </button>
-</div>
+</div> --}}

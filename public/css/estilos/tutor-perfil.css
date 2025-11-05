@@ -769,17 +769,21 @@
 }
 
 .review-form__star {
-    /* w-12 h-12 */
-    width: 3rem;
-    height: 3rem;
-    /* Color por defecto (puede ser gris claro) */
-    color: var(--color-slate-200);
+    color: #d1d5db;
+    fill: #d1d5db;
+    transition: color 0.2s ease, fill 0.2s ease;
     cursor: pointer;
-    transition: color 0.2s ease-in-out;
+    /* Asegurar que el cursor sea pointer en móvil también */
+    -webkit-tap-highlight-color: transparent; /* Remover highlight azul en móvil */
 }
 
-
+.review-form__star.active,
+.review-form__star:hover {
+    color: #fbbf24 !important;
+    fill: #fbbf24 !important;
+}
 /* MEDIA QUERY: sm:w-16 sm:h-16 */
+
 
 @media (min-width: 640px) {
     .review-form__star {
@@ -787,7 +791,45 @@
         height: 4rem;
     }
 }
+@media (max-width: 768px) {
+    .review-form__star {
+        width: 2.5rem !important;
+        height: 2.5rem !important;
+        touch-action: manipulation; /* Optimizar para touch */
+        -webkit-touch-callout: none; /* Desactivar callout en iOS */
+        -webkit-user-select: none; /* Prevenir selección de texto */
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+    
+    .review-form__star.active {
+        color: #fbbf24 !important;
+        fill: #fbbf24 !important;
+    }
+    
+    /* Asegurar que el hover no interfiera en móvil */
+    @media (hover: none) and (pointer: coarse) {
+        .review-form__star:hover {
+            color: inherit;
+            fill: inherit;
+        }
+        
+        .review-form__star.active:hover {
+            color: #fbbf24 !important;
+            fill: #fbbf24 !important;
+        }
+    }
+}
 
+/* Mejorar el espaciado en móvil */
+@media (max-width: 600px) {
+    .review-form__rating-wrapper {
+        padding: 1rem 0;
+        gap: 0.5rem;
+        justify-content: center;
+    }
+}
 
 /* Clases que serán añadidas por JavaScript para interactividad */
 
@@ -806,9 +848,6 @@
 
 /* ======================================================= */
 
-.review-form__textarea-wrapper {
-    /* Div contenedor si necesitas aplicar un margen (aunque la clase w-full no lo necesita) */
-}
 
 .review-form__textarea {
     /* w-full p-3 border border-slate-300 rounded-lg */
@@ -851,7 +890,7 @@
     background-color: var(--color-cyan-600);
     color: var(--color-white);
     font-weight: 600;
-    padding: 0.625rem 1.5rem;
+    padding: 0.8rem 1.5rem;
     /* py-2.5 px-6 */
     border-radius: 0.5rem;
     /* rounded-lg */
@@ -2269,7 +2308,7 @@ body.modal-open {
     }
 
     .tutor-tabs-content {
-        padding: 1.2rem 0.5rem 1.2rem 0.5rem !important;
+        padding: 1.2rem 0.5rem 2rem 0.5rem !important;
         width: 100vw !important;
         max-width: 100vw !important;
         min-width: 0 !important;

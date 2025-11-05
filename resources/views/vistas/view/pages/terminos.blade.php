@@ -591,5 +591,4 @@
     });
 </script>
 
-<script src="{{ asset('js/translations.js') }}"></script>
 @endsection

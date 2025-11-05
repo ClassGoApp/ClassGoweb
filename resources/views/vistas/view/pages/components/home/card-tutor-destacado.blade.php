@@ -1,48 +1,53 @@
-<div class="profile-card">
-    
-    <div class="profile-card__image-container">
-        <img 
-            class="profile-card__image" 
-            src="https://placehold.co/600x720/e9e8e7/000000?text=Sophie+Bennett" 
-            alt="Sophie Bennett"
-            onerror="this.src='https://placehold.co/600x720/d1d1d1/000000?text=Error';"
-        >
-    </div>
 
-    <div class="profile-card__content">
-        
-        <div class="profile-card__header">
-            <h2 class="profile-card__name">Sophie Bennett</h2>
-            <svg class="profile-card__verified-icon" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-            </svg>
-        </div>
-
-        <p class="profile-card__description">
-            Product Designer who focuses on simplicity & usability.
-        </p>
-
-        <div class="profile-card__footer">
-            
-            <div class="profile-card__stats-group">
-                
-                <span class="profile-card__stat">
-                    <svg class="profile-card__stat-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
-                    312
-                </span>
-                
-                <span class="profile-card__stat">
-                    <svg class="profile-card__stat-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
-                    48
-                </span>
+<div class="cards-container-tutores">
+    @for ($i=1 ; $i<=3 ;$i++)
+        <div class="profile-card">
+            <div class="profile-card__image-container">
+                <img 
+                    class="profile-card__image"
+                    src="{{ asset('./storage/profile_images/5H18q1744646136.png') }}" 
+                    alt="Sophie Bennett"
+                    onerror="this.src='https://placehold.co/600x720/d1d1d1/000000?text=Error';"
+                >
             </div>
 
-            <button class="profile-card__button">
-                Follow +
-            </button>
+            <div class="profile-card__content">
+                
+                <div class="profile-card__header">
+                    <h2 class="profile-card__name">Sophie Bennett</h2>
+                    <svg class="profile-card__verified-icon" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                    </svg>
+                </div>
+
+                <p class="profile-card__description">
+                    Product Designer who focuses on simplicity & usability.
+                </p>
+
+                <div class="profile-card__footer">
+                    
+                    <div class="profile-card__stats-group">
+                        
+                        <span class="profile-card__stat">
+                            <svg class="profile-card__stat-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                            312
+                        </span>
+                        
+                        <span class="profile-card__stat">
+                            <svg class="profile-card__stat-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                            48
+                        </span>
+                    </div>
+
+                    <button class="profile-card__button">
+                        Follow +
+                    </button>
+                </div>
+            </div>
         </div>
-    </div>
+    @endfor
 </div>
+
 
 <style>
     /* ======================================================= */
@@ -61,14 +66,21 @@
 /* ======================================================= */
 /* I. TARJETA PRINCIPAL */
 /* ======================================================= */
+.cards-container-tutores{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    gap: 1.3rem;
+    padding: 1rem;
+}
 
 .profile-card {
     /* Fondo y estructura */
     background-color: var(--color-white);
-    border-radius: 1rem; /* rounded-xl (asumo 1rem) */
+    border-radius: 2rem; /* rounded-xl (asumo 1rem) */
     overflow: hidden; /* Importante para que la imagen respete el redondeo */
     width: 100%;
-    max-width: 300px; /* Ancho típico de una tarjeta */
+    max-width: 250px; /* Ancho típico de una tarjeta */
     
     /* shadow-xl shadow-gray-300/60 */
     box-shadow: 0 20px 25px -5px rgba(209, 213, 219, 0.6), 
@@ -83,8 +95,9 @@
     /* Contenedor para manejar el aspecto ratio si es necesario */
     width: 100%;
     /* Altura basada en la imagen placeholder (600x720) */
-    aspect-ratio: 600 / 720; 
+    aspect-ratio: 210 / 200; 
     overflow: hidden;
+    padding: 0.6rem;
 }
 
 .profile-card__image {
@@ -92,6 +105,7 @@
     height: 100%;
     object-fit: cover;
     display: block;
+    border-radius: 2rem
 }
 
 /* ======================================================= */
@@ -100,8 +114,8 @@
 
 .profile-card__content {
     /* p-6 pt-5 */
-    padding: 1.5rem;
-    padding-top: 1.25rem; 
+    padding: 1rem;
+    padding-top: 0.1rem; 
 }
 
 .profile-card__header {

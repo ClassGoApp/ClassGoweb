@@ -2,7 +2,9 @@
     @if(auth()->user()->hasRole('tutor')) <!--Si es tutor-->
         @include('components.floating-button.tutor')
     @elseif(auth()->user()->hasRole('student')) <!--Si es estudiante-->
-        @include('components.floating-button.student')
+        {{-- @include('components.floating-button.student') --}}
+        @include('components.floating-button.guest')
+
     @else
         @include('components.floating-button.guest') <!--NO autenticado-->
     @endif
@@ -18,8 +20,8 @@
         const fabOptions = [
             document.getElementById('fab-option-whatsapp'),
             document.getElementById('fab-option-magic'),
-            document.getElementById('fab-option-chat')
-        ];
+                document.getElementById('fab-option-chat')
+            ];
         const fabTooltipClosed = document.getElementById('fab-tooltip-closed');
         const fabTooltipOpen = document.getElementById('fab-tooltip-open');
 
