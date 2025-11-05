@@ -338,7 +338,7 @@ body {
   justify-content: center;
   align-items: center;
   gap: 30px;
-  padding: 5rem 0;
+  padding: 5rem 0 7rem 0;
   text-align: center;
   flex-wrap: wrap;
   width: 100%;
@@ -571,7 +571,354 @@ body {
   }
 }
 
+/**---============ 3 - Visual Section ============---**/
+.visual-section {
+  padding: 1rem 5.5rem ;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  overflow: hidden; 
+  min-height: 800px; 
+}
+
+.visual-section img.visual-phone {
+  position: absolute;
+  right: 18%; /* posición desde la derecha */
+  bottom: 15%; /* elevación desde abajo para crear el efecto de "sobresalir" */
+  width: 900px; /* tamaño base del teléfono */
+  /* max-width: 32%; */
+  height: auto;
+  z-index: 30; /* por encima de la tarjeta CTA */
+  transform: translateY(-15%); /* ajuste fino para que "sobresalga" más */
+  transition: transform .25s ease, bottom .25s ease;
+  pointer-events: none; /* evita interferir con clicks */
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.15)); /* sombra sutil para realismo */
+}
+
+.visual-wrapper {
+  position: relative;
+  z-index: 10; /* menor que la imagen para que quede por debajo */
+  width: 100%;
+  max-width: 1200px;
+  padding: 2rem;
+  border-radius: 16px;
+  background: var(--bg-gradient2);
+  height: 400px;
+}
+
+/* ======================================================= */
+/* VARIABLES DE DISEÑO */
+/* ======================================================= */
+:root {
+    --color-white: #FFFFFF;
+    --color-gray-700: #374151;
+    --color-gray-900: #111827;
+    --color-gray-700-hover: #4B5563; 
+    --color-black: #000000;
+}
+
+/* ======================================================= */
+/* I. TARJETA PRINCIPAL (whats-new-card) */
+/* ======================================================= */
+
+.whats-new-card {
+    position: absolute;
+    z-index: 50; 
+    top: 60%;
+    left: 36%;
+    width: 400px;
+    max-width: 35%;
+    background-color: var(--color-white);
+    border-radius: 1rem; /* rounded-2xl */
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-lg */
+    padding: 1.5rem; /* p-6 */
+    box-sizing: border-box;
+
+}
+
+/* ======================================================= */
+/* II. ENCABEZADO */
+/* ======================================================= */
+
+.whats-new-card__header {
+    /* flex items-center space-x-2 mb-5 */
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; /* space-x-2 */
+    margin-bottom: 1.25rem; /* mb-5 */
+}
+
+.whats-new-card__icon {
+    /* w-5 h-5 text-black */
+    width: 1.25rem;
+    height: 1.25rem;
+    color: var(--primary-color);
+    flex-shrink: 0;
+}
+
+.whats-new-card__title {
+    /* text-lg font-bold text-gray-900 */
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin: 0;
+}
+
+/* ======================================================= */
+/* III. LISTA DE NOVEDADES */
+/* ======================================================= */
+
+.whats-new-card__list {
+    /* list-decimal list-inside space-y-2.5 text-gray-700 mb-6 */
+    
+    list-style-type: decimal; /* list-decimal */
+    list-style-position: inside; /* list-inside */
+    
+    color: var(--color-gray-700);
+    margin-bottom: 1.5rem; /* mb-6 */
+    margin-top: 0;
+    padding-left: 0; /* Asegura que la lista empiece justo después de los números */
+}
+
+.whats-new-card__list-item {
+    /* Simula space-y-2.5 usando margen inferior en cada elemento */
+    margin-bottom: 0.625rem; /* 2.5 * 0.25rem = 0.625rem */
+}
+
+.whats-new-card__list-item:last-child {
+    margin-bottom: 0;
+}
+
+/* ======================================================= */
+/* IV. BOTÓN */
+/* ======================================================= */
+
+.whats-new-card__button-wrapper {
+    /* flex justify-end */
+    display: flex;
+    justify-content: flex-end;
+}
+
+.whats-new-card__button {
+    /* bg-gray-900 text-white px-5 py-2 rounded-lg font-semibold text-sm */
+    background-color: var(--primary-color);
+    color: white;
+    padding: 0.8rem 1.25rem; /* px-5 py-2 */
+    border-radius: 0.5rem; /* rounded-lg */
+    font-weight: 600; /* font-semibold */
+    font-size: 0.875rem; /* text-sm */
+    border: none;
+    cursor: pointer;
+    
+    /* hover:bg-gray-700 transition-colors duration-200 */
+    transition: background-color 0.2s ease-in-out;
+}
+
+.whats-new-card__button:hover {
+    background-color: var(--secundary-color);
+}
+
+/* Ajustes responsivos */
+@media (max-width: 1024px) {
+  .visual-section {
+    padding: 1rem 3rem;
+    min-height: 350px;
+  }
+  
+  .visual-section img.visual-phone {
+    right: 5%;
+    bottom: 12%;
+    width: 240px;
+    max-width: 35%;
+    transform: translateY(-10%);
+  }
+  
+  .cta-section-wrapper {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .visual-section {
+    padding: 1rem 2rem;
+    min-height: 300px;
+  }
+  
+  .visual-section img.visual-phone {
+    right: 50%;
+    left: auto;
+    transform: translate(50%, -8%); /* centrado con ligero sobresalir */
+    bottom: 8%;
+    width: 180px;
+    max-width: 45%;
+    z-index: 25;
+    opacity: 0.95;
+  }
+  
+  .cta-section-wrapper {
+    padding: 1rem;
+    margin: 1rem auto;
+  }
+  
+  .cta-card {
+    padding: 1.5rem;
+  }
+}
 /**---============ 3 - Tutores Destacados ============---**/
+.cards-container-tutores{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    gap: 1.3rem;
+    padding: 1rem 5rem;
+}
+
+.profile-card {
+    /* Fondo y estructura */
+    background-color: var(--color-white);
+    border-radius: 2rem; /* rounded-xl (asumo 1rem) */
+    overflow: hidden; /* Importante para que la imagen respete el redondeo */
+    width: 100%;
+    max-width: 280px; /* Ancho típico de una tarjeta */
+    
+    /* shadow-xl shadow-gray-300/60 */
+    box-shadow: 0 20px 25px -5px rgba(209, 213, 219, 0.6), 
+                0 8px 10px -6px rgba(209, 213, 219, 0.6);
+}
+
+/* ======================================================= */
+/* II. IMAGEN */
+/* ======================================================= */
+
+.profile-card__image-container {
+    /* Contenedor para manejar el aspecto ratio si es necesario */
+    width: 100%;
+    /* Altura basada en la imagen placeholder (600x720) */
+    aspect-ratio: 210 / 200; 
+    overflow: hidden;
+    padding: 0.6rem;
+}
+
+.profile-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 2rem;
+}
+
+.profile-card__image::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60%; /* controla cuánto de la imagen se oscurece */
+    background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.4) 100%);
+    border-radius: 2rem;
+    pointer-events: none;
+}
+/* ======================================================= */
+/* III. CONTENIDO Y HEADER */
+/* ======================================================= */
+
+.profile-card__content {
+    /* p-6 pt-5 */
+    padding: 1rem;
+    padding-top: 0.1rem; 
+}
+
+.profile-card__header {
+    /* flex items-center justify-between */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.profile-card__name {
+    /* text-xl font-semibold text-gray-800 */
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-gray-800);
+    margin: 0;
+}
+
+.profile-card__verified-icon {
+    /* w-5 h-5 text-green-500 */
+    width: 1.25rem;
+    height: 1.25rem;
+    color: var(--color-green-500);
+    flex-shrink: 0;
+}
+
+.profile-card__description {
+    /* mt-1 text-sm text-gray-500 leading-snug */
+    margin-top: 0.25rem;
+    font-size: 0.875rem;
+    color: var(--color-gray-500);
+    line-height: 1.375; /* leading-snug */
+    margin-bottom: 0;
+}
+
+/* ======================================================= */
+/* IV. FOOTER (Estadísticas y Botón) */
+/* ======================================================= */
+
+.profile-card__footer {
+    /* mt-4 flex items-center justify-between */
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.profile-card__stats-group {
+    /* flex items-center space-x-4 text-sm text-gray-500 */
+    display: flex;
+    align-items: center;
+    gap: 1rem; /* space-x-4 */
+    font-size: 0.875rem;
+    color: var(--color-gray-500);
+}
+
+.profile-card__stat {
+    /* flex items-center */
+    display: flex;
+    align-items: center;
+}
+
+.profile-card__stat-icon {
+    /* w-4 h-4 mr-1 */
+    width: 1rem;
+    height: 1rem;
+    margin-right: 0.25rem;
+}
+
+/* ======================================================= */
+/* V. BOTÓN */
+/* ======================================================= */
+
+.profile-card__button {
+    padding: 0.5rem 1rem;
+    background-color: var(--primary-color);
+    color: white;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border-radius: 0.75rem; /* rounded-xl */
+    border: none;
+    cursor: pointer;
+    
+    /* hover:bg-gray-200 transition duration-150 shadow-sm */
+    transition: background-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm */
+}
+
+.profile-card__button:hover {
+    background-color: var(--secundary-color);
+}
+/*<-------------------->*/
 .tutors-container {
   display: flex;
   flex-direction: column;
