@@ -2,7 +2,7 @@
     <div class="footer-container">
         <div class="container-info">
             <div class="footer-info"><!--ClassGo Logo + info-->
-                <img src="{{ asset('images/logoclassgo.png') }}" alt="logo">
+                <img src="{{ asset('images/home/logoclassgo.png') }}" alt="logo">
                 <div class="info-text">
                     <i class="fa-solid fa-envelope icon"></i>
                     <p>classgobol@gmail.com</p>
