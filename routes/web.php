@@ -159,10 +159,9 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
     //<=== Oscar Pasante ===>
 // Route::view('/blogs','vistas.view.pages.blog')->name('blogs');
 Route::get('/blogs', [BeforeBlogsController::class, 'index'])->name('blogs.index');
-// Ruta genérica para cuando hagan clic en una card
-Route::get('/blogs/{slug}', function ($slug) {
-    return "Vista del blog con slug: " . $slug;
-})->name('blogs.show');
+
+Route::get('/blogs/{blog:slug}', [BeforeBlogsController::class, 'showBySlug'])->name('blogs.show');
+
 
 //<===//////////////////////////////////////////===>
 

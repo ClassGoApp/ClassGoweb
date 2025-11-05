@@ -1,3 +1,4 @@
+<!--Estilo en buscar.css-->
 @extends('vistas.view.layouts.app')
 
 @section('content')

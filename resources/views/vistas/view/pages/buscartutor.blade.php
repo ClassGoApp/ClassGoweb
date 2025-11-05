@@ -24,21 +24,4 @@
     <livewire:buscar-tutor /> 
 </div>
 
-<!-- Scripts -->
-
-<script>
-    // Hacer la función selectLanguage global si no lo está
-    window.applyLanguage = function() {
-        const savedLang = localStorage.getItem("selectedLanguage") || "es";
-        selectLanguage(savedLang, false); // no cerrar dropdown
-    }
-
-    // Traducir al cargar la página
-    document.addEventListener("DOMContentLoaded", applyLanguage);
-
-    // Traducir cuando Livewire renderiza o actualiza contenido
-    document.addEventListener("livewire:load", applyLanguage);
-    document.addEventListener("livewire:update", applyLanguage);
-</script>
-<script src="{{ asset('js/translations.js') }}"></script>
 @endsection
