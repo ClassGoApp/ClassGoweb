@@ -58,7 +58,40 @@
                 </p>
             </div>
         </div>
+        <!-- SECCION alianzas target -->
+        <!-- SECCIÓN ALIANZAS -->
+<div class="alianzas-eventos-section">
+    <div class="section-header">
+        <span data-translate="alianzas" class="section-tagline-nosotros"></span>
+        <h1 class="over-text-nosotros"><span data-translate="alianzas_edu"></span></h1>
+        <p class="section-description-nosotros">
+            <span data-translate="alianzas_Classgo"></span>
+        </p>
+    </div>
 
+    <div class="alianzas-eventos-grid">
+        @foreach($alianzas as $alianza)
+            <div class="alianza-evento-card animate-in">
+                <img 
+                    src="{{ $alianza->imagen ? asset('storage/' . $alianza->imagen) : asset('images/tutors/default.png') }}" 
+                    alt="Imagen de {{ $alianza->titulo }}" 
+                    class="client-logo alianza-evento-imagen">
+
+                <div class="alianza-evento-info">
+                    <h3>{{ $alianza->titulo }}</h3>
+                    <p class="alianza-descripcion">{{ $alianza->descripcion }}</p>
+                    <button class="btn-blanco" onclick="window.open('{{ $alianza->enlace }}', '_blank')">
+                        Visitar sitio
+                    </button>
+                </div>
+            </div>
+        @endforeach
+    </div>
+</div>
+
+
+
+        <!-- SECCION aliazas end -->
         <div class="team-section">
             <div class="team-header">
                 <h1 class="team-title" data-translate="team"></h1>

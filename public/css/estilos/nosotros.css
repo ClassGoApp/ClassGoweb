@@ -307,99 +307,166 @@
 }
 
 /* ==================== 6 - Nosotros Convenios ==================== */
-.nosotros-convenios {
-  padding: 5rem;
-  background: #fff;
+
+.alianzas-eventos-section {
+  padding: 30px 30px;
+  background: var(--bg-gradient3);
   width: 100%;
-  height: 100%;
+  border-radius: 1%;
 }
 
-.nosotros-convenios h3 {
-  text-align: center;
-  font-weight: 500;
-  font-size: 1.2rem;
-  color: #0a3643;
-  margin-bottom: 0.6rem;
-  margin-top: 0;
+.section-header {
+  margin-bottom: 30px;
+}
+.section-tagline-nosotros {
+  color: var(--terciary-color);
+  font-size: 1.5em;
+  font-weight: bold;
 }
 
-.nosotros-convenios h2 {
-  text-align: center;
-  font-size: 2.5rem;
-  color: #0a3643;
-  font-weight: 700;
-  margin: 0 0 1.5rem 0;
+.section-header .over-text-nosotros {
+  font-size: 2.5em;
+  color: white;
 }
 
-.nosotros-convenios p {
-  text-align: center;
-  color: #22546a;
-  font-size: 1.1rem;
-  max-width: 850px;
-  margin: 0 auto 3rem auto;
+.section-description-nosotros {
+  color: #dce7ee;
+  max-width: 700px;
+  margin: 0 auto;
 }
 
-.nosotros-card {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 3rem;
-  justify-content: center;
-  align-items: center;
-  /* Ajustamos para centrar los íconos y tarjetas */
+/* --- GRID --- */
+.alianzas-eventos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto
 }
 
-.nosotros-card .card {
-  background: #f5f9fa;
-  border: 2px solid #18516d;
-  border-radius: 14px;
-  width: 280px;
-  /* Ancho más amplio para las tarjetas */
-  min-height: 320px;
+/* --- TARJETAS --- */
+.alianza-evento-card {
   display: flex;
   flex-direction: column;
+  background: var(--bg-gradient2);
+  border-radius: 20px;
+  overflow: visible;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+  width: 100%;
+  max-width: 370px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   align-items: center;
-  padding: 1.5rem 1rem;
-  box-sizing: border-box;
-  transition: box-shadow 0.2s;
-  box-shadow: 0 4px 12px rgba(16, 50, 68, 0.07);
+  margin: 5%;
 }
 
-.nosotros-card .card:hover {
-  box-shadow: 0 8px 20px rgba(16, 50, 68, 0.14);
+.alianza-evento-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 25px rgba(255, 255, 255, 0.274);
 }
 
-.nosotros-card .card img {
-  width: 120px;
-  height: 120px;
-  object-fit: contain;
-  margin-bottom: 1rem;
-  border-radius: 10px;
-  background: #fff;
-  border: none;
+/* --- IMAGEN --- */
+.alianza-evento-imagen {
+  position: relative;
+  object-fit: cover;
+  top: -7%;
+}
+.client-logo {
+  width: 8rem;
+  /* 128px */
+  height: 8rem;
+  border-radius: 50%;
+  border: 4px solid var(--secundary-color);
+  object-fit: cover;
+  transition: all 0.3s ease;
+
 }
 
-.nosotros-card .card-title {
+.client-logo:hover {
+  transform: translateY(-8px) scale(1.05);
+}
+
+/* --- CONTENIDO --- */
+.alianza-evento-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1;
+  padding: 22px;
+  text-align: left;
+  color: #fff;
+  align-items: center;
+}
+
+.alianza-evento-info h3 {
   font-size: 1.2rem;
-  /* Un poco más grande para mejorar la visibilidad */
-  color: #1e3544;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: #ffffff;
+}
+
+.alianza-descripcion {
+  color: #dce8ee;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  flex-grow: 1;
+  margin-bottom: 20px;
+}
+
+/* --- BOTÓN --- */
+.btn-blanco {
+  background: #ffffff;
+  color: #0b3c50;
   font-weight: 600;
-  text-align: center;
-  margin-top: 0.5rem;
+  border: none;
+  border-radius: 30px;
+  padding: 10px 20px;
+  width: 50%;
+  cursor: pointer;
+  transition: all 0.5s ease;
 }
 
-.counter-box h1 {
-  color: #00bcd4;
-  font-size: 1.2rem;
-  font-weight: 500;
-  margin-top: 0.5rem;
-  margin-bottom: 0;
+.btn-blanco:hover {
+  background: #185875;
+  color: var(--white);
 }
 
-.counter-box h1 {
-  font-size: var(--h1-regular);
-  color: white;
-  text-transform: none;
+/* --- RESPONSIVE --- */
+@media (max-width: 768px) {
+  .alianzas-eventos-section {
+    padding: 20px;
+  }
+
+  .alianzas-eventos-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    justify-items: center;
+  }
+
+  .alianza-evento-card {
+    max-width: 90%;
+    margin: 0 auto;
+    padding-top: 40px;
+  }
+
+  .client-logo {
+    width: 6rem;
+    height: 6rem;
+  }
+
+  .alianza-evento-imagen {
+    top: -60px; /* reduce el sobresaliente en móviles */
+  }
+
+  .alianza-evento-info {
+    padding: 15px;
+    height: 70%;
+  }
+
+  .btn-blanco {
+    width: 80%;
+  }
 }
+
 
 /* ==================== 7 - Nosotros Equipo ==================== */
 /* Estilos base para dispositivos móviles (ancho < 768px) */
