@@ -155,6 +155,7 @@
         <div class="grid-app">
 
       <!-- Columna Izquierda: Contenido de texto -->
+      <div class="fade-left">
       <div class="text-app">
             <p data-translate="facil_simple_rapido"></p>
             <h1 data-translate="instala_app"></h1>
@@ -187,6 +188,7 @@
             </div>
         
         </div>
+        </div>
             <!-- Columna Derecha: Imagen -->
                         
             <div class="image-app">
@@ -207,6 +209,7 @@
 <section class="tutorias-container fade-up">
     <div class="tutorias">
         <!-- Texto -->
+        <div class="fade-left">
         <div class="tutores-text">
             <p class="tutores-text-encima" data-translate="buscas_tutorias"></p>
             <h1 data-translate="conectamos_tutores"></h1>
@@ -217,6 +220,7 @@
             </a>
 
 
+        </div>
         </div>
         <!-- Imagen -->
         <div class="carousel-3D">
@@ -256,9 +260,9 @@
     </div>
 
     <!-- ALIANZAS-->
-    {{-- <div class="fade-up">
+    <div class="fade-up">
     @include('components.alianzas', ['alianzas' => $alianzas])
-    </div> --}}
+    </div>
 
 </section>
 <!--------animacion skin----->
@@ -317,7 +321,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }, { threshold: 0.2 });
 
     // Observar elementos con clases de animación
-    document.querySelectorAll('.fade-up, .fade-left, .fade-right').forEach(el => {
+    document.querySelectorAll('.fade-up, .fade-left, .fade-right, .fade-down').forEach(el => {
         scrollObserver.observe(el);
     });
 
@@ -463,110 +467,7 @@ document.addEventListener('DOMContentLoaded', function() {
         counters.forEach(counter => counterObserver.observe(counter));
     };
 
-    // ===========================
-    // 6. CARRUSEL DE ALIANZAS (OPCIONAL)
-    // ===========================
-    const initAllianceCarousel = () => {
-        const track = document.getElementById('client-carousel-track');
-        const dotsContainer = document.getElementById('client-pagination-dots');
-        const nextButton = document.getElementById('client-next-button');
-        const prevButton = document.getElementById('client-prev-button');
-
-        // Solo ejecutar si los elementos existen (para páginas que lo tienen)
-        if (!track || !nextButton || !prevButton) {
-            return; // Salir silenciosamente si no existe
-        }
-
-        const slides = Array.from(track.children);
-        const dots = dotsContainer ? Array.from(dotsContainer.children) : [];
-
-        if (slides.length === 0) return;
-
-        const getSlidesPerView = () => {
-            if (window.innerWidth >= 1024) return 3;
-            if (window.innerWidth >= 768) return 2;
-            return 1;
-        };
-
-        let currentIndex = 0;
-        let slideInterval;
-
-        const goToSlide = (index) => {
-            const slidesPerView = getSlidesPerView();
-            const maxIndex = slides.length - slidesPerView;
-
-            if (index < 0) {
-                currentIndex = maxIndex;
-            } else if (index > maxIndex) {
-                currentIndex = 0;
-            } else {
-                currentIndex = index;
-            }
-
-            updateCarousel();
-        };
-
-        const updateCarousel = () => {
-            const slidesPerView = getSlidesPerView();
-            const slideWidth = slides[0].offsetWidth;
-            track.style.transform = 'translateX(' + (-slideWidth * currentIndex) + 'px)';
-
-            // Actualizar puntos si existen
-            if (dots.length > 0) {
-                dots.forEach((dot, index) => {
-                    dot.classList.remove('active');
-                    if (index === currentIndex) {
-                        dot.classList.add('active');
-                    }
-                });
-            }
-        };
-
-        const startInterval = () => {
-            slideInterval = setInterval(() => {
-                goToSlide(currentIndex + 1);
-            }, 3000);
-        };
-
-        const resetInterval = () => {
-            clearInterval(slideInterval);
-            startInterval();
-        };
-
-        // Event listeners
-        nextButton.addEventListener('click', () => {
-            goToSlide(currentIndex + 1);
-            resetInterval();
-        });
-
-        prevButton.addEventListener('click', () => {
-            goToSlide(currentIndex - 1);
-            resetInterval();
-        });
-
-        // Puntos de paginación
-        dots.forEach((dot, index) => {
-            dot.addEventListener('click', () => {
-                goToSlide(index);
-                resetInterval();
-            });
-        });
-
-        // Redimensionamiento
-        window.addEventListener('resize', () => {
-            const newSlidesPerView = getSlidesPerView();
-            const maxIndex = slides.length - newSlidesPerView;
-            if (currentIndex > maxIndex) {
-                currentIndex = maxIndex;
-            }
-            updateCarousel();
-        });
-
-        // Inicializar
-        updateCarousel();
-        startInterval();
-    };
-
+    
     // ===========================
     // 7. INICIALIZACIÓN PRINCIPAL
     // ===========================

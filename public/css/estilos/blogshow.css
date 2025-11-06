@@ -31,7 +31,7 @@
 }
 
 .breadcrumb-link {
-  color: #0a2533;
+  color: white;
   text-decoration: none;
   font-weight: 600;
   transition: color 0.2s ease;
@@ -46,13 +46,13 @@
 }
 
 .breadcrumb-current {
-  color: #0a2533;
+  color: white;
   font-weight: 400; 
 }
 .breadcrumb {
  
   font-size: clamp(15px, 1.5vw, 24px);
-  color: var(--primary-color);
+  color: var(--white);
   margin: 0;
   font-weight: 600;
 }

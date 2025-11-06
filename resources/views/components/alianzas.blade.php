@@ -25,15 +25,7 @@
                         </div>
                     </div>
                 @endforeach --}}
-                {{-- <img src="https://www.classgoapp.com/storage/optionbuilder/uploads/empresalicen.png" alt="Colegio de Auditores o Contadores Publicos de Santa Cruz">
-                <img src="https://www.classgoapp.com/storage/optionbuilder/uploads/incos.jpg" alt="Incos Santa Cruz">
-                <img src="https://www.classgoapp.com/storage/optionbuilder/uploads/logo%20itjm.jpeg" alt="Instituto Tecnológico Jesús María Fe y Alegría">
-                <img src="https://www.classgoapp.com/storage/optionbuilder/uploads/emi.jpeg" alt="EMI Unidad Académica Santa Cruz">
-                <img src="https://www.classgoapp.com/storage/optionbuilder/uploads/WhatsApp%20Image%202025-05-24%20at%2011.03.44%20AM.jpeg" alt="Accion creativa">
-                <img src="https://www.classgoapp.com/storage/optionbuilder/uploads/danis.jpeg" alt="danis restaurante">
-                <img src="https://www.classgoapp.com/storage/optionbuilder/uploads/empresalicen.png" alt="Gabriel Alpiry Hurtado / Impuestos - Contabilidad - Auditoría">
-                <img src="https://www.classgoapp.com/storage/optionbuilder/uploads/incos.jpg" alt="Tugo academy channel">
-                <img src="Nuestras alianzas/club abierto.jpeg" alt="Club Abierto Tacuara Debate & Oratoria"> --}}
+
                  @foreach($alianzas as $alianza)
                     
                         
@@ -42,22 +34,9 @@
                 @endforeach
             </div>
         </div>
-    {{--<button id="client-prev-button" class="client-carousel-nav-btn prev">
-            <svg xmlns="http://www.w3.org/2000/svg" class="client-carousel-nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
-        </button> 
-        <button id="client-next-button" class="client-carousel-nav-btn next">
-            <svg xmlns="http://www.w3.org/2000/svg" class="client-carousel-nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
-        </button> --}}
+
     </div>
 
-{{--<div id="client-pagination-dots" class="client-pagination-dots-container">
-        <button class="pagination-dot active"></button>
-        <button class="pagination-dot"></button>
-        <button class="pagination-dot"></button>
-        <button class="pagination-dot"></button>
-        <button class="pagination-dot"></button>
-        <button class="pagination-dot"></button>
-    </div> --}}
 </section>
 
 <script>

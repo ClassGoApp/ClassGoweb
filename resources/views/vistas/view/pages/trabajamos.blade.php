@@ -9,7 +9,7 @@
 <section class="trabajamos">
     <div class="trabajamos-container">
 
-        <div class="trabajamos-header">
+        <div class="trabajamos-header fade-down">
             <div class="trabajamos-header-content">
                 <div class="trabajamos-header-text align-left">
                     <nav class="breadcrumb">
@@ -42,7 +42,7 @@
             <!-- Sección 1: Complete sus datos -->
             <div class="trabajamos-section-white">
                 <div class="trabajamos-section-content">
-                    <div class="trabajamos-text">
+                    <div class="trabajamos-text fade-left">
                         <div class="trabajamos-icon">
                             <i class="fa-solid fa-user-plus"></i>
                         </div>
@@ -59,8 +59,8 @@
             <!-- Sección 2: Utilice filtros -->
             <div class="trabajamos-section-white">
                 <div class="trabajamos-section-content reverse">
-
-                    <div class="trabajamos-text">
+                    
+                    <div class="trabajamos-text fade-up">
                         <div class="trabajamos-icon">
                             <i class="fa-solid fa-search"></i>
                         </div>
@@ -77,7 +77,7 @@
             <!-- Sección 3: Elija un horario -->
             <div class="trabajamos-section-primary">
                 <div class="trabajamos-section-content">
-                    <div class="trabajamos-text">
+                    <div class="trabajamos-text fade-left">
                         <div class="trabajamos-icon">
                             <i class="fa-solid fa-calendar-check"></i>
                         </div>
@@ -103,7 +103,7 @@
             <div class="trabajamos-section-primary">
                 <div class="trabajamos-section-content reverse">
 
-                    <div class="trabajamos-text">
+                    <div class="trabajamos-text fade-up">
                         <div class="trabajamos-icon">
                             <i class="fa-solid fa-clock"></i>
                         </div>
@@ -121,7 +121,7 @@
             <!-- Sección 5: Complete formulario -->
             <div class="trabajamos-section-white">
                 <div class="trabajamos-section-content">
-                    <div class="trabajamos-text">
+                    <div class="trabajamos-text fade-left">
                         <div class="trabajamos-icon">
                             <i class="fa-solid fa-star"></i>
                         </div>
@@ -142,7 +142,7 @@
             <!-- Contenido para tutores (similar estructura) -->
             <div class="trabajamos-section-white">
                 <div class="trabajamos-section-content">
-                    <div class="trabajamos-text">
+                    <div class="trabajamos-text fade-left">
                         <div class="trabajamos-icon">
                             <i class="fa-solid fa-user-plus"></i>
                         </div>
@@ -162,7 +162,7 @@
                     <div class="trabajamos-image">
                         <img src="{{ asset('images/home/Tugo_With_Glasses2.webp') }}" alt="Tutor completando perfil">
                     </div>
-                    <div class="trabajamos-text">
+                    <div class="trabajamos-text fade-up">
                         <div class="trabajamos-icon">
                             <i class="fa-solid fa-user-plus"></i>
                         </div>
@@ -177,7 +177,7 @@
             <!-- Sección 3 Revisar -->
             <div class="trabajamos-section-primary">
                 <div class="trabajamos-section-content">
-                    <div class="trabajamos-text">
+                    <div class="trabajamos-text fade-left">
                         <div class="trabajamos-icon">
                             <i class="fa-solid fa-calendar-check"></i>
                         </div>
@@ -196,7 +196,7 @@
             <div class="trabajamos-section-primary">
                 <div class="trabajamos-section-content reverse">
 
-                    <div class="trabajamos-text">
+                    <div class="trabajamos-text fade-up">
                         <div class="trabajamos-icon">
                             <i class="fa-solid fa-camera"></i>
                         </div>
@@ -243,6 +243,22 @@
                 document.getElementById(targetTab + '-content').classList.add('active');
             });
         });
+    });
+         
+    // ===========================
+    // 1. ANIMACIONES AL HACER SCROLL
+    // ===========================
+    const scrollObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('show');
+            }
+        });
+    }, { threshold: 0.2 });
+
+    // Observar elementos con clases de animación
+    document.querySelectorAll('.fade-up, .fade-left, .fade-right, .fade-down').forEach(el => {
+        scrollObserver.observe(el);
     });
 </script>
 @endsection

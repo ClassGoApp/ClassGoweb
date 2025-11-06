@@ -142,7 +142,6 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
     Route::view('/como-trabajamos', 'vistas.view.pages.trabajamos')->name('como-trabajamos');
     Route::view('/preguntas', 'vistas.view.pages.preguntas')->name('preguntas');
     Route::get('/tutores/{slug}', [HomeController::class, 'tutor'])->name('tutor');
-    Route::view('/desarrolladores', 'vistas.view.pages.desarrolladores')->name('desarrolladores');
     Route::get('/tutors', [HomeController::class, 'buscarTutor'])->name('buscar.tutor'); //<---ojo
     Route::get('/buscar', [HomeController::class, 'buscar'])->name('buscar');
     Route::view('/modal', 'vistas.view.pages.modals.modal-reserva')->name('modal');

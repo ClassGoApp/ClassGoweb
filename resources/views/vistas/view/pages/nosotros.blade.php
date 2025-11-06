@@ -8,9 +8,9 @@
 <!--NOSOTROS-->
 <section class="nosotros">
     <div class="nosotros-container">
-        <div class="nosotros-header">
-            <div class="nosotros-header-content">
-                <div class="nosotros-header-text">
+        <div class="nosotros-header fade-down">
+            <div class="nosotros-header-content ">
+                <div class="nosotros-header-text fade-left">
                     <nav class="breadcrumb">
                         <a href="{{ route('home') }}" class="breadcrumb-link"><span data-translate="ini_n"></span></a> / <span class="breadcrumb-current" data-translate="i_nos"></span>
                     </nav>
@@ -26,7 +26,7 @@
         </div>
 
         <div class="nosotros-mision" id="mision">
-            <div class="nosotros-mision-text">
+            <div class="nosotros-mision-text fade-left">
                 <h2 class="nosotros-mision-title" data-translate="mision"></h2>
                 <p class="nosotros-mision-text-general1" data-translate="plataforma_d_educacion">
                 </p>
@@ -50,7 +50,7 @@
                 <img src="{{ asset('images/home/vision.webp') }}"
                     alt="Visión ClassGo" class="tugo-image">
             </div>
-            <div class="nosotros-vision-text">
+            <div class="nosotros-vision-text fade-right">
                 <h2 class="nosotros-vision-title" data-translate="vision"></h2>
                 <p class="nosotros-vision-subtext" data-translate="ser_plataforma_lider">
                 </p>
@@ -71,7 +71,8 @@
 
     <div class="alianzas-eventos-grid">
         @foreach($alianzas as $alianza)
-            <div class="alianza-evento-card animate-in">
+            <div class="fade-up">
+            <div class="alianza-evento-card">
                 <img 
                     src="{{ $alianza->imagen ? asset('storage/' . $alianza->imagen) : asset('images/tutors/default.png') }}" 
                     alt="Imagen de {{ $alianza->titulo }}" 
@@ -84,6 +85,7 @@
                         Visitar sitio
                     </button>
                 </div>
+            </div>
             </div>
         @endforeach
     </div>
@@ -99,7 +101,7 @@
             </div>
 
             <div class="team-grid">
-                <div class="team-member first-card">
+                <div class="team-member first-card fade-up">
                     <div class="member-item">
                         <div class="member-photo-wrapper">
                             <img src="{{ asset('images/team/gabriel.jpeg')}}" alt="Foto de Gabriel Alpiry Hurtado" class="member-photo">
@@ -112,7 +114,7 @@
                     <p class="member-title">CEO & Founder</p>
                 </div>
 
-                <div class="team-member">
+                <div class="team-member fade-up">
                     <div class="member-item">
                         <div class="member-photo-wrapper">
                             <img src="{{ asset('images/team/daniel.webp')}}" alt="Foto de Daniel" class="member-photo">
@@ -125,7 +127,7 @@
                     <p class="member-title" data-translate="jefi_rol"></p>
                 </div>
 
-                <div class="team-member">
+                <div class="team-member fade-up">
                     <div class="member-item">
                         <div class="member-photo-wrapper">
                             <img src="{{ asset('images/team/alvaro.webp')}}" alt="Foto de Alvaro Rojas" class="member-photo">
@@ -138,7 +140,7 @@
                     <p class="member-title" data-translate="jefi_movil_rol"></p>
                 </div>
 
-                <div class="team-member">
+                <div class="team-member fade-up">
                     <div class="member-item">
                         <div class="member-photo-wrapper">
                             <img src="{{ asset('images/team/carlos.webp')}}" alt="Foto de Carlos Mamani Torrez" class="member-photo">
@@ -151,7 +153,7 @@
                     <p class="member-title" data-translate="jefi_Fdeveloper_rol"></p>
                 </div>
 
-                <div class="team-member">
+                <div class="team-member fade-up">
                     <div class="member-item">
                         <div class="member-photo-wrapper">
                             <img src="{{ asset('images/team/jhonny.webp')}}" alt="Foto de Jhonny Durán" class="member-photo">
@@ -171,4 +173,22 @@
 
 
 </section>
+
+<script>
+     // ===========================
+    // 1. ANIMACIONES AL HACER SCROLL
+    // ===========================
+    const scrollObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('show');
+            }
+        });
+    }, { threshold: 0.2 });
+
+    // Observar elementos con clases de animación
+    document.querySelectorAll('.fade-up, .fade-left, .fade-right, .fade-down').forEach(el => {
+        scrollObserver.observe(el);
+    });
+</script>
 @endsection

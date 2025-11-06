@@ -49,19 +49,41 @@
 body {
   background: white !important;
 }
-@keyframes salto {
-  0% { transform: translateY(0); }
-  40% { transform: translateY(-10px); }
-  60% { transform: translateY(5px); }
-  80% { transform: translateY(-3px); }
-  100% { transform: translateY(0); }
-}
 
 @keyframes palpitar {
   0% {
     transform: scale(1);
     opacity: 1;
   }
+
+  5% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+
+  /* primer latido */
+  10% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+
+  15% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+
+  /* segundo latido */
+  20% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  /* pausa larga */
 }
 @keyframes sombraCeleste {
 
@@ -86,6 +108,7 @@ body {
   background-repeat: no-repeat;
   background-position: center calc(100% + 250px);
   background-size: 100% auto;
+  border-radius: 0 0 5rem 5rem;
   
 }
 
@@ -585,6 +608,7 @@ body {
   text-align: center;
   background: var(--panel-background) !important;
   line-height: 35px;
+  border-radius: 10px;
 }
 
 
@@ -1163,7 +1187,7 @@ body {
 /**---============ 5.1 - Busvador Contenedor principal ============---**/
 .tutorias {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: row;
   align-items: center;
   justify-content: space-between;
   margin: 0rem auto;
@@ -1551,12 +1575,28 @@ body {
   transform: translateY(0);
   animation: fadeInUp 0.8s ease-out forwards;
 }
-
+/* Aparece desde arriba 👇 */
+.fade-down {
+  opacity: 0;
+  transition: all 0.8s ease;
+  transform: translateY(-40px);
+}
+.fade-down.show {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+.nosotros-header {
+  background: var(--secundary-color);
+  border-bottom-left-radius: 50px;
+  border-bottom-right-radius: 50px;
+  padding-bottom: 20px;
+  width: 100%;
+}
 /*==Estado inicial: oculto y desplazado de extremos==*/
 .fade-left,
 .fade-right {
   opacity: 0;
-  transition: all 0.8s ease-out;
+  transition: all 1s ease-out;
 }
 
 /* Desde la izquierda */
@@ -1711,6 +1751,7 @@ body {
     padding: 1rem 0.5rem;
     align-items: center;
     text-align: center;
+    
   }
 
   .img-container-3D {
@@ -2071,6 +2112,7 @@ body {
     align-items: center;
     padding: 1rem 10rem;
     overflow: hidden;
+    transform: translateX(9px);
     /* evita desbordes horizontales */
   }
 
