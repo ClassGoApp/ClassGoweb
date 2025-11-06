@@ -71,6 +71,7 @@
 
             <div class="alianzas-eventos-grid">
                 @foreach($alianzas as $alianza)
+                    <div class="fade-up">
                     <div class="alianza-evento-card animate-in">
                         <img 
                             src="{{ $alianza->imagen ? asset('storage/' . $alianza->imagen) : asset('images/tutors/default.png') }}" 
@@ -84,6 +85,7 @@
                                 Visitar sitio
                             </button>
                         </div>
+                    </div>
                     </div>
                 @endforeach
             </div>
