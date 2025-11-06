@@ -21,11 +21,6 @@
 </section>
 
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-  const track = document.querySelector('#client-carousel-track');
-  if (!track) return;
-
-
   document.addEventListener('DOMContentLoaded', () => {
     const track = document.querySelector('#client-carousel-track');
     if (!track) return;
@@ -84,4 +79,3 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
 </script>
-
