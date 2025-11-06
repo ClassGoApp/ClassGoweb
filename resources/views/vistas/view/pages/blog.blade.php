@@ -7,6 +7,7 @@
 @section('content')
 
 
+
     <section class="seccion-blog">
         <div class="contenido-blog">
 
@@ -16,27 +17,16 @@
                         <h1 data-translate="ideas">Ideas y consejos de expertos para estudiantes de por vida</h1>
                         <h2 data-translate="Acceda">Acceda a informacion valiosa, consejos de expertos y sugerencias de nuestra activa comunidad de tutores.
                         </h2>
-                        <div class="filtro">
-                            <span class=filtro-blog-icon>
-                                <svg class="buscartutor-search-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-                                    fill="currentColor">
-
-                                    <path fill-rule="evenodd"
-                                        d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z"
-                                        clip-rule="evenodd">
-                                    </path>
-
-                                </svg>
-                            </span>
-                            <input class="filtro-blog-input" type="text" placeholder="Buscar por palabra clave">
-                            <button class="button-buscar"><span data-translate="bus">Buscar</span></button>
+                       
+                        <livewire:blog-search />
+                        <div class="logo-tugo-megafono">
+                            <img src="{{ asset('images/home/blogs/Community-Management.png') }}" alt="togo">
                         </div>
-                    </div>
-                    <div class="logo-tugo-megafono">
-                        <img src="{{ asset('images/home/blogs/Community-Management.png') }}" alt="togo">
-                    </div>
 
+                    </div>
                 </div>
+
+                <livewire:blogs-filter />
             </div>
             <header class="blog-section">
                 <h2 class="todos-blogs" data-translate="td_bl">Todos los blogs</h2>
@@ -110,7 +100,8 @@
     </section>
 
 
-    {{-- <script src="{{ asset('js/blog.js') }}"></script> --}}
+
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             // Verificar que existan elementos con tags
@@ -165,4 +156,7 @@
             });
         });
     </script>
+    
+
+
 @endsection

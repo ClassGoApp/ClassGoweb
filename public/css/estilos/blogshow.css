@@ -52,7 +52,7 @@
 .bread {
  
   font-size: clamp(15px, 1.5vw, 24px);
-  color: var(--primary-color);
+  color: var(--white);
   margin: 0;
   font-weight: 600;
 }

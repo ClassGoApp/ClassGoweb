@@ -26,15 +26,6 @@
 }
 
 /* ==================== 2 - Nosotros Header ==================== */
-.nosotros-header {
-  background: var(--secundary-color);
-  border-bottom-left-radius: 50px;
-  border-bottom-right-radius: 50px;
-  padding-bottom: 20px;
-  width: 100%;
-}
-
-
 .nosotros-header-content {
   background: var(--bg-gradient2);
   border-bottom-left-radius: 40px;
@@ -340,48 +331,50 @@
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 30px;
   max-width: 1200px;
-  margin: 0 auto
+  margin: 0 auto;
+  align-items: stretch;
 }
 
 /* --- TARJETAS --- */
 .alianza-evento-card {
+  position: relative;
   display: flex;
   flex-direction: column;
   background: var(--bg-gradient2);
   border-radius: 20px;
-  overflow: visible;
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
   width: 100%;
   max-width: 370px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
   align-items: center;
+  padding-top: 70px; /* espacio para el logo sobresaliente */
+  overflow: visible; /* mantiene el botón dentro */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  min-height: 400px;
   margin: 5%;
 }
-
 .alianza-evento-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 8px 25px rgba(255, 255, 255, 0.274);
+  transform: translateY(-8px);
+  box-shadow: 0 12px 30px rgba(133, 255, 249, 0.3);
 }
 
 /* --- IMAGEN --- */
 .alianza-evento-imagen {
-  position: relative;
-  object-fit: cover;
-  top: -7%;
-}
-.client-logo {
+  position: absolute;
+  top: -45px; /* sobresale por arriba */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
   width: 8rem;
-  /* 128px */
   height: 8rem;
   border-radius: 50%;
   border: 4px solid var(--secundary-color);
   object-fit: cover;
+  background: var(--bg-gradient3);
   transition: all 0.3s ease;
-
 }
 
 .client-logo:hover {
-  transform: translateY(-8px) scale(1.05);
+  transform: translateX(-50%) translateY(-5px) scale(1.05);
 }
 
 /* --- CONTENIDO --- */
@@ -457,21 +450,9 @@
   text-align: left;
   color: #fff;
   align-items: center;
-}
-
-.alianza-evento-info h3 {
-  font-size: 1.2rem;
-  font-weight: 700;
-  margin-bottom: 10px;
-  color: #ffffff;
-}
-
-.alianza-descripcion {
-  color: #dce8ee;
-  font-size: 0.95rem;
-  line-height: 1.5;
+  padding: 20px;
+  height: 100%;
   flex-grow: 1;
-  margin-bottom: 20px;
 }
 
 /* --- BOTÓN --- */
@@ -481,10 +462,10 @@
   font-weight: 600;
   border: none;
   border-radius: 30px;
-  padding: 10px 20px;
-  width: 50%;
+  padding: 10px 25px;
   cursor: pointer;
   transition: all 0.5s ease;
+  margin-top: auto; /* lo empuja al fondo */
 }
 
 /* --- RESPONSIVE --- */
@@ -534,8 +515,11 @@
 
   .alianzas-eventos-grid {
     grid-template-columns: 1fr;
-    gap: 40px;
+    gap: 55px;
     justify-items: center;
+  }
+  .section-header {
+    padding-bottom: 20px;
   }
 
   .alianza-evento-card {
@@ -550,16 +534,17 @@
   }
 
   .alianza-evento-imagen {
-    top: -60px; /* reduce el sobresaliente en móviles */
+    top: -50px; /* reduce el sobresaliente en móviles */
   }
 
   .alianza-evento-info {
     padding: 15px;
     height: 70%;
+    padding-bottom: 10px;
   }
 
   .btn-blanco {
-    width: 80%;
+    max-width: 80%;
   }
 }
 

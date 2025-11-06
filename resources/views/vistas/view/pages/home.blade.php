@@ -37,7 +37,11 @@
             </div>
 
             <!-- 1.4 Hero Mascota -->
-            <img src="{{ asset(path: 'storage/optionbuilder/uploads/740102-17-2025_0859pmTugo-saludando.gif') }}" alt="Mascota ClassGo">
+
+            <img src="{{ asset(path: 'storage/optionbuilder/uploads/740102-17-2025_0859pmTugo-saludando.webp') }}" alt="Mascota ClassGo">
+
+
+
         </div>
     </div>
 
@@ -104,6 +108,8 @@
 
 </section>
 
+
+
 <!--TUTORES DESTACADOS-->
 <section class="tutors-container fade-up">
     <h1 class="over-text">
@@ -114,7 +120,19 @@
 
     @include('vistas.view.pages.components.home.card-tutor-destacado')
 </section>
+<!--CARRUSEL ANIMADO TUGO-->
+<section class="tugo-carousel fade-up">
+  <div class="tugo-container">
+    <div class="text-zone">
+      <p class="intro-text">Con ClassGo aprendes...</p>
+      <div class="animated-word" id="animatedWord">Idiomas</div>
+    </div>
 
+    <div class="mascot-panel">
+      <img id="mascot" class="mascot" src="/images/tugos-skin/Interpretación-y-Traducción-de-Idiomas.webp" alt="Tugo">
+    </div>
+  </div>
+</section>
 
 <!--CARRUSEL ANIMADO TUGO-->
 {{-- <section class="tugo-carousel fade-up">
@@ -183,44 +201,51 @@
         <div class="grid-app">
 
       <!-- Columna Izquierda: Contenido de texto -->
+      <div class="fade-left">
       <div class="text-app">
-        <p data-translate="facil_simple_rapido"></p>
-        <h1 data-translate="instala_app"></h1>
-        <p data-translate="comienza_viaje_educativo"></p>
+            <p data-translate="facil_simple_rapido"></p>
+            <h1 data-translate="instala_app"></h1>
+            <p data-translate="comienza_viaje_educativo"></p>
 
-        <!-- Lista de características -->
-        <ul class="list-app">
-          <li>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-            </svg>
-            <span data-translate="acceso"></span>
-          </li>
-          <li>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-            </svg>
-            <span data-translate="tutores_expertos"></span>
-          </li>
-          <li>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-            </svg>
-            <span data-translate="tarifas_asequibles"></span>
-          </li>
-        </ul>
-
+            <!-- Lista de características -->
+            <ul class="list-app">
+            <li>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
+                <span data-translate="acceso"></span>
+            </li>
+            <li>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
+                <span data-translate="tutores_expertos"></span>
+            </li>
+            <li>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
+                <span data-translate="tarifas_asequibles"></span>
+            </li>
+            </ul>
+            <!-- Botón -->
+            <div>
+                <a href="https://play.google.com/store/apps/details?id=com.neurasoft.classgo" target="_blank" class="btn-app"> Descargar Ahora </a> 
+            </div>
         
-      </div>
-      <!-- Columna Derecha: Imagen -->
+        </div>
+        </div>
+            <!-- Columna Derecha: Imagen -->
                         
-        <div class="image-app">
-                    <img
-                        src="{{ asset('images/home/tugo-cel.gif')}}"
-                        alt="ClassGo"onerror="this.onerror=null;this.src='https://placehold.co/400x800/023047/FFFFFF?text=App';">
+            <div class="image-app">
+                        <img
+                            src="{{ asset('images/home/tugo-cel-optimizado.webp')}}"
+                            alt="ClassGo"onerror="this.onerror=null;this.src='https://placehold.co/400x800/023047/FFFFFF?text=App';">
+            </div>
         </div>
-        </div>
+
     </div>
+
     
 </section>
 
@@ -230,6 +255,7 @@
 <section class="tutorias-container fade-up">
     <div class="tutorias">
         <!-- Texto -->
+        <div class="fade-left">
         <div class="tutores-text">
             <p class="tutores-text-encima" data-translate="buscas_tutorias"></p>
             <h1 data-translate="conectamos_tutores"></h1>
@@ -240,6 +266,7 @@
             </a>
 
 
+        </div>
         </div>
         <!-- Imagen -->
         <div class="carousel-3D">
@@ -284,10 +311,49 @@
     </div>
 
 </section>
-
+<!--------animacion skin----->
 <script>
+const words = [
+  
+  {text: "Química", img: "/images/tugos-skin/Química-General.webp"},
+  {text: "Física", img: "/images/tugos-skin/Física-Aplicada.webp"},
+  {text: "Matemáticas", img: "/images/tugos-skin/Cálculo.webp"},
+  {text: "Programación", img: "/images/tugos-skin/Inteligencia-de-Software-26.webp"},
+  {text: "Arte y edición", img: "/images/tugos-skin/Producción-Audiovisual-Para-Plataformas-Digitales.webp"},
+  {text: "Electricidad y Electromecánica", img: "/images/tugos-skin/Robótica-y-Automatización.webp"},
+  {text: "Idiomas", img: "/images/tugos-skin/Interpretación-y-Traducción-de-Idiomas.webp"},
+  {text: "Creación de Contenidos", img: "/images/tugos-skin/Tugo-influencer.webp"},
+  {text: "Mecánica Automotriz", img: "/images/tugos-skin/Mecánica-Automotriz-Básica.webp"},
+  {text: "Contabilidad", img: "/images/tugos-skin/Modelación-Financiera.webp"},
+];
+
+const animatedWord = document.getElementById("animatedWord");
+const mascot = document.getElementById("mascot");
+let i = 0;
+
+function changeWord() {
+  animatedWord.classList.remove("fade-in");
+  animatedWord.style.opacity = 0;
+  mascot.classList.add("fade");
+
+  setTimeout(() => {
+    animatedWord.textContent = words[i].text;
+    mascot.src = words[i].img;
+
+    animatedWord.style.animation = "none";
+    void animatedWord.offsetWidth; // reinicia la animación
+    animatedWord.style.animation = "fadeSlide 1s forwards";
+
+    mascot.classList.remove("fade");
+
+    i = (i + 1) % words.length;
+  }, 500);
+}
+
+
+setInterval(changeWord, 2500);
+
 document.addEventListener('DOMContentLoaded', function() {
-    'use strict';
 
     // ===========================
     // 1. ANIMACIONES AL HACER SCROLL
@@ -301,7 +367,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }, { threshold: 0.2 });
 
     // Observar elementos con clases de animación
-    document.querySelectorAll('.fade-up, .fade-left, .fade-right').forEach(el => {
+    document.querySelectorAll('.fade-up, .fade-left, .fade-right, .fade-down').forEach(el => {
         scrollObserver.observe(el);
     });
 
@@ -340,6 +406,7 @@ document.addEventListener('DOMContentLoaded', function() {
             textos.forEach((texto) => textObserver.observe(texto));
         }
     };
+
 
     // ===========================
     // 4. CARRUSEL DE TUTORES
@@ -391,7 +458,6 @@ document.addEventListener('DOMContentLoaded', function() {
             moveToSlide(cardIndex);
         });
 
-        // Redimensionamiento de ventana
         window.addEventListener('resize', () => {
             cardsPerView = getCardsPerView();
             cardIndex = 0;
