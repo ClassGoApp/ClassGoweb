@@ -307,7 +307,6 @@
 }
 
 /* ==================== 6 - Nosotros Convenios ==================== */
-
 .alianzas-eventos-section {
   padding: 30px 30px;
   background: var(--bg-gradient3);
@@ -442,21 +441,6 @@
 .alianza-evento-card:hover {
   transform: translateY(-6px);
   box-shadow: 0 8px 25px rgba(255, 255, 255, 0.274);
-}
-
-.nosotros-card .card img {
-  width: 120px;
-  height: 120px;
-  object-fit: contain;
-  margin-bottom: 1rem;
-  border-radius: 10px;
-  background: #fff;
-  border: none;
-  border-radius: 30px;
-  padding: 15px 20px;
-  width: 50%;
-  cursor: pointer;
-  transition: all 0.5s ease;
 }
 
 .client-logo:hover {

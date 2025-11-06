@@ -89,9 +89,7 @@
             </div>
         </div>
 
-
-
-        <!-- SECCION aliazas end -->
+        <!-- SECCION TEAM-->
         <div class="team-section">
             <div class="team-header">
                 <h1 class="team-title" data-translate="team"></h1>
