@@ -298,7 +298,6 @@
 }
 
 /* ==================== 6 - Nosotros Convenios ==================== */
-
 .alianzas-eventos-section {
   padding: 30px 30px;
   background: var(--bg-gradient3);
@@ -383,7 +382,72 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  text-align: justify;
+  flex-grow: 1;
+  padding: 0rem 2rem 2rem 2rem;
+  text-align: left;
+  color: #fff;
+  align-items: center;
+}
+
+.alianza-evento-info h3 {
+  font-size: 1.2rem;
+  color: #0a3643;
+  margin-bottom: 0.6rem;
+  margin-top: 0;
+}
+
+.section-header .over-text-nosotros {
+  font-size: 2.5em;
+  color: white;
+}
+
+.section-description-nosotros {
+  color: #dce7ee;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* --- GRID --- */
+.alianzas-eventos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto
+}
+
+/* --- TARJETAS --- */
+.alianza-evento-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-gradient2);
+  border-radius: 20px;
+  overflow: visible;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+  width: 100%;
+  max-width: 370px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  align-items: center;
+  margin: 5%;
+}
+
+.alianza-evento-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 25px rgba(255, 255, 255, 0.274);
+}
+
+.client-logo:hover {
+  transform: translateY(-8px) scale(1.05);
+}
+
+/* --- CONTENIDO --- */
+.alianza-evento-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1;
+  padding: 22px;
+  text-align: left;
   color: #fff;
   align-items: center;
   padding: 20px;
@@ -404,9 +468,43 @@
   margin-top: auto; /* lo empuja al fondo */
 }
 
-.btn-blanco:hover {
-  background: #185875;
-  color: var(--white);
+/* --- RESPONSIVE --- */
+@media (max-width: 768px) {
+  .alianzas-eventos-section {
+    padding: 20px;
+  }
+
+  .alianzas-eventos-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    justify-items: center;
+  }
+
+  .alianza-evento-card {
+    max-width: 90%;
+    margin: 0 auto;
+    padding-top: 40px;
+  }
+
+  .client-logo {
+    width: 6rem;
+    height: 6rem;
+  }
+
+  .alianza-evento-imagen {
+    top: -60px; /* reduce el sobresaliente en móviles */
+
+  }
+
+  .alianza-evento-info {
+    padding: 15px;
+    height: 70%;
+    margin-top: -50px;
+  }
+
+  .btn-blanco {
+    width: 80%;
+  }
 }
 
 /* --- RESPONSIVE --- */

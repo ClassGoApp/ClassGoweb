@@ -7,13 +7,13 @@
 @section('content')
     <div class="content-blog-padre">
         <div class="header-blog-menu"></div>
-        <div class="content-breadcrumb">
-            <nav class="breadcrumb-list">
-                <a class="breadcrumb" href="{{ url('/') }}" class="breadcrumb-link">Inicio</a>
-                <span class="breadcrumb-separator">/</span>
-                <a class="breadcrumb" href="{{ route('blogs.index') }}" class="breadcrumb-link">Blog</a>
-                <span class="breadcrumb-separator">/</span>
-                <span class="breadcrumb">{{ $categories->first()->name ?? 'Lorem' }}</span>
+        <div class="content-bread">
+            <nav class="bread-list">
+                <a class="bread" href="{{ url('/') }}" class="bread-link">Inicio</a>
+                <span class="bread-separator">/</span>
+                <a class="bread" href="{{ route('blogs.index') }}" class="bread-link">Blog</a>
+                <span class="bread-separator">/</span>
+                <span class="bread">{{ $categories->first()->name ?? 'Lorem' }}</span>
             </nav>
         </div>
         <div class="content-blog-individual">
