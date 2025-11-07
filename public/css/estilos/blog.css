@@ -34,8 +34,6 @@
   align-items: center; 
   padding: 9.5rem 5rem 1rem 5rem;
   color: white;
-
-  /* gap: 2rem;                 espacio entre texto e imagen */
 }
 
 .information {
@@ -43,9 +41,9 @@
   max-width: 100%; 
 }
 .information h1 {
-font-size: 3rem;           /* tamaño grande uniforme */
-  font-weight: 700;          /* grosor consistente */
-  line-height: 1.2; 
+  font-size: 3.5rem; 
+  font-weight: 700; 
+  line-height: 1.2;
 }
 
 .information h2 {
@@ -214,33 +212,33 @@ font-size: 3rem;           /* tamaño grande uniforme */
   background: var(--panel-background);
   width: 100%;
   padding: 0px 80px 80px 80px;
-
   opacity: 1;
   transform: scale(1);
   transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
 }
 
-/* Estilo de cada cards */
-.cards {
-  /* width: 100%; */
-  height: auto;
-  padding: 0.3rem;
-  background: white;
-  border-radius: 25px;
-  max-width: 1512px;
-  box-sizing: border-box;
-  overflow: hidden;
-   box-shadow: 0 20px 25px -5px rgba(209, 213, 219, 0.6), 
-                0 8px 10px -6px rgba(209, 213, 219, 0.6);
+
+.content-cards.fade-out {
+  opacity: 0;
+  transform: scale(0.97);
+}
+
+
+.content-cards.fade-in {
+  opacity: 1;
+  transform: scale(1);
+}
+.contendor-livewire-blogs {
+  width: 100%;
+  background: var(--panel-background);
 }
 
 .blog-section {
   display: flex;
   width: 100%;
   background-color: var(--panel-background);
-  justify-content: space-between; /* separa los elementos a lados opuestos */
-  align-items: center; /* centra verticalmente */
-  /*flex-wrap: wrap; /* permite que bajen en pantallas pequeñas */
+  justify-content: space-between; 
+  align-items: center; 
   gap: 15px;
   padding: 40px 20px;
 }
@@ -298,7 +296,7 @@ font-size: 3rem;           /* tamaño grande uniforme */
 
 /* Estilo de cada cards */
 .cards {
-  background: var(--secundary-color2);
+  background: white;
   border-radius: 15px;
   box-shadow: 8px 8px 6px var(--primary-color);
   max-width: 368px;
@@ -357,19 +355,17 @@ font-size: 3rem;           /* tamaño grande uniforme */
 
 .cards .img {
   width: 100%;
-  height: auto;
-  padding: 0.7rem;
+  padding: 8px;
   border-radius: 25px;
   overflow: hidden;
 }
 .cards .img img {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 1.2rem;
-}
-.info-card-blog{
-  padding: 0rem 1rem;
+  min-height: 300px;
+  height: 300px;
+  object-fit: fill;
+  border-radius: 10px;
+  aspect-ratio: 16/9;
 }
 .categoria {
   min-width: 266px;
@@ -377,38 +373,43 @@ font-size: 3rem;           /* tamaño grande uniforme */
   height: 4%;
   color: #9198a5;
   font-size: 13px;
-  padding-bottom: 0.5rem;
+  padding: 0px 15px;
+  margin: 0 0 5px;
 }
 
 .title-cards {
   height: auto;
-  display: flex; /* 🔹 Coloca el título y el ícono en la misma fila */
-  align-items: center; /* 🔹 Centra verticalmente */
-  justify-content: space-between; /* 🔹 Separa el texto e ícono a extremos opuestos */
-  gap: 10px; /* 🔹 Espacio entre el texto y el ícono */
-
+  display: flex; 
+  align-items: center;
+  justify-content: space-between; 
+  gap: 10px; 
+  margin-bottom: 6px;
 }
 
 .titulo {
   font-weight: 700;
-  color: var(--primary-color); /* tono oscuro como en la imagen */
+  color: var(--primary-color); 
   line-height: 1.3;
-  /*flex: 1; /* 🔹 Permite que el texto ocupe el espacio sobrante */
-  display: -webkit-box; /* crea una caja flexible */
-  -webkit-box-orient: vertical; /* orienta el texto en vertical */
-  -webkit-line-clamp: 2; /* número de líneas visibles */
-  overflow: hidden; /* oculta el resto */
-  text-overflow: ellipsis; /* agrega "..." al final */
+  padding: 0px 15px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical; 
+  -webkit-line-clamp: 2; 
+  overflow: hidden; 
+  text-overflow: ellipsis; 
   line-clamp: 2;
 }
 
 .cards .descripcion {
-  color: #9198a5;
-  display: -webkit-box; /* crea una caja flexible */
-  -webkit-box-orient: vertical; /* orienta el texto en vertical */
-  -webkit-line-clamp: 4; /* número de líneas visibles */
-  line-clamp: 4; /* soporte estándar */
-  overflow: hidden; /* oculta el resto */
+  color:#9198a5 ;
+  height: 102px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-bottom: 10px;
+  display: -webkit-box; 
+  -webkit-box-orient: vertical; 
+  -webkit-line-clamp: 4;
+  line-clamp: 4; 
+  overflow: hidden;
   text-overflow: ellipsis;
   padding-bottom: 2rem;
 }
@@ -560,6 +561,12 @@ font-size: 3rem;           /* tamaño grande uniforme */
     padding: 0px 10px;
   }
   .title-cards {
+    margin-top: 5px;
+  }
+  .cards {
+    width: 350px;
+    height: auto;
+    margin: auto;
   }
 
   .cards .descripcion {

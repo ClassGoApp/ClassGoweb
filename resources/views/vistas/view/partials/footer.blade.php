@@ -14,7 +14,7 @@
                     </a>
                 </div>
                 @auth
-                <a href=" {{ route('buscar.tutor')}}"><button class="btn-registrate"><span data-translate="buscar_tutor"></span></button></a>
+                <a href=" {{ route('buscar')}}"><button class="btn-registrate"><span data-translate="buscar_tutor"></span></button></a>
                 @endauth
                 @guest
                 <a href=" {{ route('register')}}"><button class="btn-registrate"><span data-translate="registrate_gratis"></span></button></a>
@@ -24,7 +24,7 @@
             <div class="footer-about"> <!--List about-->
                 <div class="box">
                     <h1 data-translate="tutors"></h1>
-                    <a href=" {{ route('buscar.tutor')}}">
+                    <a href=" {{ route('buscar')}}">
                         <p data-translate="tutores_en_linea"></p>
                     </a>
 
@@ -35,7 +35,7 @@
                     <a href=" {{ route('register')}}">
                         <p data-translate="registrate"></p>
                     </a>
-                    <a href="{{ route('buscar.tutor')}}">
+                    <a href="{{ route('buscar')}}">
                         <p data-translate="encontrar_tutor"></p>
                     </a>
                 </div>
