@@ -41,13 +41,13 @@
                     <span class="nosotros-porcentaje-subtext" data-translate="tutorias_disponibles">
                     </span>
                 </p>
-                <img src="{{ asset('images/home/mision.webp') }}" alt="Misión ClassGo" class="tugo-image">
+                <img src="{{ asset('images/home/models/img1.webp') }}" alt="Misión ClassGo" class="tugo-image">
             </div>
         </div>
 
         <div class="nosotros-vision" id="vision">
             <div class="vision-image">
-                <img src="{{ asset('images/home/vision.webp') }}"
+                <img src="{{ asset('images/home/models/img2.webp') }}"
                     alt="Visión ClassGo" class="tugo-image">
             </div>
             <div class="nosotros-vision-text fade-right">

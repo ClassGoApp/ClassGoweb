@@ -310,47 +310,61 @@ public function getTutors($data = array()) {
             ->whereHas('roles', function($q) {
                 $q->where('name', 'tutor');
             })
+            // CRITERIO 1: Solo verificados
             ->whereHas('profile', function ($query) {
                 $query->whereNotNull('verified_at');
             })
+            // CRITERIO 2: Solo con materias registradas en user_subjects
+            ->whereHas('userSubjects', function($query) {
+                $query->whereHas('subject'); // Asegurar que la materia existe
+            })
+            // CRITERIO 3: Solo con cursos completados o activos
+            //->whereHas('companyCourseUsers')
             
-            // Solo tutores con al menos un registro en companyCourseUsers
-            ->whereHas( 'companyCourseUsers')
-            ->whereHas('subjects.group')
-
             ->with([
                 'profile:id,user_id,slug,tagline,verified_at,first_name,last_name,image,intro_video,description',
                 'address.state',
                 'address.country',
-                'educations',
-                'subjects:id,subject_group_id,name',
-                'userSubjectSlots'
+                'userSubjects.subject:id,name,subject_group_id,description',
+                'userSubjects.subject.group:id,name'
             ])
             ->withCount([
+                // Materias activas que realmente enseña
+                'userSubjects as subjects_count' => function($query) {
+                    $query->whereHas('subject');
+                },
                 'bookingSlots as active_students' => function($query){
                     $query->whereStatus('active');
                 },
-                'companyCourseUsers',
                 'companyCourseUsers as completed_courses_count' => function($query){
                     $query->where('status', 'completed');
-                }
+                },
+                'reviews as total_reviews'
             ])
             ->withAvg('reviews as avg_rating', 'rating')
-            ->withCount('reviews as total_reviews')
-            // Gabriel Alpiry Hurtado siempre primero
+            
+            // CRITERIO 4: Gabriel siempre primero
             ->orderByRaw(
-                "CASE WHEN EXISTS (\n                SELECT 1 FROM profiles p WHERE p.user_id = users.id AND p.first_name = ? AND p.last_name = ?\n            ) THEN 0 ELSE 1 END",
+                "CASE WHEN EXISTS (
+                    SELECT 1 FROM profiles p 
+                    WHERE p.user_id = users.id 
+                    AND p.first_name = ? 
+                    AND p.last_name = ?
+                ) THEN 0 ELSE 1 END",
                 ['Gabriel', 'Alpiry Hurtado']
             )
-            // Luego los que tienen todos sus cursos en completed
-            ->orderByRaw('CASE WHEN company_course_users_count > 0 AND completed_courses_count = company_course_users_count THEN 0 ELSE 1 END')
-            // Luego por la cantidad de cursos completados
-            ->orderByDesc('completed_courses_count')
-            // Luego por la cantidad total de companyCourseUsers
-            ->orderByDesc('company_course_users_count')
+            // Priorizar por:
+            // 1. Tutores con más materias
+            ->orderByDesc('subjects_count')
+            // 2. Mejor rating promedio
+            ->orderByDesc('avg_rating')
+            // 3. Más cursos completados
+            //->orderByDesc('completed_courses_count')
+            // 4. Aleatoriedad para variar
             ->inRandomOrder()
-            ->take(8)
+            ->take(4) 
             ->get();
+            
         return $featuredTutors;
     }
 
