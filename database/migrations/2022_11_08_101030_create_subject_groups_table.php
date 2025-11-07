@@ -10,13 +10,20 @@ return new class extends Migration {
      *
      * @return void
      */
-    public function up() {
+    public function up()
+    {
         Schema::create('subject_groups', function (Blueprint $table) {
             $table->id();
             $table->string('name', 255)->fulltext();
             $table->text('description')->nullable()->fullText();
             $table->enum('status', ['active', 'inactive'])->default('active')->index();
             $table->softDeletes();
+            // 🔗 Clave foránea que apunta a la misma tabla
+            $table->foreignId('id_padre')
+                ->nullable()
+                ->constrained('subject_groups')
+                ->nullOnDelete(); // Si se elimina el padre, el hijo queda sin referencia
+
         });
     }
 
@@ -25,7 +32,8 @@ return new class extends Migration {
      *
      * @return void
      */
-    public function down() {
+    public function down()
+    {
         Schema::dropIfExists('subject_groups');
     }
 };
