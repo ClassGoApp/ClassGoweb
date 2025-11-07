@@ -21,6 +21,9 @@ class BlogCategory extends Model
     ];
     public function blogs()
     {
-        return $this->belongsToMany(Blog::class, 'blog_category_link', 'blog_category_id', 'blog_id');
+        return $this->belongsToMany(Blog::class, 
+                            'blog_category_link', 
+                            'blog_category_id', 
+                            'blog_id');
     }
 }

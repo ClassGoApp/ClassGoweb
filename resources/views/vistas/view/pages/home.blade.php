@@ -37,7 +37,11 @@
             </div>
 
             <!-- 1.4 Hero Mascota -->
-            <img src="{{ asset(path: 'storage/optionbuilder/uploads/740102-17-2025_0859pmTugo-saludando.gif') }}" alt="Mascota ClassGo">
+
+            <img src="{{ asset(path: 'storage/optionbuilder/uploads/740102-17-2025_0859pmTugo-saludando.webp') }}" alt="Mascota ClassGo">
+
+
+
         </div>
     </div>
 
@@ -70,9 +74,43 @@
     </div>
 </section>
 
+<section class="visual-section">
+    
+    {{-- <img class="visual-phone" src="{{ asset('images/celular-ClassGo.png') }}" alt=""> --}}
+    <img class="visual-phone" src="{{ asset('images/home/img.png') }}" alt="">
+
+    <div class="visual-wrapper" >
+    </div>
+
+    <div class="whats-new-card">
+    
+    <div class="whats-new-card__header">
+        <svg class="whats-new-card__icon" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"/>
+            <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd"/>
+        </svg>
+        <h2 class="whats-new-card__title">¿Qué deseas aprender?</h2>
+    </div>
+    
+    <ol class="whats-new-card__list">
+        <li class="whats-new-card__list-item">Prepárate para ese exámen difícil</li>
+        <li class="whats-new-card__list-item">Domina esa asignatura</li>
+        <li class="whats-new-card__list-item">Refuerzo académico garantizado</li>
+    </ol>
+    
+    <div class="whats-new-card__button-wrapper">
+        <button class="whats-new-card__button">
+            Buscar Tutores
+        </button>
+    </div>
+    
+</div>
+
+</section>
+
+
 
 <!--TUTORES DESTACADOS-->
-
 <section class="tutors-container fade-up">
     <h1 class="over-text">
         <div class="linea"></div><span data-translate="featured_tutors"></span><div class="linea"></div>
@@ -82,7 +120,33 @@
 
     @include('vistas.view.pages.components.home.card-tutor-destacado')
 </section>
+<!--CARRUSEL ANIMADO TUGO-->
+<section class="tugo-carousel fade-up">
+  <div class="tugo-container">
+    <div class="text-zone">
+      <p class="intro-text">Con ClassGo aprendes...</p>
+      <div class="animated-word" id="animatedWord">Idiomas</div>
+    </div>
 
+    <div class="mascot-panel">
+      <img id="mascot" class="mascot" src="/images/tugos-skin/Interpretación-y-Traducción-de-Idiomas.webp" alt="Tugo">
+    </div>
+  </div>
+</section>
+
+<!--CARRUSEL ANIMADO TUGO-->
+{{-- <section class="tugo-carousel fade-up">
+  <div class="tugo-container">
+    <div class="text-zone">
+      <p class="intro-text">Con ClassGo aprendes...</p>
+      <div class="animated-word" id="animatedWord">Idiomas</div>
+    </div>
+
+    <div class="mascot-panel">
+      <img id="mascot" class="mascot" src="/images/tugos-skin/Interpretación-y-Traducción-de-Idiomas.webp" alt="Tugo">
+    </div>
+  </div>
+</section> --}}
 
 <!--GUIA PASO A PASO-->
 <section class="potencial-container fade-up">
@@ -137,44 +201,51 @@
         <div class="grid-app">
 
       <!-- Columna Izquierda: Contenido de texto -->
+      <div class="fade-left">
       <div class="text-app">
-        <p data-translate="facil_simple_rapido"></p>
-        <h1 data-translate="instala_app"></h1>
-        <p data-translate="comienza_viaje_educativo"></p>
+            <p data-translate="facil_simple_rapido"></p>
+            <h1 data-translate="instala_app"></h1>
+            <p data-translate="comienza_viaje_educativo"></p>
 
-        <!-- Lista de características -->
-        <ul class="list-app">
-          <li>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-            </svg>
-            <span data-translate="acceso"></span>
-          </li>
-          <li>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-            </svg>
-            <span data-translate="tutores_expertos"></span>
-          </li>
-          <li>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-            </svg>
-            <span data-translate="tarifas_asequibles"></span>
-          </li>
-        </ul>
-
+            <!-- Lista de características -->
+            <ul class="list-app">
+            <li>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
+                <span data-translate="acceso"></span>
+            </li>
+            <li>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
+                <span data-translate="tutores_expertos"></span>
+            </li>
+            <li>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
+                <span data-translate="tarifas_asequibles"></span>
+            </li>
+            </ul>
+            <!-- Botón -->
+            <div>
+                <a href="https://play.google.com/store/apps/details?id=com.neurasoft.classgo" target="_blank" class="btn-app"> Descargar Ahora </a> 
+            </div>
         
-      </div>
-      <!-- Columna Derecha: Imagen -->
+        </div>
+        </div>
+            <!-- Columna Derecha: Imagen -->
                         
-        <div class="image-app">
-                    <img
-                        src="{{ asset('images/home/tugo-cel.gif')}}"
-                        alt="ClassGo"onerror="this.onerror=null;this.src='https://placehold.co/400x800/023047/FFFFFF?text=App';">
+            <div class="image-app">
+                        <img
+                            src="{{ asset('images/home/tugo-cel-optimizado.webp')}}"
+                            alt="ClassGo"onerror="this.onerror=null;this.src='https://placehold.co/400x800/023047/FFFFFF?text=App';">
+            </div>
         </div>
-        </div>
+
     </div>
+
     
 </section>
 
@@ -184,6 +255,7 @@
 <section class="tutorias-container fade-up">
     <div class="tutorias">
         <!-- Texto -->
+        <div class="fade-left">
         <div class="tutores-text">
             <p class="tutores-text-encima" data-translate="buscas_tutorias"></p>
             <h1 data-translate="conectamos_tutores"></h1>
@@ -194,6 +266,7 @@
             </a>
 
 
+        </div>
         </div>
         <!-- Imagen -->
         <div class="carousel-3D">
@@ -233,15 +306,54 @@
     </div>
 
     <!-- ALIANZAS-->
-    {{-- <div class="fade-up">
+    <div class="fade-up">
     @include('components.alianzas', ['alianzas' => $alianzas])
-    </div> --}}
+    </div>
 
 </section>
-
+<!--------animacion skin----->
 <script>
+const words = [
+  
+  {text: "Química", img: "/images/tugos-skin/Química-General.webp"},
+  {text: "Física", img: "/images/tugos-skin/Física-Aplicada.webp"},
+  {text: "Matemáticas", img: "/images/tugos-skin/Cálculo.webp"},
+  {text: "Programación", img: "/images/tugos-skin/Inteligencia-de-Software-26.webp"},
+  {text: "Arte y edición", img: "/images/tugos-skin/Producción-Audiovisual-Para-Plataformas-Digitales.webp"},
+  {text: "Electricidad y Electromecánica", img: "/images/tugos-skin/Robótica-y-Automatización.webp"},
+  {text: "Idiomas", img: "/images/tugos-skin/Interpretación-y-Traducción-de-Idiomas.webp"},
+  {text: "Creación de Contenidos", img: "/images/tugos-skin/Tugo-influencer.webp"},
+  {text: "Mecánica Automotriz", img: "/images/tugos-skin/Mecánica-Automotriz-Básica.webp"},
+  {text: "Contabilidad", img: "/images/tugos-skin/Modelación-Financiera.webp"},
+];
+
+const animatedWord = document.getElementById("animatedWord");
+const mascot = document.getElementById("mascot");
+let i = 0;
+
+function changeWord() {
+  animatedWord.classList.remove("fade-in");
+  animatedWord.style.opacity = 0;
+  mascot.classList.add("fade");
+
+  setTimeout(() => {
+    animatedWord.textContent = words[i].text;
+    mascot.src = words[i].img;
+
+    animatedWord.style.animation = "none";
+    void animatedWord.offsetWidth; // reinicia la animación
+    animatedWord.style.animation = "fadeSlide 1s forwards";
+
+    mascot.classList.remove("fade");
+
+    i = (i + 1) % words.length;
+  }, 500);
+}
+
+
+setInterval(changeWord, 2500);
+
 document.addEventListener('DOMContentLoaded', function() {
-    'use strict';
 
     // ===========================
     // 1. ANIMACIONES AL HACER SCROLL
@@ -255,7 +367,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }, { threshold: 0.2 });
 
     // Observar elementos con clases de animación
-    document.querySelectorAll('.fade-up, .fade-left, .fade-right').forEach(el => {
+    document.querySelectorAll('.fade-up, .fade-left, .fade-right, .fade-down').forEach(el => {
         scrollObserver.observe(el);
     });
 
@@ -294,6 +406,7 @@ document.addEventListener('DOMContentLoaded', function() {
             textos.forEach((texto) => textObserver.observe(texto));
         }
     };
+
 
     // ===========================
     // 4. CARRUSEL DE TUTORES
@@ -345,7 +458,6 @@ document.addEventListener('DOMContentLoaded', function() {
             moveToSlide(cardIndex);
         });
 
-        // Redimensionamiento de ventana
         window.addEventListener('resize', () => {
             cardsPerView = getCardsPerView();
             cardIndex = 0;
@@ -402,119 +514,13 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     // ===========================
-    // 6. CARRUSEL DE ALIANZAS (OPCIONAL)
-    // ===========================
-    const initAllianceCarousel = () => {
-        const track = document.getElementById('client-carousel-track');
-        const dotsContainer = document.getElementById('client-pagination-dots');
-        const nextButton = document.getElementById('client-next-button');
-        const prevButton = document.getElementById('client-prev-button');
-
-        // Solo ejecutar si los elementos existen (para páginas que lo tienen)
-        if (!track || !nextButton || !prevButton) {
-            return; // Salir silenciosamente si no existe
-        }
-
-        const slides = Array.from(track.children);
-        const dots = dotsContainer ? Array.from(dotsContainer.children) : [];
-
-        if (slides.length === 0) return;
-
-        const getSlidesPerView = () => {
-            if (window.innerWidth >= 1024) return 3;
-            if (window.innerWidth >= 768) return 2;
-            return 1;
-        };
-
-        let currentIndex = 0;
-        let slideInterval;
-
-        const goToSlide = (index) => {
-            const slidesPerView = getSlidesPerView();
-            const maxIndex = slides.length - slidesPerView;
-
-            if (index < 0) {
-                currentIndex = maxIndex;
-            } else if (index > maxIndex) {
-                currentIndex = 0;
-            } else {
-                currentIndex = index;
-            }
-
-            updateCarousel();
-        };
-
-        const updateCarousel = () => {
-            const slidesPerView = getSlidesPerView();
-            const slideWidth = slides[0].offsetWidth;
-            track.style.transform = 'translateX(' + (-slideWidth * currentIndex) + 'px)';
-
-            // Actualizar puntos si existen
-            if (dots.length > 0) {
-                dots.forEach((dot, index) => {
-                    dot.classList.remove('active');
-                    if (index === currentIndex) {
-                        dot.classList.add('active');
-                    }
-                });
-            }
-        };
-
-        const startInterval = () => {
-            slideInterval = setInterval(() => {
-                goToSlide(currentIndex + 1);
-            }, 3000);
-        };
-
-        const resetInterval = () => {
-            clearInterval(slideInterval);
-            startInterval();
-        };
-
-        // Event listeners
-        nextButton.addEventListener('click', () => {
-            goToSlide(currentIndex + 1);
-            resetInterval();
-        });
-
-        prevButton.addEventListener('click', () => {
-            goToSlide(currentIndex - 1);
-            resetInterval();
-        });
-
-        // Puntos de paginación
-        dots.forEach((dot, index) => {
-            dot.addEventListener('click', () => {
-                goToSlide(index);
-                resetInterval();
-            });
-        });
-
-        // Redimensionamiento
-        window.addEventListener('resize', () => {
-            const newSlidesPerView = getSlidesPerView();
-            const maxIndex = slides.length - newSlidesPerView;
-            if (currentIndex > maxIndex) {
-                currentIndex = maxIndex;
-            }
-            updateCarousel();
-        });
-
-        // Inicializar
-        updateCarousel();
-        startInterval();
-    };
-
-    // ===========================
     // 7. INICIALIZACIÓN PRINCIPAL
     // ===========================
     try {
         // Ejecutar todas las inicializaciones
         initCarousel3D();
         initTextAnimation();
-        initTutorCarousel();
         initCounters();
-        initAllianceCarousel();
         
         console.log('✅ Scripts de Home inicializados correctamente');
     } catch (error) {

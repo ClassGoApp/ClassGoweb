@@ -82,6 +82,7 @@ const translations = {
         alianzas: "Nuestras Alianzas",
         alianzas_edu: "Alianzas que potencian la educación",
         alianzas_Classgo: "En ClassGo creemos en el poder de la colaboración para transformar el aprendizaje. Por eso, trabajamos junto a instituciones educativas, clubes y organizaciones comprometidas con la formación académica y el desarrollo personal.",
+        alianzas_Classgo_1: "En ClassGo creemos en el poder de la colaboración para transformar el aprendizaje.",
         // Buscar Tutor
         /*no traduce pero si detesta al json*/
         /*tutores_encontrar: "Tutores / Encontrar tutor",
@@ -481,6 +482,7 @@ const translations = {
         alianzas: "Our Partnerships",
         alianzas_edu: "Partnerships that Enhance Education",
         alianzas_Classgo: "At ClassGo, we believe in the power of collaboration to transform learning. That’s why we work alongside educational institutions, clubs, and organizations committed to academic growth and personal development.",
+        alianzas_Classgo_1: "At ClassGo we believe in the power of collaboration to transform learning.",
         // Buscar Tutor
         /*no traduce pero si detesta al json*/
         /*tutores_encontrar: "Tutors / Find a tutor",
@@ -882,6 +884,7 @@ const translations = {
         alianzas: "Nossas Parcerias",
         alianzas_edu: "Parcerias que potencializam a educação",
         alianzas_Classgo: "Na ClassGo, acreditamos no poder da colaboração para transformar o aprendizado. Por isso, trabalhamos junto a instituições de ensino, clubes e organizações comprometidas com o desenvolvimento acadêmico e pessoal.",
+        alianzas_Classgo_1: "Na ClassGo, acreditamos no poder da colaboração para transformar o aprendizado.",
         // Buscar Tutor
         /*no traduce pero si detesta al json*/
         /*tutores_encontrar: "Tutores / Encontrar tutor",

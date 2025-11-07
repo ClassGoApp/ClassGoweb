@@ -47,8 +47,12 @@
 .tutor-bg {
     margin: 0;
     padding: 0;
-    /* background-color: var(--panel-background); */
-    background: linear-gradient(135deg, #023047 0%, #219EBC 100%);
+    background-color: var(--primary-color);
+    background-image: url('/images/home/Elipse.png');
+    background-repeat: repeat;
+    background-position: center calc(50% + 0px);
+    background-size: 100% auto;
+    /* background: linear-gradient(135deg, #023047 0%, #219EBC 100%); */
 }
 
 .navbar-container {
