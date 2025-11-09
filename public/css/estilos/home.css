@@ -85,6 +85,7 @@ body {
 
   /* pausa larga */
 }
+
 @keyframes sombraCeleste {
 
   0%,
@@ -102,14 +103,14 @@ body {
   width: 100%;
 }
 
-.contadores-hero{
+.contadores-hero {
   background-color: var(--primary-color);
   background-image: url('/images/home/Elipse.png');
   background-repeat: no-repeat;
   background-position: center calc(100% + 250px);
   background-size: 100% auto;
   border-radius: 0 0 5rem 5rem;
-  
+
 }
 
 .hero-container {
@@ -146,11 +147,10 @@ body {
 }
 
 .hero-subtext {
-  font-size: var(--p);
   margin-top: 2rem;
   margin-bottom: 2rem;
   color: #e0f7fa;
-  
+
 }
 
 .mobile {
@@ -229,9 +229,9 @@ body {
 /* Estilo para cuando el input está seleccionado (focus) */
 .form-control:focus {
   box-shadow: var(--tertiary-color2) 0 0 0 5px, 0 10px 15px -3px rgba(255, 145, 1, 0.281), 0 4px 6px -2px rgba(255, 158, 12, 0.932);
-  box-shadow: var(--tertiary-color2) 0 0 0 5px, 
-              0 10px 15px -3px rgba(255, 145, 1, 0.281), 
-              0 4px 6px -2px rgba(255, 158, 12, 0.932);
+  box-shadow: var(--tertiary-color2) 0 0 0 5px,
+    0 10px 15px -3px rgba(255, 145, 1, 0.281),
+    0 4px 6px -2px rgba(255, 158, 12, 0.932);
 }
 
 /**---============ 1.2.4 - Lista de Resultados ============---**/
@@ -354,6 +354,7 @@ body {
   overflow-x: hidden;
   box-sizing: border-box;
 }
+
 /**---============ 2.2 - Contadores ============---**/
 .counters {
   display: flex;
@@ -593,33 +594,41 @@ body {
 
 /**---============ 3 - Visual Section ============---**/
 .visual-section {
-  padding: 1rem 5.5rem ;
+  padding: 1rem 5.5rem;
   display: flex;
   justify-content: center;
   flex-direction: column;
   align-items: center;
   position: relative;
-  overflow: hidden; 
-  min-height: 800px; 
+  overflow: hidden;
+  min-height: 800px;
 }
 
 .visual-section img.visual-phone {
   position: absolute;
-  right: 18%; /* posición desde la derecha */
-  bottom: 15%; /* elevación desde abajo para crear el efecto de "sobresalir" */
-  width: 900px; /* tamaño base del teléfono */
+  right: 18%;
+  /* posición desde la derecha */
+  bottom: 15%;
+  /* elevación desde abajo para crear el efecto de "sobresalir" */
+  width: 900px;
+  /* tamaño base del teléfono */
   /* max-width: 32%; */
   height: auto;
-  z-index: 30; /* por encima de la tarjeta CTA */
-  transform: translateY(-15%); /* ajuste fino para que "sobresalga" más */
+  z-index: 30;
+  /* por encima de la tarjeta CTA */
+  transform: translateY(-15%);
+  /* ajuste fino para que "sobresalga" más */
   transition: transform .25s ease, bottom .25s ease;
-  pointer-events: none; /* evita interferir con clicks */
-  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.15)); /* sombra sutil para realismo */
+  pointer-events: none;
+  /* evita interferir con clicks */
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.15));
+  /* sombra sutil para realismo */
 }
 
 .visual-wrapper {
   position: relative;
-  z-index: 10; /* menor que la imagen para que quede por debajo */
+  z-index: 10;
+  /* menor que la imagen para que quede por debajo */
   width: 100%;
   max-width: 1200px;
   padding: 2rem;
@@ -628,116 +637,103 @@ body {
   height: 400px;
 }
 
-/* ======================================================= */
-/* VARIABLES DE DISEÑO */
-/* ======================================================= */
-:root {
-    --color-white: #FFFFFF;
-    --color-gray-700: #374151;
-    --color-gray-900: #111827;
-    --color-gray-700-hover: #4B5563; 
-    --color-black: #000000;
-}
-
-/* ======================================================= */
-/* I. TARJETA PRINCIPAL (whats-new-card) */
-/* ======================================================= */
-
 .whats-new-card {
-    position: absolute;
-    z-index: 50; 
-    top: 60%;
-    left: 36%;
-    width: 400px;
-    max-width: 35%;
-    background-color: var(--color-white);
-    border-radius: 1rem; /* rounded-2xl */
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-lg */
-    padding: 1.5rem; /* p-6 */
-    box-sizing: border-box;
+  position: absolute;
+  z-index: 50;
+  top: 60%;
+  left: 36%;
+  width: 400px;
+  max-width: 35%;
+  background-color: white;
+  border-radius: 1rem;
+  /* rounded-2xl */
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  /* shadow-lg */
+  padding: 1.5rem;
+  /* p-6 */
+  box-sizing: border-box;
 
 }
-
-/* ======================================================= */
-/* II. ENCABEZADO */
-/* ======================================================= */
 
 .whats-new-card__header {
-    /* flex items-center space-x-2 mb-5 */
-    display: flex;
-    align-items: center;
-    gap: 0.5rem; /* space-x-2 */
-    margin-bottom: 1.25rem; /* mb-5 */
+  /* flex items-center space-x-2 mb-5 */
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  /* space-x-2 */
+  margin-bottom: 1.25rem;
+  /* mb-5 */
 }
 
 .whats-new-card__icon {
-    /* w-5 h-5 text-black */
-    width: 1.25rem;
-    height: 1.25rem;
-    color: var(--primary-color);
-    flex-shrink: 0;
+  /* w-5 h-5 text-black */
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--primary-color);
+  flex-shrink: 0;
 }
 
 .whats-new-card__title {
-    /* text-lg font-bold text-gray-900 */
-    font-size: 1.125rem;
-    font-weight: 700;
-    color: var(--primary-color);
-    margin: 0;
+  /* text-lg font-bold text-gray-900 */
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin: 0;
 }
 
-/* ======================================================= */
-/* III. LISTA DE NOVEDADES */
-/* ======================================================= */
-
 .whats-new-card__list {
-    /* list-decimal list-inside space-y-2.5 text-gray-700 mb-6 */
-    
-    list-style-type: decimal; /* list-decimal */
-    list-style-position: inside; /* list-inside */
-    
-    color: var(--color-gray-700);
-    margin-bottom: 1.5rem; /* mb-6 */
-    margin-top: 0;
-    padding-left: 0; /* Asegura que la lista empiece justo después de los números */
+  /* list-decimal list-inside space-y-2.5 text-gray-700 mb-6 */
+
+  list-style-type: decimal;
+  /* list-decimal */
+  list-style-position: inside;
+  /* list-inside */
+
+  color: #374151;
+  margin-bottom: 1.5rem;
+  /* mb-6 */
+  margin-top: 0;
+  padding-left: 0;
+  /* Asegura que la lista empiece justo después de los números */
 }
 
 .whats-new-card__list-item {
-    /* Simula space-y-2.5 usando margen inferior en cada elemento */
-    margin-bottom: 0.625rem; /* 2.5 * 0.25rem = 0.625rem */
+  /* Simula space-y-2.5 usando margen inferior en cada elemento */
+  margin-bottom: 0.625rem;
+  /* 2.5 * 0.25rem = 0.625rem */
 }
 
 .whats-new-card__list-item:last-child {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
 
-/* ======================================================= */
-/* IV. BOTÓN */
-/* ======================================================= */
-
 .whats-new-card__button-wrapper {
-    /* flex justify-end */
-    display: flex;
-    justify-content: flex-end;
+  /* flex justify-end */
+  display: flex;
+  justify-content: flex-end;
 }
 
 .whats-new-card__button {
-    /* bg-gray-900 text-white px-5 py-2 rounded-lg font-semibold text-sm */
-    background-color: var(--primary-color);
-    color: white;
-    padding: 0.8rem 1.25rem; /* px-5 py-2 */
-    border-radius: 0.5rem; /* rounded-lg */
-    font-weight: 600; /* font-semibold */
-    font-size: 0.875rem; /* text-sm */
-    border: none;
-    cursor: pointer;
-    
-    /* hover:bg-gray-700 transition-colors duration-200 */
-    transition: background-color 0.2s ease-in-out;
+  /* bg-gray-900 text-white px-5 py-2 rounded-lg font-semibold text-sm */
+  background-color: var(--primary-color);
+  color: white;
+  padding: 0.8rem 1.25rem;
+  /* px-5 py-2 */
+  border-radius: 0.5rem;
+  /* rounded-lg */
+  font-weight: 600;
+  /* font-semibold */
+  font-size: 0.875rem;
+  /* text-sm */
+  border: none;
+  cursor: pointer;
+
+  /* hover:bg-gray-700 transition-colors duration-200 */
+  transition: background-color 0.2s ease-in-out;
 }
 
 .whats-new-card__button:hover {
-    background-color: var(--secundary-color);
+  background-color: var(--secundary-color);
 }
 
 /* Ajustes responsivos */
@@ -746,7 +742,7 @@ body {
     padding: 1rem 3rem;
     min-height: 350px;
   }
-  
+
   .visual-section img.visual-phone {
     right: 5%;
     bottom: 12%;
@@ -754,7 +750,7 @@ body {
     max-width: 35%;
     transform: translateY(-10%);
   }
-  
+
   .cta-section-wrapper {
     padding: 1.5rem;
   }
@@ -765,47 +761,52 @@ body {
     padding: 1rem 2rem;
     min-height: 300px;
   }
-  
+
   .visual-section img.visual-phone {
     right: 50%;
     left: auto;
-    transform: translate(50%, -8%); /* centrado con ligero sobresalir */
+    transform: translate(50%, -8%);
+    /* centrado con ligero sobresalir */
     bottom: 8%;
     width: 180px;
     max-width: 45%;
     z-index: 25;
     opacity: 0.95;
   }
-  
+
   .cta-section-wrapper {
     padding: 1rem;
     margin: 1rem auto;
   }
-  
+
   .cta-card {
     padding: 1.5rem;
   }
 }
+
 /**---============ 3 - Tutores Destacados ============---**/
-.cards-container-tutores{
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: center;
-    gap: 1.3rem;
-    padding: 1rem 5rem;
+.cards-container-tutores {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  gap: 1.3rem;
+  padding: 1rem 5rem;
 }
 
 .profile-card {
-    /* Fondo y estructura */
-    background-color: var(--color-white);
-    border-radius: 2rem; /* rounded-xl (asumo 1rem) */
-    overflow: hidden; /* Importante para que la imagen respete el redondeo */
-    width: 100%;
-    max-width: 280px; /* Ancho típico de una tarjeta */
-    
-    /* shadow-xl shadow-gray-300/60 */
-    box-shadow: 0 20px 25px -5px rgba(209, 213, 219, 0.6), 
-                0 8px 10px -6px rgba(209, 213, 219, 0.6);
+  /* Fondo y estructura */
+  background-color: var(--color-white);
+  border-radius: 2rem;
+  /* rounded-xl (asumo 1rem) */
+  overflow: hidden;
+  /* Importante para que la imagen respete el redondeo */
+  width: 100%;
+  max-width: 280px;
+  /* Ancho típico de una tarjeta */
+
+  /* shadow-xl shadow-gray-300/60 */
+  box-shadow: 0 20px 25px -5px rgba(209, 213, 219, 0.6),
+    0 8px 10px -6px rgba(209, 213, 219, 0.6);
 }
 
 /* ======================================================= */
@@ -813,163 +814,166 @@ body {
 /* ======================================================= */
 
 .profile-card__image-container {
-    /* Contenedor para manejar el aspecto ratio si es necesario */
-    width: 100%;
-    /* Altura basada en la imagen placeholder (600x720) */
-    aspect-ratio: 210 / 200; 
-    overflow: hidden;
-    padding: 0.6rem;
+  /* Contenedor para manejar el aspecto ratio si es necesario */
+  width: 100%;
+  /* Altura basada en la imagen placeholder (600x720) */
+  aspect-ratio: 210 / 200;
+  overflow: hidden;
+  padding: 0.6rem;
 
 }
 
 
 .profile-card__image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    border-radius: 2rem;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 2rem;
 
 }
 
 .profile-card__image::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 60%; /* controla cuánto de la imagen se oscurece */
-    background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.4) 100%);
-    border-radius: 2rem;
-    pointer-events: none;
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60%;
+  /* controla cuánto de la imagen se oscurece */
+  background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.4) 100%);
+  border-radius: 2rem;
+  pointer-events: none;
 }
 
 
 /*Card explorar más*/
 .profile-card__image-container2 {
-    width: 100%;
-    /* Altura basada en la imagen placeholder (600x720) */
-    aspect-ratio: 200 / 300; 
-    overflow: hidden;
-    padding: 0.6rem;
-    position: relative; 
+  width: 100%;
+  /* Altura basada en la imagen placeholder (600x720) */
+  aspect-ratio: 200 / 300;
+  overflow: hidden;
+  padding: 0.6rem;
+  position: relative;
 
 }
 
 .profile-card__image-container2 .profile-card__image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 2rem;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 2rem;
 }
 
 .profile-card__explorar {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: linear-gradient(to top, rgba(255, 255, 255, 0.8) 0%, rgba(252, 252, 252, 0.4) 60%, transparent 100%);
-    color: white;
-    padding: 2rem 1.5rem 1.5rem 1.5rem;
-    border-radius: 0 0 2rem 2rem;
-    text-align: center;
-    z-index: 10;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.8) 0%, rgba(252, 252, 252, 0.4) 60%, transparent 100%);
+  color: white;
+  padding: 2rem 1.5rem 1.5rem 1.5rem;
+  border-radius: 0 0 2rem 2rem;
+  text-align: center;
+  z-index: 10;
 }
 
 .profile-card__explorar h1 {
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin: 0 0 0.5rem 0;
-    color: white;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .profile-card__explorar p {
-    font-size: 0.9rem;
-    margin: 0 0 1rem 0;
-    color: rgba(255, 255, 255, 0.9);
-    line-height: 1.4;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  font-size: 0.9rem;
+  margin: 0 0 1rem 0;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.4;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 
 .profile-card__explorar button {
-    background: var(--primary-color, #007bff);
-    border: none;
-    color: white;
-    padding: 0.75rem 1.5rem;
-    border-radius: 1rem;
-    font-size: 0.875rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  background: var(--primary-color, #007bff);
+  border: none;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .profile-card__explorar button:hover {
-    background: var(--primary-color-dark, #0056b3);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  background: var(--primary-color-dark, #0056b3);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 
 @media (max-width: 768px) {
-    .profile-card__explorar {
-        padding: 1.5rem 1rem 1rem 1rem;
-    }
-    
-    .profile-card__explorar h1 {
-        font-size: 1.25rem;
-    }
-    
-    .profile-card__explorar p {
-        font-size: 0.8rem;
-    }
-    
-    .profile-card__explorar button {
-        padding: 0.6rem 1.2rem;
-        font-size: 0.8rem;
-    }
+  .profile-card__explorar {
+    padding: 1.5rem 1rem 1rem 1rem;
+  }
+
+  .profile-card__explorar h1 {
+    font-size: 1.25rem;
+  }
+
+  .profile-card__explorar p {
+    font-size: 0.8rem;
+  }
+
+  .profile-card__explorar button {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.8rem;
+  }
 }
+
 /* ======================================================= */
 /* III. CONTENIDO Y HEADER */
 /* ======================================================= */
 
 .profile-card__content {
-    /* p-6 pt-5 */
-    padding: 1rem;
-    padding-top: 0.1rem; 
+  /* p-6 pt-5 */
+  padding: 1rem;
+  padding-top: 0.1rem;
 }
 
 .profile-card__header {
-    /* flex items-center justify-between */
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  /* flex items-center justify-between */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .profile-card__name {
-    /* text-xl font-semibold text-gray-800 */
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: var(--color-gray-800);
-    margin: 0;
+  /* text-xl font-semibold text-gray-800 */
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-gray-800);
+  margin: 0;
 }
 
 .profile-card__verified-icon {
-    /* w-5 h-5 text-green-500 */
-    width: 1.25rem;
-    height: 1.25rem;
-    color: var(--color-green-500);
-    flex-shrink: 0;
+  /* w-5 h-5 text-green-500 */
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--color-green-500);
+  flex-shrink: 0;
 }
 
 .profile-card__description {
-    /* mt-1 text-sm text-gray-500 leading-snug */
-    margin-top: 0.25rem;
-    font-size: 0.875rem;
-    color: var(--color-gray-500);
-    line-height: 1.375; /* leading-snug */
-    margin-bottom: 0;
+  /* mt-1 text-sm text-gray-500 leading-snug */
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  color: var(--color-gray-500);
+  line-height: 1.375;
+  /* leading-snug */
+  margin-bottom: 0;
 }
 
 /* ======================================================= */
@@ -977,60 +981,70 @@ body {
 /* ======================================================= */
 
 .profile-card__footer {
-    /* mt-4 flex items-center justify-between */
-    margin-top: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  /* mt-4 flex items-center justify-between */
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .profile-card__stats-group {
-    /* flex items-center space-x-4 text-sm text-gray-500 */
-    display: flex;
-    align-items: center;
-    gap: 1rem; /* space-x-4 */
-    font-size: 0.875rem;
-    color: var(--color-gray-500);
+  /* flex items-center space-x-4 text-sm text-gray-500 */
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  /* space-x-4 */
+  font-size: 0.875rem;
+  color: var(--color-gray-500);
 }
 
 .profile-card__stat {
-    /* flex items-center */
-    display: flex;
-    align-items: center;
+  /* flex items-center */
+  display: flex;
+  align-items: center;
 }
 
 .profile-card__stat-icon {
-    /* w-4 h-4 mr-1 */
-    width: 1rem;
-    height: 1rem;
-    margin-right: 0.25rem;
+  /* w-4 h-4 mr-1 */
+  width: 1rem;
+  height: 1rem;
+  margin-right: 0.25rem;
 }
+
 .over-text {
   font-size: var(--h1-regular);
   color: white;
 }
+
+.over-text span {
+  color: var(--primary-color);
+}
+
 /* ======================================================= */
 /* V. BOTÓN */
 /* ======================================================= */
 
 .profile-card__button {
-    padding: 0.5rem 1rem;
-    background-color: var(--primary-color);
-    color: white;
-    font-size: 0.875rem;
-    font-weight: 500;
-    border-radius: 0.75rem; /* rounded-xl */
-    border: none;
-    cursor: pointer;
-    
-    /* hover:bg-gray-200 transition duration-150 shadow-sm */
-    transition: background-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm */
+  padding: 0.5rem 1rem;
+  background-color: var(--primary-color);
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 0.75rem;
+  /* rounded-xl */
+  border: none;
+  cursor: pointer;
+
+  /* hover:bg-gray-200 transition duration-150 shadow-sm */
+  transition: background-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  /* shadow-sm */
 }
 
 .profile-card__button:hover {
-    background-color: var(--secundary-color);
+  background-color: var(--secundary-color);
 }
+
 /*<-------------------->*/
 .tutors-container {
   display: flex;
@@ -1038,7 +1052,7 @@ body {
   justify-content: center;
   align-items: center;
   color: var(--primary-color);
-  padding: 2rem 1rem;
+  padding: 3rem 1rem;
   width: 100%;
   box-sizing: border-box;
   overflow-x: hidden;
@@ -1065,8 +1079,6 @@ body {
   justify-content: center;
   align-items: center;
   gap: 12px;
-
-
 }
 
 .tutors-container h1.tutor.ideal {
@@ -1083,8 +1095,32 @@ body {
   width: 50px;
 }
 
+.potencial-container .over-text span {
+  color: white;
+}
+
+.potencial-container p {
+  color: white;
+}
+
 /*------ tugos ----*/
 /* ===== CONTENEDOR PRINCIPAL ===== */
+
+.tugo-carousel h1.tutor.ideal {
+  animation: palpitar 3s infinite ease-in-out;
+}
+
+.tugo-carousel h1,
+p {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  color: var(--primary-color);
+}
+
+
 .tugo-carousel {
   background: var(--panel-background);
   display: flex;
@@ -1092,7 +1128,7 @@ body {
   align-items: center;
   justify-items: center;
   padding: 2rem 1rem;
-  min-height: 50vh;
+  min-height: 70vh;
 }
 
 /* ===== CONTENEDOR INTERNO ===== */
@@ -2177,16 +2213,19 @@ body {
   transform: translateY(0);
   animation: fadeInUp 0.8s ease-out forwards;
 }
+
 /* Aparece desde arriba 👇 */
 .fade-down {
   opacity: 0;
   transition: all 0.8s ease;
   transform: translateY(-40px);
 }
+
 .fade-down.show {
   opacity: 1;
   transform: translate(0, 0);
 }
+
 .nosotros-header {
   background: var(--secundary-color);
   border-bottom-left-radius: 50px;
@@ -2194,6 +2233,7 @@ body {
   padding-bottom: 20px;
   width: 100%;
 }
+
 /*==Estado inicial: oculto y desplazado de extremos==*/
 .fade-left,
 .fade-right {
@@ -2353,7 +2393,7 @@ body {
     padding: 1rem 0.5rem;
     align-items: center;
     text-align: center;
-    
+
   }
 
   .img-container-3D {
@@ -2448,9 +2488,10 @@ body {
     width: 100px;
   }
 
-  .contadores-hero{
+  .contadores-hero {
     background: var(--bg-gradient2)
   }
+
   /* Hero: centrar gif y texto debajo */
   .hero {
     height: 40vh;
@@ -2503,7 +2544,7 @@ body {
     display: block;
   }
 
-  .hero-title-arriba{
+  .hero-title-arriba {
     font-size: 1.5em !important;
   }
 
@@ -2834,7 +2875,7 @@ body {
 /* ============ MEDIA QUERIES PARA ADAPTAR A DISPOSITIVOS PEQUEÑOS ============ */
 
 @media (max-width: 768px) {
-  
+
   .carousel-container {
     width: 100%;
     margin: 20px auto;
@@ -2944,7 +2985,7 @@ body {
 
 /* Contenedor principal del carrusel */
 .client-carousel-wrapper {
-  max-width: 100%; 
+  max-width: 100%;
   -webkit-mask-image: none;
   mask-image: none;
   margin-bottom: 60px;
@@ -2958,16 +2999,18 @@ body {
 .client-carousel-track {
   display: flex;
   transition: transform 0.5s ease-in-out;
-    max-width: 100%; 
+  max-width: 100%;
   -webkit-mask-image: none;
   mask-image: none;
 }
+
 /*aqui va el nuevo carrusel de alianzas sin clases*/
 
 /* Pausa la animación al pasar el cursor */
 .client-carousel-track:hover {
   animation-play-state: paused !important;
 }
+
 /*aqui va el nuevo carrusel de alianzas sin clases*/
 
 /* Pausa la animación al pasar el cursor */
@@ -2976,9 +3019,9 @@ body {
 }
 
 .client-carousel-track img {
-  height: 100px; 
-  width: auto; 
-  margin: 0 40px;  
+  height: 100px;
+  width: auto;
+  margin: 0 40px;
   filter: grayscale(100%);
   opacity: 0.6;
   transition: all 0.3s ease;
@@ -2989,12 +3032,13 @@ body {
   opacity: 1;
   transform: scale(1.1);
 }
+
 /*aqui termina el nuevo carrusel de alianzas sin clases*/
 
 .client-carousel-track img {
-  height: 100px; 
-  width: auto; 
-  margin: 0 40px;  
+  height: 100px;
+  width: auto;
+  margin: 0 40px;
   filter: grayscale(100%);
   opacity: 0.6;
   transition: all 0.3s ease;
@@ -3005,12 +3049,13 @@ body {
   opacity: 1;
   transform: scale(1.1);
 }
+
 /*aqui termina el nuevo carrusel de alianzas sin clases*/
 /* --- Media Queries --- */
 
 @media (min-width: 768px) {
 
-  
+
   .client-card-slide {
     flex-basis: 50%;
   }
@@ -3042,7 +3087,7 @@ body {
   .client-carousel-nav-btn {
     display: none;
   }
-  
+
 }
 
 /* Pantallas muy grandes: 1500px en adelante */
@@ -3051,12 +3096,11 @@ body {
     padding: 6rem 4rem;
     justify-content: center;
     gap: 2rem;
-    /* más espacio entre texto e imagen */
     justify-items: center;
   }
 
   .hero-text {
-    padding: 4rem 0 4rem 0;
+    padding: 6rem 0 0 0;
     max-width: 900px;
   }
 
@@ -3065,13 +3109,15 @@ body {
   }
 
   .hero-title-abajo {
-    font-size: 5em !important;
+    font-size: 6em !important;
   }
 
   .hero-subtext {
     font-size: 1.5rem;
     margin-top: 2rem;
     margin-bottom: 2rem;
+    line-height: 30px;
+    justify-content: start;
   }
 
   .hero-buttons {
@@ -3080,17 +3126,52 @@ body {
 
   .hero-container img {
     max-width: 600px;
-    /* imagen más grande */
     padding-right: 0.1rem;
+  }
+
+  .visual-section {
+    padding-top: 4rem;
+    margin-bottom: 2rem;
+  }
+
+  .visual-section img.visual-phone {
+    right: 27%;
+    /* posición desde la derecha */
+    bottom: 10%;
+    /* elevación desde abajo para crear el efecto de "sobresalir" */
+    width: 950px;
+  }
+
+  .visual-wrapper {
+    position: relative;
+    z-index: 10;
+    /* menor que la imagen para que quede por debajo */
+    width: 100%;
+    max-width: 1300px;
+    padding: 2rem;
+    border-radius: 16px;
+    background: var(--bg-gradient2);
+    height: 500px;
+  }
+
+  .whats-new-card {
+    top: 63%;
+    left: 38.5%;
+  }
+
+  .mascot-panel {
+    max-width: 800px;
+    aspect-ratio: 6 / 5;
   }
 
 }
 
 /* Pantallas extra grandes: 2000px en adelante */
 @media (min-width: 2000px) {
-  .hero{
+  .hero {
     align-content: center;
   }
+
   .hero-container {
     padding: 8rem 8rem;
     /* más espacio a los lados */
@@ -3126,6 +3207,6 @@ body {
     max-width: 800px;
     /* imagen más grande */
     padding-right: 4rem;
-    
+
   }
 }
