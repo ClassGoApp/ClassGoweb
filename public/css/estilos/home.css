@@ -150,7 +150,7 @@ body {
   margin-top: 2rem;
   margin-bottom: 2rem;
   color: #e0f7fa;
-
+  justify-content: start;
 }
 
 .mobile {
@@ -794,17 +794,11 @@ body {
 }
 
 .profile-card {
-  /* Fondo y estructura */
   background-color: var(--color-white);
   border-radius: 2rem;
-  /* rounded-xl (asumo 1rem) */
   overflow: hidden;
-  /* Importante para que la imagen respete el redondeo */
   width: 100%;
   max-width: 280px;
-  /* Ancho típico de una tarjeta */
-
-  /* shadow-xl shadow-gray-300/60 */
   box-shadow: 0 20px 25px -5px rgba(209, 213, 219, 0.6),
     0 8px 10px -6px rgba(209, 213, 219, 0.6);
 }
@@ -1017,6 +1011,21 @@ body {
 }
 
 .over-text span {
+  color: var(--primary-color);
+}
+
+.filtro_materias{
+  text-align: center;
+  padding: 3rem 0rem;
+}
+.filtro_materias .over-text{
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+.filtro_materias h1{
   color: var(--primary-color);
 }
 
@@ -3162,6 +3171,14 @@ p {
   .mascot-panel {
     max-width: 800px;
     aspect-ratio: 6 / 5;
+  }
+
+  .profile-card {
+    min-width: 280px !important;
+  }
+
+  .parent{
+    padding: 2rem 15rem !important;
   }
 
 }

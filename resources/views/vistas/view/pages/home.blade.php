@@ -39,7 +39,7 @@
     </section>
 
     <!--CARRUSEL ANIMADO TUGO-->
-    <section class="tugo-carousel fade-up">
+    {{-- <section class="tugo-carousel fade-up">
         <h1 class="over-text">
             <div class="linea"></div><span data-translate="featured_tutors"></span>
             <div class="linea"></div>
@@ -57,6 +57,18 @@
                     alt="Tugo">
             </div>
         </div>
+    </section> --}}
+
+    <!--FILTRO DE MATERIAS-->
+    <section class="filtro_materias fade-up">
+        <h1 class="over-text">
+            <div class="linea"></div>
+            <span>Materias que te pueden ayudar</span>
+            <div class="linea"></div>
+        </h1>
+        <h1 class="title">Explora Nuestras Materias</h1>
+        <p>Tutores listos en distintas áreas para ayudarte</p>
+        @include('vistas.view.pages.components.home.filtro-materias')
     </section>
 
     <!--GUIA PASO A PASO-->
@@ -82,74 +94,74 @@
     </section>
 
     <script>
-        const words = [
+        // const words = [
 
-            {
-                text: "Química",
-                img: "/images/tugos-skin/Química-General.webp"
-            },
-            {
-                text: "Física",
-                img: "/images/tugos-skin/Física-Aplicada.webp"
-            },
-            {
-                text: "Matemáticas",
-                img: "/images/tugos-skin/Cálculo.webp"
-            },
-            {
-                text: "Programación",
-                img: "/images/tugos-skin/Inteligencia-de-Software-26.webp"
-            },
-            {
-                text: "Arte y edición",
-                img: "/images/tugos-skin/Producción-Audiovisual-Para-Plataformas-Digitales.webp"
-            },
-            {
-                text: "Electricidad y Electromecánica",
-                img: "/images/tugos-skin/Robótica-y-Automatización.webp"
-            },
-            {
-                text: "Idiomas",
-                img: "/images/tugos-skin/Interpretación-y-Traducción-de-Idiomas.webp"
-            },
-            {
-                text: "Creación de Contenidos",
-                img: "/images/tugos-skin/Tugo-influencer.webp"
-            },
-            {
-                text: "Mecánica Automotriz",
-                img: "/images/tugos-skin/Mecánica-Automotriz-Básica.webp"
-            },
-            {
-                text: "Contabilidad",
-                img: "/images/tugos-skin/Modelación-Financiera.webp"
-            },
-        ];
+        //     {
+        //         text: "Química",
+        //         img: "/images/tugos-skin/Química-General.webp"
+        //     },
+        //     {
+        //         text: "Física",
+        //         img: "/images/tugos-skin/Física-Aplicada.webp"
+        //     },
+        //     {
+        //         text: "Matemáticas",
+        //         img: "/images/tugos-skin/Cálculo.webp"
+        //     },
+        //     {
+        //         text: "Programación",
+        //         img: "/images/tugos-skin/Inteligencia-de-Software-26.webp"
+        //     },
+        //     {
+        //         text: "Arte y edición",
+        //         img: "/images/tugos-skin/Producción-Audiovisual-Para-Plataformas-Digitales.webp"
+        //     },
+        //     {
+        //         text: "Electricidad y Electromecánica",
+        //         img: "/images/tugos-skin/Robótica-y-Automatización.webp"
+        //     },
+        //     {
+        //         text: "Idiomas",
+        //         img: "/images/tugos-skin/Interpretación-y-Traducción-de-Idiomas.webp"
+        //     },
+        //     {
+        //         text: "Creación de Contenidos",
+        //         img: "/images/tugos-skin/Tugo-influencer.webp"
+        //     },
+        //     {
+        //         text: "Mecánica Automotriz",
+        //         img: "/images/tugos-skin/Mecánica-Automotriz-Básica.webp"
+        //     },
+        //     {
+        //         text: "Contabilidad",
+        //         img: "/images/tugos-skin/Modelación-Financiera.webp"
+        //     },
+        // ];
 
-        const animatedWord = document.getElementById("animatedWord");
-        const mascot = document.getElementById("mascot");
-        let i = 0;
+        // const animatedWord = document.getElementById("animatedWord");
+        // const mascot = document.getElementById("mascot");
+        // let i = 0;
 
-        function changeWord() {
-            animatedWord.classList.remove("fade-in");
-            animatedWord.style.opacity = 0;
-            mascot.classList.add("fade");
+        // function changeWord() {
+        //     animatedWord.classList.remove("fade-in");
+        //     animatedWord.style.opacity = 0;
+        //     mascot.classList.add("fade");
 
-            setTimeout(() => {
-                animatedWord.textContent = words[i].text;
-                mascot.src = words[i].img;
+        //     setTimeout(() => {
+        //         animatedWord.textContent = words[i].text;
+        //         mascot.src = words[i].img;
 
-                animatedWord.style.animation = "none";
-                void animatedWord.offsetWidth; // reinicia la animación
-                animatedWord.style.animation = "fadeSlide 1s forwards";
+        //         animatedWord.style.animation = "none";
+        //         void animatedWord.offsetWidth; // reinicia la animación
+        //         animatedWord.style.animation = "fadeSlide 1s forwards";
 
-                mascot.classList.remove("fade");
+        //         mascot.classList.remove("fade");
 
-                i = (i + 1) % words.length;
-            }, 500);
-        }
+        //         i = (i + 1) % words.length;
+        //     }, 500);
+        // }
 
-        setInterval(changeWord, 2500);
+        // setInterval(changeWord, 2500);
 
         document.addEventListener('DOMContentLoaded', function() {
 

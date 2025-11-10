@@ -34,13 +34,13 @@
                 </p>
             </div>
             <div class="nosotros-mision-image">
-                <p class="nosotros-mision-porcentaje">
+                {{-- <p class="nosotros-mision-porcentaje">
                     <span class="nosotros-mision-porcentaje-text">
                         +200 <!-- Porcentaje de Tutores Disponibles -->
                     </span>
                     <span class="nosotros-porcentaje-subtext" data-translate="tutorias_disponibles">
                     </span>
-                </p>
+                </p> --}}
                 <img src="{{ asset('images/home/models/img1.webp') }}" alt="Misión ClassGo" class="tugo-image">
             </div>
         </div>

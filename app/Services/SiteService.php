@@ -362,7 +362,7 @@ public function getTutors($data = array()) {
             //->orderByDesc('completed_courses_count')
             // 4. Aleatoriedad para variar
             ->inRandomOrder()
-            ->take(4) 
+            ->take(8) 
             ->get();
             
         return $featuredTutors;
