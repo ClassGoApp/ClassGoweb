@@ -316,6 +316,19 @@
                     {{ session('error') }}
                 </div>
             @endif
+            @if (session()->has('warning_profile_requirements'))
+                <div class="alert alert-warning"
+                    style="background: #fff7ed; color: #9a3412; padding: 12px; border-radius: 6px;margin-top:10px; margin-bottom: 20px;">
+                    {{ session('warning_profile_requirements') }}
+                    <a href="{{ route(Auth::user()->role . '.profile.personal-details') }}" style="margin-left:8px; text-decoration: underline; color:#9a3412;">{{ __('profile.complete_now') }}</a>
+                </div>
+            @endif
+            @if (session()->has('message'))
+                <div class="alert alert-success"
+                    style="background: #d1fae5; color: #065f46; padding: 12px; border-radius: 6px;margin-top:10px; margin-bottom: 20px;">
+                    {{ session('message') }}
+                </div>
+            @endif
             {{-- Si el usuario ya está verificado --}}
         @elseif(!empty($profile->verified_at))
             <div class="am-successmsg-wrap">
@@ -451,6 +464,38 @@
         })
     </script>
 @endpush
+@push('styles')
+    <style>
+        /* Asegurar que el contenedor permite ver el footer del formulario */
+        .am-profile-setting, .am-userperinfo { overflow: visible; }
+
+        /* Dar espacio al final del formulario para que el sticky no tape el contenido */
+        .am-themeform_personalinfo { padding-bottom: 96px; }
+
+        /* Hacer que la franja del botón quede visible al hacer scroll */
+        .am-form-btns {
+            position: sticky;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
+            padding: 0.75rem 0;
+            gap: 14px;
+            background:
+                linear-gradient(to top, rgba(255,255,255,0.96) 0%, rgba(255,255,255,0.85) 60%, rgba(255,255,255,0));
+            backdrop-filter: blur(2px);
+        }
+
+        /* Mejorar contraste del texto auxiliar sobre fondo claro */
+        .am-form-btns > span { color: #0f172a; }
+
+        /* En pantallas pequeñas, separar un poco más para el dedo */
+        @media (max-width: 768px) {
+            .am-themeform_personalinfo { padding-bottom: 120px; }
+            .am-form-btns { padding: 1rem 0; }
+        }
+    </style>
+@endpush
 @push('scripts')
     <script>
         // Script para reinicializar select2 en selects de país y estado tras navegación Livewire
@@ -475,11 +520,6 @@
     @vite(['public/css/flatpicker.css', 'public/css/flatpicker-month-year-plugin.css'])
 @endpush
 
-
-
-
-
-{{-- ...existing code... --}}
 @push('scripts')
     <script>
         document.addEventListener('showConfirmAndRedirect', function(event) {
@@ -491,4 +531,4 @@
         });
     </script>
 @endpush
-{{-- ...existing code... --}}
+

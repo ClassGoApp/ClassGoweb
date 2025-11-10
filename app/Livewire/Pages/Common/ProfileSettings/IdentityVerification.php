@@ -179,9 +179,18 @@ class IdentityVerification extends Component
      */
     public function updateInfo()
     {
-       
-        $this->data = $this->form->updateInfo($this->hasStates);
-
+        // 1) Validación y preparación
+        try {
+            $this->data = $this->form->updateInfo($this->hasStates);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Mostrar errores de validación en la UI en lugar de silenciarlos
+            foreach ($e->errors() as $field => $messages) {
+                foreach ($messages as $message) {
+                    $this->addError($field, $message);
+                }
+            }
+            return; // detener flujo si hay errores
+        }
 
         $perfil= Auth::user()->profile;
         $perfilcompleto = ($perfil->image != null ) && ($perfil->intro_video !=null) && ($perfil->gender != null);
@@ -192,49 +201,74 @@ class IdentityVerification extends Component
  
 
 
-        if ($perfilcompleto==false  || $googlecalendar==null || $cuentatutor==null) {
-            session()->flash('error', __('general.incomplete_profile_error'));
-            //return $this->redirect(route(Auth::user()->role . '.profile.personal-details'), navigate: true);
-        } else {
-            try {
-                $this->data['address']['lat'] = 0.0;
-                $this->data['address']['long'] = 0.0;
-                DB::beginTransaction();
-                $this->data['identityInfo']['name'] = $this->user->profile->first_name . ' ' . $this->user->profile->last_name;
+        // Construir lista de requisitos faltantes del perfil general (no bloquear salvo que quieras forzar completitud total)
+        $missing = [];
+        if (!$perfil->image) { $missing[] = __('profile.profile_photo'); }
+        if (!$perfil->intro_video) { $missing[] = __('profile.intro_video'); }
+        if (!$perfil->gender) { $missing[] = __('profile.gender'); }
+        if ($googlecalendar==null) { $missing[] = 'Google Calendar'; }
+        if ($cuentatutor==null) { $missing[] = __('profile.payout_method'); }
 
+        // Si hay faltantes, avisar pero continuar con el guardado de identidad
+        if (!empty($missing)) {
+            session()->flash('warning_profile_requirements', __('general.incomplete_profile_error').': '.implode(', ', $missing));
+        }
+
+        // 2) Persistencia con transacción controlada
+        try {
+            DB::beginTransaction();
+
+            // Enforce explicit lat/long defaults si vienen null
+            $this->data['address']['lat'] = $this->data['address']['lat'] ?? 0.0;
+            $this->data['address']['long'] = $this->data['address']['long'] ?? 0.0;
+
+            // Adjuntar nombre del perfil
+            $this->data['identityInfo']['name'] = $this->user->profile->first_name . ' ' . $this->user->profile->last_name;
+
+            // Si ya existe verificación previa, actualiza; si no, crea
+            $existing = $this->userIdentity->getUserIdentityVerification();
+            if ($existing) {
+                $existing->update($this->data['identityInfo']);
+                $userIdentity = $existing;
+            } else {
                 $userIdentity = $this->userIdentity->setUserIdentityVerification($this->data['identityInfo']);
-
-                $this->userIdentity->setUserAddress($userIdentity?->id, $this->data['address']);
-                DB::commit();
-                $this->Coupons();
-                try {
-                    $adminEmail = config('mail.from.address');
-                    $user = Auth::user();
-                    $contenido = "El usuario {$user->profile->first_name} - {$user->profile->last_name}  ({$user->email}) ha hecho una solicitud de verificación de identidad.";
-                    \Mail::raw($contenido, function ($message) use ($adminEmail) {
-                        $message->to($adminEmail)
-                            ->subject('Nueva solicitud de verificación de identidad');
-                    });
-                } catch (\Exception $e) {
-                    \Log::error('Error al enviar correo de solicitud de verificación: ' . $e->getMessage());
-                }
-
-
-            } catch (\Illuminate\Validation\ValidationException $e) {
-
-                //dd($e->errors());
-                DB::rollBack();
-                //dd('errores');  
             }
-            $this->data['identityInfo']['gender'] = $this->profile?->gender;
-            $this->data['identityInfo']['email'] = Auth::user()->email;
-            $this->data['identityInfo']['role'] = Auth::user()->role;
-            dispatch(new SendNotificationJob('identityVerificationRequest', User::admin(), $this->data));
-            if (Auth::user()->hasRole('student') && $this->emailTemplate?->status !== 'both') {
-                return;
-            }
+
+            // Dirección
+            $this->userIdentity->setUserAddress((string)($userIdentity?->id), $this->data['address']);
+
+            DB::commit();
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            \Log::error('Error guardando verificación de identidad: '.$e->getMessage(), ['trace' => $e->getTraceAsString()]);
+            session()->flash('error', __('general.general_error'));
+            return;
+        }
+
+        // 3) Post-acciones (cupones y notificaciones)
+        $this->Coupons();
+        try {
+            $adminEmail = config('mail.from.address');
+            $user = Auth::user();
+            $contenido = "El usuario {$user->profile->first_name} - {$user->profile->last_name}  ({$user->email}) ha hecho una solicitud de verificación de identidad.";
+            \Mail::raw($contenido, function ($message) use ($adminEmail) {
+                $message->to($adminEmail)
+                    ->subject('Nueva solicitud de verificación de identidad');
+            });
+        } catch (\Exception $e) {
+            \Log::error('Error al enviar correo de solicitud de verificación: ' . $e->getMessage());
+        }
+
+        $this->data['identityInfo']['gender'] = $this->profile?->gender;
+        $this->data['identityInfo']['email'] = Auth::user()->email;
+        $this->data['identityInfo']['role'] = Auth::user()->role;
+        dispatch(new SendNotificationJob('identityVerificationRequest', User::admin(), $this->data));
+        if (!(Auth::user()->hasRole('student') && $this->emailTemplate?->status !== 'both')) {
             dispatch(new SendNotificationJob('identityVerificationRequest', Auth::user(), $this->data));
         }
+
+        // 4) Feedback al usuario
+        session()->flash('message', __('general.form_saved_successfully'));
     }
 
 
