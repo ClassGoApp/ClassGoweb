@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'general_error' => 'Ocurrió un error al guardar la verificación de identidad. Inténtalo de nuevo o contacta soporte.',
     'app_name' => 'Lernen',
     'profile_settings' => 'Profile Settings',
     'manage_bookings' => 'Manage Bookings',
