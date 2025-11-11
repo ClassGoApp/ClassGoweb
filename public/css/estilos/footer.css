@@ -14,7 +14,11 @@
 
 /* =================== 1 - Fotter Logo y Contactos =================== */
 footer {
-  background: var(--bg-gradient4);
+  background-color: var(--primary-color);
+  background-image: url('/images/home/Elipse.png');
+  background-repeat: no-repeat;
+  background-position: center calc(100% + 650px);
+  background-size: 100% auto;
   margin: 0;
 }
 
@@ -94,6 +98,7 @@ footer {
 .box p {
   line-height: 1.2;
   padding-bottom: 1rem;
+  justify-content: start;
 }
 
 /* =================== 3 - Footer redes sociales =================== */

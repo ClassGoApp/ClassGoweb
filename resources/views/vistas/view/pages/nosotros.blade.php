@@ -34,20 +34,20 @@
                 </p>
             </div>
             <div class="nosotros-mision-image">
-                <p class="nosotros-mision-porcentaje">
+                {{-- <p class="nosotros-mision-porcentaje">
                     <span class="nosotros-mision-porcentaje-text">
                         +200 <!-- Porcentaje de Tutores Disponibles -->
                     </span>
                     <span class="nosotros-porcentaje-subtext" data-translate="tutorias_disponibles">
                     </span>
-                </p>
-                <img src="{{ asset('images/home/mision.webp') }}" alt="Misión ClassGo" class="tugo-image">
+                </p> --}}
+                <img src="{{ asset('images/home/models/img1.webp') }}" alt="Misión ClassGo" class="tugo-image">
             </div>
         </div>
 
         <div class="nosotros-vision" id="vision">
             <div class="vision-image">
-                <img src="{{ asset('images/home/vision.webp') }}"
+                <img src="{{ asset('images/home/models/img2.webp') }}"
                     alt="Visión ClassGo" class="tugo-image">
             </div>
             <div class="nosotros-vision-text fade-right">
@@ -92,7 +92,7 @@
         </div>
 
         <!-- SECCION TEAM-->
-        <div class="team-section">
+        <div class="team-section" id="team">
             <div class="team-header">
                 <h1 class="team-title" data-translate="team"></h1>
                 <p class="team-subtitle" data-translate="creadores_classgo"></p>
@@ -143,7 +143,7 @@
                         <div class="member-photo-wrapper">
                             <img src="{{ asset('images/team/carlos.webp')}}" alt="Foto de Carlos Mamani Torrez" class="member-photo">
                         </div>
-                        <a href="www.linkedin.com/in/carlosenriquemamani" class="member-link">
+                        <a href="https://www.linkedin.com/in/carlosenriquemamani/" class="member-link">
                             <img class="arrow-icon" src="{{ asset('images/team/linkedin.png') }}" alt="">
                         </a>
                     </div>
