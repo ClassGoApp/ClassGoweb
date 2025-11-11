@@ -1,79 +1,141 @@
-<img src="{{ asset('images/tutors/default.png') }}" alt="Foto de " class="tutor-profile-img" style="background-color: white">
+<!-- Imagen -->
+<img src="{{ asset('images/tutors/default.png') }}"
+    alt="Foto de"
+    class="tutor-profile-img"
+    id="profileImage">
 
-
+<!-- Modal -->
+<!-- Modal Imagen -->
 <div id="imageModal" class="image-modal">
-    <span id="closeModal">&times;</span>
-    <img class="image-modal-content" id="modalImage">
+    <div class="image-modal-inner">
+        <div class="image-modal-wrapper">
+            <img class="image-modal-content" id="modalImage">
+            <button id="closeModal" class="close-modal-btn">&times;</button>
+        </div>
+    </div>
 </div>
 
-
 <style>
-    .modal-trigger {
+    .tutor-profile-img {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid #fff;
+        box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
         transition: transform 0.3s, box-shadow 0.3s;
     }
 
-    .modal-trigger:hover {
+    /* --- Efecto al pasar el mouse --- */
+    .tutor-profile-img:hover {
         transform: scale(1.05);
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
+        filter: brightness(0.9);
     }
 
     .image-modal {
         display: none;
+        /* 🔑 Inicialmente oculto */
         position: fixed;
-        z-index: 9999;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: rgba(0, 0, 0, 0.9);
+        inset: 0;
+        z-index: 1000;
+        backdrop-filter: blur(5px) brightness(0.6);
+        background-color: rgba(0, 0, 0, 0.4);
+        overflow: hidden;
         justify-content: center;
         align-items: center;
     }
 
+    .image-modal-inner {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+    }
+
+    .image-modal-wrapper {
+        position: relative;
+        display: inline-block;
+    }
+
     .image-modal-content {
         max-width: 80%;
-        max-height: 80%;
+        max-height: 75%;
         border-radius: 10px;
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        display: block;
+        animation: fadeIn 0.4s ease;
     }
 
-    #closeModal {
+    .close-modal-btn {
         position: absolute;
-        top: 20px;
-        right: 35px;
-        color: #fff;
-        font-size: 40px;
-        font-weight: bold;
+        bottom: 0;
+        /* justo sobre la parte inferior de la imagen */
+        left: 50%;
+        transform: translateX(-50%) translateY(-50%);
+        background: rgba(0, 0, 0, 0.6);
+        border: none;
+        color: white;
+        font-size: 32px;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
         cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: 0.3s ease;
     }
 
-    #closeModal:hover {
-        color: #ddd;
+    .close-modal-btn:hover {
+        background: rgba(0, 0, 0, 0.9);
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    body.modal-open {
+        overflow: hidden;
     }
 </style>
 
 <script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const modal = document.getElementById('imageModal');
-        const modalImg = document.getElementById('modalImage');
-        const images = document.querySelectorAll('.modal-trigger');
-        const closeBtn = document.getElementById('closeModal');
+    document.addEventListener('DOMContentLoaded', function() {
+        const modal = document.getElementById("imageModal");
+        const modalImg = document.getElementById("modalImage");
+        const profileImg = document.getElementById("profileImage");
+        const closeModal = document.getElementById("closeModal");
 
-        images.forEach(img => {
-            img.onclick = function() {
-                modal.style.display = "flex";
-                modalImg.src = this.src;
-            }
+        // 🔑 Modal SOLO abre al hacer clic en la imagen
+        profileImg.addEventListener('click', function() {
+            modal.style.display = "flex";
+            modalImg.src = this.src;
+            document.body.classList.add("modal-open");
         });
 
-        closeBtn.onclick = function() {
+        // Cerrar con botón
+        closeModal.addEventListener('click', function() {
             modal.style.display = "none";
-        }
+            document.body.classList.remove("modal-open");
+        });
 
-        modal.onclick = function(e) {
-            if (e.target == modal) {
+        // Cerrar al hacer clic fuera de la imagen
+        modal.addEventListener('click', function(e) {
+            if (!modalImg.contains(e.target) && !closeModal.contains(e.target)) {
                 modal.style.display = "none";
+                document.body.classList.remove("modal-open");
             }
-        }
+        });
     });
 </script>
