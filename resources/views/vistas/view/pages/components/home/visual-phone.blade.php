@@ -21,9 +21,11 @@
     </ol>
 
     <div class="whats-new-card__button-wrapper">
-        <button class="whats-new-card__button">
+        <a href="{{ route('buscar') }}">
+            <button class="whats-new-card__button">
             Buscar Tutores
         </button>
+        </a>
     </div>
 
 </div>

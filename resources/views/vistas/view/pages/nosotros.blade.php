@@ -92,7 +92,7 @@
         </div>
 
         <!-- SECCION TEAM-->
-        <div class="team-section">
+        <div class="team-section" id="team">
             <div class="team-header">
                 <h1 class="team-title" data-translate="team"></h1>
                 <p class="team-subtitle" data-translate="creadores_classgo"></p>
@@ -143,7 +143,7 @@
                         <div class="member-photo-wrapper">
                             <img src="{{ asset('images/team/carlos.webp')}}" alt="Foto de Carlos Mamani Torrez" class="member-photo">
                         </div>
-                        <a href="www.linkedin.com/in/carlosenriquemamani" class="member-link">
+                        <a href="https://www.linkedin.com/in/carlosenriquemamani/" class="member-link">
                             <img class="arrow-icon" src="{{ asset('images/team/linkedin.png') }}" alt="">
                         </a>
                     </div>

@@ -243,7 +243,7 @@
             const btnWhatsapp = document.getElementById('btn-share-whatsapp');
             const btnFacebook = document.getElementById('btn-share-facebook');
             const slug = @json($tutor->profile->slug ?? '');
-            const shareUrl = `https://classgoapp.com/tutors/${slug}`;
+            const shareUrl = `https://classgoapp.com/tutores/${slug}`;
             const shareMsg = 'Hecha un vistazo a mi perfil en ClassGo!';
 
             btnShare.addEventListener('click', function() {
