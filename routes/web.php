@@ -44,10 +44,11 @@ use App\Http\Controllers\GoogleMeetController;
 use App\Services\GoogleMeetService;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TutorPerfilController;
+use App\Http\Controllers\BeforeBlogsController;
 
 
 
-Route::view('/e', 'vistas.view.pages.e')->name('e');
+Route::view('/reserva', 'vistas.view.pages.e')->name('e');
 Route::view('/traduccion', 'vistas.view.pages.traduccion')->name('traduccion');
 
 Route::get('/verify', function (\Illuminate\Http\Request $request) {
@@ -128,7 +129,10 @@ Route::get('/conferences', [ConferencesController::class, 'index'])
         ->name('conferences.index');
         
 Route::middleware(['locale', 'maintenance'])->group(function () {
-    Route::get('/blogs', Blogs::class)->name('blogs');
+    //Route::get('find-tutors', [SearchController::class, 'findTutors'])->name('find-tutors');
+    //Route::get('find-tutors', [SearchController::class, 'findTutors'])->name('find-tutors');
+
+   // Route::get('/blogs', Blogs::class)->name('blogs');
     Route::get('/blog/{slug}', BlogDetails::class)->name('blog-details');
     Route::view('/subscriptions-page', 'subscriptions-page');
 
@@ -138,15 +142,27 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
     Route::view('/como-trabajamos', 'vistas.view.pages.trabajamos')->name('como-trabajamos');
     Route::view('/preguntas', 'vistas.view.pages.preguntas')->name('preguntas');
     Route::get('/tutores/{slug}', [HomeController::class, 'tutor'])->name('tutor');
-    Route::view('/desarrolladores', 'vistas.view.pages.desarrolladores')->name('desarrolladores');
     Route::get('/tutors', [HomeController::class, 'buscarTutor'])->name('buscar.tutor'); //<---ojo
     Route::get('/buscar', [HomeController::class, 'buscar'])->name('buscar');
     Route::view('/modal', 'vistas.view.pages.modals.modal-reserva')->name('modal');
+    
+    Route::post('/tutor/{tutorId}/review', [HomeController::class, 'storeReview'])
+    ->name('tutor.review.store')
+    ->middleware(['auth', 'role:student']);
 
 
     //<=== Kevin Pasante ===>
     Route::view('/terminos', 'vistas.view.pages.terminos')->name('terminos');
 
+/////////////////////////////////////////////////////////////////////
+    //<=== Oscar Pasante ===>
+// Route::view('/blogs','vistas.view.pages.blog')->name('blogs');
+Route::get('/blogs', [BeforeBlogsController::class, 'index'])->name('blogs.index');
+
+Route::get('/blogs/{blog:slug}', [BeforeBlogsController::class, 'showBySlug'])->name('blogs.show');
+
+
+//<===//////////////////////////////////////////===>
 
     //Route::get('/buscar-tutor', BuscarTutor::class)->name('buscar.tutor');
     Route::get('/kkkk', BuscadorTutor::class)->name('buscador.tutor');

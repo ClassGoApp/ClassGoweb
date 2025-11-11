@@ -12,12 +12,25 @@
             <div class="preguntas-header-content">
                 <div class="preguntas-header-text align-left">
                     <nav class="breadcrumb">
-                        <a href="{{ route('home') }}" class="breadcrumb-link" data-translate="inicio"></a> / <span class="breadcrumb-current" data-translate="preguntas"></span>
+                        <a href="{{ route('home') }}" class="breadcrumb-link">Inicio</a> / <span class="breadcrumb-current">Preguntas</span>
                     </nav>
-                    <h1 data-translate="encuentra_respuesta"></h1>
-                    <p data-translate="empoderando_estudiantes"></p>
+                    <h1>Encuentra tu respuesta</h1>
+                    <p>Empoderando a los estudiantes en todo el mundo</p>
+                </div>
+                <div class="preguntas-tabs tabs-centered">
+                    <div class="tab-buttons">
+                        <button class="tab-button active" data-tab="estudiantes">
+                            <i class="fa-solid fa-book"></i>
+                            Para estudiantes
+                        </button>
+                        <button class="tab-button" data-tab="tutores">
+                            <i class="fa-solid fa-briefcase"></i>
+                            Para tutores
+                        </button>
+                    </div>
                 </div>
             </div>
+        </div>
 
             <!-- Estudiantes Tab Content -->
             <div class="tab-content active" id="estudiantes-content">
@@ -32,7 +45,7 @@
                                     </div>
                                 </div>
                                 <div class="faq-answer">
-                                    <p>Utilice la barra de búsqueda y los filtros de la página "Buscar un tutor por materia, disponibilidad, calificación y más.</p>
+                                    <p>Utilice la barra de búsqueda para encontrar tutores disponibles según la materia o tema que necesites</p>
                                 </div>
                             </div>
 
@@ -44,7 +57,7 @@
                                     </div>
                                 </div>
                                 <div class="faq-answer">
-                                    <p>Una vez que encuentres un tutor, consulta su perfil y selecciona un horario disponible que te convenga. Haz clic "Reservar ahora" y sigue las instrucciones para confirmar tu sesión.</p>
+                                    <p>Una vez que encuentres un tutor, consulta su perfil y selecciona un horario disponible que te convenga. Haz clic en "Reservar” y sigue las instrucciones para confirmar tu sesión.</p>
                                 </div>
                             </div>
 
@@ -56,7 +69,7 @@
                                     </div>
                                 </div>
                                 <div class="faq-answer">
-                                    <p>Puedes cancelar o reprogramar una sesión hasta 24 horas antes de la hora programada sin penalización. Las cancelaciones dentro de las 24 horas pueden generar un cargo.</p>
+                                    <p>Las tutorías no pueden cancelarse una vez reservadas. Si ocurrió algún inconveniente, contactanos y con gusto te ayudaremos </p>
                                 </div>
                             </div>
 
@@ -68,7 +81,7 @@
                                     </div>
                                 </div>
                                 <div class="faq-answer">
-                                    <p>Los pagos se realizan a través de nuestra pasarela de pago segura utilizando tarjetas de crédito/débito u otros métodos de pago disponibles.</p>
+                                    <p>Los pagos se realizan a través del Qr proporcionado en tu reserva o también por transferencia bancaria con los datos que se muestran en pantalla.</p>
                                 </div>
                             </div>
 
@@ -92,7 +105,7 @@
                                     </div>
                                 </div>
                                 <div class="faq-answer">
-                                    <p>Después de la sesión, recibirás un correo electrónico en el que se te solicitará que califiques a tu tutor y le des tu opinión. También puedes hacerlo desde el panel de tu cuenta.</p>
+                                    <p>Entra al perfil del tutor, desliza hacia abajo y dirígete a la sección de reseñas, donde podrás ver las calificaciones y comentarios de los estudiantes.</p>
                                 </div>
                             </div>
                         </div>
@@ -116,7 +129,7 @@
                                     </div>
                                 </div>
                                 <div class="faq-answer">
-                                    <p>Haga clic en el enlace "Conviértete en tutor" y siga las instrucciones para registrarse, crear su perfil y enviar la documentación necesaria para su aprobación.</p>
+                                    <p>Si no te creaste aún cuenta <a href="{{ route('register') }}"> <span>haz click aquí</span></a> y rellena el formulario y al final selecciona "Tutor". Cree su perfil y envie la documentación necesaria para su aprobación.</p>
                                 </div>
                             </div>
 
@@ -128,7 +141,7 @@
                                     </div>
                                 </div>
                                 <div class="faq-answer">
-                                    <p>Los tutores deben tener la titulación académica pertinente y experiencia docente. Los requisitos específicos pueden variar según la materia.</p>
+                                    <p>No es requisito tener titulación académica. Si quieres enseñar "algo" puedes hacerlo.</p>
                                 </div>
                             </div>
 
@@ -140,7 +153,7 @@
                                     </div>
                                 </div>
                                 <div class="faq-answer">
-                                    <p>Inicia sesión en tu cuenta, ve a la sección "Disponibilidad" y actualiza tu calendario con tus franjas horarias disponibles.</p>
+                                    <p>Inicia sesión en tu cuenta, accede a la sección “Administrar tiempo disponible” y actualiza tu calendario con tus franjas horarias disponibles.</p>
                                 </div>
                             </div>
 
@@ -152,7 +165,7 @@
                                     </div>
                                 </div>
                                 <div class="faq-answer">
-                                    <p>Si un estudiante cancela una sesion dentro de 24 horas posteriores a las horas programada, es posible que tenga derecho a una tarifa de cancelacion. Consulta la politica de cancelacion de la plataforma para más detalles.</p>
+                                    <p>Los estudiantes no tienen la opción de cancelar una sesión después de reservarla. Si el alumno te informa de algún problema, recomiéndale escribir a nuestro contacto para recibir ayuda.</p>
                                 </div>
                             </div>
                         </div>
@@ -164,149 +177,6 @@
             </div>
         </div>
 
-        <!-- Estudiantes Tab Content -->
-        <div class="tab-content active" id="estudiantes-content">
-            <div class="preguntas-section">
-                <div class="preguntas-content">
-                    <div class="preguntas-faq">
-                        <div class="faq-item active">
-                            <div class="faq-question" onclick="toggleFaq(this)">
-                                <h3 data-translate="faq_encontrar_tutor"></h3>
-                                <div class="faq-toggle">
-                                    <i class="fa-solid fa-chevron-up"></i>
-                                </div>
-                            </div>
-                            <div class="faq-answer">
-                                <p data-translate="faq_encontrar_tutor_desc"></p>
-                            </div>
-                        </div>
-
-                        <div class="faq-item">
-                            <div class="faq-question" onclick="toggleFaq(this)">
-                                <h3 data-translate="faq_encontrar_tutor_desc"></h3>
-                                <div class="faq-toggle">
-                                    <i class="fa-solid fa-chevron-down"></i>
-                                </div>
-                            </div>
-                            <div class="faq-answer">
-                                <p data-translate="faq_reservar_sesion_desc"></p>
-                            </div>
-                        </div>
-
-                        <div class="faq-item">
-                            <div class="faq-question" onclick="toggleFaq(this)">
-                                <h3 data-translate="faq_cancelar_reprogramar"></h3>
-                                <div class="faq-toggle">
-                                    <i class="fa-solid fa-chevron-down"></i>
-                                </div>
-                            </div>
-                            <div class="faq-answer">
-                                <p data-translate="faq_cancelar_reprogramar_desc"></p>
-                            </div>
-                        </div>
-
-                        <div class="faq-item">
-                            <div class="faq-question" onclick="toggleFaq(this)">
-                                <h3 data-translate="faq_pagos"></h3>
-                                <div class="faq-toggle">
-                                    <i class="fa-solid fa-chevron-down"></i>
-                                </div>
-                            </div>
-                            <div class="faq-answer">
-                                <p data-translate="faq_pagos_desc"></p>
-                            </div>
-                        </div>
-
-                        <div class="faq-item">
-                            <div class="faq-question" onclick="toggleFaq(this)">
-                                <h3 data-translate="faq_tutor_no_presente"></h3>
-                                <div class="faq-toggle">
-                                    <i class="fa-solid fa-chevron-down"></i>
-                                </div>
-                            </div>
-                            <div class="faq-answer">
-                                <p data-translate="faq_tutor_no_presente_desc"></p>
-                            </div>
-                        </div>
-
-                        <div class="faq-item">
-                            <div class="faq-question" onclick="toggleFaq(this)">
-                                <h3 data-translate="faq_comentarios_tutor"></h3>
-                                <div class="faq-toggle">
-                                    <i class="fa-solid fa-chevron-down"></i>
-                                </div>
-                            </div>
-                            <div class="faq-answer">
-                                <p data-translate="faq_comentarios_tutor_desc"></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="preguntas-image">
-                        <img src="{{ asset('images/home/TugoUniversitario.webp') }}" alt="Estudiante con preguntas">
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Tutores Tab Content -->
-        <div class="tab-content" id="tutores-content">
-            <div class="preguntas-section">
-                <div class="preguntas-content">
-                    <div class="preguntas-faq">
-                        <div class="faq-item active">
-                            <div class="faq-question" onclick="toggleFaq(this)">
-                                <h3 data-translate="faq_ser_tutor"></h3>
-                                <div class="faq-toggle">
-                                    <i class="fa-solid fa-chevron-up"></i>
-                                </div>
-                            </div>
-                            <div class="faq-answer">
-                                <p data-translate="faq_ser_tutor_desc"></p>
-                            </div>
-                        </div>
-
-                        <div class="faq-item">
-                            <div class="faq-question" onclick="toggleFaq(this)">
-                                <h3 data-translate="faq_cualificaciones_tutor"></h3>
-                                <div class="faq-toggle">
-                                    <i class="fa-solid fa-chevron-down"></i>
-                                </div>
-                            </div>
-                            <div class="faq-answer">
-                                <p data-translate="faq_cualificaciones_tutor_desc"></p>
-                            </div>
-                        </div>
-
-                        <div class="faq-item">
-                            <div class="faq-question" onclick="toggleFaq(this)">
-                                <h3 data-translate="faq_configurar_disponibilidad"></h3>
-                                <div class="faq-toggle">
-                                    <i class="fa-solid fa-chevron-down"></i>
-                                </div>
-                            </div>
-                            <div class="faq-answer">
-                                <p data-translate="faq_configurar_disponibilidad_desc"></p>
-                            </div>
-                        </div>
-
-                        <div class="faq-item">
-                            <div class="faq-question" onclick="toggleFaq(this)">
-                                <h3 data-translate="faq_estudiante_cancela"></h3>
-                                <div class="faq-toggle">
-                                    <i class="fa-solid fa-chevron-down"></i>
-                                </div>
-                            </div>
-                            <div class="faq-answer">
-                                <p data-translate="faq_estudiante_cancela_desc"></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="preguntas-image">
-                        <img src="{{ asset('images/home/Tugotecnológico.webp') }}" alt="Tutor con preguntas">
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </section>
 
@@ -358,4 +228,5 @@
         }
     }
 </script>
+
 @endsection

@@ -26,11 +26,23 @@
             </div>
         </div>  --}}
 
+         <!-- Price section: nuevo input para el campo price en profiles -->
+            <div class="price-section" style="margin: 1.25rem 0; display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                <label for="price" style="min-width:180px; font-weight:600;">¿Cuánto deseas cobrar por tutoría?</label>
+                <input id="price" type="number" step="0.01" min="0" class="form-control" style="max-width:240px;"
+                    wire:model.defer="price" placeholder="Ej. 120.00">
+                <div>
+                    <button class="btn btn-primary" wire:click="savePrice">Guardar precio</button>
+                </div>
+                @error('price') <div style="width:100%; color: #dc2626; margin-top:6px;">{{ $message }}</div> @enderror
+            </div>
+
         <!-- Payment Methods Section -->
         <div class="payment-methods-section">
             <div class="section-header">
                 Métodos de pago
             </div>
+
             <div class="payment-methods-grid">
 
                 <div class="payment-method-card" style="display: flex; flex-flow: row wrap; justify-content: center;">
@@ -108,10 +120,12 @@
                     </div>
                 </div>
             </div>
+
+            
         </div>
 
         <!-- Transaction History -->
-        <div class="transaction-history">
+        {{-- <div class="transaction-history">
             <div class="section-header">
                 <h2 class="section-title">Historial de Transacciones</h2>
             </div>
@@ -176,7 +190,7 @@
                 {{ $pagos->links('livewire::simple-bootstrap') }}
             </div>
             
-        </div>  
+        </div>   --}}
         @include('livewire.pages.tutor.manage-account.components.modal-por-definir')
         @include('livewire.pages.tutor.manage-account.components.modal-cuenta-bancaria')
         @include('livewire.pages.tutor.manage-account.components.modal-qr-nuevo')

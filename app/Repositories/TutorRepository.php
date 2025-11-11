@@ -4,6 +4,8 @@ namespace App\Repositories;
 
 use App\Models\User;
 use App\Models\UserSubject;
+use App\Models\UserReview;
+use App\Models\Review;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -60,12 +62,23 @@ class TutorRepository
 
         // 3. Carga de Relaciones y Agregaciones (with, withAvg, withCount)
         $query->with([
-            'profile:id,user_id,first_name,last_name,slug,image,description,native_language',
+            'profile:id,user_id,first_name,last_name,price,slug,image,description,native_language,tagline',
             'languages:id,name',
             'userSubjects.subject.group:id,name', // Solo cargamos el nombre del grupo
         ])
-        ->withAvg('ratings as avg_rating', 'rating')
-        ->withCount('ratings as total_reviews');
+        ->withCount([
+            'userReviews as total_reviews' => function($query) {
+                $query->whereHas('review', function($q) {
+                    $q->where('status', 'active');
+                });
+            }
+        ])
+        ->withAvg([
+            'userReviews as avg_rating' => function($query) {
+                $query->join('reviews', 'reviews.id', '=', 'user_reviews.review_id')
+                      ->where('reviews.status', 'active');
+            }
+        ], 'reviews.rating');
 
         // 4. Lógica de Ordenamiento
         $query->orderByRaw(
@@ -95,5 +108,109 @@ class TutorRepository
             ->with('subject:id,name') // Cargar la relación de materia para obtener el nombre
             // Ejecutar la consulta y obtener la colección
             ->get();
+    }
+
+    //Obtención de comentarios del tutor
+    public function getTutorReviewsWithStats($tutorId): array
+    {
+        $reviews = UserReview::where('user_id', $tutorId)
+            ->with(['review', 'reviewer.profile'])
+            ->whereHas('review', function($q) {
+                $q->where('status', 'active');
+            })
+            ->latest()
+            ->get();
+
+        $formattedReviews = $reviews->map(function($userReview) {
+            return [
+                'id' => $userReview->id,
+                'rating' => $userReview->review->rating,
+                'comment' => $userReview->review->comment,
+                'created_at' => $userReview->created_at,
+                'reviewer' => [
+                    'name' => $userReview->reviewer->profile->first_name . ' ' . 
+                             $userReview->reviewer->profile->last_name,
+                    'image' => $userReview->reviewer->profile->image ?? null
+                ]
+            ];
+        });
+
+        // Calcular estadísticas
+        $stats = [
+            'avgRating' => number_format($reviews->avg('review.rating'), 1),
+            'totalReviews' => $reviews->count(),
+            'distribution' => [
+                5 => $reviews->where('review.rating', 5)->count(),
+                4 => $reviews->where('review.rating', 4)->count(),
+                3 => $reviews->where('review.rating', 3)->count(),
+                2 => $reviews->where('review.rating', 2)->count(),
+                1 => $reviews->where('review.rating', 1)->count(),
+            ]
+        ];
+
+        return [
+            'reviews' => $formattedReviews,
+            'stats' => $stats
+        ];
+    }
+
+    public function createReview(array $data): array
+    {
+        try {
+            DB::beginTransaction();
+
+            // Crear la reseña
+            $review = Review::create([
+                'rating' => $data['rating'],
+                'comment' => $data['comment'] ?? null,
+                'status' => 'active'
+            ]);
+
+            // Crear la relación usuario-reseña
+            UserReview::create([
+                'user_id' => $data['tutor_id'],
+                'reviewer_id' => $data['reviewer_id'],
+                'review_id' => $review->id
+            ]);
+
+            DB::commit();
+
+            return [
+                'success' => true,
+                'message' => 'Reseña creada exitosamente'
+            ];
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            \Log::error('Error creating review: ' . $e->getMessage());
+            
+            return [
+                'success' => false,
+                'message' => 'Error al crear la reseña'
+            ];
+        }
+    }
+
+    /**
+     * Verifica si un usuario puede reseñar a un tutor
+     * 
+     * @param int $reviewerId
+     * @param int $tutorId
+     * @return bool
+     */
+    public function canUserReviewTutor(int $reviewerId, int $tutorId): bool
+    {
+        // Verificar si ya existe una reseña
+        $hasReviewed = UserReview::hasUserReviewed($reviewerId, $tutorId);
+        if ($hasReviewed) {
+            return false;
+        }
+
+        // Aquí podrías agregar más validaciones:
+        // - Verificar si el usuario ha tomado clases con el tutor
+        // - Verificar si el usuario tiene el rol correcto
+        // - Etc.
+
+        return true;
     }
 }

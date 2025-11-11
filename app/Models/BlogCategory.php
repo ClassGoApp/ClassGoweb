@@ -19,4 +19,11 @@ class BlogCategory extends Model
         'parent_id',
         'image',
     ];
+    public function blogs()
+    {
+        return $this->belongsToMany(Blog::class, 
+                            'blog_category_link', 
+                            'blog_category_id', 
+                            'blog_id');
+    }
 }

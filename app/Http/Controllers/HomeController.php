@@ -81,16 +81,53 @@ class HomeController extends Controller
                 }
             }
         }
-        $conferencias = Conferences::where('user_id', $tutor->id)->get();
+        // $conferencias = Conferences::where('user_id', $tutor->id)->get();
         $materias = array_unique($materias);
         $grupos = array_unique($grupos);
 
+        //Obtener Reseñas
+        $reviewData = $this->tutorRepository->getTutorReviewsWithStats($tutor->id);
+
+
         return view('vistas.view.pages.tutor', [
             'tutor' => $tutor,
-            'materias' => $materias,
-            'grupos' => $grupos,
-            'conferencias' => $conferencias
+            'materias' => array_unique($materias),
+            'grupos' => array_unique($grupos),
+            'reviews' => $reviewData['reviews'],
+            'avgRating' => $reviewData['stats']['avgRating'],
+            'totalReviews' => $reviewData['stats']['totalReviews'],
+            'ratingDistribution' => $reviewData['stats']['distribution'],
+            'canReview' => auth()->check() ? 
+                $this->tutorRepository->canUserReviewTutor(auth()->id(), $tutor->id) : 
+                false
         ]);
+    }
+
+    /**
+     * Almacena una nueva reseña
+     */
+    public function storeReview(Request $request, $tutorId)
+    {
+        $request->validate([
+            'rating' => 'required|numeric|min:1|max:5',
+            'comment' => 'nullable|string|max:1000'
+        ]);
+
+        if (!$this->tutorRepository->canUserReviewTutor(auth()->id(), $tutorId)) {
+            return back()->with('error', 'No puedes reseñar a este tutor nuevamente.');
+        }
+
+        $result = $this->tutorRepository->createReview([
+            'rating' => $request->rating,
+            'comment' => $request->comment,
+            'tutor_id' => $tutorId,
+            'reviewer_id' => auth()->id()
+        ]);
+
+        return back()->with(
+            $result['success'] ? 'success' : 'error',
+            $result['message']
+        );
     }
 
     public function buscarTutor()
@@ -101,7 +138,8 @@ class HomeController extends Controller
     public function buscar(Request $request){
 
         //Obtener parámetros de la URL (incluído 'page' automáticamente por Laravel)
-        $search = $request->input('search');
+        // $search = $request->input('search');
+        $search = null;
         $perPage = 50;
 
         $tutors = $this->tutorRepository->getFeaturedTutors($perPage, $search);

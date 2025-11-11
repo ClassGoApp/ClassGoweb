@@ -51,21 +51,30 @@ class SlotBookingService implements interfaces\ISlotBookingService
         $booking->end_time = $endTime->format('Y-m-d H:i:s');     // Convertir de vuelta a string para la BD
         $booking->booked_at = now();
         $booking->user_subject_slot_id = null; // Asignar el ID del slot creado
-        $booking->status = 2; // Estado inicial
+        $booking->status = 1; // Estado inicial
+  
+
+        $link = $this->generarlink($booking);
+        $booking->meeting_link = $link;
         $booking->save();
 
 
-        if ($session_fee == 0) {
-
-            $this->aceptartutoria($booking);
-
-        }
+        // if ($session_fee == 0) {
+        //     $this->aceptartutoria($booking);
+        // }
         return $booking;
     }
 
 
 
 
+    // public function aceptartutoria($tutoria)
+    // {
+    //     $tutoria->status = 1; // Cambiar el estado a 'aceptado'
+    //     $link = $this->generarlink($tutoria);
+    //     $tutoria->meeting_link = $link;
+    //     $tutoria->save();
+    // }
     public function aceptartutoria($tutoria)
     {
         $tutoria->status = 1; // Cambiar el estado a 'aceptado'

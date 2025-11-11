@@ -2,7 +2,7 @@
     <div class="footer-container">
         <div class="container-info">
             <div class="footer-info"><!--ClassGo Logo + info-->
-                <img src="{{ asset('images/logoclassgo.png') }}" alt="logo">
+                <img src="{{ asset('images/home/logoclassgo.png') }}" alt="logo">
                 <div class="info-text">
                     <i class="fa-solid fa-envelope icon"></i>
                     <p>classgobol@gmail.com</p>
@@ -14,7 +14,7 @@
                     </a>
                 </div>
                 @auth
-                <a href=" {{ route('buscar.tutor')}}"><button class="btn-registrate"><span data-translate="buscar_tutor"></span></button></a>
+                <a href=" {{ route('buscar')}}"><button class="btn-registrate"><span data-translate="buscar_tutor"></span></button></a>
                 @endauth
                 @guest
                 <a href=" {{ route('register')}}"><button class="btn-registrate"><span data-translate="registrate_gratis"></span></button></a>
@@ -23,8 +23,8 @@
             </div>
             <div class="footer-about"> <!--List about-->
                 <div class="box">
-                    <h1>Tutores</h1>
-                    <a href=" {{ route('buscar.tutor')}}">
+                    <h1 data-translate="tutors"></h1>
+                    <a href=" {{ route('buscar')}}">
                         <p data-translate="tutores_en_linea"></p>
                     </a>
 
@@ -35,7 +35,7 @@
                     <a href=" {{ route('register')}}">
                         <p data-translate="registrate"></p>
                     </a>
-                    <a href="{{ route('buscar.tutor')}}">
+                    <a href="{{ route('buscar')}}">
                         <p data-translate="encontrar_tutor"></p>
                     </a>
                 </div>
@@ -50,9 +50,9 @@
                     <a href="https://play.google.com/store/apps/details?id=com.neurasoft.classgo" target="_blank"><img src="{{ asset('images/googleplay.png')}}" alt="" style=" width: 150px;"></a>
                 </div>
                 <div class="box">
-                    <a href="{{ route('nosotros')}}"><h1 data-translate="nosotros">Nosotros</h1></a>
-                    <a href=" {{ route('nosotros')}}#mision"><p data-translate="mision">Mision</p></a>
-                    <a href=" {{ route('nosotros')}}#vision"><p data-translate="vision">Vision</p></a>
+                    <a href="{{ route('nosotros')}}"><h1 data-translate="nosotros"></h1></a>
+                    <a href=" {{ route('nosotros')}}#mision"><p data-translate="mision"></p></a>
+                    <a href=" {{ route('nosotros')}}#vision"><p data-translate="vision"></p></a>
                     <a href="{{ route('nosotros')}}#team"><p data-translate="desarrolladores"></p></a>
                 </div>
                 <div class="box">

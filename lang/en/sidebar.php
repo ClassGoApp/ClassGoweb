@@ -75,4 +75,7 @@ return [
     'discover_tutor_text1' => 'Discover an online tutor',
     'discover_tutor_text2' => 'skilled for your studies',
     'promociones' => 'Promociones',
+    'manage_tutors' => 'Manage Tutors',
+    'tutors' => 'Tutors',
+    'manage_cupones'=> 'Manage Cupons   '
 ];

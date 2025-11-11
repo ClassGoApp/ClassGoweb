@@ -46,7 +46,7 @@ return [
     'clear-cache' => 'Borrar caché',
     'menu' => 'Menús',
     'site_management' => 'Gestión del sitio',
-    'transaction_payment' => 'Transacciones y pagos',
+    'transaction_payment' => 'Transacciones kkk',
     'blogs' => 'Blogs',
     'withdraw_requests' => 'Retirar solicitudes',
     'adsense_settings' => 'configuración de adsense',
@@ -75,4 +75,7 @@ return [
     'history_tutorials' => 'Historial de Tutorias ',
     'courses' => 'Cursos',
     'invoices' => 'Historial Tutorias',
+    'manage_tutors' => 'Administrar Tutores',
+    'tutors' => 'Tutores',
+    'manage_cupones' => 'Administrar Cupones'
 ];

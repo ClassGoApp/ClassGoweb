@@ -36,6 +36,8 @@ class CreateBlog extends Component
     public function mount()
     {
         $this->categories = BlogCategory::whereStatus('active')->get(['id', 'name'])?->pluck('name', 'id')?->toArray();
+        $this->selectedCategories = []; // Initialize as empty array
+        $this->status = 'draft';
 
         $this->imageFileExt = setting('_general.allowed_image_extensions') ?? 'jpg,png';
         $this->imageFileSize = (int) (setting('_general.max_image_size') ?? '5');
@@ -43,9 +45,19 @@ class CreateBlog extends Component
 
     public function loadData()
     {
-        $this->isLoading = false;
+        $this->isLoading = false; // Set loading to false
+
         $this->dispatch('loadPageJs');
-        $this->dispatch('initSelect2', target: '#category_ids');
+        $this->dispatch('initSelect2Categories', [
+            'categories' => $this->categories,
+            'selected' => $this->selectedCategories
+        ]);
+    }
+
+    // Add method to handle category updates from JavaScript
+    public function updatedCategoryIds()
+    {
+        $this->selectedCategories = $this->category_ids;
     }
 
     #[Layout('layouts.admin-app')]
