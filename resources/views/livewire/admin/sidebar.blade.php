@@ -21,6 +21,97 @@ new class extends Component {
                     'admin.insights' => __('sidebar.insights'),
                 ],
             ],
+
+            /*
+            [
+                'title' => __('sidebar.manage_packages'),
+                'icon'  => 'icon-folder-plus',
+                'routes' => [
+                    'admin.packages.index' => __('sidebar.add_new_package'),
+                    'admin.packages.installed' => __('sidebar.installed_packages')
+                ],
+            ],
+
+            [
+                'title' =>  __('sidebar.upgrade'),
+                'icon'  => 'icon-upload-cloud',
+                'routes' => [
+                    'admin.upgrade' => __('sidebar.upgrade')
+                ],
+            ],
+*/
+            [
+                'title' => __('admin/general.identity_verification'),
+                'icon' => 'icon-user-check',
+                'routes' => [
+                    'admin.identity-verification' => __('identity-verification'),
+                ],
+            ],
+            [
+                'title' => __('admin/sidebar.users'),
+                'icon' => 'icon-users',
+                'routes' => [
+                    'admin.users' => __('admin.users'),
+                ],
+            ],
+            
+            [
+                'title' => __('admin/sidebar.invoices'),
+                'icon' => 'icon-dollar-sign',
+                'routes' => [
+                    'admin.invoices' => __('invoices'),
+                ],
+            ],
+
+            [
+                'title' => __('sidebar.transaction_payment'),
+                'icon' => 'icon-credit-card',
+                'routes' => [
+                    'admin.withdraw-requests' => __('sidebar.withdraw_requests'),
+                    'admin.commission-settings' => __('sidebar.commission_settings'),
+                    'admin.payment-methods' => __('sidebar.payment_methods'),
+                ],
+            ],
+            [
+                'title' => __('sidebar.manage_tutors'),
+                'icon' => 'icon-user',
+                'routes' => [
+                    'admin.tutors.index' => __('sidebar.tutors'),
+
+                ],
+            ],
+            $this->menuItems[] = [
+                'title' => __('sidebar.bookings'),
+                'icon' => 'icon-book-open',
+                'routes' => [
+                    'admin.tutorias.index' => __('sidebar.tutorias'),
+                ],
+            ],
+            [
+                'title' => __('sidebar.manage_cupones'),
+                'icon' => 'icon-user',
+                'routes' => [
+                    'admin.cupones.index' => __('sidebar.cupones'),
+
+                ],
+            ],
+            $this->menuItems[] = [
+                'title' => __('blogs.manage_blogs'),
+                'icon' => 'icon-bold',
+                'routes' => [
+                    'admin.create-blog' => __('blogs.create_blog'),
+                    'admin.blog-listing' => __('blogs.blog_listing'),
+                    'admin.blog-categories' => __('blogs.blog_categories'),
+                ]
+            ],
+            $this->menuItems[] = [
+                'title' => __('alianza.alianzas'),
+                'icon' => 'icon-bold',
+                'routes' => [
+                    'admin.alianzas-listing' => __('alianza.alianza_listing'),
+                    'admin.create-alianza' => __('alianza.create_alianza'),
+                ]
+            ],
             [
                 'title' => __('sidebar.site_management'),
                 'icon' => 'icon-layout',
@@ -47,7 +138,6 @@ new class extends Component {
                     'admin.taxonomy.courses' => __('sidebar.courses'),
                 ],
             ],
-
             [
                 'title' => __('sidebar.translation_settings'),
                 'icon' => 'icon-globe',
@@ -56,71 +146,7 @@ new class extends Component {
                 ],
             ],
 
-            /*
-            [
-                'title' => __('sidebar.manage_packages'),
-                'icon'  => 'icon-folder-plus',
-                'routes' => [
-                    'admin.packages.index' => __('sidebar.add_new_package'),
-                    'admin.packages.installed' => __('sidebar.installed_packages')
-                ],
-            ],
 
-            [
-                'title' =>  __('sidebar.upgrade'),
-                'icon'  => 'icon-upload-cloud',
-                'routes' => [
-                    'admin.upgrade' => __('sidebar.upgrade')
-                ],
-            ],
-*/
-            [
-                'title' => __('admin/sidebar.users'),
-                'icon' => 'icon-users',
-                'routes' => [
-                    'admin.users' => __('admin.users'),
-                ],
-            ],
-            [
-                'title' => __('admin/general.identity_verification'),
-                'icon' => 'icon-user-check',
-                'routes' => [
-                    'admin.identity-verification' => __('identity-verification'),
-                ],
-            ],
-            [
-                'title' => __('admin/sidebar.invoices'),
-                'icon' => 'icon-dollar-sign',
-                'routes' => [
-                    'admin.invoices' => __('invoices'),
-                ],
-            ],
-
-            [
-                'title' => __('sidebar.transaction_payment'),
-                'icon' => 'icon-credit-card',
-                'routes' => [
-                    'admin.withdraw-requests' => __('sidebar.withdraw_requests'),
-                    'admin.commission-settings' => __('sidebar.commission_settings'),
-                    'admin.payment-methods' => __('sidebar.payment_methods'),
-                ],
-            ],
-            [
-                'title' => __('sidebar.manage_tutors'),
-                'icon' => 'icon-user',
-                'routes' => [
-                    'admin.tutors.index' => __('sidebar.tutors'),
-
-                ],
-            ],
-            [
-                'title' => __('sidebar.manage_cupones'),
-                'icon' => 'icon-user',
-                'routes' => [
-                    'admin.cupones.index' => __('sidebar.cupones'),
-
-                ],
-            ],
         ];
         if (\Nwidart\Modules\Facades\Module::has('subscriptions') && \Nwidart\Modules\Facades\Module::isEnabled('subscriptions')) {
             $this->menuItems[] = [
@@ -132,16 +158,6 @@ new class extends Component {
                 ],
             ];
         }
-        $this->menuItems[] = [
-            'title' => __('blogs.manage_blogs'),
-            'icon' => 'icon-bold',
-            'routes' => [
-                'admin.create-blog' => __('blogs.create_blog'),
-                'admin.blog-listing' => __('blogs.blog_listing'),
-                'admin.blog-categories' => __('blogs.blog_categories'),
-            ],
-        ];
-
 
         if (\Nwidart\Modules\Facades\Module::has('forumwise') && \Nwidart\Modules\Facades\Module::isEnabled('forumwise')) {
             $this->menuItems[] = [
@@ -162,13 +178,7 @@ new class extends Component {
             $this->menuItems = array_merge($this->menuItems, badgeMenuOptions());
         }
 
-        $this->menuItems[] = [
-            'title' => __('sidebar.bookings'),
-            'icon' => 'icon-book-open',
-            'routes' => [
-                'admin.tutorias.index' => __('sidebar.tutorias'),
-            ],
-        ];
+
     }
 
     /**
