@@ -92,18 +92,20 @@ class EmailTemplates extends Component
     }
 
 
-    public function updatedtemplateKey( $id ){
-        if( !empty($id) ){
+    public function updatedTemplateKey($id)
+    {
+        if (!empty($id)) {
             $this->id = $id;
-            $this->selected_template = [];
-                $this->selected_template = collect($this->emailTemplates)->where('id',$id)->first();
-                foreach( $this->selected_template['content']  as $key => $single ){
+            $this->selected_template = collect($this->emailTemplates)->where('id', $id)->first();
+            $this->validated_fields = [];
 
-                    if( !empty($single['id']) ){
-                        $this->validated_fields[$single['id']] =  str_ireplace('<br>', "\r\n", $single['default']);
-                    }
+            foreach ($this->selected_template['content'] as $key => $single) {
+                if (!empty($single['id'])) {
+                    $this->validated_fields[$single['id']] = str_ireplace('<br>', "\r\n", $single['default']);
                 }
-                $this->status = $this->selected_template['status'] == 'active' ? true : false;
+            }
+
+            $this->status = $this->selected_template['status'] == 'active';
         }
     }
 
@@ -126,20 +128,20 @@ class EmailTemplates extends Component
         }
     }
 
-    public function edit( $id ){
-
+    public function edit($id)
+    {
         $this->selected_template = collect($this->emailTemplates)->where('id',$id)->first();
         $this->validated_fields = [];
         $this->edit_id = $id;
         $this->email_type = $this->selected_template['type'];
-        foreach($this->selected_template['content'] as $key => &$single){
-            if( !empty($single['id'])){
-                if(isset($fields[$single['id']]) ){
-                    $single['default'] = $fields[$single['id']];
-                }
-                $this->validated_fields[$single['id']] =  $single['default'];
+
+        foreach ($this->selected_template['content'] as $key => $single) {
+            if (!empty($single['id'])) {
+                // Carga directa desde el contenido del template
+                $this->validated_fields[$single['id']] = $single['default'];
             }
         }
+
         $this->status = $this->selected_template['status'] == 'active' ? true : false;
     }
 
