@@ -30,13 +30,17 @@
                 @if(!empty($alianza->enlace)) onclick="window.location.href='{{ $alianza->enlace }}'" @endif
               > 
             @else
-              <img src="{{ asset('images/tutors/default.png') }}" 
+              <img src="{{ $alianza->imagen }}" 
                   alt="Imagen de {{ $alianza->titulo }}"
                   @if(!empty($alianza->enlace)) onclick="window.location.href='{{ $alianza->enlace }}'" @endif
                 > 
             @endif
           @else
-            <img src="{{ asset('images/tutors/default.png') }}" alt="{{ $alianza->titulo }}" class="client-logo alianza-evento-imagen">
+
+            <img src="{{ $alianza->imagen }}" 
+              alt="Imagen de {{ $alianza->titulo }}"
+              @if(!empty($alianza->enlace)) onclick="window.location.href='{{ $alianza->enlace }}'" @endif
+            >          
           @endif
         @endforeach
       </div>
