@@ -30,14 +30,14 @@
                 @if(!empty($alianza->enlace)) onclick="window.location.href='{{ $alianza->enlace }}'" @endif
               > 
             @else
-              <img src="{{ $alianza->imagen }}" 
+              <img src="{{ asset('storage/' . $alianza->imagen) }}" 
                   alt="Imagen de {{ $alianza->titulo }}"
                   @if(!empty($alianza->enlace)) onclick="window.location.href='{{ $alianza->enlace }}'" @endif
                 > 
             @endif
           @else
 
-            <img src="{{ $alianza->imagen }}" 
+            <img src="{{ asset('storage/' . $alianza->imagen) }}" 
               alt="Imagen de {{ $alianza->titulo }}"
               @if(!empty($alianza->enlace)) onclick="window.location.href='{{ $alianza->enlace }}'" @endif
             >          

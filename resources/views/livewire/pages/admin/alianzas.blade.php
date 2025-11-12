@@ -87,9 +87,12 @@
                                                         <img src="{{ $imageSrc }}" alt="{{ $single->titulo }}" width="80" height="60" style="object-fit: cover; border-radius: 4px;">
                                                     </div>
                                                 @else
-                                                    <div class="tb-no-image">
+                                                    {{-- <div class="tb-no-image">
                                                         <i class="icon-image" style="font-size: 24px; color: #ccc;"></i>
                                                         <small>{{ __('alianza.file_not_found') }}</small>
+                                                    </div> --}}
+                                                    <div class="tb-blog-image">
+                                                        <img src="{{ asset('storage/' . $single->imagen) }}" alt="{{ $single->titulo }}" class="client-logo alianza-evento-imagen">
                                                     </div>
                                                 @endif
                                             @else

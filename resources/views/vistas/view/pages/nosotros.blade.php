@@ -87,11 +87,14 @@
                                 @endphp
                                 <img src="{{ $imageSrc }}" alt="{{ $alianza->titulo }}" class="client-logo alianza-evento-imagen">
                             @else
-                            <img src="{{ $alianza->imagen }}" alt="{{ $alianza->titulo }}" class="client-logo alianza-evento-imagen">
+                            <img src="{{ asset('storage/' . $alianza->imagen) }}" alt="{{ $alianza->titulo }}" class="client-logo alianza-evento-imagen">
                             @endif
-
+                        {{-- <img 
+                            src="{{ $alianza->imagen ? asset('storage/' . $alianza->imagen) : asset('images/tutors/default.png') }}" 
+                            alt="Imagen de {{ $alianza->titulo }}" 
+                            class="client-logo alianza-evento-imagen"> --}}
                         @else
-                            <img src="{{ $alianza->imagen }}" alt="{{ $alianza->titulo }}" class="client-logo alianza-evento-imagen">
+                            <img src="{{ asset('storage/' . $alianza->imagen) }}" alt="{{ $alianza->titulo }}" class="client-logo alianza-evento-imagen">
                         @endif
 
                         <div class="alianza-evento-info">
