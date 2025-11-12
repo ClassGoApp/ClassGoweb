@@ -20,6 +20,8 @@ return [
     'link_placeholder' => 'https://...',
     'description_placeholder' => 'Descripción de la alianza (opcional)',
     'image_validation' => 'Formatos permitidos: :extensions, tamaño máx: :size MB.',
+    'description_limit' => 'Máximo :count caracteres',
+    'limit_reached' => 'Límite alcanzado',
 
     // Acciones / mensajes
     'toggle_status' => 'Alternar estado',

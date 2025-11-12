@@ -40,7 +40,7 @@ class CreateAlianza extends Component
             'titulo'        => 'required|string|max:255',
             'imagen'        => 'required|mimes:' . $this->imageFileExt . '|max:' . $this->imageFileSize * 1024,
             'enlace'        => 'nullable|url|max:255',
-            'descripcion'   => 'nullable|string',
+            'descripcion'   => 'nullable|string|max:224',
             'activo'        => 'boolean',
             'orden'         => 'nullable|integer|min:0',
         ];

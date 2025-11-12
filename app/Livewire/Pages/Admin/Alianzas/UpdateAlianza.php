@@ -51,7 +51,7 @@ class UpdateAlianza extends Component
         $rules = [
             'titulo'        => 'required|string|max:255',
             'enlace'        => 'nullable|url|max:255',
-            'descripcion'   => 'nullable|string',
+            'descripcion'   => 'nullable|string|max:224',
             'activo'        => 'boolean',
             'orden'         => 'nullable|integer|min:0',
         ];

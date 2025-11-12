@@ -33,7 +33,17 @@
                                     <div class="tk-blog-content">
                                         <h6 class="tb-label">{{ __('general.description') }}</h6>
                                         <div class="form-group">
-                                            <textarea wire:model="descripcion" class="form-control" rows="5" placeholder="{{ __('alianza.description_placeholder') }}"></textarea>
+                                            <div id="desc-meta" 
+                                                data-max="224" 
+                                                data-max-label="{{ __('alianza.description_limit', ['count' => 224]) }}" 
+                                                data-limit-reached="{{ __('alianza.limit_reached') }}">
+                                                <small class="text-muted d-block mb-1" id="desc-message">{{ __('alianza.description_limit', ['count' => 224]) }}</small>
+                                                <textarea id="descripcion" maxlength="224" wire:model="descripcion" class="form-control w-100" rows="5" placeholder="{{ __('alianza.description_placeholder') }}"></textarea>
+                                                <div class="d-flex justify-content-between mt-1">
+                                                    <small class="text-muted" id="desc-counter">0/224</small>
+                                                    <small class="text-danger d-none" id="desc-warning">{{ __('alianza.limit_reached') }}</small>
+                                                </div>
+                                            </div>
                                             @error('descripcion')
                                                 <div class="tk-errormsg">
                                                     <span>{{ $message }}</span>
@@ -129,3 +139,63 @@
         </div>
     </div>
 </main>
+@push('styles')
+<style>
+    /* Ensure description block uses full available width */
+    #desc-meta { display: block; width: 100%; }
+    #desc-meta #descripcion {
+        width: 100% !important;
+        min-width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        resize: vertical; /* prevent horizontal shrinking */
+    }
+    /* Make the counter/warning row not constrain width */
+    #desc-meta .d-flex { width: 100%; }
+    /* In case any parent sets inline-block widths */
+    .tk-blog-content .form-group { width: 100%; }
+    .tk-blog-content { width: 100%; }
+    .tb-themeform .form-group { max-width: 100%; }
+    .tb-themeform .form-control { width: 100%; }
+    .tb-themeform .form-group textarea.form-control { width: 100%; }
+    .tb-themeform .form-group input.form-control { width: 100%; }
+</style>
+@endpush
+@push('scripts')
+<script type="text/javascript" data-navigate-once>
+    document.addEventListener('livewire:navigated', function() {
+        const meta = document.getElementById('desc-meta');
+        if (!meta) return;
+
+        const textarea = document.getElementById('descripcion');
+        const counter = document.getElementById('desc-counter');
+        const warning = document.getElementById('desc-warning');
+        const message = document.getElementById('desc-message');
+
+        const MAX = parseInt(meta.getAttribute('data-max') || '224', 10);
+        const maxLabel = meta.getAttribute('data-max-label') || '';
+        const limitReached = meta.getAttribute('data-limit-reached') || '';
+
+        function update() {
+            let val = textarea.value || '';
+            if (val.length > MAX) {
+                val = val.substring(0, MAX);
+                textarea.value = val;
+            }
+            const used = val.length;
+            counter.textContent = `${used}/${MAX}`;
+            if (used >= MAX) {
+                warning.classList.remove('d-none');
+                message.textContent = limitReached;
+            } else {
+                warning.classList.add('d-none');
+                message.textContent = maxLabel;
+            }
+        }
+
+        ['input','change','keyup','paste'].forEach(evt => textarea.addEventListener(evt, update));
+        // initialize on load in case of edit
+        update();
+    });
+</script>
+@endpush
