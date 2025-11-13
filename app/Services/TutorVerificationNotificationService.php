@@ -567,7 +567,7 @@ class TutorVerificationNotificationService
             </div>
             
             <div style="background-color: #fff; border: 1px solid #ddd; padding: 15px; border-radius: 8px; margin: 20px 0;">
-                <a href="' . \url('/tutors') . '" style="background-color: #007bff; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block; font-weight: bold;">Ver Todos los Tutores</a>
+                <a href="' . \url('/buscar') . '" style="background-color: #007bff; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block; font-weight: bold;">Ver Todos los Tutores</a>
             </div>
             
             <div style="background-color: #f8f9fa; border: 1px solid #dee2e6; padding: 15px; border-radius: 8px; margin: 20px 0;">
