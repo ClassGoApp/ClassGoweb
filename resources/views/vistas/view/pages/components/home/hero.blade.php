@@ -28,7 +28,7 @@
 
     <!-- 1.4 Hero Mascota -->
 
-    <img src="{{ asset(path: 'storage/optionbuilder/uploads/740102-17-2025_0859pmTugo-saludando.webp') }}" alt="Mascota ClassGo">
+    <img class = "hero-image" src="{{ asset(path: 'storage/optionbuilder/uploads/740102-17-2025_0859pmTugo-saludando.webp') }}" alt="Mascota ClassGo">
 
 
 
