@@ -45,6 +45,14 @@
 							Blog
 						</a>
 					</li>
+
+					<li class="popover-parent">
+						<a>
+							Mis Tutorías
+						</a>
+						@include('vistas.view.partials.popover')
+					</li>
+
 				</ul>
 			</nav>
 		</div>
