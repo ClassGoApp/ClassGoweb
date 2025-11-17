@@ -41,6 +41,7 @@ return [
     'success_message' => 'Your mentioned details have been submitted successfully.',
     'payment_method' => 'Payment method is required please select any payment method',
     'delete_record' => 'Record deleted successfully',
+    'deleted_alianza' => 'Alliance Deleted',
     'updated_msg' => 'Updated successfully',
     'confirm' => 'Confirm!',
     'confirm_content' => 'Are you sure you wanna do that?',
@@ -534,6 +535,8 @@ return [
     'saved_ok'                   => 'Cupón guardado correctamente.',
     'updated_ok'                 => 'Cupón actualizado correctamente.',
     'deleted_ok'                 => 'Cupón eliminado correctamente.',
+
+
 
    
 

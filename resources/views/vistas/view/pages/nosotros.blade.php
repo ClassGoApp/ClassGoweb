@@ -73,10 +73,29 @@
                 @foreach($alianzas as $alianza)
                     <div class="fade-up">
                     <div class="alianza-evento-card animate-in">
-                        <img 
+                        @if($alianza->imagen)
+                            @php
+                                $imagePath = storage_path('app/public/' . $alianza->imagen);
+                                $imageExists = file_exists($imagePath);
+                            @endphp
+
+                            @if($imageExists)
+                                @php
+                                    $imageData = base64_encode(file_get_contents($imagePath));
+                                    $imageType = pathinfo($imagePath, PATHINFO_EXTENSION);
+                                    $imageSrc = 'data:image/' . $imageType . ';base64,' . $imageData;
+                                @endphp
+                                <img src="{{ $imageSrc }}" alt="{{ $alianza->titulo }}" class="client-logo alianza-evento-imagen">
+                            @else
+                            <img src="{{ asset('storage/' . $alianza->imagen) }}" alt="{{ $alianza->titulo }}" class="client-logo alianza-evento-imagen">
+                            @endif
+                        {{-- <img 
                             src="{{ $alianza->imagen ? asset('storage/' . $alianza->imagen) : asset('images/tutors/default.png') }}" 
                             alt="Imagen de {{ $alianza->titulo }}" 
-                            class="client-logo alianza-evento-imagen">
+                            class="client-logo alianza-evento-imagen"> --}}
+                        @else
+                            <img src="{{ asset('storage/' . $alianza->imagen) }}" alt="{{ $alianza->titulo }}" class="client-logo alianza-evento-imagen">
+                        @endif
 
                         <div class="alianza-evento-info">
                             <h3>{{ $alianza->titulo }}</h3>

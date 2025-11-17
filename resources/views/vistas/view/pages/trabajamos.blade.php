@@ -200,7 +200,7 @@
                         <div class="trabajamos-icon">
                             <i class="fa-solid fa-camera"></i>
                         </div>
-                        <h3 data-translate="dirige_clase"></h3>
+                        <h3 data-translate="dirige_clase2"></h3>
                         <h2 data-translate="dirige_clase"></h2>
                         <p data-translate="dirige_clase_desc">
                         </p>

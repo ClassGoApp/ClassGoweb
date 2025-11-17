@@ -10,6 +10,7 @@ class Alianza extends Model
         'titulo',
         'imagen',
         'enlace',
+        'descripcion',
         'activo',
         'orden'
     ];

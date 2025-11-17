@@ -11,11 +11,39 @@
 
 	<div class="client-carousel-wrapper">
 		<div id="client-carousel-container" class="client-carousel-container">
-			<div id="client-carousel-track" class="client-carousel-track">
-				@foreach($alianzas as $alianza)
-				  <img src="{{ $alianza->imagen ? asset('storage/' . $alianza->imagen) : asset('images/tutors/default.png') }}" alt="Imagen de {{ $alianza->titulo }}" onclick="window.location.href='{{ $alianza->enlace }}' "> 
+      <div id="client-carousel-track" class="client-carousel-track">
+        @foreach($alianzas as $alianza)
+          @if($alianza->imagen)
+            @php
+              $imagePath = storage_path('app/public/' . $alianza->imagen);
+              $imageExists = file_exists($imagePath);
+            @endphp
+
+            @if($imageExists)
+              @php
+                  $imageData = base64_encode(file_get_contents($imagePath));
+                  $imageType = pathinfo($imagePath, PATHINFO_EXTENSION);
+                  $imageSrc = 'data:image/' . $imageType . ';base64,' . $imageData;
+              @endphp
+              <img src="{{ $imageSrc }}" 
+                alt="Imagen de {{ $alianza->titulo }}"
+                @if(!empty($alianza->enlace)) onclick="window.location.href='{{ $alianza->enlace }}'" @endif
+              > 
+            @else
+              <img src="{{ asset('storage/' . $alianza->imagen) }}" 
+                  alt="Imagen de {{ $alianza->titulo }}"
+                  @if(!empty($alianza->enlace)) onclick="window.location.href='{{ $alianza->enlace }}'" @endif
+                > 
+            @endif
+          @else
+
+            <img src="{{ asset('storage/' . $alianza->imagen) }}" 
+              alt="Imagen de {{ $alianza->titulo }}"
+              @if(!empty($alianza->enlace)) onclick="window.location.href='{{ $alianza->enlace }}'" @endif
+            >          
+          @endif
         @endforeach
-			</div>
+      </div>
 		</div>
 	</div>
 </section>
