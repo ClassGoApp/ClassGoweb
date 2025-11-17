@@ -475,6 +475,29 @@
     background-color: #fdeeee;
   }
 
+  /* =================== 11 - Popover en Navbar =================== */
+  
+  /* Contenedor para el popover (debe tener posición relativa) */
+  .navbar-links li.popover-parent {
+    position: relative;
+  }
+
+  /* Ajustar el posicionamiento del popover en el navbar */
+  .navbar-links .tutorias-popover {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%) translateY(-0.5rem);
+    min-width: 28rem;
+  }
+
+  /* Mostrar el popover al hacer hover */
+  .navbar-links li.popover-parent:hover .tutorias-popover {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+    visibility: visible;
+  }
+
   /* ========================== Media Queries ===================== */
 
   /* Tablet */
