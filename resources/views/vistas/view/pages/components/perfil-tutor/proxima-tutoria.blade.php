@@ -1,35 +1,43 @@
 <div class="tutoring-panel">
-            <!-- Card de Próxima Sesión -->
-    <div class="upcoming-session-card">
-        <div class="upcoming-session-header">
-            <h3 class="upcoming-session-title">
-                <i class="fas fa-calendar-alt"></i>
-                ¿Listo para tu próxima tutoría?
-            </h3>
-            <span class="status-badge">Confirmada</span>
-        </div>
-        
-        <div class="upcoming-session-body">
-            <div class="session-info">
-                <div class="session-icon">
-                    <i class="fas fa-clock"></i>
-                </div>
-                <div class="session-details">
-                    <h3>Repaso Rápido</h3>
-                    <p>Hoy, 18 Nov • <span class="session-time">16:00</span></p>
-                </div>
+    <!-- Card de Próxima Sesión -->
+    @foreach ( $reservas as $reserva)
+        <div class="upcoming-session-card">
+            <div class="upcoming-session-header">
+                <h3 class="upcoming-session-title">
+                    <i class="fas fa-calendar-alt"></i>
+                    ¿Listo para tu próxima tutoría?
+                </h3>
+                <span class="status-badge">Confirmada</span>
             </div>
-
-            <button class="btn btn-primary">
-                <i class="fas fa-video"></i>
-                Ir al Aula Virtual
-            </button>
             
-            <button class="text-link">
-                Ver detalles 
-            </button>
+            <div class="upcoming-session-body">
+                <div class="session-info">
+                    <div class="session-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="session-details">
+                        <h3>{{ $reserva->subject->name }}</h3>
+                        <p>{{ \Carbon\Carbon::parse($reserva->start_time)->locale('es')->diffForHumans()}}, • 
+                            <span class="session-time">
+                            {{ \Carbon\Carbon::parse($reserva->start_time)->format('H:i') }}
+                            </span>
+                        </p>
+                    </div>
+                </div>
+
+                <a href="{{ $reserva->meeting_link }}" target="_blank">
+                    <button class="btn btn-primary">
+                        <i class="fas fa-video"></i>
+                        Ir al Aula Virtual
+                    </button>
+                </a>
+                
+                <button class="text-link">
+                    Ver detalles 
+                </button>
+            </div>
         </div>
-    </div>
+    @endforeach
 </div>
 <style>
 
@@ -44,16 +52,16 @@
     /* Card de próxima sesión */
     .upcoming-session-card {
         background-color: white;
-        border-radius: 18px;
+        border-radius: 20px;
         box-shadow: var(--shadow-lg);
         border-left: 4px solid var(--primary-color);
         overflow: hidden;
         animation: fadeInUp 0.5s ease-out;
+        margin-bottom: 1rem;
     }
 
     .upcoming-session-header {
-        background-color: var(--light-bg);
-        padding: 0.5rem 1rem;
+        padding: 0.8rem 1rem;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -61,7 +69,7 @@
     }
 
     .upcoming-session-title {
-        color: var(--text-gris);
+        color: var(--primary-color);
         font-weight: bold;
         font-size: 0.875rem;
         display: flex;
@@ -104,6 +112,7 @@
     }
 
     .session-details p {
+        justify-content: start;
         font-size: 0.875rem;
         color: var(--text-gris);
         margin-top: 0.25rem;
@@ -156,8 +165,8 @@
     }
 
     .text-link:hover {
-        color: var(--secondary-color);
-        text-decoration: underline;
+        color: var(--primary-color);
+        text-decoration: none;
     }
 
     /* Animación (necesaria para la card) */

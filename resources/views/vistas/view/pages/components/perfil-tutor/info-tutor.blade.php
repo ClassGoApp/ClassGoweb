@@ -6,9 +6,14 @@
 </div>
 
 <!-- SEECION SI TIENE TUTORIA SEGUN EL ESTUDIANTE QUE MIRA EL PERFIL-->
-<div class="subjects-card">
-    @include('vistas.view.pages.components.perfil-tutor.proxima-tutoria')
-</div>
+@if($reservas)
+    <div class="subjects-card">
+        @include('vistas.view.pages.components.perfil-tutor.proxima-tutoria',[
+            'reservas' => $reservas
+        ])
+    </div>
+@else
+@endif
 
 <!-- SECCION DE MATERIAS-->
 <div class="subjects-card">

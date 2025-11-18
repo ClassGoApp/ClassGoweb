@@ -13,7 +13,7 @@
         </div>
 
         <div class="tutor-grid">
-
+            
             <!-- Columna Izquierda (Información del Tutor) -->
             <div class="tutor-col tutor-col-main">
                 @include('vistas.view.pages.components.perfil-tutor.info-tutor', [
@@ -21,8 +21,8 @@
                     'reviews' => $reviews,
                     'avgRating' => $avgRating,
                     'totalReviews' => $totalReviews,
-                    'ratingDistribution' => $ratingDistribution
-
+                    'ratingDistribution' => $ratingDistribution,
+                    'reservas' => $reservas
                 ])
             </div>
 
