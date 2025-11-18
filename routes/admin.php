@@ -26,6 +26,9 @@ use App\Livewire\Pages\Admin\Taxonomy\Subjects;
 use App\Livewire\Pages\Admin\Upgrade\Upgrade;
 use App\Livewire\Pages\Admin\Users\Users;
 use App\Http\Controllers\Admin\AlianzaController;
+use App\Livewire\Pages\Admin\Alianzas\Alianzas as AlianzasListing;
+use App\Livewire\Pages\Admin\Alianzas\CreateAlianza;
+use App\Livewire\Pages\Admin\Alianzas\UpdateAlianza;
 use App\Http\Controllers\Admin\SlotBookingAdminController;
 use App\Http\Controllers\Admin\TutorController;
 use App\Livewire\Admin\Tutors\Tutors;
@@ -43,6 +46,11 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     Route::get('/blogs/create', CreateBlog::class)->name('create-blog');
     Route::get('/blogs/update/{id}', UpdateBlog::class)->name('update-blog');
     Route::get('/blog-categories', BlogCategories::class)->name('blog-categories');
+
+    // Rutas para Alianzas (Livewire)
+    Route::get('/alianzas', AlianzasListing::class)->name('alianzas-listing');
+    Route::get('/alianzas/create', CreateAlianza::class)->name('create-alianza');
+    Route::get('/alianzas/update/{id}', UpdateAlianza::class)->name('update-alianza');
 
     
     
@@ -79,17 +87,6 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     Route::get('clear-cache', [GeneralController::class, 'clearCache'])->name('clear-cache');
     Route::post('update-smtp-settings', [GeneralController::class, 'updateSMTPSettings'])->name('update-smtp-settings');
     Route::post('update-social-login-settings', [GeneralController::class, 'updateSocialLoginSettings'])->name('update-social-login-settings');
-
-    // Rutas para Alianzas
-    Route::group(['prefix' => 'alianzas', 'as' => 'alianzas.'], function () {
-        Route::get('/', [AlianzaController::class, 'index'])->name('index');
-        Route::get('/create', [AlianzaController::class, 'create'])->name('create');
-        Route::post('/store', [AlianzaController::class, 'store'])->name('store');
-        Route::get('/{alianza}/edit', [AlianzaController::class, 'edit'])->name('edit');
-        Route::put('/{alianza}', [AlianzaController::class, 'update'])->name('update');
-        Route::delete('/{alianza}', [AlianzaController::class, 'destroy'])->name('destroy');
-        Route::post('/{alianza}/toggle-status', [AlianzaController::class, 'toggleStatus'])->name('toggle-status');
-    });
 
     Route::get('tutorias', [SlotBookingAdminController::class, 'index'])->name('tutorias.index');
     Route::post('tutorias/{id}/status', [SlotBookingAdminController::class, 'updateStatus'])->name('tutorias.updateStatus');
