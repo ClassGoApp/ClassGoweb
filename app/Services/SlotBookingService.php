@@ -115,12 +115,23 @@ class SlotBookingService implements interfaces\ISlotBookingService
         return $link;
     }
 
-
-
-
-
-
-
-
-
+    /**
+     *  Para extraer las proximas tutorías del estudiante
+     */
+    public function getStudentUpcomingTutorias()
+    {
+        $user = Auth::user();
+        
+        if (!$user || !$user->hasRole('student')) {
+            return collect();
+        }
+        
+        return SlotBooking::where('student_id', $user->id)
+            ->where('status', '!=', 3 )
+            ->where('start_time', '>=', now()) 
+            ->orderBy('start_time', 'asc') // Próximas primero
+            ->limit(5) // Limita a las próximas 5
+            ->get();    
+    
+    }
 }

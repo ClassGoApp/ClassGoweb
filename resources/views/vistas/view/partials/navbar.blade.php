@@ -46,12 +46,14 @@
 						</a>
 					</li>
 
-					<li class="popover-parent">
-						<a>
-							Mis Tutorías
-						</a>
-						@include('vistas.view.partials.popover')
-					</li>
+					@auth
+						@role('student')
+						<li class="popover-parent">
+							<a>Mis Tutorías</a>
+							@include('vistas.view.partials.popover')
+						</li>
+						@endrole
+					@endauth
 
 				</ul>
 			</nav>

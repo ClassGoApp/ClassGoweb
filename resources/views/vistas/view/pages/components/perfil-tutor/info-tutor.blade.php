@@ -5,6 +5,11 @@
     ])
 </div>
 
+<!-- SEECION SI TIENE TUTORIA SEGUN EL ESTUDIANTE QUE MIRA EL PERFIL-->
+<div class="subjects-card">
+    @include('vistas.view.pages.components.perfil-tutor.proxima-tutoria')
+</div>
+
 <!-- SECCION DE MATERIAS-->
 <div class="subjects-card">
     @include('vistas.view.pages.components.perfil-tutor.materias',[
