@@ -248,4 +248,14 @@
     .tutorias-popover__link:hover {
         color: var(--color-cyan-900);
     }
+
+    @media (max-width: 1100px) {
+
+    .tutorias-popover {
+        width: 370px; /* ancho controlado */
+        left: auto !important;
+        transform: translateY(0) !important;
+    }
+    
+}
 </style>
