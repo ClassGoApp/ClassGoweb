@@ -46,7 +46,7 @@
 						</a>
 					</li>
 
-					<li class="popover-parent">
+					<li class="popover-parent" style="cursor: pointer;">
 						<a>
 							Mis Tutorías
 						</a>
@@ -395,4 +395,22 @@
 			}
 		});
 	});
+	
+	document.addEventListener('DOMContentLoaded', function() {
+	const ul = document.querySelector('.navbar-links ul'); // <-- el UL
+	const links = ul.querySelectorAll('a');
+
+	// Hover permanente: solo un enlace a la vez
+	links.forEach(link => {
+		link.addEventListener('mouseenter', () => {
+			links.forEach(a => a.classList.remove('hovered'));
+			link.classList.add('hovered');
+		});
+	});
+
+	// Salir del UL: reset total
+	ul.addEventListener('mouseleave', () => {
+		links.forEach(a => a.classList.remove('hovered'));
+	});
+});
 </script>
