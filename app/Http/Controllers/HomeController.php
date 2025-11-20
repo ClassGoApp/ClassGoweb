@@ -10,7 +10,7 @@ use App\Models\UserSubject;
 use App\Services\SiteService;
 use App\Services\CountUserService;
 use App\Repositories\TutorRepository;
-
+use App\Services\SlotBookingService;
 
 
 
@@ -20,14 +20,16 @@ class HomeController extends Controller
 {
     protected $siteService;
     protected $countUserService;
+    protected $slotBookingService;
 
     protected $tutorRepository;
 
-    public function __construct(SiteService $siteService,  CountUserService $countUserService, TutorRepository $tutorRepository)
+    public function __construct(SiteService $siteService,  CountUserService $countUserService, TutorRepository $tutorRepository, SlotBookingService $slotBookingService)
     {
         $this->siteService = $siteService;
         $this->countUserService = $countUserService;
         $this->tutorRepository = $tutorRepository;
+        $this->slotBookingService = $slotBookingService;
     }
 
     public function index()
@@ -62,8 +64,13 @@ class HomeController extends Controller
         ]);
     }
 
+    /**
+     *  Redirecciona a la vista del perfil del tutor
+     */
     public function tutor($slug)
     {
+        $tutorias = $this->slotBookingService->getStudentUpcomingTutorias();
+        
         $tutor = $this->siteService->getTutorDetail($slug);
         if (!$tutor) {
             abort(404, 'Tutor no encontrado');
@@ -87,9 +94,19 @@ class HomeController extends Controller
 
         //Obtener Reseñas
         $reviewData = $this->tutorRepository->getTutorReviewsWithStats($tutor->id);
+        
+        // Verificar si el estudiante tiene una tutoría con este tutor
+        $tienetutoriaConEsteTutor = $tutorias->where('tutor_id', $tutor->id)->isNotEmpty();
 
+        // Verificación correcta
+        if ($tienetutoriaConEsteTutor) {
+            $reservas = $tutorias->where('tutor_id', $tutor->id);
+        } else {    
+            $reservas = null;
+        }
 
         return view('vistas.view.pages.tutor', [
+            'reservas' => $reservas,
             'tutor' => $tutor,
             'materias' => array_unique($materias),
             'grupos' => array_unique($grupos),

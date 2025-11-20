@@ -29,34 +29,58 @@
                 <livewire:blogs-filter />
             </div>
     </section>
-
-
-
-
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const scrollContainer = document.getElementById('tagsScroll');
-            const track = scrollContainer.querySelector('.tags-track');
-            track.innerHTML += track.innerHTML;
-
-            let scrollSpeed = 0.5;
-            let isUserInteracting = false;
-
-            function autoScroll() {
-                if (!isUserInteracting) {
-                    scrollContainer.scrollLeft += scrollSpeed;
-                    if (scrollContainer.scrollLeft >= track.scrollWidth / 2) {
-                        scrollContainer.scrollLeft = 0;
-                    }
-                }
-                requestAnimationFrame(autoScroll);
+            // Verificar que existan elementos con tags
+            const tagsContainers = document.querySelectorAll('.tags');
+            
+            if (tagsContainers.length === 0) {
+                console.log('No se encontraron contenedores de tags');
+                return;
             }
-            scrollContainer.addEventListener('mousedown', () => isUserInteracting = true);
-            scrollContainer.addEventListener('mouseup', () => isUserInteracting = false);
-            scrollContainer.addEventListener('touchstart', () => isUserInteracting = true);
-            scrollContainer.addEventListener('touchend', () => isUserInteracting = false);
+            
+            tagsContainers.forEach((scrollContainer, index) => {
+                const track = scrollContainer.querySelector('.tags-track');
+                
+                if (!track) {
+                    console.log(`No se encontró .tags-track en el contenedor ${index}`);
+                    return;
+                }
+                
+                // Verificar que hay contenido en el track
+                if (track.children.length === 0) {
+                    console.log(`El track ${index} está vacío`);
+                    return;
+                }
+                
+                // Duplicamos contenido para efecto infinito
+                const originalContent = track.innerHTML;
+                track.innerHTML += originalContent;
 
-            autoScroll();
+                let scrollSpeed = 0.5;
+                let isUserInteracting = false;
+
+                function autoScroll() {
+                    if (!isUserInteracting && track.scrollWidth > scrollContainer.clientWidth) {
+                        scrollContainer.scrollLeft += scrollSpeed;
+                        
+                        // Cuando llega al final, vuelve al inicio
+                        if (scrollContainer.scrollLeft >= track.scrollWidth / 2) {
+                            scrollContainer.scrollLeft = 0;
+                        }
+                    }
+                    requestAnimationFrame(autoScroll);
+                }
+
+                // Detectar interacción del usuario
+                scrollContainer.addEventListener('mousedown', () => isUserInteracting = true);
+                scrollContainer.addEventListener('mouseup', () => isUserInteracting = false);
+                scrollContainer.addEventListener('mouseleave', () => isUserInteracting = false);
+                scrollContainer.addEventListener('touchstart', () => isUserInteracting = true);
+                scrollContainer.addEventListener('touchend', () => isUserInteracting = false);
+
+                autoScroll();
+            });
         });
     </script>
     

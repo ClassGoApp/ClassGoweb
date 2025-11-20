@@ -44,7 +44,8 @@ new #[Layout('layouts.guest')] class extends Component
     {
         $logout();
 
-        $this->redirect('/', navigate: true);
+        // $this->redirect('/', navigate: true);
+        $this->redirect('/');
     }
 }; ?>
 

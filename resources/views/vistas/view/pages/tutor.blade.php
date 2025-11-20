@@ -13,7 +13,7 @@
         </div>
 
         <div class="tutor-grid">
-
+            
             <!-- Columna Izquierda (Información del Tutor) -->
             <div class="tutor-col tutor-col-main">
                 @include('vistas.view.pages.components.perfil-tutor.info-tutor', [
@@ -21,8 +21,8 @@
                     'reviews' => $reviews,
                     'avgRating' => $avgRating,
                     'totalReviews' => $totalReviews,
-                    'ratingDistribution' => $ratingDistribution
-
+                    'ratingDistribution' => $ratingDistribution,
+                    'reservas' => $reservas
                 ])
             </div>
 
@@ -35,6 +35,11 @@
         </div>
 
     </main>
+
+    <!-- Modal Compartir -->
+    <div id="modal-share-profile" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.4);z-index:9999;align-items:center;justify-content:center;">
+        @include('vistas.view.pages.modals.modal-compartir')
+    </div>
 
     <script>
         //Para los botones de favoritos
@@ -238,7 +243,7 @@
             const btnWhatsapp = document.getElementById('btn-share-whatsapp');
             const btnFacebook = document.getElementById('btn-share-facebook');
             const slug = @json($tutor->profile->slug ?? '');
-            const shareUrl = `https://classgoapp.com/tutors/${slug}`;
+            const shareUrl = `https://classgoapp.com/tutores/${slug}`;
             const shareMsg = 'Hecha un vistazo a mi perfil en ClassGo!';
 
             btnShare.addEventListener('click', function() {
@@ -258,148 +263,6 @@
                 window.open(url, '_blank');
             });
         });
-
-        //============== Calificaciones y reseñas =========================
-        document.addEventListener('DOMContentLoaded', function() {
-            const starRating = document.getElementById('star-rating');
-            const stars = starRating.getElementsByClassName('review-form__star');
-            const ratingInput = document.getElementById('rating-input');
-            const form = document.getElementById('review-form');
-            let currentRating = 0;
-
-            function updateStars(rating) {
-                Array.from(stars).forEach((star, index) => {
-                    star.style.color = index < rating ? '#FB8500' : '#E5E7EB';
-                });
-            }
-
-            Array.from(stars).forEach((star, index) => {
-                star.addEventListener('mouseover', () => {
-                    updateStars(index + 1);
-                });
-
-                star.addEventListener('click', () => {
-                    currentRating = index + 1;
-                    ratingInput.value = currentRating;
-                    updateStars(currentRating);
-                });
-            });
-
-            starRating.addEventListener('mouseleave', () => {
-                updateStars(currentRating);
-            });
-
-            form.addEventListener('submit', function(e) {
-                if (!currentRating) {
-                    e.preventDefault();
-                    alert('Por favor, selecciona una calificación');
-                }
-            });
-        });
-
-    document.addEventListener('livewire:initialized', () => {
-        // --- Selección de Elementos del DOM ---
-        const reservationModal = document.getElementById('reservationModal');
-        const cancelBtn = document.getElementById('cancelBtn');
-        const body = document.body;
-
-        // Verificar que los elementos existen
-        if (!reservationModal) {
-            console.error('Modal element not found');
-            return;
-        }
-
-        // --- Funciones ---
-        const openModal = () => {
-            try {
-                // Calcular ancho de scrollbar para evitar saltos
-                const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
-                body.style.paddingRight = `${scrollbarWidth}px`;
-                body.classList.add('modal-open');
-                reservationModal.classList.add('is-visible');
-                
-                console.log('Modal opened successfully');
-                
-            } catch (error) {
-                console.error('Error opening modal:', error);
-            }
-        };
-
-        const closeModal = () => {
-            try {
-                reservationModal.classList.remove('is-visible');
-                body.classList.remove('modal-open');
-                body.style.paddingRight = '';
-                
-                console.log('Modal closed successfully');
-            } catch (error) {
-                console.error('Error closing modal:', error);
-            }
-        };
-
-        // --- Asignación de Eventos Livewire ---
-        
-        // 1. Escucha el evento 'open-modal' que viene desde Livewire
-        if (window.Livewire) {
-            Livewire.on('open-modal', (event) => {
-            console.log('Received open-modal event:', event);
-            setTimeout(() => {
-                openModal();
-            }, 1); // Un retraso mínimo es suficiente
-        });
-
-            // 2. Escucha un evento de error (opcional pero recomendado)
-            Livewire.on('show-error', (event) => {
-                console.log('Received error event:', event);
-                alert(event.message || 'Ha ocurrido un error');
-            });
-        } else {
-            console.error('Livewire not found. Make sure Livewire is properly loaded.');
-        }
-
-        // --- Eventos de Cierre del Modal ---
-        
-        // Cierra el modal con el botón de cancelar
-        if (cancelBtn) {
-            cancelBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                closeModal();
-            });
-        }
-
-        // Cierra el modal al hacer clic en el fondo
-        reservationModal.addEventListener('click', (event) => {
-            if (event.target === reservationModal) {
-                closeModal();
-            }
-        });
-
-        // Cierra el modal con la tecla Escape
-        document.addEventListener('keydown', (event) => {
-            if (event.key === 'Escape' && reservationModal.classList.contains('is-visible')) {
-                closeModal();
-            }
-        });
-
-        // --- Manejo del Input de Archivo ---
-        const fileInput = document.getElementById('comprobante');
-        const fileNameDisplay = document.getElementById('fileName');
-        
-        if (fileInput && fileNameDisplay) {
-            fileInput.addEventListener('change', (event) => {
-                const file = event.target.files[0];
-                fileNameDisplay.textContent = file ? file.name : 'Ningún archivo seleccionado';
-            });
-        }
-
-        // --- Debug: Función para probar el modal manualmente ---
-        window.testModal = () => {
-            console.log('Testing modal...');
-            openModal();
-        };
-        
-        console.log('Modal JavaScript initialized successfully');
-    });
 
     let lastScroll = 0;
     const actionBar = document.querySelector('.tutor-col-actions');

@@ -1,210 +1,321 @@
+<div class="tutor-carousel" data-carousel="featured-tutors">
+    <button class="tutor-carousel__btn tutor-carousel__btn--prev" type="button" aria-label="Anterior" disabled>
+        <span>&lt;</span>
+    </button>
 
-<div class="cards-container-tutores">
-    @for ($i=1 ; $i<=3 ;$i++)
-        <div class="profile-card">
-            <div class="profile-card__image-container">
-                <img 
-                    class="profile-card__image"
-                    src="{{ asset('./storage/profile_images/5H18q1744646136.png') }}" 
-                    alt="Sophie Bennett"
-                    onerror="this.src='https://placehold.co/600x720/d1d1d1/000000?text=Error';"
-                >
-            </div>
+    <div class="tutor-carousel__viewport">
+        <div class="tutor-carousel__track">
+            @foreach($featuredTutors as $tutor)
+                <div class="tutor-carousel__slide">
+                    <div class="profile-card">
+                        <div class="profile-card__image-container">
+                            <img src="{{ $tutor->profile->image ? asset('storage/' . $tutor->profile->image) : asset('images/tutors/default.png') }}"
+                                 alt="Tutor"
+                                 class="profile-card__image"
+                                 onerror="this.src='{{ asset('images/tutors/default.png') }}'">
+                        </div>
 
-            <div class="profile-card__content">
-                
-                <div class="profile-card__header">
-                    <h2 class="profile-card__name">Sophie Bennett</h2>
-                    <svg class="profile-card__verified-icon" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                    </svg>
-                </div>
+                        <div class="profile-card__content">
+                            <div class="profile-card__header">
+                                <h2 class="profile-card__name">
+                                    {{ explode(' ', $tutor->profile->first_name)[0] }}
+                                    {{ explode(' ', $tutor->profile->last_name)[0] }}
+                                </h2>
+                                <svg class="profile-card__verified-icon" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                </svg>
+                            </div>
 
-                <p class="profile-card__description">
-                    Product Designer who focuses on simplicity & usability.
-                </p>
+                            <p class="profile-card__description">
+                                {{ $tutor->profile->tagline ?? 'Tutor verificado y aprobado por ClassGo!' }}
+                            </p>
 
-                <div class="profile-card__footer">
-                    
-                    <div class="profile-card__stats-group">
-                        
-                        <span class="profile-card__stat">
-                            <svg class="profile-card__stat-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
-                            312
-                        </span>
-                        
-                        <span class="profile-card__stat">
-                            <svg class="profile-card__stat-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
-                            48
-                        </span>
+                            <div class="profile-card__footer">
+                                <div class="profile-card__stats-group">
+                                    <span class="profile-card__stat">
+                                        <svg class="profile-card__stat-icon" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                        </svg>
+                                        {{ number_format($tutor->avg_rating,1) }}
+                                    </span>
+                                    <span class="profile-card__stat">
+                                        <svg class="profile-card__stat-icon" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"/>
+                                        </svg>
+                                        {{ $tutor->subjects_count }} Materias
+                                    </span>
+                                </div>
+
+                                <button class="profile-card__button"
+                                        onclick="window.location.href='{{ route('tutor', ['slug' => $tutor->profile['slug']]) }}'">
+                                    Ver Perfil
+                                </button>
+                            </div>
+                        </div>
                     </div>
+                </div>
+            @endforeach
 
-                    <button class="profile-card__button">
-                        Follow +
-                    </button>
+            <!-- Slide adicional para explorar -->
+            <div class="tutor-carousel__slide">
+                <div class="profile-card">
+                    <div class="profile-card__image-container2">
+                        <img src="{{ asset('images/home/models/img4.webp') }}"
+                             alt="Ver más tutores"
+                             class="profile-card__image"
+                             onerror="this.src='{{ asset('images/tutors/default.png') }}'">
+                        <div class="profile-card__explorar">
+                            <h1>Ver más tutores</h1>
+                            <p>Busca tutores de acuerdo a lo que necesites aprender</p>
+                            <a href="{{ route('buscar') }}">
+                                <button type="button">Explorar</button>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    @endfor
+
+        </div><!-- /.tutor-carousel__track -->
+    </div><!-- /.tutor-carousel__viewport -->
+
+    <button class="tutor-carousel__btn tutor-carousel__btn--next" type="button" aria-label="Siguiente" disabled>
+        <span>&gt;</span>
+    </button>
 </div>
 
-
 <style>
-    /* ======================================================= */
-/* VARIABLES DE COLOR */
-/* ======================================================= */
-:root {
-    --color-white: #FFFFFF;
-    --color-gray-800: #1F2937;
-    --color-gray-500: #6B7280;
-    --color-gray-300: #D1D5DB;
-    --color-gray-100: #F3F4F6;
-    --color-gray-200: #E5E7EB;
-    --color-green-500: #10B981;
-}
+    .tutor-carousel {
+        position: relative;
+        width: 100%;
+        max-width: 1300px;
+        margin: 2rem auto;
+        padding: 0 3rem;
+        box-sizing: border-box;
+        }
 
-/* ======================================================= */
-/* I. TARJETA PRINCIPAL */
-/* ======================================================= */
-.cards-container-tutores{
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: center;
-    gap: 1.3rem;
-    padding: 1rem;
-}
+        .tutor-carousel__viewport {
+        overflow: hidden;
+        width: 100%;
+        padding-bottom: 2rem
+        }
 
-.profile-card {
-    /* Fondo y estructura */
-    background-color: var(--color-white);
-    border-radius: 2rem; /* rounded-xl (asumo 1rem) */
-    overflow: hidden; /* Importante para que la imagen respete el redondeo */
-    width: 100%;
-    max-width: 250px; /* Ancho típico de una tarjeta */
-    
-    /* shadow-xl shadow-gray-300/60 */
-    box-shadow: 0 20px 25px -5px rgba(209, 213, 219, 0.6), 
-                0 8px 10px -6px rgba(209, 213, 219, 0.6);
-}
+        .tutor-carousel__track {
+        display: flex;
+        gap: 1.5rem;
+        will-change: transform;
+        transition: transform 0.5s cubic-bezier(.4,0,.2,1);
+        padding: 0.5rem 0;
+        }
 
-/* ======================================================= */
-/* II. IMAGEN */
-/* ======================================================= */
+        .tutor-carousel__slide {
+        flex: 0 0 clamp(240px, 24%, 280px);
+        /* Permite que en pantallas grandes quepan varias sin ser gigantes */
+        display: flex;
+        justify-content: center;
+        }
 
-.profile-card__image-container {
-    /* Contenedor para manejar el aspecto ratio si es necesario */
-    width: 100%;
-    /* Altura basada en la imagen placeholder (600x720) */
-    aspect-ratio: 210 / 200; 
-    overflow: hidden;
-    padding: 0.6rem;
-}
+        .tutor-carousel__btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: transparent;
+            color: var(--primary-color);
+            font-size: 1.75rem;
+            font-weight: 800;
+            line-height: 1;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0.25rem 0.5rem;
+            box-shadow: none;
+            transition: transform .2s ease, opacity .2s ease;
+            z-index: 5;
+        }
 
-.profile-card__image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    border-radius: 2rem
-}
+        .tutor-carousel__btn:hover:not([disabled]) {
+            transform: translateY(-50%) scale(1.08);
+        }
 
-/* ======================================================= */
-/* III. CONTENIDO Y HEADER */
-/* ======================================================= */
+        .tutor-carousel__btn:active:not([disabled]) {
+            transform: translateY(-50%) scale(.95);
+        }
 
-.profile-card__content {
-    /* p-6 pt-5 */
-    padding: 1rem;
-    padding-top: 0.1rem; 
-}
+        .tutor-carousel__btn[disabled] {
+            opacity: .35;
+            cursor: not-allowed;
+        }
 
-.profile-card__header {
-    /* flex items-center justify-between */
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
+        .tutor-carousel__btn--prev { left: 0.75rem; }
+        .tutor-carousel__btn--next { right: 0.75rem; }
 
-.profile-card__name {
-    /* text-xl font-semibold text-gray-800 */
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: var(--color-gray-800);
-    margin: 0;
-}
+        @media (max-width: 1023px) {
+        .tutor-carousel {
+            padding: 0 2.2rem;
+        }
+        .tutor-carousel__slide {
+            flex: 0 0 clamp(220px, 70%, 320px);
+        }
+        .tutor-carousel__btn {
+            font-size: 1.5rem;
+            padding: 0.2rem 0.4rem;
+        }
+        }
 
-.profile-card__verified-icon {
-    /* w-5 h-5 text-green-500 */
-    width: 1.25rem;
-    height: 1.25rem;
-    color: var(--color-green-500);
-    flex-shrink: 0;
-}
+        @media (max-width: 640px) {
+        .tutor-carousel {
+            padding: 0 1.5rem;
+        }
+        .tutor-carousel__btn--prev { left: .25rem; }
+        .tutor-carousel__btn--next { right: .25rem; }
+        .tutor-carousel__track { gap: 1rem; }
+        .tutor-carousel__slide { flex: 0 0 85%; }
+        }
 
-.profile-card__description {
-    /* mt-1 text-sm text-gray-500 leading-snug */
-    margin-top: 0.25rem;
-    font-size: 0.875rem;
-    color: var(--color-gray-500);
-    line-height: 1.375; /* leading-snug */
-    margin-bottom: 0;
-}
+        @media (min-width: 1400px) {
+        .tutor-carousel__slide { flex: 0 0 clamp(250px, 18%, 280px); }
+        }
 
-/* ======================================================= */
-/* IV. FOOTER (Estadísticas y Botón) */
-/* ======================================================= */
+        @media (min-width: 1500px) {
+            .tutor-carousel__viewport {
+                overflow: hidden;
+                width: 100%;
+                padding-bottom: 2rem
+            }
 
-.profile-card__footer {
-    /* mt-4 flex items-center justify-between */
-    margin-top: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.profile-card__stats-group {
-    /* flex items-center space-x-4 text-sm text-gray-500 */
-    display: flex;
-    align-items: center;
-    gap: 1rem; /* space-x-4 */
-    font-size: 0.875rem;
-    color: var(--color-gray-500);
-}
-
-.profile-card__stat {
-    /* flex items-center */
-    display: flex;
-    align-items: center;
-}
-
-.profile-card__stat-icon {
-    /* w-4 h-4 mr-1 */
-    width: 1rem;
-    height: 1rem;
-    margin-right: 0.25rem;
-}
-
-/* ======================================================= */
-/* V. BOTÓN */
-/* ======================================================= */
-
-.profile-card__button {
-    /* px-4 py-2 bg-gray-100 text-gray-800 text-sm font-medium rounded-xl */
-    padding: 0.5rem 1rem; /* px-4 py-2 */
-    background-color: var(--color-gray-100);
-    color: var(--color-gray-800);
-    font-size: 0.875rem;
-    font-weight: 500;
-    border-radius: 0.75rem; /* rounded-xl */
-    border: none;
-    cursor: pointer;
-    
-    /* hover:bg-gray-200 transition duration-150 shadow-sm */
-    transition: background-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm */
-}
-
-.profile-card__button:hover {
-    background-color: var(--color-gray-200);
-}
+            .tutor-carousel {
+                max-width: 1293px;
+            }
+        }
 </style>
+
+<script>
+        function initCarousel(root) {
+            if (!root) return;
+            const viewport = root.querySelector('.tutor-carousel__viewport');
+            const track = root.querySelector('.tutor-carousel__track');
+            const slides = [...track.querySelectorAll('.tutor-carousel__slide')];
+            const btnPrev = root.querySelector('.tutor-carousel__btn--prev');
+            const btnNext = root.querySelector('.tutor-carousel__btn--next');
+
+            if (!viewport || !track || slides.length === 0) return;
+
+            let currentIndex = 0;
+            let slideWidth = 0;
+            let gap = 0;
+
+            function measure() {
+            const slide = slides[0];
+            const style = window.getComputedStyle(track);
+            gap = parseFloat(style.columnGap || style.gap) || 0;
+            slideWidth = slide.getBoundingClientRect().width;
+            update();
+            updateButtons();
+            hideButtonsIfNoOverflow();
+            }
+
+            function maxIndex() {
+            const viewportWidth = viewport.getBoundingClientRect().width;
+            // cuántas slides caben visibles
+            const visibleCount = Math.max(1, Math.floor((viewportWidth + gap) / (slideWidth + gap)));
+            return Math.max(0, slides.length - visibleCount);
+            }
+
+            function clampIndex(i) {
+            return Math.min(Math.max(i, 0), maxIndex());
+            }
+
+            function update() {
+            const offset = -(slideWidth + gap) * currentIndex;
+            track.style.transform = `translateX(${offset}px)`;
+            updateButtons();
+            }
+
+            function updateButtons() {
+            btnPrev.disabled = currentIndex <= 0;
+            btnNext.disabled = currentIndex >= maxIndex();
+            }
+
+            function hideButtonsIfNoOverflow() {
+            if (maxIndex() === 0) {
+                btnPrev.style.display = 'none';
+                btnNext.style.display = 'none';
+            } else {
+                btnPrev.style.display = '';
+                btnNext.style.display = '';
+            }
+            }
+
+            btnPrev.addEventListener('click', () => {
+            currentIndex = clampIndex(currentIndex - 1);
+            update();
+            });
+
+            btnNext.addEventListener('click', () => {
+            currentIndex = clampIndex(currentIndex + 1);
+            update();
+            });
+
+            // Drag / Touch
+            let startX = 0;
+            let lastX = 0;
+            let isDragging = false;
+
+            function onPointerDown(e) {
+            isDragging = true;
+            startX = e.clientX || e.touches?.[0].clientX;
+            lastX = startX;
+            track.style.transition = 'none';
+            }
+
+            function onPointerMove(e) {
+            if (!isDragging) return;
+            const x = e.clientX || e.touches?.[0].clientX;
+            const delta = x - startX;
+            track.style.transform = `translateX(${-(slideWidth + gap) * currentIndex + delta}px)`;
+            lastX = x;
+            }
+
+            function onPointerUp() {
+            if (!isDragging) return;
+            isDragging = false;
+            const deltaTotal = lastX - startX;
+            track.style.transition = 'transform 0.5s cubic-bezier(.4,0,.2,1)';
+            const threshold = slideWidth * 0.25;
+            if (deltaTotal < -threshold) {
+                currentIndex = clampIndex(currentIndex + 1);
+            } else if (deltaTotal > threshold) {
+                currentIndex = clampIndex(currentIndex - 1);
+            }
+            update();
+            }
+
+            track.addEventListener('mousedown', onPointerDown);
+            track.addEventListener('touchstart', onPointerDown, { passive: true });
+            window.addEventListener('mousemove', onPointerMove);
+            window.addEventListener('touchmove', onPointerMove, { passive: true });
+            window.addEventListener('mouseup', onPointerUp);
+            window.addEventListener('touchend', onPointerUp);
+
+            // Recalcular en resize
+            window.addEventListener('resize', () => {
+            measure();
+            });
+
+            // Integración con Livewire (si se re-renderiza el componente)
+            if (window.Livewire) {
+            window.Livewire.hook('message.processed', () => {
+                measure();
+            });
+            }
+
+            measure();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document
+            .querySelectorAll('.tutor-carousel[data-carousel]')
+            .forEach(initCarousel);
+        });
+</script>

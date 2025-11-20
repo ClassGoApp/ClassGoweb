@@ -82,6 +82,7 @@ const translations = {
         alianzas: "Nuestras Alianzas",
         alianzas_edu: "Alianzas que potencian la educación",
         alianzas_Classgo: "En ClassGo creemos en el poder de la colaboración para transformar el aprendizaje. Por eso, trabajamos junto a instituciones educativas, clubes y organizaciones comprometidas con la formación académica y el desarrollo personal.",
+        alianzas_Classgo_1: "En ClassGo creemos en el poder de la colaboración para transformar el aprendizaje.",
         // Buscar Tutor
         /*no traduce pero si detesta al json*/
         /*tutores_encontrar: "Tutores / Encontrar tutor",
@@ -145,8 +146,9 @@ const translations = {
         gestiona_horario: "Gestiona tu horario para mostrar cuándo estás disponible para enseñar",
         gestiona_horario_desc: "Administra fácilmente tu disponibilidad actualizando tu horario con los momentos en los que estás disponible para enseñar. Esto ayuda a los estudiantes a saber cuándo pueden reservar sesiones contigo y mantiene tu calendario organizado.",
         revisar_solicitudes: "Revisa tus reservas .",
-        revisar_solicitudes_desc: "Revisa tu reservas de estudiantes que decidieron tener una tutoría con tigo",
-        dirige_clase: "Dirige tu clase con Google Meet",
+        revisar_solicitudes_desc: "Revisa tus reservas de estudiantes que decidieron tener una tutoría contigo",
+        dirige_clase: "Desde cualquier lugar, en tus horarios libres",
+        dirige_clase2: "Dirige la tutoría con Google Meet",
         dirige_clase_desc: "Conéctate a la hora programada y comienza a impartir tu sesión. Usa la herramienta de videoconferencia integrada en la plataforma para interactuar con tus alumnos y ofrecer una experiencia de aprendizaje atractiva.",
         proceso_calidad: "Garantizamos un proceso de calidad",
         unete_comunidad_repetido: "Únase a nuestra comunidad hoy",
@@ -481,6 +483,7 @@ const translations = {
         alianzas: "Our Partnerships",
         alianzas_edu: "Partnerships that Enhance Education",
         alianzas_Classgo: "At ClassGo, we believe in the power of collaboration to transform learning. That’s why we work alongside educational institutions, clubs, and organizations committed to academic growth and personal development.",
+        alianzas_Classgo_1: "At ClassGo we believe in the power of collaboration to transform learning.",
         // Buscar Tutor
         /*no traduce pero si detesta al json*/
         /*tutores_encontrar: "Tutors / Find a tutor",
@@ -882,6 +885,7 @@ const translations = {
         alianzas: "Nossas Parcerias",
         alianzas_edu: "Parcerias que potencializam a educação",
         alianzas_Classgo: "Na ClassGo, acreditamos no poder da colaboração para transformar o aprendizado. Por isso, trabalhamos junto a instituições de ensino, clubes e organizações comprometidas com o desenvolvimento acadêmico e pessoal.",
+        alianzas_Classgo_1: "Na ClassGo, acreditamos no poder da colaboração para transformar o aprendizado.",
         // Buscar Tutor
         /*no traduce pero si detesta al json*/
         /*tutores_encontrar: "Tutores / Encontrar tutor",

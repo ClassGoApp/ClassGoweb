@@ -34,7 +34,7 @@ return [
     'lost_password' => 'Forgot Password?',
     'tutor' => 'Tutor',
     'student' => 'Student',
-    'register_terms' => 'I accept </span><a href="https://classgoapp.com/terms-condition">Terms of Service</a> & <a href="https://classgoapp.com/privacy-policy">Privacy Policy</a>',
+    'register_terms' => 'I accept </span><a href="https://www.classgoapp.com/terminos" target="_blank">Terms of Service</a> & <a href="https://www.classgoapp.com/terminos" target="_blank">Privacy Policy</a>',
     'verify_title' => 'Verify your Email Address',
     'verify_email_link' => 'A new verification link has been sent to the email address you provided during registration.',
     'verify_email_msg' => 'Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you?',

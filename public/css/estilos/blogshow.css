@@ -15,11 +15,11 @@
   border-bottom-left-radius: 30px;
     border-bottom-right-radius: 30px;
 }
-.content-breadcrumb {
+.content-bread {
   width: 100%;
 
 }
-.breadcrumb-list {
+.bread-list {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -30,26 +30,26 @@
   margin: 0.5rem 3rem 1rem 3%;
 }
 
-.breadcrumb-link {
+.bread-link {
   color: #0a2533;
   text-decoration: none;
   font-weight: 600;
   transition: color 0.2s ease;
 }
 
-.breadcrumb-link:hover {
+.bread-link:hover {
   color: #1a5a7a; 
 }
 
-.breadcrumb-separator {
+.bread-separator {
   color: #78909c; 
 }
 
-.breadcrumb-current {
+.bread-current {
   color: #0a2533;
   font-weight: 400; 
 }
-.breadcrumb {
+.bread {
  
   font-size: clamp(15px, 1.5vw, 24px);
   color: var(--primary-color);

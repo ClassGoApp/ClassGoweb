@@ -39,11 +39,22 @@
 
 						</a>
 					</li>
-						{{-- <li>
-							<a href="{{  route('blogs.index') }}" class="{{ request()->is('blog*') ? 'active' : '' }}">
-								Blog
-							</a>
-						</li> --}}
+					
+					<li>
+						<a href="{{  route('blogs.index') }}" class="{{ request()->is('blog*') ? 'active' : '' }}">
+							Blog
+						</a>
+					</li>
+
+					@auth
+						@role('student')
+						<li class="popover-parent">
+							<a>Mis Tutorías</a>
+							@include('vistas.view.partials.popover')
+						</li>
+						@endrole
+					@endauth
+
 				</ul>
 			</nav>
 		</div>

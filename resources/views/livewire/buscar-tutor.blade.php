@@ -1,7 +1,5 @@
-<div class="container-buscartuto">
+<div class="container-buscartutor">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-
-    
     <!-- Componente de búsqueda y listado de tutores -->
     {{-- <section class="buscartutor-search-section">
         <div class="buscartutor-search-box">

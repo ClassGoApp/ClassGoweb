@@ -17,14 +17,10 @@
                 <option value="populares">Más populares</option>
             </select>
         </div>
-
-
-
-
     </header >
 
-        <div class="content-cards transition-all duration-300"
-     wire:target="category,order"
+    <div class="content-cards transition-all duration-300"
+        wire:target="category,order"
         wire:loading.class="fade-out"
         wire:loading.remove.class="fade-in">
 
@@ -77,14 +73,14 @@
                     <div class="tags">
                         <div class="tags-track">
                             @foreach ($blog->tags as $tag)
-                               
+                                
                                 <span class="tag"
-                                          >{{ $tag->name }}</span>
+                                            >{{ $tag->name }}</span>
                             @endforeach
                             @foreach ($blog->tags as $tag)
-                               
+                                
                                 <span class="tag"
-                                  
+                                    
                                     >{{ $tag->name }}</span>
                             @endforeach
                         </div>

@@ -96,11 +96,8 @@
             <div class="am-mainwrap" style="background-color: white">
                 <livewire:header.header />
                 <!-- Page Content -->
-                <main class="am-main" style="height: calc(100vh - 80px); overflow: hidden;">
-                    <div 
-                    style="height: 100vh; 
-                    overflow-y: auto; 
-                    overflow-x: hidden; ">
+                <main class="am-main" style="height: calc(100vh - 80px); ">
+                    <div>
                         <div>
                             @yield('content')
                             {{ $slot ?? '' }}
