@@ -92,7 +92,7 @@
                         </span>
                     @enderror
                 </div>
-{{-- /*******************************************************************/ --}}
+                {{-- /*******************************************************************/ --}}
 
                 <div class="tutor-profile-field" style="margin-bottom: 0rem;">
                     <label for="languages" class="form-label m-2 text-black" style="margin-bottom: 0.5rem;">
@@ -129,8 +129,9 @@
 
                             <div class="modern-dropdown-options">
                                 @foreach ($personalStatements as $index => $statement)
-                                    <label class="modern-dropdown-option"  style="cursor:pointer;">
-                                        <span style="width:100%;font-weight:bold;" wire:click="selectLema({{ $index }})">
+                                    <label class="modern-dropdown-option" style="cursor:pointer;">
+                                        <span style="width:100%;font-weight:bold;"
+                                            wire:click="selectLema({{ $index }})">
                                             {{ $statement }}
                                         </span>
                                     </label>
@@ -292,18 +293,18 @@
 @push('scripts')
     <script>
         /* window.filterModernLanguage = function(input, listId = null) {
-                                                                                                console.log('llega al filtro');
-                                                                                                const filter = input.value.toLowerCase();
-                                                                                                const listSelector = listId ? '#' + listId + ' .modern-dropdown-option' : '.modern-dropdown-option';
-                                                                                                const options = input.closest('.modern-dropdown-menu').querySelectorAll(listSelector);
-                                                                                                options.forEach(function(option) {
-                                                                                                    const label = option.querySelector('label');
-                                                                                                    if (label) {
-                                                                                                        const text = label.textContent.toLowerCase();
-                                                                                                        option.style.display = text.includes(filter) ? '' : 'none';
-                                                                                                    }
-                                                                                                });
-                                                                                            } */
+                                                                                                    console.log('llega al filtro');
+                                                                                                    const filter = input.value.toLowerCase();
+                                                                                                    const listSelector = listId ? '#' + listId + ' .modern-dropdown-option' : '.modern-dropdown-option';
+                                                                                                    const options = input.closest('.modern-dropdown-menu').querySelectorAll(listSelector);
+                                                                                                    options.forEach(function(option) {
+                                                                                                        const label = option.querySelector('label');
+                                                                                                        if (label) {
+                                                                                                            const text = label.textContent.toLowerCase();
+                                                                                                            option.style.display = text.includes(filter) ? '' : 'none';
+                                                                                                        }
+                                                                                                    });
+                                                                                                } */
         // Selección múltiple visual
         window.selectModernMultiOption = function(input) {
             const option = input.closest('.modern-dropdown-option');
