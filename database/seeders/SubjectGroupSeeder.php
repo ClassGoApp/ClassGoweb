@@ -29,10 +29,7 @@ class SubjectGroupSeeder extends Seeder
         // NIVEL 2: SUBCATEGORÍAS PRINCIPALES
         // =====================================================
         DB::table('subject_groups')->insert([
-            // Colegio
-            ['id' => 1100, 'name' => 'Básico', 'description' => 'Nivel inicial orientado al aprendizaje de lectura, escritura y pensamiento lógico.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 1000],
-            ['id' => 1101, 'name' => 'Primaria', 'description' => 'Etapa educativa centrada en el desarrollo académico y formativo fundamental.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 1000],
-            ['id' => 1102, 'name' => 'Secundaria', 'description' => 'Nivel educativo orientado al razonamiento crítico y preparación para estudios superiores.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 1000],
+           
 
 
             // Universidad

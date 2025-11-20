@@ -17,13 +17,13 @@ return new class extends Migration {
             $table->string('name', 255)->fulltext();
             $table->text('description')->nullable()->fullText();
             $table->enum('status', ['active', 'inactive'])->default('active')->index();
-            $table->softDeletes();
+
             // 🔗 Clave foránea que apunta a la misma tabla
             $table->foreignId('id_padre')
                 ->nullable()
                 ->constrained('subject_groups')
                 ->nullOnDelete(); // Si se elimina el padre, el hijo queda sin referencia
-
+            $table->softDeletes();
         });
     }
 
