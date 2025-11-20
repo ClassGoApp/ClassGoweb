@@ -62,7 +62,7 @@
 			<div class="language-select">
 				<div class="selected-option" onclick="toggleDropdown()">
 					<img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f1ea-1f1f8.svg" alt="Español">
-					<span>Español</span>
+					<span>Esp</span>
 				</div>
 				<ul class="options-dropdown" id="languageDropdown">
 					<li onclick="selectLanguage('es')">
@@ -307,15 +307,15 @@
 		// Diccionario para mostrar bandera y nombre
 		const languages = {
 			es: {
-				text: "Español",
+				text: "Esp",
 				flag: "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f1ea-1f1f8.svg"
 			},
 			en: {
-				text: "English",
+				text: "Eng",
 				flag: "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f1ec-1f1e7.svg"
 			},
 			pt: {
-				text: "Português",
+				text: "Port",
 				flag: "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f1f5-1f1f9.svg"
 			}
 		};
@@ -327,7 +327,7 @@
 		// Guardar selección en localStorage (para recordar en otras páginas)
 		localStorage.setItem("selectedLanguage", lang);
 
-		if (!isInitialization) {
+		if (!isInitialLoad) {
 			toggleDropdown();
 		}
 	}
