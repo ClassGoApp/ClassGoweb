@@ -7,9 +7,9 @@
         <p class="hero-subtext" data-translate="reach_goals">
         </p>
 
-        <div class="buscador-home">
+        {{-- <div class="buscador-home">
             @livewire('buscador-tutor')
-        </div>
+        </div> --}}
 
         <!-- 1.3 Botones-->
         <div class="hero-buttons">
