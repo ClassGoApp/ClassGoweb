@@ -26,6 +26,10 @@
         @include('vistas.view.pages.components.home.visual-phone')
     </section>
 
+    <section class="buscar-tutor-section">
+        @include('vistas.view.pages.components.home.buscar-tutor')
+    </section>
+
     <!--TUTORES DESTACADOS-->
     <section class="tutors-container fade-up">
         <h1 class="over-text">

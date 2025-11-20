@@ -60,7 +60,6 @@
 .container-buscartutor {
     margin: 0;
     padding: 0;
-    background-color: var(--panel-background);
 }
 
 .subjects-matched strong {
