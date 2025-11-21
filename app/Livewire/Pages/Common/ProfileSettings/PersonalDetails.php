@@ -28,6 +28,7 @@ class PersonalDetails extends Component
     private ?ProfileService $profileService = null;
 
     // Propiedades del formulario
+    public $state;
     public $first_name = '';
     public $last_name = '';
     public $email = '';
@@ -220,6 +221,8 @@ class PersonalDetails extends Component
         $this->image = $profile?->image ?? '';
         $this->intro_video = $profile?->intro_video ?? '';
         $this->native_language = $profile?->native_language ?? '';
+        $this->selected_lema = $profile?->tagline ?? null;
+
     }
 
     /**

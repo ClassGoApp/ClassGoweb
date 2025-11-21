@@ -203,7 +203,7 @@
                         @foreach ($user_languages as $langId)
                             @if (isset($languages[$langId]))
                                 <div class="badge bg-primary p-2 d-flex align-items-center"
-                                    style="font-size: 0.9rem;">
+                                    style="font-size: 0.9rem;height:2rem;">
                                     <span class="text-white">{{ __('lenguajes.' . $languages[$langId]) }}</span>
                                     <button type="button" class="btn-close btn-close-white ms-2"
                                         style="font-size: 0.7rem;" wire:click="removeLanguage({{ $langId }})">
