@@ -7,9 +7,9 @@
         <p class="hero-subtext" data-translate="reach_goals">
         </p>
 
-        <div class="buscador-home">
+        {{-- <div class="buscador-home">
             @livewire('buscador-tutor')
-        </div>
+        </div> --}}
 
         <!-- 1.3 Botones-->
         <div class="hero-buttons">
@@ -28,7 +28,7 @@
 
     <!-- 1.4 Hero Mascota -->
 
-    <img src="{{ asset(path: 'storage/optionbuilder/uploads/740102-17-2025_0859pmTugo-saludando.webp') }}" alt="Mascota ClassGo">
+    <img class = "hero-image" src="{{ asset(path: 'storage/optionbuilder/uploads/740102-17-2025_0859pmTugo-saludando.webp') }}" alt="Mascota ClassGo">
 
 
 

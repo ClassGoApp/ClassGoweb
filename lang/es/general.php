@@ -2,6 +2,7 @@
 
 return [
     'general_error' => 'Ocurrió un error al guardar la verificación de identidad. Inténtalo de nuevo o contacta soporte.',
+    'deleted_alianza'=> 'Alianza Eliminada',
     'app_name' => 'aprender',
     'profile_settings' => 'Configuración de perfil',
     'manage_bookings' => 'Gestionar reservas',

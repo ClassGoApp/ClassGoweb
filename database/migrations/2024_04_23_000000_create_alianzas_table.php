@@ -16,6 +16,7 @@ return new class extends Migration
             $table->boolean('activo')->default(true);
             $table->integer('orden')->default(0);
             $table->timestamps();
+            $table->string('descripcion')->nullable();
         });
     }
 

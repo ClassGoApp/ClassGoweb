@@ -2748,4 +2748,7 @@ body.modal-open {
     body:has(.tutor-bg) footer {
         display: none !important;
     }
+    .tutor-btn-share {
+        display: none;
+    }
 }
