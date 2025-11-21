@@ -64,7 +64,7 @@
 			<div class="language-select">
 				<div class="selected-option" onclick="toggleDropdown()">
 					<img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f1ea-1f1f8.svg" alt="Español">
-					<span>Esp</span>
+					<span>Español</span>
 				</div>
 				<ul class="options-dropdown" id="languageDropdown">
 					<li onclick="selectLanguage('es')">

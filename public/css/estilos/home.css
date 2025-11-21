@@ -797,7 +797,7 @@ body {
   background-repeat: no-repeat;
   background-position: top calc(100% + 10px);
   background-size: 100% auto;
-  min-height: 70vh;
+  min-height: 60vh;
   padding: 5rem 0rem 1rem 0rem;
   
 }
@@ -2627,6 +2627,10 @@ p {
     overflow-x: auto;
     gap: 1.2rem;
     padding: 1rem 0 1rem 28rem;
+  }
+  .buscar-tutor-section{
+    min-height: 60vh;
+    max-height: auto;
   }
 }
 

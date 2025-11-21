@@ -119,7 +119,7 @@
   /* =================== 4 - Navbar Select =================== */
   .language-select {
     position: relative;
-    width: 150px;
+    width: 130px;
     font-family: inherit;
     user-select: none;
   }
@@ -480,6 +480,7 @@
   /* Contenedor para el popover (debe tener posición relativa) */
   .navbar-links li.popover-parent {
     position: relative;
+    cursor: pointer;
   }
 
   /* Ajustar el posicionamiento del popover en el navbar */
@@ -522,6 +523,9 @@
     .btn-outline {
       padding: 0.6rem 1.5rem;
       font-size: 0.9rem;
+    }
+    .selected-option span {
+      display: none;
     }
   }
 
