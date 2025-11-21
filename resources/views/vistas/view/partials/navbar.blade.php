@@ -309,15 +309,15 @@
 		// Diccionario para mostrar bandera y nombre
 		const languages = {
 			es: {
-				text: "Español",
+				text: "Esp",
 				flag: "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f1ea-1f1f8.svg"
 			},
 			en: {
-				text: "English",
+				text: "Eng",
 				flag: "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f1ec-1f1e7.svg"
 			},
 			pt: {
-				text: "Português",
+				text: "Port",
 				flag: "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f1f5-1f1f9.svg"
 			}
 		};
@@ -329,7 +329,7 @@
 		// Guardar selección en localStorage (para recordar en otras páginas)
 		localStorage.setItem("selectedLanguage", lang);
 
-		if (!isInitialization) {
+		if (!isInitialLoad) {
 			toggleDropdown();
 		}
 	}
@@ -397,4 +397,22 @@
 			}
 		});
 	});
+	
+	document.addEventListener('DOMContentLoaded', function() {
+	const ul = document.querySelector('.navbar-links ul'); // <-- el UL
+	const links = ul.querySelectorAll('a');
+
+	// Hover permanente: solo un enlace a la vez
+	links.forEach(link => {
+		link.addEventListener('mouseenter', () => {
+			links.forEach(a => a.classList.remove('hovered'));
+			link.classList.add('hovered');
+		});
+	});
+
+	// Salir del UL: reset total
+	ul.addEventListener('mouseleave', () => {
+		links.forEach(a => a.classList.remove('hovered'));
+	});
+});
 </script>

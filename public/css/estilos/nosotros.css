@@ -698,6 +698,48 @@
     width: 160px;
   }
 }
+@media (max-width: 820px) {
+  .nosotros-header-content {
+        flex-direction: row;
+        padding: 2rem 1rem 1.5rem 1rem;
+  }
+  /*nosotros*/
+  .nosotros-mision {
+    flex-direction: column;
+    padding: 2rem 1rem;
+  }
+  .nosotros-mision-text {
+    width: 80%;
+    padding: 1rem 0rem;
+    text-align: center;
+  }
+  .nosotros-mision-text-general1 {
+    text-align: start;
+  }
+  .nosotros-mision-image{
+    display: none;
+  }
+  /*vision*/
+  .nosotros-vision {
+    flex-direction: column;
+    padding: 2rem 4rem;
+    align-items: flex-end;
+  }
+  .nosotros-vision-text {
+    width: 80%;
+    padding: 1rem 0rem;
+    text-align: end;
+  }
+  .nosotros-vision-title {
+    text-align: end;
+  }
+  .nosotros-vision-text-general1 {
+    text-align: justify;
+  }
+  .vision-image{
+    display: none;
+  }
+}
 
 
 /* =================== home-mobile.css =================== */
