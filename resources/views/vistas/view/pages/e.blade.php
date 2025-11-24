@@ -1,196 +1,185 @@
-<div class="profile-card">
-    
-    <div class="profile-card__image-container">
-        <img 
-            class="profile-card__image" 
-            src="https://placehold.co/600x720/e9e8e7/000000?text=Sophie+Bennett" 
-            alt="Sophie Bennett"
-            onerror="this.src='https://placehold.co/600x720/d1d1d1/000000?text=Error';"
-        >
-    </div>
-
-    <div class="profile-card__content">
-        
-        <div class="profile-card__header">
-            <h2 class="profile-card__name">Sophie Bennett</h2>
-            <svg class="profile-card__verified-icon" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-            </svg>
+<div class="parent">
+    <div class="div1">
+        <img src="{{ asset('images/home/Tugo-skin/contabilidad.webp') }}" class="filtro-img" alt="Matemáticas">
+        <div class="filtro-content">
+            <h3>Contabilidad</h3>
+            <p>Contabilidad Intermedia, de Sociedades, Agropecuaria, Fiscal, Gubernamental, Tributaria, de Costos.</p>
         </div>
-
-        <p class="profile-card__description">
-            Product Designer who focuses on simplicity & usability.
-        </p>
-
-        <div class="profile-card__footer">
-            
-            <div class="profile-card__stats-group">
-                
-                <span class="profile-card__stat">
-                    <svg class="profile-card__stat-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
-                    312
-                </span>
-                
-                <span class="profile-card__stat">
-                    <svg class="profile-card__stat-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
-                    48
-                </span>
-            </div>
-
-            <button class="profile-card__button">
-                Follow +
-            </button>
+    </div>
+    <div class="div2">
+        <img src="{{ asset('images/home/Tugo-skin/matematicas.webp') }}" class="filtro-img" alt="Programación">
+        <div class="filtro-content">
+            <h3>Ciencias Exactas</h3>
+            <p>Cálculo, Física, Mecánica Aplicada, Física de Materiales, Estática</p>
+        </div>
+    </div>
+    <div class="div3">
+        <img src="{{ asset('images/home/Tugo-skin/quimica.webp') }}" class="filtro-img" alt="Inglés">
+        <div class="filtro-content">
+            <h3>Química</h3>
+            <p>Química de Soluciones, Cromatografía, Eletroquímica, Química de Alimentos, Reacciones Químicas.</p>
+        </div>
+    </div>
+    <div class="div4">
+        <img src="{{ asset('images/home/Tugo-skin/programacion.webp') }}" class="filtro-img" alt="Ciencias Naturales">
+        <div class="filtro-content">
+            <h3>Programación</h3>
+            <p>Teoría de la Computación, Python, Php, Java, Flutter, Estructura de Datos, Iteracción Hombre-Computador.
+            </p>
+        </div>
+    </div>
+    <div class="div5">
+        <img src="{{ asset('images/home/Tugo-skin/ingles.webp') }}" class="filtro-img" alt="Historia">
+        <div class="filtro-content">
+            <h3>Inglés</h3>
+            <p>Ezpresiones Idiomáticas, Pronunciación, Escritura, Análisi de Textos, Perfeccionamiento Gramatical.</p>
+        </div>
+    </div>
+    <div class="div6">
+        <img src="{{ asset('images/home/Tugo-skin/musica.webp') }}" class="filtro-img" alt="Literatura">
+        <div class="filtro-content">
+            <h3>Música</h3>
+            <p>Composición, Lectura Musical, Acordes, Rítmica.</p>
         </div>
     </div>
 </div>
 
 <style>
-    /* ======================================================= */
-/* VARIABLES DE COLOR */
-/* ======================================================= */
-:root {
-    --color-white: #FFFFFF;
-    --color-gray-800: #1F2937;
-    --color-gray-500: #6B7280;
-    --color-gray-300: #D1D5DB;
-    --color-gray-100: #F3F4F6;
-    --color-gray-200: #E5E7EB;
-    --color-green-500: #10B981;
-}
+    .parent {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        /* filas con altura base para que los spans (1, 2, 3) se reflejen en la altura */
+        grid-template-rows: repeat(3, clamp(96px, 18vw, 200px));
+        gap: 12px;
+        padding: 2rem 4rem;
+        /* margen interno general */
+        box-sizing: border-box;
+    }
 
-/* ======================================================= */
-/* I. TARJETA PRINCIPAL */
-/* ======================================================= */
+    /* Cada celda funciona como contenedor de imagen recortada */
+    .parent>div {
+        position: relative;
+        overflow: hidden;
+        padding: 0.6rem;
+        /* similar a profile-card__image-container2 */
+        border-radius: 2rem;
+        box-sizing: border-box;
+        background: transparent;
+    }
 
-.profile-card {
-    /* Fondo y estructura */
-    background-color: var(--color-white);
-    border-radius: 1rem; /* rounded-xl (asumo 1rem) */
-    overflow: hidden; /* Importante para que la imagen respete el redondeo */
-    width: 100%;
-    max-width: 300px; /* Ancho típico de una tarjeta */
-    
-    /* shadow-xl shadow-gray-300/60 */
-    box-shadow: 0 20px 25px -5px rgba(209, 213, 219, 0.6), 
-                0 8px 10px -6px rgba(209, 213, 219, 0.6);
-}
+    .filtro-img {
+        position: absolute;
+        background: var(--bg-gradient3);
+        /* background: var(--panel-background); */
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 2rem;
+        /* mismo radio que la card destacada */
+        display: block;
+        transform: scale(1);
+        transition: transform .5s cubic-bezier(.4, 0, .2, 1);
+    }
 
-/* ======================================================= */
-/* II. IMAGEN */
-/* ======================================================= */
+    /* Overlay degradado oscuro desde mitad hacia abajo */
+    .parent>div::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        top: 45%;
+        /* punto donde comienza a oscurecer (aprox mitad) */
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.55) 60%, rgba(0, 0, 0, 0.85) 100%);
+        border-radius: 0 0 2rem 2rem;
+        pointer-events: none;
+    }
 
-.profile-card__image-container {
-    /* Contenedor para manejar el aspecto ratio si es necesario */
-    width: 100%;
-    /* Altura basada en la imagen placeholder (600x720) */
-    aspect-ratio: 600 / 720; 
-    overflow: hidden;
-}
+    /* Contenido textual sobre la imagen */
+    .filtro-content {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        padding: 1rem 1.25rem 1.1rem 1.25rem;
+        color: #fff;
+        z-index: 2;
+        pointer-events: none;
+    }
 
-.profile-card__image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
+    .filtro-content h3 {
+        margin: 0 0 .25rem 0;
+        font-size: 1.1rem;
+        font-weight: 700;
+        line-height: 1.2;
+        text-shadow: 0 2px 6px rgba(0, 0, 0, .4);
+        transform: translateY(4px);
+        transition: transform .35s ease, opacity .35s ease;
+        opacity: .95;
+    }
 
-/* ======================================================= */
-/* III. CONTENIDO Y HEADER */
-/* ======================================================= */
+    .filtro-content p {
+        margin: 0;
+        font-size: .85rem;
+        line-height: 1.3;
+        color: rgba(255, 255, 255, .92);
+        text-shadow: 0 1px 3px rgba(0, 0, 0, .4);
+        transform: translateY(6px);
+        transition: transform .35s ease, opacity .35s ease;
+        opacity: .9;
+    }
 
-.profile-card__content {
-    /* p-6 pt-5 */
-    padding: 1.5rem;
-    padding-top: 1.25rem; 
-}
+    /* Hover sencillo */
+    .parent>div:hover .filtro-img {
+        transform: scale(1.05);
+    }
 
-.profile-card__header {
-    /* flex items-center justify-between */
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
+    .parent>div:hover .filtro-content h3,
+    .parent>div:hover .filtro-content p {
+        transform: translateY(0);
+        opacity: 1;
+    }
 
-.profile-card__name {
-    /* text-xl font-semibold text-gray-800 */
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: var(--color-gray-800);
-    margin: 0;
-}
+    .parent>div:hover {
+        box-shadow: 0 10px 24px rgba(0, 0, 0, .12);
+    }
+    @media (max-width: 576px) {
+        
+    }
 
-.profile-card__verified-icon {
-    /* w-5 h-5 text-green-500 */
-    width: 1.25rem;
-    height: 1.25rem;
-    color: var(--color-green-500);
-    flex-shrink: 0;
-}
+    @media (max-width: 768px) {
+        .parent>div::after {
+            top: 50%;
+            /* un poco más abajo en móviles si se ve muy oscuro */
+        }
+    }
 
-.profile-card__description {
-    /* mt-1 text-sm text-gray-500 leading-snug */
-    margin-top: 0.25rem;
-    font-size: 0.875rem;
-    color: var(--color-gray-500);
-    line-height: 1.375; /* leading-snug */
-    margin-bottom: 0;
-}
+    .div1 {
+        grid-row: span 3 / span 3;
+    }
 
-/* ======================================================= */
-/* IV. FOOTER (Estadísticas y Botón) */
-/* ======================================================= */
 
-.profile-card__footer {
-    /* mt-4 flex items-center justify-between */
-    margin-top: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
+    .div3 {
+        grid-row: span 2 / span 2;
+        grid-column-start: 2;
+        grid-row-start: 2;
+    }
 
-.profile-card__stats-group {
-    /* flex items-center space-x-4 text-sm text-gray-500 */
-    display: flex;
-    align-items: center;
-    gap: 1rem; /* space-x-4 */
-    font-size: 0.875rem;
-    color: var(--color-gray-500);
-}
+    .div4 {
+        grid-row: span 3 / span 3;
+        grid-column-start: 3;
+        grid-row-start: 1;
+    }
 
-.profile-card__stat {
-    /* flex items-center */
-    display: flex;
-    align-items: center;
-}
+    .div5 {
+        grid-row: span 2 / span 2;
+        grid-column-start: 4;
+        grid-row-start: 1;
+    }
 
-.profile-card__stat-icon {
-    /* w-4 h-4 mr-1 */
-    width: 1rem;
-    height: 1rem;
-    margin-right: 0.25rem;
-}
-
-/* ======================================================= */
-/* V. BOTÓN */
-/* ======================================================= */
-
-.profile-card__button {
-    /* px-4 py-2 bg-gray-100 text-gray-800 text-sm font-medium rounded-xl */
-    padding: 0.5rem 1rem; /* px-4 py-2 */
-    background-color: var(--color-gray-100);
-    color: var(--color-gray-800);
-    font-size: 0.875rem;
-    font-weight: 500;
-    border-radius: 0.75rem; /* rounded-xl */
-    border: none;
-    cursor: pointer;
-    
-    /* hover:bg-gray-200 transition duration-150 shadow-sm */
-    transition: background-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm */
-}
-
-.profile-card__button:hover {
-    background-color: var(--color-gray-200);
-}
+    .div6 {
+        grid-column-start: 4;
+        grid-row-start: 3;
+    }
 </style>

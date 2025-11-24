@@ -13,7 +13,10 @@ return new class extends Migration
     {
         Schema::create('asistencias', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('personal_id')->constrained('personals')->onDelete('cascade');
+            $table->foreignId('personal_id')
+                ->constrained('personals')
+                ->cascadeOnDelete();
+            $table->enum('tipo', ['Presencial', 'Remoto'])->default('Presencial');
             $table->date('fecha');
             $table->time('hora_entrada')->nullable();
             $table->time('hora_salida')->nullable();
