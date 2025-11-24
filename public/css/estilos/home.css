@@ -2735,13 +2735,12 @@ p {
 
   .hero-title-arriba {
     font-size: 1.5em !important;
-    transform: translateY(-15px);
     /* sube 10px */
   }
 
   .hero-title-abajo {
     font-size: 2.2em !important;
-    transform: translateY(-15px);
+    padding-bottom: 20px;
     /* sube 15px */
   }
 
