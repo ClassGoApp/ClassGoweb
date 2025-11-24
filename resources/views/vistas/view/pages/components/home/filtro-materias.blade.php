@@ -145,6 +145,50 @@
         box-shadow: 0 10px 24px rgba(0, 0, 0, .12);
     }
 
+    @media (max-width: 576px) {
+
+        /* Contenedor: cambia columnas, mantiene otros estilos */
+        p {
+            display: none !important;
+        }
+
+        .parent {
+            grid-template-columns: repeat(2, 1fr);
+            grid-auto-rows: auto;
+            /* evita forzar las alturas originales */
+            gap: 12px;
+            padding: 1rem;
+        }
+
+        /* Resetea sólo la colocación (quitar spans que rompían todo) */
+        .parent>.div1,
+        .parent>.div2,
+        .parent>.div3,
+        .parent>.div4,
+        .parent>.div5,
+        .parent>.div6 {
+            grid-column: auto;
+            grid-row: auto;
+        }
+
+        /* Suavizado visual: mantiene bordes/overflow originales */
+        .parent>div {
+            padding: 0.6rem;
+            /* deja el padding original de las celdas */
+            border-radius: 1rem;
+            /* similar a tu diseño */
+        }
+
+        .filtro-content h3 {
+            font-size: 1rem;
+        }
+
+        .filtro-content p {
+            font-size: .75rem;
+        }
+    }
+
+
     @media (max-width: 768px) {
         .parent>div::after {
             top: 50%;

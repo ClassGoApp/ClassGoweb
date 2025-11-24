@@ -1,141 +1,185 @@
-<!-- Imagen -->
-<img src="{{ asset('images/tutors/default.png') }}"
-    alt="Foto de"
-    class="tutor-profile-img"
-    id="profileImage">
-
-<!-- Modal -->
-<!-- Modal Imagen -->
-<div id="imageModal" class="image-modal">
-    <div class="image-modal-inner">
-        <div class="image-modal-wrapper">
-            <img class="image-modal-content" id="modalImage">
-            <button id="closeModal" class="close-modal-btn">&times;</button>
+<div class="parent">
+    <div class="div1">
+        <img src="{{ asset('images/home/Tugo-skin/contabilidad.webp') }}" class="filtro-img" alt="Matemáticas">
+        <div class="filtro-content">
+            <h3>Contabilidad</h3>
+            <p>Contabilidad Intermedia, de Sociedades, Agropecuaria, Fiscal, Gubernamental, Tributaria, de Costos.</p>
+        </div>
+    </div>
+    <div class="div2">
+        <img src="{{ asset('images/home/Tugo-skin/matematicas.webp') }}" class="filtro-img" alt="Programación">
+        <div class="filtro-content">
+            <h3>Ciencias Exactas</h3>
+            <p>Cálculo, Física, Mecánica Aplicada, Física de Materiales, Estática</p>
+        </div>
+    </div>
+    <div class="div3">
+        <img src="{{ asset('images/home/Tugo-skin/quimica.webp') }}" class="filtro-img" alt="Inglés">
+        <div class="filtro-content">
+            <h3>Química</h3>
+            <p>Química de Soluciones, Cromatografía, Eletroquímica, Química de Alimentos, Reacciones Químicas.</p>
+        </div>
+    </div>
+    <div class="div4">
+        <img src="{{ asset('images/home/Tugo-skin/programacion.webp') }}" class="filtro-img" alt="Ciencias Naturales">
+        <div class="filtro-content">
+            <h3>Programación</h3>
+            <p>Teoría de la Computación, Python, Php, Java, Flutter, Estructura de Datos, Iteracción Hombre-Computador.
+            </p>
+        </div>
+    </div>
+    <div class="div5">
+        <img src="{{ asset('images/home/Tugo-skin/ingles.webp') }}" class="filtro-img" alt="Historia">
+        <div class="filtro-content">
+            <h3>Inglés</h3>
+            <p>Ezpresiones Idiomáticas, Pronunciación, Escritura, Análisi de Textos, Perfeccionamiento Gramatical.</p>
+        </div>
+    </div>
+    <div class="div6">
+        <img src="{{ asset('images/home/Tugo-skin/musica.webp') }}" class="filtro-img" alt="Literatura">
+        <div class="filtro-content">
+            <h3>Música</h3>
+            <p>Composición, Lectura Musical, Acordes, Rítmica.</p>
         </div>
     </div>
 </div>
 
 <style>
-    .tutor-profile-img {
-        width: 150px;
-        height: 150px;
-        border-radius: 50%;
-        object-fit: cover;
-        border: 3px solid #fff;
-        box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
-        cursor: pointer;
-        transition: transform 0.3s, box-shadow 0.3s;
+    .parent {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        /* filas con altura base para que los spans (1, 2, 3) se reflejen en la altura */
+        grid-template-rows: repeat(3, clamp(96px, 18vw, 200px));
+        gap: 12px;
+        padding: 2rem 4rem;
+        /* margen interno general */
+        box-sizing: border-box;
     }
 
-    /* --- Efecto al pasar el mouse --- */
-    .tutor-profile-img:hover {
-        transform: scale(1.05);
-        box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
-        filter: brightness(0.9);
-    }
-
-    .image-modal {
-        display: none;
-        /* 🔑 Inicialmente oculto */
-        position: fixed;
-        inset: 0;
-        z-index: 1000;
-        backdrop-filter: blur(5px) brightness(0.6);
-        background-color: rgba(0, 0, 0, 0.4);
+    /* Cada celda funciona como contenedor de imagen recortada */
+    .parent>div {
+        position: relative;
         overflow: hidden;
-        justify-content: center;
-        align-items: center;
+        padding: 0.6rem;
+        /* similar a profile-card__image-container2 */
+        border-radius: 2rem;
+        box-sizing: border-box;
+        background: transparent;
     }
 
-    .image-modal-inner {
-        display: flex;
-        justify-content: center;
-        align-items: center;
+    .filtro-img {
+        position: absolute;
+        background: var(--bg-gradient3);
+        /* background: var(--panel-background); */
+        inset: 0;
         width: 100%;
         height: 100%;
-    }
-
-    .image-modal-wrapper {
-        position: relative;
-        display: inline-block;
-    }
-
-    .image-modal-content {
-        max-width: 80%;
-        max-height: 75%;
-        border-radius: 10px;
-        box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        object-fit: cover;
+        border-radius: 2rem;
+        /* mismo radio que la card destacada */
         display: block;
-        animation: fadeIn 0.4s ease;
+        transform: scale(1);
+        transition: transform .5s cubic-bezier(.4, 0, .2, 1);
     }
 
-    .close-modal-btn {
+    /* Overlay degradado oscuro desde mitad hacia abajo */
+    .parent>div::after {
+        content: '';
         position: absolute;
+        left: 0;
+        right: 0;
         bottom: 0;
-        /* justo sobre la parte inferior de la imagen */
-        left: 50%;
-        transform: translateX(-50%) translateY(-50%);
-        background: rgba(0, 0, 0, 0.6);
-        border: none;
-        color: white;
-        font-size: 32px;
-        border-radius: 50%;
-        width: 50px;
-        height: 50px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: 0.3s ease;
+        top: 45%;
+        /* punto donde comienza a oscurecer (aprox mitad) */
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.55) 60%, rgba(0, 0, 0, 0.85) 100%);
+        border-radius: 0 0 2rem 2rem;
+        pointer-events: none;
     }
 
-    .close-modal-btn:hover {
-        background: rgba(0, 0, 0, 0.9);
+    /* Contenido textual sobre la imagen */
+    .filtro-content {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        padding: 1rem 1.25rem 1.1rem 1.25rem;
+        color: #fff;
+        z-index: 2;
+        pointer-events: none;
     }
 
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: scale(0.9);
+    .filtro-content h3 {
+        margin: 0 0 .25rem 0;
+        font-size: 1.1rem;
+        font-weight: 700;
+        line-height: 1.2;
+        text-shadow: 0 2px 6px rgba(0, 0, 0, .4);
+        transform: translateY(4px);
+        transition: transform .35s ease, opacity .35s ease;
+        opacity: .95;
+    }
+
+    .filtro-content p {
+        margin: 0;
+        font-size: .85rem;
+        line-height: 1.3;
+        color: rgba(255, 255, 255, .92);
+        text-shadow: 0 1px 3px rgba(0, 0, 0, .4);
+        transform: translateY(6px);
+        transition: transform .35s ease, opacity .35s ease;
+        opacity: .9;
+    }
+
+    /* Hover sencillo */
+    .parent>div:hover .filtro-img {
+        transform: scale(1.05);
+    }
+
+    .parent>div:hover .filtro-content h3,
+    .parent>div:hover .filtro-content p {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    .parent>div:hover {
+        box-shadow: 0 10px 24px rgba(0, 0, 0, .12);
+    }
+    @media (max-width: 576px) {
+        
+    }
+
+    @media (max-width: 768px) {
+        .parent>div::after {
+            top: 50%;
+            /* un poco más abajo en móviles si se ve muy oscuro */
         }
-
-        to {
-            opacity: 1;
-            transform: scale(1);
-        }
     }
 
-    body.modal-open {
-        overflow: hidden;
+    .div1 {
+        grid-row: span 3 / span 3;
+    }
+
+
+    .div3 {
+        grid-row: span 2 / span 2;
+        grid-column-start: 2;
+        grid-row-start: 2;
+    }
+
+    .div4 {
+        grid-row: span 3 / span 3;
+        grid-column-start: 3;
+        grid-row-start: 1;
+    }
+
+    .div5 {
+        grid-row: span 2 / span 2;
+        grid-column-start: 4;
+        grid-row-start: 1;
+    }
+
+    .div6 {
+        grid-column-start: 4;
+        grid-row-start: 3;
     }
 </style>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const modal = document.getElementById("imageModal");
-        const modalImg = document.getElementById("modalImage");
-        const profileImg = document.getElementById("profileImage");
-        const closeModal = document.getElementById("closeModal");
-
-        // 🔑 Modal SOLO abre al hacer clic en la imagen
-        profileImg.addEventListener('click', function() {
-            modal.style.display = "flex";
-            modalImg.src = this.src;
-            document.body.classList.add("modal-open");
-        });
-
-        // Cerrar con botón
-        closeModal.addEventListener('click', function() {
-            modal.style.display = "none";
-            document.body.classList.remove("modal-open");
-        });
-
-        // Cerrar al hacer clic fuera de la imagen
-        modal.addEventListener('click', function(e) {
-            if (!modalImg.contains(e.target) && !closeModal.contains(e.target)) {
-                modal.style.display = "none";
-                document.body.classList.remove("modal-open");
-            }
-        });
-    });
-</script>

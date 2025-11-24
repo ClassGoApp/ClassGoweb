@@ -1,7 +1,7 @@
 <div class="hero-container">
     <!-- 1.1 Hero Titular -->
     <div class="hero-text fade-left">
-        
+
         <h1 class="hero-title-arriba" data-translate="learn"></h1>
         <h1 class="hero-title-abajo" data-translate="tutoring"></h1>
         <p class="hero-subtext" data-translate="reach_goals">
@@ -28,8 +28,6 @@
 
     <!-- 1.4 Hero Mascota -->
 
-    <img class = "hero-image" src="{{ asset(path: 'storage/optionbuilder/uploads/740102-17-2025_0859pmTugo-saludando.webp') }}" alt="Mascota ClassGo">
-
-
+    <img class="hero-image" src="{{ asset(path: 'storage/optionbuilder/uploads/740102-17-2025_0859pmTugo-saludando.webp') }}" alt="Mascota ClassGo">
 
 </div>
