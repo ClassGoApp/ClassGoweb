@@ -25,6 +25,7 @@
         wire:loading.remove.class="fade-in">
 
         @forelse ($blogs as $blog)
+        
             <a href="{{ $blog->url }}"  class="cards" wire:key="blog-{{ $blog->id }}" style="text-decoration:none; color:inherit;">
                 <div class="img" loading="lazy">
                     @if ($blog->image)
@@ -87,6 +88,7 @@
                     </div>
                 @endif
             </a>
+        
         @empty
             <p style="font-weight: 500; height: 477px;">No hay blogs disponibles.</p>
         @endforelse
