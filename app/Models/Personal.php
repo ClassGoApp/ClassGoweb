@@ -3,15 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Personal extends Model
 {
     protected $fillable = [
             'nombre',
             'apellido',
-            'correo',
-            'password',
-            'celular',
             'direccion',
             'fecha_nacimiento',
             'genero',
@@ -21,6 +19,7 @@ class Personal extends Model
             'estado',
             'departamento',
             'fecha_contratacion',
+            'user_id',
     ];
     protected $casts = [
         'fecha_nacimiento' => 'date',
@@ -30,4 +29,9 @@ class Personal extends Model
     {
         return $this->hasMany(Asistencia::class);
     }
+
+     public function user(): BelongsTo {
+        return $this->belongsTo(User::class);
+    }
+
 }

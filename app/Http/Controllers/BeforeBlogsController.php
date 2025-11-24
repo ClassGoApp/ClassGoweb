@@ -21,27 +21,7 @@ class BeforeBlogsController extends Controller
      */
     public function index()
     {
-        // // Cargamos los blogs con sus relaciones necesarias
-        // $blogs = Blog::with(['categories', 'tags', 'author'])
-        //     ->where('status', 1)
-        //     ->orderBy('created_at', 'desc')
-        //     ->get()
-        //     ->map(function ($blog) {
-        //         // Descripción corta (30–40 palabras)
-        //         $blog->short_description = Str::words(strip_tags($blog->description), 35, '...');
-
-        //         // Primera categoría (por ejemplo: Negocio)
-        //         $blog->main_category = $blog->categories->first()?->name ?? 'General';
-
-        //          $blog->image_url = Storage::url($blog->image); 
-        //         // ? Storage::url($blog->image)
-        //         // : asset('D:\proyectos_de_informatica\ClassGo_Project\ClassGoweb\public\images\Tugo-negativo.png');
-
-        //         // Generar URL (usa slug si existe)
-        //         $blog->url = route('blogs.show', $blog->slug ?? $blog->id);
-
-        //         return $blog;
-        //     });
+        
 
         return view('vistas.view.pages.blog');
         // , compact('blogs'));
