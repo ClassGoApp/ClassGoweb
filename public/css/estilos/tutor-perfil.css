@@ -2752,3 +2752,115 @@ body.modal-open {
         display: none;
     }
 }
+
+/* ======================================================= */
+/* 17. TUTOR TOOLTIP (Instrucciones Hover - CORREGIDO)     */
+/* ======================================================= */
+
+/* 1. CONFIGURACIÓN BASE (Para los títulos del calendario) */
+.tutor-tooltip-wrapper {
+    position: relative;
+    display: inline-flex; /* IMPORTANTE: inline-flex evita que rompa el diseño */
+    width: auto;          /* IMPORTANTE: Solo ocupa el ancho del texto */
+    align-items: center;  /* Alinea el texto con el icono i */
+    gap: 6px;             /* Espacio entre texto e icono */
+    text-decoration: none;
+    vertical-align: middle;
+}
+
+/* 2. EXCEPCIÓN PARA EL BOTÓN DE RESERVAR (Para mantenerlo grande) */
+/* Como el botón es un enlace <a>, le forzamos el ancho completo */
+a.tutor-tooltip-wrapper {
+    display: block;
+    width: 100%;
+}
+
+/* 3. LA CAJA DEL MENSAJE (Globo) */
+.tutor-tooltip-content {
+    position: absolute;
+    z-index: 99999;
+    
+    /* Diseño Visual */
+    background-color: #1f2937; /* Gris oscuro */
+    color: #ffffff;
+    padding: 12px 16px;
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    
+    /* Configuración por defecto (Centrado - Para el botón) */
+    width: 240px;
+    text-align: center;
+    bottom: 115%;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    
+    /* Animación */
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease-in-out;
+    pointer-events: none;
+}
+
+/* 4. CONTENIDO INTERNO */
+.tutor-tooltip-content strong {
+    display: block;
+    color: #fbbf24; /* Amarillo */
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+}
+
+.tutor-tooltip-content p {
+    margin: 0;
+    font-size: 0.8rem;
+    line-height: 1.4;
+    color: #e5e7eb;
+}
+
+/* 5. FLECHITA (Por defecto centrada) */
+.tutor-tooltip-arrow {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -6px;
+    border-width: 6px;
+    border-style: solid;
+    border-color: #1f2937 transparent transparent transparent;
+}
+
+/* 6. INTERACCIÓN HOVER (General) */
+.tutor-tooltip-wrapper:hover .tutor-tooltip-content {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* ======================================================= */
+/* 7. MODIFICADORES PARA LOS TÍTULOS (Alineación Izquierda) */
+/* ======================================================= */
+
+.tooltip-left-align {
+    left: 0 !important; /* Alineado al inicio del texto */
+    transform: translateY(10px) !important; /* Reseteamos la traslación X */
+    text-align: left !important;
+    width: 260px; /* Un poco más ancho para texto largo */
+    bottom: 100% !important; /* Justo encima */
+    margin-bottom: 8px; /* Un poco de aire */
+}
+
+/* Ajuste de la flecha para alineación izquierda */
+.tooltip-left-align .tutor-tooltip-arrow {
+    left: 20px !important; /* Flecha a la izquierda */
+    margin-left: 0 !important;
+}
+
+/* Hover específico para alineación izquierda */
+.tutor-tooltip-wrapper:hover .tooltip-left-align {
+    transform: translateY(0) !important;
+}
+
+/* 8. RESPONSIVE: Ocultar en móviles */
+@media (max-width: 768px) {
+    .tutor-tooltip-content {
+        display: none !important;
+    }
+}
