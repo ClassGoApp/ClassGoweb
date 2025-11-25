@@ -28,7 +28,7 @@ return [
     'latest_changes_the_live' => 'Guarde y actualice los últimos cambios en vivo',
     'female' => 'Femenino',
     'save_update' => 'Guardar y actualizar',
-    'not_specified' => 'No especificado',
+    'not_specified' => 'Ninguno',
     'hour_rate' => 'Tarifa por hora',
     'hour_rate_placeholder' => 'Ingrese su tarifa horaria',
     'country' => 'País',
