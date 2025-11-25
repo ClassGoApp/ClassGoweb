@@ -1,3 +1,31 @@
+.tutor-profile-field{
+    gap: 0;
+    padding-bottom: 0px;
+}
+.selected-lema-container {
+    margin-top: 8px;
+    padding: 6px 10px;
+    background: #e5f0ff;
+    color: #1e3a8a;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+}
+
+.remove-lema-btn {
+    background: transparent;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    color: #1e3a8a;
+}
+.remove-lema-btn:hover {
+    color: red;
+}
+
+
 /* ========= VISTA MOBILE - Areglos By Grillo ===========*/
 @media (max-width: 768px) {
     .tutor-profile-title{
@@ -88,8 +116,8 @@
     .tutor-profile-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 1.5rem;
-        margin-bottom: 1.5rem;
+        /* gap: 1.5rem; */
+        /* margin-bottom: 1.5rem; */
     }
 
     .tutor-profile-field {
@@ -97,7 +125,7 @@
         flex-direction: column;
         gap: 0.1rem;
         align-items: start;
-        padding-bottom: 1rem;
+        /* padding-bottom: 1rem; */
     }
 
     .tutor-profile-input {

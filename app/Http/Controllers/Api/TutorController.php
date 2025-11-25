@@ -463,7 +463,7 @@ class TutorController extends Controller
 
             return $this->success($result, 'Fotos de perfil de tutores verificados obtenidas exitosamente');
         } catch (\Exception $e) {
-            \Log::error('Error en getVerifiedTutorsPhotos: ' . $e->getMessage());
+            Log::error('Error en getVerifiedTutorsPhotos: ' . $e->getMessage());
             return $this->error(message: 'Error al obtener fotos de tutores verificados: ' . $e->getMessage());
         }
     }

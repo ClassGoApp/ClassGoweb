@@ -41,8 +41,10 @@
                 </div>
                 <div class="box">
                     <h1 data-translate="lee_ma"></h1>
-                    <a href=" {{ route('terminos') }}"> <p data-translate="terminos"></p> </a>
-                    
+                    <a href=" {{ route('terminos') }}">
+                        <p data-translate="terminos"></p>
+                    </a>
+
                 </div>
                 <div class="box">
                     <h1 data-translate="get_app"></h1>
@@ -50,10 +52,18 @@
                     <a href="https://play.google.com/store/apps/details?id=com.neurasoft.classgo" target="_blank"><img src="{{ asset('images/googleplay.png')}}" alt="" style=" width: 150px;"></a>
                 </div>
                 <div class="box">
-                    <a href="{{ route('nosotros')}}"><h1 data-translate="nosotros"></h1></a>
-                    <a href=" {{ route('nosotros')}}#mision"><p data-translate="mision"></p></a>
-                    <a href=" {{ route('nosotros')}}#vision"><p data-translate="vision"></p></a>
-                    <a href="{{ route('nosotros')}}#team"><p data-translate="desarrolladores"></p></a>
+                    <a href="{{ route('nosotros')}}">
+                        <h1 data-translate="nosotros"></h1>
+                    </a>
+                    <a href=" {{ route('nosotros')}}#mision">
+                        <p data-translate="mision"></p>
+                    </a>
+                    <a href=" {{ route('nosotros')}}#vision">
+                        <p data-translate="vision"></p>
+                    </a>
+                    <a href="{{ route('nosotros')}}#team">
+                        <p data-translate="desarrolladores"></p>
+                    </a>
                 </div>
                 <div class="box">
                     <h1 data-translate="preguntas"></h1>
@@ -65,17 +75,30 @@
 
         </div>
         <div class="container-redes">
-            <a href="https://www.tiktok.com/@classgoapp" target="_blank">
-                <div class="circle-icon"><i class="fa-brands fa-tiktok fa-2x"></i></div>
-            </a>
             <a href="https://www.facebook.com/profile.php?id=61578383078347" target="_blank">
-                <div class="circle-icon"><i class="fa-brands fa-facebook-f"></i></div>
+                <div class="circle-icon-f">
+                    <img src="{{ asset('images/facebook.png')}}" alt="Facebook Link" class="icon-img">
+                </div>
             </a>
             <a href="https://www.instagram.com/classgo_app/" target="_blank">
-                <div class="circle-icon"><i class="fa-brands fa-instagram"></i></div>
+                <div class="circle-icon-i">
+                    <img src="{{ asset('images/instagram.png')}}" alt="Instagram link" class="icon-img">
+                </div>
             </a>
-            <a href="https://wa.link/yiegi5" target="_blank">
-                <div class="circle-icon"><i class="fa-brands fa-whatsapp"></i></div>
+            <a href="https://www.tiktok.com/@classgoapp" target="_blank">
+                <div class="circle-icon-t">
+                    <img src="{{ asset('images/tik-tok.png')}}" alt="TikTok link" class="icon-img">
+                </div>
+            </a>
+            <a href="http://www.youtube.com/@ClassGo-z4d" target="_blank">
+                <div class="circle-icon-y">
+                    <img src="{{ asset('images/youtube.png') }}" alt="YouTube link" class="icon-img">
+                </div>
+            </a>
+            <a href="https://www.linkedin.com/company/classgoapp/about/?viewAsMember=true" target="_blank">
+                <div class="circle-icon-l">
+                    <img src="{{ asset('images/linkedin.png') }}" alt="linkedind link" class="icon-img">
+                </div>
             </a>
         </div>
         <hr>

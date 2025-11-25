@@ -28,6 +28,7 @@ class PersonalDetails extends Component
     private ?ProfileService $profileService = null;
 
     // Propiedades del formulario
+    public $state;
     public $first_name = '';
     public $last_name = '';
     public $email = '';
@@ -38,6 +39,111 @@ class PersonalDetails extends Component
     public $native_language = '';
     public $user_languages = [];
     public $selected_languages = [];
+    // lema tag_line
+    public $personalStatements = [
+        'Enseñar es transformar vidas',
+        'Enseñar es transformar vidas con conocimiento y empatía.',
+        'Mi pasión es compartir el poder del aprendizaje constante.',
+        'Innovar, enseñar y crecer: mi fórmula para el éxito.',
+        'La educación es mi motor, el futuro mi inspiración.',
+        'Aprender nunca fue tan emocionante como enseñarlo.',
+        'Transformo ideas en conocimiento útil para los demás.',
+        'Creando caminos de aprendizaje con pasión y propósito.',
+        'Inspirar, motivar y guiar: mi misión como educador.',
+        'La enseñanza es el arte de encender mentes brillantes.',
+        'La programación me enseña a pensar y resolver mejor.',
+        'En cada clase siembro curiosidad, no solo respuestas.',
+        'Mi meta: hacer del conocimiento una aventura diaria.',
+        'Programar es mi forma de crear soluciones con lógica.',
+        'Formando mentes creativas para un mundo tecnológico.',
+        'La tecnología cambia, pero el conocimiento permanece.',
+        'Enseñar con pasión, aprender con humildad siempre.',
+        'Aprendo enseñando, enseño aprendiendo cada día.',
+        'Mi pasión es enseñar lo que me apasiona aprender.',
+        'Crear, enseñar y mejorar: mi lema profesional.',
+        'Transformo el aprendizaje en experiencias inspiradoras.',
+        'Hacer fácil lo complejo: el arte de enseñar con amor.',
+        'La innovación comienza con una mente curiosa.',
+        'Enseñar tecnología es abrir puertas al futuro.',
+        'Conocimiento, pasión y constancia son mis pilares.',
+        'Mi meta es inspirar mentes que cambien el mundo.',
+        'Enseñar con empatía, aprender con gratitud profunda.',
+        'Formando líderes a través del conocimiento compartido.',
+        'Cada error es una lección para mejorar y avanzar.',
+        'La lógica es mi herramienta, la programación mi arte.',
+        'Donde otros ven problemas, yo veo oportunidades.',
+        'El futuro pertenece a quienes nunca dejan de aprender.',
+        'Aprender es crecer, enseñar es multiplicar el saber.',
+        'Compartir conocimiento es una forma de inmortalidad.',
+        'La educación cambia el mundo, una mente a la vez.',
+        'La programación me enseña paciencia y creatividad.',
+        'La innovación nace de la curiosidad y el aprendizaje.',
+        'Conocimiento aplicado, resultados extraordinarios.',
+        'Enseñar es guiar a otros hacia su mejor versión.',
+        'Programar ideas, construir sueños y resolver retos.',
+        'Aprendo, enseño y evoluciono en cada proyecto nuevo.',
+        'Mi pasión por aprender impulsa todo lo que enseño.',
+        'Inspirar mentes curiosas es mi mayor recompensa.',
+        'La enseñanza es el puente hacia un futuro brillante.',
+        'Cada clase es una oportunidad de crear impacto real.',
+        'En cada lección, dejo huellas de conocimiento vivo.',
+        'Mi objetivo es inspirar y despertar la curiosidad.',
+        'Enseñar con amor es sembrar esperanza en el alma.',
+        'El aprendizaje nunca termina, solo evoluciona siempre.',
+        'Con cada código, creo soluciones que transforman.',
+        'Mi vocación: enseñar, motivar y transformar vidas.',
+        'El saber compartido multiplica su valor sin límite.',
+        'Aprender y enseñar son dos caras del mismo sueño.',
+        'El futuro digital se construye con conocimiento hoy.',
+        'Cada clase es una semilla de cambio positivo.',
+        'Enseñar es encender la chispa del pensamiento libre.',
+        'Aprender a aprender es la clave del éxito duradero.',
+        'Programar es convertir la lógica en arte funcional.',
+        'La pasión por enseñar impulsa mi crecimiento diario.',
+        'Enseñar valores a través del conocimiento aplicado.',
+        'Crear soluciones reales con pensamiento lógico claro.',
+        'Cada día enseño, cada día también aprendo algo.',
+        'Formando mentes críticas, libres y creativas siempre.',
+        'Programar es mi idioma, la lógica mi mejor aliada.',
+        'Educar con propósito, innovar con cada experiencia.',
+        'Enseñar con propósito es cambiar vidas con amor.',
+        'Mi código más importante: pasión por enseñar bien.',
+        'Convertir ideas en aprendizaje es mi mayor logro.',
+        'Educar es sembrar conocimiento para un mañana mejor.',
+        'Cada alumno es una oportunidad de transformar futuro.',
+        'La tecnología al servicio del aprendizaje humano.',
+        'Aprender para enseñar, enseñar para transformar.',
+        'Inspirar el cambio a través del conocimiento digital.',
+        'La educación es la base del progreso sostenible.',
+        'Mi pasión: formar mentes curiosas y creativas hoy.',
+        'Programar es crear lógica con imaginación constante.',
+        'Enseñar con empatía genera aprendizajes duraderos.',
+        'Educar es el arte de encender luces en la oscuridad.',
+        'Aprender de los demás me hace un mejor profesor.',
+        'Enseñar a pensar es más valioso que enseñar a hacer.',
+        'La curiosidad es el motor de todo aprendizaje real.',
+        'Conocimiento, pasión y acción: mi lema profesional.',
+        'La educación es mi herramienta para cambiar el mundo.',
+        'La programación me enseña a ver el mundo distinto.',
+        'Enseñar ciencia con pasión y creatividad auténtica.',
+        'Aprender del error es la clave del éxito constante.',
+        'El aprendizaje es infinito, igual que mi curiosidad.',
+        'Programar soluciones que impacten vidas positivamente.',
+        'Enseñar tecnología es preparar líderes del mañana.',
+        'La lógica y la pasión construyen mi camino docente.',
+        'Formando mentes que piensan, crean y transforman.',
+        'Aprender es descubrir, enseñar es multiplicar.',
+        'Educar con pasión es cambiar destinos para siempre.',
+        'La enseñanza es mi vocación y mi propósito vital.',
+        'Aprender juntos es crecer más allá del conocimiento.',
+        'Cada código que escribo enseña algo nuevo al mundo.',
+        'La tecnología es el lenguaje del futuro que enseño.',
+        'Enseñar con alegría es sembrar conocimiento eterno.',
+        'El aprendizaje es mi viaje favorito sin destino final.',
+        'Programar para crear, enseñar para inspirar siempre.',
+        'Mi misión: guiar mentes brillantes hacia el futuro.',
+    ];
+    public $selected_lema=null;
     // Archivos
     public $image;
     public $intro_video;
@@ -54,7 +160,7 @@ class PersonalDetails extends Component
     public $maxImageSize = 3; // MB
     public $maxVideoSize = 50; // MB
     public $enableGooglePlaces = false;
-
+    public $select_lema;
     /**
      * Inicializa el componente
      */
@@ -115,6 +221,8 @@ class PersonalDetails extends Component
         $this->image = $profile?->image ?? '';
         $this->intro_video = $profile?->intro_video ?? '';
         $this->native_language = $profile?->native_language ?? '';
+        $this->selected_lema = $profile?->tagline ?? null;
+
     }
 
     /**
@@ -200,8 +308,9 @@ class PersonalDetails extends Component
                 'slug' => $this->slug,
                 'description' => $this->description,
                 'native_language' => $this->native_language,
+                'tagline' => $this->selected_lema,
             ];
-           
+
             if ($this->image instanceof \Livewire\Features\SupportFileUploads\TemporaryUploadedFile) {
                 // Guardar temporalmente en storage
                 $filename = time() . '_' . $this->image->getClientOriginalName();
@@ -230,7 +339,7 @@ class PersonalDetails extends Component
                 rename(storage_path('app/' . $tempPath), $destinationPath . '/' . $filename);
                 $profileData['intro_video'] = 'profile_videos/' . $filename;
             }
-             
+
             $this->profileService->setUserProfile($profileData); // Guarda los datos
             $this->profileService->storeUserLanguages($this->user_languages); // Guardar los IDs de idiomas directamente
             // Enviar correo notificando el cambio de perfil
@@ -396,4 +505,14 @@ class PersonalDetails extends Component
         }
         $this->selected_languages = [];
     }
+    public function selectLema($index)
+    {
+        $this->selected_lema = $this->personalStatements[$index];
+        // dd($this->selected_lema);
+    }
+    public function removeLema()
+{
+    $this->selected_lema = null;
+    // dd($this->selected_lema);
+}
 }

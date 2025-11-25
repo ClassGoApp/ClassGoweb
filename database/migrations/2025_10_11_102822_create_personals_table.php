@@ -16,8 +16,6 @@ return new class extends Migration
             $table->string('nombre');
             $table->string('apellido');
             $table->string('correo')->unique();
-            $table->string('password');
-            $table->string('celular')->nullable();
             $table->string('direccion')->nullable();
             $table->date('fecha_nacimiento')->nullable();
             $table->enum('genero', ['masculino', 'femenino', 'otro']);
@@ -25,8 +23,10 @@ return new class extends Migration
             $table->string('puesto')->nullable();
             $table->decimal('salario', 10, 2)->nullable();
             $table->enum('estado', ['activo', 'inactivo'])->default('activo');
-            $table->enum('departamento', ['administracion', 'marketing', 'procesos','TI','otro']);
+            $table->enum('departamento', ['administracion', 'marketing', 'procesos','TI','pasante','contabilidad','legal','otro']);
             $table->date('fecha_contratacion')->nullable();
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

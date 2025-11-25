@@ -47,7 +47,7 @@
     "src": "public/admin/css/fonts/themify.woff"
   },
   "public/admin/css/main.css": {
-    "file": "assets/main-DLk_d4yS.css",
+    "file": "assets/main-COgHe-mS.css",
     "src": "public/admin/css/main.css",
     "isEntry": true
   },
@@ -428,7 +428,7 @@
     "isEntry": true
   },
   "resources/css/app.css": {
-    "file": "assets/app-C6QgHVpa.css",
+    "file": "assets/app-C9K7xkJz.css",
     "src": "resources/css/app.css",
     "isEntry": true
   }

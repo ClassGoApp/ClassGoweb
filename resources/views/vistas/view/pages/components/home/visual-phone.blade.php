@@ -1,4 +1,3 @@
-{{-- <img class="visual-phone" src="{{ asset('images/celular-ClassGo.png') }}" alt=""> --}}
 <img class="visual-phone" src="{{ asset('images/home/img.png') }}" alt="">
 
 <div class="visual-wrapper" >

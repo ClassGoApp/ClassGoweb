@@ -311,13 +311,18 @@
 @keyframes cardFadeIn {
   from {
     opacity: 0;
-    transform: translateY(15px) scale(0.98);
+    transform: translateY(15px) scale(0.9);
   }
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
   }
 }
+.cards:active {
+  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3); 
+  transform: scale(0.1); 
+}
+
 .cards:nth-child(1) {
   animation-delay: 0.7s;
 }
@@ -346,10 +351,6 @@
   animation-delay: 0.63s;
 }
 
-.cards:active {
-  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3); 
-  transform: scale(0.98); 
-}
 
 /*  estilos dentro de las cards */
 

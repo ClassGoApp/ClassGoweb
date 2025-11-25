@@ -88,6 +88,10 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPasswordC
     {
         return $this->hasOne(Profile::class);
     }
+      public function personal()
+    {
+        return $this->hasOne(Personal::class);
+    }
     public function accountSetting(): HasMany
     {
         return $this->hasMany(AccountSetting::class, 'user_id');
