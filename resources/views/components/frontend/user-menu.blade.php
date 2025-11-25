@@ -103,7 +103,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('buscar.tutor') }}" >
+                    <a href="{{ route('buscar') }}" >
                         <i class="am-icon-user-02"></i>
                         {{__('sidebar.find_tutors') }}
                     </a>
