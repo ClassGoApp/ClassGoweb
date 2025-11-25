@@ -102,29 +102,86 @@ footer {
 }
 
 /* =================== 3 - Footer redes sociales =================== */
+/* Contenedor de íconos */
 .container-redes {
   display: flex;
-  flex-flow: row wrap;
-  justify-content: flex-end;
-  padding-right: 8rem;
-  gap: 30px;
-  margin-bottom: 1rem;
-}
-
-.circle-icon {
-  background-color: white;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  color: black;
-  display: flex;
+  gap: 10px;
   justify-content: center;
   align-items: center;
+  flex-wrap: wrap;
+  padding: 10px 0;
 }
 
-.circle-icon i {
-  font-size: 20px;
+/* Clase base para todos los círculos */
+[class^="circle-icon-"] {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+  background-color: white;
+  /* por defecto fondo blanco */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
 }
+
+[class^="circle-icon-"] img.icon-img {
+  width: 60%;
+  height: 60%;
+  object-fit: contain;
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+/* Hover común */
+[class^="circle-icon-"]:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+[class^="circle-icon-"]:hover img.icon-img {
+  filter: brightness(0) invert(1);
+}
+
+/* Colores únicos por red */
+.circle-icon-f:hover {
+  background-color: #1877F2;
+}
+
+/* Facebook */
+.circle-icon-i:hover {
+  background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+}
+
+/* Instagram */
+.circle-icon-t:hover {
+  background-color: #000000;
+}
+
+/* TikTok */
+.circle-icon-y:hover {
+  background-color: #FF0000;
+}
+
+/* YouTube */
+.circle-icon-l:hover {
+  background-color: #0077b5;
+}
+
+/* LinkedIn */
+
+/* WhatsApp por defecto en verde */
+
+.circle-icon-w:hover {
+  background-color: #25D366;
+  /* Verde más oscuro al hover */
+}
+
+/* Icono de WhatsApp en blanco desde el inicio */
+
+
 
 hr {
   height: 0.4px;

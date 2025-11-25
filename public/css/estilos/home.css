@@ -569,6 +569,10 @@ body {
     max-width: 400px;
     aspect-ratio: 1 / 1;
   }
+
+  .counters>.box-sky:nth-child(4) {
+    display: none;
+  }
 }
 
 /* Dispositivos pequeños (≤480px): compactar */
@@ -589,6 +593,15 @@ body {
 
   .animated-word {
     font-size: clamp(20px, 8vw, 28px);
+  }
+
+  .buscar-tutor-section {
+    background-position: center bottom;
+    /* mueve la imagen hacia abajo */
+    background-size: 150% auto;
+    /* la hace más grande para que no se vea recortada */
+    padding: 4rem 0 1rem 0;
+
   }
 }
 
@@ -749,12 +762,15 @@ body {
     max-width: 80%;
     transform: translateY(-15%) translateX(4%);
   }
+
   .visual-wrapper {
     max-height: 60vh;
   }
+
   .cta-section-wrapper {
     padding: 1.5rem;
   }
+
   .whats-new-card {
     transform: translateY(15%);
   }
@@ -791,7 +807,7 @@ body {
 }
 
 /*================ Buscar tutor seccion =================*/
-.buscar-tutor-section{
+.buscar-tutor-section {
   background-color: var(--primary-color);
   background-image: url('/images/home/Elipse.png');
   background-repeat: no-repeat;
@@ -799,10 +815,10 @@ body {
   background-size: 100% auto;
   min-height: 60vh;
   padding: 5rem 0rem 1rem 0rem;
-  
+
 }
 
-.buscar-tutor-section h1{
+.buscar-tutor-section h1 {
   color: white;
 }
 
@@ -1036,18 +1052,20 @@ body {
   color: var(--primary-color);
 }
 
-.filtro_materias{
+.filtro_materias {
   text-align: center;
   padding: 3rem 0rem;
 }
-.filtro_materias .over-text{
+
+.filtro_materias .over-text {
   display: flex;
   flex-flow: row wrap;
   justify-content: center;
   align-items: center;
   gap: 1rem;
 }
-.filtro_materias h1{
+
+.filtro_materias h1 {
   color: var(--primary-color);
 }
 
@@ -2316,6 +2334,7 @@ p {
     background-color: transparent !important;
     box-shadow: none;
   }
+
   /* Ajustes alto hero */
   .hero {
     height: 90vh;
@@ -2363,9 +2382,10 @@ p {
   }
 
   /* Contadores en fila de dos */
-  .info-container{
+  .info-container {
     margin-top: auto;
   }
+
   .counters {
     flex-wrap: wrap;
     flex-direction: row;
@@ -2513,28 +2533,35 @@ p {
 
   /* El carrusel horizontal solo se aplica en móvil */
 }
+
 /* ======================  RESPONSIVE 820px  ====================== */
-@media (max-width: 820px)  {
- /*hero*/
- .hero {
-  height: 70%;
-  margin: auto;
- }
- /* contadores */
- .info-container {
-  margin-top: auto;
- }
- /*visual phone*/
- .visual-section {
-  padding: 10rem 3rem 5rem 3rem;
- }
- .visual-wrapper{
-  margin-bottom: 100px;
-  height: 28vh;
- }
- .whats-new-card {
-  transform: translateY(-40px);
- }
+@media (max-width: 820px) {
+
+  /*hero*/
+  .hero {
+    height: 70%;
+    margin: auto;
+  }
+
+  /* contadores */
+  .info-container {
+    margin-top: auto;
+  }
+
+  /*visual phone*/
+  .visual-section {
+    padding: 10rem 3rem 5rem 3rem;
+  }
+
+  .visual-wrapper {
+    margin-bottom: 100px;
+    height: 28vh;
+  }
+
+  .whats-new-card {
+    transform: translateY(-40px);
+  }
+
   /* Contenedor principal */
   .tutorias {
     flex-direction: column;
@@ -2621,14 +2648,15 @@ p {
     transform: translate(-50%, -50%) rotateY(-8deg) translateZ(-90px);
   }
 
-    /* Guía paso a paso: cards ocupan ancho */
+  /* Guía paso a paso: cards ocupan ancho */
   .steps {
     flex-direction: row;
     overflow-x: auto;
     gap: 1.2rem;
     padding: 1rem 0 1rem 28rem;
   }
-  .buscar-tutor-section{
+
+  .buscar-tutor-section {
     min-height: 60vh;
     max-height: auto;
   }
@@ -2680,6 +2708,9 @@ p {
     padding: 0;
     text-align: center;
     order: 1;
+    /* Subir a altura media */
+    transform: translateY(-30px);
+    /* ajusta el valor según se vea bien */
   }
 
   .hero-container img {
@@ -2713,10 +2744,13 @@ p {
 
   .hero-title-arriba {
     font-size: 1.5em !important;
+    /* sube 10px */
   }
 
   .hero-title-abajo {
     font-size: 2.2em !important;
+    padding-bottom: 20px;
+    /* sube 15px */
   }
 
   .hero-subtext {
@@ -3335,7 +3369,7 @@ p {
     min-width: 280px !important;
   }
 
-  .parent{
+  .parent {
     padding: 2rem 15rem !important;
   }
 
@@ -3383,5 +3417,47 @@ p {
     /* imagen más grande */
     padding-right: 4rem;
 
+  }
+}
+
+/*media para movil segun gepeto*/
+@media (max-width: 576px) {
+  .visual-wrapper {
+    display: none !important;
+  }
+
+  .visual-phone {
+    display: none !important;
+  }
+
+  .whats-new-card {
+    position: static;
+    /* Para que no se “pierda” fuera de pantalla */
+    width: 100%;
+    /* Ocupa todo el ancho disponible */
+    max-width: 100%;
+    /* Sin límites */
+    margin: 20px auto;
+    /* Centrado */
+    padding: 1.2rem;
+    /* Ajuste cómodo para mobile */
+    border-radius: 0.8rem;
+    box-sizing: border-box;
+  }
+
+  .whats-new-card__title {
+    font-size: 1rem;
+    /* Se ajusta a móviles */
+  }
+
+  .whats-new-card__list {
+    font-size: 0.9rem;
+  }
+
+  .whats-new-card__button {
+    width: 100%;
+    /* Botón ancho completo */
+    padding: 0.9rem;
+    font-size: 1rem;
   }
 }
