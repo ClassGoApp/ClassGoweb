@@ -13,19 +13,31 @@
     </div>
     <div class="tutor-actions-btns">
         @role('student')
-            <a href="#reservar">
+            <!--<a href="#reservar">
                 <button onclick="goToTab('disponibilidad')" class="tutor-btn tutor-btn-now" id="btn-go-disponibilidad">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tutor-btn-icon"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect><line x1="16" x2="16" y1="2" y2="6"></line><line x1="8" x2="8" y1="2" y2="6"></line><line x1="3" x2="21" y1="10" y2="10"></line></svg>
                     <span>Reservar</span>
                 </button>
-            </a>
+            </a>-->
+            <a href="#reservar" class="tutor-tooltip-wrapper">
+                
+                <button onclick="goToTab('disponibilidad')" class="tutor-btn tutor-btn-now" id="btn-go-disponibilidad">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tutor-btn-icon"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect><line x1="16" x2="16" y1="2" y2="6"></line><line x1="8" x2="8" y1="2" y2="6"></line><line x1="3" x2="21" y1="10" y2="10"></line></svg>
+                    <span>Reservar</span>
+                </button>
 
             {{-- <button class="tutor-btn tutor-btn-now" id="open-modal-reservar">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tutor-btn-icon"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect><line x1="16" x2="16" y1="2" y2="6"></line><line x1="8" x2="8" y1="2" y2="6"></line><line x1="3" x2="21" y1="10" y2="10"></line></svg>
                 <span>Reservar</span>
             </button> --}}
 
-            <!--Boton para añadir a favoritos-->
+                <div class="tutor-tooltip-content">
+                    <strong>Reserva ahora!</strong>
+                    <p>Haz clic para ver el calendario y seleccionar el horario disponible.</p>
+                    <div class="tutor-tooltip-arrow"></div>
+                </div>
+            </a>
+                <!--Boton para añadir a favoritos-->
             <livewire:favourite-button :tutorId="$tutor->id" />
         
         @elserole('tutor')

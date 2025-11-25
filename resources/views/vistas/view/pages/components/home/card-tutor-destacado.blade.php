@@ -172,9 +172,12 @@
         .tutor-carousel__track { gap: 1rem; }
         .tutor-carousel__slide { flex: 0 0 85%; }
         }
+        @media (min-width: 1024px) {
+        .tutor-carousel__slide { flex: 0 0 clamp(270px, 20%, 280px); }
+        }
 
         @media (min-width: 1400px) {
-        .tutor-carousel__slide { flex: 0 0 clamp(250px, 18%, 280px); }
+        .tutor-carousel__slide { flex: 0 0 clamp(270px, 18%, 280px); }
         }
 
         @media (min-width: 1500px) {

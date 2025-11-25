@@ -1078,6 +1078,7 @@
         .tutor-grid-buscar {
             grid-template-columns: repeat(3, minmax(0, 1fr));
             gap: 2.4rem;
+            padding: 0 4rem 3rem 4em;
             /* 4 columnas en desktop */
         }
     }

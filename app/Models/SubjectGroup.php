@@ -6,6 +6,7 @@ use App\Models\Scopes\ActiveScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -15,7 +16,12 @@ class SubjectGroup extends Model {
     public $timestamps = false;
 
     public $fillable  = [
-        'id', 'name', 'description', 'status', 'deleted_at'
+        'id', 
+        'name', 
+        'description', 
+        'status',
+        'id_padre', // 👈 nuevo atributo agregado 
+        'deleted_at',
     ];
 
     protected static function booted() {
@@ -29,4 +35,20 @@ class SubjectGroup extends Model {
     public function subjects(): HasMany {
         return $this->hasMany(Subject::class);
     }
+    /**
+     * 🔹 Relación jerárquica: grupo padre
+     */
+    public function padre(): BelongsTo
+    {
+        return $this->belongsTo(SubjectGroup::class, 'id_padre');
+    }
+
+    /**
+     * 🔹 Relación jerárquica: subgrupos hijos
+     */
+    public function hijos(): HasMany
+    {
+        return $this->hasMany(SubjectGroup::class, 'id_padre');
+    }
+
 }
