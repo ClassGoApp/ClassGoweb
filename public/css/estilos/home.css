@@ -594,6 +594,15 @@ body {
   .animated-word {
     font-size: clamp(20px, 8vw, 28px);
   }
+
+  .buscar-tutor-section {
+    background-position: center bottom;
+    /* mueve la imagen hacia abajo */
+    background-size: 150% auto;
+    /* la hace más grande para que no se vea recortada */
+    padding: 4rem 0 1rem 0;
+
+  }
 }
 
 /**---============ 3 - Visual Section ============---**/
