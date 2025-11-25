@@ -598,12 +598,24 @@ body {
   .buscar-tutor-section {
     background-position: center bottom;
     /* mueve la imagen hacia abajo */
-    background-size: 150% auto;
+    background-size: 0% auto;
     /* la hace más grande para que no se vea recortada */
     padding: 4rem 0 1rem 0;
+  }
 
+  .buscar-tutor-wrapper {
+    background-image: url('/images/home/Elipse.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
   }
 }
+
+
 
 /**---============ 3 - Visual Section ============---**/
 .visual-section {
