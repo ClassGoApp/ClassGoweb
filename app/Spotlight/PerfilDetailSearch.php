@@ -9,7 +9,7 @@ use LivewireUI\Spotlight\SpotlightCommandDependencies;
 use LivewireUI\Spotlight\SpotlightCommandDependency;
 use LivewireUI\Spotlight\SpotlightSearchResult;
 
-class perfildetailsearch extends SpotlightCommand
+class PerfilDetailSearch extends SpotlightCommand
 {
     /**
      * This is the name of the command that will be shown in the Spotlight component.
