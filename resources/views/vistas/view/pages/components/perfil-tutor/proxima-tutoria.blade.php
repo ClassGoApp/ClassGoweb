@@ -26,13 +26,13 @@
                 </div>
 
                 <a href="{{ $reserva->meeting_link }}" target="_blank">
-                    <button class="btn btn-primary">
+                    <button class="tutoria-btn tutoria-btn-primary">
                         <i class="fas fa-video"></i>
                         Ir al Aula Virtual
                     </button>
                 </a>
                 
-                <button class="text-link">
+                <button class="tutoria-text-link">
                     Ver detalles 
                 </button>
             </div>
@@ -124,7 +124,7 @@
     }
 
     /* Botones usados en este partial */
-    .btn {
+    .tutoria-btn {
         width: 100%;
         padding: 1rem;
         border-radius: 10px;
@@ -139,21 +139,18 @@
         font-size: 0.875rem;
     }
 
-    .btn-primary {
+    .tutoria-btn-primary {
         background: var(--bg-gradient2);
         color: white;
         box-shadow: 0 1px 2px 0 rgba(59, 130, 246, 0.2);
     }
 
-    .btn-primary:hover {
-        background: var(--bg-gradient2);
-    }
 
     .btn:active {
         transform: scale(0.98);
     }
 
-    .text-link {
+    .tutoria-text-link {
         width: 100%;
         margin-top: 0.5rem;
         color: var(--text-gris);
@@ -164,7 +161,7 @@
         border: none;
     }
 
-    .text-link:hover {
+    .tutoria-text-link:hover {
         color: var(--primary-color);
         text-decoration: none;
     }

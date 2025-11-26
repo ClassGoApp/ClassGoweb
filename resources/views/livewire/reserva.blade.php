@@ -316,6 +316,16 @@
                                 </p>
                                 <p><strong>Hora:</strong>
                                     <span>{{ \Carbon\Carbon::parse($selectedTime)->format('h:i a') }}</span></p>
+                                @if($descuento > 0)
+                                    <p><strong>Descuento ({{ $porcentaje }}%):</strong> -{{ number_format($descuento, 2) }} Bs.</p>
+                                @endif
+                                    
+                                <p><strong>Total a Pagar:</strong>
+                                    <span> {{ number_format($montoFinal, 2) }} Bs.</span></p>
+
+                                @if($montoFinal == 0)
+                                    <p style="color: green; text-align: center;">¡Felicidades! Tienes una tutoría gratis</p>
+                                @endif
                             </div>
                         @endif
 
