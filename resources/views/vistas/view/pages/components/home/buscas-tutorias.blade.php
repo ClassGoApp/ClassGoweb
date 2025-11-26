@@ -14,19 +14,19 @@
 <div class="carousel-3D">
     <div class="img-container-3D">
         <div class="box-3D">
-            <img src="images/home/models/img1.webp" alt=""/>
+            <img src="images/home/models/img1.webp" alt="" />
         </div>
         <div class="box-3D">
-            <img src="images/home/models/img3.webp" alt=""/>
+            <img src="images/home/models/img5.webp" alt="" />
         </div>
         <div class="box-3D">
-            <img src="images/home/models/img2.webp" alt=""/>
+            <img src="images/home/models/img2.webp" alt="" />
         </div>
         <div class="box-3D">
-            <img src="images/home/models/img1.webp" alt=""/>
+            <img src="images/home/models/img1.webp" alt="" />
         </div>
         <div class="box-3D">
-            <img src="images/home/models/img3.webp" alt=""/>
+            <img src="images/home/models/img3.webp" alt="" />
         </div>
     </div>
 </div>
