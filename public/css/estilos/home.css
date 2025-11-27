@@ -152,6 +152,9 @@ body {
   color: #e0f7fa;
   justify-content: start;
 }
+.hero-subtext-movil {
+  display: none;
+}
 
 .mobile {
   display: none;
@@ -2747,7 +2750,7 @@ p {
   }
 
   .hero-subtext {
-    display: none;
+    display: block;
   }
 
   .mobile {
@@ -3434,42 +3437,40 @@ p {
 
 /*media para movil segun gepeto*/
 @media (max-width: 576px) {
-  .visual-wrapper {
-    display: none !important;
+  .visual-section {
+    display: none;
   }
-
-  .visual-phone {
-    display: none !important;
+  /* Hero: centrar texto debajo */
+  .hero-subtext-movil {
+    display: block !important;
+    text-align: center;
+    color: #e0f7fa;
+    line-height: 130%;
+    padding: 0.2rem 2rem 1rem 2rem;
   }
-
-  .whats-new-card {
-    position: static;
-    /* Para que no se “pierda” fuera de pantalla */
-    width: 100%;
-    /* Ocupa todo el ancho disponible */
-    max-width: 100%;
-    /* Sin límites */
-    margin: 20px auto;
-    /* Centrado */
-    padding: 1.2rem;
-    /* Ajuste cómodo para mobile */
-    border-radius: 0.8rem;
-    box-sizing: border-box;
+  .buscar-tutor-section p {
+    display: block !important;
   }
-
-  .whats-new-card__title {
-    font-size: 1rem;
-    /* Se ajusta a móviles */
+  /* Contenedor principal del footer */
+  .container-info {
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem 0 0 0;
   }
-
-  .whats-new-card__list {
-    font-size: 0.9rem;
+  .info-text p{
+    display: block !important;
   }
-
-  .whats-new-card__button {
-    width: 100%;
-    /* Botón ancho completo */
-    padding: 0.9rem;
-    font-size: 1rem;
+  .buscar-tutor-section {
+    border-radius: 1rem;
+  }
+  .header-main__title{
+    padding: 0 1rem 0 1rem;
+  }
+  .header-main__subtitle{
+    display: block ;
+  }
+  /* Contenedor de los pasos */
+  .steps-card p {
+    display: block !important;
   }
 }
