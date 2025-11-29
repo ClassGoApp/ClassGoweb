@@ -416,7 +416,7 @@
 /* --- RESPONSIVE (unificado) --- */
 @media (max-width: 768px) {
   .alianzas-eventos-section { padding: 20px; }
-  .alianzas-eventos-grid { grid-template-columns: 1fr; gap: 48px; justify-items: center; }
+  .alianzas-eventos-grid { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 4rem; justify-items: center; }
   .section-header { padding-bottom: 20px; }
   .alianza-evento-card { max-width: 90%; margin: 0 auto; padding-top: 40px; }
   .client-logo { width: 6rem; height: 6rem; }

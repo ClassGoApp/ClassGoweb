@@ -802,11 +802,11 @@ body {
   .visual-section img.visual-phone {
     right: 50%;
     left: auto;
-    transform: translate(50%, -8%);
+    transform: translate(50%, -40%);
     /* centrado con ligero sobresalir */
     bottom: 8%;
-    width: 180px;
-    max-width: 45%;
+    width: 560px;
+    max-width: 80%;
     z-index: 25;
     opacity: 0.95;
   }
@@ -829,7 +829,7 @@ body {
   background-position: top calc(100% + 10px);
   background-size: 100% auto;
   min-height: 60vh;
-  padding: 5rem 0rem 1rem 0rem;
+  padding: 5rem 2rem 1rem 2rem;
 
 }
 
@@ -2668,7 +2668,7 @@ p {
     flex-direction: row;
     overflow-x: auto;
     gap: 1.2rem;
-    padding: 1rem 0 1rem 28rem;
+    padding: 1rem 0 1rem 30rem;
   }
 
   .buscar-tutor-section {
@@ -2967,11 +2967,10 @@ p {
   }
 
   .carousel-3D {
-    justify-content: end;
     align-items: center;
+    justify-content: center;
     padding: 1rem 10rem;
     overflow: hidden;
-    transform: translateX(9px);
     /* evita desbordes horizontales */
   }
 
@@ -3133,7 +3132,11 @@ p {
     max-width: 600px;
     margin-bottom: 0rem;
   }
-
+  .container-info {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
 
 }
 
@@ -3238,7 +3241,6 @@ p {
   height: 100px;
   width: auto;
   margin: 0 40px;
-  filter: grayscale(100%);
   opacity: 0.6;
   transition: all 0.3s ease;
 }
@@ -3255,7 +3257,6 @@ p {
   height: 100px;
   width: auto;
   margin: 0 40px;
-  filter: grayscale(100%);
   opacity: 0.6;
   transition: all 0.3s ease;
 }
@@ -3451,6 +3452,11 @@ p {
   .buscar-tutor-section p {
     display: block !important;
   }
+
+  .tutores-text-encima {
+    display: block !important;
+  }
+
   /* Contenedor principal del footer */
   .container-info {
     flex-direction: column;
