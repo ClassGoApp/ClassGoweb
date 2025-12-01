@@ -7,7 +7,7 @@
 
 <!-- SEECION SI TIENE TUTORIA SEGUN EL ESTUDIANTE QUE MIRA EL PERFIL-->
 @if($reservas)
-    <div class="subjects-card">
+    <div class="subjects-card" id="reservas-tutor">
         @include('vistas.view.pages.components.perfil-tutor.proxima-tutoria',[
             'reservas' => $reservas
         ])
