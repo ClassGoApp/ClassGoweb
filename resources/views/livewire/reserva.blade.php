@@ -3,7 +3,7 @@
     <div class="section-reserva">
         {{-- Mensaje de éxito tras reservar --}}
         @if (session()->has('success_message'))
-            <div class="alert-successs">{{ session('success_message') }}</div>
+            <div class="alert-successs  ">{{ session('success_message') }}</div>
         @endif
 
         @if (session()->has('error'))
