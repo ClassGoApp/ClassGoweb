@@ -32,14 +32,17 @@
 
     <!--TUTORES DESTACADOS-->
     <section class="tutors-container fade-up">
+    
         <h1 class="over-text">
-            <div class="linea"></div><span data-translate="featured_tutors"></span>
-            <div class="linea"></div>
+        <div class="linea"></div><span data-translate="featured_tutors"></span>
+        <div class="linea"></div>
         </h1>
         <h1 class ="tutor ideal" data-translate="selected_tutors"></h1>
         <p data-translate="academic_variety"></p>
 
+
         @include('vistas.view.pages.components.home.card-tutor-destacado')
+
     </section>
 
     <!--CARRUSEL ANIMADO TUGO-->
