@@ -26,6 +26,7 @@
         @include('vistas.view.pages.components.home.visual-phone')
     </section>
 
+    <!--Buscar Tutor-->
     <section class="buscar-tutor-section">
         @include('vistas.view.pages.components.home.buscar-tutor')
     </section>

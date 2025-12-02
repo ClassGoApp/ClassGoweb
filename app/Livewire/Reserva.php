@@ -56,6 +56,10 @@ class Reserva extends Component
     public $cuponesUsuario = [];
 
     public float $porcentaje = 0.0;
+    public float $precioTutor = 15.0;
+    public float $montoFinal = 0.0;
+    public float $descuento = 0.0;
+
 
     //============== End Variables Cupones ===============//
 
@@ -80,11 +84,38 @@ class Reserva extends Component
             // session()->flash('error', 'Debes iniciar sesión para ver tus cupones.');
         }
 
+        $tutor = User::with('profile')->find($this->tutorId);
+        $this->precioTutor = $tutor?->profile?->price ?? 15.0;
+
+        // Calcular monto inicial
+        $this->calcularMontoFinal();
+
         $this->loadMonthData();
         $this->materiasTutor = UserSubject::where("user_id", $this->tutorId)->get();
     }
 
     //================== FUNCIONES DE CUPONES ====================//
+    public function calcularMontoFinal()
+    {
+        $montoBase = $this->precioTutor;
+        
+        // Aplicar promoción de agosto si está activa
+        if ($this->isAugustPromotion) {
+            $this->montoFinal = 0.0;
+            $this->descuento = $montoBase;
+            return;
+        }
+        
+        // Aplicar descuento de cupón si existe
+        if ($this->porcentaje > 0) {
+            $this->descuento = $montoBase * ($this->porcentaje / 100);
+            $this->montoFinal = $montoBase - $this->descuento;
+        } else {
+            $this->montoFinal = $montoBase;
+            $this->descuento = 0.0;
+        }
+    }
+
     public function mostrarCupones()
     { //lista de cupones que se extraerá de la base de datos
         $this->cupones = true;
@@ -108,6 +139,9 @@ class Reserva extends Component
         $this->cuponCode = '';
         $this->banner100 = true;
         $this->cuponMensage = '';
+        $this->porcentaje = 0.0;
+
+        $this->calcularMontoFinal();
     }
     public function ocultarComprobante()
     {
@@ -124,6 +158,8 @@ class Reserva extends Component
         $this->key = now();
         // vmeter servicio de cupones
         $this->porcentaje = $service->porcentajeCupon($codigo);
+
+        $this->calcularMontoFinal();
 
         if ($this->porcentaje == 100) { // Comprueba la tutoría Gratis
             $this->ocultarComprobante();
@@ -145,6 +181,8 @@ class Reserva extends Component
         if ($service->existeCupon($this->cuponCode) && !$service->verificaUsoCupon($this->cuponCode, auth()->user())) {
             $service->canjeaCupon($this->cuponCode, auth()->user());
             $this->cuponesUsuario = $service->todosLosCupones(auth()->user());
+            $this->porcentaje = $service->porcentajeCupon($this->cuponCode);
+            $this->calcularMontoFinal();
             $this->cuponSeleccionado();
             //Por el momento oculanto el comprobante, luego verificar si es el 100% el cupon introducido
             $this->ocultarComprobante();
@@ -268,10 +306,21 @@ class Reserva extends Component
 
     public function closeModal()
     {
-        $this->showModal = false;
+         $this->showModal = false;
+    
         $this->cuponCode = '';
         $this->cuponMensage = '';
-        $this->quitarCupon();
+        $this->porcentaje = 0.0;
+        $this->introCupon = true;
+        $this->cuponSelecionado = false;
+        $this->comprobante = true;
+        $this->banner100 = true;
+        $this->cupones = false;
+        
+        // Recalcular el monto final (sin descuento)
+        $this->calcularMontoFinal();
+        
+        // Resetear los campos del formulario
         $this->reset(['paymentReceipt', 'selectedSubject']);
     }
 
@@ -283,7 +332,7 @@ class Reserva extends Component
     {
 
 
-        $sessionFee = 15;
+        $sessionFee = $this->montoFinal;
         $service = $this->cuponservice ?? app(ICuponesService::class);
         $isAugustPromotion = $this->currentDate->month === 9;
 

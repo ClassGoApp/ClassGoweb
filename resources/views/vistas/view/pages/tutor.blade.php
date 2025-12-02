@@ -41,6 +41,9 @@
         @include('vistas.view.pages.modals.modal-compartir')
     </div>
 
+    <!-- Modal Reserva (incluido, oculto hasta abrir) -->
+    @include('vistas.view.pages.modals.modal-reserva.content')
+
     <script>
         //Para los botones de favoritos
         document.addEventListener('DOMContentLoaded', () => {
