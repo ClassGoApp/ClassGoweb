@@ -160,6 +160,19 @@ Route::get('/blogs', [BeforeBlogsController::class, 'index'])->name('blogs.index
 
 Route::get('/blogs/{blog:slug}', [BeforeBlogsController::class, 'showBySlug'])->name('blogs.show');
 
+/////////////////////////////////////////////////////////////////////
+// //<=== Joel Pasante ===>
+    
+Route::get('/prueba-cards', function () {
+    // Obtenemos 5 tutores con sus perfiles y materias para probar el diseño
+    // Usamos \App\Models\Tutor para no tener que agregar el "use" arriba del archivo
+    $featuredTutors = \App\Models\user::with(['profile', 'subjects'])->take(5)->get();
+        
+    return view('prueba-componente', compact('featuredTutors'));
+})->name('prueba.cards');
+
+ //<===//////////////////////////////////////////===>
+
 
 //<===//////////////////////////////////////////===>
 

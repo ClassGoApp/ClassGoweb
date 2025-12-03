@@ -7,7 +7,7 @@
 
 <!-- SEECION SI TIENE TUTORIA SEGUN EL ESTUDIANTE QUE MIRA EL PERFIL-->
 @if($reservas)
-    <div class="subjects-card">
+    <div class="subjects-card" id="reservas-tutor">
         @include('vistas.view.pages.components.perfil-tutor.proxima-tutoria',[
             'reservas' => $reservas
         ])
@@ -43,13 +43,14 @@
             <hr class="tutor-section-divider">
             <div>
                 <h3 class="tutor-section-title">Puedo hablar</h3>
-                @if($tutor->languages && count($tutor->languages))
+                <div class="space-languages-perfil">                @if($tutor->languages && count($tutor->languages))
                     @foreach($tutor->languages as $lang)
                         <span class="tutor-language-tag">{{ $lang->name }}</span>
                     @endforeach
                 @else
                     <span class="tutor-language-tag">No especificado</span>
                 @endif
+                </div>
             </div>
         </div>
         

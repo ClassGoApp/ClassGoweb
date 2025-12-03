@@ -285,5 +285,16 @@
 
 
     </script>
+
+    <script>
+        document.addEventListener('livewire:init', () => {
+            Livewire.on('reload-page', (event) => {
+                const section = event.section || 'top'; // Sección por defecto
+                // Recargar y redirigir a la sección
+                window.location.href = window.location.pathname + '#' + section;
+                window.location.reload();
+            });
+        });
+    </script>
 </div>
 @endsection

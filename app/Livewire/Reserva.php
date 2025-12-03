@@ -418,6 +418,8 @@ class Reserva extends Component
 
             $this->loadMonthData();
             session()->flash('success_message', '¡Hora reservada correctamente!');
+            $this->dispatch('reload-page', section: 'reservas-tutor');
+            
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Error creando reserva', [
