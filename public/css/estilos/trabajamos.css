@@ -369,6 +369,9 @@
     flex-direction: row;
     gap: 2rem;
   }
+  .trabajamos-section-content.reverse {
+    flex-direction: column;
+  }
 
   .trabajamos-text {
     padding-left: 0;
@@ -414,6 +417,7 @@
 
   .trabajamos-section-content {
     gap: 1.5rem;
+    flex-direction: column;
   }
 
   .trabajamos-text h2 {
@@ -436,7 +440,4 @@
     font-size: 0.8rem;
   }
 
-  .trabajamos-image {
-    display: none;
-  }
 }

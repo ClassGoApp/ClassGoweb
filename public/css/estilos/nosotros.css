@@ -416,7 +416,7 @@
 /* --- RESPONSIVE (unificado) --- */
 @media (max-width: 768px) {
   .alianzas-eventos-section { padding: 20px; }
-  .alianzas-eventos-grid { grid-template-columns: 1fr; gap: 48px; justify-items: center; }
+  .alianzas-eventos-grid { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 4rem; justify-items: center; }
   .section-header { padding-bottom: 20px; }
   .alianza-evento-card { max-width: 90%; margin: 0 auto; padding-top: 40px; }
   .client-logo { width: 6rem; height: 6rem; }
@@ -716,14 +716,11 @@
   .nosotros-mision-text-general1 {
     text-align: start;
   }
-  .nosotros-mision-image{
-    display: none;
-  }
   /*vision*/
   .nosotros-vision {
-    flex-direction: column;
+    flex-direction: column-reverse;
     padding: 2rem 4rem;
-    align-items: flex-end;
+    align-items: center;
   }
   .nosotros-vision-text {
     width: 80%;
@@ -736,9 +733,7 @@
   .nosotros-vision-text-general1 {
     text-align: justify;
   }
-  .vision-image{
-    display: none;
-  }
+
 }
 
 
@@ -759,10 +754,6 @@
 
   .nosotros-header-content h1 {
     padding: 0rem;
-  }
-
-  .nosotros-header-image {
-    display: none;
   }
 
   /*====== NOSOTROS =========*/
@@ -804,15 +795,7 @@
     text-align: center;
   }
 
-  .nosotros-mision-image {
-    display: none;
-  }
-
-
   /* ====== VISION =====*/
-  .nosotros-vision .vision-image {
-    display: none !important;
-  }
 
   .nosotros-vision {
     display: flex;
@@ -867,6 +850,11 @@
     margin: 0;
     padding: 1.5rem 0;
     /* agrega espacio arriba y abajo */
+    flex-direction: column;
+  }
+  .nosotros-mision-image,
+  .vision-image {
+    display: block;
   }
 
   .nosotros-mision-text,
