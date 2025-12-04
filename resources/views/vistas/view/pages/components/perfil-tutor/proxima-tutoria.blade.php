@@ -1,18 +1,26 @@
 <div class="tutoring-panel">
     <!-- Card de Próxima Sesión -->
     @foreach ( $reservas as $reserva)
+        @php
+            $now = now();
+            $startTime = \Carbon\Carbon::parse($reserva->start_time);
+            $endTime = \Carbon\Carbon::parse($reserva->end_time);
+            $isInProgress = $now->between($startTime, $endTime);
+        @endphp
         <div class="upcoming-session-card">
             <div class="upcoming-session-header">
                 <h3 class="upcoming-session-title">
                     <i class="fas fa-calendar-alt"></i>
                     ¿Listo para tu próxima tutoría?
                 </h3>
-                <span class="status-badge">Confirmada</span>
+                <span class="status-badge {{ $isInProgress ? 'status-in-progress' : '' }}">
+                    {{ $isInProgress ? 'En curso' : 'Confirmada' }}
+                </span>
             </div>
             
             <div class="upcoming-session-body">
                 <div class="session-info">
-                    <div class="session-icon">
+                    <div class="session-icon {{ $isInProgress ? 'icon-active' : '' }}">
                         <i class="fas fa-clock"></i>
                     </div>
                     <div class="session-details">
@@ -26,7 +34,7 @@
                 </div>
 
                 <a href="{{ $reserva->meeting_link }}" target="_blank">
-                    <button class="tutoria-btn tutoria-btn-primary">
+                    <button class="tutoria-btn tutoria-btn-primary {{ $isInProgress ? 'btn-pulse' : '' }}">
                         <i class="fas fa-video"></i>
                         Ir al Aula Virtual
                     </button>
@@ -86,7 +94,45 @@
         border-radius: 9999px;
         text-transform: uppercase;
         letter-spacing: 0.05em;
+        transition: all 0.3s ease;
     }
+
+    /* Estado "En curso" */
+    .status-badge.status-in-progress {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    /* Icono activo */
+    .session-icon.icon-active {
+        background-color: #d1fae5;
+        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    /* Botón con pulso */
+    .btn-pulse {
+        animation: buttonPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    /* Animación de pulso */
+    @keyframes pulse {
+        0%, 100% {
+            opacity: 1;
+        }
+        50% {
+            opacity: 0.8;
+        }
+    }
+
+    @keyframes buttonPulse {
+        0%, 100% {
+            box-shadow: 0 1px 2px 0 rgba(59, 130, 246, 0.2);
+        }
+        50% {
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.3);
+        }
+    }
+
 
     .upcoming-session-body {
         padding: 1rem 1.25rem;
