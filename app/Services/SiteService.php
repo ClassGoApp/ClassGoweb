@@ -322,7 +322,7 @@ public function getTutors($data = array()) {
             //->whereHas('companyCourseUsers')
             
             ->with([
-                'profile:id,user_id,slug,tagline,verified_at,first_name,last_name,image,intro_video,description',
+                'profile:id,user_id,slug,tagline,verified_at,first_name,last_name,image,intro_video,description,price',
                 'address.state',
                 'address.country',
                 'userSubjects.subject:id,name,subject_group_id,description',

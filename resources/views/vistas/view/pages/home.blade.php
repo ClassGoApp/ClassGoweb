@@ -85,7 +85,7 @@
     </section>
 
     <!-- INSTALA NUESTRA APP -->
-    <section class="section-app fade-up">
+    <section>
         @include('vistas.view.pages.components.home.nuestra-app')
     </section>
 
@@ -99,6 +99,11 @@
         <div class="fade-up">
             @include('components.alianzas', ['alianzas' => $alianzas])
         </div>
+    </section>
+
+    <!-- Encuesta-->
+    <section>
+        @include('vistas.view.pages.components.home.encuesta')
     </section>
 
     <script>

@@ -32,7 +32,7 @@
                                 </span>
                             </h3>
                             <p class="tutor-cargo">
-                                {{ Str::limit($tutor->profile->tagline ?? 'Tutor Profesional', 50) }}
+                                {{ Str::limit($tutor->profile->tagline ?? 'Tutor Verificado por ClassGo', 50) }}
                             </p>
                         </div>
 
@@ -47,14 +47,14 @@
 
                             <div class="stat-item">
                                 <div class="stat-value">
-                                    <span class="stat-icon-emoji">📖</span>{{ $tutor->subjects_count }}100
+                                    <span class="stat-icon-emoji">📖</span>{{ $tutor->subjects_count }}
                                 </div>
                                 <div class="stat-label">Materias</div>
                             </div>
 
                             <div class="stat-item">
                                 <div class="stat-value">
-                                    {{ $tutor->hourly_rate ?? '15' }}Bs
+                                    {{ 0 + ($tutor->profile->price ?? 15) }}Bs
                                 </div>
                                 <div class="stat-label">20 min.</div>
                             </div>
@@ -65,9 +65,7 @@
                             <button class="btn-perfil" onclick="window.location.href='{{ route('tutor', ['slug' => $tutor->profile['slug']]) }}'">
                                 Ver perfil
                             </button> 
-                            <button class="btn-bookmark">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
-                            </button>
+                            <livewire:save-button :tutorId="$tutor->id" />
                         </div>
 
                     </div>
@@ -104,6 +102,7 @@
 
         </div>
     </div>
+    
     
     {{-- Botón Siguiente --}}
     <button class="carousel-btn next" type="button" aria-label="Siguiente" disabled>›</button>
@@ -216,7 +215,21 @@
         color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center;
         transition: transform 0.2s;
     }
-    #carousel-nativo .btn-bookmark:hover { transform: scale(1.05); color: #00ffff; }
+    #carousel-nativo .btn-bookmark:hover { transform: scale(1.05); color: #FB8500; }
+
+    #carousel-nativo .btn-bookmark.is-favorited {
+        background: rgba(251, 133, 0, 0.15);
+        border-color: #FB8500;
+        color: #FB8500;
+    }
+
+    #carousel-nativo .btn-bookmark svg {
+        transition: all 0.3s ease;
+    }
+
+    #carousel-nativo .btn-bookmark.is-favorited svg {
+        stroke: #FB8500;
+    }
 
     /* =========================================
        CARD "VER MÁS" (SOLUCIÓN BORDE CUADRADO)
@@ -261,8 +274,8 @@
         box-shadow: 0 4px 12px rgba(0,0,0,0.3); transition: all 0.3s;
     }
     #carousel-nativo .carousel-btn:hover { 
-        background: #00e0e0; color: #001a20; 
-        box-shadow: 0 0 15px #00e0e0; transform: translateY(-50%) scale(1.1);
+        background: #219EBC; 
+        box-shadow: 0 0 5px #219EBC; transform: translateY(-50%) scale(1.1);
     }
     #carousel-nativo .carousel-btn.prev { left: 10px !important; right: auto !important; }
     #carousel-nativo .carousel-btn.next { right: 10px !important; left: auto !important; }

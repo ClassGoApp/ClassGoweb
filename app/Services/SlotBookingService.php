@@ -127,11 +127,16 @@ class SlotBookingService implements interfaces\ISlotBookingService
         }
         
         return SlotBooking::where('student_id', $user->id)
-            ->where('status', '!=', 3 )
-            ->where('start_time', '>=', now()) 
-            ->orderBy('start_time', 'asc') // Próximas primero
-            ->limit(5) // Limita a las próximas 5
+            ->where('status', '!=', 3)
+            ->where(function($query) {
+                $query->where('start_time', '>=', now())
+                    ->orWhere(function($q) {
+                        $q->where('start_time', '<=', now())
+                            ->where('end_time', '>=', now());
+                    });
+            })
+            ->orderBy('start_time', 'asc')
+            ->limit(5)
             ->get();    
-    
     }
 }
