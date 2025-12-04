@@ -47,14 +47,14 @@
 
                             <div class="stat-item">
                                 <div class="stat-value">
-                                    <span class="stat-icon-emoji">📖</span>{{ $tutor->subjects_count }}100
+                                    <span class="stat-icon-emoji">📖</span>{{ $tutor->subjects_count }}
                                 </div>
                                 <div class="stat-label">Materias</div>
                             </div>
 
                             <div class="stat-item">
                                 <div class="stat-value">
-                                    {{ $tutor->hourly_rate ?? '15' }}Bs
+                                    {{ 0 + ($tutor->profile->price ?? 15) }}Bs
                                 </div>
                                 <div class="stat-label">20 min.</div>
                             </div>
