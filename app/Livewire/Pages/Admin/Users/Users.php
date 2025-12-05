@@ -43,7 +43,6 @@ class Users extends Component
     public      $student_name = '';
 
 
-
     #[Layout('layouts.admin-app')]
     public function render()
     {

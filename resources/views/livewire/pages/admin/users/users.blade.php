@@ -12,74 +12,86 @@
                                         data-bs-toggle="modal" data-bs-target="#tb-add-user">{{__('general.add_new_user')}}
                                         <i class="icon-plus"></i></a>
                                 </div>
-                                <div class="tb-actionselect" wire:ignore>
-                                    <div class="tb-select">
-                                        <select data-componentid="@this" class="am-select2 form-control"
-                                            data-searchable="false" data-live='true' id="verification"
-                                            data-wiremodel="verification">
-                                            <option value="" {{ $verification=='' ? 'selected' : '' }}>{{ __('All users') }}
-                                            </option>
-                                            <option value="verified" {{ $verification=='verified' ? 'selected' : '' }}>{{
-                                                __('Verified users') }}</option>
-                                            <option value="unverified" {{ $verification=='non_verified' ? 'selected' : ''
-                                                }}>{{ __('Non verified users') }}</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="tb-actionselect" wire:ignore>
-                                    <div class="tb-select">
-                                        <select data-componentid="@this" class="am-select2 form-control"
-                                            data-searchable="false" data-live='true' id="filter_user"
-                                            data-wiremodel="filterUser">
-                                            <option value="" {{ $filterUser=='' ? 'selected' : '' }}>{{ __('All users') }}
-                                            </option>
-                                            <option value="active" {{ $filterUser=='active' ? 'selected' : '' }}>{{
-                                                __('Active') }}</option>
-                                            <option value="inactive" {{ $filterUser=='inactive' ? 'selected' : '' }}>{{
-                                                __('Inactive') }}</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="tb-actionselect" wire:ignore>
-                                    <div class="tb-select">
-                                        <select data-componentid="@this" class="am-select2 form-control"
-                                            data-searchable="false" data-live='true' id="roles" data-wiremodel="roles">
-                                            <option value="" {{ $roles=='' ? 'selected' : '' }}>{{ __('All users') }}
-                                            </option>
-                                            <option value="student" {{ $roles=='student' || $role=='student' ? 'selected' : '' }}>{{
-                                                $student_name }}</option>
-                                            <option value="tutor" {{ $roles=='tutor' || $role=='tutor' ? 'selected' : '' }}>{{
-                                                $tutor_name }}</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="tb-actionselect" wire:ignore>
-                                    <div class="tb-select">
-                                        <select data-componentid="@this" class="am-select2 form-control"
-                                            data-searchable="false" data-live='true' id="sort_by" data-wiremodel="sortby">
-                                            <option value="asc" {{ $sortby=='asc' ? 'selected' : '' }}>{{ __('general.asc')
-                                                }}</option>
-                                            <option value="desc" {{ $sortby=='desc' ? 'selected' : '' }}>{{
-                                                __('general.desc') }}</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group tb-inputicon tb-inputheight">
-                                    <i class="icon-search"></i>
-                                    <input type="text" class="form-control" wire:model.live.debounce.500ms="search"
-                                        autocomplete="off" placeholder="{{ __('general.search') }}">
-                                </div>
-                            </div>
+                            </div>      
                         </fieldset>
                     </form>
                 </div>
             </div>
-            <div class="am-disputelist_wrap">
-                <div class="am-disputelist am-custom-scrollbar-y">
+            
+            <!-- Filtros debajo del botón -->
+            <div class="tb-sortby" style="margin-top: 20px;">
+                <form class="tb-themeform tb-displistform">
+                    <fieldset>
+                        <div class="tb-themeform__wrap">
+                            <div class="tb-actionselect" wire:ignore>
+                                        <label class="tb-label">{{ __('general.email_verification') }}</label>
+                                        <div class="tb-select">
+                                            <select data-componentid="@this" class="filter-select2 form-control"
+                                                data-searchable="false" data-hide_search_opt="true" data-live='true' id="verification"
+                                                data-wiremodel="verification">
+                                                <option value="">{{ __('All users') }}</option>
+                                                <option value="verified" {{ $verification=='verified' ? 'selected' : '' }}>{{
+                                                    __('Verified users') }}</option>
+                                                <option value="unverified" {{ $verification=='unverified' ? 'selected' : ''
+                                                    }}>{{ __('Non verified users') }}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="tb-actionselect" wire:ignore>
+                                        <label class="tb-label">{{ __('general.status') }}</label>
+                                        <div class="tb-select">
+                                            <select data-componentid="@this" class="filter-select2 form-control"
+                                                data-searchable="false" data-hide_search_opt="true" data-live='true' id="filter_user"
+                                                data-wiremodel="filterUser">
+                                                <option value="">{{ __('All users') }}</option>
+                                                <option value="active" {{ $filterUser=='active' ? 'selected' : '' }}>{{ __('Active') }}</option>
+                                                <option value="inactive" {{ $filterUser=='inactive' ? 'selected' : '' }}>{{ __('Inactive') }}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="tb-actionselect" wire:ignore>
+                                        <label class="tb-label">{{ __('admin/general.role') }}</label>
+                                        <div class="tb-select">
+                                            <select data-componentid="@this" class="filter-select2 form-control"
+                                                data-searchable="false" data-hide_search_opt="true" data-live='true' id="roles" data-wiremodel="roles">
+                                                <option value="">{{ __('All users') }}</option>
+                                                <option value="student" {{ $roles=='student' || $role=='student' ? 'selected' : '' }}>{{$student_name }}</option>
+                                                <option value="tutor" {{ $roles=='tutor' || $role=='tutor' ? 'selected' : '' }}>{{$tutor_name }}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="tb-actionselect" wire:ignore>
+                                        <label class="tb-label">{{ __('general.sort_order') }}</label>
+                                        <div class="tb-select">
+                                            <select data-componentid="@this" class="filter-select2 form-control"
+                                                data-searchable="false" data-hide_search_opt="true" data-live='true' id="sort_by" data-wiremodel="sortby">
+                                                <option value="asc" {{ $sortby=='asc' ? 'selected' : '' }}>{{ __('general.asc') }}</option>
+                                                <option value="desc" {{ $sortby=='desc' ? 'selected' : '' }}>{{ __('general.desc') }}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                            <div class="form-group tb-inputicon tb-inputheight">
+                                <i class="icon-search"></i>
+                                <input type="text" class="form-control" wire:model.live.debounce.500ms="search"
+                                    autocomplete="off" placeholder="{{ __('general.search') }}">
+                            </div>
+                        </div>      
+                    </fieldset>
+                </form>
+            </div>
+            <div class="am-disputelist_wrap" style="position: relative;">
+                <div wire:loading wire:target="search,verification,filterUser,roles,sortby" 
+                     style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 999;">
+                    <x-loader />
+                </div>
+                
+                <div class="am-disputelist am-custom-scrollbar-y" 
+                     wire:loading.class="tb-blur-loading" 
+                     wire:target="search,verification,filterUser,roles,sortby">
 
                     @if( !$users->isEmpty() )
                     <table class="tb-table @if(setting('_general.table_responsive') == 'yes') tb-table-responsive @endif">
-                        <thead>
+                        <thead> 
                             <tr>
                                 <th>{{ __('#' )}}</th>
                                 <th>{{ __('Name' )}}</th>
@@ -295,3 +307,51 @@
         </div>
     </div>
 </main>
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        function initFilterSelects() {
+            $('.filter-select2').each(function() {
+                const $select = $(this);
+                
+                // Destruir si ya existe
+                if ($select.data('select2')) {
+                    $select.select2('destroy');
+                }
+                
+                // Inicializar SIN limpiar opciones
+                $select.select2({
+                    minimumResultsForSearch: -1,
+                    width: '100%'
+                });
+                
+                // Manejar cambios
+                $select.off('change').on('change', function() {
+                    const wireModel = $(this).data('wiremodel');
+                    const value = $(this).val();
+                    
+                    // Actualizar el valor
+                    @this.set(wireModel, value);
+                });
+            });
+        }
+        
+        initFilterSelects();
+        
+        // Cuando Livewire termina de actualizar
+        Livewire.hook('morph.updated', () => {
+            initFilterSelects();
+        });
+    });
+</script>
+@endpush
+
+@push('styles')
+<style>
+.tb-blur-loading {
+    filter: blur(3px);
+    pointer-events: none;
+    transition: filter 0.3s ease;
+}
+</style>
+@endpush

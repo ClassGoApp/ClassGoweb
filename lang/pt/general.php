@@ -26,6 +26,7 @@ return [
     'sr_no' => 'Nº',
     'asc' => 'asc',
     'desc' => 'Descrição',
+    'sort_order' => 'Ordem',
     'description' => 'Descrição',
     'add_now' => 'Adicionar agora',
     'actions' => 'Ações',
