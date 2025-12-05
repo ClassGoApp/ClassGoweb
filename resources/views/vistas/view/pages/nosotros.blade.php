@@ -168,7 +168,7 @@
                                 <img src="{{ asset('images/team/ronald.webp') }}" alt="Foto de Carlos Mamani Torrez"
                                     class="member-photo">
                             </div>
-                            <a href="https://www.linkedin.com/in/carlosenriquemamani/" class="member-link">
+                            <a href="https://www.linkedin.com/in/ronald-flores-llanos-952bba397/" class="member-link">
                                 <img class="arrow-icon" src="{{ asset('images/team/linkedin.png') }}" alt="">
                             </a>
                         </div>
