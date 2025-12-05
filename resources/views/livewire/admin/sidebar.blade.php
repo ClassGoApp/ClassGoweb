@@ -201,7 +201,8 @@ new class extends Component {
         </div>
         <div class="tb-sidebartop">
             <strong class="am-logo">
-                <x-application-logo />
+                {{-- <x-application-logo /> --}}
+                <img src="{{ asset('images/ClassGo1-22.png') }}" alt="" srcset="">
             </strong>
             <a class="tb-icongray" href="javascript:void(0)"><i class="icon-layout"></i></a>
         </div>
