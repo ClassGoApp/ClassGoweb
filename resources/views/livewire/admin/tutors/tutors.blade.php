@@ -9,8 +9,8 @@
                         <fieldset>
                             <div class="tb-themeform__wrap">
                                 <div class="tb-actionselect">
-                                    <a href="javascript:void(0)" id="add_user_click" class="tb-btn add-new"
-                                       data-bs-toggle="modal" data-bs-target="#tb-add-user">
+                                    <a href="javascript:void(0)" id="add_tutor_click" class="tb-btn add-new"
+                                       data-bs-toggle="modal" data-bs-target="#tb-add-tutor">
                                         {{ __('general.add_new_tutor') }} <i class="icon-plus"></i>
                                     </a>
                                 </div>
@@ -136,6 +136,91 @@
                     @else
                         <x-no-record :image="asset('images/empty.png')" :title="__('general.no_record_title')"/>
                     @endif
+                </div>
+            </div>
+        </div>
+        
+        <!-- Modal Agregar Tutor -->
+        <div wire:ignore.self class="modal fade tb-addonpopup" id="tb-add-tutor" aria-labelledby="tb_tutor_info_label"
+            role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg tb-modaldialog" role="document">
+                <div class="modal-content">
+                    <div class="tb-popuptitle">
+                        <h5 id="tb_tutor_info_label">{{ __('general.tutor_information') }}</h5>
+                        <a href="javascript:void(0);" class="close"><i class="icon-x" data-bs-dismiss="modal"></i></a>
+                    </div>
+                    <div class="modal-body">
+                        <form class="tb-themeform" wire:submit.prevent="addTutor" id="add_tutor_form">
+                            <fieldset>
+                                <div class="form-group-wrap">
+                                    <div class="form-group">
+                                        <label class="tb-label">{{ __('general.first_name') }}</label>
+                                        <input type="text"
+                                            class="form-control @error('first_name') tk-invalid @enderror"
+                                            wire:model="first_name" 
+                                            placeholder="{{ __('general.name_placeholder') }}">
+                                        @error('first_name')
+                                        <div class="tk-errormsg">
+                                            <span>{{ $message }}</span>
+                                        </div>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="tb-label">{{ __('general.last_name') }}</label>
+                                        <input type="text"
+                                            class="form-control @error('last_name') tk-invalid @enderror"
+                                            wire:model="last_name"
+                                            placeholder="{{ __('general.lastname_placeholder') }}">
+                                        @error('last_name')
+                                        <div class="tk-errormsg">
+                                            <span>{{ $message }}</span>
+                                        </div>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="tb-label">{{ __('general.email') }}</label>
+                                        <input type="email" 
+                                            class="form-control @error('email') tk-invalid @enderror"
+                                            wire:model="email" 
+                                            placeholder="{{ __('general.email_placeholder') }}">
+                                        @error('email')
+                                        <div class="tk-errormsg">
+                                            <span>{{ $message }}</span>
+                                        </div>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="tb-label">{{ __('general.password') }}</label>
+                                        <input type="password" 
+                                            wire:model="password"
+                                            class="form-control @error('password') tk-invalid @enderror"
+                                            placeholder="{{ __('general.password_placeholder') }}">
+                                        @error('password')
+                                        <div class="tk-errormsg">
+                                            <span>{{ $message }}</span>
+                                        </div>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="tb-label">{{ __('general.confirm_password') }}</label>
+                                        <input type="password" 
+                                            wire:model="confirm_password"
+                                            class="form-control @error('confirm_password') tk-invalid @enderror"
+                                            placeholder="{{ __('general.password_placeholder') }}">
+                                        @error('confirm_password')
+                                        <div class="tk-errormsg">
+                                            <span>{{ $message }}</span>
+                                        </div>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group tb-formbtn">
+                                        <button class="tb-btn" type="submit" wire:target="addTutor"
+                                            wire:loading.class="am-btn_disable">{{ __('general.save_tutor') }}</button>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
