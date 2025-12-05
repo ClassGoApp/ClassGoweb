@@ -7,7 +7,7 @@
             $endTime = \Carbon\Carbon::parse($reserva->end_time);
             $isInProgress = $now->between($startTime, $endTime);
         @endphp
-        <div class="upcoming-session-card">
+        <div class="{{ $isInProgress ? 'upcoming-sesion-start' : 'upcoming-session-card'}}">
             <div class="upcoming-session-header">
                 <h3 class="upcoming-session-title">
                     <i class="fas fa-calendar-alt"></i>
@@ -34,15 +34,18 @@
                 </div>
 
                 <a href="{{ $reserva->meeting_link }}" target="_blank">
-                    <button class="tutoria-btn tutoria-btn-primary {{ $isInProgress ? 'btn-pulse' : '' }}">
+                    <button class=" {{ $isInProgress ? 'tutoria-btn tutoria-btn-secundary btn-pulse' : 'tutoria-btn tutoria-btn-primary' }}">
                         <i class="fas fa-video"></i>
                         Ir al Aula Virtual
                     </button>
                 </a>
                 
-                <button class="tutoria-text-link">
+                <a href="{{  route('student.bookings') }}">
+                    <button class="tutoria-text-link">
                     Ver detalles 
                 </button>
+                </a>
+                
             </div>
         </div>
     @endforeach
@@ -59,10 +62,18 @@
 
     /* Card de próxima sesión */
     .upcoming-session-card {
-        background-color: white;
+        background-color: #f1f3f4;
         border-radius: 20px;
         box-shadow: var(--shadow-lg);
         border-left: 4px solid var(--primary-color);
+        overflow: hidden;
+        animation: fadeInUp 0.5s ease-out;
+        margin-bottom: 1rem;
+    }
+    .upcoming-sesion-start{
+        border-radius: 20px;
+        box-shadow: var(--shadow-lg);
+        border-left: 4px solid #10b981;
         overflow: hidden;
         animation: fadeInUp 0.5s ease-out;
         margin-bottom: 1rem;
@@ -126,10 +137,10 @@
 
     @keyframes buttonPulse {
         0%, 100% {
-            box-shadow: 0 1px 2px 0 rgba(59, 130, 246, 0.2);
+            box-shadow: 0 1px 2px 0 rgba(136, 255, 0, 0.2);
         }
         50% {
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.3);
+            box-shadow: 0 0 0 4px rgba(22, 247, 2, 0.521);
         }
     }
 
@@ -187,6 +198,11 @@
 
     .tutoria-btn-primary {
         background: var(--bg-gradient2);
+        color: white;
+        box-shadow: 0 1px 2px 0 rgba(59, 130, 246, 0.2);
+    }
+    .tutoria-btn-secundary {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
         color: white;
         box-shadow: 0 1px 2px 0 rgba(59, 130, 246, 0.2);
     }
