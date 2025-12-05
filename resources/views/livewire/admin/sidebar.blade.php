@@ -106,7 +106,7 @@ new class extends Component {
             ],
             $this->menuItems[] = [
                 'title' => __('alianza.alianzas'),
-                'icon' => 'icon-bold',
+                'icon' => 'icon-link',
                 'routes' => [
                     'admin.alianzas-listing' => __('alianza.alianza_listing'),
                     'admin.create-alianza' => __('alianza.create_alianza'),

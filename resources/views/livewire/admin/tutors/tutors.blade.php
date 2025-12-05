@@ -103,7 +103,7 @@
                                                     @if (!empty($tutor->profile->image) && file_exists(public_path('storage/' . $tutor->profile->image)))
                                                         <img src="{{ asset('storage/' . $tutor->profile->image) }}" alt="{{ $tutor->profile->full_name }}" />
                                                     @else
-                                                        <img src="{{ asset('images/placeholder.png') }}" alt="avatar" />
+                                                        <img src="{{ asset('images/default.png') }}" alt="avatar" />
                                                     @endif
                                                 </strong>
                                                 <span>{{ $tutor->profile->full_name }}</span>
