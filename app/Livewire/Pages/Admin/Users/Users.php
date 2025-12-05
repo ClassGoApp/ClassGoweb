@@ -92,11 +92,14 @@ class Users extends Component
         }
 
         if (!empty($this->search)) {
-            $users = $users->whereHas('profile', function ($query) {
-                $query->where(function ($sub_query) {
-                    $sub_query->whereFullText('first_name', $this->search);
-                    $sub_query->orWhereFullText('last_name', $this->search);
-                });
+            $users = $users->where(function ($query) {
+                $query->where('id', 'like', '%' . $this->search . '%')
+                    ->orWhere('email', 'like', '%' . $this->search . '%')
+                    ->orWhereHas('profile', function ($sub_query) {
+                        $sub_query->where('first_name', 'like', '%' . $this->search . '%')
+                            ->orWhere('last_name', 'like', '%' . $this->search . '%')
+                            ->orWhereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ['%' . $this->search . '%']);
+                    });
             });
         }
         $users = $users->orderBy('id', $this->sortby)->paginate(setting('_general.per_page_opt') ?? 10);

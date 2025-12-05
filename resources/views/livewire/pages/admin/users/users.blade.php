@@ -1,7 +1,7 @@
 <main class="tb-main am-dispute-system am-user-system">
-    <div class="row">
+    <div class="row" >
         <div class="col-lg-12 col-md-12">
-            <div class="tb-dhb-mainheading">
+            <div class="tb-dhb-mainheading" >
                 <h4> {{ __('general.all_users') .' ('. $users->total() .')'}}</h4>
                 <div class="tb-sortby">
                     <form class="tb-themeform tb-displistform">
@@ -76,6 +76,7 @@
             </div>
             <div class="am-disputelist_wrap">
                 <div class="am-disputelist am-custom-scrollbar-y">
+
                     @if( !$users->isEmpty() )
                     <table class="tb-table @if(setting('_general.table_responsive') == 'yes') tb-table-responsive @endif">
                         <thead>
