@@ -32,11 +32,14 @@ class Tutors extends Component
             ]);
 
         if (!empty($this->search)) {
-            $tutors = $tutors->whereHas('profile', function ($query) {
-                $query->where(function ($sub_query) {
-                    $sub_query->where('first_name', 'like', '%' . $this->search . '%')
-                              ->orWhere('last_name', 'like', '%' . $this->search . '%');
-                });
+            $tutors = $tutors->where(function ($query) {
+                $query->where('id', 'like', '%' . $this->search . '%')
+                    ->orWhere('email', 'like', '%' . $this->search . '%')
+                    ->orWhereHas('profile', function ($sub_query) {
+                        $sub_query->where('first_name', 'like', '%' . $this->search . '%')
+                            ->orWhere('last_name', 'like', '%' . $this->search . '%')
+                            ->orWhereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ['%' . $this->search . '%']);
+                    });
             });
         }
 
