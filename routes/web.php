@@ -128,6 +128,8 @@ Route::get('/prueba-cards', function () {
     return view('prueba-componente', compact('featuredTutors'));
 })->name('prueba.cards');
 
+Route::post('/encuesta/guardar', [HomeController::class, 'storeEncuesta'])->name('encuesta.store');
+
  //<===//////////////////////////////////////////===>
 
 
