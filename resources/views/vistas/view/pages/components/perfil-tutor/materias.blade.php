@@ -12,6 +12,17 @@
                     }
                 }
             }
+            
+            // Ordenar grupos para que "Secundaria" y "Primaria" queden al final
+            $materiasPorGrupo = collect($materiasPorGrupo)->sortBy(function($value, $key) {
+                // Grupos que van al final
+                $gruposAlFinal = ['Secundaria', 'Primaria', 'Básico'];
+                
+                // Si el grupo está en la lista, prioridad 1 (al final)
+                // Si no está, prioridad 0 (al inicio)
+                return in_array($key, $gruposAlFinal, true) ? 1 : 0;
+            })->toArray();
+      
             // Definir los 3 bloques SVG completos que quieres alternar.
             $icons = [
                 '<span class="subject-item__icon subject-item__icon--math"><svg xmlns="http://www.w3.org/2000/svg" class="subject-item__svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v11.494m-9-5.747h18" /></svg></span>',
