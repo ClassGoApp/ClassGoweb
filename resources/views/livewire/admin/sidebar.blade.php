@@ -64,6 +64,15 @@ new class extends Component {
             ],
 
             [
+                'title' => __('general.surveys'),
+                'icon' => 'icon-clipboard',
+                'routes' => [
+                    'admin.encuesta-resumen' => __('general.survey_statistics'),
+                    'admin.encuesta' => __('general.all_surveys'),
+                ]
+            ],
+
+            [
                 'title' => __('sidebar.transaction_payment'),
                 'icon' => 'icon-credit-card',
                 'routes' => [

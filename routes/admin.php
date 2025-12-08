@@ -10,6 +10,7 @@ use App\Livewire\Pages\Admin\CoursesCompany\Courses;
 use App\Livewire\Pages\Admin\Dispute\Dispute;
 use App\Livewire\Pages\Admin\Dispute\ManageDispute;
 use App\Livewire\Pages\Admin\EmailTemplates\EmailTemplates;
+use App\Livewire\Pages\Admin\Encuestas\Encuestas;
 use App\Livewire\Pages\Admin\IdentityVerification\IdentityVerification;
 use App\Livewire\Pages\Admin\Insights\Insights;
 use App\Livewire\Pages\Admin\Invoices\Invoices;
@@ -98,4 +99,10 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
      * rutas para la gestion de cupones cupones
      */
     Route::get('cupones', Cupones::class)->name('cupones.index');
+
+    /**
+     * Rutas para la visualización de la encuesta
+     */
+    Route::get('encuesta/resumen', \App\Livewire\Pages\Admin\Encuestas\Resumen::class)->name('encuesta-resumen');
+    Route::get('encuesta', Encuestas::class)->name('encuesta');
 });
