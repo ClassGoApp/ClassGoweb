@@ -139,11 +139,11 @@
                         <img src="{{ asset('images/tugo-encuesta/tugo-pulgar-arriba.png') }}" alt="Success">
                     </div>
                     <h2 class="final-title">¡Casi listo!</h2>
-                    <p class="final-desc">Tu opinión es muy valiosa para nosotros. Como agradecimiento, te regalaremos un cupón de descuento.</p>
+                    <p class="final-desc">Tu opinión es muy valiosa para nosotros. Como agradecimiento, te regalaremos un cupón del 50% descuento.</p>
                 </div>
                 <div class="contact-form-premium" id="coupon-form">
                     <p style="margin-bottom: 10px; font-weight:600; color: #185875;">
-                        Ingresa tu número de Teléfono para recibir el cupón:
+                        Ingresa tu número de teléfono para recibir el cupón:
                     </p>
                     <input type="tel" placeholder="Ej: 70012345" class="premium-input contact-input" style="text-align: center;" maxlength="15">
                     <button class="btn-redeem" onclick="EncuestaManager.submitGuest()">Enviar y Finalizar</button>
@@ -182,7 +182,7 @@
                     <h2 class="final-title">¡Encuesta Completada!</h2>
 
                     <p class="final-desc">
-                        Gracias por tu opinión. enviaremos tu cupón al número que está asociado a tu cuenta.
+                        Tu opinión es muy valiosa para nosotros. Como agradecimiento, te enviaremos un cupón del 50% descuento al número que está asociado a tu cuenta.
                     </p>
                     
                     <button class="btn-naranja-original" onclick="window.location.reload()" style="margin-top:20px; padding: 10px 30px; font-size:1rem;">Cerrar</button>
@@ -640,7 +640,7 @@ const EncuestaManager = (function() {
             if (esDuplicado) {
                 Swal.fire({
                     title: '¡Atención!',
-                    html: "Este número ya ha sido utilizado. Actualiza tu número, si no fuiste tú contáctanos con nosotros:",
+                    html: "El número asociado a esta cuenta ya fue usado. Actualiza tu número; si no fuiste tú, contáctanos.",
                     icon: 'warning',
                     iconColor: '#FB8500',
                     showCancelButton: true,
