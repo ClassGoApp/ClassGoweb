@@ -83,4 +83,13 @@ return [
     'max' => 'Máximo',
     'other_languages' => 'Outros idiomas',
     'remove' => 'Remover',
+    
+    // Mensagens de perfil incompleto
+    'complete_profile_requirements' => 'Para verificar sua identidade, você deve primeiro completar os seguintes requisitos:',
+    'missing_profile_photo' => 'Foto de perfil',
+    'missing_intro_video' => 'Vídeo de introdução',
+    'missing_gender' => 'Gênero',
+    'missing_google_calendar' => 'Conexão com Google Calendar (Vá para Configurações da Conta)',
+    'missing_payout_method' => 'Método de pagamento configurado (Vá para Painel > Preferências > QR)',
+    'complete_now' => 'Completar agora',
 ];

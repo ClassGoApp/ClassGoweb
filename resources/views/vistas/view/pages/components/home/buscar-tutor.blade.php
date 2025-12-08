@@ -19,7 +19,7 @@
         if (!inputElement) return;
 
         const texts = [
-            "Busca por nombre del tutor: Gariel Alpiry...",
+            "Busca por nombre del tutor: Gabriel Alpiry...",
             "Busca por materia: Matemáticas, Contabilidad...",
             "Buscar por temas: Álgebra, Cálculo..."
         ];

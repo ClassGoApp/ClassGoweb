@@ -32,3 +32,6 @@ app/credentials/credential.json
 /storage/app/public/uploads/*
 /public/storage/uploads/*
 /storage/app/livewire-tmp/
+/public/hot
+*.map
+/public/build/

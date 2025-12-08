@@ -40,66 +40,63 @@ class Users extends Component
     public      $filterUser                      = '';
     public      $verification                    = '';
     public      $tutor_name = '';
-    public      $student_name = '';
-
+    public      $student_name = ''; 
 
 
     #[Layout('layouts.admin-app')]
     public function render()
     {
-        $this->role =  request()->role;
-        $users = User::select('id', 'email', 'created_at', 'status', 'email_verified_at',)
-            ->with(
-                [
-                    'roles',
-                    'profile' => function ($query) {
-                        $query->select('id', 'user_id', 'first_name', 'last_name', 'slug', 'image', 'recommend_tutor', 'verified_at');
-                    },
-                    'identityVerification' => function ($query) {
-                        $query->select('id', 'user_id', 'parent_verified_at');
-                    }
-                ]
-            )
+        $this->role = request()->role;
+        
+        // Query optimizada con select específico
+        $users = User::query()
+            ->select('id', 'email', 'created_at', 'status', 'email_verified_at')
+            ->with([
+                'roles:id,name', // Solo los campos necesarios
+                'profile:id,user_id,first_name,last_name,slug,image,recommend_tutor,verified_at',
+                'identityVerification:id,user_id,parent_verified_at'
+            ])
             ->whereHas('roles', function ($query) {
-                $query->where('name', '!=', 'admin')
-                    ->when($this->role, function ($query, $role) {
-                        $query->where('name', $role);
-                    });
+                $query->where('name', '!=', 'admin');
             });
 
-        if (!empty($this->roles)) {
-            $users = $users->whereHas('roles', function ($query) {
-                $query->where('name', $this->roles);
-            });
-        }
-
-        if (!empty($this->role)) {
-            $users = $users->whereHas('roles', function ($query) {
-                $query->where('name', $this->role);
-            });
-        }
-
-        if (!empty($this->filterUser)) {
-            $users = $this->filterUser === 'active' ? $users->active() : $users->inactive();
-        }
-
-        if (!empty($this->verification)) {
-            if ($this->verification === 'verified') {
-                $users = $users->whereNotNull('email_verified_at');
-            } elseif ($this->verification === 'unverified') {
-                $users = $users->whereNull('email_verified_at');
-            }
-        }
-
-        if (!empty($this->search)) {
-            $users = $users->whereHas('profile', function ($query) {
-                $query->where(function ($sub_query) {
-                    $sub_query->whereFullText('first_name', $this->search);
-                    $sub_query->orWhereFullText('last_name', $this->search);
+        // Aplicar filtros de forma más eficiente
+        $users = $users->when($this->roles, function ($query) {
+                return $query->whereHas('roles', function ($q) {
+                    $q->where('name', $this->roles);
+                });
+            })
+            ->when($this->role, function ($query) {
+                return $query->whereHas('roles', function ($q) {
+                    $q->where('name', $this->role);
+                });
+            })
+            ->when($this->filterUser, function ($query) {
+                return $this->filterUser === 'active' 
+                    ? $query->where('status', 'active') 
+                    : $query->where('status', 'inactive');
+            })
+            ->when($this->verification === 'verified', function ($query) {
+                return $query->whereNotNull('email_verified_at');
+            })
+            ->when($this->verification === 'unverified', function ($query) {
+                return $query->whereNull('email_verified_at');
+            })
+            ->when($this->search, function ($query) {
+                return $query->where(function ($q) {
+                    $q->where('id', 'like', '%' . $this->search . '%')
+                        ->orWhere('email', 'like', '%' . $this->search . '%')
+                        ->orWhereHas('profile', function ($sub_query) {
+                            $sub_query->where('first_name', 'like', '%' . $this->search . '%')
+                                ->orWhere('last_name', 'like', '%' . $this->search . '%')
+                                ->orWhereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ['%' . $this->search . '%']);
+                        });
                 });
             });
-        }
-        $users = $users->orderBy('id', $this->sortby)->paginate(setting('_general.per_page_opt') ?? 10);
+
+        $users = $users->orderBy('id', $this->sortby)
+            ->paginate(setting('_general.per_page_opt') ?? 10);
+
         return view('livewire.pages.admin.users.users', compact('users'));
     }
 

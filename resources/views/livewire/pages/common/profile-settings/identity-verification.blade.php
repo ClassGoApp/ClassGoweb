@@ -318,9 +318,21 @@
             @endif
             @if (session()->has('warning_profile_requirements'))
                 <div class="alert alert-warning"
-                    style="background: #fff7ed; color: #9a3412; padding: 12px; border-radius: 6px;margin-top:10px; margin-bottom: 20px;">
-                    {{ session('warning_profile_requirements') }}
-                    <a href="{{ route(Auth::user()->role . '.profile.personal-details') }}" style="margin-left:8px; text-decoration: underline; color:#9a3412;">{{ __('profile.complete_now') }}</a>
+                    style="background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%); color: #9a3412; padding: 20px 24px; border-radius: 12px; margin-top:10px; margin-bottom: 20px; border-left: 5px solid #f59e0b; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    <div style="display: flex; align-items: start; gap: 12px;">
+                        <span style="font-size: 28px; line-height: 1;">⚠️</span>
+                        <div style="flex: 1;">
+                            <strong style="display: block; margin-bottom: 14px; font-size: 18px; color: #92400e;">{{ __('profile.complete_profile_requirements') }}</strong>
+                            <div style="white-space: pre-line; line-height: 2; margin-bottom: 16px; color: #78350f; font-size: 15px;">{{ session('warning_profile_requirements') }}</div>
+                            <a href="{{ route(Auth::user()->role . '.profile.personal-details') }}" 
+                               style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; background: #f59e0b; color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 14px; transition: all 0.3s; box-shadow: 0 2px 4px rgba(245, 158, 11, 0.3);"
+                               onmouseover="this.style.background='#d97706'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 8px rgba(217, 119, 6, 0.4)'" 
+                               onmouseout="this.style.background='#f59e0b'; this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(245, 158, 11, 0.3)'">
+                                {{ __('profile.complete_now') }} 
+                                <span style="font-size: 16px;">→</span>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             @endif
             @if (session()->has('message'))

@@ -290,7 +290,7 @@
         #carousel-nativo .tutor-card { width: 85vw !important; flex: 0 0 85vw !important; height: 480px !important; }
 
         #carousel-nativo .tutor-card-content {
-            background: linear-gradient(to top, rgba(3, 20, 30, 1) 35%, rgba(3, 20, 30, 0.9) 75%, rgba(3, 20, 30, 0) 100%) !important;
+            background: linear-gradient(to top, rgba(3, 20, 30, 1) 15%, rgba(3, 20, 30, 0.9) 60%, rgba(3, 20, 30, 0) 100%) !important;
             padding-bottom: 35px !important;
             align-items: flex-start !important;
         }

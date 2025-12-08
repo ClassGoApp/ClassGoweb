@@ -1,4 +1,4 @@
-<div class="container-buscartutor">
+    <div class="container-buscartutor">
     {{-- <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"> --}}
     <!-- Componente de búsqueda y listado de tutores -->
     {{-- <section class="buscartutor-search-section">
@@ -93,9 +93,24 @@
                                         @php
                                             // Aseguramos que 'all_subjects' sea un array (aunque ya lo es por tu mapeo)
                                             $allSubjects = $profile['all_subjects'];
+                                            // Separar materias según si son de Primaria/Secundaria o no
+                                            $materiasPrioritarias = [];
+                                            $materiasAlFinal = [];
+
+                                            foreach ($allSubjects as $subject) {
+                                                // Verificar si la materia contiene "Primaria" o "Secundaria" (case insensitive)
+                                                if (stripos($subject, 'Primaria') !== false || stripos($subject, 'Secundaria') !== false || stripos($subject, 'Básico') !== false ) {
+                                                    $materiasAlFinal[] = $subject;
+                                                } else {
+                                                    $materiasPrioritarias[] = $subject;
+                                                }
+                                            }
                                             
-                                            // Implode junta todos los elementos del array con ', '
-                                            $subjectList = implode(', ', $allSubjects);
+                                            // Combinar: primero las prioritarias, luego las de Primaria/Secundaria
+                                            $subjectsOrdenados = array_merge($materiasPrioritarias, $materiasAlFinal);
+                                            
+                                            // Convertir a string separado por comas
+                                            $subjectList = implode(', ', $subjectsOrdenados);
                                         @endphp
                                         
                                         <span class="subjects-summary">
