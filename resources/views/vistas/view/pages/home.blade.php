@@ -79,11 +79,41 @@
             @include('components.alianzas', ['alianzas' => $alianzas])
         </div>
     </section>
-
+    
     <!-- Encuesta-->
-    <section>
-        @include('vistas.view.pages.components.home.encuesta')
-    </section>
+    @php
+        $mostrarEncuesta = false;
+
+        // 1. INVITADO -> MOSTRAR
+        if (Auth::guest()) {
+            $mostrarEncuesta = true;
+        } 
+        // 2. LOGUEADO
+        else {
+            /** @var \App\Models\User $user */
+            $user = Auth::user();
+
+            // VALIDACIÓN DE ROL:
+            if ($user->hasRole('student')) {
+                
+                // VALIDACIÓN DE SI YA RESPONDIo
+                $yaRespondio = \App\Models\Encuesta::where('IdUser', $user->id)->exists();
+
+                if (!$yaRespondio) {
+                    // Es estudiante y NO ha respondido
+                    $mostrarEncuesta = true;
+                }
+            }
+            // Si es tutor se queda oculto.
+        }
+    @endphp
+    
+    {{-- Renderizado --}}
+    @if($mostrarEncuesta)
+        <section>
+            @include('vistas.view.pages.components.home.encuesta')
+        </section>
+    @endif
 
     <script>
         // const words = [
