@@ -35,3 +35,4 @@ app/credentials/credential.json
 /public/hot
 *.map
 /public/build/
+storage/app/purifier/
