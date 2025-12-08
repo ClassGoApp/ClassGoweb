@@ -47,14 +47,14 @@
 
                             <div class="stat-item">
                                 <div class="stat-value">
-                                    <span class="stat-icon-emoji">📖</span>{{ $tutor->subjects_count }}100
+                                    <span class="stat-icon-emoji">📖</span>{{ $tutor->subjects_count }}
                                 </div>
                                 <div class="stat-label">Materias</div>
                             </div>
 
                             <div class="stat-item">
                                 <div class="stat-value">
-                                    {{ $tutor->hourly_rate ?? '15' }}Bs
+                                    {{ 0 + ($tutor->profile->price ?? 15) }}Bs
                                 </div>
                                 <div class="stat-label">20 min.</div>
                             </div>
@@ -277,7 +277,7 @@
         #carousel-nativo .tutor-card { width: 85vw !important; flex: 0 0 85vw !important; height: 480px !important; }
 
         #carousel-nativo .tutor-card-content {
-            background: linear-gradient(to top, rgba(3, 20, 30, 1) 35%, rgba(3, 20, 30, 0.9) 75%, rgba(3, 20, 30, 0) 100%) !important;
+            background: linear-gradient(to top, rgba(3, 20, 30, 1) 15%, rgba(3, 20, 30, 0.9) 60%, rgba(3, 20, 30, 0) 100%) !important;
             padding-bottom: 35px !important;
             align-items: flex-start !important;
         }
