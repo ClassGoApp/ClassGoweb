@@ -200,8 +200,8 @@
        1. ESTILOS SECCIÓN ORIGINAL
        ========================================= */
     #seccion-encuesta-wrapper {
-        background-color: #185875; padding: 60px 20px; width: 100%; text-align: center;
-        font-family: 'Montserrat', sans-serif; box-sizing: border-box; position: relative;
+        background-image: linear-gradient(to right, #02011b, #054f72); padding: 60px 20px; width: 100%; text-align: center;
+        font-family: 'Montserrat', sans-serif; box-sizing: border-box; position: relative; border-radius: 2rem 2rem 0 0;
     }
     #seccion-encuesta-wrapper * { box-sizing: border-box; }
     .encuesta-card-dark { max-width: 800px; margin: 0 auto; }
@@ -210,7 +210,7 @@
     .top-text-dark { color: #fff; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem; }
     .titulo-dark { color: #fff; font-size: 2.2rem; font-weight: 800; line-height: 1.2; margin-bottom: 30px; }
     .subtitulo-dark { font-size: 0.6em; font-weight: 400; opacity: 0.9; display: block; margin-top: 5px; }
-    .mascot-img-dark { width: 180px; max-width: 100%; height: auto; margin-bottom: 30px; }
+    .mascot-img-dark { width: 180px; max-width: 100%; height: auto; transform: scale(1.5); }
     .btn-naranja-original {
         background-color: #FB8500; color: white; border: none; padding: 16px 50px; border-radius: 50px;
         font-size: 1.3rem; font-weight: 800; cursor: pointer;
