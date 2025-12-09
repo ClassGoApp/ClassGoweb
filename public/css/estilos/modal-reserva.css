@@ -707,4 +707,11 @@
     .booking-stepper__wrapper {
         max-width: 100%;
     }
+    .tutor-card-main-content, .tutor-banner-overlay {
+    z-index: auto !important;
+    position: static !important;
+    }
+    .tutor-profile-img{
+        z-index: 1 !important;
+    }
 }
