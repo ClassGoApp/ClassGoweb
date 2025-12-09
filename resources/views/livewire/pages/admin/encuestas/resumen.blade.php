@@ -9,51 +9,53 @@
                     </div>
                     
                     {{-- Tarjetas de Estadísticas --}}
-                    <div class="row mb-5 mt-4">
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="stats-card stats-card-primary">
-                                <div class="stats-card-icon">
-                                    <i class="icon-clipboard"></i>
-                                </div>
-                                <div class="stats-card-body">
-                                    <h3>150</h3>
-                                    <p>{{ __('general.total_surveys') }}</p>
-                                </div>
-                            </div>
-                        </div>
-                        
+                    <div class="row">
                         <div class="col-xl-3 col-md-6 mb-4">
                             <div class="stats-card stats-card-success">
-                                <div class="stats-card-icon">
-                                    <i class="icon-calendar"></i>
-                                </div>
-                                <div class="stats-card-body">
-                                    <h3>12</h3>
-                                    <p>{{ __('general.surveys_today') }}</p>
+                                <div class="stats-card-body-full">
+                                    <div class="stats-header">
+                                        <span class="stats-title">ÉXITO EN BÚSQUEDA</span>
+                                    </div>
+                                    <h2 class="stats-number">{{ $metricas['exito_busqueda'] }}%</h2>
+                                    <p class="stats-description">Usuarios que encontraron la materia fácilmente.</p>
                                 </div>
                             </div>
                         </div>
                         
                         <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="stats-card stats-card-warning">
-                                <div class="stats-card-icon">
-                                    <i class="icon-trending-up"></i>
+                            <div class="stats-card stats-card-primary">
+                                <div class="stats-card-body-full">
+                                    <div class="stats-header">
+                                        <span class="stats-title">PROMEDIO DE RECOMENDACIÓN</span>
+                                    </div>
+                                    <h2 class="stats-number">{{ $metricas['promedio_recomendacion'] }} / 5</h2>
+                                    <p class="stats-description">Calificación promedio de los usuarios (1-5).</p>
                                 </div>
-                                <div class="stats-card-body">
-                                    <h3>45</h3>
-                                    <p>{{ __('general.surveys_this_week') }}</p>
+                            </div>
+                        </div>
+                        
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="stats-card stats-card-danger">
+                                <div class="stats-card-body-full">
+                                    <div class="stats-header">
+                                        <span class="stats-title">USUARIOS DETRACTORES (1-2)</span>
+                                    </div>
+                                    <h2 class="stats-number">{{ $metricas['usuarios_detractores'] }}%</h2>
+                                    <p class="stats-description">Alerta de usuarios con insatisfacción grave.</p>
                                 </div>
                             </div>
                         </div>
 
                         <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="stats-card stats-card-info">
-                                <div class="stats-card-icon">
-                                    <i class="icon-bar-chart"></i>
-                                </div>
-                                <div class="stats-card-body">
-                                    <h3>98</h3>
-                                    <p>{{ __('general.surveys_this_month') }}</p>
+                            <div class="stats-card stats-card-warning">
+                                <div class="stats-card-body-full">
+                                    <div class="stats-header">
+                                        <span class="stats-title">FOCO DE MEJORA</span>
+                                    </div>
+                                    <h2 class="stats-number" style="font-size: {{ strlen($metricas['foco_mejora']) > 20 ? '24px' : '42px' }}">
+                                        {{ $metricas['foco_mejora'] }}
+                                    </h2>
+                                    <p class="stats-description">Comentario negativo más frecuente.</p>
                                 </div>
                             </div>
                         </div>
@@ -83,21 +85,40 @@
                                 </div>
                             </div>
                         </div>
+
                     </div>
 
-                    {{-- Gráfico de Líneas - Últimos 6 meses --}}
-                    <div class="row mb-4">
-                        <div class="col-lg-12">
+                    {{-- Gráficos inferiores: Líneas y Torta --}}
+                    <div class="row mb-4" style="display: flex; justify-content: space-between;">
+                        {{-- Gráfico de Líneas - Últimos 6 meses --}}
+                        <div class="col-lg-4 mb-4">
                             <div class="chart-container">
                                 <div class="chart-header">
                                     <h5>{{ __('general.surveys_last_6_months') }}</h5>
                                 </div>
-                                <div class="chart-body">
+                                <div class="chart-body" style="height: 300px;">
                                     <canvas id="lineChart"></canvas>
                                 </div>
                             </div>
                         </div>
+
+                        {{-- Gráfico de Torta - Usuarios Autenticados vs No Autenticados --}}
+                        <div class="col-lg-8 mb-4">
+                            <div class="chart-container">
+                                <div class="chart-header">
+                                    <h5>{{ __('general.user_authentication_distribution') }}</h5>
+                                    <p style="color: #6c757d; font-size: 13px; margin-top: 5px;">
+                                        Total: {{ $distribucionUsuarios['total'] }} encuestas
+                                    </p>
+                                </div>
+                                <div class="chart-body" style="height: 300px;">
+                                    <canvas id="userTypeChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
+                    
 
                 </div>
             </div>
@@ -112,13 +133,12 @@
     .stats-card {
         background: #fff;
         border-radius: 12px;
-        padding: 25px;
+        padding: 20px;
         box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        display: flex;
-        align-items: center;
-        gap: 20px;
         transition: all 0.3s ease;
         border-left: 4px solid;
+        height: 100%;
+        min-height: 180px;
     }
 
     .stats-card:hover {
@@ -126,65 +146,69 @@
         box-shadow: 0 6px 20px rgba(0,0,0,0.12);
     }
 
-    .stats-card-primary {
-        border-left-color: #FF3D00;
-    }
-
     .stats-card-success {
         border-left-color: #28a745;
+    }
+
+    .stats-card-primary {
+        border-left-color: #2196F3;
+    }
+
+    .stats-card-danger {
+        border-left-color: #dc3545;
     }
 
     .stats-card-warning {
         border-left-color: #ffc107;
     }
 
-    .stats-card-info {
-        border-left-color: #17a2b8;
-    }
-
-    .stats-card-icon {
-        width: 70px;
-        height: 70px;
-        border-radius: 12px;
+    .stats-card-body-full {
         display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 32px;
-        color: white;
+        flex-direction: column;
+        height: 100%;
     }
 
-    .stats-card-primary .stats-card-icon {
-        background: linear-gradient(135deg, #FF3D00 0%, #ff6b3d 100%);
+    .stats-header {
+        margin-bottom: 15px;
     }
 
-    .stats-card-success .stats-card-icon {
-        background: linear-gradient(135deg, #28a745 0%, #5cb85c 100%);
+    .stats-title {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        display: block;
     }
 
-    .stats-card-warning .stats-card-icon {
-        background: linear-gradient(135deg, #ffc107 0%, #ffd454 100%);
+    .stats-card-success .stats-title {
+        color: #28a745;
     }
 
-    .stats-card-info .stats-card-icon {
-        background: linear-gradient(135deg, #17a2b8 0%, #5bc0de 100%);
+    .stats-card-primary .stats-title {
+        color: #2196F3;
     }
 
-    .stats-card-body {
-        flex: 1;
+    .stats-card-danger .stats-title {
+        color: #dc3545;
     }
 
-    .stats-card-body h3 {
-        font-size: 36px;
+    .stats-card-warning .stats-title {
+        color: #ffc107;
+    }
+
+    .stats-number {
+        font-size: 42px;
         font-weight: 700;
-        margin: 0;
+        margin: 10px 0;
+        line-height: 1;
         color: #2c3e50;
     }
 
-    .stats-card-body p {
-        margin: 5px 0 0 0;
-        color: #7f8c8d;
-        font-size: 14px;
-        font-weight: 500;
+    .stats-description {
+        margin: 8px 0 0 0;
+        color: #6c757d;
+        font-size: 13px;
+        line-height: 1.4;
     }
 
     .chart-container {
@@ -215,7 +239,6 @@
 
     .tb-dhb-mainheading__title p {
         color: #7f8c8d;
-        margin-top: 5px;
         font-size: 14px;
     }
     </style>
@@ -225,31 +248,10 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Datos estáticos para demostración
-            const encuestasPorDia = [
-                { fecha: '02/12', count: 8 },
-                { fecha: '03/12', count: 12 },
-                { fecha: '04/12', count: 6 },
-                { fecha: '05/12', count: 15 },
-                { fecha: '06/12', count: 10 },
-                { fecha: '07/12', count: 14 },
-                { fecha: '08/12', count: 12 }
-            ];
-
-            const encuestasPorMes = [
-                { mes: 'Jul', count: 45 },
-                { mes: 'Ago', count: 52 },
-                { mes: 'Sep', count: 38 },
-                { mes: 'Oct', count: 67 },
-                { mes: 'Nov', count: 73 },
-                { mes: 'Dic', count: 98 }
-            ];
-
-            const estadisticas = {
-                hoy: 12,
-                esta_semana: 45,
-                este_mes: 98
-            };
+            // Datos desde el backend
+            const encuestasPorDia = @json($encuestasPorDia);
+            const encuestasPorMes = @json($encuestasPorMes);
+            const estadisticas = @json($estadisticas);
 
             // Colores del tema
             const colors = {
@@ -371,6 +373,80 @@
                             beginAtZero: true,
                             ticks: {
                                 stepSize: 1
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Gráfico de Torta - Usuarios Autenticados vs No Autenticados
+            const distribucionUsuarios = @json($distribucionUsuarios);
+            const userTypeCtx = document.getElementById('userTypeChart').getContext('2d');
+            
+            const autenticados = distribucionUsuarios.autenticados;
+            const noAutenticados = distribucionUsuarios.no_autenticados;
+            const total = distribucionUsuarios.total;
+            
+            const porcentajeAutenticados = total > 0 ? ((autenticados / total) * 100).toFixed(1) : 0;
+            const porcentajeNoAutenticados = total > 0 ? ((noAutenticados / total) * 100).toFixed(1) : 0;
+
+            new Chart(userTypeCtx, {
+                type: 'pie',
+                data: {
+                    labels: [
+                        `{{ __("general.authenticated_users") }} (${porcentajeAutenticados}%)`,
+                        `{{ __("general.guest_users") }} (${porcentajeNoAutenticados}%)`
+                    ],
+                    datasets: [{
+                        data: [autenticados, noAutenticados],
+                        backgroundColor: [
+                            '#28a745', // Verde para autenticados
+                            '#ffc107'  // Amarillo para no autenticados
+                        ],
+                        borderWidth: 3,
+                        borderColor: '#fff',
+                        hoverOffset: 10
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                font: {
+                                    size: 13,
+                                    weight: '500'
+                                },
+                                generateLabels: function(chart) {
+                                    const data = chart.data;
+                                    if (data.labels.length && data.datasets.length) {
+                                        return data.labels.map((label, i) => {
+                                            const value = data.datasets[0].data[i];
+                                            return {
+                                                text: `${label}: ${value} encuestas`,
+                                                fillStyle: data.datasets[0].backgroundColor[i],
+                                                hidden: false,
+                                                index: i
+                                            };
+                                        });
+                                    }
+                                    return [];
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.parsed || 0;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = ((value / total) * 100).toFixed(1);
+                                    return `${value} encuestas (${percentage}%)`;
+                                }
                             }
                         }
                     }
