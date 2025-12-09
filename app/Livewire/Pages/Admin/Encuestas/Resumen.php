@@ -12,6 +12,7 @@ class Resumen extends Component
     public $estadisticas = [];
     public $encuestasPorDia = [];
     public $encuestasPorMes = [];
+    public $distribucionUsuarios = [];
 
     public function mount(EncuestaService $encuestaService)
     {
@@ -24,6 +25,7 @@ class Resumen extends Component
         // Cargar datos para gráficos
         $this->encuestasPorDia = $encuestaService->obtenerEncuestasPorDia();
         $this->encuestasPorMes = $encuestaService->obtenerEncuestasPorMes();
+        $this->distribucionUsuarios = $encuestaService->obtenerDistribucionUsuarios();
     }
 
     #[Layout('layouts.admin-app')]

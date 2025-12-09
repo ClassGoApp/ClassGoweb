@@ -85,21 +85,40 @@
                                 </div>
                             </div>
                         </div>
+
                     </div>
 
-                    {{-- Gráfico de Líneas - Últimos 6 meses --}}
-                    <div class="row mb-4">
-                        <div class="col-lg-12">
+                    {{-- Gráficos inferiores: Líneas y Torta --}}
+                    <div class="row mb-4" style="display: flex; justify-content: space-between;">
+                        {{-- Gráfico de Líneas - Últimos 6 meses --}}
+                        <div class="col-lg-4 mb-4">
                             <div class="chart-container">
                                 <div class="chart-header">
                                     <h5>{{ __('general.surveys_last_6_months') }}</h5>
                                 </div>
-                                <div class="chart-body">
+                                <div class="chart-body" style="height: 300px;">
                                     <canvas id="lineChart"></canvas>
                                 </div>
                             </div>
                         </div>
+
+                        {{-- Gráfico de Torta - Usuarios Autenticados vs No Autenticados --}}
+                        <div class="col-lg-8 mb-4">
+                            <div class="chart-container">
+                                <div class="chart-header">
+                                    <h5>{{ __('general.user_authentication_distribution') }}</h5>
+                                    <p style="color: #6c757d; font-size: 13px; margin-top: 5px;">
+                                        Total: {{ $distribucionUsuarios['total'] }} encuestas
+                                    </p>
+                                </div>
+                                <div class="chart-body" style="height: 300px;">
+                                    <canvas id="userTypeChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
+                    
 
                 </div>
             </div>
@@ -354,6 +373,80 @@
                             beginAtZero: true,
                             ticks: {
                                 stepSize: 1
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Gráfico de Torta - Usuarios Autenticados vs No Autenticados
+            const distribucionUsuarios = @json($distribucionUsuarios);
+            const userTypeCtx = document.getElementById('userTypeChart').getContext('2d');
+            
+            const autenticados = distribucionUsuarios.autenticados;
+            const noAutenticados = distribucionUsuarios.no_autenticados;
+            const total = distribucionUsuarios.total;
+            
+            const porcentajeAutenticados = total > 0 ? ((autenticados / total) * 100).toFixed(1) : 0;
+            const porcentajeNoAutenticados = total > 0 ? ((noAutenticados / total) * 100).toFixed(1) : 0;
+
+            new Chart(userTypeCtx, {
+                type: 'pie',
+                data: {
+                    labels: [
+                        `{{ __("general.authenticated_users") }} (${porcentajeAutenticados}%)`,
+                        `{{ __("general.guest_users") }} (${porcentajeNoAutenticados}%)`
+                    ],
+                    datasets: [{
+                        data: [autenticados, noAutenticados],
+                        backgroundColor: [
+                            '#28a745', // Verde para autenticados
+                            '#ffc107'  // Amarillo para no autenticados
+                        ],
+                        borderWidth: 3,
+                        borderColor: '#fff',
+                        hoverOffset: 10
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                font: {
+                                    size: 13,
+                                    weight: '500'
+                                },
+                                generateLabels: function(chart) {
+                                    const data = chart.data;
+                                    if (data.labels.length && data.datasets.length) {
+                                        return data.labels.map((label, i) => {
+                                            const value = data.datasets[0].data[i];
+                                            return {
+                                                text: `${label}: ${value} encuestas`,
+                                                fillStyle: data.datasets[0].backgroundColor[i],
+                                                hidden: false,
+                                                index: i
+                                            };
+                                        });
+                                    }
+                                    return [];
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.parsed || 0;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = ((value / total) * 100).toFixed(1);
+                                    return `${value} encuestas (${percentage}%)`;
+                                }
                             }
                         }
                     }

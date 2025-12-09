@@ -205,4 +205,20 @@ class EncuestaService {
 
         return $datos;
     }
+
+    /**
+     * Obtener distribución de encuestas por tipo de usuario
+     * (Autenticados vs No autenticados)
+     */
+    public function obtenerDistribucionUsuarios()
+    {
+        $autenticados = Encuesta::whereNotNull('IdUser')->count();
+        $noAutenticados = Encuesta::whereNull('IdUser')->count();
+        
+        return [
+            'autenticados' => $autenticados,
+            'no_autenticados' => $noAutenticados,
+            'total' => $autenticados + $noAutenticados
+        ];
+    }
 }

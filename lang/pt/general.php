@@ -544,4 +544,7 @@ return [
     'surveys_last_7_days' => 'Enquetes - Últimos 7 dias',
     'surveys_last_6_months' => 'Enquetes - Últimos 6 meses',
     'distribution_by_period' => 'Distribuição por Período',
+    'user_authentication_distribution' => 'Distribuição por Tipo de Usuário',
+    'authenticated_users' => 'Usuários Autenticados',
+    'guest_users' => 'Usuários Convidados',
 ];
