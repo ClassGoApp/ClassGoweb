@@ -607,7 +607,6 @@ body {
   }
 
   .buscar-tutor-wrapper {
-    background-image: url('/images/home/Elipse.png');
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
@@ -828,7 +827,7 @@ body {
   background-repeat: no-repeat;
   background-position: top calc(100% + 10px);
   background-size: 100% auto;
-  min-height: 60vh;
+  min-height: 50vh;
   padding: 5rem 2rem 1rem 2rem;
 
 }
@@ -2450,7 +2449,7 @@ p {
     flex-direction: row;
     overflow-x: auto;
     gap: 1.2rem;
-    padding: 1rem 0 1rem 16rem;
+    padding: 1rem 0 1rem 19rem;
   }
 
   .steps-card,
@@ -2856,7 +2855,7 @@ p {
   /* ------Guía paso a paso -----*/
   .potencial-container {
     align-items: center;
-    padding: 3rem 1rem;
+    padding: 3rem 2rem;
   }
 
   .potencial-container h1 {
@@ -2884,7 +2883,7 @@ p {
   .steps-card,
   .go {
     min-width: 150px;
-    max-width: 90vw;
+    max-width: 70vw;
     width: 98vw;
     padding: 1rem;
     margin: 0 auto;
@@ -3440,6 +3439,11 @@ p {
     padding-right: 4rem;
 
   }
+
+  .buscar-tutor-section {
+    min-height: 10vh !important;
+    max-height: auto;
+  }
 }
 
 /*media para movil segun gepeto*/
@@ -3474,6 +3478,8 @@ p {
   }
   .buscar-tutor-section {
     border-radius: 1rem;
+    background-size: 100% 57%;
+
   }
   .header-main__title{
     padding: 0 1rem 0 1rem;
@@ -3481,7 +3487,15 @@ p {
   .header-main__subtitle{
     display: block ;
   }
+
+  .tutors-container p {
+    display: block !important;
+  }
+
   /* Contenedor de los pasos */
+  .steps-card, .go {
+    max-width: 340px;
+  }
   .steps-card p {
     display: block !important;
   }
