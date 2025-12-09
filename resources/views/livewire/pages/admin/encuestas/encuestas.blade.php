@@ -76,37 +76,77 @@
                                 <thead>
                                     <tr>
                                         <th>ID</th>
-                                        <th>{{ __('general.user_id') }}</th>
-                                        <th>{{ __('general.question_1') }}</th>
-                                        <th>{{ __('general.question_2') }}</th>
-                                        <th>{{ __('general.question_3') }}</th>
+                                        <th>{{ __('general.user') }}</th>
+                                        <th>{{ __('general.found_subject_easily') }}</th>
+                                        <th>{{ __('general.recommendation_rating') }}</th>
+                                        <th>{{ __('general.opinion') }}</th>
                                         <th>{{ __('general.contact') }}</th>
-                                        <th>{{ __('general.survey_date') }}</th>
-                                        <th>{{ __('general.actions') }}</th>
+                                        <th style="min-width: 180px;">{{ __('general.survey_date') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach($encuestas as $encuesta)
                                         <tr wire:key="encuesta-{{ $encuesta->id }}">
                                             <td><strong>#{{ $encuesta->id }}</strong></td>
-                                            <td>{{ $encuesta->IdUser ?? 'N/A' }}</td>
-                                            <td>{{ Str::limit($encuesta->Question_1, 50) }}</td>
-                                            <td>{{ Str::limit($encuesta->Question_2, 50) }}</td>
-                                            <td>{{ Str::limit($encuesta->Question_3, 50) }}</td>
-                                            <td>{{ $encuesta->Contact }}</td>
                                             <td>
-                                                <span class="badge badge-info">
-                                                    {{ $encuesta->created_at->format('d/m/Y') }}
-                                                </span>
-                                                <br>
-                                                <small class="text-muted">{{ $encuesta->created_at->format('H:i') }}</small>
+                                                @if($encuesta->IdUser && $encuesta->user && $encuesta->user->profile)
+                                                    <span class="badge badge-success">
+                                                        {{ $encuesta->user->profile->first_name }} {{ $encuesta->user->profile->last_name }}
+                                                    </span>
+                                                @elseif($encuesta->IdUser && $encuesta->user)
+                                                    <span class="badge badge-success">
+                                                        {{ $encuesta->user->email }}
+                                                    </span>
+                                                @else
+                                                    <span class="badge badge-secondary">
+                                                        {{ __('general.not_authenticated') }}
+                                                    </span>
+                                                @endif
                                             </td>
                                             <td>
-                                                <button class="btn btn-sm btn-info" 
-                                                        wire:click="verDetalle({{ $encuesta->id }})"
-                                                        title="{{ __('general.view_details') }}">
-                                                    <i class="icon-eye"></i> {{ __('general.view_details') }}
-                                                </button>
+                                                @if($encuesta->Question_1 == 1)
+                                                    <span class="badge badge-success">
+                                                        <i class="icon-check-circle"></i> {{ __('general.yes_easy') }}
+                                                    </span>
+                                                @else
+                                                    <span class="badge badge-warning">
+                                                        <i class="icon-alert-circle"></i> {{ __('general.was_difficult') }}
+                                                    </span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <div class="rating-display">
+                                                    @for($i = 1; $i <= 5; $i++)
+                                                        @if($i <= $encuesta->Question_2)
+                                                            <i class="icon-star text-warning" style="font-size: 16px;"></i>
+                                                        @else
+                                                            <i class="icon-star text-muted" style="font-size: 16px; opacity: 0.3;"></i>
+                                                        @endif
+                                                    @endfor
+                                                    <span class="ml-2"><strong>{{ $encuesta->Question_2 }}/5</strong></span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                @if($encuesta->Question_3)
+                                                    <span title="{{ $encuesta->Question_3 }}">
+                                                        {{ Str::limit($encuesta->Question_3, 50) }}
+                                                    </span>
+                                                @else
+                                                    <span class="text-muted">{{ __('general.no_comment') }}</span>
+                                                @endif
+                                            </td>
+                                            <td>{{ $encuesta->Contact }}</td>
+                                            <td class="survey-date-cell">
+                                                <div class="date-time-wrapper">
+                                                    <div class="date-info">
+                                                        <i class="icon-calendar" style="color: #17a2b8;"></i>
+                                                        <strong>{{ $encuesta->created_at->format('d/m/Y') }}</strong>
+                                                    </div>
+                                                    <div class="time-info">
+                                                        <i class="icon-clock" style="color: #6c757d;"></i>
+                                                        <span>{{ $encuesta->created_at->format('H:i:s') }}</span>
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -220,6 +260,78 @@
         padding: 4px 8px;
         border-radius: 4px;
         font-size: 12px;
+    }
+
+    .badge-success {
+        background: #28a745;
+        color: white;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+    }
+
+    .badge-secondary {
+        background: #6c757d;
+        color: white;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+    }
+
+    .badge-warning {
+        background: #ffc107;
+        color: #000;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+    }
+
+    .rating-display {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+    }
+
+    .text-warning {
+        color: #ffc107 !important;
+    }
+
+    .text-muted {
+        color: #6c757d !important;
+    }
+
+    .survey-date-cell {
+        padding: 12px 8px;
+    }
+
+    .date-time-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .date-info,
+    .time-info {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+    }
+
+    .date-info {
+        color: #2c3e50;
+    }
+
+    .date-info strong {
+        font-weight: 600;
+    }
+
+    .time-info {
+        color: #6c757d;
+    }
+
+    .time-info span {
+        font-family: 'Courier New', monospace;
     }
     </style>
     @endpush

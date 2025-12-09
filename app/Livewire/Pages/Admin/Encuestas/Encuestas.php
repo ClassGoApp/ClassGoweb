@@ -35,6 +35,7 @@ class Encuestas extends Component
     {
         // Obtener encuestas con búsqueda y paginación
         $encuestas = Encuesta::query()
+            ->with('user.profile:id,user_id,first_name,last_name') // Cargar relación de usuario con perfil
             ->when($this->search, function($query) {
                 $query->where(function($q) {
                     $q->where('Question_1', 'like', '%' . $this->search . '%')

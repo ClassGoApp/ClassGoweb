@@ -221,4 +221,18 @@ class EncuestaService {
             'total' => $autenticados + $noAutenticados
         ];
     }
+
+    /**
+     * Obtener nombre de usuario por ID
+     */
+    public function obtenerNombreUsuario($userId)
+    {
+        if (!$userId) {
+            return null;
+        }
+
+        $user = \App\Models\User::find($userId);
+        
+        return $user ? $user->name : null;
+    }
 }

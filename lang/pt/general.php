@@ -547,4 +547,12 @@ return [
     'user_authentication_distribution' => 'Distribuição por Tipo de Usuário',
     'authenticated_users' => 'Usuários Autenticados',
     'guest_users' => 'Usuários Convidados',
+    'user' => 'Usuário',
+    'not_authenticated' => 'Não autenticado',
+    'found_subject_easily' => 'Você encontrou a matéria facilmente?',
+    'recommendation_rating' => 'O quanto você nos recomendaria?',
+    'opinion' => 'Opinião',
+    'yes_easy' => 'Sim, foi fácil',
+    'was_difficult' => 'Foi difícil',
+    'no_comment' => 'Sem comentário',
 ];
