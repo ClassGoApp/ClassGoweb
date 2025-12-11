@@ -169,7 +169,7 @@
                                                     </a> 
                                                 </li>
                                                 <li> 
-                                                    <a href="{{ route('blog-details', ['slug' => $single->slug, 'source' => 'admin']) }}" target="_blank" title="{{ __('general.view') }}">
+                                                    <a href="{{ route('blogs.show', ['blog' => $single->slug]) }}" target="_blank" title="{{ __('general.view') }}">
                                                         <i class="icon-eye"></i>
                                                     </a> 
                                                 </li>

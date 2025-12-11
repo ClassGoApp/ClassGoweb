@@ -11,9 +11,9 @@
                         <div class="am-titlebox">
                             @if(!empty($blog->categories))
                             <ul>
-                                @foreach ($blog->categories as $category)
+                                {{-- @foreach ($blog->categories as $category)
                                     <li><a href="{{ route('blogs', ['category' => $category->slug]) }}">{{ $category->name }}</a></li>
-                                @endforeach
+                                @endforeach --}}
                             </ul>  
                             @endif
                             <h2>{{ $blog->title }}</h2>
@@ -72,9 +72,9 @@
                                             <div class="am-article-content">
                                                 @if(!empty($relatedBlog->categories))
                                                     <div class="am-categorie-name">
-                                                        @foreach ($relatedBlog->categories as $category)
+                                                        {{-- @foreach ($relatedBlog->categories as $category)
                                                         <a href="{{ route('blogs', ['category' => $category->slug]) }}"><span>{{ $category->name }}{{ !$loop->last ? ',' : '' }}</span></a>
-                                                        @endforeach
+                                                        @endforeach --}}
                                                     </div>
                                                 @endif
                                                 @if (!empty($relatedBlog->title))
