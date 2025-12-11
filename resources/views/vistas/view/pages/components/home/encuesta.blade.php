@@ -18,21 +18,25 @@
 
         @guest
         <!-- si no esta logueado que siga el flujo normal -->
-        <button class="btn-naranja-original" id="trigger-encuesta-final">
-            Realizar Encuesta
-        </button>
+        <div class="btn-static-wrapper" id="trigger-encuesta-final">
+            <button class="btn-naranja-original">
+                Realizar Encuesta
+            </button>
+        </div>
         @endguest
 
         <!-- boton modificado para que cuando se presione valide si el usuario logueado 
             y no tiene numero en registrado en su perfil que lo reenvie para que coloque su numero de celular-->
         @auth
-            <button class="btn-naranja-original" id="trigger-encuesta-final"
+            <div class="btn-static-wrapper" id="trigger-encuesta-final"
                 data-auth="1"
                 data-has-phone="{{ (Auth::user()->profile && Auth::user()->profile->phone_number) ? '1' : '0' }}"
-                data-profile-url="{{ route('student.profile.personal-details') }}" 
-            >
-                Realizar Encuesta
-            </button>
+                data-profile-url="{{ route('student.profile.personal-details') }}" >
+
+                <button class="btn-naranja-original">
+                    Realizar Encuesta
+                </button> 
+            </div>
         @endauth
 
     </div>
@@ -210,13 +214,46 @@
     .top-text-dark { color: #fff; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem; }
     .titulo-dark { color: #fff; font-size: 2.2rem; font-weight: 800; line-height: 1.2; margin-bottom: 30px; }
     .subtitulo-dark { font-size: 0.6em; font-weight: 400; opacity: 0.9; display: block; margin-top: 5px; }
-    .mascot-img-dark { width: 180px; max-width: 100%; height: auto; transform: scale(1.5); }
-    .btn-naranja-original {
-        background-color: #FB8500; color: white; border: none; padding: 16px 50px; border-radius: 50px;
-        font-size: 1.3rem; font-weight: 800; cursor: pointer;
-        box-shadow: 0 6px 0 #7e480bff; transition: transform 0.1s, box-shadow 0.1s;
+    .mascot-img-dark { 
+        width: 180px; 
+        max-width: 100%; 
+        height: auto; 
+        transform: scale(1.5); 
+        pointer-events: none; 
+        position: relative; 
+        z-index: 1;
     }
-    .btn-naranja-original:hover { transform: translateY(4px); box-shadow: 0 2px 0 #ff8800ff; }
+    /* 1. el envoltorio div recibe los clics y es estatico para evitar bugs */
+    .btn-static-wrapper {
+        display: inline-block;
+        padding-bottom: 4px;
+        cursor: pointer;
+    }
+
+    /* 2. boton */
+    .btn-naranja-original {
+        background-color: #FB8500; 
+        color: white; 
+        border: none; 
+        padding: 16px 50px; 
+        border-radius: 50px;
+        font-size: 1.3rem; 
+        font-weight: 800; 
+        box-shadow: 0 6px 0 #7e480bff; 
+        transition: transform 0.1s, box-shadow 0.1s;   
+        pointer-events: none; 
+    }
+
+    /* 3. acción cuando el cursor toca el area del div hace el efecto de estar precionado */
+    .btn-static-wrapper:hover .btn-naranja-original {
+        transform: translateY(4px);
+        box-shadow: 0 2px 0 #ff8800ff;
+    }
+
+    .btn-static-wrapper:active .btn-naranja-original {
+        transform: translateY(6px);
+        box-shadow: none;
+    }
 
     /* =========================================
        2. MODAL & ESTRUCTURA
