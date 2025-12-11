@@ -72,7 +72,7 @@
                     </label>
                     <label class="option-card">
                         <input type="radio" name="p1" value="no">
-                        <div class="card-inner"><span class="emoji">👎</span> <span>Me costó</span></div>
+                        <div class="card-inner"><span class="emoji">👎</span> <span>No lo encontré</span></div>
                     </label>
                 </div>
                 <div class="action-footer">
