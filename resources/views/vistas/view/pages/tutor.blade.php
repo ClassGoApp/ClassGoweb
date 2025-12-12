@@ -268,22 +268,78 @@
         });
 
     let lastScroll = 0;
+const actionBar = document.querySelector('.tutor-col-actions');
+
+function isMobile() {
+    return window.innerWidth <= 768;
+}
+
+// Función para verificar si el modal está abierto
+function isModalOpen() {
+    const modal = document.querySelector('.modal-overlay');
+    return modal && modal.classList.contains('is-visible');
+}
+
+window.addEventListener('scroll', () => {
+    if (!actionBar || !isMobile()) return;
+
+    // Si el modal está abierto, mantener oculto y salir
+    if (isModalOpen()) {
+        actionBar.classList.add('hidden');
+        return;
+    }
+
+    const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+    if (currentScroll > lastScroll) {
+        // Scroll hacia abajo → ocultar
+        actionBar.classList.remove('hidden');
+    } else {
+        // Scroll hacia arriba → mostrar
+        actionBar.classList.add('hidden');
+    }
+    lastScroll = currentScroll <= 0 ? 0 : currentScroll;
+});
+
+
+document.addEventListener('DOMContentLoaded', function() {
     const actionBar = document.querySelector('.tutor-col-actions');
 
-    window.addEventListener('scroll', () => {
-        const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
-        if (currentScroll > lastScroll) {
-            // Scroll hacia abajo → ocultar
-            actionBar.classList.remove('hidden');
-        } else {
-            // Scroll hacia arriba → mostrar
+    function isMobile() {
+        return window.innerWidth <= 768;
+    }
+
+    function updateActionBar(modal) {
+        if (!actionBar) return;
+        if (isMobile() && modal && modal.classList.contains('is-visible')) {
             actionBar.classList.add('hidden');
+        } else {
+            actionBar.classList.remove('hidden');
         }
-        lastScroll = currentScroll <= 0 ? 0 : currentScroll; // Evita valores negativos
+    }
+
+    // Observar todo el body para detectar modal dinámico (Livewire)
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach(mutation => {
+            mutation.addedNodes.forEach(node => {
+                if (node.nodeType === 1 && node.classList.contains('modal-overlay')) {
+                    // Observar cambios de clase dentro del modal
+                    const modalObserver = new MutationObserver(() => updateActionBar(node));
+                    modalObserver.observe(node, { attributes: true, attributeFilter: ['class'] });
+                    updateActionBar(node);
+                }
+            });
+        });
     });
 
+    observer.observe(document.body, { childList: true, subtree: true });
 
-
+    // También actualizar al redimensionar
+    window.addEventListener('resize', () => {
+        const modal = document.querySelector('.modal-overlay');
+        updateActionBar(modal);
+    });
+});
     </script>
+    
 </div>
 @endsection

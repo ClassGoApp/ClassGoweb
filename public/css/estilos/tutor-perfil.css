@@ -628,11 +628,13 @@
     line-height: 1;
     /* Elimina padding horizontal extra si lo tienes */
 }
-.space-languages-perfil{
+
+.space-languages-perfil {
     display: flex;
     gap: 1rem;
     margin-bottom: 1rem;
 }
+
 .tutor-language-tag {
     background: var(--secundary-color2);
     color: var(--primary-color);
@@ -769,7 +771,8 @@
     transition: color 0.2s ease, fill 0.2s ease;
     cursor: pointer;
     /* Asegurar que el cursor sea pointer en móvil también */
-    -webkit-tap-highlight-color: transparent; /* Remover highlight azul en móvil */
+    -webkit-tap-highlight-color: transparent;
+    /* Remover highlight azul en móvil */
 }
 
 .review-form__star.active,
@@ -2220,10 +2223,14 @@ body.modal-open {
 /* 1. CONFIGURACIÓN BASE (Para los títulos del calendario) */
 .tutor-tooltip-wrapper {
     position: relative;
-    display: inline-flex; /* IMPORTANTE: inline-flex evita que rompa el diseño */
-    width: auto;          /* IMPORTANTE: Solo ocupa el ancho del texto */
-    align-items: center;  /* Alinea el texto con el icono i */
-    gap: 6px;             /* Espacio entre texto e icono */
+    display: inline-flex;
+    /* IMPORTANTE: inline-flex evita que rompa el diseño */
+    width: auto;
+    /* IMPORTANTE: Solo ocupa el ancho del texto */
+    align-items: center;
+    /* Alinea el texto con el icono i */
+    gap: 6px;
+    /* Espacio entre texto e icono */
     text-decoration: none;
     vertical-align: middle;
 }
@@ -2244,21 +2251,22 @@ a.tutor-tooltip-wrapper {
 .tutor-tooltip-content {
     position: absolute;
     z-index: 99999;
-    
+
     /* Diseño Visual */
-    background-color: #1f2937; /* Gris oscuro */
+    background-color: #1f2937;
+    /* Gris oscuro */
     color: #ffffff;
     padding: 12px 16px;
     border-radius: 8px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-    
+
     /* Configuración por defecto (Centrado - Para el botón) */
     width: 240px;
     text-align: center;
     bottom: 115%;
     left: 50%;
     transform: translateX(-50%) translateY(10px);
-    
+
     /* Animación */
     opacity: 0;
     visibility: hidden;
@@ -2269,7 +2277,8 @@ a.tutor-tooltip-wrapper {
 /* 4. CONTENIDO INTERNO */
 .tutor-tooltip-content strong {
     display: block;
-    color: #fbbf24; /* Amarillo */
+    color: #fbbf24;
+    /* Amarillo */
     font-size: 0.9rem;
     margin-bottom: 4px;
 }
@@ -2304,17 +2313,23 @@ a.tutor-tooltip-wrapper {
 /* ======================================================= */
 
 .tooltip-left-align {
-    left: 0 !important; /* Alineado al inicio del texto */
-    transform: translateY(10px) !important; /* Reseteamos la traslación X */
+    left: 0 !important;
+    /* Alineado al inicio del texto */
+    transform: translateY(10px) !important;
+    /* Reseteamos la traslación X */
     text-align: left !important;
-    width: 260px; /* Un poco más ancho para texto largo */
-    bottom: 100% !important; /* Justo encima */
-    margin-bottom: 8px; /* Un poco de aire */
+    width: 260px;
+    /* Un poco más ancho para texto largo */
+    bottom: 100% !important;
+    /* Justo encima */
+    margin-bottom: 8px;
+    /* Un poco de aire */
 }
 
 /* Ajuste de la flecha para alineación izquierda */
 .tooltip-left-align .tutor-tooltip-arrow {
-    left: 20px !important; /* Flecha a la izquierda */
+    left: 20px !important;
+    /* Flecha a la izquierda */
     margin-left: 0 !important;
 }
 
@@ -2322,6 +2337,7 @@ a.tutor-tooltip-wrapper {
 .tutor-tooltip-wrapper:hover .tooltip-left-align {
     transform: translateY(0) !important;
 }
+
 /* =================== RESPONSIVE DESIGN TABLETS=================== */
 
 /* =================== RESPONSIVE DESIGN TABLETS =================== */
@@ -2461,7 +2477,7 @@ a.tutor-tooltip-wrapper {
         padding-bottom: 120px;
     }
 
-    .tutor-bg ~ footer,
+    .tutor-bg~footer,
     .tutor-bg footer,
     body:has(.tutor-bg) footer {
         display: none;
@@ -2471,6 +2487,7 @@ a.tutor-tooltip-wrapper {
         display: inline-flex;
         width: 50%;
     }
+
     .favorite-button-container-blue {
         display: inline-flex;
         width: 50%;
@@ -2479,6 +2496,82 @@ a.tutor-tooltip-wrapper {
     .tutor-btn-share {
         display: none;
     }
+
+    /* Modal overlay siempre por encima */
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        /* Muy alto para estar por encima de todo */
+        overflow-y: auto;
+    }
+
+    /* Modal contenido */
+    .modal-content {
+        background: #fff;
+        border-radius: 0.5rem;
+        padding: 1.5rem;
+        max-width: 600px;
+        width: 90%;
+        position: relative;
+        z-index: 10000;
+        /* Aún más arriba */
+    }
+
+    /* Opcional: animación de aparición */
+    .modal-overlay.is-visible {
+        animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+
+    /* 🔹 Reducir alto de la barra */
+    .tutor-actions-card {
+        padding: 0.4rem 0.6rem !important;
+    }
+
+    /* 🔹 Reducir botones */
+    .tutor-btn {
+        padding: 0.45rem 0.5rem !important;
+        font-size: 0.85rem !important;
+    }
+
+    /* 🔹 Ajustar iconos */
+    .tutor-btn-icon {
+        width: 18px !important;
+        height: 18px !important;
+    }
+
+    /* 🔹 Reducir altura de la parte de precio */
+    .tutor-actions-price-box {
+        margin-bottom: 0.2rem !important;
+    }
+
+    /* 🔹 Reducir tamaño del texto de precio */
+    .tutor-actions-price {
+        font-size: 1.1rem !important;
+    }
+
+    .tutor-actions-price-text {
+        font-size: 0.85rem !important;
+    }
+
 }
 
 /* =================== MIN-WIDTH 768 =================== */
@@ -2646,6 +2739,7 @@ a.tutor-tooltip-wrapper {
         text-align: center;
         width: 100%;
     }
+
     .space-languages-perfil {
         flex-wrap: wrap;
         flex-direction: row;
