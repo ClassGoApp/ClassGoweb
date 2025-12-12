@@ -2231,6 +2231,11 @@ a.tutor-tooltip-wrapper {
     width: 100%;
 }
 
+.favorite-button-container-blue {
+    display: block;
+    width: 100%;
+}
+
 /* 3. LA CAJA DEL MENSAJE (Globo) */
 .tutor-tooltip-content {
     position: absolute;
@@ -2456,6 +2461,15 @@ a.tutor-tooltip-wrapper {
     .tutor-bg footer,
     body:has(.tutor-bg) footer {
         display: none;
+    }
+
+    a.tutor-tooltip-wrapper {
+        display: inline-flex;
+        width: 50%;
+    }
+    .favorite-button-container-blue {
+        display: inline-flex;
+        width: 50%;
     }
 
     .tutor-btn-share {
