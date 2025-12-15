@@ -73,19 +73,36 @@ class GoogleCalendarController extends Controller
             $code = $request->input('code');
             $error = $request->input('error');
             $state = $request->input('state');
+
+            $isMobile = !empty($state);
             
             if ($error) {
                 Log::error('Error en callback de Google Calendar', [
                     'error' => $error,
                     'error_description' => $request->input('error_description')
                 ]);
-                
-                return redirect('https://classgoapp.com/calendar-error?error=' . urlencode($error));
+
+                // return redirect('https://classgoapp.com/calendar-error?error=' . urlencode($error));
+                // Redirigir según el origen
+                if ($isMobile) {
+                    // Para móvil: deep link o URL específica
+                    return redirect('https://classgoapp.com/calendar-error?error=' . urlencode($error));
+                } else {
+                    // Para web: ruta de Laravel
+                    return redirect()->route('profile.edit')
+                        ->with('error', __('passwords.google_calendar_cancelled'));
+                }
             }
             
             if (!$code) {
                 Log::error('Código de autorización no proporcionado en callback');
+                // return redirect('https://classgoapp.com/calendar-error?error=no_code');
+                if ($isMobile) {
                 return redirect('https://classgoapp.com/calendar-error?error=no_code');
+                } else {
+                    return redirect()->route('profile.edit')
+                        ->with('error', __('passwords.google_calendar_no_code'));
+                }
             }
             
             // Log para debugging
@@ -154,15 +171,28 @@ class GoogleCalendarController extends Controller
             }
             
             // Si no hay state o falló el procesamiento, redirigir con el código
-            return redirect('https://classgoapp.com/calendar-success?code=' . urlencode($code));
+            // return redirect('https://classgoapp.com/calendar-success?code=' . urlencode($code));
+
+            // Si no hay state, redirigir a perfil con el código (para casos especiales)
+            return redirect()->route('profile.edit')
+            ->with('info', __('passwords.google_calendar_code_received'));
             
         } catch (\Exception $e) {
             Log::error('Error en handleCallback de Google Calendar', [
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
             ]);
+
+            // Determinar si es móvil por el state
+            $isMobile = !empty($request->input('state'));
             
-            return redirect('https://classgoapp.com/calendar-error?error=server_error');
+            // return redirect('https://classgoapp.com/calendar-error?error=server_error');
+            if ($isMobile) {
+                return redirect('https://classgoapp.com/calendar-error?error=server_error');
+            } else {
+                return redirect()->route('profile.edit')
+                    ->with('error', __('passwords.google_calendar_server_error'));
+            }
         }
     }
 
