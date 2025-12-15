@@ -284,7 +284,7 @@ return [
     'recommendation_rating' => '¿Qué tanto nos recomendarías?',
     'opinion' => 'Opinión',
     'yes_easy' => 'Sí, fue fácil',
-    'was_difficult' => 'Me costó',
+    'was_difficult' => 'No lo Encontré',
     'no_comment' => 'Sin comentario',
     'identity_attachments' => 'Adjuntos de identidad',
     'address' => 'DIRECCIÓN',

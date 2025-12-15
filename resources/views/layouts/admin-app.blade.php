@@ -66,11 +66,11 @@
                                         </div>
                                     </div>
                                 </li>
-                                <li class="">
+                                {{-- <li class="">
                                     <a href="{{ route('admin.profile') }}">
                                         <i class="icon-user"></i> {{ __('sidebar.profile') }}
                                     </a>
-                                </li>
+                                </li> --}}
                                 <li>
                                     <a href="{{ url('/') }}" target="_blank">
                                         <i class="ti-new-window"></i> {{ __('general.view_site') }}

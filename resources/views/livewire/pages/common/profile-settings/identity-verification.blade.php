@@ -300,7 +300,7 @@
 
                             {{-- Botón para guardar cambios --}}
                             <div class="form-group am-form-btns">
-                                <span>{{ __('profile.latest_changes_the_live') }}</span>
+                                <span style="color: black">{{ __('profile.latest_changes_the_live') }}</span>
                                 <x-primary-button wire:target="updateInfo"
                                     wire:loading.class="am-btn_disable">{{ __('profile.save_update') }}</x-primary-button>
                             </div>

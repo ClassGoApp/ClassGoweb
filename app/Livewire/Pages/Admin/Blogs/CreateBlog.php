@@ -76,8 +76,8 @@ class CreateBlog extends Component
     {
         return [
             'title'                 => 'required|string|max:255',
-            'meta_title'            => 'required|string',
-            'meta_description'      => 'required|string',
+            'meta_title'            => 'nullable|string|max:255',
+            'meta_description'      => 'nullable|string',
             'description'           => 'required|string',
             'category_ids'          => 'required|array|min:1',
             'category_ids.*'        => 'required|exists:blog_categories,id',
@@ -110,6 +110,8 @@ class CreateBlog extends Component
 
         $validatedData['status'] = $this->status ?? 'draft';
         $validatedData['author_id'] = auth()->user()->id;
+        $validatedData['meta_title'] = $this->meta_title;
+        $validatedData['meta_description'] = $this->meta_description;
 
         $blog = Blog::create($validatedData);
 
