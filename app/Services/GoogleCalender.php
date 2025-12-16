@@ -85,10 +85,6 @@ class GoogleCalender
         }
     }
 
-
-
-
-
     public function getAccessTokenInfo($code)
     {
         // Validar ANTES de intentar usar el código
@@ -97,7 +93,12 @@ class GoogleCalender
                 'code_is_empty' => empty($code),
                 'code_type' => gettype($code)
             ]);
-            throw new \InvalidArgumentException('Código de autorización inválido o vacío');
+            
+            // En lugar de lanzar excepción, retornar error
+            return [
+                'status' => Response::HTTP_BAD_REQUEST,
+                'message' => 'Código de autorización inválido o vacío'
+            ];
         }
 
         try {
@@ -110,21 +111,29 @@ class GoogleCalender
                     'error' => $tokenInfo['error'],
                     'error_description' => $tokenInfo['error_description'] ?? 'Sin descripción'
                 ]);
-                throw new \Exception($tokenInfo['error_description'] ?? $tokenInfo['error']);
+                
+                return [
+                    'status' => Response::HTTP_BAD_REQUEST,
+                    'message' => $tokenInfo['error_description'] ?? $tokenInfo['error']
+                ];
             }
             
-            return $tokenInfo;
+            return [
+                'status' => Response::HTTP_OK,
+                'data' => $tokenInfo
+            ];
             
         } catch (\Exception $e) {
             Log::error('Excepción al obtener access token', [
                 'message' => $e->getMessage(),
-                'code_length' => strlen($code)
+                'code_length' => !empty($code) ? strlen($code) : 0
             ]);
-            throw $e;
+            
+            return [
+                'status' => Response::HTTP_INTERNAL_SERVER_ERROR,
+                'message' => $e->getMessage()
+            ];
         }
-
-        // $client = new Client($this->clientCredentials);
-        // return $client->fetchAccessTokenWithAuthCode($code);
     }
 
     protected function verifyToken()

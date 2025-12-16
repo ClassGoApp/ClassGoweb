@@ -89,12 +89,11 @@ class GoogleCalendarController extends Controller
                     ->with('error', __('passwords.google_calendar_cancelled'));
             }
             
-            // 2. Verificar si hay código ANTES de continuar
+            // 2. Verificar si hay código
             if (empty($code)) {
                 Log::error('Código de autorización no proporcionado en callback', [
                     'is_mobile' => $isMobile,
-                    'has_state' => !empty($state),
-                    'request_params' => $request->all()
+                    'has_state' => !empty($state)
                 ]);
                 
                 return redirect()->route('profile.edit')
@@ -112,7 +111,6 @@ class GoogleCalendarController extends Controller
                     ->with('error', __('passwords.google_calendar_invalid_code'));
             }
             
-            // Log para debugging
             Log::info('Google Calendar callback recibido', [
                 'code_length' => strlen($code),
                 'state' => $state,
@@ -143,54 +141,40 @@ class GoogleCalendarController extends Controller
                             ->with('error', 'Usuario no encontrado');
                     }
                     
-                    $clientCredentials = [
-                        'client_id' => config('services.google.client_id'),
-                        'client_secret' => config('services.google.client_secret'),
-                        'redirect_uri' => 'https://www.classgoapp.com/api/google-calendar/callback',
-                        'scopes' => [\Google\Service\Calendar::CALENDAR]
-                    ];
+                    // Crear instancia del servicio con el usuario
+                    $googleCalendarService = new \App\Services\GoogleCalender();
+                    $googleCalendarService->setUser($user);
                     
-                    $client = new \Google\Client($clientCredentials);
-
-                    try {
-                        // Aquí es donde puede fallar si el código es inválido
-                        $tokenInfo = $client->fetchAccessTokenWithAuthCode($code);
-                        
-                        if (!empty($tokenInfo['error'])) {
-                            Log::error('Error en respuesta de token de Google', [
-                                'error' => $tokenInfo['error'],
-                                'error_description' => $tokenInfo['error_description'] ?? null,
-                                'user_id' => $userId
-                            ]);
-                            return redirect()->route('profile.edit')
-                                ->with('error', 'Error al obtener token de Google: ' . ($tokenInfo['error_description'] ?? $tokenInfo['error']));
-                        }
-                        
-                    } catch (\InvalidArgumentException $e) {
-                        // Captura el error del servicio cuando el código está vacío
-                        Log::error('InvalidArgumentException al obtener token', [
-                            'error' => $e->getMessage(),
+                    // Obtener el token usando el servicio
+                    $tokenResponse = $googleCalendarService->getAccessTokenInfo($code);
+                    
+                    // Verificar si hubo error en el servicio
+                    if ($tokenResponse['status'] !== Response::HTTP_OK) {
+                        Log::error('Error al obtener token desde el servicio', [
+                            'status' => $tokenResponse['status'],
+                            'message' => $tokenResponse['message'],
                             'user_id' => $userId
                         ]);
+                        
                         return redirect()->route('profile.edit')
-                            ->with('error', __('passwords.google_calendar_invalid_code'));
-                            
-                    } catch (\Exception $e) {
-                        // Captura cualquier otro error (código inválido, expirado, etc.)
-                        Log::error('Excepción al obtener token', [
-                            'error' => $e->getMessage(),
-                            'user_id' => $userId,
-                            'code_length' => strlen($code)
-                        ]);
-                        return redirect()->route('profile.edit')
-                            ->with('error', 'Código de autorización inválido o expirado');
+                            ->with('error', $tokenResponse['message'] ?? 'Error al obtener token de Google');
                     }
+                    
+                    $tokenInfo = $tokenResponse['data'];
                     
                     // Guardar token
                     $userService = new \App\Services\UserService($user);
                     $userService->setAccountSetting('google_access_token', $tokenInfo);
                     
                     // Obtener información del calendario
+                    $clientCredentials = [
+                        'client_id' => config('services.google.client_id'),
+                        'client_secret' => config('services.google.client_secret'),
+                        'redirect_uri' => config('services.callback.url'),
+                        'scopes' => [\Google\Service\Calendar::CALENDAR]
+                    ];
+                    
+                    $client = new \Google\Client($clientCredentials);
                     $client->setAccessToken($tokenInfo);
                     $service = new \Google\Service\Calendar($client);
                     
