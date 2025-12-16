@@ -91,6 +91,15 @@ class GoogleCalender
 
     public function getAccessTokenInfo($code)
     {
+        // Validar ANTES de intentar usar el código
+        if (empty($code) || !is_string($code)) {
+            Log::error('Código de autorización inválido', [
+                'code_is_empty' => empty($code),
+                'code_type' => gettype($code)
+            ]);
+            throw new \InvalidArgumentException('Código de autorización inválido o vacío');
+        }
+
         try {
             $client = new Client($this->clientCredentials);
             $tokenInfo = $client->fetchAccessTokenWithAuthCode($code);
