@@ -91,11 +91,6 @@ class GoogleCalender
 
     public function getAccessTokenInfo($code)
     {
-        if (empty($code)) {
-            Log::error('Intento de obtener token con código vacío');
-            throw new \InvalidArgumentException('El código de autorización no puede estar vacío');
-        }
-
         try {
             $client = new Client($this->clientCredentials);
             $tokenInfo = $client->fetchAccessTokenWithAuthCode($code);
