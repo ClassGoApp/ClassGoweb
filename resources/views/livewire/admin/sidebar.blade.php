@@ -145,6 +145,14 @@ new class extends Component {
                     'ltu.translation.index' => __('sidebar.languages'),
                 ],
             ],
+            [
+                'title' => 'Nuestro Equipo',
+                'icon' => 'icon-users',
+                'routes' => [
+                    'admin.team-listing' => 'Ver Lista', 
+                    'admin.create-team'  => 'Crear Nuevo',
+                ]
+            ]
 
 
         ];
