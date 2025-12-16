@@ -91,8 +91,36 @@ class GoogleCalender
 
     public function getAccessTokenInfo($code)
     {
-        $client = new Client($this->clientCredentials);
-        return $client->fetchAccessTokenWithAuthCode($code);
+        if (empty($code)) {
+            Log::error('Intento de obtener token con código vacío');
+            throw new \InvalidArgumentException('El código de autorización no puede estar vacío');
+        }
+
+        try {
+            $client = new Client($this->clientCredentials);
+            $tokenInfo = $client->fetchAccessTokenWithAuthCode($code);
+            
+            // Verificar si Google devolvió un error
+            if (isset($tokenInfo['error'])) {
+                Log::error('Error al obtener token de Google', [
+                    'error' => $tokenInfo['error'],
+                    'error_description' => $tokenInfo['error_description'] ?? 'Sin descripción'
+                ]);
+                throw new \Exception($tokenInfo['error_description'] ?? $tokenInfo['error']);
+            }
+            
+            return $tokenInfo;
+            
+        } catch (\Exception $e) {
+            Log::error('Excepción al obtener access token', [
+                'message' => $e->getMessage(),
+                'code_length' => strlen($code)
+            ]);
+            throw $e;
+        }
+
+        // $client = new Client($this->clientCredentials);
+        // return $client->fetchAccessTokenWithAuthCode($code);
     }
 
     protected function verifyToken()
