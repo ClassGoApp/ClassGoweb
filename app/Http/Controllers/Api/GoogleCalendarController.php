@@ -124,7 +124,7 @@ class GoogleCalendarController extends Controller
                     return redirect('https://classgoapp.com/calendar-error?error=' . urlencode($error) . '&cancelled=true');
                 } else {
                     // Para web: configuración de perfil
-                    return redirect()->route('profile.edit')
+                    return redirect()->route('tutor.profile.account-settings')
                         ->with('error', __('passwords.google_calendar_cancelled'));
                 }
             }
@@ -159,7 +159,7 @@ class GoogleCalendarController extends Controller
                 if ($isMobile) {
                     return redirect('https://classgoapp.com/calendar-error?error=no_code');
                 } else {
-                    return redirect()->route('profile.edit')
+                    return redirect()->route('tutor.profile.account-settings')
                         ->with('error', __('passwords.google_calendar_no_code'));
                 }
             }
@@ -206,7 +206,7 @@ class GoogleCalendarController extends Controller
                                     if ($isMobile) {
                                         return redirect('https://classgoapp.com/calendar-error?error=token_error');
                                     } else {
-                                        return redirect()->route('profile.edit')
+                                        return redirect()->route('tutor.profile.account-settings')
                                             ->with('error', __('passwords.google_calendar_token_error'));
                                     }
                                 }
@@ -242,7 +242,7 @@ class GoogleCalendarController extends Controller
                                 if ($isMobile) {
                                     return redirect('https://classgoapp.com/calendar-success?connected=true');
                                 } else {
-                                    return redirect()->route('profile.edit')
+                                    return redirect()->route('tutor.profile.account-settings')
                                         ->with('success', __('passwords.connect_calender'));
                                 }
                                 
@@ -255,7 +255,7 @@ class GoogleCalendarController extends Controller
                                 if ($isMobile) {
                                     return redirect('https://classgoapp.com/calendar-error?error=token_exception');
                                 } else {
-                                    return redirect()->route('profile.edit')
+                                    return redirect()->route('tutor.profile.account-settings')
                                         ->with('error', 'Error al obtener token de Google Calendar');
                                 }
                             }
@@ -271,7 +271,7 @@ class GoogleCalendarController extends Controller
                     if ($isMobile) {
                         return redirect('https://classgoapp.com/calendar-error?error=processing_error');
                     } else {
-                        return redirect()->route('profile.edit')
+                        return redirect()->route('tutor.profile.account-settings')
                             ->with('error', 'Error al procesar la conexión con Google Calendar');
                     }
                 }
@@ -283,7 +283,7 @@ class GoogleCalendarController extends Controller
                 'code_length' => strlen($code)
             ]);
             
-            return redirect()->route('profile.edit')
+            return redirect()->route('tutor.profile.account-settings')
                 ->with('info', 'Código recibido, complete la configuración');
             
         } catch (\Exception $e) {
@@ -298,7 +298,7 @@ class GoogleCalendarController extends Controller
             if ($isMobile) {
                 return redirect('https://classgoapp.com/calendar-error?error=server_error');
             } else {
-                return redirect()->route('profile.edit')
+                return redirect()->route('tutor.profile.account-settings')
                     ->with('error', 'Error del servidor al conectar Google Calendar');
             }
         }
