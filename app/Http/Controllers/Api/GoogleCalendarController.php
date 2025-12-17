@@ -67,166 +67,113 @@ class GoogleCalendarController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    
     public function handleCallback(Request $request)
     {
         try {
+             // ===== LOGS DE DEBUG TEMPORAL =====
+            Log::emergency('🔴 CALLBACK COMPLETO', [
+                'url' => $request->fullUrl(),
+                'todos_params' => $request->all(),
+                'tiene_code' => $request->has('code'),
+                'tiene_error' => $request->has('error'),
+                'valor_code' => $request->input('code'),
+                'valor_error' => $request->input('error'),
+            ]);
+
             $code = $request->input('code');
             $error = $request->input('error');
             $state = $request->input('state');
 
-            $isMobile = !empty($state);
             
-            // 1. Verificar si hay error (usuario canceló)
             if ($error) {
-                Log::warning('Usuario canceló la conexión con Google Calendar', [
+                Log::error('Error en callback de Google Calendar', [
                     'error' => $error,
-                    'error_description' => $request->input('error_description'),
-                    'is_mobile' => $isMobile
-                ]);
-
-                return redirect()->route('profile.edit')
-                    ->with('error', __('passwords.google_calendar_cancelled'));
-            }
-            
-            // 2. Verificar si hay código
-            if (empty($code)) {
-                Log::error('Código de autorización no proporcionado en callback', [
-                    'is_mobile' => $isMobile,
-                    'has_state' => !empty($state)
+                    'error_description' => $request->input('error_description')
                 ]);
                 
-                return redirect()->route('profile.edit')
-                    ->with('error', __('passwords.google_calendar_no_code'));
+                return redirect('https://classgoapp.com/calendar-error?error=' . urlencode($error));
             }
             
-            // 3. Validar que el código sea una cadena válida
-            if (!is_string($code) || strlen($code) < 10) {
-                Log::error('Código de autorización inválido', [
-                    'code_type' => gettype($code),
-                    'code_length' => is_string($code) ? strlen($code) : 0
-                ]);
-                
-                return redirect()->route('profile.edit')
-                    ->with('error', __('passwords.google_calendar_invalid_code'));
+            if (!$code) {
+                Log::error('Código de autorización no proporcionado en callback');
+                return redirect('https://classgoapp.com/calendar-error?error=no_code');
             }
             
+            // Log para debugging
             Log::info('Google Calendar callback recibido', [
-                'code_length' => strlen($code),
-                'state' => $state,
-                'is_mobile' => $isMobile
+                'code' => $code,
+                'state' => $state
             ]);
             
-            // 4. Si hay un state (user_id), procesar el token
+            // Si hay un state (user_id), procesar el token directamente
             if ($state) {
                 try {
+                    // Decodificar el user_id del state
                     $userId = base64_decode($state);
                     
-                    if (!$userId || !is_numeric($userId)) {
-                        Log::error('State inválido en callback', [
-                            'state' => $state,
-                            'decoded' => $userId
-                        ]);
-                        return redirect()->route('profile.edit')
-                            ->with('error', 'Estado de autorización inválido');
+                    if ($userId && is_numeric($userId)) {
+                        $user = \App\Models\User::find($userId);
+                        
+                        if ($user) {
+                            // Procesar el token como en la web
+                            $clientCredentials = [  
+                                'client_id' => config('services.google.client_id'),
+                                'client_secret' => config('services.google.client_secret'),
+                                'redirect_uri' => 'https://www.classgoapp.com/api/google-calendar/callback',
+                                'scopes' => [\Google\Service\Calendar::CALENDAR]
+                            ];
+                            
+                            $client = new \Google\Client($clientCredentials);
+                            $tokenInfo = $client->fetchAccessTokenWithAuthCode($code);
+                            
+                            if (!empty($tokenInfo['error'])) {
+                                Log::error('Error al obtener token de Google', ['error' => $tokenInfo['error']]);
+                                return redirect('https://classgoapp.com/calendar-error?error=token_error');
+                            }
+                            
+                            // Guardar token en account settings
+                            $userService = new \App\Services\UserService($user);
+                            $userService->setAccountSetting('google_access_token', $tokenInfo);
+                            
+                            // Obtener información del calendario primario
+                            $client->setAccessToken($tokenInfo);
+                            $service = new \Google\Service\Calendar($client);
+                            $calendar = $service->calendarList->get('primary');
+                            
+                            $calendarInfo = [
+                                'id' => $calendar->getId(),
+                                'summary' => $calendar->getSummary(),
+                                'minutes' => 30
+                            ];
+                            
+                            $userService->setAccountSetting('google_calendar_info', $calendarInfo);
+                            
+                            Log::info('Google Calendar conectado exitosamente para usuario', [
+                                'user_id' => $userId,
+                                'calendar_id' => $calendar->getId()
+                            ]);
+                            
+                            return redirect('https://classgoapp.com/calendar-success?connected=true');
+                        }
                     }
-                    
-                    $user = \App\Models\User::find($userId);
-                    
-                    if (!$user) {
-                        Log::error('Usuario no encontrado en callback', [
-                            'user_id' => $userId
-                        ]);
-                        return redirect()->route('profile.edit')
-                            ->with('error', 'Usuario no encontrado');
-                    }
-                    
-                    // Crear instancia del servicio con el usuario
-                    $googleCalendarService = new \App\Services\GoogleCalender();
-                    $googleCalendarService->setUser($user);
-                    
-                    // Obtener el token usando el servicio
-                    $tokenResponse = $googleCalendarService->getAccessTokenInfo($code);
-                    
-                    // Verificar si hubo error en el servicio
-                    if ($tokenResponse['status'] !== Response::HTTP_OK) {
-                        Log::error('Error al obtener token desde el servicio', [
-                            'status' => $tokenResponse['status'],
-                            'message' => $tokenResponse['message'],
-                            'user_id' => $userId
-                        ]);
-                        
-                        return redirect()->route('profile.edit')
-                            ->with('error', $tokenResponse['message'] ?? 'Error al obtener token de Google');
-                    }
-                    
-                    $tokenInfo = $tokenResponse['data'];
-                    
-                    // Guardar token
-                    $userService = new \App\Services\UserService($user);
-                    $userService->setAccountSetting('google_access_token', $tokenInfo);
-                    
-                    // Obtener información del calendario
-                    $clientCredentials = [
-                        'client_id' => config('services.google.client_id'),
-                        'client_secret' => config('services.google.client_secret'),
-                        'redirect_uri' => config('services.callback.url'),
-                        'scopes' => [\Google\Service\Calendar::CALENDAR]
-                    ];
-                    
-                    $client = new \Google\Client($clientCredentials);
-                    $client->setAccessToken($tokenInfo);
-                    $service = new \Google\Service\Calendar($client);
-                    
-                    try {
-                        $calendar = $service->calendarList->get('primary');
-                        
-                        $calendarInfo = [
-                            'id' => $calendar->getId(),
-                            'summary' => $calendar->getSummary(),
-                            'minutes' => 30
-                        ];
-                        
-                        $userService->setAccountSetting('google_calendar_info', $calendarInfo);
-                        
-                        Log::info('Google Calendar conectado exitosamente', [
-                            'user_id' => $userId,
-                            'calendar_id' => $calendar->getId()
-                        ]);
-                        
-                    } catch (\Exception $e) {
-                        Log::error('Error al obtener información del calendario', [
-                            'error' => $e->getMessage(),
-                            'user_id' => $userId
-                        ]);
-                    }
-                    
-                    return redirect()->route('profile.edit')
-                        ->with('success', __('passwords.connect_calender'));
-                    
                 } catch (\Exception $e) {
                     Log::error('Error al procesar token en callback', [
                         'error' => $e->getMessage(),
-                        'trace' => $e->getTraceAsString(),
                         'state' => $state
                     ]);
-                    return redirect()->route('profile.edit')
-                        ->with('error', 'Error al procesar la conexión');
                 }
             }
             
-            // Si no hay state, redirigir a perfil
-            return redirect()->route('profile.edit')
-                ->with('info', 'Código recibido, complete la configuración');
+            // Si no hay state o falló el procesamiento, redirigir con el código
+            return redirect('https://classgoapp.com/calendar-success?code=' . urlencode($code));
             
         } catch (\Exception $e) {
             Log::error('Error en handleCallback de Google Calendar', [
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
             ]);
-
-            return redirect()->route('profile.edit')
-                ->with('error', 'Error del servidor al conectar Google Calendar');
+            
+            return redirect('https://classgoapp.com/calendar-error?error=server_error');
         }
     }
 
