@@ -1,18 +1,26 @@
 <div class="tutoring-panel">
     <!-- Card de Próxima Sesión -->
     @foreach ( $reservas as $reserva)
-        <div class="upcoming-session-card">
+        @php
+            $now = now();
+            $startTime = \Carbon\Carbon::parse($reserva->start_time);
+            $endTime = \Carbon\Carbon::parse($reserva->end_time);
+            $isInProgress = $now->between($startTime, $endTime);
+        @endphp
+        <div class="{{ $isInProgress ? 'upcoming-sesion-start' : 'upcoming-session-card'}}">
             <div class="upcoming-session-header">
                 <h3 class="upcoming-session-title">
                     <i class="fas fa-calendar-alt"></i>
                     ¿Listo para tu próxima tutoría?
                 </h3>
-                <span class="status-badge">Confirmada</span>
+                <span class="status-badge {{ $isInProgress ? 'status-in-progress' : '' }}">
+                    {{ $isInProgress ? 'En curso' : 'Confirmada' }}
+                </span>
             </div>
             
             <div class="upcoming-session-body">
                 <div class="session-info">
-                    <div class="session-icon">
+                    <div class="session-icon {{ $isInProgress ? 'icon-active' : '' }}">
                         <i class="fas fa-clock"></i>
                     </div>
                     <div class="session-details">
@@ -26,15 +34,18 @@
                 </div>
 
                 <a href="{{ $reserva->meeting_link }}" target="_blank">
-                    <button class="tutoria-btn tutoria-btn-primary">
+                    <button class=" {{ $isInProgress ? 'tutoria-btn tutoria-btn-secundary btn-pulse' : 'tutoria-btn tutoria-btn-primary' }}">
                         <i class="fas fa-video"></i>
                         Ir al Aula Virtual
                     </button>
                 </a>
                 
-                <button class="tutoria-text-link">
+                <a href="{{  route('student.bookings') }}">
+                    <button class="tutoria-text-link">
                     Ver detalles 
                 </button>
+                </a>
+                
             </div>
         </div>
     @endforeach
@@ -51,10 +62,18 @@
 
     /* Card de próxima sesión */
     .upcoming-session-card {
-        background-color: white;
+        background-color: #f1f3f4;
         border-radius: 20px;
         box-shadow: var(--shadow-lg);
         border-left: 4px solid var(--primary-color);
+        overflow: hidden;
+        animation: fadeInUp 0.5s ease-out;
+        margin-bottom: 1rem;
+    }
+    .upcoming-sesion-start{
+        border-radius: 20px;
+        box-shadow: var(--shadow-lg);
+        border-left: 4px solid #10b981;
         overflow: hidden;
         animation: fadeInUp 0.5s ease-out;
         margin-bottom: 1rem;
@@ -86,7 +105,45 @@
         border-radius: 9999px;
         text-transform: uppercase;
         letter-spacing: 0.05em;
+        transition: all 0.3s ease;
     }
+
+    /* Estado "En curso" */
+    .status-badge.status-in-progress {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    /* Icono activo */
+    .session-icon.icon-active {
+        background-color: #d1fae5;
+        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    /* Botón con pulso */
+    .btn-pulse {
+        animation: buttonPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    /* Animación de pulso */
+    @keyframes pulse {
+        0%, 100% {
+            opacity: 1;
+        }
+        50% {
+            opacity: 0.8;
+        }
+    }
+
+    @keyframes buttonPulse {
+        0%, 100% {
+            box-shadow: 0 1px 2px 0 rgba(136, 255, 0, 0.2);
+        }
+        50% {
+            box-shadow: 0 0 0 4px rgba(22, 247, 2, 0.521);
+        }
+    }
+
 
     .upcoming-session-body {
         padding: 1rem 1.25rem;
@@ -141,6 +198,11 @@
 
     .tutoria-btn-primary {
         background: var(--bg-gradient2);
+        color: white;
+        box-shadow: 0 1px 2px 0 rgba(59, 130, 246, 0.2);
+    }
+    .tutoria-btn-secundary {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
         color: white;
         box-shadow: 0 1px 2px 0 rgba(59, 130, 246, 0.2);
     }

@@ -146,12 +146,13 @@ new #[Layout('layouts.guest')] class extends Component
                         </div>
 
                         {{-- codidgo para cupon  --}}
-                        <div class="form-group {{ $errors->get('codigo') ? 'am-invalid' : '' }}">
+                        {{-- <div class="form-group {{ $errors->get('codigo') ? 'am-invalid' : '' }}">
                             <label class="am-label-register" for="codigo">{{ __('auth.codigo_placeholder') }}</label>
                             <x-text-input id="codigo" wire:model="codigo"
                                 placeholder="{{ __('auth.codigo_placeholder') }}" type="text" autofocus />
                             <x-input-error field_name="codigo" />
                         </div>
+                         --}}
                         <div class="form-group am-form-groupradio">
                             <label class="am-label-register">{{ __('auth.role') }}</label>
                             <div class="am-selectrole">

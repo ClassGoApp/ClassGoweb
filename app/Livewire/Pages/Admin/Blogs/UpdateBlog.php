@@ -92,11 +92,13 @@ class UpdateBlog extends Component
     {
 
         return [
-            'title'         => 'required|string|max:255',
-            'slug'          => 'required|string|max:255|unique:blogs,slug,' . $this->blogId,
-            'description'   => 'required|string',
-            'category_ids'  => 'required|array|min:1',
-            'category_ids.*'  => 'required|exists:blog_categories,id',
+            'title'             => 'required|string|max:255',
+            'slug'              => 'required|string|max:255|unique:blogs,slug,' . $this->blogId,
+            'meta_title'        => 'nullable|string|max:255',
+            'meta_description'  => 'nullable|string',
+            'description'       => 'required|string',
+            'category_ids'      => 'required|array|min:1',
+            'category_ids.*'    => 'required|exists:blog_categories,id',
         ];
     }
 
@@ -131,6 +133,8 @@ class UpdateBlog extends Component
         }
 
         $validatedData['status'] = $this->status ?? 'draft';
+        $validatedData['meta_title'] = $this->meta_title;
+        $validatedData['meta_description'] = $this->meta_description;
 
         $blog = Blog::findOrFail($this->blogId);
         $blog->update($validatedData);

@@ -46,7 +46,7 @@ return [
     'clear-cache' => 'Borrar caché',
     'menu' => 'Menús',
     'site_management' => 'Gestión del sitio',
-    'transaction_payment' => 'Transacciones kkk',
+    'transaction_payment' => 'Transacciones',
     'blogs' => 'Blogs',
     'withdraw_requests' => 'Retirar solicitudes',
     'adsense_settings' => 'configuración de adsense',

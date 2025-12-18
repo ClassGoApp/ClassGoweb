@@ -47,12 +47,8 @@
 .tutor-bg {
     margin: 0;
     padding: 0;
-    background-color: var(--primary-color);
-    background-image: url('/images/home/Elipse.png');
-    background-repeat: repeat;
-    background-position: center calc(50% + 0px);
-    background-size: 100% auto;
     /* background: linear-gradient(135deg, #023047 0%, #219EBC 100%); */
+    background: var(--bg-gradient);
 }
 
 .navbar-container {
@@ -77,7 +73,7 @@
 }
 
 .tutor-breadcrumb-link {
-    color: var(--text-gris);
+    color: white;
     text-decoration: none;
     transition: var(--transition);
 }
@@ -1030,7 +1026,7 @@
 
 /* ==================== 8.5 - Mensaje De Exito ==================== */
 
-.alert-success {
+.alert-successs {
     background-color: #2ecc71;
     color: white;
     padding: 1rem;

@@ -46,27 +46,6 @@
 
     </section>
 
-    <!--CARRUSEL ANIMADO TUGO-->
-    {{-- <section class="tugo-carousel fade-up">
-        <h1 class="over-text">
-            <div class="linea"></div><span data-translate="featured_tutors"></span>
-            <div class="linea"></div>
-        </h1>
-        <h1 class ="tutor ideal" data-translate="selected_tutors"></h1>
-        <p data-translate="academic_variety"></p>
-        <div class="tugo-container">
-            <div class="text-zone">
-                <p class="intro-text">En ClassGo encuentras tutorías de...</p>
-                <div class="animated-word" id="animatedWord">Idiomas</div>
-            </div>
-
-            <div class="mascot-panel">
-                <img id="mascot" class="mascot" src="/images/tugos-skin/Interpretación-y-Traducción-de-Idiomas.webp"
-                    alt="Tugo">
-            </div>
-        </div>
-    </section> --}}
-
     <!--FILTRO DE MATERIAS-->
     <section class="filtro_materias fade-up">
         <h1 class="over-text">

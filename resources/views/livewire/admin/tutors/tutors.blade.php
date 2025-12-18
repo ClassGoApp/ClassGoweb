@@ -9,58 +9,77 @@
                         <fieldset>
                             <div class="tb-themeform__wrap">
                                 <div class="tb-actionselect">
-                                    <a href="javascript:void(0)" id="add_user_click" class="tb-btn add-new"
-                                       data-bs-toggle="modal" data-bs-target="#tb-add-user">
+                                    <a href="javascript:void(0)" id="add_tutor_click" class="tb-btn add-new"
+                                       data-bs-toggle="modal" data-bs-target="#tb-add-tutor">
                                         {{ __('general.add_new_tutor') }} <i class="icon-plus"></i>
                                     </a>
-                                </div>
-                                <div class="tb-actionselect" wire:ignore>
-                                    <div class="tb-select">
-                                        <select data-componentid="@this" class="am-select2 form-control"
-                                                data-searchable="false" data-live='true' id="verification"
-                                                data-wiremodel="verification">
-                                            <option value="">{{ __('All') }}</option>
-                                            <option value="verified">{{ __('Verified') }}</option>
-                                            <option value="unverified">{{ __('Unverified') }}</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="tb-actionselect" wire:ignore>
-                                    <div class="tb-select">
-                                        <select data-componentid="@this" class="am-select2 form-control"
-                                                data-searchable="false" data-live='true' id="filter_user"
-                                                data-wiremodel="filterUser">
-                                            <option value="">{{ __('All') }}</option>
-                                            <option value="active">{{ __('Active') }}</option>
-                                            <option value="inactive">{{ __('Inactive') }}</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="tb-actionselect" wire:ignore>
-                                    <div class="tb-select">
-                                        <select data-componentid="@this" class="am-select2 form-control"
-                                                data-searchable="false" data-live='true' id="sort_by"
-                                                data-wiremodel="sortby">
-                                            <option value="asc">{{ __('general.asc') }}</option>
-                                            <option value="desc">{{ __('general.desc') }}</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group tb-inputicon tb-inputheight">
-                                    <i class="icon-search"></i>
-                                    <input type="text" class="form-control"
-                                           wire:model.live.debounce.500ms="search"
-                                           autocomplete="off"
-                                           placeholder="{{ __('general.search_tutor') }}">
                                 </div>
                             </div>
                         </fieldset>
                     </form>
                 </div>
             </div>
+            
+            <!-- Filtros debajo del botón -->
+            <div class="tb-sortby" style="margin-top: 20px;">
+                <form class="tb-themeform tb-displistform">
+                    <fieldset>
+                        <div class="tb-themeform__wrap">
+                            <div class="tb-actionselect" wire:ignore>
+                                <label class="tb-label">{{ __('general.email_verification') }}</label>
+                                <div class="tb-select">
+                                    <select data-componentid="@this" class="filter-select2 form-control"
+                                            data-searchable="false" data-hide_search_opt="true" data-live='true' id="verification"
+                                            data-wiremodel="verification">
+                                        <option value="">{{ __('All') }}</option>
+                                        <option value="verified" {{ $verification=='verified' ? 'selected' : '' }}>{{ __('Verified') }}</option>
+                                        <option value="unverified" {{ $verification=='unverified' ? 'selected' : '' }}>{{ __('Unverified') }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="tb-actionselect" wire:ignore>
+                                <label class="tb-label">{{ __('general.status') }}</label>
+                                <div class="tb-select">
+                                    <select data-componentid="@this" class="filter-select2 form-control"
+                                            data-searchable="false" data-hide_search_opt="true" data-live='true' id="filter_user"
+                                            data-wiremodel="filterUser">
+                                        <option value="">{{ __('All') }}</option>
+                                        <option value="active" {{ $filterUser=='active' ? 'selected' : '' }}>{{ __('Active') }}</option>
+                                        <option value="inactive" {{ $filterUser=='inactive' ? 'selected' : '' }}>{{ __('Inactive') }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="tb-actionselect" wire:ignore>
+                                <label class="tb-label">{{ __('general.sort_order') }}</label>
+                                <div class="tb-select">
+                                    <select data-componentid="@this" class="filter-select2 form-control"
+                                            data-searchable="false" data-hide_search_opt="true" data-live='true' id="sort_by"
+                                            data-wiremodel="sortby">
+                                        <option value="asc" {{ $sortby=='asc' ? 'selected' : '' }}>{{ __('general.asc') }}</option>
+                                        <option value="desc" {{ $sortby=='desc' ? 'selected' : '' }}>{{ __('general.desc') }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group tb-inputicon tb-inputheight">
+                                <i class="icon-search"></i>
+                                <input type="text" class="form-control"
+                                       wire:model.live.debounce.500ms="search"
+                                       autocomplete="off"
+                                       placeholder="{{ __('general.search_tutor') }}">
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
 
-            <div class="am-disputelist_wrap">
-                <div class="am-disputelist am-custom-scrollbar-y">
+            <div class="am-disputelist_wrap" style="position: relative;">
+                <div wire:loading wire:target="search,verification,filterUser,sortby" 
+                     style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 999;">
+                    <x-loader />
+                </div>
+                <div class="am-disputelist am-custom-scrollbar-y" 
+                     wire:loading.class="tb-blur-loading" 
+                     wire:target="search,verification,filterUser,sortby">
                     @if(!$tutors->isEmpty())
                         <table class="tb-table @if(setting('_general.table_responsive') == 'yes') tb-table-responsive @endif">
                             <thead>
@@ -84,7 +103,7 @@
                                                     @if (!empty($tutor->profile->image) && file_exists(public_path('storage/' . $tutor->profile->image)))
                                                         <img src="{{ asset('storage/' . $tutor->profile->image) }}" alt="{{ $tutor->profile->full_name }}" />
                                                     @else
-                                                        <img src="{{ asset('images/placeholder.png') }}" alt="avatar" />
+                                                        <img src="{{ asset('images/default.png') }}" alt="avatar" />
                                                     @endif
                                                 </strong>
                                                 <span>{{ $tutor->profile->full_name }}</span>
@@ -120,5 +139,139 @@
                 </div>
             </div>
         </div>
+        
+        <!-- Modal Agregar Tutor -->
+        <div wire:ignore.self class="modal fade tb-addonpopup" id="tb-add-tutor" aria-labelledby="tb_tutor_info_label"
+            role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg tb-modaldialog" role="document">
+                <div class="modal-content">
+                    <div class="tb-popuptitle">
+                        <h5 id="tb_tutor_info_label">{{ __('general.tutor_information') }}</h5>
+                        <a href="javascript:void(0);" class="close"><i class="icon-x" data-bs-dismiss="modal"></i></a>
+                    </div>
+                    <div class="modal-body">
+                        <form class="tb-themeform" wire:submit.prevent="addTutor" id="add_tutor_form">
+                            <fieldset>
+                                <div class="form-group-wrap">
+                                    <div class="form-group">
+                                        <label class="tb-label">{{ __('general.first_name') }}</label>
+                                        <input type="text"
+                                            class="form-control @error('first_name') tk-invalid @enderror"
+                                            wire:model="first_name" 
+                                            placeholder="{{ __('general.name_placeholder') }}">
+                                        @error('first_name')
+                                        <div class="tk-errormsg">
+                                            <span>{{ $message }}</span>
+                                        </div>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="tb-label">{{ __('general.last_name') }}</label>
+                                        <input type="text"
+                                            class="form-control @error('last_name') tk-invalid @enderror"
+                                            wire:model="last_name"
+                                            placeholder="{{ __('general.lastname_placeholder') }}">
+                                        @error('last_name')
+                                        <div class="tk-errormsg">
+                                            <span>{{ $message }}</span>
+                                        </div>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="tb-label">{{ __('general.email') }}</label>
+                                        <input type="email" 
+                                            class="form-control @error('email') tk-invalid @enderror"
+                                            wire:model="email" 
+                                            placeholder="{{ __('general.email_placeholder') }}">
+                                        @error('email')
+                                        <div class="tk-errormsg">
+                                            <span>{{ $message }}</span>
+                                        </div>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="tb-label">{{ __('general.password') }}</label>
+                                        <input type="password" 
+                                            wire:model="password"
+                                            class="form-control @error('password') tk-invalid @enderror"
+                                            placeholder="{{ __('general.password_placeholder') }}">
+                                        @error('password')
+                                        <div class="tk-errormsg">
+                                            <span>{{ $message }}</span>
+                                        </div>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="tb-label">{{ __('general.confirm_password') }}</label>
+                                        <input type="password" 
+                                            wire:model="confirm_password"
+                                            class="form-control @error('confirm_password') tk-invalid @enderror"
+                                            placeholder="{{ __('general.password_placeholder') }}">
+                                        @error('confirm_password')
+                                        <div class="tk-errormsg">
+                                            <span>{{ $message }}</span>
+                                        </div>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group tb-formbtn">
+                                        <button class="tb-btn" type="submit" wire:target="addTutor"
+                                            wire:loading.class="am-btn_disable">{{ __('general.save_tutor') }}</button>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </main>
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        function initFilterSelects() {
+            $('.filter-select2').each(function() {
+                const $select = $(this);
+                
+                // Destruir si ya existe
+                if ($select.data('select2')) {
+                    $select.select2('destroy');
+                }
+                
+                // Inicializar SIN limpiar opciones
+                $select.select2({
+                    minimumResultsForSearch: -1,
+                    width: '100%'
+                });
+                
+                // Manejar cambios
+                $select.off('change').on('change', function() {
+                    const wireModel = $(this).data('wiremodel');
+                    const value = $(this).val();
+                    
+                    // Actualizar el valor
+                    @this.set(wireModel, value);
+                });
+            });
+        }
+        
+        initFilterSelects();
+        
+        // Cuando Livewire termina de actualizar
+        Livewire.hook('morph.updated', () => {
+            initFilterSelects();
+        });
+    });
+</script>
+@endpush
+
+@push('styles')
+<style>
+.tb-blur-loading {
+    filter: blur(3px);
+    pointer-events: none;
+    transition: filter 0.3s ease;
+}
+</style>
+@endpush

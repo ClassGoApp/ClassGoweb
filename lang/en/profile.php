@@ -82,4 +82,12 @@ return [
     'remove' => 'Remove',
      'profile_picture' => 'A picture is worth a thousand words.',
     
+    // Incomplete profile messages
+    'complete_profile_requirements' => 'To verify your identity, you must first complete the following requirements:',
+    'missing_profile_photo' => 'Profile photo',
+    'missing_intro_video' => 'Introduction video',
+    'missing_gender' => 'Gender',
+    'missing_google_calendar' => 'Google Calendar connection (Go to Account Settings)',
+    'missing_payout_method' => 'Payout method configured (Go to Panel > Preferences > QR)',
+    'complete_now' => 'Complete now',
 ];

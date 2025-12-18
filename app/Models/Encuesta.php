@@ -20,4 +20,12 @@ class Encuesta extends Model
         'Contact',
         'IdUser',
     ];
+
+    /**
+     * Relación con el modelo User
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'IdUser', 'id');
+    }
 }
