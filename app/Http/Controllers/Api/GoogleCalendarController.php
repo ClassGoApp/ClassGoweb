@@ -121,7 +121,9 @@ class GoogleCalendarController extends Controller
                 // Redirigir según el origen
                 if ($isMobile) {
                     // Para móvil: deep link
-                    return redirect('https://classgoapp.com/calendar-error?error=' . urlencode($error) . '&cancelled=true');
+                    // return redirect('https://classgoapp.com/calendar-error?error=' . urlencode($error) . '&cancelled=true');
+                    return redirect()->route('tutor.profile.account-settings')
+                        ->with('error');
                 } else {
                     // Para web: configuración de perfil
                     return redirect()->route('tutor.profile.account-settings')
@@ -157,7 +159,9 @@ class GoogleCalendarController extends Controller
                 
                 // Redirigir según el origen
                 if ($isMobile) {
-                    return redirect('https://classgoapp.com/calendar-error?error=no_code');
+                    // return redirect('https://classgoapp.com/calendar-error?error=no_code');
+                    return redirect()->route('tutor.profile.account-settings')
+                        ->with('error');
                 } else {
                     return redirect()->route('tutor.profile.account-settings')
                         ->with('error', __('passwords.google_calendar_no_code'));
