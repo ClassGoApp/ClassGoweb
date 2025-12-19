@@ -1,5 +1,4 @@
-
-<div class="contendor-livewire-blogs" >
+<div class="contendor-livewire-blogs">
     <header class="blog-section">
         <h2 class="todos-blogs">Todos los blogs</h2>
         <div class="blog-filters">
@@ -17,16 +16,16 @@
                 <option value="populares">Más populares</option>
             </select>
         </div>
-    </header >
+    </header>
 
-    <div class="content-cards transition-all duration-300"
-        wire:target="category,order"
-        wire:loading.class="fade-out"
+    <div class="content-cards transition-all duration-300" wire:target="category,order" wire:loading.class="fade-out"
         wire:loading.remove.class="fade-in">
 
         @forelse ($blogs as $blog)
-            <a href="{{ $blog->url }}"  class="cards" wire:key="blog-{{ $blog->id }}" style="text-decoration:none; color:inherit;">
-                <div class="img" loading="lazy">
+
+            <a href="{{ $blog->url }}" class="cards" wire:key="blog-{{ $blog->id }}"
+                style="text-decoration:none; color:inherit;">
+                {{-- <div class="img" loading="lazy">
                     @if ($blog->image)
                         @php
                             $imagePath = storage_path('app/public/' . $blog->image);
@@ -52,7 +51,33 @@
                             <i class="icon-image" style="font-size: 24px; color: #ccc;"></i>
                         </div>
                     @endif
+                </div> --}}
+                <div class="img">
+                    @if ($blog->image)
+                        @php
+                            $imagePath = storage_path('app/public/' . $blog->image);
+                            $imageExists = file_exists($imagePath);
+                        @endphp
+
+                        @if ($imageExists)
+                            @php
+                                $imageData = base64_encode(file_get_contents($imagePath));
+                                $imageType = pathinfo($imagePath, PATHINFO_EXTENSION);
+                                $imageSrc = 'data:image/' . $imageType . ';base64,' . $imageData;
+                            @endphp
+
+                            <div class="img-wrapper">
+                                <img class="img-blur" src="{{ $imageSrc }}" alt="">
+                                <img class="img-main" src="{{ $imageSrc }}" alt="{{ $blog->title }}">
+                            </div>
+                        @else
+                            <div class="tb-no-image">…</div>
+                        @endif
+                    @else
+                        <div class="tb-no-image">…</div>
+                    @endif
                 </div>
+
 
                 <h4 class="categoria">
                     {{ $blog->main_category ?? 'General' }} /
@@ -66,27 +91,22 @@
                 <p class="descripcion">{{ $blog->short_description }}</p>
 
                 @if ($blog->tags && $blog->tags->count())
-                    
-
-
-
                     <div class="tags">
                         <div class="tags-track">
                             @foreach ($blog->tags as $tag)
-                                
-                                <span class="tag"
-                                            >{{ $tag->name }}</span>
+                                <span class="tag">{{ $tag->name }}</span>
                             @endforeach
                             @foreach ($blog->tags as $tag)
-                                
-                                <span class="tag"
-                                    
-                                    >{{ $tag->name }}</span>
+                                <span class="tag">{{ $tag->name }}</span>
                             @endforeach
                         </div>
                     </div>
                 @endif
             </a>
+<<<<<<< HEAD
+=======
+
+>>>>>>> 9ec26bb (arreglo de bugs:)
         @empty
             <p style="font-weight: 500; height: 477px;">No hay blogs disponibles.</p>
         @endforelse

@@ -49,27 +49,31 @@
                             $imageSrc = 'data:image/' . $imageType . ';base64,' . $imageData;
                         @endphp
 
-                        <img src="{{ $imageSrc }}" alt="{{ $title }}" />
+                        <div class="img-blog-frame">
+                            <img class="img-blog-bg" src="{{ $imageSrc }}" alt="">
+                            <img class="img-blog-front" src="{{ $imageSrc }}" alt="{{ $title }}" onclick="openImageModal(this)">
+                        </div>
                     @else
                         <div class="tb-no-image">
-                            <i class="icon-image" style="font-size: 24px; color: #ccc;"></i>
+                            <i class="icon-image"></i>
                             <small>File not found</small>
                         </div>
                     @endif
                 @else
                     <div class="tb-no-image">
-                        <i class="icon-image" style="font-size: 24px; color: #ccc;"></i>
+                        <i class="icon-image"></i>
                     </div>
                 @endif
-
             </div>
+
             <h3 class="meta-titulo">
                 {{ $title }}
             </h3>
-            <p class="descripcion">
-                {!! $content !!}
-            </p>
-
+            <div class="padre-descripcion" style="color: var(--secundary-color2)">
+                <p class="descripcion">
+                    {!! $content !!}
+                </p>
+            </div>
             <div class="footer-blog">
                 <div class="social-bar">
                     <a href="http://linkedin.com" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
@@ -85,12 +89,15 @@
                         <i class="fa-solid fa-eye"></i>
                         <span>{{ $views_count }} visitas</span>
                     </div>
-                    
+
                 </div>
 
             </div>
 
         </div>
+        <div id="image-modal" class="image-modal" onclick="closeImageModal()">
+    <img id="image-modal-content" />
+</div>
         <div class="card-populares">Blogs Populares</div>
         <div class="content-cards" id="content-cards">
 
@@ -111,19 +118,18 @@
                                     $imageSrc = 'data:image/' . $imageType . ';base64,' . $imageData;
                                 @endphp
 
-                                <img src="{{ $imageSrc }}" alt="{{ $blog->title }}" />
-                            @else
-                                <div class="tb-no-image">
-                                    <i class="icon-image" style="font-size: 24px; color: #ccc;"></i>
-                                    <small>File not found</small>
+                                <div class="img-wrapper">
+                                    <img class="img-blur" src="{{ $imageSrc }}" alt="">
+                                    <img class="img-main" src="{{ $imageSrc }}" alt="{{ $blog->title }}">
                                 </div>
+                            @else
+                                <div class="tb-no-image">…</div>
                             @endif
                         @else
-                            <div class="tb-no-image">
-                                <i class="icon-image" style="font-size: 24px; color: #ccc;"></i>
-                            </div>
+                            <div class="tb-no-image">…</div>
                         @endif
                     </div>
+
 
                     <h4 class="categoria">
                         {{ $blog->main_category ?? 'General' }} /
@@ -137,16 +143,12 @@
                     <p class="descripcion">{{ $blog->short_description }}</p>
 
                     @if ($blog->tags && $blog->tags->count())
-                        
-
                         <div class="tags">
                             <div class="tags-track">
                                 @foreach ($blog->tags as $tag)
-                                    
                                     <span class="tag">{{ $tag->name }}</span>
                                 @endforeach
                                 @foreach ($blog->tags as $tag)
-                                    
                                     <span class="tag">{{ $tag->name }}</span>
                                 @endforeach
                             </div>
@@ -159,4 +161,25 @@
         </div>
 
     </div>
+    <script>
+function openImageModal(img) {
+    const modal = document.getElementById('image-modal');
+    const modalImg = document.getElementById('image-modal-content');
+
+    modalImg.src = img.src;
+    modal.style.display = 'flex';
+}
+
+// cerrar al hacer click fuera
+function closeImageModal() {
+    const modal = document.getElementById('image-modal');
+    modal.style.display = 'none';
+}
+
+// evitar que click en la imagen cierre el modal
+document.getElementById('image-modal-content').onclick = function(e) {
+    e.stopPropagation();
+};
+</script>
+
 @endsection
