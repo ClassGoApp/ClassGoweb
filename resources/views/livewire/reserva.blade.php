@@ -3,7 +3,7 @@
     <div class="section-reserva">
         {{-- Mensaje de éxito tras reservar --}}
         @if (session()->has('success_message'))
-            <div class="alert-success">{{ session('success_message') }}</div>
+            <div class="alert-successs  ">{{ session('success_message') }}</div>
         @endif
 
         @if (session()->has('error'))
@@ -12,8 +12,21 @@
 
         <div class="tutor-availability-grid">
             {{-- CALENDARIO --}}
-            <div>
-                <h4 class="tutor-section-title">Mis días disponibles</h4>
+            
+            <div> 
+                <h4 class="tutor-section-title">
+                    <span class="tutor-tooltip-wrapper">
+                        Mis días disponibles <span style="font-size: 0.8em; color: #fbbf24; cursor: help;">ⓘ</span>
+                        
+                        <div class="tutor-tooltip-content tooltip-left-align">
+                            <strong>Paso 1:</strong>
+                            <p>Busca en el calendario los días marcados (círculos) y haz clic en el que prefieras.</p>
+                            <div class="tutor-tooltip-arrow"></div>
+                        </div>
+                    </span>
+                </h4>
+                <!--<h4 class="tutor-section-title">Mis días disponibles</h4>-->
+                
                 {{--  <div>
                     <p>ID del tutor: {{ $this->tutorId }}</p>
                 </div> --}}
@@ -69,8 +82,20 @@
 
             {{-- SELECTOR DE HORA --}}
             @if ($selectedDay)
-                <div class="tutor-time-selector-col">
-                    <h4 class="tutor-section-title">Selecciona una hora</h4>
+                <div class="tutor-time-selector-col"> 
+                    <h4 class="tutor-section-title">
+                        <span class="tutor-tooltip-wrapper">
+                            Selecciona una hora <span style="font-size: 0.8em; color: #fbbf24; cursor: help;">ⓘ</span>
+                                
+                            <div class="tutor-tooltip-content tooltip-left-align">
+                                <strong>Paso 2:</strong>
+                                <p>Elige un bloque de horario disponible para confirmar la tutoria.</p>
+                                <div class="tutor-tooltip-arrow"></div>
+                            </div>
+                        </span>
+                    </h4>
+                                    <!--<div class="tutor-time-selector-col">
+                    <h4 class="tutor-section-title">Selecciona una hora</h4>-->
                     <div class="tutor-time-selector-box">
                         @if (!empty($availableTimeSlots))
                             <div class="tutor-time-slots">
@@ -103,8 +128,24 @@
     </div>
     @auth
         @role('student')
+            <!-- Hover Boton Pagar y Reservar
             <div class="tutor-pay-btn-box">
                 <button wire:click="openReservationModal" class="tutor-pay-btn">Pagar y reservar</button>
+            </div>-->
+            <div class="tutor-pay-btn-box">
+    
+                <span class="tutor-tooltip-wrapper">
+                    
+                    <button wire:click="openReservationModal" class="tutor-pay-btn">Pagar y reservar</button>
+
+                    <div class="tutor-tooltip-content">
+                        <strong>Paso 3:</strong>
+                        <p>Haz clic aquí para confirmar tu reserva y realizar el pago.</p>
+                        <div class="tutor-tooltip-arrow"></div>
+                    </div>
+                    
+                </span>
+
             </div>
 
             @elserole('tutor')
@@ -275,6 +316,16 @@
                                 </p>
                                 <p><strong>Hora:</strong>
                                     <span>{{ \Carbon\Carbon::parse($selectedTime)->format('h:i a') }}</span></p>
+                                @if($descuento > 0)
+                                    <p><strong>Descuento ({{ $porcentaje }}%):</strong> -{{ number_format($descuento, 2) }} Bs.</p>
+                                @endif
+                                    
+                                <p><strong>Total a Pagar:</strong>
+                                    <span> {{ number_format($montoFinal, 2) }} Bs.</span></p>
+
+                                @if($montoFinal == 0)
+                                    <p style="color: green; text-align: center;">¡Felicidades! Tienes una tutoría gratis</p>
+                                @endif
                             </div>
                         @endif
 

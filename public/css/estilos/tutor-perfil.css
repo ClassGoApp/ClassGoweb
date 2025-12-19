@@ -47,12 +47,8 @@
 .tutor-bg {
     margin: 0;
     padding: 0;
-    background-color: var(--primary-color);
-    background-image: url('/images/home/Elipse.png');
-    background-repeat: repeat;
-    background-position: center calc(50% + 0px);
-    background-size: 100% auto;
     /* background: linear-gradient(135deg, #023047 0%, #219EBC 100%); */
+    background: var(--bg-gradient);
 }
 
 .navbar-container {
@@ -77,7 +73,7 @@
 }
 
 .tutor-breadcrumb-link {
-    color: var(--text-gris);
+    color: white;
     text-decoration: none;
     transition: var(--transition);
 }
@@ -333,13 +329,7 @@
 }
 
 
-/* MEDIA QUERY: md:p-8 */
 
-@media (min-width: 768px) {
-    .subjects-card {
-        padding: 2rem;
-    }
-}
 
 .subjects-card__title {
     /* text-2xl font-bold text-gray-800 mb-6 */
@@ -634,7 +624,11 @@
     line-height: 1;
     /* Elimina padding horizontal extra si lo tienes */
 }
-
+.space-languages-perfil{
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
 .tutor-language-tag {
     background: var(--secundary-color2);
     color: var(--primary-color);
@@ -725,13 +719,6 @@
 }
 
 
-/* MEDIA QUERY: sm:p-8 */
-
-@media (min-width: 640px) {
-    .review-form-container {
-        padding: 2rem;
-    }
-}
 
 
 /* ======================================================= */
@@ -786,54 +773,9 @@
     color: #fbbf24 !important;
     fill: #fbbf24 !important;
 }
-/* MEDIA QUERY: sm:w-16 sm:h-16 */
 
 
-@media (min-width: 640px) {
-    .review-form__star {
-        width: 4rem;
-        height: 4rem;
-    }
-}
-@media (max-width: 768px) {
-    .review-form__star {
-        width: 2.5rem !important;
-        height: 2.5rem !important;
-        touch-action: manipulation; /* Optimizar para touch */
-        -webkit-touch-callout: none; /* Desactivar callout en iOS */
-        -webkit-user-select: none; /* Prevenir selección de texto */
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-    }
-    
-    .review-form__star.active {
-        color: #fbbf24 !important;
-        fill: #fbbf24 !important;
-    }
-    
-    /* Asegurar que el hover no interfiera en móvil */
-    @media (hover: none) and (pointer: coarse) {
-        .review-form__star:hover {
-            color: inherit;
-            fill: inherit;
-        }
-        
-        .review-form__star.active:hover {
-            color: #fbbf24 !important;
-            fill: #fbbf24 !important;
-        }
-    }
-}
 
-/* Mejorar el espaciado en móvil */
-@media (max-width: 600px) {
-    .review-form__rating-wrapper {
-        padding: 1rem 0;
-        gap: 0.5rem;
-        justify-content: center;
-    }
-}
 
 /* Clases que serán añadidas por JavaScript para interactividad */
 
@@ -1084,7 +1026,7 @@
 
 /* ==================== 8.5 - Mensaje De Exito ==================== */
 
-.alert-success {
+.alert-successs {
     background-color: #2ecc71;
     color: white;
     padding: 1rem;
@@ -1683,13 +1625,14 @@ body.modal-open {
 /* ==================== 9 - Tutor Modal ==================== */
 
 .modal-overlay {
-    position: fixed;
+    position: fixed !important;
+    inset: 0 !important;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
-    z-index: 50;
+    z-index: 999999 !important;
     display: none;
     align-items: center;
     justify-content: center;
@@ -1719,6 +1662,7 @@ body.modal-open {
     opacity: 0;
     transition: transform 0.3s ease-out, opacity 0.3s ease-out;
     display: block;
+    z-index: 1000000000 !important;
 }
 
 
@@ -1921,6 +1865,9 @@ body.modal-open {
     font-size: 0.875rem;
     color: #4b5563;
     margin-top: 0.4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
 }
 
 .info-box p+p {
@@ -2177,409 +2124,8 @@ body.modal-open {
 }
 
 
-/* =================== RESPONSIVE DESIGN TABLETS=================== */
-
-@media (max-width: 900px) {
-    .tutor-main {
-        padding: 1.5rem 0.5rem;
-        max-width: 100vw;
-        box-sizing: border-box;
-    }
-
-    .tutor-grid {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-    }
-
-    .tutor-col-actions {
-        margin-top: 2rem;
-    }
-
-    .tutor-profile-info {
-        margin-left: 0;
-        padding-left: 0;
-        margin-top: 80px;
-    }
-
-    .tutor-card-main-content {
-        padding: 1.2rem;
-    }
-
-    .tutor-tabs-list {
-        gap: 1rem;
-        padding: 0 0.5rem;
-    }
-
-    .tutor-actions-card {
-        padding: 1.2rem;
-    }
-}
 
 
-/* =================== RESPONSIVE DESIGN MOBILE=================== */
-
-@media (max-width: 600px) {
-
-    html,
-    body {
-        width: 100vw !important;
-        box-sizing: border-box !important;
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-
-    body.modal-open {
-        overflow: hidden;
-    }
-
-    .tutor-breadcrumbs {
-        display: none;
-    }
-
-    .tutor-bg {
-        width: 100vw !important;
-        max-width: 100vw !important;
-        min-width: 0 !important;
-        overflow-x: hidden !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        box-sizing: border-box !important;
-    }
-
-    .tutor-main {
-        width: 100vw !important;
-        max-width: 100vw !important;
-        min-width: 0 !important;
-        margin: 0 !important;
-        padding: 0 0 2rem 0 !important;
-        box-sizing: border-box !important;
-        overflow-x: hidden !important;
-    }
-
-    .tutor-grid {
-        width: 100vw !important;
-        max-width: 100vw !important;
-        min-width: 0 !important;
-        margin: 0 !important;
-        box-sizing: border-box !important;
-        overflow-x: hidden !important;
-    }
-
-    .tutor-tabs-card {
-        width: 100vw !important;
-        max-width: 100vw !important;
-        min-width: 0 !important;
-        margin: 0 !important;
-        border-radius: 30px !important;
-        box-sizing: border-box !important;
-        overflow-x: hidden !important;
-        padding: 0 !important;
-    }
-
-    .tutor-tabs-nav {
-        width: 100vw !important;
-        max-width: 100vw !important;
-        min-width: 0 !important;
-        box-sizing: border-box !important;
-        overflow-x: auto !important;
-        margin: 0 !important;
-        padding: 0.4rem 0.5rem !important;
-        scrollbar-width: none !important;
-        -ms-overflow-style: none !important;
-    }
-
-    .tutor-tabs-list {
-        display: flex !important;
-        flex-direction: row !important;
-        gap: 0.2rem !important;
-        width: max-content !important;
-        box-sizing: border-box !important;
-        overflow-x: auto !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        scrollbar-width: none !important;
-        -ms-overflow-style: none !important;
-    }
-
-    .tutor-tabs-list::-webkit-scrollbar {
-        height: 4px !important;
-        background: #eee !important;
-    }
-
-    .tutor-tabs-list::-webkit-scrollbar-thumb {
-        background: #ccc !important;
-        border-radius: 2px !important;
-    }
-
-    .tutor-tabs-content {
-        padding: 1.2rem 0.5rem 2rem 0.5rem !important;
-        width: 100vw !important;
-        max-width: 100vw !important;
-        min-width: 0 !important;
-        box-sizing: border-box !important;
-        margin: 0 auto !important;
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: center !important;
-        justify-content: center !important;
-    }
-
-    .tutor-tab-content {
-        width: 100%;
-        max-width: 400px;
-        margin: 0 auto;
-        box-sizing: border-box;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .tutor-section-title-lg,
-    .tutor-section-title {
-        text-align: center !important;
-        width: 100%;
-    }
-
-    .tutor-availability-grid {
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: center !important;
-        gap: 1.5rem !important;
-        width: 100vw !important;
-        max-width: 100vw !important;
-        box-sizing: border-box !important;
-        padding: 0 0.5rem !important;
-        overflow-x: hidden !important;
-    }
-
-    .tutor-calendar-box,
-    .tutor-time-selector-box {
-        margin: 0 auto !important;
-        width: 100% !important;
-        max-width: 340px !important;
-        min-width: 0 !important;
-        box-sizing: border-box !important;
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: center !important;
-        justify-content: center !important;
-        padding-left: 0.5rem !important;
-        padding-right: 0.5rem !important;
-        overflow-x: hidden !important;
-    }
-
-    .tutor-time-selector-col {
-        display: block !important;
-        width: 100% !important;
-        margin: 0 auto !important;
-        box-sizing: border-box !important;
-        overflow-x: hidden !important;
-    }
-
-    .tutor-subtab-content {
-        width: 100%;
-        max-width: 400px;
-        margin: 0 auto;
-        box-sizing: border-box;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .tutor-reviews-box {
-        flex-direction: column !important;
-        gap: 1rem !important;
-        align-items: center !important;
-        width: 100% !important;
-        max-width: 400px !important;
-        margin: 0 auto !important;
-    }
-
-    .tutor-reviews-summary,
-    .tutor-reviews-details {
-        width: 100% !important;
-        padding: 0.5rem !important;
-        box-sizing: border-box !important;
-        margin: 0 auto !important;
-    }
-
-    /* REVERTIR estilos de .tutor-card-main y sus hijos a como estaban antes */
-    .tutor-card-main {
-        border-radius: 0rem;
-    }
-
-    .tutor-banner {
-        position: relative;
-        overflow: hidden;
-        width: 100%;
-        height: 280px;
-        background: #000;
-    }
-
-    .tutor-banner::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 150px;
-        z-index: 2;
-        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), transparent);
-        pointer-events: none;
-    }
-
-    .tutor-profile-img {
-        left: 50% !important;
-        transform: translateX(-50%) !important;
-        position: relative !important;
-        top: 0 !important;
-        margin-top: -5rem !important;
-    }
-
-    .tutor-profile-info {
-        margin-left: 0 !important;
-        padding-left: 0 !important;
-        margin-top: 0.5rem !important;
-        text-align: center !important;
-    }
-
-    .tutor-profile-meta {
-        display: flex;
-        flex-flow: column wrap;
-        justify-content: center;
-        align-items: center;
-        gap: 1px;
-    }
-
-    .tutor-profile-quote {
-        margin-top: 0rem;
-        padding: 1rem 1rem;
-        text-align: center;
-    }
-
-    /* FIN REVERTIR estilos de .tutor-card-main */
-    /* Ajuste para que los textos largos en skills/materias hagan salto de línea */
-    .tutor-section-skills-grupos {
-        width: 100% !important;
-        box-sizing: border-box !important;
-        overflow-x: hidden !important;
-        word-break: break-word !important;
-    }
-
-    .tutor-section-skills-materias {
-        display: flex !important;
-        flex-wrap: wrap !important;
-        gap: 1.2rem !important;
-        margin-top: 0.5rem !important;
-        margin-left: 0 !important;
-        width: 100% !important;
-        box-sizing: border-box !important;
-        overflow-x: hidden !important;
-        word-break: break-word !important;
-    }
-
-    .tutor-skill-materia {
-        word-break: break-word !important;
-        white-space: normal !important;
-        max-width: 80vw !important;
-        min-width: 0 !important;
-        box-sizing: border-box !important;
-    }
-
-    .tutor-subtab-btn {
-        width: 100px;
-        padding: 0.7rem 0.4rem;
-    }
-
-    /*---------- modal reservar -------------*/
-    .modal-content {
-        width: 90%;
-        height: 95%;
-        padding: 0rem;
-        margin: 0rem;
-        overflow: scroll;
-    }
-
-    .modal-body {
-        display: flex;
-        flex-direction: column;
-        /* QR a la izquierda, form a la derecha */
-    }
-
-    .modal-qr-column {
-        height: auto;
-        display: flex;
-        justify-content: center;
-        padding: 0.6rem 0.6rem 0rem 0.6rem;
-    }
-
-    .qr-image {
-        width: 100%;
-        height: auto;
-    }
-
-    .modal-form-column {
-        width: 100%;
-        padding: 1rem;
-        display: flex;
-        justify-content: start;
-        gap: 5px;
-    }
-
-    .action-buttons {
-        flex-direction: row;
-    }
-
-    .form-title {
-        text-align: centers;
-    }
-
-    /* Estilos para el input de archivo personalizado */
-    .file-input-label {
-        gap: 0.2rem;
-        padding: 0.5rem 1rem;
-        font-weight: 500;
-        width: 100%;
-    }
-
-    .file-name-display {
-        font-size: 0.675rem;
-        color: #6b7281;
-        margin-top: 0.25rem;
-        padding: 0rem;
-    }
-
-    .info-box p {
-        margin-top: 0.25rem;
-        padding: 0.4rem 1rem;
-    }
-
-    .select-input {
-        font-weight: 500;
-    }
-
-    /* Cupones */
-    .coupon-input-group {
-        width: 100%;
-    }
-
-    .coupon-input {
-        width: 100%;
-    }
-
-    .btn btn-secondary {
-        width: 30%;
-    }
-
-    .coupon-dropdown-content {
-        min-width: 80% !important;
-        /* Ocupa todo el ancho del contenedor */
-    }
-
-    .applied-coupon-container {
-        min-width: 100px;
-    }
-}
 
 .tutor-main-bg {
     background: #fff !important;
@@ -2660,36 +2206,209 @@ body.modal-open {
 }
 
 
-/* Media Query para pantallas más grandes (sm) */
 
-@media (min-width: 640px) {
-    .info-card-title {
-        font-size: 1.125rem;
+
+
+/* ======================================================= */
+/* 17. TUTOR TOOLTIP (Instrucciones Hover - CORREGIDO)     */
+/* ======================================================= */
+
+/* 1. CONFIGURACIÓN BASE (Para los títulos del calendario) */
+.tutor-tooltip-wrapper {
+    position: relative;
+    display: inline-flex; /* IMPORTANTE: inline-flex evita que rompa el diseño */
+    width: auto;          /* IMPORTANTE: Solo ocupa el ancho del texto */
+    align-items: center;  /* Alinea el texto con el icono i */
+    gap: 6px;             /* Espacio entre texto e icono */
+    text-decoration: none;
+    vertical-align: middle;
+}
+
+/* 2. EXCEPCIÓN PARA EL BOTÓN DE RESERVAR (Para mantenerlo grande) */
+/* Como el botón es un enlace <a>, le forzamos el ancho completo */
+a.tutor-tooltip-wrapper {
+    display: block;
+    width: 100%;
+}
+
+.favorite-button-container-blue {
+    display: block;
+    width: 100%;
+}
+
+/* 3. LA CAJA DEL MENSAJE (Globo) */
+.tutor-tooltip-content {
+    position: absolute;
+    z-index: 99999;
+    
+    /* Diseño Visual */
+    background-color: #1f2937; /* Gris oscuro */
+    color: #ffffff;
+    padding: 12px 16px;
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    
+    /* Configuración por defecto (Centrado - Para el botón) */
+    width: 240px;
+    text-align: center;
+    bottom: 115%;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    
+    /* Animación */
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease-in-out;
+    pointer-events: none;
+}
+
+/* 4. CONTENIDO INTERNO */
+.tutor-tooltip-content strong {
+    display: block;
+    color: #fbbf24; /* Amarillo */
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+}
+
+.tutor-tooltip-content p {
+    margin: 0;
+    font-size: 0.8rem;
+    line-height: 1.4;
+    color: #e5e7eb;
+}
+
+/* 5. FLECHITA (Por defecto centrada) */
+.tutor-tooltip-arrow {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -6px;
+    border-width: 6px;
+    border-style: solid;
+    border-color: #1f2937 transparent transparent transparent;
+}
+
+/* 6. INTERACCIÓN HOVER (General) */
+.tutor-tooltip-wrapper:hover .tutor-tooltip-content {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* ======================================================= */
+/* 7. MODIFICADORES PARA LOS TÍTULOS (Alineación Izquierda) */
+/* ======================================================= */
+
+.tooltip-left-align {
+    left: 0 !important; /* Alineado al inicio del texto */
+    transform: translateY(10px) !important; /* Reseteamos la traslación X */
+    text-align: left !important;
+    width: 260px; /* Un poco más ancho para texto largo */
+    bottom: 100% !important; /* Justo encima */
+    margin-bottom: 8px; /* Un poco de aire */
+}
+
+/* Ajuste de la flecha para alineación izquierda */
+.tooltip-left-align .tutor-tooltip-arrow {
+    left: 20px !important; /* Flecha a la izquierda */
+    margin-left: 0 !important;
+}
+
+/* Hover específico para alineación izquierda */
+.tutor-tooltip-wrapper:hover .tooltip-left-align {
+    transform: translateY(0) !important;
+}
+/* =================== RESPONSIVE DESIGN TABLETS=================== */
+
+/* =================== RESPONSIVE DESIGN TABLETS =================== */
+
+@media (max-width: 900px) {
+    .tutor-main {
+        padding: 1.5rem 0.5rem;
+        max-width: 100vw;
+        box-sizing: border-box;
     }
 
-    .info-card-meta {
-        flex-direction: row;
-        column-gap: 1.5rem;
-        row-gap: 0;
-        align-items: center;
+    .tutor-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .tutor-col-actions {
+        margin-top: 2rem;
+    }
+
+    .tutor-profile-info {
+        margin-left: 0;
+        padding-left: 0;
+        margin-top: 80px;
+    }
+
+    .tutor-card-main-content {
+        padding: 1.2rem;
+    }
+
+    .tutor-tabs-list {
+        gap: 1rem;
+        padding: 0 0.5rem;
+    }
+
+    .tutor-actions-card {
+        padding: 1.2rem;
     }
 }
 
-/* Solo móviles */
+/* =================== RESPONSIVE <= 768px =================== */
+
 @media (max-width: 768px) {
+
+    .tutor-tooltip-content {
+        display: none;
+    }
+
+    .review-form__star {
+        width: 2.5rem;
+        height: 2.5rem;
+        touch-action: manipulation;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+    .review-form__star.active {
+        color: #fbbf24;
+        fill: #fbbf24;
+    }
+
+    /* 🔥 Bloque táctil: debe estar dentro del media de 768px */
+    @media (hover: none) and (pointer: coarse) {
+        .review-form__star:hover {
+            color: inherit;
+            fill: inherit;
+        }
+
+        .review-form__star.active:hover {
+            color: #fbbf24;
+            fill: #fbbf24;
+        }
+    }
+
+    /* ===== Barra fija inferior (móvil) ===== */
+
     .tutor-col-actions {
         position: fixed;
         bottom: 0;
         left: 0;
         width: 100%;
-        z-index: 1000;
+        z-index: 10 !important;
         background-color: white;
         box-shadow: 0 -3px 12px rgba(0, 0, 0, 0.15);
         border-radius: 1rem 1rem 0 0;
         transition: transform 0.3s ease;
     }
 
-    /* Ocultar/mostrar con scroll */
     .tutor-col-actions.hidden {
         transform: translateY(100%);
     }
@@ -2700,7 +2419,7 @@ body.modal-open {
         padding: 0.75rem 1rem;
     }
 
-    .tutor-actions-price-box{
+    .tutor-actions-price-box {
         margin-bottom: 0.5rem;
     }
 
@@ -2718,37 +2437,448 @@ body.modal-open {
 
     .tutor-col-actions {
         border-radius: 1rem 1rem 0 0;
-        /* solo arriba */
     }
 
     .tutor-actions-card {
         border-radius: 1rem 1rem 0 0;
-        /* coincide con el contenedor */
     }
 
-    /* Agregar padding al contenido principal para evitar que se tape */
     .tutor-col-main {
-        padding-bottom: 80px; /* Altura aproximada de la barra fija */
-        z-index: 1; /* Asegurar que esté por debajo de la barra */
+        padding-bottom: 80px;
+        z-index: 1;
     }
 
-    /* Asegurar que el contenido principal tenga un z-index menor */
     .tutor-tabs-card {
         position: relative;
         z-index: 1;
     }
 
-    /* Alternativamente, puedes aplicar el padding a todo el main */
     .tutor-main {
-        padding-bottom: 120px !important;
+        padding-bottom: 120px;
     }
 
     .tutor-bg ~ footer,
     .tutor-bg footer,
     body:has(.tutor-bg) footer {
-        display: none !important;
+        display: none;
     }
+
+    a.tutor-tooltip-wrapper {
+        display: inline-flex;
+        width: 50%;
+    }
+    .favorite-button-container-blue {
+        display: inline-flex;
+        width: 50%;
+    }
+
     .tutor-btn-share {
         display: none;
+    }
+}
+
+/* =================== MIN-WIDTH 768 =================== */
+
+@media (min-width: 768px) {
+    .subjects-card {
+        padding: 2rem;
+    }
+}
+
+/* =================== MIN-WIDTH 640 =================== */
+
+@media (min-width: 640px) {
+    .review-form-container {
+        padding: 2rem;
+    }
+
+    .review-form__star {
+        width: 4rem;
+        height: 4rem;
+    }
+
+    .info-card-title {
+        font-size: 1.125rem;
+    }
+
+    .info-card-meta {
+        flex-direction: row;
+        column-gap: 1.5rem;
+        row-gap: 0;
+        align-items: center;
+    }
+}
+
+/* =================== MAX-WIDTH 600px =================== */
+
+@media (max-width: 600px) {
+
+    .review-form__rating-wrapper {
+        padding: 1rem 0;
+        gap: 0.5rem;
+        justify-content: center;
+    }
+
+    html,
+    body {
+        width: 100vw;
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body.modal-open {
+        overflow: hidden;
+    }
+
+    .tutor-breadcrumbs {
+        display: none;
+    }
+
+    .tutor-bg {
+        width: 100vw;
+        max-width: 100vw;
+        min-width: 0;
+        overflow-x: hidden;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .tutor-main {
+        width: 100vw;
+        max-width: 100vw;
+        min-width: 0;
+        margin: 0;
+        padding: 0 0 2rem 0;
+        box-sizing: border-box;
+        overflow-x: hidden;
+    }
+
+    .tutor-grid {
+        width: 100vw;
+        max-width: 100vw;
+        min-width: 0;
+        margin: 0;
+        box-sizing: border-box;
+        overflow-x: hidden;
+    }
+
+    .tutor-tabs-card {
+        width: 100vw;
+        max-width: 100vw;
+        min-width: 0;
+        margin: 0;
+        border-radius: 30px;
+        box-sizing: border-box;
+        overflow-x: hidden;
+        padding: 0;
+    }
+
+    .tutor-tabs-nav {
+        width: 100vw;
+        max-width: 100vw;
+        min-width: 0;
+        box-sizing: border-box;
+        overflow-x: auto;
+        margin: 0;
+        padding: 0.4rem 0.5rem;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .tutor-tabs-nav::-webkit-scrollbar {
+        display: none;
+    }
+
+    .tutor-tabs-list {
+        display: flex;
+        flex-direction: row;
+        gap: 0.2rem;
+        width: max-content;
+        box-sizing: border-box;
+        overflow-x: auto;
+        margin: 0;
+        padding: 0;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .tutor-tabs-list::-webkit-scrollbar {
+        height: 4px;
+        background: #eee;
+    }
+
+    .tutor-tabs-list::-webkit-scrollbar-thumb {
+        background: #ccc;
+        border-radius: 2px;
+    }
+
+    .tutor-tabs-content {
+        padding: 1.2rem 0.5rem 2rem 0.5rem;
+        width: 100vw;
+        max-width: 100vw;
+        min-width: 0;
+        box-sizing: border-box;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .tutor-tab-content {
+        width: 100%;
+        max-width: 400px;
+        margin: 0 auto;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .tutor-section-title-lg,
+    .tutor-section-title {
+        text-align: center;
+        width: 100%;
+    }
+    .space-languages-perfil {
+        flex-wrap: wrap;
+        flex-direction: row;
+        justify-content: center;
+        gap: 1rem;
+        max-width: 380px;
+    }
+
+    .tutor-availability-grid {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+        width: 100vw;
+        max-width: 100vw;
+        box-sizing: border-box;
+        padding: 0 0.5rem;
+        overflow-x: hidden;
+    }
+
+    .tutor-calendar-box,
+    .tutor-time-selector-box {
+        margin: 0 auto;
+        width: 100%;
+        max-width: 340px;
+        min-width: 0;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+        overflow-x: hidden;
+    }
+
+    .tutor-time-selector-col {
+        display: block;
+        width: 100%;
+        margin: 0 auto;
+        box-sizing: border-box;
+        overflow-x: hidden;
+    }
+
+    .tutor-subtab-content {
+        width: 100%;
+        max-width: 400px;
+        margin: 0 auto;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .tutor-reviews-box {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: center;
+        width: 100%;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    .tutor-reviews-summary,
+    .tutor-reviews-details {
+        width: 100%;
+        padding: 0.5rem;
+        box-sizing: border-box;
+        margin: 0 auto;
+    }
+
+    .tutor-card-main {
+        border-radius: 0rem;
+    }
+
+    .tutor-banner {
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+        height: 280px;
+        background: #000;
+    }
+
+    .tutor-banner::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 150px;
+        z-index: 2;
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), transparent);
+        pointer-events: none;
+    }
+
+    .tutor-profile-img {
+        left: 50%;
+        transform: translateX(-50%);
+        position: relative;
+        top: 0;
+        margin-top: -5rem;
+    }
+
+    .tutor-profile-info {
+        margin-left: 0;
+        padding-left: 0;
+        margin-top: 0.5rem;
+        text-align: center;
+    }
+
+    .tutor-profile-meta {
+        display: flex;
+        flex-flow: column wrap;
+        justify-content: center;
+        align-items: center;
+        gap: 1px;
+    }
+
+    .tutor-profile-quote {
+        margin-top: 0rem;
+        padding: 1rem 1rem;
+        text-align: center;
+    }
+
+    .tutor-section-skills-grupos {
+        width: 100%;
+        box-sizing: border-box;
+        overflow-x: hidden;
+        word-break: break-word;
+    }
+
+    .tutor-section-skills-materias {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.2rem;
+        margin-top: 0.5rem;
+        margin-left: 0;
+        width: 100%;
+        box-sizing: border-box;
+        overflow-x: hidden;
+        word-break: break-word;
+    }
+
+    .tutor-skill-materia {
+        word-break: break-word;
+        white-space: normal;
+        max-width: 80vw;
+        min-width: 0;
+        box-sizing: border-box;
+    }
+
+    .tutor-subtab-btn {
+        width: 100px;
+        padding: 0.7rem 0.4rem;
+    }
+
+    .modal-content {
+        width: 90%;
+        height: 95%;
+        padding: 0rem;
+        margin: 0rem;
+        overflow: scroll;
+    }
+
+    .modal-body {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .modal-qr-column {
+        height: auto;
+        display: flex;
+        justify-content: center;
+        padding: 0.6rem 0.6rem 0rem 0.6rem;
+    }
+
+    .qr-image {
+        width: 100%;
+        height: auto;
+    }
+
+    .modal-form-column {
+        width: 100%;
+        padding: 1rem;
+        display: flex;
+        justify-content: start;
+        gap: 5px;
+    }
+
+    .action-buttons {
+        flex-direction: row;
+    }
+
+    .form-title {
+        text-align: centers;
+    }
+
+    .file-input-label {
+        gap: 0.2rem;
+        padding: 0.5rem 1rem;
+        font-weight: 500;
+        width: 100%;
+    }
+
+    .file-name-display {
+        font-size: 0.675rem;
+        color: #6b7281;
+        margin-top: 0.25rem;
+        padding: 0rem;
+    }
+
+    .info-box p {
+        margin-top: 0.25rem;
+        padding: 0.4rem 1rem;
+    }
+
+    .select-input {
+        font-weight: 500;
+    }
+
+    .coupon-input-group {
+        width: 100%;
+    }
+
+    .coupon-input {
+        width: 100%;
+    }
+
+    .btn btn-secondary {
+        width: 30%;
+    }
+
+    .coupon-dropdown-content {
+        min-width: 80%;
+    }
+
+    .applied-coupon-container {
+        min-width: 100px;
     }
 }

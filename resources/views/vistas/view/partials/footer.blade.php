@@ -100,11 +100,6 @@
                     <img src="{{ asset('images/linkedin.png') }}" alt="linkedind link" class="icon-img">
                 </div>
             </a>
-            <a href="https://wa.link/yiegi5" target="_blank">
-                <div class="circle-icon-w">
-                    <img src="{{ asset('images/whatsapp.png')}}" alt="WhatsApp link" class="icon-img">
-                </div>
-            </a>
         </div>
         <hr>
         <p class="derechos-reservados">© 2025 classgobol. <span data-translate="todos_derechos"></span></p>

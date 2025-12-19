@@ -64,6 +64,15 @@ new class extends Component {
             ],
 
             [
+                'title' => __('general.surveys'),
+                'icon' => 'icon-clipboard',
+                'routes' => [
+                    'admin.encuesta-resumen' => __('general.survey_statistics'),
+                    'admin.encuesta' => __('general.all_surveys'),
+                ]
+            ],
+
+            [
                 'title' => __('sidebar.transaction_payment'),
                 'icon' => 'icon-credit-card',
                 'routes' => [
@@ -106,7 +115,7 @@ new class extends Component {
             ],
             $this->menuItems[] = [
                 'title' => __('alianza.alianzas'),
-                'icon' => 'icon-bold',
+                'icon' => 'icon-link',
                 'routes' => [
                     'admin.alianzas-listing' => __('alianza.alianza_listing'),
                     'admin.create-alianza' => __('alianza.create_alianza'),
@@ -145,6 +154,14 @@ new class extends Component {
                     'ltu.translation.index' => __('sidebar.languages'),
                 ],
             ],
+            [
+                'title' => 'Nuestro Equipo',
+                'icon' => 'icon-users',
+                'routes' => [
+                    'admin.team-listing' => 'Ver Lista', 
+                    'admin.create-team'  => 'Crear Nuevo',
+                ]
+            ]
 
 
         ];
@@ -201,7 +218,8 @@ new class extends Component {
         </div>
         <div class="tb-sidebartop">
             <strong class="am-logo">
-                <x-application-logo />
+                {{-- <x-application-logo /> --}}
+                <img src="{{ asset('images/ClassGo1-22.png') }}" alt="" srcset="">
             </strong>
             <a class="tb-icongray" href="javascript:void(0)"><i class="icon-layout"></i></a>
         </div>

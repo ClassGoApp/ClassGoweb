@@ -6,6 +6,8 @@
         <h1 class="hero-title-abajo" data-translate="tutoring"></h1>
         <p class="hero-subtext" data-translate="reach_goals">
         </p>
+        <p class="hero-subtext-movil" data-translate="reach_goals_short">
+        </p>
 
         {{-- <div class="buscador-home">
             @livewire('buscador-tutor')

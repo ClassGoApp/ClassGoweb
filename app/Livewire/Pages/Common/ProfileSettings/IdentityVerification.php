@@ -184,17 +184,36 @@ class IdentityVerification extends Component
 
 
         $perfil= Auth::user()->profile;
-        $perfilcompleto = ($perfil->image != null ) && ($perfil->intro_video !=null) && ($perfil->gender != null);
-        //dd($perfilcompleto);
-
         $googlecalendar = AccountSetting::where('user_id', Auth::user()->id)->first();
         $cuentatutor=UserPayoutMethod::where('user_id', Auth::user()->id)->first();      
  
+        // Validar requisitos de perfil y generar mensaje descriptivo
+        $errores = [];
+        
+        if ($perfil->image == null) {
+            $errores[] = '• ' . __('profile.missing_profile_photo');
+        }
+        
+        if ($perfil->intro_video == null) {
+            $errores[] = '• ' . __('profile.missing_intro_video');
+        }
+        
+        if ($perfil->gender == null) {
+            $errores[] = '• ' . __('profile.missing_gender');
+        }
+        
+        if ($googlecalendar == null) {
+            $errores[] = '• ' . __('profile.missing_google_calendar');
+        }
+        
+        if ($cuentatutor == null) {
+            $errores[] = '• ' . __('profile.missing_payout_method');
+        }
 
-
-        if ($perfilcompleto==false  || $googlecalendar==null || $cuentatutor==null) {
-            session()->flash('error', __('general.incomplete_profile_error'));
-            //return $this->redirect(route(Auth::user()->role . '.profile.personal-details'), navigate: true);
+        if (!empty($errores)) {
+            $mensajeError = implode("\n", $errores);
+            session()->flash('warning_profile_requirements', $mensajeError);
+            return;
         } else {
             try {
                 $this->data['address']['lat'] = 0.0;

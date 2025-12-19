@@ -25,7 +25,6 @@
 .profile-gender-row {
     display: flex;
     align-items: center;
-    gap: 2rem;
     margin-bottom: 1.5rem;
 }
 .profile-gender-label {
@@ -36,7 +35,7 @@
 }
 .profile-gender-options {
     display: flex;
-    gap: 2rem;
+    gap: 1rem;
 }
 .profile-gender-radio {
     display: flex;

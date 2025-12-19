@@ -80,6 +80,9 @@ class UpdateAlianza extends Component
             $ext = $this->imagen->getClientOriginalExtension();
             $this->imagen->storeAs('public/optionbuilder/uploads', $random . '.' . $ext);
             $validated['imagen'] = 'optionbuilder/uploads/' . $random . '.' . $ext;
+        } else {
+            // Remove imagen from validated data if no new image was uploaded
+            unset($validated['imagen']);
         }
 
         $this->alianza->update($validated);

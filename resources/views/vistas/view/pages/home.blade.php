@@ -26,42 +26,25 @@
         @include('vistas.view.pages.components.home.visual-phone')
     </section>
 
+    <!--Buscar Tutor-->
     <section class="buscar-tutor-section">
         @include('vistas.view.pages.components.home.buscar-tutor')
     </section>
 
     <!--TUTORES DESTACADOS-->
     <section class="tutors-container fade-up">
+    
         <h1 class="over-text">
-            <div class="linea"></div><span data-translate="featured_tutors"></span>
-            <div class="linea"></div>
+        <div class="linea"></div><span data-translate="featured_tutors"></span>
+        <div class="linea"></div>
         </h1>
         <h1 class ="tutor ideal" data-translate="selected_tutors"></h1>
         <p data-translate="academic_variety"></p>
+
 
         @include('vistas.view.pages.components.home.card-tutor-destacado')
+
     </section>
-
-    <!--CARRUSEL ANIMADO TUGO-->
-    {{-- <section class="tugo-carousel fade-up">
-        <h1 class="over-text">
-            <div class="linea"></div><span data-translate="featured_tutors"></span>
-            <div class="linea"></div>
-        </h1>
-        <h1 class ="tutor ideal" data-translate="selected_tutors"></h1>
-        <p data-translate="academic_variety"></p>
-        <div class="tugo-container">
-            <div class="text-zone">
-                <p class="intro-text">En ClassGo encuentras tutorías de...</p>
-                <div class="animated-word" id="animatedWord">Idiomas</div>
-            </div>
-
-            <div class="mascot-panel">
-                <img id="mascot" class="mascot" src="/images/tugos-skin/Interpretación-y-Traducción-de-Idiomas.webp"
-                    alt="Tugo">
-            </div>
-        </div>
-    </section> --}}
 
     <!--FILTRO DE MATERIAS-->
     <section class="filtro_materias fade-up">
@@ -81,7 +64,7 @@
     </section>
 
     <!-- INSTALA NUESTRA APP -->
-    <section class="section-app fade-up">
+    <section>
         @include('vistas.view.pages.components.home.nuestra-app')
     </section>
 
@@ -96,6 +79,41 @@
             @include('components.alianzas', ['alianzas' => $alianzas])
         </div>
     </section>
+    
+    <!-- Encuesta-->
+    @php
+        $mostrarEncuesta = false;
+
+        // 1. INVITADO -> MOSTRAR
+        if (Auth::guest()) {
+            $mostrarEncuesta = true;
+        } 
+        // 2. LOGUEADO
+        else {
+            /** @var \App\Models\User $user */
+            $user = Auth::user();
+
+            // VALIDACIÓN DE ROL:
+            if ($user->hasRole('student')) {
+                
+                // VALIDACIÓN DE SI YA RESPONDIo
+                $yaRespondio = \App\Models\Encuesta::where('IdUser', $user->id)->exists();
+
+                if (!$yaRespondio) {
+                    // Es estudiante y NO ha respondido
+                    $mostrarEncuesta = true;
+                }
+            }
+            // Si es tutor se queda oculto.
+        }
+    @endphp
+    
+    {{-- Renderizado --}}
+    @if($mostrarEncuesta)
+        <section>
+            @include('vistas.view.pages.components.home.encuesta')
+        </section>
+    @endif
 
     <script>
         // const words = [

@@ -198,6 +198,43 @@
   color: inherit;
 }
 
+/* FONDO BORROSO */
+.img-blog-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(30px);
+  transform: scale(1.15);
+  opacity: 0.65;
+  z-index: 1;
+}
+
+/* IMAGEN PRINCIPAL */
+.img-blog-front {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  z-index: 2;
+}
+
+
+.padre-descripcion {
+  color: var(--secundary-color2);
+  justify-items: left;
+  line-height: 1.7;
+}
+
+.padre-descripcion > * {
+  color: inherit;
+}
+
+.descripcion{
+  color: var(--secundary-color2);
+}
 .credits-box {
   color: #e0f0f5;
   font-family: "Poppins", "Inter", sans-serif;

@@ -28,7 +28,7 @@ return [
     'latest_changes_the_live' => 'Guarde y actualice los últimos cambios en vivo',
     'female' => 'Femenino',
     'save_update' => 'Guardar y actualizar',
-    'not_specified' => 'No especificado',
+    'not_specified' => 'Ninguno',
     'hour_rate' => 'Tarifa por hora',
     'hour_rate_placeholder' => 'Ingrese su tarifa horaria',
     'country' => 'País',
@@ -85,5 +85,13 @@ return [
     'remove' => 'Eliminar',
     'change_photo' => 'Cambiar foto',
     
+    // Mensajes de perfil incompleto
+    'complete_profile_requirements' => 'Para verificar tu identidad, primero debes completar los siguientes requisitos:',
+    'missing_profile_photo' => 'Foto de perfil',
+    'missing_intro_video' => 'Video de introducción',
+    'missing_gender' => 'Género',
+    'missing_google_calendar' => 'Conexión con Google Calendar (Ve a Configuración de Cuenta)',
+    'missing_payout_method' => 'Método de pago configurado (Ve a Panel > Preferencias > QR)',
+    'complete_now' => 'Completar ahora',
    
 ];

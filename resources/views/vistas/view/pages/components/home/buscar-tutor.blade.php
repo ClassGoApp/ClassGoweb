@@ -2,11 +2,13 @@
 <p class="header-main__subtitle">
     Domina cualquier materia con la ayuda de nuestros tutores expertos y alcanza tus metas académicas.
 </p>
+<div class="buscar-tutor-wrapper">
+        @livewire('buscar-tutor')
+</div>
 
-@livewire('buscar-tutor')
 
 <p class="header-main__subtitle" id="texto">
-        ¿Que deseas aprender?
+    ¿Que deseas aprender?
 </p>
 <script>
     const textoPlaceholder = document.querySelector('#texto');
@@ -17,7 +19,7 @@
         if (!inputElement) return;
 
         const texts = [
-            "Busca por nombre del tutor: Gariel Alpiry...",
+            "Busca por nombre del tutor: Gabriel Alpiry...",
             "Busca por materia: Matemáticas, Contabilidad...",
             "Buscar por temas: Álgebra, Cálculo..."
         ];
@@ -25,7 +27,7 @@
         const typingSpeed = 70;
         const erasingSpeed = 40;
         const newTextDelay = 500;
-        
+
         let textIndex = 0;
         let charIndex = 0;
 
@@ -53,6 +55,6 @@
             }
         }
 
-        setTimeout(type, newTextDelay); 
+        setTimeout(type, newTextDelay);
     });
 </script>

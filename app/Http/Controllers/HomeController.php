@@ -11,8 +11,10 @@ use App\Services\SiteService;
 use App\Services\CountUserService;
 use App\Repositories\TutorRepository;
 use App\Services\SlotBookingService;
+use App\Models\TeamMember;
 
-
+use App\Models\Encuesta; 
+use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
 
@@ -44,12 +46,19 @@ class HomeController extends Controller
         // Obtener alianzas
         $alianzas = $this->siteService->getAlliances();
 
+        // obtener team
+        $teamGroups = TeamMember::where('status', true)
+                        ->orderBy('order', 'asc')
+                        ->get()
+                        ->groupBy('order');
+        
         return view('vistas.view.pages.home', [
             'featuredTutors' => $featuredTutors,
             'alianzas' => $alianzas,
             'totalUsers' => $counts['totalUsers'],
             'totalEstudiantes' => $counts['studentCount'],
-            'totalTutores' => $counts['tutorCount']
+            'totalTutores' => $counts['tutorCount'],
+            'teamGroups' => $teamGroups
 
         ]);
     }
@@ -58,9 +67,16 @@ class HomeController extends Controller
     {
         // Obtener alianzas
         $alianzas = $this->siteService->getAlliances();
+        
+        // obtener team
+        $teamGroups = TeamMember::where('status', true)
+                        ->orderBy('order', 'asc')
+                        ->get()
+                        ->groupBy('order');
 
         return view('vistas.view.pages.nosotros', [
-            'alianzas' => $alianzas
+            'alianzas' => $alianzas,
+            'teamGroups' => $teamGroups
         ]);
     }
 
@@ -168,5 +184,58 @@ class HomeController extends Controller
             'searchTerm' => $search,
             'topSubjects' => $topSubjects,
         ]);
+    }
+    public function storeEncuesta(Request $request)
+    {
+        $user = Auth::user();
+        $contactValue = $request->Contact;
+        
+        // VERIFICACIÓN CORRECTA SEGÚN TU MODELO USER.PHP
+        if ($user) {
+            // Usamos la relación profile() definida en la línea 86 de User.php
+            // Y accedemos a phone_number (según tu captura de base de datos anterior)
+            if ($user->profile && $user->profile->phone_number) {
+                $contactValue = $user->profile->phone_number;
+            }
+        }
+        
+        $rules = [
+            'Question_1' => 'required|boolean',
+            'Question_2' => 'required|integer',
+            // Question_3 es opcional, no necesita regla
+        ];
+
+        // Solo validamos que el Contact sea obligatorio/único si es GUEST.
+        // Si es AUTH, asumimos que ya lo validamos antes o confiamos en la BD de usuarios.
+        if (!$user) {
+            $rules['Contact'] = 'required|string|max:20|unique:encuesta,Contact';
+        } else {
+            // Opcional: Verificar que el usuario no haya contestado ya (por ID)
+            $yaContesto = \App\Models\Encuesta::where('IdUser', $user->id)->exists();
+            if($yaContesto) {
+                return response()->json(['success' => false, 'message' => 'Ya has realizado esta encuesta anteriormente.'], 422);
+            }
+        }
+
+        $request->validate($rules, [
+            'Contact.unique' => 'Este número ya tiene un cupón activo.',
+            'Contact.required' => 'El contacto es obligatorio.',
+        ]);
+
+        // 3. Guardar
+        try {
+            \App\Models\Encuesta::create([
+                'Question_1' => $request->Question_1,
+                'Question_2' => $request->Question_2,
+                'Question_3' => $request->Question_3,
+                'Contact'    => $contactValue, // Usamos la variable calculada arriba
+                'IdUser'     => $user ? $user->id : null,
+            ]);
+
+            return response()->json(['success' => true, 'message' => '¡Encuesta guardada con éxito!'], 200);
+
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Error: ' . $e->getMessage()], 500);
+        }
     }
 }

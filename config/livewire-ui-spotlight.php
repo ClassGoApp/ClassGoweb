@@ -3,7 +3,7 @@
 use App\Livewire\Components\SearchTutor;
 use App\Spotlight\Logout;
 use App\Spotlight\ManageSessions;
-use App\Spotlight\perfildetailsearch;
+use App\Spotlight\PerfilDetailSearch;
 use App\Spotlight\Search;
 use App\Spotlight\SearchTutorCourses;
 use App\Spotlight\StudenBookings;
@@ -42,7 +42,7 @@ return [
        Logout::class,
        Search::class,
        ManageSessions::class,
-       perfildetailsearch::class,
+       PerfilDetailSearch::class,
        SearchTutorCourses::class,
        StudenBookings::class,
        StudentFavourites::class,

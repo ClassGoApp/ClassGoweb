@@ -41,6 +41,9 @@
         @include('vistas.view.pages.modals.modal-compartir')
     </div>
 
+    <!-- Modal Reserva (incluido, oculto hasta abrir) -->
+    @include('vistas.view.pages.modals.modal-reserva.content')
+
     <script>
         //Para los botones de favoritos
         document.addEventListener('DOMContentLoaded', () => {
@@ -281,6 +284,17 @@
 
 
 
+    </script>
+
+    <script>
+        document.addEventListener('livewire:init', () => {
+            Livewire.on('reload-page', (event) => {
+                const section = event.section || 'top'; // Sección por defecto
+                // Recargar y redirigir a la sección
+                window.location.href = window.location.pathname + '#' + section;
+                window.location.reload();
+            });
+        });
     </script>
 </div>
 @endsection
