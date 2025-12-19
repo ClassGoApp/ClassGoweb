@@ -67,7 +67,7 @@
                 </div>
                 <div class="box">
                     <h1 data-translate="preguntas"></h1>
-                    <a href="preguntas">
+                    <a href=" {{ route('preguntas')}}">
                         <p data-translate="preguntas_frecuentes"></p>
                     </a>
                 </div>

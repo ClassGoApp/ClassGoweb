@@ -131,10 +131,10 @@ class BeforeBlogsController extends Controller
 
     // Si en 'image' guardas ruta relativa de storage, genera URL pública.
     // Si ya es URL absoluta (http/https), la devuelve tal cual.
-    private function imageUrl(?string $path): string
-    {
-        if (!$path) return asset('img/placeholder.jpg');
-        if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) return $path;
-        return asset('storage/' . $path);
-    }
+    // private function imageUrl(?string $path): string
+    // {
+    //     if (!$path) return asset('img/placeholder.jpg');
+    //     if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) return $path;
+    //     return asset('storage/' . $path);
+    // }
 }
