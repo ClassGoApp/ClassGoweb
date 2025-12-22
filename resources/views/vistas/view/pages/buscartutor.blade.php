@@ -15,7 +15,7 @@
                 <p class="mobile-only">Nuestros tutores capacitados están aquí para ayudarte a construir bases sólidas y alcanzar tus objetivos académicos.</p>
             </div>
             <div class="buscartutor-hero-image">
-                <img src="{{ asset('storage/optionbuilder/uploads/740102-17-2025_0859pmTugo-saludando.gif') }}" alt="Mascota de ClassGo" class="buscartutor-hero-img" onerror="this.onerror=null; this.src='https://placehold.co/300x300/ffffff/023047?text=ClassGo';">
+                {{-- <img src="{{ asset('storage/optionbuilder/uploads/740102-17-2025_0859pmTugo-saludando.gif') }}" alt="Mascota de ClassGo" class="buscartutor-hero-img" onerror="this.onerror=null; this.src='https://placehold.co/300x300/ffffff/023047?text=ClassGo';"> --}}
             </div>
         </div>
     </section>

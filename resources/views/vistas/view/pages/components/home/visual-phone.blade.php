@@ -1,4 +1,4 @@
-<img class="visual-phone" src="{{ asset('images/home/img.png') }}" alt="">
+<img class="visual-phone" src="{{ asset('images/home/telefono.webp') }}" alt="">
 
 <div class="visual-wrapper" >
 </div>

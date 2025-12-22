@@ -8,7 +8,7 @@
     
     .buscar-header-content {
         background-color: var(--primary-color);
-        background-image: url('/images/home/Elipse.png');
+        background-image: url('/images/home/Elipse.webp');
         background-repeat: no-repeat;
         background-position: center calc(100% + 500px); /* Empuja la imagen 50px hacia abajo */
         background-size: 100% auto;
