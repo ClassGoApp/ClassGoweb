@@ -22,28 +22,19 @@
                                 <img src="{{ setting('_general.default_avatar_for_user') ? url(Storage::url(setting('_general.default_avatar_for_user')[0]['path'])) : resizedImage('placeholder.png', 50, 50) }}" alt="{{ $favourite->profile->image }}" />
                             @endif
                         <div class="am-resume_content">
-                            <div class="am-resume_item_title">
-                                <h3>{{$favourite->profile->full_name}}</h3>
-                                <div class="am-itemdropdown">
-                                    <a href="#" id="am-itemdropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="am-icon-ellipsis-horizontal-02"></i>
-                                    </a>
-                                    <ul class="am-itemdropdown_list dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                        <li>
-                                            <a href="{{ route('tutor-detail',['slug' => $favourite->profile->slug]) }}">
-                                                <i class="am-icon-eye-open-01"></i>
-                                                {{ __('profile.view_profile') }}
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" @click="$wire.dispatch('showConfirm', { id : {{ $favourite->id }}, action : 'remove-favourite-user' })">
-                                                <i class="am-icon-trash-02"></i>
-                                                {{ __('profile.remove_from_list') }}
-                                            </a>
-                                        </li>
-                                    </ul>
+                                <div class="am-resume_item_title">
+                                    <h3>{{$favourite->profile->full_name}}</h3>
+                                    <div class="am-favourite-actions">
+                                        <a href="{{ url('/tutores/' . $favourite->profile->slug) }}" class="btn btn-sm btn-outline-primary" title="Ver perfil">
+                                            <i class="am-icon-eye-open-01"></i>
+                                            Ver perfil
+                                        </a>
+                                        <button type="button" class="btn btn-sm btn-outline-danger" @click="$wire.dispatch('showConfirm', { id : {{ $favourite->id }}, action : 'remove-favourite-user' })" title="Eliminar de favoritos">
+                                            <i class="am-icon-trash-02"></i>
+                                            Eliminar
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
                             <ul class="am-resume_item_info">
                                 <li>
                                     <span>
@@ -83,4 +74,34 @@
 @vite([
 'public/css/flags.css'
 ])
+<style>
+.am-favourite-actions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.am-favourite-actions .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    white-space: nowrap;
+}
+
+.am-favourite-actions .btn i {
+    font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+    .am-favourite-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .am-favourite-actions .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+</style>
 @endpush
