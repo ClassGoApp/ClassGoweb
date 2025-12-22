@@ -40,7 +40,7 @@
         <!-- Columna Derecha: Imagen -->    
         <div class="image-app">
             <img
-                src="{{ asset('images/home/tugo-cel-optimizado.webp')}}"
+                src="{{ asset('images/home/TugoCelular.webp')}}"
                 alt="ClassGo"onerror="this.onerror=null;this.src='https://placehold.co/400x800/023047/FFFFFF?text=App';">
         </div>
     </div>

@@ -11,7 +11,7 @@
             <span class="subtitulo-dark">Gana un cupón exclusivo al finalizar</span>
         </h2>
         <div class="mascot-wrap-dark">
-            <img src="{{ asset(path: 'storage/optionbuilder/uploads/740102-17-2025_0859pmTugo-saludando.webp') }}" 
+            <img src="{{ asset(path: 'images/home/logoClassgo.webp') }}" 
                  alt="Tugo" class="mascot-img-dark"
                  onerror=this.src="{{ asset('images/Tugo-rostro.png') }}">
         </div>
@@ -61,7 +61,7 @@
         </div>
 
         <div class="modal-watermark">
-            <img src="{{ asset(path: 'storage/optionbuilder/uploads/740102-17-2025_0859pmTugo-saludando.webp') }}" alt="Watermark">
+            <img src="{{ asset(path: 'images/home/logoClassgo.webp') }}" alt="Watermark">
         </div>
 
         <div class="modal-body">
@@ -215,13 +215,14 @@
     .titulo-dark { color: #fff; font-size: 2.2rem; font-weight: 800; line-height: 1.2; margin-bottom: 30px; }
     .subtitulo-dark { font-size: 0.6em; font-weight: 400; opacity: 0.9; display: block; margin-top: 5px; }
     .mascot-img-dark { 
-        width: 180px; 
+        width: 130px; 
         max-width: 100%; 
         height: auto; 
         transform: scale(1.5); 
         pointer-events: none; 
         position: relative; 
         z-index: 1;
+        padding: 2rem 0 2rem 0;
     }
     /* 1. el envoltorio div recibe los clics y es estatico para evitar bugs */
     .btn-static-wrapper {
