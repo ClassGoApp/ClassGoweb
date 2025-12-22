@@ -11,6 +11,7 @@ use App\Services\SiteService;
 use App\Services\CountUserService;
 use App\Repositories\TutorRepository;
 use App\Services\SlotBookingService;
+use App\Models\TeamMember;
 
 use App\Models\Encuesta; 
 use Illuminate\Support\Facades\Auth;
@@ -45,12 +46,19 @@ class HomeController extends Controller
         // Obtener alianzas
         $alianzas = $this->siteService->getAlliances();
 
+        // obtener team
+        $teamGroups = TeamMember::where('status', true)
+                        ->orderBy('order', 'asc')
+                        ->get()
+                        ->groupBy('order');
+        
         return view('vistas.view.pages.home', [
             'featuredTutors' => $featuredTutors,
             'alianzas' => $alianzas,
             'totalUsers' => $counts['totalUsers'],
             'totalEstudiantes' => $counts['studentCount'],
-            'totalTutores' => $counts['tutorCount']
+            'totalTutores' => $counts['tutorCount'],
+            'teamGroups' => $teamGroups
 
         ]);
     }
@@ -59,9 +67,16 @@ class HomeController extends Controller
     {
         // Obtener alianzas
         $alianzas = $this->siteService->getAlliances();
+        
+        // obtener team
+        $teamGroups = TeamMember::where('status', true)
+                        ->orderBy('order', 'asc')
+                        ->get()
+                        ->groupBy('order');
 
         return view('vistas.view.pages.nosotros', [
-            'alianzas' => $alianzas
+            'alianzas' => $alianzas,
+            'teamGroups' => $teamGroups
         ]);
     }
 
