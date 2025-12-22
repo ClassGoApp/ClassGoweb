@@ -103,10 +103,6 @@
                     </div>
                 @endif
             </a>
-<<<<<<< HEAD
-=======
-
->>>>>>> 9ec26bb (arreglo de bugs:)
         @empty
             <p style="font-weight: 500; height: 477px;">No hay blogs disponibles.</p>
         @endforelse
