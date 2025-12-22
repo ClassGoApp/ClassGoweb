@@ -50,11 +50,11 @@
     <section class="filtro_materias fade-up">
         <h1 class="over-text">
             <div class="linea"></div>
-            <span>Materias que te pueden ayudar</span>
+            <span data-translate="filtro_materias_txt1"></span>
             <div class="linea"></div>
         </h1>
-        <h1 class="title">Explora Nuestras Materias</h1>
-        <p>Tutores listos en distintas áreas para ayudarte</p>
+        <h1 class="title"><span data-translate="filtro_materias_txt2"></span></h1>
+        <p data-translate="filtro_materias_txt3"></p>
         @include('vistas.view.pages.components.home.filtro-materias')
     </section>
 
