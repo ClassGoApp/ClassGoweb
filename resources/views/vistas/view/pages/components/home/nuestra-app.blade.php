@@ -4,8 +4,7 @@
         <!-- Columna Izquierda: Contenido de texto -->
         <div class="fade-left">
             <div class="text-app">
-                <p data-translate="facil_simple_rapido"></p>
-                <h1 data-translate="instala_app"></h1>
+                <h1 class="header-main__title" data-translate="instala_app"></h1>
                 <p data-translate="comienza_viaje_educativo"></p>
 
                 <!-- Lista de características -->
@@ -40,7 +39,7 @@
         <!-- Columna Derecha: Imagen -->    
         <div class="image-app">
             <img
-                src="{{ asset('images/home/TugoCelular.webp')}}"
+                src="{{ asset('images/home/AppCelular.webp')}}"
                 alt="ClassGo"onerror="this.onerror=null;this.src='https://placehold.co/400x800/023047/FFFFFF?text=App';">
         </div>
     </div>

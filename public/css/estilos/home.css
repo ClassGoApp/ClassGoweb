@@ -1554,7 +1554,7 @@ body {
   max-width: 1300px;
   margin: 0 auto;
   width: 100%;
-  padding: 1.3rem;
+  padding: 2rem;
   position: relative;
   z-index: 2;
 }
@@ -1661,7 +1661,7 @@ body {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  width: 106%;
+  width: 100%;
   overflow: hidden;
 }
 
