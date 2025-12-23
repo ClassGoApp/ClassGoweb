@@ -3,41 +3,46 @@
 body {
   background: white !important;
 }
-/* 
-@keyframes palpitar {
-  0% {
-    transform: scale(1);
-    opacity: 1;
-  }
 
-  5% {
-    transform: scale(1.05);
-    opacity: 1;
-  }
+.header-main__title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  line-height: 1.25;
+  text-align: center;
+  background: var(--bg-gradient2);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
 
- 
-  10% {
-    transform: scale(1);
-    opacity: 0.9;
-  }
+.header-main__title_ligth {
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1.25;
+  text-align: center;
+  color: white;
+}
 
-  15% {
-    transform: scale(1.05);
-    opacity: 1;
-  }
+.header-main__subtitle {
+  font-size: 1.125rem;
+  background: var(--bg-gradient4);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  max-width: 48rem;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
 
-  20% {
-    transform: scale(1);
-    opacity: 0.9;
-  }
-
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-
-
-} */
+.header-main__subtitle_ligth {
+  font-size: 1.125rem;
+  color: white;
+  max-width: 48rem;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
 
 .hero {
   height: 100vh;
@@ -593,9 +598,7 @@ body {
   background-repeat: no-repeat;
   background-position: top calc(100% + 10px);
   background-size: 100% auto;
-  min-height: 50vh;
-  padding: 5rem 2rem 1rem 2rem;
-
+  padding: 5rem 2rem;
 }
 
 .buscar-tutor-section h1 {
@@ -669,6 +672,10 @@ body {
 .mascot.fade {
   opacity: 0;
   transform: scale(0.9);
+}
+
+.tutors-container{
+  padding: 3rem 2rem;
 }
 
 /* ===== RESPONSIVE ===== */
@@ -1391,7 +1398,6 @@ body {
 
 .tutorias-container {
   background: white;
-  padding: 2rem 1rem;
 }
 
 .tutorias {
@@ -1694,7 +1700,9 @@ body {
     justify-content: center;
   }
 }
-
+.alianzas-container{
+  padding: 3rem 1rem;
+}
 .alianzas-card {
   width: 300px;
   height: 270px;

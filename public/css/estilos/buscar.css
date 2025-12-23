@@ -50,23 +50,6 @@
         height: 8rem;
     }
     
-    .header-main__title {
-        font-size: 2.25rem;
-        font-weight: 700;
-        line-height: 1.25;
-        text-align: center;
-    }
-    
-    .header-main__subtitle {
-        font-size: 1.125rem;
-        color: #DBEAFE;
-        /* blue-100 */
-        margin-top: 1rem;
-        max-width: 48rem;
-        margin-left: auto;
-        margin-right: auto;
-        text-align: center;
-    }
     /* 3. ESTILOS DE BÚSQUEDA (Ajustado a más grande y responsive) */
     
     .search-module {

@@ -33,13 +33,8 @@
 
     <!--TUTORES DESTACADOS-->
     <section class="tutors-container fade-up">
-    
-        <h1 class="over-text">
-        <div class="linea"></div><span data-translate="featured_tutors"></span>
-        <div class="linea"></div>
-        </h1>
-        <h1 class ="tutor ideal" data-translate="selected_tutors"></h1>
-        <p data-translate="academic_variety"></p>
+        <h1 class="header-main__title fade-up" data-translate="selected_tutors"></h1>
+        <p class="header-main__subtitle fade-up" data-translate="academic_variety"></p>
 
 
         @include('vistas.view.pages.components.home.card-tutor-destacado')
@@ -48,18 +43,15 @@
 
     <!--FILTRO DE MATERIAS-->
     <section class="filtro_materias fade-up">
-        <h1 class="over-text">
-            <div class="linea"></div>
-            <span>Materias que te pueden ayudar</span>
-            <div class="linea"></div>
-        </h1>
-        <h1 class="title">Explora Nuestras Materias</h1>
-        <p>Tutores listos en distintas áreas para ayudarte</p>
+        <h1 class="header-main__title fade-up">Explora Nuestras Materias</h1>
+        <p class="header-main__subtitle fade-up">Tutores listos en distintas áreas para ayudarte</p>
         @include('vistas.view.pages.components.home.filtro-materias')
     </section>
 
-    <!--GUIA PASO A PASO-->
+    <!--DESBLOQUEA TU POTENCIAL CON SENCILLOS PASOS-->
     <section class="potencial-container fade-up">
+        <h1 class="header-main__title_ligth fade-up" data-translate="unlock_potential"></h1>
+        <p class="header-main__subtitle_ligth fade-up" data-translate="improve_skills"></p>
         @include('vistas.view.pages.components.home.guia-pasos')
     </section>
 
@@ -75,7 +67,9 @@
         </div>
 
         <!-- ALIANZAS-->
-        <div class="fade-up">
+        <div class=" alianzas-container fade-up">
+            <h1 class="header-main__title"><span data-translate="alianzas_edu"></span></h1>
+            <p class="header-main__subtitle" data-translate="alianzas_Classgo_1"></p>
             @include('components.alianzas', ['alianzas' => $alianzas])
         </div>
     </section>

@@ -1,5 +1,5 @@
 <h1 class="header-main__title">Descubre un Tutor en Línea para tus Estudios</h1>
-<p class="header-main__subtitle">
+<p class="header-main__subtitle_ligth">
     Domina cualquier materia con la ayuda de nuestros tutores expertos y alcanza tus metas académicas.
 </p>
 <div class="buscar-tutor-wrapper">
@@ -7,7 +7,7 @@
 </div>
 
 
-<p class="header-main__subtitle" id="texto">
+<p class="header-main__subtitle_ligth" style="padding-top: 1rem;" id="texto">
     ¿Que deseas aprender?
 </p>
 <script>

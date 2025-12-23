@@ -1,10 +1,3 @@
-<h1 class="over-text ">
-    <div class="linea"></div>
-    <span data-translate="guide"></span>
-    <div class="linea"></div>
-</h1>
-<h1 class="unlock-potencial" data-translate="unlock_potential"></h1>
-<p data-translate="improve_skills"></p>
 <div class="steps">
     <!--CARD-->
     <div class="steps-card">
