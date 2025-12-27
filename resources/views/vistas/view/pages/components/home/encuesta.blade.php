@@ -11,15 +11,9 @@
             <span class="subtitulo-dark"><span data-translate="encuesta_txt3"></span></span>
         </h2>
         <div class="mascot-wrap-dark">
-<<<<<<< HEAD
             <img src="{{ asset(path: 'images/home/logoClassgo.webp') }}" 
                  alt="Tugo" class="mascot-img-dark"
                  onerror=this.src="{{ asset('images/Tugo-rostro.png') }}">
-=======
-            <img src="{{ asset(path: 'storage/optionbuilder/uploads/740102-17-2025_0859pmTugo-saludando.webp') }}"
-                alt="Tugo" class="mascot-img-dark"
-                onerror=this.src="{{ asset('images/Tugo-rostro.png') }}">
->>>>>>> fix/traducciones
         </div>
 
         @guest
@@ -86,11 +80,7 @@
                     </label>
                     <label class="option-card">
                         <input type="radio" name="p1" value="no">
-<<<<<<< HEAD
-                        <div class="card-inner"><span class="emoji">👎</span> <span>No lo encontré</span></div>
-=======
                         <div class="card-inner"><span class="emoji">👎</span> <span data-translate="encuesta_op2"></span></div>
->>>>>>> fix/traducciones
                     </label>
                 </div>
                 <div class="action-footer">
@@ -237,22 +227,6 @@
         position: relative;
         border-radius: 2rem 2rem 0 0;
     }
-<<<<<<< HEAD
-    #seccion-encuesta-wrapper * { box-sizing: border-box; }
-    .encuesta-card-dark { max-width: 800px; margin: 0 auto; }
-    .encuesta-top-dark { display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 20px; }
-    .bar-accent { width: 50px; height: 4px; background: #46c7e0; border-radius: 4px; }
-    .top-text-dark { color: #fff; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem; }
-    .titulo-dark { color: #fff; font-size: 2.2rem; font-weight: 800; line-height: 1.2; margin-bottom: 30px; }
-    .subtitulo-dark { font-size: 0.6em; font-weight: 400; opacity: 0.9; display: block; margin-top: 5px; }
-    .mascot-img-dark { 
-        width: 130px; 
-        max-width: 100%; 
-        height: auto; 
-        transform: scale(1.5); 
-        pointer-events: none; 
-        position: relative; 
-=======
 
     #seccion-encuesta-wrapper * {
         box-sizing: border-box;
@@ -309,7 +283,6 @@
         transform: scale(1.5);
         pointer-events: none;
         position: relative;
->>>>>>> fix/traducciones
         z-index: 1;
         padding: 2rem 0 2rem 0;
     }
