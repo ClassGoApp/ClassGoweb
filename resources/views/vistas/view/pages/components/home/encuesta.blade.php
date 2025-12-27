@@ -218,14 +218,19 @@
        1. ESTILOS SECCIÓN ORIGINAL
        ========================================= */
     #seccion-encuesta-wrapper {
-        background-image: linear-gradient(to right, #02011b, #054f72);
+        /* background-image: linear-gradient(to right, #02011b, #054f72); */
+        background-color: var(--primary-color);
+        background-image: url('/images/home/Elipse.webp');
+        background-repeat: no-repeat;
+        background-position: center calc(100% + 500px);
+        background-size: 100% auto;
         padding: 60px 20px;
         width: 100%;
         text-align: center;
         font-family: 'Montserrat', sans-serif;
         box-sizing: border-box;
         position: relative;
-        border-radius: 2rem 2rem 0 0;
+        border-radius: 4rem 4rem 0 0;
     }
 
     #seccion-encuesta-wrapper * {
