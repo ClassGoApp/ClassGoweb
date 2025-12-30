@@ -413,6 +413,9 @@
   margin-top: auto; /* lo empuja al fondo */
 }
 
+.alianza-descripcion{
+  color: var(--primary-color);
+}
 /* --- RESPONSIVE (unificado) --- */
 @media (max-width: 768px) {
   .alianzas-eventos-section { padding: 20px; }

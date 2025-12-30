@@ -33,33 +33,23 @@
 
     <!--TUTORES DESTACADOS-->
     <section class="tutors-container fade-up">
-    
-        <h1 class="over-text">
-        <div class="linea"></div><span data-translate="featured_tutors"></span>
-        <div class="linea"></div>
-        </h1>
-        <h1 class ="tutor ideal" data-translate="selected_tutors"></h1>
-        <p data-translate="academic_variety"></p>
-
-
+        <h1 class="header-main__title fade-up" data-translate="selected_tutors"></h1>
+        <p class="header-main__subtitle fade-up" data-translate="academic_variety"></p>
         @include('vistas.view.pages.components.home.card-tutor-destacado')
 
     </section>
 
     <!--FILTRO DE MATERIAS-->
     <section class="filtro_materias fade-up">
-        <h1 class="over-text">
-            <div class="linea"></div>
-            <span>Materias que te pueden ayudar</span>
-            <div class="linea"></div>
-        </h1>
-        <h1 class="title">Explora Nuestras Materias</h1>
-        <p>Tutores listos en distintas áreas para ayudarte</p>
+        <h1 class="header-main__title "><span data-translate="filtro_materias_txt2"></span></h1>
+        <p class="header-main__subtitle" data-translate="filtro_materias_txt3"></p>
         @include('vistas.view.pages.components.home.filtro-materias')
     </section>
 
-    <!--GUIA PASO A PASO-->
+    <!--DESBLOQUEA TU POTENCIAL CON SENCILLOS PASOS-->
     <section class="potencial-container fade-up">
+        <h1 class="header-main__title_ligth fade-up" data-translate="unlock_potential"></h1>
+        <p class="header-main__subtitle_ligth fade-up" data-translate="improve_skills"></p>
         @include('vistas.view.pages.components.home.guia-pasos')
     </section>
 
@@ -75,7 +65,9 @@
         </div>
 
         <!-- ALIANZAS-->
-        <div class="fade-up">
+        <div class=" alianzas-container fade-up">
+            <h1 class="header-main__title"><span data-translate="alianzas_edu"></span></h1>
+            <p class="header-main__subtitle" data-translate="alianzas_Classgo_1"></p>
             @include('components.alianzas', ['alianzas' => $alianzas])
         </div>
     </section>
@@ -116,74 +108,6 @@
     @endif
 
     <script>
-        // const words = [
-
-        //     {
-        //         text: "Química",
-        //         img: "/images/tugos-skin/Química-General.webp"
-        //     },
-        //     {
-        //         text: "Física",
-        //         img: "/images/tugos-skin/Física-Aplicada.webp"
-        //     },
-        //     {
-        //         text: "Matemáticas",
-        //         img: "/images/tugos-skin/Cálculo.webp"
-        //     },
-        //     {
-        //         text: "Programación",
-        //         img: "/images/tugos-skin/Inteligencia-de-Software-26.webp"
-        //     },
-        //     {
-        //         text: "Arte y edición",
-        //         img: "/images/tugos-skin/Producción-Audiovisual-Para-Plataformas-Digitales.webp"
-        //     },
-        //     {
-        //         text: "Electricidad y Electromecánica",
-        //         img: "/images/tugos-skin/Robótica-y-Automatización.webp"
-        //     },
-        //     {
-        //         text: "Idiomas",
-        //         img: "/images/tugos-skin/Interpretación-y-Traducción-de-Idiomas.webp"
-        //     },
-        //     {
-        //         text: "Creación de Contenidos",
-        //         img: "/images/tugos-skin/Tugo-influencer.webp"
-        //     },
-        //     {
-        //         text: "Mecánica Automotriz",
-        //         img: "/images/tugos-skin/Mecánica-Automotriz-Básica.webp"
-        //     },
-        //     {
-        //         text: "Contabilidad",
-        //         img: "/images/tugos-skin/Modelación-Financiera.webp"
-        //     },
-        // ];
-
-        // const animatedWord = document.getElementById("animatedWord");
-        // const mascot = document.getElementById("mascot");
-        // let i = 0;
-
-        // function changeWord() {
-        //     animatedWord.classList.remove("fade-in");
-        //     animatedWord.style.opacity = 0;
-        //     mascot.classList.add("fade");
-
-        //     setTimeout(() => {
-        //         animatedWord.textContent = words[i].text;
-        //         mascot.src = words[i].img;
-
-        //         animatedWord.style.animation = "none";
-        //         void animatedWord.offsetWidth; // reinicia la animación
-        //         animatedWord.style.animation = "fadeSlide 1s forwards";
-
-        //         mascot.classList.remove("fade");
-
-        //         i = (i + 1) % words.length;
-        //     }, 500);
-        // }
-
-        // setInterval(changeWord, 2500);
 
         document.addEventListener('DOMContentLoaded', function() {
 

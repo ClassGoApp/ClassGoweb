@@ -1,14 +1,4 @@
 <section class="client-testimonials-section">
-	<div class="section-header">
-		<span class="section-tagline"></span>
-		<h1 class="over-text"><span data-translate="alianzas"></span></h1>
-
-		<h1 class="section-title"><span data-translate="alianzas_edu"></span></h1>
-		<p class="section-description">
-			<span data-translate="alianzas_Classgo_1"></span>
-		</p>
-	</div>
-
 	<div class="client-carousel-wrapper">
 		<div id="client-carousel-container" class="client-carousel-container">
       <div id="client-carousel-track" class="client-carousel-track">
