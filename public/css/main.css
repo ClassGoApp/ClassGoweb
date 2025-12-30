@@ -9375,7 +9375,7 @@ body:has(.am-dragfile):before {
   border-radius: 20px;
   align-items: center;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   background: #233b4f url("../images/login/fondo-login.png") center no-repeat;
   background-size: cover;
   overflow: hidden;
@@ -9397,18 +9397,18 @@ body:has(.am-dragfile):before {
 */
 
 .am-login-left strong{
-    position: relative;
+    /* position: relative; */
   text-align: center;
-  top: -45%;
+  /* top: -45%; */
 }
 
 .am-login-left {
-  position: relative; /* Asegura que los hijos absolutos se posicionen relativos a este contenedor */
+  /* position: relative; */ /* Asegura que los hijos absolutos se posicionen relativos a este contenedor */
   height: 100vh; /* Altura del contenedor (puedes ajustarlo según tus necesidades) */
   display: flex;
   flex-direction: column; /* Organiza los elementos en columna */
-  justify-content: flex-end; /* Alinea el contenido al fondo */
-  align-items: center; /* Centra horizontalmente */
+  /* justify-content: flex-end; */ /* Alinea el contenido al fondo */
+  /* align-items: center; */ /* Centra horizontalmente */
 }
 
 .am-login-left figure {
