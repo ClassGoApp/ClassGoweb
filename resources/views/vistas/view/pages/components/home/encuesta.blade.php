@@ -247,7 +247,7 @@
         align-items: center;
         justify-content: center;
         gap: 15px;
-        margin-bottom: 20px;
+        margin-bottom: 15px;
     }
 
     .bar-accent {

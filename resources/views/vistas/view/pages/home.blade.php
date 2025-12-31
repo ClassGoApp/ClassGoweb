@@ -33,6 +33,11 @@
 
     <!--TUTORES DESTACADOS-->
     <section class="tutors-container fade-up">
+        <h3 class= "over-text">
+            <div class="linea"></div>
+            <span data-translate="featured_tutors"></span>
+            <div class="linea"></div>
+        </h3>
         <h1 class="header-main__title fade-up" data-translate="selected_tutors"></h1>
         <p class="header-main__subtitle fade-up" data-translate="academic_variety"></p>
         @include('vistas.view.pages.components.home.card-tutor-destacado')
@@ -41,6 +46,11 @@
 
     <!--FILTRO DE MATERIAS-->
     <section class="filtro_materias fade-up">
+        <h3 class= "over-text">
+            <div class="linea"></div>
+            <span data-translate="filtro_materias_txt1"></span>
+            <div class="linea"></div>
+        </h3>
         <h1 class="header-main__title "><span data-translate="filtro_materias_txt2"></span></h1>
         <p class="header-main__subtitle" data-translate="filtro_materias_txt3"></p>
         @include('vistas.view.pages.components.home.filtro-materias')
@@ -48,6 +58,11 @@
 
     <!--DESBLOQUEA TU POTENCIAL CON SENCILLOS PASOS-->
     <section class="potencial-container fade-up">
+        <h3 class= "encuesta-top-dark">
+            <div class="linea"></div>
+            <span data-translate="guide"></span>
+            <div class="linea"></div>
+        </h3>
         <h1 class="header-main__title_ligth fade-up" data-translate="unlock_potential"></h1>
         <p class="header-main__subtitle_ligth fade-up" data-translate="improve_skills"></p>
         @include('vistas.view.pages.components.home.guia-pasos')
@@ -66,12 +81,17 @@
 
         <!-- ALIANZAS-->
         <div class=" alianzas-container fade-up">
+            <h3 class= "over-text">
+            <div class="linea"></div>
+            <span data-translate="alianzas"></span>
+            <div class="linea"></div>
+        </h3>
             <h1 class="header-main__title"><span data-translate="alianzas_edu"></span></h1>
             <p class="header-main__subtitle" data-translate="alianzas_Classgo_1"></p>
             @include('components.alianzas', ['alianzas' => $alianzas])
         </div>
     </section>
-    
+
     <!-- Encuesta-->
     @php
         $mostrarEncuesta = false;
@@ -79,7 +99,7 @@
         // 1. INVITADO -> MOSTRAR
         if (Auth::guest()) {
             $mostrarEncuesta = true;
-        } 
+        }
         // 2. LOGUEADO
         else {
             /** @var \App\Models\User $user */
@@ -87,7 +107,6 @@
 
             // VALIDACIÓN DE ROL:
             if ($user->hasRole('student')) {
-                
                 // VALIDACIÓN DE SI YA RESPONDIo
                 $yaRespondio = \App\Models\Encuesta::where('IdUser', $user->id)->exists();
 
@@ -99,16 +118,15 @@
             // Si es tutor se queda oculto.
         }
     @endphp
-    
+
     {{-- Renderizado --}}
-    @if($mostrarEncuesta)
+    @if ($mostrarEncuesta)
         <section>
             @include('vistas.view.pages.components.home.encuesta')
         </section>
     @endif
 
     <script>
-
         document.addEventListener('DOMContentLoaded', function() {
 
             // ===========================
