@@ -614,6 +614,13 @@ body {
   color: var(--primary-color);
 }
 
+.linea {
+  background-color: var(--secundary-color);
+  height: 4px;
+  width: 50px;
+  border-radius: 10px;
+}
+
 .carousel-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
@@ -2628,6 +2635,7 @@ body {
     line-height: 130%;
     padding: 0.2rem 2rem 1rem 2rem;
   }
+
   .buscar-tutor-section p {
     display: block !important;
   }
@@ -2643,15 +2651,28 @@ body {
     display: block !important;
   }
   .buscar-tutor-section {
-    border-radius: 1rem;
-    background-size: 100% 57%;
+    border-radius: 3rem;
+    padding: 5rem 2rem;
+    height: auto;
+    margin: 0rem 1rem;
+
+    background-color: var(--primary-color);
+    background-image: url('/images/home/Elipse.webp');
+    background-repeat: no-repeat;
+    background-position: center calc(100% + 2px);
+    background-size: 100% auto;
   }
-  .header-main__title{
-    padding: 0 1rem 0 1rem;
+  .header-main__subtitle_ligth {
+    font-size: 1.125rem;
+    color: rgb(190, 189, 189);
+    max-width: 48rem;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    line-height: 25px;
+    padding-top: 1rem;
   }
-  .header-main__subtitle{
-    display: block ;
-  }
+
   .tutors-container p {
     display: block !important;
   }
@@ -2710,18 +2731,7 @@ body {
     font-size: clamp(20px, 8vw, 28px);
   }
   .buscar-tutor-section {
-    background-position: center bottom;
-    background-size: 0% auto;
-    padding: 4rem 0 1rem 0;
-  }
-  .buscar-tutor-wrapper {
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 300px;
+    
   }
 }
 /* =================== (max-width: 1200px) =================== */
