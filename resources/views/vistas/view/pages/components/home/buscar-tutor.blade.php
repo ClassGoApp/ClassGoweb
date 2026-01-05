@@ -1,11 +1,11 @@
-<h1 class="header-main__title"><span data-translate="buscar_tutor_txt1"></span></h1>
-<p class="header-main__subtitle_ligth" data-translate="buscar_tutor_txt2"></p>
-<div class="buscar-tutor-wrapper">
+<h1 class="header-main__title fade-up" ><span data-translate="buscar_tutor_txt1"></span></h1>
+<p class="header-main__subtitle_ligth fade-up" data-translate="buscar_tutor_txt2"></p>
+<div class="buscar-tutor-wrapper fade-up">
     @livewire('buscar-tutor')
 </div>
 
 
-<p class="header-main__subtitle_ligth" style="padding-top: 1rem;" id="texto" data-translate="buscar_tutor_txt3"></p>
+<p class="header-main__subtitle_ligth fade-up" style="padding-top: 1rem;" id="texto" data-translate="buscar_tutor_txt3"></p>
 <script>
     const textoPlaceholder = document.querySelector('#texto');
 
