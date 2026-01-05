@@ -221,7 +221,7 @@
 .buscartutor-tutorlist-section {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 48px 32px;
+    padding: 48px 0px
 }
 
 .buscartutor-tutorlist-space {
@@ -654,8 +654,8 @@
     .buscartutor-tutor-card {
         flex-direction: column;
         align-items: center;
-        padding: 1rem;
         gap: 0.3rem;
+    
     }
     .buscartutor-tutor-img {
         max-width: 80px;

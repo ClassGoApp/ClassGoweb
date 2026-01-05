@@ -1,11 +1,11 @@
 <div id="seccion-encuesta-wrapper">
     <div class="encuesta-card-dark">
-        <div class="encuesta-top-dark">
+        <div class="encuesta-top-dark fade-up">
             <span class="bar-accent"></span>
             <span class="top-text-dark"><span data-translate="encuesta_txt1"></span></span>
             <span class="bar-accent"></span>
         </div>
-        <h2 class="titulo-dark">
+        <h2 class="titulo-dark fade-up">
             <span data-translate="encuesta_txt2"></span>
             <br>
             <span class="subtitulo-dark"><span data-translate="encuesta_txt3"></span></span>
