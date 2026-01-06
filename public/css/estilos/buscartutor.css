@@ -694,9 +694,8 @@
         width: 100%;
         font-size: 1rem;
     }
-    .buscartutor-pagination {
-        margin-top: 1.5rem;
-    }
+
+    
     /* 5. Estilos de "no resultados" */
     .no-results-icon-wrapper {
         background-color: white;

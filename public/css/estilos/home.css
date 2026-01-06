@@ -2673,6 +2673,18 @@ body {
     padding-top: 1rem;
   }
 
+  .header-main__title {
+    font-size: 2.25rem;
+    font-weight: 700;
+    line-height: 1.25;
+    text-align: center;
+    background: var(--bg-gradient2);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  
+  }
+
   .tutors-container p {
     display: block !important;
   }
@@ -2733,6 +2745,7 @@ body {
   .buscar-tutor-section {
     
   }
+  
 }
 /* =================== (max-width: 1200px) =================== */
 /* home-mobile.css: Estilos responsivos para móvil (max-width: 1200px)  */

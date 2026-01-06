@@ -1,5 +1,5 @@
     <div class="container-buscartutor">
-    {{-- <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"> --}}
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"> 
     <!-- Componente de búsqueda y listado de tutores -->
     {{-- <section class="buscartutor-search-section">
         <div class="buscartutor-search-box">
@@ -165,46 +165,13 @@
                     justify-content: center;
                     margin-top: 2rem;
                 }
-                .buscartutor-pagination .pagination {
-                    display: flex;
-                    gap: 0.5rem;
-                    list-style: none;
-                    padding: 0;
-                }
-                .buscartutor-pagination .pagination li {
-                    display: inline-block;
-                }
-                .buscartutor-pagination .pagination li a,
-                .buscartutor-pagination .pagination li span {
-                    padding: 0.5rem 1rem;
-                    border-radius: 0.5rem;
-                    border: 1px solid #023047;
-                    color: #023047;
-                    background: #fff;
-                    font-weight: 600;
-                    text-decoration: none;
-                    transition: background 0.2s, color 0.2s;
-                }
-                .buscartutor-pagination .pagination li.active span,
-                .buscartutor-pagination .pagination li span[aria-current="page"] {
-                    background: #023047;
-                    color: #fff;
-                    border-color: #023047;
-                }
-                .buscartutor-pagination .pagination li a:hover {
-                    background: #FB8500;
-                    color: #fff;
-                    border-color: #FB8500;
-                }
-                .buscartutor-pagination .pagination li.disabled span {
-                    color: #aaa;
-                    background: #f5f5f5;
-                    border-color: #eee;
-                }
+                
             </style>
+            
             {{ $profiles->links() }}
         </div>
     </section>
 
     @endif
+
 </div>
