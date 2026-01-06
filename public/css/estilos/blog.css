@@ -23,7 +23,7 @@
 
 .blog-header-content {
   background: var(--primary-color);
-  background-image: url('/images/home/Elipse.png');
+  background-image: url("/images/home/Elipse.webp");
   background-repeat: no-repeat;
   background-position: center calc(100% + 250px);
   background-size: 100% auto;
@@ -31,28 +31,28 @@
   border-bottom-right-radius: 40px;
   display: flex;
   justify-content: space-between;
-  align-items: center; 
+  align-items: center;
   padding: 9.5rem 5rem 1rem 5rem;
   color: white;
 }
 
 .information {
   flex: 1;
-  max-width: 100%; 
+  max-width: 100%;
 }
 .information h1 {
-  font-size: 3.5rem; 
-  font-weight: 700; 
+  font-size: 3.5rem;
+  font-weight: 700;
   line-height: 1.2;
 }
 
 .information h2 {
   font-family: "Poppins", sans-serif;
   color: #cfd8dc;
-  font-weight: 400; 
+  font-weight: 400;
   font-size: 1.5rem;
   letter-spacing: 0.5px;
-  margin: 15px 0; 
+  margin: 15px 0;
   line-height: 1.1;
 }
 .filtro {
@@ -79,11 +79,11 @@
   height: 1.25rem;
 }
 .filtro-blog-input {
-  flex: 1; 
+  flex: 1;
   border: none;
   outline: none;
   font-size: 1rem;
-  margin-left: 0.5rem; 
+  margin-left: 0.5rem;
   max-width: 14rem;
   color: var(--primary-color);
 }
@@ -98,7 +98,7 @@
 }
 
 .button-buscar:hover {
-  background-color: #138ba8; 
+  background-color: #138ba8;
 }
 .button-buscar:active {
   box-shadow: inset 6px 7px 10px rgba(0, 0, 0, 0.6);
@@ -130,17 +130,15 @@
   z-index: 10;
   color: var(--secundary-color2);
 
-
   max-height: 195px;
   height: 150px;
   overflow-y: auto;
   padding: 0px 25px 15px 10px;
-    scroll-behavior: smooth;      
-  -webkit-overflow-scrolling: touch; 
-  overscroll-behavior: contain;  
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
   scroll-padding: 10px;
 }
-
 
 .sugerencias-lista::-webkit-scrollbar {
   display: none;
@@ -162,7 +160,7 @@
 }
 
 .sugerencias-lista li:hover {
-  scale: 1.05; 
+  scale: 1.05;
   box-shadow: 3px 4px 9px black;
 }
 
@@ -170,11 +168,11 @@
 @keyframes fadeInUp {
   0% {
     opacity: 0;
-    transform: translateY(15px); 
+    transform: translateY(15px);
   }
   100% {
     opacity: 1;
-    transform: translateY(0); 
+    transform: translateY(0);
   }
 }
 .sin-coincidencias {
@@ -200,7 +198,7 @@
 .logo-tugo-megafono img {
   width: 100%;
   height: 100%;
-  object-fit: contain; 
+  object-fit: contain;
   display: block;
 }
 
@@ -211,18 +209,16 @@
   gap: 40px;
   background: var(--panel-background);
   width: 100%;
-  padding: 0px 80px 80px 80px;
+  padding: 50px 80px 80px 80px;
   opacity: 1;
   transform: scale(1);
   transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
 }
 
-
 .content-cards.fade-out {
   opacity: 0;
   transform: scale(0.97);
 }
-
 
 .content-cards.fade-in {
   opacity: 1;
@@ -237,8 +233,8 @@
   display: flex;
   width: 100%;
   background-color: var(--panel-background);
-  justify-content: space-between; 
-  align-items: center; 
+  justify-content: space-between;
+  align-items: center;
   gap: 15px;
   padding: 40px 20px;
 }
@@ -261,7 +257,7 @@
 }
 
 .blog-filters select {
-  max-width: 100%; 
+  max-width: 100%;
   padding: 8px 10px;
   border-radius: 8px;
   border: 2px solid var(--secundary-color);
@@ -277,22 +273,20 @@
 }
 .blog-filters select option {
   background-color: var(--secundary-color);
-  color: var(--primary-color); 
+  color: var(--primary-color);
   font-family: "Inter", sans-serif;
   font-size: 15px;
   padding: 10px;
   border-radius: 10px;
 }
 
-
 .blog-filters select option:hover {
-  background-color: var(--secundary-color); 
+  background-color: var(--secundary-color);
   color: #ffffff;
 }
 .blog-filters select option:focus {
   background-color: var(--secundary-color);
 }
-
 
 /* Estilo de cada cards */
 .cards {
@@ -319,8 +313,8 @@
   }
 }
 .cards:active {
-  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3); 
-  transform: scale(0.1); 
+  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3);
+  transform: scale(0.98) !important;
 }
 
 .cards:nth-child(1) {
@@ -351,10 +345,9 @@
   animation-delay: 0.63s;
 }
 
-
 /*  estilos dentro de las cards */
 
-.cards .img {
+/* .cards .img {
   width: 100%;
   padding: 8px;
   border-radius: 25px;
@@ -367,7 +360,42 @@
   object-fit: fill;
   border-radius: 10px;
   aspect-ratio: 16/9;
+} */
+.cards .img {
+  width: 100%;
+  padding: 8px;
 }
+
+.img-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #000;
+}
+
+/* Fondo borroso */
+.img-wrapper .img-blur {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(20px);
+  transform: scale(1.2);
+  opacity: 0.6;
+}
+
+/* Imagen principal */
+.img-wrapper .img-main {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
 .categoria {
   min-width: 266px;
 
@@ -380,36 +408,36 @@
 
 .title-cards {
   height: auto;
-  display: flex; 
+  display: flex;
   align-items: center;
-  justify-content: space-between; 
-  gap: 10px; 
+  justify-content: space-between;
+  gap: 10px;
   margin-bottom: 6px;
 }
 
 .titulo {
   font-weight: 700;
-  color: var(--primary-color); 
+  color: var(--primary-color);
   line-height: 1.3;
   padding: 0px 15px;
   display: -webkit-box;
-  -webkit-box-orient: vertical; 
-  -webkit-line-clamp: 2; 
-  overflow: hidden; 
-  text-overflow: ellipsis; 
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
   line-clamp: 2;
 }
 
 .cards .descripcion {
-  color:#9198a5 ;
+  color: #9198a5;
   height: 102px;
   padding-left: 15px;
   padding-right: 15px;
   padding-bottom: 10px;
-  display: -webkit-box; 
-  -webkit-box-orient: vertical; 
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
   -webkit-line-clamp: 4;
-  line-clamp: 4; 
+  line-clamp: 4;
   overflow: hidden;
   text-overflow: ellipsis;
   padding-bottom: 2rem;
@@ -473,10 +501,10 @@
 }
 @media (max-width: 900px) {
   .blog-header-content {
-    flex-direction: column; 
-    align-items: center; 
+    flex-direction: column;
+    align-items: center;
     text-align: center;
-    padding: 6rem 1rem 3rem 1rem; 
+    padding: 6rem 1rem 3rem 1rem;
   }
 
   .information {
@@ -492,9 +520,9 @@
     font-size: 1.2rem;
     line-height: 1.3;
   }
-.content-sugerencias{
-  left: -100%;
-}
+  .content-sugerencias {
+    left: -100%;
+  }
   .filtro {
     margin: 1.5rem auto;
     width: 100%;
@@ -519,7 +547,7 @@
   }
   .blog-section select {
     width: 100%;
-    max-width: none; 
+    max-width: none;
   }
   .blog-section {
     flex-direction: column;
@@ -533,7 +561,6 @@
   }
 }
 @media (max-width: 560px) {
-     
   .todos-blogs {
     width: 100%;
   }
@@ -544,15 +571,15 @@
   }
   .blog-section select {
     width: 100%;
-    max-width: none; 
+    max-width: none;
   }
   .content-sugerencias {
     left: -102%;
   }
- .sugerencias-lista {
-        padding-right: 0;
-    }
-    
+  .sugerencias-lista {
+    padding-right: 0;
+  }
+
   .sugerencias-lista li {
     margin: 0 0px;
     width: 20.5rem;
@@ -576,7 +603,7 @@
   }
   .tags {
     width: auto;
-    flex-wrap: nowrap; 
+    flex-wrap: nowrap;
   }
 }
 @media (max-width: 360px) {

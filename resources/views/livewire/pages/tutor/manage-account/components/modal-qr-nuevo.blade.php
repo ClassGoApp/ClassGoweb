@@ -58,7 +58,8 @@
                                                 KB</span>
                                         </div>
                                         <button type="button" class="remove-preview-btn" wire:click="$set('qrImage', null)">
-                                            <i class="fas fa-times"></i>
+                                            {{-- <i class="fas fa-trash"></i> --}}
+                                            🗑️
                                         </button>
                                     </div>
                                 </div>
@@ -239,7 +240,7 @@
     .upload-zone {
         border: 2px dashed #ddd;
         border-radius: 8px;
-        padding: 30px 20px;
+        padding: 20px 15px 50px 15px;
         text-align: center;
         cursor: pointer;
         transition: all 0.2s ease;
@@ -317,7 +318,6 @@
 
     .preview-overlay {
         position: absolute;
-        bottom: -25px;
         left: 0;
         right: 0;
         background: transparent;
@@ -345,23 +345,34 @@
         position: absolute;
         top: -8px;
         right: -8px;
-        background: #ff6b35;
+        background: #fae9e3;
         border: none;
         color: white;
         border-radius: 50%;
-        width: 24px;
-        height: 24px;
+        width: 30px;
+        height: 30px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 10px;
+        font-size: 12px;
         transition: all 0.2s ease;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        z-index: 10;
     }
 
     .remove-preview-btn:hover {
         background: #e55a2b;
         transform: scale(1.1);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .remove-preview-btn:active {
+        transform: scale(0.95);
+    }
+
+    .remove-preview-btn i {
+        pointer-events: none;
     }
 
     .qr-modal-footer {
@@ -419,7 +430,7 @@
         }
 
         .upload-zone {
-            padding: 20px 15px;
+            padding: 20px 15px 45px 15px;
         }
 
         .qr-modal-footer {
