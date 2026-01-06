@@ -956,18 +956,18 @@
             color: white; /* Asegurar texto blanco sobre fondo oscuro */
         }
         
-        /* Asegurar que todos los textos del header sean visibles en móvil */
+        /* Asegurar que todos los textos del header sean visibles en móvil 
         .header-main__title {
             color: white !important;
             font-size: 1.75rem;
             line-height: 2.25rem;
-        }
+        }*/
         
-        .header-main__subtitle {
+        /* .header-main__subtitle {
             color: white !important;
             font-size: 0.95rem;
             line-height: 1.5rem;
-        }
+        } */
         
         .main-border {
             border-top-left-radius: 2rem;
@@ -1089,9 +1089,7 @@
             padding-top: 5rem;
             padding-bottom: 2rem;
         }
-        .header-main__title {
-            font-size: 3rem;
-        }
+        
         .header-main__subtitle {
             font-size: 1.25rem;
         }
