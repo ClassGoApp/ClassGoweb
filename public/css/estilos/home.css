@@ -2655,12 +2655,16 @@ body {
     padding: 5rem 2rem;
     height: auto;
     margin: 0rem 1rem;
+    background: var(--bg-gradient3);
 
-    background-color: var(--primary-color);
+    /* background-color: var(--primary-color);
     background-image: url('/images/home/Elipse.webp');
     background-repeat: no-repeat;
-    background-position: center calc(100% + 2px);
-    background-size: 100% auto;
+    background-position: center calc(100% + 0px);
+    background-size: 100% auto; */
+  }
+  .header-main__title {
+     
   }
   .header-main__subtitle_ligth {
     font-size: 1.125rem;
@@ -2672,17 +2676,8 @@ body {
     line-height: 25px;
     padding-top: 1rem;
   }
-
-  .header-main__title {
-    font-size: 2.25rem;
-    font-weight: 700;
-    line-height: 1.25;
-    text-align: center;
-    background: var(--bg-gradient2);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  
+  .tutors-container{
+  padding: 4rem 1rem;
   }
 
   .tutors-container p {
@@ -2742,9 +2737,7 @@ body {
   .animated-word {
     font-size: clamp(20px, 8vw, 28px);
   }
-  .buscar-tutor-section {
-    
-  }
+  
   
 }
 /* =================== (max-width: 1200px) =================== */
