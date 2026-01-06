@@ -819,7 +819,6 @@ body {
 .filtro-img {
     position: absolute;
 
-    background: var(--panel-background);
     inset: 0;
     width: 100%;
     height: 100%;
@@ -2677,7 +2676,7 @@ body {
     padding-top: 1rem;
   }
   .tutors-container{
-  padding: 4rem 1rem;
+  padding: 4rem 1rem 1rem 1rem;
   }
 
   .tutors-container p {
@@ -2689,34 +2688,47 @@ body {
   .steps-card p {
     display: block !important;
   }
-  p {
+  /* p {
         display: none !important;
-    }
-    .parent {
-        grid-template-columns: repeat(2, 1fr);
-        grid-auto-rows: auto;
-        gap: 12px;
-        padding: 1rem;
-    }
-    .parent>.div1,
-    .parent>.div2,
-    .parent>.div3,
-    .parent>.div4,
-    .parent>.div5,
-    .parent>.div6 {
-        grid-column: auto;
-        grid-row: auto;
-    }
-    .parent>div {
-        padding: 0.6rem;
-        border-radius: 1rem;
-      }
-    .filtro-content h3 {
-        font-size: 1rem;
-    }
-    .filtro-content p {
-        font-size: .75rem;
-    }
+    } */
+
+  .filtro_materias{
+    padding: 3rem 0rem;
+  }
+  .parent {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 16px !important;
+    padding: 0 !important;
+    width: 100vw !important;
+    box-sizing: border-box;
+  }
+  .parent > div {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 80vw !important;
+    border-radius: 1rem !important;
+    padding: 0 !important;
+    margin: 0 auto !important;
+    position: relative;
+    overflow: hidden;
+  }
+  .parent .filtro-img {
+    position: relative !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 150px;
+    max-width: 80vw !important;
+    object-fit: cover !important;
+    border-radius: 1rem !important;
+    display: block;
+  }
+  .parent > div::after {
+    border-radius: 0 0 1rem 1rem !important;
+  }
+  .filtro-content {
+    padding: 1rem 1rem 1.1rem 1rem !important;
+  }
 }
 
 /* =================== (max-width: 480px) =================== */
