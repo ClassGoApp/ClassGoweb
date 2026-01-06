@@ -1,5 +1,51 @@
 @import 'variables.css';
 
+@keyframes sombraCeleste {
+
+  0%,
+  100% {
+    text-shadow: 0 0 3px #00FFFF, 0 0 10px #00CED1, 0 0 25px #00CED1;
+  }
+
+  50% {
+    text-shadow: 0 0 15px #00FFFF, 0 0 25px #00CED1, 0 0 35px #00CED1;
+  }
+}
+
+@keyframes palpitar {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  5% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+
+  /* primer latido */
+  10% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+
+  15% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+
+  /* segundo latido */
+  20% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
 body {
   background: white !important;
 }
@@ -548,6 +594,19 @@ body {
 
 .tutors-container{
   padding: 3rem 2rem;
+}
+.over-text {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  color: var(--primary-color);
+}
+.linea {
+  background-color: var(--secundary-color);
+  height: 4px;
+  width: 50px;
 }
 
 .carousel-btn:disabled {
