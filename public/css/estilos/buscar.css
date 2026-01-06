@@ -957,13 +957,13 @@
         }
         
         /* Asegurar que todos los textos del header sean visibles en móvil */
-        .header-main__title {
+        .header-main_title {
             color: white !important;
             font-size: 1.75rem;
             line-height: 2.25rem;
         }
         
-        .header-main__subtitle {
+        .header-main_subtitle {
             color: white !important;
             font-size: 0.95rem;
             line-height: 1.5rem;
