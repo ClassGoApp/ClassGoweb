@@ -785,6 +785,9 @@
 
 
     @media (max-width: 600px) {
+        #seccion-encuesta-wrapper {
+            background-position: center calc(-10% + 500px);
+        }
         .encuesta-modal-card {
             width: 90%;
             min-height: auto;
