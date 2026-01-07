@@ -10,7 +10,7 @@
         background-color: var(--primary-color);
         background-image: url('/images/home/Elipse.webp');
         background-repeat: no-repeat;
-        background-position: center calc(100% + 500px); /* Empuja la imagen 50px hacia abajo */
+        background-position: center calc(100% + 500px);
         background-size: 100% auto;
         
         display: flex;
@@ -956,23 +956,14 @@
             color: white; /* Asegurar texto blanco sobre fondo oscuro */
         }
         
-<<<<<<< HEAD
-        /* Asegurar que todos los textos del header sean visibles en móvil */
-        .header-main_title {
-=======
         /* Asegurar que todos los textos del header sean visibles en móvil 
         .header-main__title {
->>>>>>> 6041ebf (Texto en tutores destacados mobile)
             color: white !important;
             font-size: 1.75rem;
             line-height: 2.25rem;
         }*/
         
-<<<<<<< HEAD
-        .header-main_subtitle {
-=======
         /* .header-main__subtitle {
->>>>>>> 6041ebf (Texto en tutores destacados mobile)
             color: white !important;
             font-size: 0.95rem;
             line-height: 1.5rem;
