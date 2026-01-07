@@ -26,6 +26,9 @@
             <a href="https://play.google.com/store/apps/details?id=com.neurasoft.classgo" target="_blank"><button class="button-explorar-tutores"><i class="fa-solid fa-mobile"></i> <span data-translate="nuestra_app"></span> </button></a>
             @endauth
         </div>
+        <div class="hero-tutors-intant">
+            <a href=""><button class="btn-primary">TUTRÍAS AL INSTANTE</button></a>
+        </div>
     </div>
 
     <!-- 1.4 Hero Mascota -->
