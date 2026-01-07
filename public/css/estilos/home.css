@@ -2670,7 +2670,7 @@ body {
     display: block !important;
   }
   .steps-card, .go {
-    max-width: 340px;
+    max-width: 300px;
   }
   .steps-card p {
     display: block !important;
