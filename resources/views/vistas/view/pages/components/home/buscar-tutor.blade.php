@@ -1,4 +1,4 @@
-<h1 class="header-main__title"><span data-translate="buscar_tutor_txt1"></span></h1>
+<h1 class="header-main_title"><span data-translate="buscar_tutor_txt1"></span></h1>
 <p class="header-main__subtitle_ligth" data-translate="buscar_tutor_txt2"></p>
 <div class="buscar-tutor-wrapper">
     @livewire('buscar-tutor')

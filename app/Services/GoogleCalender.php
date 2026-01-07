@@ -85,14 +85,55 @@ class GoogleCalender
         }
     }
 
-
-
-
-
     public function getAccessTokenInfo($code)
     {
-        $client = new Client($this->clientCredentials);
-        return $client->fetchAccessTokenWithAuthCode($code);
+        // Validar ANTES de intentar usar el código
+        if (empty($code) || !is_string($code)) {
+            Log::error('Código de autorización inválido', [
+                'code_is_empty' => empty($code),
+                'code_type' => gettype($code)
+            ]);
+            
+            // En lugar de lanzar excepción, retornar error
+            return [
+                'status' => Response::HTTP_BAD_REQUEST,
+                'message' => 'Código de autorización inválido o vacío'
+            ];
+        }
+
+        try {
+            $client = new Client($this->clientCredentials);
+            $tokenInfo = $client->fetchAccessTokenWithAuthCode($code);
+            
+            // Verificar si Google devolvió un error
+            if (isset($tokenInfo['error'])) {
+                Log::error('Error al obtener token de Google', [
+                    'error' => $tokenInfo['error'],
+                    'error_description' => $tokenInfo['error_description'] ?? 'Sin descripción'
+                ]);
+                
+                return [
+                    'status' => Response::HTTP_BAD_REQUEST,
+                    'message' => $tokenInfo['error_description'] ?? $tokenInfo['error']
+                ];
+            }
+            
+            return [
+                'status' => Response::HTTP_OK,
+                'data' => $tokenInfo
+            ];
+            
+        } catch (\Exception $e) {
+            Log::error('Excepción al obtener access token', [
+                'message' => $e->getMessage(),
+                'code_length' => !empty($code) ? strlen($code) : 0
+            ]);
+            
+            return [
+                'status' => Response::HTTP_INTERNAL_SERVER_ERROR,
+                'message' => $e->getMessage()
+            ];
+        }
     }
 
     protected function verifyToken()

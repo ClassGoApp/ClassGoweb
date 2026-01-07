@@ -163,8 +163,18 @@
                     <p style="margin-bottom: 10px; font-weight:600; color: #185875;">
                         <span data-translate="encuesta_txt10"></span>
                     </p>
-                    <input type="tel" placeholder="Ej: 70012345" class="premium-input contact-input" style="text-align: center;" maxlength="15">
-                    <button class="btn-redeem" onclick="EncuestaManager.submitGuest()"><span data-translate="encuesta_btn3"></button>
+                    <form onsubmit="EncuestaManager.submitGuest(); return false;">
+                        <input 
+                            type="tel"
+                            placeholder="Ej: 70012345"
+                            class="premium-input contact-input"
+                            style="text-align: center;"
+                            maxlength="15"
+                        >
+                        <button type="submit" class="btn-redeem">
+                            <span data-translate="encuesta_btn3"></span>
+                        </button>
+                    </form>
                 </div>
             </div>
             @endguest
@@ -202,8 +212,13 @@
                     <p class="final-desc">
                         Tu opinión es muy valiosa para nosotros. Como agradecimiento, te enviaremos un cupón del 50% descuento al número que está asociado a tu cuenta.
                     </p>
-
-                    <button class="btn-naranja-original" onclick="window.location.reload()" style="margin-top:20px; padding: 10px 30px; font-size:1rem;">Cerrar</button>
+                    <div class="btn-static-wrapper" id="trigger-encuesta-final">
+                        <button class="btn-naranja-original" 
+                                onclick="window.location.reload()" 
+                                style="margin-top:20px; padding: 10px 30px; font-size:1rem; pointer-events: auto; cursor: pointer;">
+                            Cerrar
+                        </button>
+                    </div>
                 </div>
             </div>
             @endauth
@@ -291,8 +306,7 @@
         z-index: 1;
         padding: 2rem 0 2rem 0;
     }
-
-    /* 1. el envoltorio div recibe los clics y es estatico para evitar bugs */
+    
     .btn-static-wrapper {
         display: inline-block;
         padding-bottom: 4px;
@@ -341,7 +355,7 @@
         justify-content: center;
         opacity: 0;
         visibility: hidden;
-        transition: all 0.3s ease;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
         padding: 20px;
     }
 
@@ -363,13 +377,15 @@
         display: flex;
         flex-direction: column;
         font-family: 'Inter', sans-serif;
-        transform: scale(0.95);
-        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        transform: scale(0.9) translateY(20px);
+        opacity: 0;
+        transition: transform 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28), opacity 0.3s ease;
         overflow-y: auto;
     }
 
     .encuesta-overlay-fixed.active .encuesta-modal-card {
-        transform: scale(1);
+        transform: scale(1) translateY(0);
+        opacity: 1;
     }
 
     .btn-corner {
@@ -824,21 +840,16 @@
             font-size: 0.95rem !important;
         }
     }
-
-    /* 1. Bajamos la encuesta de "Infinito" a un número alto pero razonable */
+    
     .encuesta-overlay-fixed {
         z-index: 10000 !important;
-        /* Antes era 2147483647 */
-    }
+        }
 
-    /* 2. Subimos la Alerta y el Toast por encima de la encuesta */
-    .swal2-container {
+        .swal2-container {
         z-index: 20000 !important;
-        /* Mayor que 10000 para que gane */
-    }
+        }
 
-    /* También aseguramos que tu notificación toast se vea */
-    #toast-wrapper-fixed {
+        #toast-wrapper-fixed {
         z-index: 20000 !important;
     }
 </style>
@@ -944,28 +955,45 @@
         // --- LIMPIEZA ---
         function resetForm() {
             currentRating = 0;
+            
+            // Limpiar radios
             const radios = document.querySelectorAll('input[name="p1"]');
             radios.forEach(r => r.checked = false);
+            
+            // Limpiar estrellas
             const starBtns = document.querySelectorAll('.star-btn');
             starBtns.forEach(b => b.classList.remove('filled', 'active-scale'));
+            
+            // Resetear texto feedback estrellas
             const feedbackText = document.getElementById('rating-feedback-text');
             if (feedbackText) {
                 feedbackText.textContent = "Selecciona las estrellas";
                 feedbackText.style.color = "#ccc";
             }
+            
+            // Limpiar tags
             const tags = document.querySelectorAll('.tag-bubble');
             tags.forEach(t => t.classList.remove('selected'));
+            
+            // Limpiar textarea
             const textarea = document.getElementById('comment-box');
             if (textarea) {
                 textarea.value = '';
                 textarea.style.borderColor = '#eee';
             }
+            
+            // Limpiar input teléfono
             const phoneInput = document.querySelector('.contact-input');
             if (phoneInput) {
                 phoneInput.value = '';
                 phoneInput.style.borderColor = '#eee';
             }
-            setTimeout(() => next(1), 300);
+
+            setTimeout(() => {
+                next(1);
+                const modalCard = document.querySelector('.encuesta-modal-card');
+                if(modalCard) modalCard.scrollTop = 0;
+            }, 500); 
         }
 
         function close() {
@@ -1074,7 +1102,7 @@
         }
 
         // ==========================================
-        // 1. ENVÍO GUEST (SIN BOTÓN WHATSAPP)
+        // 1. ENVÍO GUEST
         // ==========================================
         async function submitGuest() {
             const input = document.querySelector('.contact-input');
@@ -1096,8 +1124,7 @@
                 showToast('✔', result.message, '#2ecc71');
                 input.value = '';
             } else {
-                // ERROR GUEST: Solo mostramos Toast rojo pidiendo corregir
-                // NO mostramos SweetAlert ni WhatsApp aquí
+
                 showToast('✖', "El número ya fue usado. Ingresa otro.", '#e74c3c');
                 input.style.borderColor = 'red';
             }
@@ -1115,7 +1142,7 @@
                 next('final-auth');
                 showToast('✔', 'Datos guardados correctamente', '#2ecc71');
             } else {
-                // ERROR AUTH: Detectamos duplicado y mostramos Alerta WhatsApp
+                // ERROR AUTH:
                 const errorMsg = result.message.toLowerCase();
                 const esDuplicado = errorMsg.includes('duplicate') || errorMsg.includes('1062') || errorMsg.includes('ya tiene un cupón');
 
