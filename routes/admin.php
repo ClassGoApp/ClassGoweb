@@ -26,6 +26,7 @@ use App\Livewire\Pages\Admin\Taxonomy\SubjectGroups;
 use App\Livewire\Pages\Admin\Taxonomy\Subjects;
 use App\Livewire\Pages\Admin\Upgrade\Upgrade;
 use App\Livewire\Pages\Admin\Users\Users;
+use App\Livewire\Pages\Admin\Users\UsersReports;
 use App\Http\Controllers\Admin\AlianzaController;
 use App\Livewire\Pages\Admin\Alianzas\Alianzas as AlianzasListing;
 use App\Livewire\Pages\Admin\Alianzas\CreateAlianza;
@@ -77,6 +78,7 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     Route::get('withdraw-requests',     WithdrawRequest::class)->name('withdraw-requests');
 
     Route::get('users',          Users::class)->name('users');
+    Route::get('users/reports',          UsersReports::class)->name('users-reports');
     Route::get('identity-verification',          IdentityVerification::class)->name('identity-verification');
     Route::get('bookings',          Bookings::class)->name('bookings');
     Route::get('invoices',          Invoices::class)->name('invoices');

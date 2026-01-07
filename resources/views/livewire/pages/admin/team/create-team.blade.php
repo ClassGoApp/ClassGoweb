@@ -164,7 +164,15 @@
                                     <div class="form-group-half">
                                         <div class="form-group">
                                             <label class="tb-label">{{ __('alianza.order') }}</label>
-                                            <input type="number" class="form-control @error('order') tk-invalid @enderror" wire:model="order" min="0" step="1" placeholder="0">
+                                            <input 
+                                                type="number" 
+                                                class="form-control @error('order') tk-invalid @enderror" 
+                                                wire:model="order" 
+                                                min="1" 
+                                                step="1" 
+                                                placeholder="1" 
+                                                required
+                                            >
                                             @error('order')
                                                 <div class="tk-errormsg"><span>{{ $message }}</span></div>
                                             @enderror

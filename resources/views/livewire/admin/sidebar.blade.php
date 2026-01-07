@@ -51,7 +51,8 @@ new class extends Component {
                 'title' => __('admin/sidebar.users'),
                 'icon' => 'icon-users',
                 'routes' => [
-                    'admin.users' => __('admin.users'),
+                    'admin.users' => 'Listar Usuarios',
+                    'admin.users-reports' => 'Reportes',
                 ],
             ],
             
