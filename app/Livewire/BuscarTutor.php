@@ -15,7 +15,7 @@ class BuscarTutor extends Component
     use WithPagination;
 
     public $search = '';
-    public $perPage = 10;
+    public $perPage = 20;
      public $page = 1;
 
     protected $queryString = [

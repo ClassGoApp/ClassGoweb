@@ -30,6 +30,10 @@
         padding-right: 1rem;
         margin-top: 6rem;
     }
+    
+    .container--center {
+        color: white; /* Asegurar que el texto sea visible */
+    }
     /* 2. ESTILOS DE LA CABECERA (Header) */
     
     .header-main {
@@ -50,22 +54,12 @@
         height: 8rem;
     }
     
-    .header-main__title {
-        font-size: 2.25rem;
-        font-weight: 700;
-        line-height: 1.25;
-        text-align: center;
-    }
-    
-    .header-main__subtitle {
-        font-size: 1.125rem;
-        color: #DBEAFE;
-        /* blue-100 */
-        margin-top: 1rem;
-        max-width: 48rem;
-        margin-left: auto;
-        margin-right: auto;
-        text-align: center;
+    .header-main__title_ligth {
+    font-size: 3rem;
+    font-weight: 700;
+    line-height: 1.25;
+    text-align: center;
+    color: white;
     }
     /* 3. ESTILOS DE BÚSQUEDA (Ajustado a más grande y responsive) */
     
@@ -384,7 +378,7 @@
         font-size: 1rem;
         font-weight: 600;
         color: var(--primary-color);
-
+        min-height: 1.5rem; /* Asegurar espacio mínimo */
     }
     
     .card-tutor__price-duration {
@@ -409,6 +403,7 @@
         max-width: 100%;
         flex-shrink: 0;
         padding-right: 14px; /* espacio para el fade */
+        min-height: 2rem; /* Asegurar espacio mínimo para los tags */
     }
 
     /* Fade al final para que el corte sea suave */
@@ -702,7 +697,7 @@
         font-size: 1.3rem;
         font-weight: 700;
         line-height: 24px;
-
+        color: #1F2937; /* gray-900 - Color oscuro para visibilidad */
     }
     
     .card-tutor__review-count {
@@ -955,10 +950,25 @@
             grid-template-columns: repeat(3, 1fr);
         }
         .buscar-header-content {
-            padding: 0rem;
+            padding: 1rem;
             min-height: 100vh;
             background: var(--bg-gradient2);
+            color: white; /* Asegurar texto blanco sobre fondo oscuro */
         }
+        
+        /* Asegurar que todos los textos del header sean visibles en móvil 
+        .header-main__title {
+            color: white !important;
+            font-size: 1.75rem;
+            line-height: 2.25rem;
+        }*/
+        
+        /* .header-main__subtitle {
+            color: white !important;
+            font-size: 0.95rem;
+            line-height: 1.5rem;
+        } */
+        
         .main-border {
             border-top-left-radius: 2rem;
             border-top-right-radius: 2rem;
@@ -968,7 +978,6 @@
         .main-content {
             border-top-left-radius: 2rem;
             border-top-right-radius: 2rem;
-
         }
         .filter-controls__list {
             display: flex;
@@ -992,16 +1001,55 @@
         .cta-card__title {
             line-height: 40px;
             padding-top: 2rem;
+            color: white;
         }
         .tutor-grid-buscar {
-            padding: 0 2rem 3rem 2em;
+            padding: 0 1rem 3rem 1rem;
             gap: 2rem;
         }
         .card-tutor__header{
             justify-content: space-between;
+            gap: 0.5rem;
         }
         .card-tutor__name {
             text-align: end;
+            font-size: 1.1rem;
+            color: #1F2937;
+            line-height: 1.4rem;
+        }
+        
+        .card-tutor__price {
+            font-size: 0.9rem;
+            color: var(--primary-color);
+        }
+        
+        .card-tutor__price-duration {
+            font-size: 0.75rem;
+            color: #6B7280;
+        }
+        
+        .card-tutor__description {
+            font-size: 0.8rem;
+            color: #374151;
+            line-height: 1.2rem;
+        }
+        
+        .card-tutor__tags {
+            font-size: 0.65rem;
+        }
+        
+        /* Asegurar que los botones sean visibles y táctiles */
+        .card-tutor__button,
+        .card-tutor__button-materias {
+            font-size: 0.9rem;
+            padding: 0.75rem 1rem;
+            min-height: 44px; /* Tamaño mínimo táctil */
+        }
+        
+        /* Asegurar visibilidad del avatar */
+        .card-tutor__avatar {
+            width: 3.5rem;
+            height: 3.5rem;
         }
     }
     /* Vista de Móvil Grande / Tablet Pequeña (sm: ~ 640px) */
@@ -1041,9 +1089,7 @@
             padding-top: 5rem;
             padding-bottom: 2rem;
         }
-        .header-main__title {
-            font-size: 3rem;
-        }
+        
         .header-main__subtitle {
             font-size: 1.25rem;
         }
