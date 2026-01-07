@@ -1,6 +1,6 @@
-z<?php
-// app/DTOs/ProfileData.php
-namespace App\DTOs\Pages\Common;
+<?php
+// app/Dtos/ProfileData.php
+namespace App\Dtos\Pages\Common;
 
 class ProfileData
 {
