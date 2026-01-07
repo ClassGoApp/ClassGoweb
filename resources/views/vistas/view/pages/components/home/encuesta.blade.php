@@ -281,8 +281,13 @@
         margin-top: 5px;
     }
 
+    .mascot-wrap-dark{
+        display: flex;
+        justify-content: center
+    }
+
     .mascot-img-dark {
-        width: 180px;
+        width: 130px;
         max-width: 100%;
         height: auto;
         transform: scale(1.5);
@@ -785,6 +790,11 @@
 
 
     @media (max-width: 600px) {
+
+        #seccion-encuesta-wrapper {
+            /* background-image: linear-gradient(to right, #02011b, #054f72); */
+            background: linear-gradient(135deg, #219EBC 0%, #023047 100%);
+        }
         .encuesta-modal-card {
             width: 90%;
             min-height: auto;
