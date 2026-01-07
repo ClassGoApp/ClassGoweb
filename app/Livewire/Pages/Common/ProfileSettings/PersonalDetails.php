@@ -359,6 +359,7 @@ class PersonalDetails extends Component
             }
 
             $this->dispatch('showAlertMessage', type: 'success', message: __('general.success_message'));
+            return redirect()->route('bookings.manage-sessions'); //Añadiendo redireccion a los horarios del tutor
         } catch (\Illuminate\Validation\ValidationException $e) {
             throw $e;
         } catch (\Exception $e) {
