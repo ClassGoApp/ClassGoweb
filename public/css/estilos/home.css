@@ -2693,7 +2693,7 @@ body {
     } */
 
   .filtro_materias{
-    padding: 3rem 0rem;
+    padding: 3rem 0.2rem;
   }
   .parent {
     display: flex !important;
