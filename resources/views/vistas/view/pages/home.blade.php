@@ -58,7 +58,7 @@
 
     <!--DESBLOQUEA TU POTENCIAL CON SENCILLOS PASOS-->
     <section class="potencial-container fade-up">
-        <h3 class= "encuesta-top-dark">
+        <h3 class="over-text-dark">
             <div class="linea"></div>
             <span data-translate="guide"></span>
             <div class="linea"></div>
