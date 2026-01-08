@@ -600,6 +600,14 @@ body {
   gap: 12px;
   color: var(--primary-color);
 }
+.over-text-dark{
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  color: white;
+}
 
 .linea {
   background-color: var(--secundary-color);
@@ -2614,7 +2622,7 @@ body {
     text-align: center;
     color: #e0f7fa;
     line-height: 130%;
-    padding: 0.2rem 1rem 1  rem 1rem;
+    padding: 0.2rem 1rem 1rem 1rem;
   }
 
   .buscar-tutor-section p {
@@ -2665,7 +2673,7 @@ body {
     display: block !important;
   }
   .steps-card, .go {
-    max-width: 300px;
+    max-width: 290px;
   }
   .steps-card p {
     display: block !important;
@@ -2719,6 +2727,14 @@ body {
     /* Subir a altura media */
     transform: translateY(20px);
     /* clip-path: inset(0 0 20% 0); */
+  }
+
+  .hero-buttons span{
+    line-height: 20px;
+  }
+
+  .over-text-dark{
+    padding-bottom: 1rem;
   }
 }
 
