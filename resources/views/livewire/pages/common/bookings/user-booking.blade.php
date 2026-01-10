@@ -6,9 +6,10 @@
 
         <!-- Botón Nueva Reserva (solo para estudiantes) -->
         @role('student')
-            <div style="margin-bottom: 24px;">
-                <button class="js-open-booking btn btn-primary" style="padding: 12px 24px; font-weight: 600;">
-                    ✨ Nueva Reserva
+            <div class="reserva-modal" style=" margin-bottom: 24px;
+">
+                <button class="js-open-booking btn btn-primary" style="background:#219EBC;padding: 12px 24px; font-weight: 600;">
+                     Nueva Reserva
                 </button>
             </div>
         @endrole
@@ -524,6 +525,7 @@
             padding-top: 6px;
             padding-bottom: 6px;
         }
+        
     </style>
 @endpush
 @push('scripts')
