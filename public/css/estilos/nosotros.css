@@ -28,7 +28,7 @@
 /* ==================== 2 - Nosotros Header ==================== */
 .nosotros-header-content {
   background-color: var(--primary-color);
-  background-image: url('/images/home/Elipse.png');
+  background-image: url('/images/home/Elipse.webp');
   background-repeat: no-repeat;
   background-position: center calc(100% + 500px);
   background-size: 100% auto;
@@ -413,6 +413,9 @@
   margin-top: auto; /* lo empuja al fondo */
 }
 
+.alianza-descripcion{
+  color: var(--primary-color);
+}
 /* --- RESPONSIVE (unificado) --- */
 @media (max-width: 768px) {
   .alianzas-eventos-section { padding: 20px; }

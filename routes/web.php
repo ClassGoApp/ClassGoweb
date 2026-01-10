@@ -47,11 +47,54 @@ use App\Http\Controllers\TutorPerfilController;
 use App\Http\Controllers\BeforeBlogsController;
 use App\Http\Controllers\BookingController;
 
-
-
 Route::view('/reserva', 'vistas.view.pages.e')->name('e');
 Route::view('/traduccion', 'vistas.view.pages.traduccion')->name('traduccion');
 
+Route::get('/verify', function (\Illuminate\Http\Request $request) {
+    $id = $request->query('id');
+    $hash = $request->query('hash');
+    $status = null;
+    $message = null;
+    $redirect = null;
+
+    if ($id && $hash) {
+        $user = \App\Models\User::find($id);
+        if ($user && hash_equals($hash, sha1($user->email))) {
+            if (!$user->email_verified_at) {
+                $user->email_verified_at = now();
+                $user->save();
+                $status = 'success';
+                $message = 'Correo verificado correctamente.';
+            } else {
+                $status = 'info';
+                $message = 'El correo ya estaba verificado.';
+            }
+            // Redirección según el rol
+            if ($user->hasRole('tutor')) {
+                $redirect = url('/tutor/dashboard');
+            } elseif ($user->hasRole('student')) {
+                $redirect = url('/student/bookings');
+            }
+        } else {
+            $status = 'error';
+            $message = 'El enlace de verificación no es válido.';
+        }
+    } else {
+        $status = 'error';
+        $message = 'Parámetros inválidos.';
+    }
+
+    return view('verify', [
+        'status' => $status,
+        'message' => $message,
+        'redirect' => $redirect,
+        'id' => $id,
+        'hash' => $hash,
+    ]);
+});
+Route::get('/prueba', function () {
+    return '¡Ruta de prueba funcionando!';
+});;
 
 // web.php
 

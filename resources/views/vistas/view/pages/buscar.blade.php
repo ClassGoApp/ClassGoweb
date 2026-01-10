@@ -7,12 +7,12 @@
     <div class="buscar-header-content">
         <div class="container container--center">
             
-            <h1 class="header-main__title">Descubre un Tutor en Línea para tus Estudios</h1>
-            <p class="header-main__subtitle">
+            <h1 class="header-main__title" style="color: white;">Descubre un Tutor en Línea para tus Estudios</h1>
+            <p class="header-main__subtitle" style="color: white">
                 Domina cualquier materia con la ayuda de nuestros tutores expertos y alcanza tus metas académicas.
             </p>
             <livewire:buscar-tutor>
-            <p class="header-main__subtitle" id="texto">
+            <p class="header-main__subtitle" style="padding-top: 1rem; color:white;" id="texto">
                 ¿Que deseas aprender?
             </p>
             <div class="loading-indicator">

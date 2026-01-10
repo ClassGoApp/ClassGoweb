@@ -23,7 +23,7 @@
 
 .blog-header-content {
   background: var(--primary-color);
-  background-image: url("/images/home/Elipse.png");
+  background-image: url("/images/home/Elipse.webp");
   background-repeat: no-repeat;
   background-position: center calc(100% + 250px);
   background-size: 100% auto;
