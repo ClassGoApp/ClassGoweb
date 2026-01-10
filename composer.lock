@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2692d143bc15470acf32b30000c7eea0",
+    "content-hash": "02de9bba59f48589392334ef61b17cf1",
     "packages": [
         {
             "name": "amentotech/laraguppy",
@@ -15130,8 +15130,5 @@
         "php": "^8.2"
     },
     "platform-dev": {},
-    "platform-overrides": {
-        "php": "8.2.12"
-    },
-    "plugin-api-version": "2.9.0"
+    "plugin-api-version": "2.6.0"
 }

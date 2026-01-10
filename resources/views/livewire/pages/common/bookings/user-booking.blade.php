@@ -6,8 +6,7 @@
 
         <!-- Botón Nueva Reserva (solo para estudiantes) -->
         @role('student')
-            <div class="reserva-modal" style=" margin-bottom: 24px;
-">
+            <div class="reserva-modal" style=" margin-bottom: 24px;">
                 <button class="js-open-booking btn btn-primary" style="background:#219EBC;padding: 12px 24px; font-weight: 600;">
                      Nueva Reserva
                 </button>
