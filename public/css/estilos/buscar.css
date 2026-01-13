@@ -7,12 +7,12 @@
     /* ==================== buscar header ==================== */
     
     .buscar-header-content {
-        background-color: var(--primary-color);
+        /* background-color: var(--primary-color);
         background-image: url('/images/home/Elipse.webp');
         background-repeat: no-repeat;
         background-position: center calc(100% + 500px);
         background-size: 100% auto;
-        
+         */
         display: flex;
         justify-content: space-between;
         align-items: center;
