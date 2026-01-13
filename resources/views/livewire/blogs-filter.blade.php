@@ -103,6 +103,7 @@
                     </div>
                 @endif
             </a>
+
         @empty
             <p style="font-weight: 500; height: 477px;">No hay blogs disponibles.</p>
         @endforelse

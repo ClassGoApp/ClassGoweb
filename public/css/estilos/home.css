@@ -613,11 +613,6 @@ body {
   gap: 12px;
   color: var(--primary-color);
 }
-.linea {
-  background-color: var(--secundary-color);
-  height: 4px;
-  width: 50px;
-}
 
 .carousel-btn:disabled {
   opacity: 0.5;
@@ -2563,6 +2558,9 @@ body {
     padding: 2rem 15rem !important;
   }
 
+  .filtro-content h3 {
+    font-size: 2.3rem;
+  }
 }
 
 
