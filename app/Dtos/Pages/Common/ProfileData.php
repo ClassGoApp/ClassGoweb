@@ -1,11 +1,6 @@
 <?php
-<<<<<<< HEAD
 // app/Dtos/ProfileData.php
 namespace App\Dtos\Pages\Common;
-=======
-// app/DTOs/ProfileData.php
-namespace App\DTOs\Pages\Common;
->>>>>>> develops
 
 class ProfileData
 {

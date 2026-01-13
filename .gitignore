@@ -1,6 +1,8 @@
 storage/*.key
 storage/logs/
 .env
+
+/bootstrap/cache/*
 Homestead.yaml
 Homestead.json
 /.vagrant
