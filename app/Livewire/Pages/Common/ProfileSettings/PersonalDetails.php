@@ -367,14 +367,29 @@ class PersonalDetails extends Component
                 Log::error('Error al enviar correo de actualización de perfil: ' . $e->getMessage());
             }
 
-            $this->dispatch('showAlertMessage', type: 'success', message: __('general.success_message'));
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            throw $e;
-        } catch (\Exception $e) {
-            Log::error('Error al actualizar perfil: ' . $e->getMessage());
-            $this->dispatch('showAlertMessage', type: 'error', message: __('general.error_message'));
-        }
+            
+            // 👉 Verificar estado de verificación
+            $user = Auth::user();
+
+            if (!$user->verified) {
+                // 👉 REDIRECCIÓN CUANDO NO ESTÁ VERIFICADO
+                // DESTINO EN BLANCO COMO PEDISTE
+                $this->redirectRoute('tutor.profile.identification');//revisar esta redireccion
+                return;
+            }
+
+            // 👉 SI ESTÁ VERIFICADO
+            $this->dispatch('showAlertMessage',type: 'success', message: __('general.success_message')
+            );
+
+            } catch (\Illuminate\Validation\ValidationException $e) {
+                throw $e;
+            } catch (\Exception $e) {
+                Log::error('Error al actualizar perfil: ' . $e->getMessage());
+                $this->dispatch('showAlertMessage', type: 'error', message: __('general.error_message'));
+            }
     }
+
 
     /**
      * Convierte el string de género a integer según GenderCast
