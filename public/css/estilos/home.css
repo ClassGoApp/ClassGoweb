@@ -60,6 +60,16 @@ body {
   background-clip: text;
   color: transparent;
 }
+.header-main_title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  line-height: 1.25;
+  text-align: center;
+  background: var(--bg-gradient2);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
 
 .header-main__title_ligth {
   font-size: 3rem;
@@ -2541,6 +2551,9 @@ body {
     padding: 2rem 15rem !important;
   }
 
+  .filtro-content h3 {
+    font-size: 2.3rem;
+  }
 }
 
 
