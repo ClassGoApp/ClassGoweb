@@ -120,13 +120,13 @@
 
 /* Aplicamos las posiciones fijas al estar activo */
 #fab-option-whatsapp.active {
-    transform: translateY(calc(-1 * (var(--fab-size) + var(--fab-gap)) * 3));
+    transform: translateY(calc(-1 * (var(--fab-size) + var(--fab-gap)) * 4));
 }
 #fab-option-magic.active {
-    transform: translateY(calc(-1 * (var(--fab-size) + var(--fab-gap)) * 2));
+    transform: translateY(calc(-1 * (var(--fab-size) + var(--fab-gap)) * 3));
 }
 #fab-option-chat.active {
-    transform: translateY(calc(-1 * (var(--fab-size) + var(--fab-gap)) * 1));
+    transform: translateY(calc(-1 * (var(--fab-size) + var(--fab-gap)) * 2));
 }
 
 
