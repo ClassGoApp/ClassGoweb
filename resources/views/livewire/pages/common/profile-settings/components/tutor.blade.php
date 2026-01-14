@@ -1,3 +1,6 @@
+
+
+
 <!-- Datos personales -->
 <div class="tutor-profile-section">
     <form wire:submit.prevent="updateInfo" class="tutor-profile-section row g-4 am-themeform am-themeform_personalinfo">
@@ -240,6 +243,66 @@
 
 
         </div>
+
+        @role('tutor')
+       {{--   <div class="am-title_wrap">
+            <div class="am-title">
+                <h2>{{ __('passwords.link_google_calendar') }}</h2>
+                <p>{{ __('passwords.link__google_calendar_schedule') }}</p>
+            </div>
+        </div>  --}}
+        <div class="am-linkaccount">
+            @if(!empty($getAccountSetting['google_access_token']))
+            <div class="am-linkaccount_option">
+                <div class="am-linkaccount_option_title">
+                    <span>{{ __('passwords.connected_account') }}</span>
+                    @if(isset($getAccountSetting['google_calendar_info']['summary']))
+                        <h4>{{ $getAccountSetting['google_calendar_info']['summary'] }}</h4>
+                    @endif
+                </div>
+                <a wire:click.prevent="disconnectCalender" href="#" wire:target="disconnectCalender"  wire:loading.class="am-btn_disable" class="am-linkbtn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><g clip-path="url(#clip0_689_18487)"><path d="M23.7663 12.2765C23.7663 11.4608 23.7001 10.6406 23.559 9.83813H12.2402V14.4591H18.722C18.453 15.9495 17.5888 17.2679 16.3233 18.1056V21.104H20.1903C22.4611 19.014 23.7663 15.9274 23.7663 12.2765Z" fill="#4285F4"/><path d="M12.2401 24.0008C15.4766 24.0008 18.2059 22.9382 20.1945 21.1039L16.3276 18.1055C15.2517 18.8375 13.8627 19.252 12.2445 19.252C9.11388 19.252 6.45946 17.1399 5.50705 14.3003H1.5166V17.3912C3.55371 21.4434 7.7029 24.0008 12.2401 24.0008Z" fill="#34A853"/><path d="M5.50277 14.3002C5.00011 12.8099 5.00011 11.196 5.50277 9.70569V6.61475H1.51674C-0.185266 10.0055 -0.185266 14.0004 1.51674 17.3912L5.50277 14.3002Z" fill="#FBBC04"/><path d="M12.2401 4.74966C13.9509 4.7232 15.6044 5.36697 16.8434 6.54867L20.2695 3.12262C18.1001 1.0855 15.2208 -0.034466 12.2401 0.000808666C7.7029 0.000808666 3.55371 2.55822 1.5166 6.61481L5.50264 9.70575C6.45064 6.86173 9.10947 4.74966 12.2401 4.74966Z" fill="#EA4335"/></g><defs><clipPath id="clip0_689_18487"><rect width="24" height="24" fill="white"/></clipPath></defs></svg>
+                    {{ __('passwords.disconnect_google_calendar') }}
+                </a>
+            </div>
+            @else
+            <div class="am-linkaccount_option">
+                <div class="am-linkaccount_option_title">
+                    <span>{{ __('passwords.no_calendar_linked') }}</span>
+                </div>
+                <a wire:click.prevent="connectCalender" href="#" wire:target="connectCalender"  wire:loading.class="am-btn_disable" class="am-linkbtn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><g clip-path="url(#clip0_689_18487)"><path d="M23.7663 12.2765C23.7663 11.4608 23.7001 10.6406 23.559 9.83813H12.2402V14.4591H18.722C18.453 15.9495 17.5888 17.2679 16.3233 18.1056V21.104H20.1903C22.4611 19.014 23.7663 15.9274 23.7663 12.2765Z" fill="#4285F4"/><path d="M12.2401 24.0008C15.4766 24.0008 18.2059 22.9382 20.1945 21.1039L16.3276 18.1055C15.2517 18.8375 13.8627 19.252 12.2445 19.252C9.11388 19.252 6.45946 17.1399 5.50705 14.3003H1.5166V17.3912C3.55371 21.4434 7.7029 24.0008 12.2401 24.0008Z" fill="#34A853"/><path d="M5.50277 14.3002C5.00011 12.8099 5.00011 11.196 5.50277 9.70569V6.61475H1.51674C-0.185266 10.0055 -0.185266 14.0004 1.51674 17.3912L5.50277 14.3002Z" fill="#FBBC04"/><path d="M12.2401 4.74966C13.9509 4.7232 15.6044 5.36697 16.8434 6.54867L20.2695 3.12262C18.1001 1.0855 15.2208 -0.034466 12.2401 0.000808666C7.7029 0.000808666 3.55371 2.55822 1.5166 6.61481L5.50264 9.70575C6.45064 6.86173 9.10947 4.74966 12.2401 4.74966Z" fill="#EA4335"/></g><defs><clipPath id="clip0_689_18487"><rect width="24" height="24" fill="white"/></clipPath></defs></svg>
+                    {{ __('passwords.connect_google_calendar') }}
+                </a>
+            </div>
+            @endif  
+        </div> 
+       @endrole
+       
+        @if(session()->get('error'))
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    Livewire.dispatch('showAlertMessage', {
+                        type: 'error',
+                        title: 'Failed Google Calendar',
+                        message: "Failed to retrieve Google token. Please try again."
+                    });
+                });
+            </script>
+        @endif
+        @if(session()->get('success'))
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    Livewire.dispatch('showAlertMessage', {
+                        type: 'success',
+                        title: 'Connect Google Calendar',
+                        message: "{{ __('passwords.connect_calender') }}"
+                    });
+                });
+            </script>
+        @endif     
+
+
         <div class="profile-details-actions">
             <x-primary-button class="button_save" type="submit" wire:loading.class="am-btn_disable"
                 wire:target="updateInfo">
@@ -259,6 +322,11 @@
 <!-- Botón guardar -->
 @push('styles')
     <style>
+        .am-linkaccount{
+margin-bottom:20px;
+margin-top:0px;
+
+        }
         .modern-dropdown-options input[type="checkbox"] {
             accent-color: #3b82f6;
             margin-right: 10px;

@@ -12,7 +12,7 @@ use App\Http\Controllers\PromocionesController;
 use App\Http\Controllers\Impersonate;
 use App\Http\Controllers\OpenAiController;
 use App\Http\Controllers\SiteController;
-use App\Http\Controllers\ExportImageController; 
+use App\Http\Controllers\ExportImageController;
 use App\Livewire\Frontend\BlogDetails;
 use App\Livewire\Frontend\Blogs;
 use App\Livewire\Frontend\Checkout;
@@ -45,6 +45,7 @@ use App\Services\GoogleMeetService;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TutorPerfilController;
 use App\Http\Controllers\BeforeBlogsController;
+use App\Http\Controllers\BookingController;
 
 Route::view('/reserva', 'vistas.view.pages.e')->name('e');
 Route::view('/traduccion', 'vistas.view.pages.traduccion')->name('traduccion');
@@ -125,13 +126,13 @@ Route::get('/auth/api/google/callback', [GoogleController::class, 'googlecallbac
 //Route::get('auth/{provider}', [Go::class, 'redirect'])->name('social.redirect');
 
 Route::get('/conferences', [ConferencesController::class, 'index'])
-        ->name('conferences.index');
-        
+    ->name('conferences.index');
+
 Route::middleware(['locale', 'maintenance'])->group(function () {
     //Route::get('find-tutors', [SearchController::class, 'findTutors'])->name('find-tutors');
     //Route::get('find-tutors', [SearchController::class, 'findTutors'])->name('find-tutors');
 
-   // Route::get('/blogs', Blogs::class)->name('blogs');
+    // Route::get('/blogs', Blogs::class)->name('blogs');
     Route::get('/blog/{slug}', BlogDetails::class)->name('blog-details');
     Route::view('/subscriptions-page', 'subscriptions-page');
 
@@ -143,40 +144,25 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
     Route::get('/tutores/{slug}', [HomeController::class, 'tutor'])->name('tutor');
     Route::get('/tutors', [HomeController::class, 'buscarTutor'])->name('buscar.tutor'); //<---ojo
     Route::get('/buscar', [HomeController::class, 'buscar'])->name('buscar');
-    Route::view('/modal', 'vistas.view.pages.modals.modal-reserva')->name('modal');
-    
+    Route::get('/modal', [BookingController::class, 'create'])->name('modal');
+
     Route::post('/tutor/{tutorId}/review', [HomeController::class, 'storeReview'])
-    ->name('tutor.review.store')
-    ->middleware(['auth', 'role:student']);
+        ->name('tutor.review.store')
+        ->middleware(['auth', 'role:student']);
 
 
     //<=== Kevin Pasante ===>
     Route::view('/terminos', 'vistas.view.pages.terminos')->name('terminos');
 
-/////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////
     //<=== Oscar Pasante ===>
-// Route::view('/blogs','vistas.view.pages.blog')->name('blogs');
-Route::get('/blogs', [BeforeBlogsController::class, 'index'])->name('blogs.index');
+    // Route::view('/blogs','vistas.view.pages.blog')->name('blogs');
+    Route::get('/blogs', [BeforeBlogsController::class, 'index'])->name('blogs.index');
 
-Route::get('/blogs/{blog:slug}', [BeforeBlogsController::class, 'showBySlug'])->name('blogs.show');
-
-/////////////////////////////////////////////////////////////////////
-// //<=== Joel Pasante ===>
-    
-Route::get('/prueba-cards', function () {
-    // Obtenemos 5 tutores con sus perfiles y materias para probar el diseño
-    // Usamos \App\Models\Tutor para no tener que agregar el "use" arriba del archivo
-    $featuredTutors = \App\Models\user::with(['profile', 'subjects'])->take(5)->get();
-        
-    return view('prueba-componente', compact('featuredTutors'));
-})->name('prueba.cards');
-
-Route::post('/encuesta/guardar', [HomeController::class, 'storeEncuesta'])->name('encuesta.store');
-
- //<===//////////////////////////////////////////===>
+    Route::get('/blogs/{blog:slug}', [BeforeBlogsController::class, 'showBySlug'])->name('blogs.show');
 
 
-//<===//////////////////////////////////////////===>
+    //<===//////////////////////////////////////////===>
 
     //Route::get('/buscar-tutor', BuscarTutor::class)->name('buscar.tutor');
     Route::get('/kkkk', BuscadorTutor::class)->name('buscador.tutor');
@@ -251,6 +237,20 @@ Route::post('/encuesta/guardar', [HomeController::class, 'storeEncuesta'])->name
             Route::get('certificates', CertificateList::class)->name('certificate-list');
             Route::get('disputes', Dispute::class)->name('disputes');
             Route::get('manage-dispute/{id}', ManageDispute::class)->name('manage-dispute');
+
+            // Rutas para el wizard de reservas (requiere autenticación de estudiante)
+            Route::prefix('booking')->name('booking.')->group(function () {
+                // Route::get('/niveles', [BookingController::class, 'getLevels'])->name('niveles');
+                // Route::get('/categorias', [BookingController::class, 'getCategories'])->name('categorias');
+                Route::get('/materias', [BookingController::class, 'getSubjects'])->name('materias');
+                
+                Route::get('/tutores', [BookingController::class, 'getTutors'])->name('tutores');
+                Route::get('/horarios/{tutor_id}', [BookingController::class, 'getSlots'])->name('horarios');
+                Route::get('/tutor-payment/{tutor_id}', [BookingController::class, 'getTutorPayment'])->name('tutor-payment');
+
+                Route::post('/validar-cupon', [BookingController::class, 'validarCupon'])->name('validar-cupon');
+                Route::post('/reservar', [BookingController::class, 'storeBooking'])->name('reservar');
+            });
         });
     });
 
@@ -276,7 +276,7 @@ Route::post('/encuesta/guardar', [HomeController::class, 'storeEncuesta'])->name
 
 
     // routes/web.php
-    
+
 });
 
 Route::get('/tutor/{id}', [TutorPerfilController::class, 'show'])->name('tutor.perfil');

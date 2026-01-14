@@ -239,7 +239,7 @@
     }
     .tk-pagination{
         margin-top: 0;
-        padding: 13.5px 37px;
+        padding: 10px 37px 0px !important;
         border-top: 1px solid $border-color;
         ul li{
             &.active span,
