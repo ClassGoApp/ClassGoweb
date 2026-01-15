@@ -211,8 +211,9 @@
 
                 </div>
             </div>
-            {{ $users->links('pagination.custom') }}
+            
         </div>
+        {{ $users->links('pagination.custom') }}
         <div wire:ignore.self class="modal fade tb-addonpopup" id="tb-add-user" aria-labelledby="tb_user_info_label"
             role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg tb-modaldialog" role="document">
