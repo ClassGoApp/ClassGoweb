@@ -1,0 +1,82 @@
+@import 'variables.css';
+
+.tutoria-instantanea-section {
+    background: var(--bg-gradient5);
+}
+
+.tutoria-instantanea-header-content {
+    background-color: var(--primary-color);
+    background-image: url('/images/home/Elipse.webp');
+    background-repeat: no-repeat;
+    background-position: center calc(100% + 500px);
+    background-size: 100% auto;
+    
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5rem 5rem 3rem 5rem;
+    color: white;
+    min-height: 100vh;
+}
+
+.container-text-header {
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    margin-top: 6rem;
+}
+
+.container--center {
+    color: white; /* Asegurar que el texto sea visible */
+}
+
+.loading-indicator {
+    max-width: 1200px;
+    height: 30vh;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    /* opcional: fondo semitransparente */
+}
+
+.loader {
+    width: 48px;
+    height: 48px;
+    border: 5px solid #FFF;
+    border-bottom-color: var(--tertiary-color2);
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+}
+
+.main-tutoria-instantanea {
+    border-top-left-radius: 5rem;
+    border-top-right-radius: 5rem;
+    background: var(--secundary-color);
+    padding-top: 1.2rem;
+    display: block;
+}
+    
+    
+@media (max-width: 600px) {
+    .tutoria-instantanea-header-content {
+        padding: 1rem;
+        min-height: 100vh;
+        background: var(--bg-gradient2);
+        color: white; /* Asegurar texto blanco sobre fondo oscuro */
+    }
+    .header-main__subtitle {
+        font-size: 1.25rem;
+    }
+
+    .main-tutoria-instantanea {
+        border-top-left-radius: 2rem;
+        border-top-right-radius: 2rem;
+        padding-top: 1rem;
+        margin-top: -21px;
+    }
+
+}

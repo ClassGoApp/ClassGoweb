@@ -22,7 +22,7 @@ class UpdateTeam extends Component
     public $photo; // Nueva foto si se sube
     public $platform;
     public $platform_link;
-    public $order = 0;
+    public $order = 1;
     
     // NUEVO: Variable de estado
     public $status;
@@ -70,7 +70,7 @@ class UpdateTeam extends Component
             'role'          => 'required|string|max:255',
             'platform'      => 'nullable|string|max:100',
             'platform_link' => 'nullable|url|max:255',
-            'order'         => 'nullable|integer|min:0',
+            'order'         => 'nullable|integer|min:1',
             'status'        => 'boolean',
         ];
 

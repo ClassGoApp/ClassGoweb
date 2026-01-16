@@ -18,7 +18,7 @@ class CreateTeam extends Component
     public $photo;
     public $platform;
     public $platform_link;
-    public $order = 0;
+    public $order = 1;
     
     // Estado activo por defecto
     public $status = true;
@@ -53,7 +53,7 @@ class CreateTeam extends Component
             
             'platform'      => 'nullable|string|max:100',
             'platform_link' => 'nullable|url|max:255',
-            'order'         => 'nullable|integer|min:0',
+            'order'         => 'nullable|integer|min:1',
             'status'        => 'boolean',
         ];
     }
