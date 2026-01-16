@@ -3,7 +3,7 @@
     @include('components.floating-button.partials.ai-option')
     @include('components.floating-button.partials.support-option')
 
-    <button class="instant-btn-floating">
+    <button class="instant-btn-floating " onclick="window.location.href='{{ route('buscar') }}'">
         <i>
             <svg class="bolt" viewBox="0 0 24 24">
                 <path d="M13 2L3 14h7l-1 8 10-12h-7z" />
@@ -11,7 +11,7 @@
         </i>
 
         <span class="instant-tooltip">
-            ¡Tutor listo para ayudarte!
+            ¡Tutoría al Instante!
         </span>
     </button>
 
@@ -85,9 +85,8 @@
         top: 50%;
         transform: translateY(-50%);
 
-        background: #0ea5b7;
+        background: rgba(14, 165, 183, 0.4);
 
-        border: 2px solid var(--terciary-color2);
         color: #ffffff;
         padding: 12px 20px;
 
@@ -97,7 +96,6 @@
         letter-spacing: 0.4px;
         white-space: nowrap;
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
-
         opacity: 0;
         pointer-events: none;
         border-left: 4px solid var(--terciary-color2);

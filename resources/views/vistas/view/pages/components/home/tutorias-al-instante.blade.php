@@ -40,10 +40,87 @@
                 <line id="connectionLine" x1="0" y1="0" x2="0" y2="0" />
             </svg>
 
-            <div class="tutor-card-instant">Matemáticas<br><small>Bs. 30</small></div>
-            <div class="tutor-card-instant">Física<br><small>Bs. 35</small></div>
-            <div class="tutor-card-instant">Programación<br><small>Bs. 40</small></div>
-            <div class="tutor-card-instant">Química<br><small>Bs. 45</small></div>
+            <div class="tutor-card-mini">
+
+                <div class="mini-body">
+                    <div class="mini-icon avatar-icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path fill="currentColor"
+                                d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12Zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8Z" />
+                        </svg>
+                    </div>
+
+                    <span class="mini-badge">MATEMÁTICAS</span>
+                    <div class="mini-price">
+                        Bs. 30
+                    </div>
+                </div>
+            </div>
+
+            <div class="tutor-card-mini">
+
+                <div class="mini-body">
+                    <div class="mini-icon avatar-icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path fill="currentColor"
+                                d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12Zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8Z" />
+                        </svg>
+                    </div>
+                    <span class="mini-badge">PROGRAMACIÓN</span>
+                    <div class="mini-price">
+                        Bs. 35
+                    </div>
+                </div>
+            </div>
+
+            <div class="tutor-card-mini">
+
+                <div class="mini-body">
+                    <div class="mini-icon avatar-icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path fill="currentColor"
+                                d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12Zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8Z" />
+                        </svg>
+                    </div>
+                    <span class="mini-badge">CÁLCULO</span>
+                    <div class="mini-price">
+                        Bs. 30
+                    </div>
+                </div>
+            </div>
+
+            <div class="tutor-card-mini">
+
+                <div class="mini-body">
+                    <div class="mini-icon avatar-icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path fill="currentColor"
+                                d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12Zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8Z" />
+                        </svg>
+                    </div>
+                    <span class="mini-badge">LITERATURA</span>
+                    <div class="mini-price">
+                        Bs. 40
+                    </div>
+                </div>
+            </div>
+
+            <div class="tutor-card-mini">
+
+                <div class="mini-body">
+                    <div class="mini-icon avatar-icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path fill="currentColor"
+                                d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12Zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8Z" />
+                        </svg>
+                    </div>
+                    <span class="mini-badge">MARKETING</span>
+                    <div class="mini-price">
+                        Bs. 25
+                    </div>
+                </div>
+            </div>
+
         </div>
 
     </div>
@@ -65,7 +142,7 @@
         }
 
         100% {
-            box-shadow: 0 0 0 60px rgba(0, 243, 251, 0);
+            box-shadow: 0 0 0 80px rgba(0, 243, 251, 0);
             opacity: 1;
         }
     }
@@ -75,7 +152,7 @@
         background: linear-gradient(135deg,
                 #071c2f,
                 #0b3a5a,
-                #0f6fa3);
+                #1395b6);
         color: #ffffff;
         text-align: left;
         position: relative;
@@ -235,37 +312,134 @@
     }
 
 
-    .tutor-card-instant {
+    /* ================= MINI CARD ================= */
+    .tutor-card-mini {
         position: absolute;
         top: 50%;
         left: 50%;
-        width: 130px;
-        padding: 10px;
-        background: rgba(255, 255, 255, 0.95);
-        border-radius: 16px;
-        text-align: center;
-        color: #002635;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
 
-        /* 🔥 CLAVE ABSOLUTA */
-        transform-origin: center center;
+        width: 120px;
+        padding: 14px;
+        border-radius: 18px;
 
-        z-index: 4;
-        transition: transform 0.5s ease, box-shadow 0.4s ease;
-    }
+        background: linear-gradient(145deg,
+                rgba(255, 255, 255, .45),
+                rgba(235, 245, 255, .55));
 
+        backdrop-filter: blur(8px);
 
-    .tutor-card-instant small {
-        display: block;
-        margin-top: 6px;
-        opacity: 0.7;
-    }
-
-    .tutor-card-instant.active {
         box-shadow:
-            0 0 0 3px #4fd1ff,
-            0 30px 60px rgba(79, 209, 255, 0.6);
+            0 12px 28px rgba(0, 0, 0, .18),
+            inset 0 1px 0 rgba(255, 255, 255, .6);
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        font-weight: 800;
+        font-size: .75rem;
+        color: #023047;
+
+        transform-origin: center center;
+        transition: box-shadow .3s ease, transform .3s ease;
+        z-index: 4;
     }
+
+    .tutor-card-mini.active {
+        box-shadow:
+            0 0 0 3px rgba(79, 209, 255, .9),
+            0 30px 60px rgba(79, 209, 255, .7);
+    }
+
+    .tutor-card-mini:hover {
+        transform: translateY(-6px) scale(1.05);
+        box-shadow:
+            0 0 0 3px rgba(79, 209, 255, .9),
+            0 30px 60px rgba(79, 209, 255, .65);
+    }
+
+    /* ================= HEADER ================= */
+    .mini-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: .65rem;
+        font-weight: 800;
+    }
+
+    .mini-badge {
+        padding: .3rem .6rem;
+        border-radius: 999px;
+        background: rgba(2, 48, 71, .08);
+        color: #023047;
+    }
+
+    /* ================= BODY ================= */
+    .mini-body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .mini-icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #4fd1ff, #2bb0ff);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        box-shadow: 0 8px 18px rgba(79, 209, 255, .6);
+    }
+
+    .avatar-icon {
+        background: #b9b9b9;
+        color: #64748b;
+        box-shadow: none;
+    }
+
+    .avatar-icon svg {
+        width: 22px;
+        height: 22px;
+        color: white;
+    }
+
+    .mini-price {
+        font-size: 1.05rem;
+        font-weight: 900;
+        color: #0f172a;
+    }
+
+    .mini-price small {
+        display: block;
+        font-size: .65rem;
+        font-weight: 600;
+        color: #64748b;
+    }
+
+    /* ================= BUTTON ================= */
+    .mini-btn {
+        border: none;
+        border-radius: 999px;
+        padding: .6rem;
+        font-size: .7rem;
+        font-weight: 800;
+        cursor: pointer;
+
+        background: linear-gradient(135deg, #023047, #219EBC);
+        color: white;
+
+        transition: all .3s ease;
+    }
+
+    .mini-btn:hover {
+        background: #FB8500;
+        color: #023047;
+    }
+
 
     /* ---------- RESPONSIVE ---------- */
 
@@ -293,92 +467,92 @@
     }
 </style>
 <script>
-  /* ========= SETUP ========= */
-  const $ = s => document.querySelector(s);
-  const cards = [...document.querySelectorAll('.tutor-card-instant')];
+    /* ========= SETUP ========= */
+    const $ = s => document.querySelector(s);
+    const cards = [...document.querySelectorAll('.tutor-card-mini')];
 
-  const visual = $('.instant-info-visual');
-  const avatar = $('.student-avatar');
-  const line = $('#connectionLine');
+    const visual = $('.instant-info-visual');
+    const avatar = $('.student-avatar');
+    const line = $('#connectionLine');
 
-  const isMobile = innerWidth <= 768;
+    const isMobile = innerWidth <= 768;
 
-  const CFG = {
-    radius: isMobile ? 100 : 170,
-    speed: 0.18,
-    approach: 80,
-    lineOffset: 30,
-    cycle: 5200,
-    inspect: 1500,
-    return: 600
-  };
+    const CFG = {
+        radius: isMobile ? 100 : 170,
+        speed: 0.18,
+        approach: 80,
+        lineOffset: 30,
+        cycle: 5200,
+        inspect: 1500,
+        return: 600
+    };
 
-  let angle = 0;
-  let active = 0;
-  let target = 1;
-  let state = 'rotating';
+    let angle = 0;
+    let active = 0;
+    let target = 1;
+    let state = 'rotating';
 
-  cards.forEach((c, i) => c.dataset.base = i * 360 / cards.length);
+    cards.forEach((c, i) => c.dataset.base = i * 360 / cards.length);
 
-  /* ========= HELPERS ========= */
-  const center = r => ({
-    x: r.left + r.width / 2,
-    y: r.top + r.height / 2
-  });
-
-  function updateLine() {
-    const v = visual.getBoundingClientRect();
-    const a = center(avatar.getBoundingClientRect());
-    const c = center(cards[target].getBoundingClientRect());
-
-    const dx = c.x - a.x;
-    const dy = c.y - a.y;
-    const d = Math.hypot(dx, dy) || 1;
-
-    line.setAttribute('x1', a.x - v.left);
-    line.setAttribute('y1', a.y - v.top);
-    line.setAttribute('x2', c.x - v.left - dx / d * CFG.lineOffset);
-    line.setAttribute('y2', c.y - v.top - dy / d * CFG.lineOffset);
-    line.style.opacity = 1;
-  }
-
-  /* ========= LOOP ========= */
-  function animate() {
-    if (!isMobile && state === 'rotating') angle += CFG.speed;
-
-    cards.forEach((card, i) => {
-      const total = angle + Number(card.dataset.base);
-      const r = state === 'selecting' && i === active
-        ? CFG.radius - CFG.approach
-        : CFG.radius;
-
-      card.style.transform =
-        `translate(-50%,-50%) rotate(${total}deg) translate(${r}px) rotate(${-total}deg)`;
+    /* ========= HELPERS ========= */
+    const center = r => ({
+        x: r.left + r.width / 2,
+        y: r.top + r.height / 2
     });
 
-    updateLine();
-    requestAnimationFrame(animate);
-  }
+    function updateLine() {
+        const v = visual.getBoundingClientRect();
+        const a = center(avatar.getBoundingClientRect());
+        const c = center(cards[target].getBoundingClientRect());
 
-  /* ========= TIMELINE ========= */
-  setInterval(() => {
-    active = target;
-    cards.forEach(c => c.classList.remove('active'));
-    cards[active].classList.add('active');
-    state = 'selecting';
+        const dx = c.x - a.x;
+        const dy = c.y - a.y;
+        const d = Math.hypot(dx, dy) || 1;
 
-    setTimeout(() => {
-      cards[active].classList.remove('active');
-      state = 'returning';
+        line.setAttribute('x1', a.x - v.left);
+        line.setAttribute('y1', a.y - v.top);
+        line.setAttribute('x2', c.x - v.left - dx / d * CFG.lineOffset);
+        line.setAttribute('y2', c.y - v.top - dy / d * CFG.lineOffset);
+        line.style.opacity = 1;
+    }
 
-      setTimeout(() => {
-        target = (active + 1) % cards.length;
-        state = 'rotating';
-      }, CFG.return);
+    /* ========= LOOP ========= */
+    function animate() {
+        if (!isMobile && state === 'rotating') angle += CFG.speed;
 
-    }, CFG.inspect);
+        cards.forEach((card, i) => {
+            const total = angle + Number(card.dataset.base);
+            const r = state === 'selecting' && i === active ?
+                CFG.radius - CFG.approach :
+                CFG.radius;
 
-  }, CFG.cycle);
+            card.style.transform =
+                `translate(-50%,-50%) rotate(${total}deg) translate(${r}px) rotate(${-total}deg)`;
+        });
 
-  animate();
+        updateLine();
+        requestAnimationFrame(animate);
+    }
+
+    /* ========= TIMELINE ========= */
+    setInterval(() => {
+        active = target;
+        cards.forEach(c => c.classList.remove('active'));
+        cards[active].classList.add('active');
+        state = 'selecting';
+
+        setTimeout(() => {
+            cards[active].classList.remove('active');
+            state = 'returning';
+
+            setTimeout(() => {
+                target = (active + 1) % cards.length;
+                state = 'rotating';
+            }, CFG.return);
+
+        }, CFG.inspect);
+
+    }, CFG.cycle);
+
+    animate();
 </script>
