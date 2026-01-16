@@ -1525,6 +1525,7 @@ form p span i {
 
 .tb-sortby .tb-actionselect + .form-group {
   padding: 5px;
+  min-width: 10rem;
 }
 
 .tb-radiolist {
@@ -4753,10 +4754,11 @@ address {
   padding: 0;
 }
 .tb-db-dashboard_box .tb-db-dashboard_box_wrap {
-  height: calc(100vh - 112px);
+  /*height: calc(100vh - 112px);*/
   overflow: auto;
   overflow-x: hidden;
 }
+
 .tb-db-dashboard_box .tb-db-dashboard_box_wrap_inner {
   padding: 6px;
   border-radius: 20px;
@@ -4778,6 +4780,12 @@ address {
 .tb-db-dashboard_box .tb-dhb-mainheading {
   margin: -20px;
   padding: 20px !important;
+  flex-wrap: nowrap;
+}
+@media (max-width: 400px) {
+  .tb-db-dashboard_box .tb-dhb-mainheading {
+    flex-wrap: wrap;
+  }
 }
 
 .tb-db-dashboard_box .lb-bodywraper .tb-disputetable > .tk-skeletonwrap {
@@ -4994,6 +5002,7 @@ address {
 
 .tb-sortby .tb-themeform fieldset > .tb-themeform__wrap {
   margin: 0;
+  overflow-x: auto;
 }
 
 .tb-menumanagement_wrap .tb-managepageswrap {

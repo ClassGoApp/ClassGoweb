@@ -132,13 +132,15 @@
                             </tbody>
                         </table>
 
-                        {{ $tutors->links('pagination.custom') }}
+                        {{-- {{ $tutors->links('pagination.custom') }} --}}
                     @else
                         <x-no-record :image="asset('images/empty.png')" :title="__('general.no_record_title')"/>
                     @endif
                 </div>
             </div>
         </div>
+        
+        {{ $tutors->links('pagination.custom') }}
         
         <!-- Modal Agregar Tutor -->
         <div wire:ignore.self class="modal fade tb-addonpopup" id="tb-add-tutor" aria-labelledby="tb_tutor_info_label"
