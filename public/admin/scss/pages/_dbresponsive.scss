@@ -954,7 +954,7 @@
             tbody {
                 tr {
                     display: block;
-                    margin-bottom: 1rem;
+                    // margin-bottom: 1rem;
                     border-radius: 8px;
 
                     td {
@@ -1101,7 +1101,7 @@
         }
     }
     .tb-menumanagement_wrap:has(.am-dispute-system) {
-        padding: 20px 10px;
+        padding: 20px 10px 0 !important;
     }
 }
 @media (max-width: 640px) {

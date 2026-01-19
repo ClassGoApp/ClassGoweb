@@ -1,0 +1,3022 @@
+<div>
+   
+    <div id="js-booking-modal"
+        style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;  z-index: 9999;">
+        <div style="display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px;">
+           
+            <div id="js-modal-box"
+                style="background:white; border-radius:16px; box-shadow:0 25px 50px -12px rgba(0,0,0,0.25); width:100%; max-width:1100px; position:relative;">
+
+
+                <div id="js-modal-body">
+
+                   
+                    <div class="encabezado-modal">
+                       
+                        <h2 style="text-align: center; font-size: 24px; font-weight: bold; color: #333;">
+                            Reserva tu Clase
+                        </h2>
+
+                        <button id="js-close-modal-btn" type="button"
+                            style="position: absolute;color:red; top: 8px; right: 16px; background: none; border: none; font-size: 28px; cursor: pointer; color: #999; line-height: 1;">
+                            <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
+                                <path d="M6 6L18 18M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2.8"
+                                    stroke-linecap="round" />
+                            </svg>
+                        </button>
+
+                       
+                        <div style="padding-top: 6px;">
+                            <div id="stepper-track"
+                                style="display: flex; align-items: center; justify-content: center; max-width: 500px; margin: 0 auto; position: relative;">
+
+                                
+                                <div id="step-indicator"></div>
+
+                                <div style="display: flex; flex-direction: column; align-items: center;">
+                                    <div id="step-icon-1" class="step-icon"
+                                        style="width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">
+                                        1
+                                    </div>
+                                    <p class="step-label" style="font-size: 12px;">Materia</p>
+                                </div>
+
+                                <div id="line-1" class="step-line" style="flex: 1; height: 2px; margin: 0 8px;">
+                                </div>
+
+                                <div style="display: flex; flex-direction: column; align-items: center;">
+                                    <div id="step-icon-2" class="step-icon"
+                                        style="width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">
+                                        2
+                                    </div>
+                                    <p class="step-label" style="font-size: 12px;">Horario</p>
+                                </div>
+
+                                <div id="line-2" class="step-line" style="flex: 1; height: 2px; margin: 0 8px;">
+                                </div>
+
+                                <div style="display: flex; flex-direction: column; align-items: center;">
+                                    <div id="step-icon-3" class="step-icon"
+                                        style="width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">
+                                        3
+                                    </div>
+                                    <p class="step-label" style="font-size: 12px;">Pago</p>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    
+                    <div style="min-height: 450px; position: relative;margin:10px;">
+                      
+                        <div id="content-step-1" class="step-panel is-active">
+                            <div class="step1-grid" style="display: grid; grid-template-columns: 220px 1fr; gap: 16px;">
+                                
+                                <div>
+                                    <label
+                                        style="display: block; font-weight: 600; margin-bottom: 8px; font-size: 14px;">
+                                        Tipo de institución
+                                    </label>
+                                    <select id="js-institution-select" class="sr-only" aria-hidden="true">
+                                        <option value="">Selecciona tipo de institución</option>
+                                        <option value="colegio">Colegio</option>
+                                        <option value="universidad">Universidad</option>
+                                        <option value="instituto">Instituto</option>
+                                    </select>
+
+                                    
+                                    <div class="dd" id="js-inst-dd">
+                                        <button type="button" class="dd-btn" id="js-inst-btn" aria-expanded="false">
+                                            <span class="dd-label" id="js-inst-label">Selecciona tipo de
+                                                institución</span>
+                                            <span class="dd-chev" aria-hidden="true"></span>
+                                        </button>
+
+                                        <div class="dd-menu" id="js-inst-menu" role="listbox">
+                                            <button type="button" class="dd-item" data-value="colegio">Colegio</button>
+                                            <button type="button" class="dd-item"
+                                                data-value="universidad">Universidad</button>
+                                            <button type="button" class="dd-item"
+                                                data-value="instituto">Instituto</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                               
+                                <div>
+                                    <label
+                                        style="display: block; font-weight: 600; margin-bottom: 8px; font-size: 14px;">
+                                        Materias disponibles
+                                    </label>
+                                    <input id="js-subject-search" type="text" class="form-control"
+                                        placeholder="Escribe para filtrar tu materia..."
+                                        style="margin-bottom: 8px; font-size: 14px;" disabled>
+
+                                    <div id="js-subjects-list"
+                                        style="max-height: 295px; overflow-y: auto; border: 1px solid #219EBC;
+                       border-radius: 4px; ">
+                                        <p
+                                            style="padding: 16px; text-align: center; color: #666; margin: 0; font-size: 14px;">
+                                            Selecciona un tipo de institución.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                           
+                            <div id="js-tutor-container"
+                                style="display:block; margin-top:24px; max-width:900px; margin-left:auto; margin-right:auto;">
+
+                                <p id="js-tutor-helper" style="margin-bottom:12px; color:#666; font-size:14px;">
+                                    Elige una materia para ver los tutores disponibles.
+                                </p>
+
+                                <div id="js-tutor-list" style="display:grid; gap:12px;">
+                                    
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                       
+                        <div id="content-step-2" class="step-panel" ">
+                            <div class="slots-layout">
+                                <div style="justify-items: center;">
+                                    <div id="js-mini-calendar"></div>
+                                </div>
+
+                                <div>
+                                    <div class="slots-head">
+                                        <div>
+                                            <div class="slots-title">Horarios</div>
+                                            <div class="slots-sub" id="js-selected-date-label">Hoy</div>
+                                        </div>
+
+                                    </div>
+                                    
+
+                                    <div id="js-slots-container"></div>
+                                    <button type="button" id="js-scroll-calendar" class="btn-scroll-calendar" aria-label="Subir al calendario">
+    <span class="chev-up" aria-hidden="true"></span>
+  </button>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                      
+                        <div id="content-step-3" class="step-panel" >
+
+                            <div class="pay-layout"
+                                style="display:grid; grid-template-columns: 1fr 1fr; gap:32px; align-items:start;">
+
+                               
+                                <div>
+                                    <h3 style="color:#023047;font-size:18px; font-weight:600; margin-bottom:16px;">Resumen de reserva
+                                    </h3>
+
+                                    <div style="background:#f8f9fa;  border-radius:12px;">
+                                        
+                                        <div class="float-field">
+                                            <span class="float-label">Materia</span>
+                                            <span class="float-value" id="js-summary-subject"></span>
+                                        </div>
+
+                                        <div class="float-field">
+                                            <span class="float-label">Tutor</span>
+                                            <span class="float-value" id="js-summary-tutor"></span>
+                                        </div>
+
+                                        <div class="float-field">
+                                            <span class="float-label">Fecha</span>
+                                            <span class="float-value" id="js-summary-date"></span>
+                                        </div>
+
+                                        <div class="float-field">
+                                            <span class="float-label">Hora</span>
+                                            <span class="float-value" id="js-summary-time"></span>
+                                        </div>
+
+                                        <hr style="margin:16px 0;">
+
+                                        <div style="font-size:18px; font-weight:bold;">
+                                            <strong>Total:</strong>
+                                            <span id="js-summary-total" style="color:#219EBC;"></span>
+                                        </div>
+
+                                        <div id="js-summary-discount-row" style="display:none; margin-top:8px;">
+                                            <b>Descuento (<span id="js-summary-discount-pct">0</span>%):</b>
+                                            <span id="js-summary-discount-amount">-0.00</span> Bs.
+                                        </div>
+
+                                        <div id="js-summary-free-note"
+                                            style="display:none; margin-top:10px; color:#16a34a; font-weight:800;">
+                                            ¡Felicidades! Tienes una tutoría gratis <br>
+                                             Presiona finalizar reserva.
+                                        </div>
+                                    </div>
+
+
+                                    <div style="margin-top:24px;">
+                                        <label style="display:block; font-weight:600; margin-bottom:8px;">
+                                            ¿Tienes un cupón de descuento?
+                                        </label>
+
+                                       
+                                        <div id="js-coupon-form" style="display:flex; gap:8px;">
+                                            <input id="js-coupon-input" type="text" placeholder="Ej. classgo25"
+                                                style="flex:1; border:1px solid #e5e7eb; border-radius:10px; padding:12px;">
+                                            <button id="js-apply-coupon-btn" type="button">
+                                                Aplicar
+                                            </button>
+                                        </div>
+
+                                        <p id="js-coupon-message" style="margin-top:8px; min-height:20px;"></p>
+
+                                        
+                                        <div id="js-coupon-bar"
+                                            style="display:none; margin-top:10px; border:2px dashed #86efac; background:#ecfdf5; padding:10px 12px; border-radius:12px; align-items:center; justify-content:space-between;">
+                                            <div style="font-weight:700;">
+                                                Cupón aplicado: <span id="js-coupon-code">-</span>
+                                            </div>
+                                            <button type="button" id="js-remove-coupon"
+                                                style="border:none; background:transparent; font-weight:800; color:#065f46; cursor:pointer;">
+                                                Quitar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                              
+                                <div>
+                                    
+
+                                    <div style="background:#f8f9fa; padding:24px; border-radius:12px;">
+                                        <p style="color:#023047;font-size:14px; margin-bottom:12px;">Métodos de pago del tutor:</p>
+
+                                       
+                                        <div id="js-pay-grid"
+                                            style="display:none; gap:16px; grid-template-columns:1fr 1fr; margin-bottom:14px; align-items:stretch;">
+
+                                           
+                                            <div id="js-card-bank"
+                                                style="background:#fff; border:1px solid #e5e7eb; border-radius:12px; padding:14px;
+                      flex-direction:column;justify-content:space-between; min-height:320px;">
+
+                                                <div style="text-align:center;display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;">
+                                                    <div style="display:flex; justify-content:center;align-items:center;font-size:28px; margin-bottom:6px;width:58px; height:58px; border-radius:999px; background:#d1fae5;"><svg viewBox="0 0 24 24" width="32" height="32" aria-hidden="true">
+  <path d=" M4 9h16L12 4 4 9Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+                        <path d="M6 10v8M10 10v8M14 10v8M18 10v8" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" />
+                        <path d="M5 19h14" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" />
+                        </svg>
+                    </div>
+                    <div style="color:#023047;font-weight:800;">Transferencia bancaria</div>
+                </div>
+
+                <div id="js-bank-info"
+                    style="margin-top:10px; font-size:13px; color:#023047; line-height:1.6; flex:1 1 auto; overflow:auto;">
+                </div>
+
+                <div style="display:flex; justify-content:center; margin-top:auto; padding-top:12px;">
+                    <button type="button" id="js-copy-bank"
+                        style="border:1px solid #e5e7eb; background:#219EBC; color:#fff; border-radius:10px; padding:10px 12px; cursor:pointer;">
+                        Copiar datos
+                    </button>
+                </div>
+            </div>
+
+           
+            <div id="js-card-qr"
+                style="background:#fff; border:1px solid #e5e7eb; border-radius:12px; padding:14px;
+                      display:flex; flex-direction:column; min-height:320px;">
+
+                <div style="text-align:center;">
+                    <div
+                        style="width:58px; height:58px; border-radius:999px; background:#d1fae5; display:grid; place-items:center; margin:0 auto;">
+                        <span style="font-size:24px;"><svg viewBox="0 0 24 24" width="32" height="32"
+                                aria-hidden="true">
+                              
+                                <rect x="7" y="2.8" width="10" height="18.4" rx="2.2" fill="none"
+                                    stroke="currentColor" stroke-width="2" />
+                                <path d="M10 5.7h4" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" />
+                                <circle cx="12" cy="18.6" r="1" fill="currentColor" />
+
+                              
+                                <rect x="2.8" y="7.2" width="3.2" height="3.2" fill="none"
+                                    stroke="currentColor" stroke-width="1.8" />
+                                <rect x="2.8" y="12.0" width="3.2" height="3.2" fill="none"
+                                    stroke="currentColor" stroke-width="1.8" />
+                                <rect x="18.0" y="7.2" width="3.2" height="3.2" fill="none"
+                                    stroke="currentColor" stroke-width="1.8" />
+                                <path d="M18.4 12.2h2.8M18.4 14.2h1.6M20.0 14.2v2.8" fill="none"
+                                    stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                            </svg>
+                        </span>
+                    </div>
+                    <div style="color:#023047;margin-top:8px; font-weight:800;">Pago con QR</div>
+                </div>
+
+                <div style="margin-top:12px; display:flex; justify-content:center;">
+                    <div
+                        style="width:170px; height:170px; border:1px dashed #cbd5e1; border-radius:12px; display:grid; place-items:center; overflow:hidden; background:#fff;">
+                        <img id="js-qr-img" src="" alt="QR de pago"
+                            style="display:none; width:100%; height:100%; object-fit:contain;">
+                        <span id="js-qr-empty"
+                            style="font-size:12px; color:#6b7280; padding:10px; text-align:center;">
+                            Sin QR configurado
+                        </span>
+                    </div>
+                </div>
+
+                <div style="display:flex; justify-content:center; margin-top:auto; padding-top:12px;">
+                    <a id="js-open-qr" href="#" target="_blank" rel="noopener"
+                        style="display:none; text-decoration:none; border:1px solid #e5e7eb; background:#219EBC; color:#fff; border-radius:10px; padding:10px 12px;">
+                        Ver QR
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <p id="js-pay-hint" style="display:none; margin:0 0 14px; font-size:12px; color:#6b7280;">
+            Realiza el pago con el método disponible y luego sube tu comprobante.
+        </p>
+
+      
+        <div id="js-receipt-block">
+            <label for="js-file-upload"
+                style="cursor:pointer; display:block; text-align:center; padding:32px; border:2px dashed #ddd; border-radius:8px;">
+                <p style="margin:0;">📄 Subir comprobante</p>
+                <p id="js-file-name" style="font-size:12px; color:#999; margin-top:8px;"></p>
+            </label>
+
+            <input id="js-file-upload" type="file" accept="image/*,application/pdf" style="display:none;">
+        </div>
+
+    </div>
+</div>
+
+</div>
+</div>
+
+</div>
+
+
+
+<div id="js-loader"
+    style="display: none; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: white; align-items: center; justify-content: center; flex-direction: column;">
+    <div
+        style="width: 64px; height: 64px; border: 4px solid #219EBC; border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite;">
+    </div>
+    <p style="margin-top: 16px;">Procesando...</p>
+</div>
+
+
+<div id="js-confirmation"
+    style="display: none; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: white; align-items: center; justify-content: center; flex-direction: column; text-align: center;">
+    <div style="font-size: 64px; color: #28a745; margin-bottom: 16px;">✓</div>
+    <h3 style="color:black;font-size: 24px; font-weight: bold; margin-bottom: 8px;">¡Reserva exitosa!</h3>
+
+</div>
+</div>
+
+
+
+<div id="js-navigation-buttons">
+
+
+    <button id="js-back-btn" type="button" class="btn btn-secondary">Cancelar</button>
+    <button id="js-next-btn" type="button" class="btn btn-primary">Siguiente</button>
+</div>
+
+
+</div>
+</div>
+
+</div>
+<link rel="stylesheet" href="/css/variables.css">
+
+<style>
+    @keyframes spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    .step-panel {
+        display: none;
+        opacity: 0;
+        transform: translateY(10px);
+        pointer-events: none;
+        transition: opacity 0.18s ease, transform 0.18s ease;
+        will-change: opacity, transform;
+    }
+
+    .step-panel.is-active {
+        display: block;
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+        transition: opacity 0.18s ease, transform 0.18s ease;
+    }
+
+    .sr-only {
+        position: absolute !important;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+    }
+
+    .dd {
+        position: relative;
+        width: 100%;
+    }
+
+    .dd-btn {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 8px;
+        border-radius: 12px;
+        border: 1px solid rgba(2, 48, 71, 0.18);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+        cursor: pointer;
+        transition: box-shadow 0.18s ease, border-color 0.18s ease,
+            transform 0.12s ease;
+    }
+
+    .dd-btn:hover {
+        border-color: #8ecae6;
+        box-shadow: 0 14px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .dd-btn:active {
+        transform: scale(0.99);
+    }
+
+    .dd-label {
+        font-size: 14px;
+        color: #0f172a;
+    }
+
+    .dd-chev {
+        width: 10px;
+        height: 10px;
+        border-right: 2px solid rgb(255, 255, 255);
+        border-bottom: 2px solid rgb(255, 255, 255);
+        transform: rotate(45deg);
+        transition: transform 0.18s ease;
+    }
+
+    .dd-menu {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: calc(100% + 8px);
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid #219EBC;
+        border-radius: 4px;
+        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.16);
+        display: none;
+        z-index: 200;
+    }
+
+    .dd.is-open .dd-menu {
+        display: block;
+    }
+
+    .dd.is-open .dd-chev {
+        transform: rotate(-135deg);
+    }
+
+    .dd.has-value.is-open .dd-btn {
+        background: #023047 !important;
+    }
+
+    .dd-item {
+        width: 100%;
+        text-align: left;
+        border: 0;
+        background: #219ebc;
+        padding: 12px 12px;
+        
+        margin: 1px;
+        cursor: pointer;
+        font-size: 14px;
+        color: white;
+        transition: background 0.14s ease, transform 0.08s ease;
+    }
+
+    .dd-item:hover {
+        background: #023047;
+    }
+
+    .dd-item:active {
+        transform: scale(0.99);
+    }
+
+    .dd-item.is-selected {
+        background: #023047;
+        color: white;
+    }
+
+    .dd.has-value .dd-btn {
+        background: #023047;
+        border-color: white;
+        box-shadow: 0 14px 30px rgba(0, 0, 0, 0.14);
+    }
+
+    .dd.has-value .dd-label {
+        color: white;
+    }
+
+    #js-tutor-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 14px;
+    }
+
+    .tutor-card {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 14px;
+        padding: 12px;
+        display: flex;
+        gap: 10px;
+        cursor: pointer;
+        color: #334155;
+        transition: background 0.15s ease, border-color 0.15s ease,
+            box-shadow 0.15s ease, transform 0.15s ease;
+    }
+
+    .tutor-card div>* {
+        color: inherit;
+    }
+
+    .tutor-card:hover {
+        border-color: #cbd5e1;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        transform: translateY(-1px);
+    }
+
+    .tutor-card:active {
+        transform: translateY(0px) scale(0.99);
+    }
+
+    .tutor-card.is-selected {
+        background: linear-gradient(180deg, rgba(7, 59, 76, 1) 64%, rgba(24, 77, 94, 1) 89%, rgba(33, 158, 188, 1) 108%);
+        border-color: #219ebc;
+        color: #fff;
+    }
+
+    .tutor-card .tutor-avatar {
+        width: 58px;
+        height: 58px;
+        border-radius: 999px;
+        flex: 0 0 58px;
+        overflow: hidden;
+        border: 1px solid #e5e7eb;
+        background: #f8fafc;
+    }
+
+    .tutor-card .tutor-avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    .tutor-card .tutor-info {
+        flex: 1;
+        min-width: 0;
+    }
+
+
+    .tutor-card .tutor-name {
+        font-weight: 800;
+        font-size: 14px;
+        margin: 0 0 6px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+
+    .tutor-card .tutor-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: center;
+    }
+
+    .tutor-card .tutor-badge {
+        font-size: 12px;
+        line-height: 1;
+        padding: 7px 10px;
+        border: 1px solid #e5e7eb;
+        background: #f8fafc;
+        white-space: nowrap;
+    }
+
+
+    .tutor-card .tutor-badge.price {
+        border-color: rgba(13, 110, 253, 0.22);
+        background: rgba(13, 110, 253, 0.08);
+        color: #439c33;
+        font-weight: 700;
+    }
+
+
+    .tutor-card.is-selected .tutor-badge.price {
+        color: #fff;
+        border-color: rgba(255, 255, 255, 0.35);
+        background: rgba(255, 255, 255, 0.12);
+    }
+
+
+    .tutor-card.is-selected .tutor-badge {
+        border-color: rgba(255, 255, 255, 0.28);
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+
+    .tutor-card .tutor-check {
+        width: 26px;
+        height: 26px;
+        border: 1px solid #e5e7eb;
+        display: grid;
+        place-items: center;
+        background: #fff;
+        transition: background 0.14s ease, border-color 0.14s ease, color 0.14s ease;
+    }
+
+
+    .tutor-card.is-selected .tutor-check {
+        border-color: #023047;
+        background: #023047;
+        color: #fff;
+    }
+
+    .tutor-card.is-selected:hover {
+        border-color: #023047;
+        transform: translateY(-1px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .tutor-card.is-selected div h4,
+    .tutor-card.is-selected div p {
+        color: #fff;
+    }
+
+    .mini-cal {
+        background: #219ebc;
+        border: 1px solid #e5e7eb;
+        border-radius: 14px;
+        padding: 12px;
+        max-width: 320px;
+    }
+
+    .mini-cal-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 10px;
+        gap: 10px;
+        background: #023047;
+        padding: 0 10px;
+        border-radius: 7px;
+        height: 3rem;
+    }
+
+    .mini-cal-title {
+        font-weight: 800;
+        font-size: 28px;
+        color: #CDD6DA;
+        text-transform: uppercase;
+    }
+
+    .mini-cal-nav {
+        display: flex;
+        gap: 8px;
+    }
+
+    .btn-scroll-calendar {
+        display: none;
+        position: sticky;
+        bottom: 12px;
+        margin-left: auto;
+
+        width: 46px;
+        height: 46px;
+        border-radius: 999px;
+
+        border: 1px solid rgba(0, 0, 0, 0.12);
+        outline: none;
+        padding: 0;
+        appearance: none;
+
+        border: 1px solid rgba(0, 0, 0, 0.12);
+        background: rgba(255, 255, 255, 0.92);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        box-shadow: 0 12px 26px rgba(0, 0, 0, 0.12);
+        cursor: pointer;
+
+        font-size: 18px;
+        font-weight: 900;
+        line-height: 1;
+
+        opacity: 0;
+        transform: translateY(8px) scale(0.98);
+        pointer-events: none;
+        transition: opacity 0.16s ease, transform 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+        z-index: 60;
+    }
+
+    .btn-scroll-calendar .chev-up {
+        width: 14px;
+        height: 14px;
+        display: inline-block;
+        border-right: 2.5px solid currentColor;
+        border-bottom: 2.5px solid currentColor;
+        transform: rotate(-135deg);
+    }
+
+    .btn-scroll-calendar.is-visible {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        pointer-events: auto;
+    }
+
+    .btn-scroll-calendar:active {
+        transform: translateY(0) scale(0.94);
+    }
+
+    .mini-btn {
+        color: white;
+        font-size: 50px;
+        cursor: pointer;
+
+        transform: translateY(-6px);
+    }
+
+    .mini-cal-week {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 8px;
+        font-size: 11px;
+        color: white;
+        margin-bottom: 8px;
+        text-align: center;
+    }
+
+    .mini-cal-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 2px;
+        justify-items: center;
+        align-items: center;
+
+        min-height: 200px;
+    }
+
+    .day-btn {
+        position: relative;
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
+        border: 1px solid #cdd6daa1;
+        cursor: pointer;
+        font-size: 12px;
+        color: #111827;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+    }
+
+    .day-btn.muted {
+        opacity: 0.25;
+        pointer-events: none;
+        border-color: transparent;
+        background: transparent;
+    }
+
+    .day-btn.today {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.12);
+    }
+
+    .day-btn.selected {
+        background: #023047;
+        border-color: #0d6efd;
+        color: #fff;
+    }
+
+    .day-btn.has-slots::after {
+        content: "";
+        position: absolute;
+        top: 5px;
+        right: 6px;
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background: #22c55e;
+    }
+
+    .day-btn.selected.has-slots::after {
+        background: #fff;
+    }
+
+
+    .day-btn.no-slots {
+        background: transparent;
+        border-color: transparent;
+        box-shadow: none;
+
+    }
+
+    .slots-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+
+    .slots-title {
+        font-weight: 800;
+        font-size: 14px;
+    }
+
+    .slots-sub {
+        font-size: 12px;
+        color: #6b7280;
+    }
+
+    .btn-today {
+        border: 1px solid #e5e7eb;
+        background: #fff;
+        border-radius: 10px;
+        padding: 8px 10px;
+        font-size: 12px;
+        cursor: pointer;
+    }
+
+    .slots-legend {
+        display: flex;
+        gap: 14px;
+        align-items: center;
+        margin: 6px 0 12px;
+        font-size: 12px;
+        color: #6b7280;
+    }
+
+    .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 10px;
+        border: 1px solid #e5e7eb;
+        border-radius: 999px;
+        background: #fff;
+    }
+
+    .legend-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        display: inline-block;
+    }
+
+    .dot-available {
+        background: #22c55e;
+    }
+
+    .dot-unavailable {
+        background: #9ca3af;
+    }
+
+
+    .slots-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: clamp(8px, 1.2vw, 14px);
+        align-items: start;
+    }
+
+    .slot-chip {
+        width: 100%;
+        justify-content: space-between;
+
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+
+        border: 1px solid #cbd5e1;
+        background: #219ebc;
+        color: #fff;
+        border-radius: 999px;
+        padding: 10px 12px;
+
+        font-size: 12px;
+        cursor: pointer;
+        user-select: none;
+        line-height: 1;
+
+        transition: transform 0.08s ease, box-shadow 0.12s ease,
+            border-color 0.12s ease;
+    }
+
+    .slot-chip {
+        will-change: transform, opacity;
+    }
+
+    .slot-chip:hover {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.12);
+        background: #fff;
+        color: #000000;
+    }
+
+    .slot-chip:active {
+        transform: scale(0.98);
+    }
+
+    .slot-chip.active {
+        background: #023047;
+        border-color: #0d6efd;
+        color: #fff;
+    }
+
+    .slot-chip .chip-time {
+        font-weight: 600;
+    }
+
+    .slot-chip .chip-dot {
+        margin-left: auto;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #22c55e;
+    }
+
+    .slot-chip.disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+    }
+
+    .slot-chip.disabled:hover {
+        border-color: #cbd5e1;
+        box-shadow: none;
+    }
+
+    .slot-chip.disabled .chip-dot {
+        background: #9ca3af;
+    }
+
+    .form-msg {
+        margin-top: 10px;
+        padding: 10px 12px;
+        border-radius: 12px;
+        font-size: 13px;
+        border: 1px solid #e5e7eb;
+        background: #fff;
+    }
+
+    .form-msg.error {
+        border-color: rgba(220, 53, 69, 0.35);
+        background: rgba(220, 53, 69, 0.08);
+        color: #b02a37;
+    }
+
+    .form-msg.success {
+        border-color: rgba(34, 197, 94, 0.35);
+        background: rgba(34, 197, 94, 0.08);
+        color: #166534;
+    }
+
+
+    .input-error {
+        outline: 3px solid rgba(220, 53, 69, 0.15);
+        border-color: rgba(220, 53, 69, 0.55) !important;
+        border-radius: 10px;
+    }
+
+    .modal-qr {
+        width: 15rem;
+        height: 15rem;
+        margin: 0 auto;
+
+    }
+
+    .qr-image {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: block;
+    }
+
+    #js-booking-modal {
+        background: rgba(2, 6, 23, 0.55) !important;
+        backdrop-filter: blur(12px) saturate(130%);
+        -webkit-backdrop-filter: blur(12px) saturate(130%);
+
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 420ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    #js-modal-box {
+        opacity: 0;
+        transform: translateY(22px) scale(0.985);
+        transition: opacity 320ms cubic-bezier(0.16, 1, 0.3, 1),
+            transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+
+    #js-booking-modal.is-open {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    #js-booking-modal.is-open #js-modal-box {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+
+    @keyframes bookingOverlayIn {
+        from {
+            opacity: 0;
+            transform: translateY(40px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+
+    #js-modal-body {
+        flex: 1 1 auto;
+        overflow-y: auto;
+        padding: 4px;
+        -webkit-overflow-scrolling: touch;
+    }
+
+
+    .encabezado-modal {
+        position: sticky;
+        top: 0;
+        z-index: 60;
+        background: #fff;
+        padding: 4px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+    }
+
+
+    #stepper-track {
+        position: relative;
+    }
+
+
+    #step-indicator {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 40px;
+        height: 40px;
+        border-radius: 999px;
+        background: rgba(33, 158, 188, 0.14);
+        border: 2px solid rgba(33, 158, 188, 0.55);
+        transform: translateX(0);
+        transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1),
+            background-color 220ms ease, border-color 220ms ease;
+        pointer-events: none;
+        z-index: 0;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    }
+
+
+    .step-icon {
+        position: relative;
+        z-index: 1;
+        transition: transform 250ms ease, background-color 250ms ease,
+            color 250ms ease;
+    }
+
+
+    .step-line {
+        transition: background-color 280ms ease;
+    }
+
+
+    .step-label {
+        transition: color 250ms ease;
+    }
+
+    .tutor-card:focus-visible,
+    .slot-chip:focus-visible,
+    .mini-btn:focus-visible,
+    .day-btn:focus-visible {
+        outline: 3px solid rgba(13, 110, 253, 0.25);
+        outline-offset: 2px;
+    }
+
+
+    #js-modal-box {
+        height: 90vh;
+        max-height: 90vh;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .float-field {
+        position: relative;
+        border: 2px solid #d1d5db;
+        border-radius: 14px;
+        padding: 16px 14px 12px;
+        background: #fff;
+        margin-bottom: 12px;
+    }
+
+    .float-label {
+        position: absolute;
+        top: -10px;
+        left: 12px;
+        background: #fff;
+        padding: 0 8px;
+        font-size: 12px;
+        font-weight: 600;
+        color: #219ebc;
+    }
+
+    .float-value {
+        display: block;
+        font-size: 16px;
+        color: #111827;
+        line-height: 1.2;
+        word-break: break-word;
+    }
+
+    .slots-layout {
+        display: grid;
+        grid-template-columns: 320px 1fr;
+        gap: 16px;
+        align-items: start;
+    }
+
+    #js-mini-calendar {
+        position: sticky;
+        top: 12px;
+        align-self: start;
+    }
+
+
+    .slots-layout>div:last-child {
+        min-height: 0;
+    }
+
+
+    #js-slots-container {
+        max-height: 52vh;
+        overflow-y: auto;
+        padding-right: 6px;
+        overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
+        border-radius: 14px;
+
+        background: #fff;
+    }
+
+    .slot-chip {
+        min-height: 44px;
+    }
+
+
+    #js-apply-coupon-btn {
+        border: 1px solid rgba(15, 23, 42, 0.1) !important;
+        background: #eef2f7 !important;
+        color: #0f172a !important;
+
+        border-radius: 12px !important;
+        padding: 8px 16px !important;
+
+
+        font-size: 14px;
+        letter-spacing: 0.2px;
+
+        cursor: pointer;
+        user-select: none;
+
+
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1), 0 2px 0 rgba(15, 23, 42, 0.12);
+
+
+        transform: translateY(0);
+        transition: transform 0.08s ease, box-shadow 0.12s ease, filter 0.12s ease;
+    }
+
+
+    #js-apply-coupon-btn:hover {
+        filter: brightness(0.98);
+        box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12), 0 2px 0 rgba(15, 23, 42, 0.14);
+    }
+
+
+    #js-apply-coupon-btn:active {
+        transform: translateY(2px);
+
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12), 0 0px 0 rgba(15, 23, 42, 0);
+
+    }
+
+
+    #js-apply-coupon-btn:disabled {
+        opacity: 0.55;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+    }
+
+    #js-apply-coupon-btn:focus-visible {
+        outline: 3px solid rgba(13, 110, 253, 0.25);
+        outline-offset: 2px;
+    }
+
+
+    #js-summary-free-note {
+        opacity: 1;
+        transform: translateY(0);
+        transition: opacity 420ms cubic-bezier(0.16, 1, 0.3, 1),
+            transform 520ms cubic-bezier(0.16, 1, 0.3, 1), display 520ms;
+        transition-behavior: allow-discrete;
+    }
+
+
+    #js-summary-free-note[style*="display:none"],
+    #js-summary-free-note[style*="display: none"] {
+        opacity: 0;
+        transform: translateY(10px);
+        display: none;
+    }
+
+
+    @starting-style {
+        #js-summary-free-note {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+    }
+
+
+    #js-coupon-bar {
+        opacity: 1;
+        transform: translateY(0);
+        transition: opacity 420ms cubic-bezier(0.16, 1, 0.3, 1),
+            transform 520ms cubic-bezier(0.16, 1, 0.3, 1), display 520ms;
+        transition-behavior: allow-discrete;
+    }
+
+    #js-coupon-bar[style*="display:none"],
+    #js-coupon-bar[style*="display: none"] {
+        opacity: 0;
+        transform: translateY(10px);
+        display: none;
+    }
+
+    @starting-style {
+        #js-coupon-bar {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+    }
+
+
+    #js-navigation-buttons {
+        position: sticky;
+        bottom: 0;
+        left: 0;
+        right: 0;
+
+        display: flex;
+        gap: 12px;
+        padding: 12px 14px;
+        padding-bottom: calc(12px + env(safe-area-inset-bottom));
+
+        background: rgba(255, 255, 255, 0.92);
+        backdrop-filter: blur(10px);
+        border-top: 1px solid rgba(15, 23, 42, 0.1);
+        box-shadow: 0 -10px 25px rgba(0, 0, 0, 0.08);
+
+        z-index: 999;
+    }
+
+
+    #js-navigation-buttons .btn {
+        flex: 1 1 0;
+        min-height: 48px;
+
+        padding: 0 16px;
+        border-radius: 14px;
+        line-height: 1;
+        white-space: nowrap;
+
+    }
+
+
+    #js-back-btn,
+    #js-next-btn {
+        flex: 1 1 0;
+    }
+
+
+    #js-back-btn {
+        background: #eef2f7;
+        color: #0f172a;
+        border: 1px solid rgba(15, 23, 42, 0.1);
+    }
+
+  
+    #js-next-btn {
+        background: #219ebc;
+        color: #fff;
+        box-shadow: 0 10px 22px rgba(33, 158, 188, 0.25);
+    }
+
+ 
+    #js-navigation-buttons .btn:hover {
+        filter: brightness(0.98);
+        box-shadow: 0 12px 26px rgba(0, 0, 0, 0.1);
+    }
+
+    #js-navigation-buttons .btn:active {
+        transform: scale(0.98);
+    }
+
+    #js-navigation-buttons .btn:disabled {
+        opacity: 0.55;
+        cursor: not-allowed;
+        box-shadow: none;
+        transform: none;
+    }
+
+
+    #js-navigation-buttons .btn:focus-visible {
+        outline: 3px solid rgba(13, 110, 253, 0.25);
+        outline-offset: 2px;
+    }
+
+    #js-next-btn::after {
+        content: " →";
+        font-weight: 900;
+        opacity: 0.9;
+    }
+
+    #js-back-btn::before {
+        content: "←";
+        font-weight: 900;
+        opacity: 0.75;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        * {
+            scroll-behavior: auto !important;
+        }
+    }
+
+    @media (max-width: 900px) {
+
+        .tutor-card {
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 12px;
+            padding: 14px;
+        }
+
+        #js-tutor-list {
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        }
+
+        .tutor-card .tutor-avatar {
+            width: 78px;
+            height: 78px;
+            flex: 0 0 78px;
+        }
+
+        .tutor-card .tutor-info {
+            width: 100%;
+        }
+
+        .tutor-card .tutor-meta {
+            justify-content: center;
+        }
+
+
+
+        #js-pay-grid {
+            grid-template-columns: 1fr !important;
+        }
+
+        .pay-layout {
+            grid-template-columns: 1fr !important;
+            gap: 16px !important;
+        }
+
+        .slots-layout {
+            grid-template-columns: 1fr;
+        }
+
+        #js-mini-calendar {
+            position: relative;
+            top: 0;
+        }
+
+        .btn-scroll-calendar {
+            display: grid;
+            place-items: center;
+        }
+
+        #js-slots-container {
+            max-height: none;
+            overflow: visible;
+            padding-right: 0;
+        }
+
+        .mini-cal {
+            max-width: 100%;
+        }
+    }
+
+    @media (max-width: 640px) {
+        #js-modal-box {
+
+            max-height: 100vh;
+            border-radius: 0;
+        }
+
+        #js-modal-body {
+
+            height: 100%;
+        }
+
+        #js-navigation-buttons {
+            padding: 12px;
+        }
+
+        #js-navigation-buttons .btn {
+            height: 50px;
+            font-size: 15px;
+            border-radius: 16px;
+        }
+
+        .step1-grid {
+            grid-template-columns: 1fr !important;
+        }
+
+        #js-subjects-list {
+            max-height: 240px !important;
+        }
+
+        input,
+        select {
+            font-size: 16px !important;
+        }
+    }
+
+    @media (max-width: 600px) {
+        #js-tutor-list {
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)) !important;
+        }
+
+        .slots-grid {
+            gap: 8px;
+        }
+
+        .slot-chip {
+            padding: 9px 10px;
+            gap: 8px;
+        }
+    }
+
+    @media (max-width: 480px) {
+
+        .tutor-card {
+            padding: 12px;
+        }
+    }
+</style>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('🚀 WIZARD CARGADO - 3 instituciones');
+
+        
+
+        let currentStep = 1;
+
+       
+        let selectedInstitution = null;
+        let allSubjects = [];
+        let selectedSubject = null;
+        let selectedSubjectName = null;
+
+       
+        let selectedTutor = null;
+        let selectedTutorName = null;
+        let selectedTutorPrice = 0;
+
+  
+        let selectedSlot = null;
+        let selectedCoupon = null;
+        let comprobanteFile = null;
+        let basePrice = 0;
+        let currentPrice = 0;
+
+        let appliedDiscountDecimal = 0; 
+        let appliedDiscountPct = 0; 
+        let isFreeBooking = false;
+        let appliedCouponCode = null;
+
+
+        let slotsByDate = {}; 
+        let calendarYear = null;
+        let calendarMonth = null; 
+        let selectedDate = null; 
+
+
+
+
+       
+        const modal = document.getElementById('js-booking-modal');
+        const closeBtn = document.getElementById('js-close-modal-btn');
+        const backBtn = document.getElementById('js-back-btn');
+        const nextBtn = document.getElementById('js-next-btn');
+        const loader = document.getElementById('js-loader');
+        const confirmation = document.getElementById('js-confirmation');
+        const navigationButtons = document.getElementById('js-navigation-buttons');
+        
+        const modalBox = document.getElementById('js-modal-body');
+
+        function scrollTopStep() {
+            if (!modalBox) return;
+            modalBox.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        function scrollToTutors() {
+            if (!tutorContainer || !modalBox) return;
+
+            
+            tutorContainer.style.display = 'block';
+
+           
+            const top = tutorContainer.offsetTop - 12; 
+            modalBox.scrollTo({
+                top,
+                behavior: 'smooth'
+            });
+        }
+
+        function lockBody(lock) {
+            document.body.style.overflow = lock ? 'hidden' : '';
+        }
+
+
+      
+        document.addEventListener('keydown', (e) => {
+            if (e.key !== 'Escape') return;
+            if (!modal || modal.style.display !== 'block') return;
+
+   
+            if (loader && loader.style.display === 'flex') return;
+
+            closeModal();
+        });
+
+       
+        const institutionSelect = document.getElementById('js-institution-select');
+        const subjectSearch = document.getElementById('js-subject-search');
+        const subjectsList = document.getElementById('js-subjects-list');
+
+       
+        const tutorContainer = document.getElementById('js-tutor-container');
+        const tutorHelper = document.getElementById('js-tutor-helper');
+        const tutorList = document.getElementById('js-tutor-list');
+
+
+
+        
+        const slotsContainer = document.getElementById('js-slots-container');
+
+        
+        const couponInput = document.getElementById('js-coupon-input');
+        const applyCouponBtn = document.getElementById('js-apply-coupon-btn');
+        const couponMessage = document.getElementById('js-coupon-message');
+       
+        const fileUpload = document.getElementById('js-file-upload');
+        const fileName = document.getElementById('js-file-name');
+        const receiptBlock = document.getElementById('js-receipt-block');
+
+        const couponBar = document.getElementById('js-coupon-bar');
+        const couponCodeEl = document.getElementById('js-coupon-code');
+        const removeCouponBtn = document.getElementById('js-remove-coupon');
+        const freeMsg = document.getElementById('js-free-msg');
+
+        
+        const summaryDiscountRow = document.getElementById('js-summary-discount-row');
+        const summaryDiscountPct = document.getElementById('js-summary-discount-pct');
+        const summaryDiscountAmount = document.getElementById('js-summary-discount-amount');
+        const summaryFreeNote = document.getElementById('js-summary-free-note');
+
+
+
+        
+        const formMsg = document.createElement('div');
+
+        const payGrid = document.getElementById('js-pay-grid');
+        const payHint = document.getElementById('js-pay-hint');
+
+        const cardBank = document.getElementById('js-card-bank');
+        const bankInfo = document.getElementById('js-bank-info');
+        const copyBank = document.getElementById('js-copy-bank');
+
+        const cardQR = document.getElementById('js-card-qr');
+        const qrImg = document.getElementById('js-qr-img');
+        const qrEmpty = document.getElementById('js-qr-empty');
+        const openQR = document.getElementById('js-open-qr');
+        
+        const receiptLabel = document.querySelector('label[for="js-file-upload"]');
+        const fileUploadInput = document.getElementById(
+            'js-file-upload'); 
+
+       
+
+
+        async function loadTutorPaymentInfo() {
+            if (!selectedTutor || !payGrid) return;
+
+            payGrid.style.display = 'grid';
+            payHint.style.display = 'block';
+            payHint.textContent = 'Cargando métodos de pago del tutor...';
+
+            
+            cardBank.style.display = 'none';
+            cardQR.style.display = 'none';
+            bankInfo.innerHTML = '';
+            qrImg.style.display = 'none';
+            qrEmpty.style.display = 'block';
+            openQR.href = '#';
+
+            try {
+                const resp = await fetch(`/student/booking/tutor-payment/${selectedTutor}`);
+                const data = await resp.json();
+                console.log(data);
+
+                if (!data.success) {
+                    payHint.textContent = data.message || 'No se pudo cargar los métodos de pago.';
+                    return;
+                }
+
+                const p = data.payment || {};
+                const bank = p.bank || null;
+
+                
+                if (bank) {
+                    cardBank.style.display = 'flex';
+
+                    const rows = [
+                        ['Título', bank.title],
+                        ['Banco', bank.bankName],
+                        ['Nro cuenta', bank.accountNumber],
+                        ['Ruta', bank.bankRoutingNumber],
+                    ].filter(([, v]) => v);
+
+                    bankInfo.innerHTML = rows.length ?
+                        rows.map(([k, v]) => `<div><b>${k}:</b> ${v}</div>`).join('') :
+                        `<div style="color:#6b7280;">El tutor no completó datos bancarios.</div>`;
+
+                    copyBank.onclick = async () => {
+                        const text = rows.map(([k, v]) => `${k}: ${v}`).join('\n');
+                        try {
+                            await navigator.clipboard.writeText(text);
+                            copyBank.textContent = '✅ Copiado';
+                            setTimeout(() => copyBank.textContent = 'Copiar datos', 1200);
+                        } catch {
+                            alert('No se pudo copiar. Copia manualmente.');
+                        }
+                    };
+                }
+
+
+                if (p.qr_url) {
+                    cardQR.style.display = 'block';
+
+                    const qrSrc = `/storage/${p.qr_url}`; 
+
+                    qrImg.src = qrSrc;
+                    qrImg.style.display = 'block';
+                    qrEmpty.style.display = 'none';
+
+                    openQR.href = qrSrc;
+                    openQR.style.display = 'inline-block';
+                } else {
+                    qrImg.style.display = 'none';
+                    qrEmpty.style.display = 'block';
+                    openQR.href = '#';
+                    openQR.style.display = 'none';
+                }
+
+
+                if (!bank && !p.qr_url) {
+                    payHint.textContent = 'El tutor aún no configuró métodos de pago.';
+                } else {
+                    payHint.textContent =
+                        'Realiza el pago con el método disponible y luego sube tu comprobante.';
+                }
+
+            } catch (e) {
+                console.error(e);
+                payHint.textContent = 'Error al cargar los métodos de pago.';
+            }
+        }
+
+        formMsg.className = 'form-msg';
+        formMsg.style.display = 'none';
+
+        
+        fileUpload.parentElement.appendChild(formMsg);
+
+        function showFormMsg(text, type = 'error') {
+            formMsg.className = `form-msg ${type}`;
+            formMsg.textContent = text;
+            formMsg.style.display = 'block';
+        }
+
+        function hideFormMsg() {
+            formMsg.style.display = 'none';
+            formMsg.textContent = '';
+        }
+
+        function openModal() {
+            console.log('📖 Abriendo modal');
+            modal.style.display = 'block';
+            lockBody(true);
+            resetModalState();
+
+            requestAnimationFrame(() => modal.classList.add('is-open'));
+
+            scrollTopStep();
+        }
+
+       
+        function closeModal() {
+            if (modal.style.display !== 'block') return;
+
+            
+            modal.classList.remove('is-open');
+
+            const box = document.getElementById('js-modal-box');
+
+            const done = () => {
+                modal.style.display = 'none';
+                lockBody(false);
+                resetModalState();
+            };
+
+            
+            const onEnd = (e) => {
+                if (e.target !== box) return;
+                if (e.propertyName !== 'transform') return;
+                box.removeEventListener('transitionend', onEnd);
+                done();
+            };
+
+            box.addEventListener('transitionend', onEnd);
+
+            
+            setTimeout(done, 850);
+        }
+
+        
+        const dd = document.getElementById('js-inst-dd');
+        const ddBtn = document.getElementById('js-inst-btn');
+        const ddMenu = document.getElementById('js-inst-menu');
+        const ddLabel = document.getElementById('js-inst-label');
+
+        function closeDD() {
+            dd?.classList.remove('is-open');
+            ddBtn?.setAttribute('aria-expanded', 'false');
+        }
+
+        function openDD() {
+            dd?.classList.add('is-open');
+            ddBtn?.setAttribute('aria-expanded', 'true');
+        }
+
+        ddBtn?.addEventListener('click', () => {
+            if (!dd) return;
+            dd.classList.contains('is-open') ? closeDD() : openDD();
+        });
+
+        
+        ddMenu?.addEventListener('click', (e) => {
+            const item = e.target.closest('.dd-item');
+            if (!item || !institutionSelect) return;
+
+            const value = item.dataset.value || '';
+            const text = item.textContent.trim();
+
+           
+            ddMenu.querySelectorAll('.dd-item').forEach(x => x.classList.remove('is-selected'));
+            item.classList.add('is-selected');
+
+           
+            ddLabel.textContent = text;
+            dd?.classList.add('has-value');
+
+            
+            institutionSelect.value = value;
+            institutionSelect.dispatchEvent(new Event('change', {
+                bubbles: true
+            }));
+
+            closeDD();
+        });
+
+        
+        document.addEventListener('click', (e) => {
+            if (!dd) return;
+            if (!dd.contains(e.target)) closeDD();
+        });
+
+        
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeDD();
+        });
+
+
+        function resetModalState() {
+            currentStep = 1;
+
+           
+            selectedInstitution = null;
+           
+            const instDD = document.getElementById('js-inst-dd');
+            const instLabel = document.getElementById('js-inst-label');
+            const instBtn = document.getElementById('js-inst-btn');
+            const instMenu = document.getElementById('js-inst-menu');
+
+            if (institutionSelect) institutionSelect.value = ''; // select real (oculto)
+
+           
+            if (instLabel) instLabel.textContent = 'Selecciona tipo de institución';
+            if (instDD) {
+                instDD.classList.remove('has-value', 'is-open');
+            }
+            if (instBtn) instBtn.setAttribute('aria-expanded', 'false');
+
+            
+            instMenu?.querySelectorAll('.dd-item').forEach(x => x.classList.remove('is-selected'));
+
+            allSubjects = [];
+            selectedSubject = null;
+            selectedSubjectName = null;
+
+            
+            selectedTutor = null;
+            selectedTutorName = null;
+            selectedTutorPrice = 0;
+
+           
+            selectedSlot = null;
+            selectedCoupon = null;
+            comprobanteFile = null;
+            basePrice = 0;
+            currentPrice = 0;
+
+            
+            slotsByDate = {};
+            calendarYear = null;
+            calendarMonth = null;
+            selectedDate = null;
+
+            appliedDiscountDecimal = 0;
+            appliedDiscountPct = 0;
+            isFreeBooking = false;
+            appliedCouponCode = null;
+
+          
+            hideCouponBar();
+            if (freeMsg) freeMsg.style.display = 'none';
+            if (summaryFreeNote) summaryFreeNote.style.display = 'none';
+            if (summaryDiscountRow) summaryDiscountRow.style.display = 'none';
+
+            
+            if (receiptLabel) receiptLabel.style.display = 'block';
+            comprobanteFile = null;
+            fileUpload.value = '';
+            fileName.textContent = '';
+            hideFormMsg();
+
+           
+            institutionSelect.value = '';
+            subjectSearch.value = '';
+            subjectSearch.disabled = true;
+
+            subjectsList.innerHTML = `
+    <p style="padding: 16px; text-align: center; color: #666; margin: 0; font-size: 14px;">
+      Selecciona un tipo de institución.
+    </p>`;
+
+           
+            tutorContainer.style.display = 'none';
+            tutorHelper.textContent = 'Elige una materia para ver los tutores disponibles.';
+            tutorList.innerHTML = '';
+
+            
+            slotsContainer.innerHTML = '';
+            if (miniCalendarEl) miniCalendarEl.innerHTML = '';
+            if (selectedDateLabel) selectedDateLabel.textContent = 'Hoy';
+
+           
+            couponInput.value = '';
+            couponMessage.textContent = '';
+            fileName.textContent = '';
+
+            updateStepUI();
+            updateContent();
+            updateNavButtons();
+            
+            requestAnimationFrame(() => {
+                requestAnimationFrame(scrollTopStep);
+            });
+
+            loader.style.display = 'none';
+            confirmation.style.display = 'none';
+            navigationButtons.style.display = 'flex';
+        }
+
+
+        const miniCalendarEl = document.getElementById('js-mini-calendar');
+        const selectedDateLabel = document.getElementById('js-selected-date-label');
+        const scrollCalBtn = document.getElementById('js-scroll-calendar');
+        const modalBody = document.getElementById('js-modal-body');
+
+        function toggleScrollCalendarBtn() {
+            if (!scrollCalBtn || !modalBody) return;
+
+            const isMobile = window.matchMedia('(max-width: 900px)').matches;
+            const show = isMobile && modalBody.scrollTop > 220; 
+
+            scrollCalBtn.classList.toggle('is-visible', show);
+        }
+
+        function smoothScrollTo(el, to, duration = 650) {
+            if (!el) return;
+
+            const start = el.scrollTop;
+            const change = to - start;
+            const startTime = performance.now();
+
+            
+            const easeInOutCubic = (t) =>
+                t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+            function animateScroll(now) {
+                const elapsed = now - startTime;
+                const t = Math.min(1, elapsed / duration);
+                el.scrollTop = start + change * easeInOutCubic(t);
+
+                if (t < 1) requestAnimationFrame(animateScroll);
+            }
+
+            requestAnimationFrame(animateScroll);
+        }
+
+        scrollCalBtn?.addEventListener('click', () => {
+            if (!miniCalendarEl || !modalBody) return;
+
+            const target = miniCalendarEl.offsetTop - 10;
+
+            
+            smoothScrollTo(modalBody, target, 800);
+        });
+
+        modalBody?.addEventListener('scroll', toggleScrollCalendarBtn, {
+            passive: true
+        });
+
+        
+        window.addEventListener('resize', toggleScrollCalendarBtn);
+
+        
+        toggleScrollCalendarBtn();
+        requestAnimationFrame(toggleScrollCalendarBtn);
+
+
+        function todayStr() {
+            const d = new Date();
+            const yyyy = d.getFullYear();
+            const mm = String(d.getMonth() + 1).padStart(2, '0');
+            const dd = String(d.getDate()).padStart(2, '0');
+            return `${yyyy}-${mm}-${dd}`;
+        }
+
+        function monthName(m) {
+            const names = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto',
+                'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+            ];
+            return `${names[m]}`;
+        }
+
+        function renderMiniCalendar(y, m) {
+            calendarYear = y;
+            calendarMonth = m;
+
+            const first = new Date(y, m, 1);
+            const startDay = first.getDay(); 
+            const daysInMonth = new Date(y, m + 1, 0).getDate();
+
+            const week = ['D', 'L', 'M', 'M', 'J', 'V', 'S'];
+
+            miniCalendarEl.innerHTML = `
+    <div class="mini-cal">
+      <div class="mini-cal-header">
+        <div class="mini-cal-title">${monthName(m)}</div>
+        <div class="mini-cal-nav">
+          <button class="mini-btn" type="button" id="cal-prev">‹</button>
+          <button class="mini-btn" type="button" id="cal-next">›</button>
+        </div>
+      </div>
+
+      <div class="mini-cal-week">
+        ${week.map(w => `<div>${w}</div>`).join('')}
+      </div>
+
+      <div class="mini-cal-grid" id="cal-grid"></div>
+    </div>
+  `;
+
+            const grid = miniCalendarEl.querySelector('#cal-grid');
+
+            
+            const blanks = startDay;
+            for (let i = 0; i < blanks; i++) {
+                const b = document.createElement('button');
+                b.type = 'button';
+                b.className = 'day-btn muted';
+                b.textContent = '';
+                grid.appendChild(b);
+            }
+
+            const today = todayStr();
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dd = String(day).padStart(2, '0');
+                const mm = String(m + 1).padStart(2, '0');
+                const dateStr = `${y}-${mm}-${dd}`;
+
+                const hasSlots = Array.isArray(slotsByDate[dateStr]) && slotsByDate[dateStr].length > 0;
+
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'day-btn';
+                if (dateStr === today) btn.classList.add('today');
+                if (hasSlots) btn.classList.add('has-slots');
+                else btn.classList.add('no-slots'); 
+                if (dateStr === selectedDate) btn.classList.add('selected');
+
+                btn.textContent = day;
+                btn.addEventListener('click', () => selectDate(dateStr));
+
+                grid.appendChild(btn);
+            }
+
+            miniCalendarEl.querySelector('#cal-prev').addEventListener('click', () => {
+                const prev = new Date(y, m - 1, 1);
+                renderMiniCalendar(prev.getFullYear(), prev.getMonth());
+            });
+
+            miniCalendarEl.querySelector('#cal-next').addEventListener('click', () => {
+                const next = new Date(y, m + 1, 1);
+                renderMiniCalendar(next.getFullYear(), next.getMonth());
+            });
+        }
+
+        function selectDate(dateStr) {
+            selectedDate = dateStr;
+
+            
+            miniCalendarEl.querySelectorAll('.day-btn').forEach(b => b.classList.remove('selected'));
+            
+            renderMiniCalendar(calendarYear, calendarMonth);
+
+            
+            const isToday = dateStr === todayStr();
+            selectedDateLabel.textContent = isToday ? 'Hoy' : dateStr;
+
+           
+            renderSlotsForDate(dateStr);
+        }
+
+
+        function renderSlotsForDate(dateStr) {
+            const slots = slotsByDate[dateStr] || [];
+            selectedSlot = null;
+
+           
+            if (!slots.length) {
+                slotsContainer.innerHTML = `
+      <p style="margin:0; padding:14px; color:#6b7280;">
+        Sin horarios disponibles ${dateStr === todayStr() ? 'hoy' : 'ese día'}.
+      </p>`;
+                return;
+            }
+
+         
+            slots.sort((a, b) => {
+                const as = String(a.id).split('|')[1] || '';
+                const bs = String(b.id).split('|')[1] || '';
+                return as.localeCompare(bs);
+            });
+
+            
+            let grid = slotsContainer.querySelector('.slots-grid');
+            if (!grid) {
+                slotsContainer.innerHTML = '';
+                grid = document.createElement('div');
+                grid.className = 'slots-grid';
+                slotsContainer.appendChild(grid);
+            }
+
+            
+            const firstRects = new Map();
+            const existing = new Map();
+
+            grid.querySelectorAll('.slot-chip').forEach(el => {
+                firstRects.set(el.dataset.slotId, el.getBoundingClientRect());
+                existing.set(el.dataset.slotId, el);
+            });
+
+            
+            const nextIds = new Set(slots.map(s => String(s.id)));
+
+           
+            existing.forEach((el, id) => {
+                if (!nextIds.has(id)) {
+                    el.animate(
+                        [{
+                            opacity: 1,
+                            transform: 'translateY(0)'
+                        }, {
+                            opacity: 0,
+                            transform: 'translateY(6px)'
+                        }], {
+                            duration: 500,
+                            easing: 'ease-out',
+                            fill: 'forwards'
+                        }
+                    );
+                    setTimeout(() => el.remove(), 140);
+                    existing.delete(id);
+                }
+            });
+
+            
+            const frag = document.createDocumentFragment();
+
+            slots.forEach((slot) => {
+                const id = String(slot.id);
+                const [, start, end] = id.split('|');
+
+                const available = slot.available !== false;
+
+                let chip = existing.get(id);
+
+                if (!chip) {
+                   
+                    chip = document.createElement('button');
+                    chip.type = 'button';
+                    chip.className = 'slot-chip';
+                    chip.dataset.slotId = id;
+
+                    
+                    chip.style.opacity = '0';
+                    chip.style.transform = 'translateY(10px) scale(.98)';
+                }
+
+                
+                chip.innerHTML = `
+      <span class="chip-time">${start} - ${end}</span>
+      <span class="chip-dot"></span>
+    `;
+
+                chip.classList.toggle('disabled', !available);
+
+               
+                chip.onclick = () => {
+                    if (!available) return;
+
+                    grid.querySelectorAll('.slot-chip').forEach(c => c.classList.remove('active'));
+                    chip.classList.add('active');
+
+                    selectedSlot = {
+                        id: slot.id,
+                        date: slot.date,
+                        time: `${start} - ${end}`,
+                        start,
+                        end,
+                    };
+
+                    console.log('✅ Slot seleccionado:', selectedSlot);
+                };
+
+                frag.appendChild(chip);
+            });
+
+           
+            grid.innerHTML = '';
+            grid.appendChild(frag);
+
+            
+            const lastRects = new Map();
+            grid.querySelectorAll('.slot-chip').forEach(el => {
+                lastRects.set(el.dataset.slotId, el.getBoundingClientRect());
+            });
+
+            grid.querySelectorAll('.slot-chip').forEach((el, idx) => {
+                const id = el.dataset.slotId;
+                const first = firstRects.get(id);
+                const last = lastRects.get(id);
+
+               
+                if (first && last) {
+                    const dx = first.left - last.left;
+                    const dy = first.top - last.top;
+
+                    
+                    el.style.transition = 'transform 0s';
+                    el.style.transform = `translate(${dx}px, ${dy}px)`;
+
+                    
+                    requestAnimationFrame(() => {
+                        el.style.transition = 'transform 520s cubic-bezier(.16, 1, .3, 1)';
+                        el.style.transform = '';
+                    });
+                } else {
+                    
+                    const delay = Math.min(idx * 85, 1100); 
+
+                    el.animate(
+                        [{
+                                opacity: 0,
+                                transform: 'translateY(12px) scale(.985)'
+                            },
+                            {
+                                opacity: 1,
+                                transform: 'translateY(0) scale(1)'
+                            }
+                        ], {
+                            duration: 620,
+                            delay,
+                            easing: 'cubic-bezier(.16, 1, .3, 1)',
+                            fill: 'forwards'
+                        }
+                    );
+
+
+                 
+                    el.style.opacity = '';
+                    el.style.transform = '';
+                }
+            });
+        }
+
+        function hidePayUIOnSubmit() {
+           
+            if (payGrid) payGrid.style.display = 'none';
+            if (payHint) payHint.style.display = 'none';
+            if (cardBank) cardBank.style.display = 'none';
+            if (cardQR) cardQR.style.display = 'none';
+
+            
+            if (receiptLabel) receiptLabel.style.display = 'none';
+            if (fileName) fileName.textContent = '';
+
+           
+        }
+
+        function showPayUIAfterError() {
+           
+            if (payGrid) payGrid.style.display = 'grid';
+            if (payHint) payHint.style.display = 'block';
+
+            
+            if (receiptLabel) receiptLabel.style.display = isFreeBooking ? 'none' : 'block';
+        }
+
+
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('.js-open-booking')) {
+                e.preventDefault();
+                openModal();
+            }
+        });
+        closeBtn.addEventListener('click', closeModal);
+
+        let antiCloseArmed = false;
+
+        modal.addEventListener('click', (e) => {
+            if (e.target !== modal) return;
+
+            const hasProgress = !!selectedTutor || !!selectedSlot || !!comprobanteFile || !!
+                appliedCouponCode;
+
+            if (!hasProgress) {
+                closeModal();
+                return;
+            }
+
+            if (!antiCloseArmed) {
+                antiCloseArmed = true;
+
+               
+                if (typeof showFormMsg === 'function') {
+                    showFormMsg('Toca afuera otra vez para cerrar (así no pierdes tu progreso).',
+                        'error');
+                }
+
+                setTimeout(() => (antiCloseArmed = false), 2000);
+                return;
+            }
+
+            closeModal();
+        });
+
+        console.log('nextBtn encontrado?', !!document.getElementById('js-next-btn'));
+
+        nextBtn.addEventListener('click', async () => {
+            if (currentStep === 1) {
+                if (!selectedSubject || !selectedTutor) {
+                    alert('Por favor selecciona una materia y un tutor');
+                    return;
+                }
+                await loadSlots();
+            } else if (currentStep === 2) {
+                if (!selectedSlot) {
+                    alert('Por favor selecciona un horario');
+                    return;
+                }
+                updateSummary();
+                await loadTutorPaymentInfo();
+            } else if (currentStep === 3) {
+                await submitBooking();
+                return;
+            }
+
+            if (currentStep < 3) {
+                currentStep++;
+                updateStepUI();
+                updateContent();
+                updateNavButtons();
+
+              
+                requestAnimationFrame(() => requestAnimationFrame(scrollTopStep));
+            }
+        });
+
+
+
+        backBtn.addEventListener('click', () => {
+            if (currentStep === 1) {
+                closeModal(); 
+                return;
+            }
+            currentStep--;
+            updateStepUI();
+            updateContent();
+            updateNavButtons();
+          
+            requestAnimationFrame(() => {
+                requestAnimationFrame(scrollTopStep);
+            });
+
+
+        });
+
+        // ====== EVENTOS PASO 1 ======
+
+      
+        institutionSelect.addEventListener('change', async (e) => {
+            selectedInstitution = e.target.value;
+
+
+            console.log("Institución seleccionada:", selectedInstitution);
+
+
+            selectedSubject = null;
+            selectedTutor = null;
+            basePrice = 0;
+            currentPrice = 0;
+
+
+            subjectSearch.value = '';
+            subjectsList.innerHTML =
+                '<p style="padding: 16px; text-align: center; color: #666;">Cargando materias...</p>';
+
+
+
+            if (!selectedInstitution) {
+                subjectSearch.disabled = true;
+                subjectsList.innerHTML =
+                    '<p style="padding: 16px; text-align: center; color: #666;">Selecciona un tipo de institución.</p>';
+                return;
+            }
+
+            await loadSubjectsByInstitution(selectedInstitution);
+        });
+
+        subjectSearch.addEventListener('input', (e) => {
+            filterSubjects(e.target.value);
+        });
+
+        applyCouponBtn.addEventListener('click', async () => {
+            const codigo = couponInput.value.trim();
+            if (!codigo) return;
+
+            try {
+                const response = await fetch('/student/booking/validar-cupon', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                            .content
+                    },
+                    body: JSON.stringify({
+                        codigo
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    selectedCoupon = data.coupon_id;
+                    appliedCouponCode = codigo;
+
+                    appliedDiscountDecimal = Number(data.descuento || 0); // 0..1
+                    appliedDiscountPct = Math.round(appliedDiscountDecimal * 100); // 0..100
+
+                    showCouponBar(codigo);
+
+                    couponMessage.textContent = data.message;
+                    couponMessage.style.color = '#28a745';
+
+                    recalcTotals();
+                } else {
+                    couponMessage.textContent = data.message;
+                    couponMessage.style.color = '#dc3545';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                couponMessage.textContent = 'Error al validar cupón';
+                couponMessage.style.color = '#dc3545';
+            }
+        });
+        removeCouponBtn?.addEventListener('click', () => {
+            selectedCoupon = null;
+            appliedCouponCode = null;
+            appliedDiscountDecimal = 0;
+            appliedDiscountPct = 0;
+
+            couponInput.value = '';
+            couponMessage.textContent = '';
+            hideCouponBar();
+
+            recalcTotals();
+        });
+
+        fileUpload.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                comprobanteFile = e.target.files[0];
+                fileName.textContent = comprobanteFile.name;
+                fileUpload.classList.remove('input-error');
+                hideFormMsg();
+            }
+        });
+
+
+        function updateStepUI() {
+            const ACTIVE_BG = '#219EBC';
+            const ACTIVE_TEXT = '#ffffff';
+            const IDLE_BG = '#ddd';
+            const IDLE_TEXT = '#999';
+
+           
+            for (let i = 1; i <= 3; i++) {
+                const icon = document.getElementById(`step-icon-${i}`);
+                if (!icon) continue;
+
+                const label = icon.parentElement?.querySelector('.step-label');
+
+                const isActive = i === currentStep;
+                const isDone = i < currentStep;
+
+                if (isActive) {
+                    icon.style.backgroundColor = ACTIVE_BG;
+                    icon.style.color = ACTIVE_TEXT;
+                    icon.style.transform = 'scale(1.10)';
+                    if (label) label.style.color = '#333';
+                } else if (isDone) {
+                    icon.style.backgroundColor = ACTIVE_BG;
+                    icon.style.color = ACTIVE_TEXT;
+                    icon.style.transform = 'scale(1)';
+                    if (label) label.style.color = '#666';
+                } else {
+                    icon.style.backgroundColor = IDLE_BG;
+                    icon.style.color = IDLE_TEXT;
+                    icon.style.transform = 'scale(1)';
+                    if (label) label.style.color = '#999';
+                }
+            }
+
+         
+            for (let i = 1; i <= 2; i++) {
+                const line = document.getElementById(`line-${i}`);
+                if (!line) continue;
+                line.style.backgroundColor = i < currentStep ? ACTIVE_BG : '#ddd';
+            }
+
+            
+            const track = document.getElementById('stepper-track');
+            const indicator = document.getElementById('step-indicator');
+            const targetIcon = document.getElementById(`step-icon-${currentStep}`);
+
+            if (track && indicator && targetIcon) {
+                const trackRect = track.getBoundingClientRect();
+                const iconRect = targetIcon.getBoundingClientRect();
+                const x = iconRect.left - trackRect.left;
+
+                requestAnimationFrame(() => {
+                    indicator.style.transform = `translateX(${x}px)`;
+                });
+            }
+        }
+
+        function updateContent() {
+            [1, 2, 3].forEach(i => {
+                const el = document.getElementById(`content-step-${i}`);
+                if (!el) return;
+
+                if (i === currentStep) {
+                    el.classList.add('is-active');
+                } else {
+                    el.classList.remove('is-active');
+                }
+            });
+        }
+
+
+
+
+        function updateNavButtons() {
+
+            if (currentStep === 1) {
+                backBtn.disabled = false;
+                backBtn.textContent = 'Cancelar';
+            } else {
+                backBtn.disabled = false;
+                backBtn.textContent = 'Atrás';
+            }
+
+            nextBtn.textContent = currentStep === 3 ? 'Finalizar Reserva' : 'Siguiente';
+        }
+
+        // ====== CARGA DE MATERIAS SEGÚN INSTITUCIÓN ======
+        async function loadSubjectsByInstitution(institution) {
+            subjectSearch.disabled = true;
+            try {
+                const response = await fetch(`/student/booking/materias?institution=${institution}`);
+                const data = await response.json();
+                console.log('Materias recibidas', data);
+
+                if (!data.success) {
+                    subjectsList.innerHTML =
+                        '<p style="padding: 16px; text-align: center; color: red;">Error al cargar materias</p>';
+                    return;
+                }
+
+                allSubjects = data.subjects || [];
+
+                if (allSubjects.length === 0) {
+                    subjectsList.innerHTML =
+                        '<p style="padding: 16px; text-align: center; color: white; margin: 0;">⚠️ No hay materias registradas para esta institución.</p>';
+                    return;
+                }
+
+                renderSubjects(allSubjects);
+                subjectSearch.disabled = false;
+            } catch (error) {
+                console.error('Error al cargar materias:', error);
+                subjectsList.innerHTML =
+                    '<p style="padding: 16px; text-align: center; color: red;">Error al cargar materias</p>';
+            }
+        }
+
+        function renderSubjects(subjects) {
+            subjectsList.innerHTML = '';
+
+            subjects.forEach(subject => {
+                const item = document.createElement('div');
+
+            
+                item.style.cssText =
+                    'padding:12px; margin:1px; background:#219EBC;  cursor:pointer; border:2px solid transparent; transition:all .2s;';
+
+                item.innerHTML = `
+      <strong style="font-size:14px; color:white;">${subject.name}</strong>
+    `;
+
+                item.dataset.subjectId = subject.id;
+                item.dataset.subjectName = subject.name;
+
+                item.addEventListener('click', async () => {
+                
+                    subjectsList.querySelectorAll('div').forEach(d => {
+                        d.style.border = '2px solid transparent';
+                        d.style.backgroundColor = '#219EBC';
+                        const strong = d.querySelector('strong');
+                        if (strong) strong.style.color = '#fff';
+                    });
+
+                  
+                    item.style.border = '2px solid #023047';
+                    item.style.backgroundColor = '#023047';
+                    const myStrong = item.querySelector('strong');
+                    if (myStrong) myStrong.style.color = 'white';
+
+                    selectedSubject = subject.id;
+                    selectedSubjectName = subject.name;
+
+                    await loadTutors(subject.id);
+                });
+
+                subjectsList.appendChild(item);
+            });
+        }
+
+
+
+        function filterSubjects(searchTerm) {
+            const term = searchTerm.toLowerCase();
+            const filtered = allSubjects.filter(subj =>
+                subj.name.toLowerCase().includes(term)
+            );
+            renderSubjects(filtered);
+        }
+
+        // ====== CARGA DE TUTORES ======
+        async function loadTutors(subjectId) {
+         
+            tutorContainer.style.display = 'block';
+            tutorHelper.textContent = 'Cargando tutores...';
+            tutorList.innerHTML = '';
+
+         
+            selectedTutor = null;
+            selectedTutorName = null;
+            selectedTutorPrice = 0;
+            basePrice = 0;
+            currentPrice = 0;
+
+         
+            scrollToTutors();
+
+            try {
+                const response = await fetch(`/student/booking/tutores?subject_id=${subjectId}`);
+                const data = await response.json();
+
+                console.log('Respuesta tutores', data);
+
+                if (!data.success) {
+                    tutorHelper.textContent = data.message || 'Error al cargar tutores.';
+                    return;
+                }
+
+                if (!Array.isArray(data.tutors) || data.tutors.length === 0) {
+                    tutorHelper.textContent = 'No hay tutores disponibles para esta materia.';
+                    tutorList.innerHTML = '';
+                    return;
+                }
+
+                tutorHelper.textContent = 'Elige un tutor para continuar.';
+                tutorList.innerHTML = '';
+
+                data.tutors.forEach((tutor, i) => {
+                    const fullName = tutor.full_name || tutor.name || 'Tutor';
+                    const price = parseFloat(tutor.price || 0);
+                    const tutorId = tutor.user_id;
+
+                    const card = document.createElement('div');
+                    card.className = 'tutor-card';
+                    card.dataset.tutorId = tutorId;
+
+                    const imgSrc = tutor.image_url ?
+                        tutor.image_url :
+                        (tutor.image ? `/storage/${tutor.image}` : '/images/tutors/default.png');
+
+
+                    card.innerHTML = `
+  <div class="tutor-avatar">
+    <img src="${imgSrc}" alt="Foto de ${fullName}">
+  </div>
+
+  <div class="tutor-info">
+    <h4 class="tutor-name">${fullName}</h4>
+
+    <div class="tutor-meta">
+      <span class="tutor-badge price">$ Bs. ${price.toFixed(2)}</span>
+    </div>
+  </div>
+
+`;
+
+                    card.addEventListener('click', () => {
+                        tutorList.querySelectorAll('.tutor-card').forEach(c => c.classList
+                            .remove('is-selected'));
+                        card.classList.add('is-selected');
+
+                        selectedTutor = tutorId;
+                        selectedTutorName = fullName;
+                        selectedTutorPrice = price;
+                        basePrice = price;
+                        currentPrice = basePrice;
+                    });
+
+                
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(14px) scale(.98)';
+
+                    tutorList.appendChild(card);
+
+                    requestAnimationFrame(() => {
+                        if (typeof card.animate !== 'function') {
+                            card.style.opacity = '1';
+                            card.style.transform = 'translateY(0) scale(1)';
+                            return;
+                        }
+
+                        card.animate(
+                            [{
+                                    opacity: 0,
+                                    transform: 'translateY(14px) scale(.98)'
+                                },
+                                {
+                                    opacity: 1,
+                                    transform: 'translateY(0) scale(1)'
+                                }
+                            ], {
+                                duration: 520,
+                                delay: i * 60,
+                                easing: 'cubic-bezier(.16, 1, .3, 1)',
+                                fill: 'forwards'
+                            }
+                        );
+                    });
+                });
+
+
+                requestAnimationFrame(() => scrollToTutors());
+
+            } catch (error) {
+                console.error('Error al cargar tutores', error);
+                tutorHelper.textContent = 'Error al cargar tutores.';
+                tutorList.innerHTML = '';
+            }
+        }
+
+
+
+
+        // ====== CARGA DE HORARIOS ======
+        async function loadSlots() {
+            slotsContainer.innerHTML =
+                '<p style="text-align:center; padding: 24px;">Cargando horarios...</p>';
+
+            selectedSlot = null;
+            slotsByDate = {};
+            selectedDate = null;
+
+            try {
+                const response = await fetch(`/student/booking/horarios/${selectedTutor}`);
+                const data = await response.json();
+                console.log("HORARIOS RAW:", data);
+                console.log("SLOT EJEMPLO:", data?.slots?.[0]);
+
+
+                if (!data.success) {
+                    slotsContainer.innerHTML =
+                        '<p style="text-align:center; padding: 24px;">Error al cargar horarios</p>';
+                    return;
+                }
+
+                if (!Array.isArray(data.slots) || data.slots.length === 0) {
+                    slotsContainer.innerHTML =
+                        '<p style="text-align:center; padding: 24px;">No hay horarios disponibles</p>';
+
+
+                    const now = new Date();
+                    renderMiniCalendar(now.getFullYear(), now.getMonth());
+                    selectDate(todayStr());
+                    return;
+                }
+
+
+                slotsByDate = data.slots.reduce((acc, s) => {
+                    if (!acc[s.date]) acc[s.date] = [];
+                    acc[s.date].push(s);
+                    return acc;
+                }, {});
+
+
+                const now = new Date();
+                renderMiniCalendar(now.getFullYear(), now.getMonth());
+                selectDate(todayStr());
+
+
+
+            } catch (error) {
+                console.error('Error al cargar horarios:', error);
+                slotsContainer.innerHTML =
+                    '<p style="text-align:center; padding: 24px;">Error al cargar horarios</p>';
+            }
+        }
+
+
+
+        // ====== RESUMEN + SUBMIT ======
+        function updateSummary() {
+            const subjectName = selectedSubjectName || 'N/A';
+            const tutorName = selectedTutorName || 'N/A';
+
+            document.getElementById('js-summary-subject').textContent = subjectName;
+            document.getElementById('js-summary-tutor').textContent = tutorName;
+            document.getElementById('js-summary-date').textContent = selectedSlot.date;
+            document.getElementById('js-summary-time').textContent = selectedSlot.time;
+            document.getElementById('js-summary-total').textContent = `Bs. ${currentPrice.toFixed(2)}`;
+        }
+
+        function toggleReceiptUI() {
+
+            if (receiptLabel) receiptLabel.style.display = isFreeBooking ? 'none' : 'block';
+
+
+            if (payHint) payHint.style.display = isFreeBooking ? 'none' : 'block';
+
+            if (freeMsg) freeMsg.style.display = isFreeBooking ? 'block' : 'none';
+
+
+            if (summaryFreeNote) summaryFreeNote.style.display = isFreeBooking ? 'block' : 'none';
+        }
+
+        function showCouponBar(code) {
+            couponBar.style.display = 'flex';
+            couponCodeEl.textContent = code || '-';
+        }
+
+        function hideCouponBar() {
+            couponBar.style.display = 'none';
+            couponCodeEl.textContent = '-';
+        }
+
+
+
+        function recalcTotals() {
+
+            currentPrice = basePrice * (1 - appliedDiscountDecimal);
+
+
+            isFreeBooking = currentPrice <= 0.00001;
+
+
+            const totalEl = document.getElementById('js-summary-total');
+            if (totalEl) totalEl.textContent = `Bs. ${currentPrice.toFixed(2)}`;
+
+
+            const discountAmount = basePrice - currentPrice;
+            if (summaryDiscountRow && appliedDiscountPct > 0) {
+                summaryDiscountRow.style.display = 'block';
+                summaryDiscountPct.textContent = String(appliedDiscountPct);
+                summaryDiscountAmount.textContent = `-${discountAmount.toFixed(2)}`;
+            } else if (summaryDiscountRow) {
+                summaryDiscountRow.style.display = 'none';
+            }
+
+            toggleReceiptUI();
+        }
+
+        async function submitBooking() {
+            //  Si NO es gratis, exige comprobante
+            if (!isFreeBooking && !comprobanteFile) {
+                fileUpload.classList.add('input-error');
+                showFormMsg('🚫 Falta tu comprobante de pago. Súbelo para finalizar la reserva.', 'error');
+
+                if (receiptLabel) {
+                    receiptLabel.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
+                }
+                return;
+            }
+
+
+            nextBtn.disabled = true;
+            navigationButtons.style.display = 'none';
+            hidePayUIOnSubmit();
+            loader.style.display = 'flex';
+
+            try {
+                const formData = new FormData();
+                formData.append('subject_id', selectedSubject);
+                formData.append('tutor_id', selectedTutor);
+                formData.append('slot_id', selectedSlot.id);
+                formData.append('slot_date', selectedSlot.date);
+
+                if (selectedCoupon) formData.append('coupon_id', selectedCoupon);
+                formData.append('is_free', isFreeBooking ? '1' : '0');
+
+                // Solo adjuntar comprobante si NO es gratis
+                if (!isFreeBooking && comprobanteFile) {
+                    formData.append('comprobante', comprobanteFile);
+                }
+
+                const response = await fetch('/student/booking/reservar', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: formData
+                });
+
+                const raw = await response.text();
+                let data;
+                try {
+                    data = JSON.parse(raw);
+                } catch {
+                    console.error('❌ Respuesta NO JSON del servidor:', raw);
+                    throw new Error('El servidor devolvió HTML/no JSON. Revisa logs de Laravel.');
+                }
+
+                if (data.success) {
+                    loader.style.display = 'none';
+                    confirmation.style.display = 'flex';
+                    // setTimeout(() => window.location.href = '{{ route('student.bookings') }}', 2500);
+                    setTimeout(() => closeModal(), 800);
+                    nextBtn.disabled = false;
+                    return;
+                }
+
+
+                loader.style.display = 'none';
+                navigationButtons.style.display = 'flex';
+                showPayUIAfterError();
+                alert(data.message || 'Error al procesar la reserva');
+
+            } catch (error) {
+                console.error('Error al procesar la reserva:', error);
+                loader.style.display = 'none';
+                navigationButtons.style.display = 'flex';
+                showPayUIAfterError();
+                alert(error.message || 'Error al procesar la reserva');
+            }
+        }
+
+    });
+</script>
+
+</div>

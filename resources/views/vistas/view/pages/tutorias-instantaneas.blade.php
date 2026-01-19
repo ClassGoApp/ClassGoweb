@@ -30,8 +30,6 @@
     
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const inputElement = document.getElementById('searchInput');
-        if (!inputElement) return;
 
         const texts = [
             "Prueba con: Matemáticas, Contabilidad...",

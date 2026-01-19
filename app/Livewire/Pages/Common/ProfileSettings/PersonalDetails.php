@@ -17,6 +17,17 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 
+
+use App\Http\Requests\Common\AccountSetting\AccountSettingStoreRequest;
+
+use App\Services\UserService;
+
+use App\Services\GoogleCalender;
+use Illuminate\Support\Facades\Cache;
+
+
+use Symfony\Component\HttpFoundation\Response;
+
 /**
  * Componente Livewire para la gestión de detalles personales
  * Maneja la carga y actualización de información del perfil de usuario
@@ -26,7 +37,14 @@ class PersonalDetails extends Component
     use WithFileUploads;
 
     private ?ProfileService $profileService = null;
-
+    public  $reminder               = 30;
+    public  $timezone;
+    private $userService            = null;
+    public  string $password        = '';
+    public  $getAccountSetting      = null;
+    public  string $confirm         = '';
+    private $googleCalenderService  = null;
+    public $activeRoute1            = false;
     // Propiedades del formulario
     public $state;
     public $first_name = '';
@@ -164,21 +182,7 @@ class PersonalDetails extends Component
     /**
      * Inicializa el componente
      */
-    public function mount(): void
-    {
-        try {
-            $this->isLoading = true;
-            $this->profileService = new ProfileService(Auth::id());
-            $this->loadConfiguration();
-            $this->loadUserData();
-            $this->activeRoute = Route::currentRouteName();
-        } catch (\Exception $e) {
-            Log::error('Error al cargar datos del perfil: ' . $e->getMessage());
-            $this->dispatch('showAlertMessage', type: 'error', message: __('general.error_loading_profile'));
-        } finally {
-            $this->isLoading = false;
-        }
-    }
+   
 
     /**
      * Verifica si el servicio está inicializado
@@ -252,6 +256,11 @@ class PersonalDetails extends Component
     public function render(Request $request)
     {
         try {
+            $this->getAccountSetting   = $this->userService->getAccountSetting();
+        $this->timezone            = $this->getAccountSetting['timezone'][0] ?? 'UTC';
+        if(!empty($this->getAccountSetting['google_calendar_info'])){
+            $this->reminder = $this->getAccountSetting['google_calendar_info']['minutes'];
+        }
             $states = null;
             $countries = Country::orderBy('name')->get();
             $languages = Language::get(['id', 'name'])->pluck('name', 'id');
@@ -358,14 +367,29 @@ class PersonalDetails extends Component
                 Log::error('Error al enviar correo de actualización de perfil: ' . $e->getMessage());
             }
 
-            $this->dispatch('showAlertMessage', type: 'success', message: __('general.success_message'));
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            throw $e;
-        } catch (\Exception $e) {
-            Log::error('Error al actualizar perfil: ' . $e->getMessage());
-            $this->dispatch('showAlertMessage', type: 'error', message: __('general.error_message'));
-        }
+            
+            // 👉 Verificar estado de verificación
+            $user = Auth::user();
+
+            if (!$user->verified) {
+                // 👉 REDIRECCIÓN CUANDO NO ESTÁ VERIFICADO
+                // DESTINO EN BLANCO COMO PEDISTE
+                $this->redirectRoute('tutor.profile.identification');//revisar esta redireccion
+                return;
+            }
+
+            // 👉 SI ESTÁ VERIFICADO
+            $this->dispatch('showAlertMessage',type: 'success', message: __('general.success_message')
+            );
+
+            } catch (\Illuminate\Validation\ValidationException $e) {
+                throw $e;
+            } catch (\Exception $e) {
+                Log::error('Error al actualizar perfil: ' . $e->getMessage());
+                $this->dispatch('showAlertMessage', type: 'error', message: __('general.error_message'));
+            }
     }
+
 
     /**
      * Convierte el string de género a integer según GenderCast
@@ -515,4 +539,116 @@ class PersonalDetails extends Component
     $this->selected_lema = null;
     // dd($this->selected_lema);
 }
+
+
+//*********************************************** */
+public function boot()
+    {
+        $this->googleCalenderService  = new GoogleCalender(Auth::user());
+        $this->userService            = new UserService(Auth::user());
+    }
+
+    public function mount()
+    {
+        $this->activeRoute1 = Route::currentRouteName();
+        $this->dispatch('initSelect2', target: '.am-select2' );
+        try {
+            $this->isLoading = true;
+            $this->profileService = new ProfileService(Auth::id());
+            $this->loadConfiguration();
+            $this->loadUserData();
+            $this->activeRoute = Route::currentRouteName();
+        } catch (\Exception $e) {
+            Log::error('Error al cargar datos del perfil: ' . $e->getMessage());
+            $this->dispatch('showAlertMessage', type: 'error', message: __('general.error_loading_profile'));
+        } finally {
+            $this->isLoading = false;
+        }
+    }
+
+    public function updatePassword()
+    {
+        $request    = new AccountSettingStoreRequest();
+        $rules      = $request->rules();
+        $data       = $this->validate($rules);
+        $response   = isDemoSite();
+        if( $response ){
+            $this->dispatch('showAlertMessage', type: 'error', title:  __('general.demosite_res_title') , message: __('general.demosite_res_txt'));
+            return;
+        }
+        if($data){
+            $this->userService->setUserPassword($this->password);
+            $this->reset('password', 'confirm');
+        }
+
+        $this->dispatch('showAlertMessage', type: 'success', title: __('passwords.success') , message: __('passwords.password_changed_successfully'));
+    }
+
+    public function saveTimezone()
+    {
+
+        $request    = new AccountSettingStoreRequest();
+        $rules      = $request->rules(true);
+        $data       = $this->validate($rules);
+        $response   = isDemoSite();
+        if( $response ){
+            $this->dispatch('showAlertMessage', type: 'error', title:  __('general.demosite_res_title') , message: __('general.demosite_res_txt'));
+            return;
+        }
+        if($data){
+            $this->userService->setAccountSetting('timezone',[$this->timezone]);
+            Cache::forget('userTimeZone_' . Auth::user()?->id);
+            $this->reset('timezone');
+        }
+        $this->dispatch('showAlertMessage', type: 'success', title: __('passwords.success') , message: __('settings.save_time_zone_successfully'));
+    }
+
+
+
+
+
+
+
+
+
+    public function connectCalender()
+    {
+        $response = isDemoSite();
+        if( $response ){
+            $this->dispatch('showAlertMessage', type: 'error', title:  __('general.demosite_res_title') , message: __('general.demosite_res_txt'));
+            return;
+        }
+        $authUrlResponse = $this->googleCalenderService->getAuthUrl();
+        // dd($authUrlResponse, "aver que es esto");
+        if($authUrlResponse['status'] == Response::HTTP_OK){
+            $this->redirect($authUrlResponse['url']);
+        } else {
+            $this->dispatch('showAlertMessage', type: 'error', message: $authUrlResponse['message']);
+        }
+    }
+
+
+
+
+    
+
+    public function disconnectCalender()
+    {
+        $this->userService->setAccountSetting(['google_access_token','google_calendar_info'], null);
+        $this->dispatch('showAlertMessage', type: 'success', title: __('passwords.success') , message: __('passwords.disconnect_calender'));
+    }
+
+
+    public function saveReminder()
+    {
+        $userPrimaryCalendar  = $this->googleCalenderService->updateCalendarNotificationSettings($this->reminder);
+        if($userPrimaryCalendar['status'] == 200){
+            $calendarData               = $this->getAccountSetting['google_calendar_info'];
+            $calendarData['minutes']    = $this->reminder;
+            $this->userService->setAccountSetting('google_calendar_info',  $calendarData);
+            $this->dispatch('showAlertMessage', type: 'success', title: __('passwords.success') , message: __('passwords.update_calendar_notification'));
+        } else {
+            $this->dispatch('showAlertMessage', type: 'error', title: __('passwords.update_reminder') , message: $userPrimaryCalendar['message']);
+        }
+    }
 }
