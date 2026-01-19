@@ -28,8 +28,8 @@
         margin-top: -15px;
         margin-bottom: -15px;
         >[class^="col-"] {
-            padding-top: 15px;
-            padding-bottom: 15px;
+            padding-top: 0px!important;
+            padding-bottom: 0px!important;
         }
     }
 }
@@ -2463,9 +2463,9 @@ address {
         padding: 0;
     }
     .tb-db-dashboard_box_wrap{
-        height: calc(100vh - 112px);
-        overflow: auto;
-        overflow-x: hidden;
+        // height: calc(100vh - 112px);
+        // overflow: auto;
+        // overflow-x: hidden;
         &_inner{
             padding: 6px;
             border-radius: 20px;
@@ -2858,7 +2858,7 @@ address {
     background: #fff;
 }
 .tb-db-dashboard_box .tb-db-dashboard_box_wrap:has(.fw-forumwrap){
-    overflow: visible;
+    // overflow: visible;
     height: auto;
 }
 .tb-db-dashboard_box:has(.fw-forumwrap){

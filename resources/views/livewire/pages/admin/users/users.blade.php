@@ -19,10 +19,10 @@
             </div>
             
             <!-- Filtros debajo del botón -->
-            <div class="tb-sortby" style="margin-top: 20px;">
+            <div class="tb-sortby" >
                 <form class="tb-themeform tb-displistform">
                     <fieldset>
-                        <div class="tb-themeform__wrap">
+                        <div class="tb-themeform__wrap" style="overflow-x: auto;">
                             <div class="tb-actionselect" wire:ignore>
                                         <label class="tb-label">{{ __('general.email_verification') }}</label>
                                         <div class="tb-select">
@@ -70,7 +70,7 @@
                                             </select>
                                         </div>
                                     </div>
-                            <div class="form-group tb-inputicon tb-inputheight">
+                            <div class="form-group tb-inputicon tb-inputheight" style="min-width: 10rem;">
                                 <i class="icon-search"></i>
                                 <input type="text" class="form-control" wire:model.live.debounce.500ms="search"
                                     autocomplete="off" placeholder="{{ __('general.search') }}">
@@ -144,7 +144,7 @@
                                     </div>
                                 </td>
                                 <td data-label="{{ __('general.email' )}}"><span>{{ $single->email }}</span></td>
-                                <td data-label="{{ __('general.created_date' )}}"><span>{{ $single->created_at->format('F d,
+                                <td data-label="{{ __('general.created_date' )}}"><span style="min-width:8rem;">{{ $single->created_at->format('F d,
                                         Y')}}</span></td>
                                 <td data-label="{{ __('admin/general.role') }}">
                                     {{ ucfirst( $single->roles()->first()->name ) }}
@@ -202,13 +202,18 @@
                             @endforeach
                         </tbody>
                     </table>
-                    {{ $users->links('pagination.custom') }}
+                    {{-- {{ $users->links('pagination.custom') }} --}}
                     @else
                         <x-no-record :image="asset('images/empty.png')"  :title="__('general.no_record_title')"/>
                     @endif
+
+
+
                 </div>
             </div>
+            
         </div>
+        {{ $users->links('pagination.custom') }}
         <div wire:ignore.self class="modal fade tb-addonpopup" id="tb-add-user" aria-labelledby="tb_user_info_label"
             role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg tb-modaldialog" role="document">
@@ -352,6 +357,25 @@
     filter: blur(3px);
     pointer-events: none;
     transition: filter 0.3s ease;
+}
+.tb-dhb-mainheading{
+    display:flex;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+}
+.tk-pagination{
+    padding: 10px 37px 0px !important;
+}
+.tb-db-dashboard_box_wrap{
+  
+    overflow: hidden!important;
+ 
+}
+.tb-db-dashboard_box,.tb-db-dashboard_box_wrap{
+    height: 100%;
+}
+.tb-db-dashboard_box .tb-db-dashboard_box_wrap{
+    height: 100%;
 }
 </style>
 @endpush
