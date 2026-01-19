@@ -47,6 +47,18 @@ use App\Http\Controllers\TutorPerfilController;
 use App\Http\Controllers\BeforeBlogsController;
 use App\Http\Controllers\BookingController;
 
+use App\Livewire\SubjectPicker;
+
+
+
+//////////////// OSCAR ///////////////////////
+
+// Route::get('/materias/elegir', SubjectPicker::class)->name('subjects.pick');
+Route::get('/materias/elegir', function () {
+    return view('vistas.view.pages.subjectPicker');
+})->name('subjects.pick');
+//////////////// OSCAR ///////////////////////
+
 Route::view('/reserva', 'vistas.view.pages.e')->name('e');
 Route::view('/traduccion', 'vistas.view.pages.traduccion')->name('traduccion');
 
@@ -222,6 +234,16 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
         });
 
         Route::middleware('student')->prefix('student')->name('student.')->group(function () {
+
+            /////////////////////////////////////oscar tutor-instant//////////////////////////////////////////////
+
+            ROUTE::get('/student/materias/elegir', function () {
+        return view('vistas.view.pages.subjectPicker');
+    })
+    ->name('student.subjects.pick');
+
+
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////
             Route::get('profile', fn() => redirect('tutor.profile.personal-details'))->name('profile');
             Route::prefix('profile')->name('profile.')->group(function () {
                 Route::get('personal-details', PersonalDetails::class)->name('personal-details');
@@ -243,7 +265,7 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
                 // Route::get('/niveles', [BookingController::class, 'getLevels'])->name('niveles');
                 // Route::get('/categorias', [BookingController::class, 'getCategories'])->name('categorias');
                 Route::get('/materias', [BookingController::class, 'getSubjects'])->name('materias');
-                
+
                 Route::get('/tutores', [BookingController::class, 'getTutors'])->name('tutores');
                 Route::get('/horarios/{tutor_id}', [BookingController::class, 'getSlots'])->name('horarios');
                 Route::get('/tutor-payment/{tutor_id}', [BookingController::class, 'getTutorPayment'])->name('tutor-payment');
