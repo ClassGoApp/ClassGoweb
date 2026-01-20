@@ -221,19 +221,6 @@ body {
   transform: scale(0.98);
 }
 
-.hero-image {
-  flex: 1;
-  min-width: 400px;
-  text-align: right;
-  padding: 2.5rem 5rem 0 0;
-}
-
-.hero-container img {
-  max-width: 500px;
-  width: 100%;
-  height: auto;
-  padding-right: 2rem;
-}
 
 .info-container {
   background-color: var(--primary-white);
@@ -615,6 +602,22 @@ body {
   align-items: center;
   gap: 12px;
   color: var(--primary-color);
+}
+
+.over-text-dark {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  color: white;
+}
+
+.linea {
+  background-color: var(--secundary-color);
+  height: 4px;
+  width: 50px;
+  border-radius: 10px;
 }
 
 .carousel-btn:disabled {
@@ -1876,7 +1879,7 @@ body {
     order: 2;
   }
 
-  .hero-tutors-intant{
+  .hero-tutors-intant {
     justify-content: center;
     padding: 0;
   }
@@ -2097,7 +2100,7 @@ body {
     margin: auto;
   }
 
-  .hero-tutors-intant{
+  .hero-tutors-intant {
     justify-content: center;
     padding-left: 0;
   }
@@ -2264,14 +2267,6 @@ body {
 
   }
 
-  .hero-image {
-    padding: 0;
-    text-align: center;
-    order: 1;
-    /* Subir a altura media */
-    transform: translateY(-30px);
-    /* ajusta el valor según se vea bien */
-  }
 
   .hero-container img {
     margin: 0 auto;
@@ -2294,7 +2289,7 @@ body {
     margin-top: -30px;
   }
 
-  .hero-tutors-intant{
+  .hero-tutors-intant {
     justify-content: center;
     padding-left: 0;
   }
@@ -2314,7 +2309,7 @@ body {
 
   .hero-title-abajo {
     font-size: 2.2em !important;
-    padding-bottom: 20px;
+    padding-bottom: 10px;
     /* sube 15px */
   }
 
@@ -2886,7 +2881,7 @@ body {
     text-align: center;
     color: #e0f7fa;
     line-height: 130%;
-    padding: 0.2rem 2rem 1rem 2rem;
+    padding: 0.2rem 1rem 1rem 1rem;
   }
 
   .buscar-tutor-section p {
@@ -2908,8 +2903,17 @@ body {
   }
 
   .buscar-tutor-section {
-    border-radius: 1rem;
-    background-size: 100% 57%;
+    border-radius: 3rem;
+    padding: 5rem 2rem;
+    height: auto;
+    margin: 0rem 1rem;
+    background: var(--bg-gradient3);
+
+    /* background-color: var(--primary-color);
+    background-image: url('/images/home/Elipse.webp');
+    background-repeat: no-repeat;
+    background-position: center calc(100% + 0px);
+    background-size: 100% auto; */
   }
 
   .header-main__title {
@@ -2976,9 +2980,11 @@ body {
   .hero-image {
     transform: translateY(15px);
   }
+
   .hero-text {
     margin-bottom: 2rem;
   }
+
   .tugo-carousel {
     padding: 1rem;
     min-height: auto;

@@ -53,7 +53,11 @@
 
     <!--DESBLOQUEA TU POTENCIAL CON SENCILLOS PASOS-->
     <section class="potencial-container fade-up">
-        
+        <h3 class="over-text-dark">
+            <div class="linea"></div>
+            <span data-translate="guide"></span>
+            <div class="linea"></div>
+        </h3>
         <h1 class="header-main__title_ligth fade-up" data-translate="unlock_potential"></h1>
         <p class="header-main__subtitle_ligth fade-up" data-translate="improve_skills"></p>
         @include('vistas.view.pages.components.home.guia-pasos')
