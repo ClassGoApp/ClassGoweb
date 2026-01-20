@@ -61,7 +61,7 @@ class SlotBookingService implements interfaces\ISlotBookingService
 
         // --- ENVIAR NOTIFICACIÓN ---
         $notificationService = app(BookingNotificationService::class);
-        $notificationService->handleStatusChangeNotification($booking, null, $booking->status);
+        $notificationService->handleStatusChangeNotification($booking, '', $booking->status);
 
 
         // if ($session_fee == 0) {
