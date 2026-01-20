@@ -48,6 +48,8 @@ use App\Http\Controllers\TutorPerfilController;
 use App\Http\Controllers\BeforeBlogsController;
 use App\Http\Controllers\BookingController;
 
+
+
 Route::view('/reserva', 'vistas.view.pages.e')->name('e');
 Route::view('/traduccion', 'vistas.view.pages.traduccion')->name('traduccion');
 
@@ -145,8 +147,7 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
     Route::get('/tutores/{slug}', [HomeController::class, 'tutor'])->name('tutor');
     Route::get('/tutors', [HomeController::class, 'buscarTutor'])->name('buscar.tutor'); //<---ojo
     Route::get('/buscar', [HomeController::class, 'buscar'])->name('buscar');
-    Route::view('/modal', 'vistas.view.pages.modals.modal-reserva')->name('modal');
-    Route::get('/tutorias-instantaneas', [InstantTutoringController::class, 'index'])->name('tutorias-instantaneas');
+    Route::get('/modal', [BookingController::class, 'create'])->name('modal');
 
     Route::post('/tutor/{tutorId}/review', [HomeController::class, 'storeReview'])
         ->name('tutor.review.store')
@@ -242,15 +243,15 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
 
             // Rutas para el wizard de reservas (requiere autenticación de estudiante)
             Route::prefix('booking')->name('booking.')->group(function () {
-                // Route::get('/niveles', [BookingController::class, 'getLevels'])->name('niveles');
-                // Route::get('/categorias', [BookingController::class, 'getCategories'])->name('categorias');
+                Route::get('/niveles', [BookingController::class, 'getLevels'])->name('niveles');
+                Route::get('/categorias', [BookingController::class, 'getCategories'])->name('categorias');
                 Route::get('/materias', [BookingController::class, 'getSubjects'])->name('materias');
-                
+                // Route::get('/tutores/{subject_id}', [BookingController::class, 'getTutors'])->name('tutores');
                 Route::get('/tutores', [BookingController::class, 'getTutors'])->name('tutores');
                 Route::get('/horarios/{tutor_id}', [BookingController::class, 'getSlots'])->name('horarios');
                 Route::get('/tutor-payment/{tutor_id}', [BookingController::class, 'getTutorPayment'])->name('tutor-payment');
 
-                Route::post('/validar-cupon', [BookingController::class, 'validarCupon'])->name('validar-cupon');
+                Route::post('/validar-cupon', [BookingController::class, 'validateCoupon'])->name('validar-cupon');
                 Route::post('/reservar', [BookingController::class, 'storeBooking'])->name('reservar');
             });
         });
@@ -281,4 +282,4 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
 
 });
 
-Route::get('/tutor/{id}', [TutorPerfilController::class, 'show'])->name('tutor.perfil');
+ Route::get('/tutor/{id}', [TutorPerfilController::class, 'show'])->name('tutor.perfil');
