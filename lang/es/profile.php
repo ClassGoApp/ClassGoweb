@@ -88,7 +88,7 @@ return [
     // Mensajes de perfil incompleto
     'complete_profile_requirements' => 'Para verificar tu identidad, primero debes completar los siguientes requisitos:',
     'missing_profile_photo' => 'Foto de perfil',
-    'missing_intro_video' => 'Video de introducción',
+    'missing_intro_video' => 'Video de introducción (Opcional)',
     'missing_gender' => 'Género',
     'missing_google_calendar' => 'Conexión con Google Calendar (Ve a Configuración de Cuenta)',
     'missing_payout_method' => 'Método de pago configurado (Ve a Panel > Preferencias > QR)',
