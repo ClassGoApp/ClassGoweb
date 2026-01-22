@@ -163,7 +163,8 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
 
     Route::get('/blogs/{blog:slug}', [BeforeBlogsController::class, 'showBySlug'])->name('blogs.show');
 
-
+    ///Ruta para la encuesta
+    Route::post('/encuesta/guardar', [HomeController::class, 'storeEncuesta'])->name('encuesta.store');
     //<===//////////////////////////////////////////===>
 
     //Route::get('/buscar-tutor', BuscarTutor::class)->name('buscar.tutor');
