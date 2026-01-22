@@ -81,25 +81,35 @@
         <tbody>
             @foreach($users as $user)
             <tr>
-                <td>{{ $user->profile->full_name ?? 'N/A' }}</td>
+                <td>{{ $user->profile?->full_name ?? 'N/A' }}</td>
                 <td>{{ $user->email }}</td>
                 <td>{{ $user->roles->pluck('name')->implode(', ') }}</td>
-                <td>{{ $user->profile->phone_number ?? '-' }}</td>
+                
+                {{-- CORRECCIÓN CRÍTICA: Se agregó ?-> para evitar el error con usuarios sin perfil --}}
+                <td>{{ $user->profile?->phone_number ?? '-' }}</td>
                 
                 @if($reportType === 'incomplete')
                     <td style="color: #b91c1c; font-size: 10px;">
                         @php
                             $missing = [];
-                            if (!$user->profile->phone_number) $missing[] = 'Teléfono';
-                            if (!$user->profile->image) $missing[] = 'Foto';
-                            if (!$user->profile->description) $missing[] = 'Bio';
+                            
+                            // Validaciones seguras
+                            if (!$user->profile?->phone_number) $missing[] = 'Teléfono';
+                            if (!$user->profile?->image) $missing[] = 'Foto';
+                            
+                            // CAMBIO 1: Coincidir con Excel (Descripción en vez de Bio)
+                            if (!$user->profile?->description) $missing[] = 'Descripción';
+                            
+                            // CAMBIO 2: Agregar aviso si no existe perfil (Igual que Excel)
+                            if (!$user->profile) $missing[] = '(Perfil no creado)';
+
                             if ($user->roles->contains('name', 'tutor') && $user->userSubjects->isEmpty()) $missing[] = 'Materias';
                         @endphp
                         {{ implode(', ', $missing) }}
                     </td>
                 @else
                     <td>
-                        @if($user->profile->verified_at)
+                        @if($user->profile?->verified_at)
                             <span class="badge-green">Verificado</span>
                         @else
                             <span class="badge-red">Pendiente</span>

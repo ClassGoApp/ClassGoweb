@@ -12,7 +12,7 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 class UsersReportExport implements FromQuery, WithHeadings, WithMapping, WithStyles, ShouldAutoSize
 {
     protected $query;
-    protected $reportType; // Variable nueva
+    protected $reportType;
 
     public function __construct($query, $reportType)
     {
@@ -27,18 +27,27 @@ class UsersReportExport implements FromQuery, WithHeadings, WithMapping, WithSty
 
     public function map($user): array
     {
+        // CORRECCIÓN 1: Usamos ?-> en full_name y phone_number
+        // Si no hay perfil, devuelve 'N/A' y 'Sin teléfono' sin romper el excel
         $commonData = [
-            $user->profile->full_name ?? 'N/A',
+            $user->profile?->full_name ?? 'N/A', 
             $user->email,
             $user->roles->pluck('name')->implode(', '),
-            $user->profile->phone_number ?? 'Sin teléfono',
+            $user->profile?->phone_number ?? 'Sin teléfono',
         ];
 
         if ($this->reportType === 'incomplete') {
             $missing = [];
-            if (!$user->profile->phone_number) $missing[] = 'Teléfono';
-            if (!$user->profile->image) $missing[] = 'Foto';
-            if (!$user->profile->description) $missing[] = 'Descripción';
+            
+            // CORRECCIÓN 2: Validaciones seguras con ?->
+            // Si $user->profile es null, la expresión devuelve null y el if lo toma como "faltante" (true)
+            if (!$user->profile?->phone_number) $missing[] = 'Teléfono';
+            if (!$user->profile?->image) $missing[] = 'Foto';
+            if (!$user->profile?->description) $missing[] = 'Descripción';
+            
+            // Opcional: Si no tiene perfil del todo, podrías indicarlo explícitamente:
+            if (!$user->profile) $missing[] = '(Perfil no creado)';
+
             if ($user->hasRole('tutor') && $user->userSubjects->isEmpty()) $missing[] = 'Materias';
 
             return array_merge($commonData, [
@@ -49,7 +58,8 @@ class UsersReportExport implements FromQuery, WithHeadings, WithMapping, WithSty
         else {
             return array_merge($commonData, [
                 $user->created_at->format('d/m/Y'),
-                $user->profile->verified_at ? 'Verificado' : 'Pendiente', // Estado
+                // CORRECCIÓN 3: Validación segura en verified_at
+                $user->profile?->verified_at ? 'Verificado' : 'Pendiente', 
             ]);
         }
     }

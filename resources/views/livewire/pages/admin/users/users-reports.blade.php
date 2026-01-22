@@ -623,10 +623,10 @@
                                 {{ $reportType === 'verified_complete' ? 'verified-avatar' : 
                                   ($reportType === 'incomplete' ? 'incomplete-avatar' : 
                                   ($reportType === 'unverified_empty' ? 'empty-avatar' : 'area-avatar')) }}">
-                                {{ substr($user->profile->first_name ?? '?', 0, 1) }}
+                                {{ substr($user->profile?->first_name ?? '?', 0, 1) }}
                             </div>
                             <div class="user-info-cell">
-                                <p class="user-name">{{ $user->profile->full_name ?? 'Sin Nombre' }}</p>
+                                <p class="user-name">{{ $user->profile?->full_name ?? 'Sin Nombre' }}</p>
                                 <p class="user-email">{{ $user->email }}</p>
                             </div>
                         </div>
@@ -645,16 +645,21 @@
                                 </div>
                             @elseif($reportType === 'incomplete')
                                 <div class="tags-wrapper">
-                                    @if(!$user->profile->phone_number) <span class="missing-tag">Teléfono</span> @endif
-                                    @if(!$user->profile->image) <span class="missing-tag">Foto</span> @endif
-                                    @if(!$user->profile->description) <span class="missing-tag">Bio</span> @endif
+                                    @if(!$user->profile)
+                                        <span class="missing-tag">Perfil No Creado</span>
+                                    @else
+                                        @if(!$user->profile?->phone_number) <span class="missing-tag">Teléfono</span> @endif
+                                        @if(!$user->profile?->image) <span class="missing-tag">Foto</span> @endif
+                                        @if(!$user->profile?->description) <span class="missing-tag">Bio</span> @endif
+                                    @endif
+                                    
                                     @if($user->userSubjects->count() == 0) <span class="missing-tag">Materias</span> @endif
                                 </div>
                             @elseif($reportType === 'unverified_empty')
                                 <span class="time-ago">{{ $user->created_at->diffForHumans() }}</span>
                             @else
                                 <div class="date-info-wrapper">
-                                    <strong>{{ $user->profile->verified_at ? \Carbon\Carbon::parse($user->profile->verified_at)->format('d M, Y') : '--' }}</strong>
+                                    <strong>{{ $user->profile?->verified_at ? \Carbon\Carbon::parse($user->profile?->verified_at)->format('d M, Y') : '--' }}</strong>
                                     <small>Fecha de validación</small>
                                 </div>
                             @endif
@@ -667,7 +672,7 @@
                                     <div class="status-dot"></div>
                                     Incompleto
                                 </span>
-                            @elseif($user->profile->verified_at)
+                            @elseif($user->profile?->verified_at)
                                 <span class="status-badge complete-badge">
                                     <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
                                     Completo

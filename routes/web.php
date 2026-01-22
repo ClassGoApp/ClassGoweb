@@ -147,7 +147,8 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
     Route::get('/tutores/{slug}', [HomeController::class, 'tutor'])->name('tutor');
     Route::get('/tutors', [HomeController::class, 'buscarTutor'])->name('buscar.tutor'); //<---ojo
     Route::get('/buscar', [HomeController::class, 'buscar'])->name('buscar');
-    Route::get('/modal', [BookingController::class, 'create'])->name('modal');
+    Route::view('/modal', 'vistas.view.pages.modals.modal-reserva')->name('modal');
+    Route::get('/tutorias-instantaneas', [InstantTutoringController::class, 'index'])->name('tutorias-instantaneas');
 
     Route::post('/tutor/{tutorId}/review', [HomeController::class, 'storeReview'])
         ->name('tutor.review.store')
@@ -164,7 +165,8 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
 
     Route::get('/blogs/{blog:slug}', [BeforeBlogsController::class, 'showBySlug'])->name('blogs.show');
 
-
+    ///Ruta para la encuesta
+    Route::post('/encuesta/guardar', [HomeController::class, 'storeEncuesta'])->name('encuesta.store');
     //<===//////////////////////////////////////////===>
 
     //Route::get('/buscar-tutor', BuscarTutor::class)->name('buscar.tutor');

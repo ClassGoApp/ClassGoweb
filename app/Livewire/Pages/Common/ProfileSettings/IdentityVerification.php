@@ -194,9 +194,9 @@ class IdentityVerification extends Component
             $errores[] = '• ' . __('profile.missing_profile_photo');
         }
         
-        if ($perfil->intro_video == null) {
-            $errores[] = '• ' . __('profile.missing_intro_video');
-        }
+        // if ($perfil->intro_video == null) {
+        //     $errores[] = '• ' . __('profile.missing_intro_video');
+        // }
         
         if ($perfil->gender == null) {
             $errores[] = '• ' . __('profile.missing_gender');
