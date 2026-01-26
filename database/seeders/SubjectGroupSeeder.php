@@ -15,29 +15,28 @@ class SubjectGroupSeeder extends Seeder
      */
     public function run(): void
     {
+        // Columnas que queremos actualizar si el registro ya existe
+        $columnsToUpdate = ['name', 'description', 'status', 'deleted_at', 'id_padre'];
+
         // =====================================================
         // NIVEL 1: CATEGORÍAS PRINCIPALES
         // =====================================================
-        DB::table('subject_groups')->insert([
+        DB::table('subject_groups')->upsert([
             ['id' => 1000, 'name' => 'Colegio', 'description' => 'Nivel educativo escolar que abarca la formación básica, primaria y secundaria.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => null],
             ['id' => 2000, 'name' => 'Universidad', 'description' => 'Nivel académico superior orientado a la formación profesional e investigación científica.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => null],
             ['id' => 3000, 'name' => 'Instituto', 'description' => 'Formación técnica y profesional enfocada en la práctica, especialización y empleabilidad.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => null],
-        ]);
+        ], ['id'], $columnsToUpdate);
 
 
         // =====================================================
         // NIVEL 2: SUBCATEGORÍAS PRINCIPALES
         // =====================================================
-        DB::table('subject_groups')->insert([
-           
-
-
+        DB::table('subject_groups')->upsert([
             // Universidad
             ['id' => 2100, 'name' => 'Ciencias Exactas', 'description' => 'Área universitaria dedicada a las matemáticas, física, química y estadística.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 2000],
             ['id' => 2101, 'name' => 'Ingeniería Avanzada', 'description' => 'Campo aplicado con enfoque en innovación tecnológica y simulación de sistemas.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 2000],
             ['id' => 2102, 'name' => 'Ciencias Sociales y Económicas', 'description' => 'Estudios orientados a la gestión empresarial, finanzas y análisis económico.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 2000],
-
-
+            
             // Instituto
             ['id' => 3100, 'name' => 'Idiomas', 'description' => 'Formación en lenguas extranjeras y nativas con fines comunicativos y profesionales.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 3000],
             ['id' => 3101, 'name' => 'Marketing y Comunicación Digital', 'description' => 'Área dedicada al estudio de estrategias digitales y publicidad online.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 3000],
@@ -46,30 +45,28 @@ class SubjectGroupSeeder extends Seeder
             ['id' => 3104, 'name' => 'Ingeniería y Tecnología', 'description' => 'Especialidades técnicas relacionadas con programación, redes y automatización.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 3000],
             ['id' => 3105, 'name' => 'Psicología y Desarrollo Personal', 'description' => 'Área enfocada en el bienestar emocional y el crecimiento humano integral.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 3000],
             ['id' => 3106, 'name' => 'Deporte y Bienestar', 'description' => 'Área dedicada a la salud física, el entrenamiento y el turismo activo.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 3000],
-
-
-        ]);
+        ], ['id'], $columnsToUpdate);
 
 
         // =====================================================
-        // NIVEL 3: CATEGORÍAS DETALLADAS (114 REGISTROS)
+        // NIVEL 3: CATEGORÍAS DETALLADAS
         // =====================================================
         // Cada bloque está organizado por su subcategoría y con descripciones técnico-institucionales.
-
-
+        
+        
         // -----------------------------------------------------
         // COLEGIO → NIVELES EDUCATIVOS
         // -----------------------------------------------------
-        DB::table('subject_groups')->insert([
+        DB::table('subject_groups')->upsert([
             ['id' => 1, 'name' => 'Básico', 'description' => 'Nivel educativo inicial orientado al desarrollo de competencias básicas en lectura, escritura y razonamiento lógico.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 1000],
             ['id' => 2, 'name' => 'Primaria', 'description' => 'Etapa educativa centrada en la adquisición de conocimientos fundamentales y valores formativos.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 1000],
             ['id' => 3, 'name' => 'Secundaria', 'description' => 'Nivel escolar enfocado en la formación crítica, científica y preparación para estudios superiores.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 1000],
-        ]);
+        ], ['id'], $columnsToUpdate);
 
         // -----------------------------------------------------
         // UNIVERSIDAD → CIENCIAS EXACTAS
         // -----------------------------------------------------
-        DB::table('subject_groups')->insert([
+        DB::table('subject_groups')->upsert([
             ['id' => 4,  'name' => 'Ciencias Exactas', 'description' => 'Área académica que abarca disciplinas como matemáticas, física, química y estadística aplicada a la ingeniería y la investigación científica.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 2100],
             ['id' => 5,  'name' => 'Química', 'description' => 'Curso orientado al estudio de la composición, propiedades y transformaciones de la materia, con aplicación en entornos industriales y de laboratorio.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 2100],
             ['id' => 28, 'name' => 'Matemática Aplicada a la Ingeniería Ambiental', 'description' => 'Asignatura que aplica modelos matemáticos para la resolución de problemas medioambientales y de ingeniería sostenible.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 2100],
@@ -77,12 +74,12 @@ class SubjectGroupSeeder extends Seeder
             ['id' => 30, 'name' => 'Cálculo', 'description' => 'Asignatura fundamental sobre límites, derivadas e integrales con aplicación en problemas de ingeniería y ciencias exactas.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 2100],
             ['id' => 31, 'name' => 'Ecuaciones Diferenciales', 'description' => 'Curso técnico que aborda la resolución de ecuaciones diferenciales ordinarias y parciales aplicadas a sistemas dinámicos.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 2100],
             ['id' => 33, 'name' => 'Métodos Numéricos', 'description' => 'Asignatura centrada en algoritmos de aproximación numérica para resolver problemas científicos e ingenieriles.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 2100],
-        ]);
+        ], ['id'], $columnsToUpdate);
 
         // -----------------------------------------------------
         // UNIVERSIDAD → INGENIERÍA AVANZADA
         // -----------------------------------------------------
-        DB::table('subject_groups')->insert([
+        DB::table('subject_groups')->upsert([
             ['id' => 34, 'name' => 'Programación', 'description' => 'Curso técnico orientado al desarrollo de algoritmos, estructuras de datos y fundamentos de programación aplicados a la ingeniería.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 2101],
             ['id' => 35, 'name' => 'Modelado y Simulación de Sistemas', 'description' => 'Asignatura centrada en la creación de modelos matemáticos y simulaciones computacionales de procesos complejos de ingeniería.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 2101],
             ['id' => 43, 'name' => 'Sistemas y Tecnologías de la Información', 'description' => 'Curso sobre infraestructura tecnológica, gestión de sistemas de información y aplicaciones en entornos empresariales e industriales.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 2101],
@@ -92,12 +89,12 @@ class SubjectGroupSeeder extends Seeder
             ['id' => 48, 'name' => 'Computación y Automatización', 'description' => 'Curso práctico sobre sistemas automatizados, control computarizado y robótica aplicada a procesos industriales.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 2101],
             ['id' => 49, 'name' => 'Diseño Electrónico y Circuitos', 'description' => 'Asignatura que aborda el diseño, simulación y análisis de circuitos eléctricos y electrónicos.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 2101],
             ['id' => 104, 'name' => 'Ingeniería y Medio Ambiente', 'description' => 'Curso técnico interdisciplinario que aplica principios de ingeniería en el diseño de soluciones sostenibles para el medio ambiente.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 2101],
-        ]);
+        ], ['id'], $columnsToUpdate);
 
         // -----------------------------------------------------
         // UNIVERSIDAD → Ciencias Sociales y Económicas
         // -----------------------------------------------------
-        DB::table('subject_groups')->insert([
+        DB::table('subject_groups')->upsert([
             ['id' => 6,  'name' => 'Econometría', 'description' => 'Asignatura que combina la estadística, las matemáticas y la economía para el análisis y modelado de fenómenos económicos.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 2102],
             ['id' => 7,  'name' => 'Finanzas', 'description' => 'Curso orientado al estudio de la gestión financiera, análisis de inversiones y planificación económica empresarial.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 2102],
             ['id' => 8,  'name' => 'Economía Cuantitativa', 'description' => 'Asignatura que aplica métodos matemáticos y estadísticos para el análisis riguroso de la economía y los mercados.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 2102],
@@ -107,13 +104,13 @@ class SubjectGroupSeeder extends Seeder
             ['id' => 45, 'name' => 'Auditoría', 'description' => 'Asignatura técnica que desarrolla competencias en control interno, revisión de estados financieros y auditorías externas.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 2102],
             ['id' => 51, 'name' => 'Diseño de Sistemas Financieros', 'description' => 'Curso sobre la estructura, diseño e implementación de modelos financieros y bancarios modernos.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 2102],
             ['id' => 95, 'name' => 'Emprendimiento y Gestión de Negocios', 'description' => 'Asignatura enfocada en la creación, desarrollo y sostenibilidad de proyectos empresariales innovadores.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 2102],
-        ]);
+        ], ['id'], $columnsToUpdate);
 
 
         // -----------------------------------------------------
         // INSTITUTO → IDIOMAS
         // -----------------------------------------------------
-        DB::table('subject_groups')->insert([
+        DB::table('subject_groups')->upsert([
             ['id' => 52, 'name' => 'Interpretación y Traducción de Idiomas', 'description' => 'Curso orientado a desarrollar competencias lingüísticas y técnicas para la interpretación y traducción profesional.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 3100],
             ['id' => 53, 'name' => 'Traducción', 'description' => 'Asignatura enfocada en la traducción escrita de textos especializados, literarios y técnicos con precisión terminológica.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 3100],
             ['id' => 54, 'name' => 'Inglés Profesional Jurídico', 'description' => 'Curso técnico sobre terminología y redacción jurídica en inglés aplicada a contextos legales y corporativos.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 3100],
@@ -128,12 +125,12 @@ class SubjectGroupSeeder extends Seeder
             ['id' => 63, 'name' => 'Aymara', 'description' => 'Asignatura práctica sobre el idioma aymara, con énfasis en comunicación básica y rescate lingüístico andino.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 3100],
             ['id' => 64, 'name' => 'Guaraní', 'description' => 'Curso sobre el idioma guaraní y su relevancia cultural, con prácticas de expresión oral y escrita.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 3100],
             ['id' => 103, 'name' => 'Traducción e Interpretación Profesional', 'description' => 'Asignatura avanzada que integra técnicas de interpretación simultánea y traducción especializada en contextos multilingües.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 3100],
-        ]);
+        ], ['id'], $columnsToUpdate);
 
         // -----------------------------------------------------
         // INSTITUTO → MARKETING Y COMUNICACIÓN DIGITAL
         // -----------------------------------------------------
-        DB::table('subject_groups')->insert([
+        DB::table('subject_groups')->upsert([
             ['id' => 12, 'name' => 'Gestión de Contenidos Digitales', 'description' => 'Curso orientado a la planificación, creación y administración de contenidos en plataformas digitales y redes sociales.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 3101],
             ['id' => 13, 'name' => 'Gestión de Redes Sociales', 'description' => 'Asignatura técnica sobre estrategias de gestión y análisis de redes sociales para marcas y empresas.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 3101],
             ['id' => 14, 'name' => 'Community Management', 'description' => 'Curso práctico que forma especialistas en la administración de comunidades digitales y gestión de la reputación online.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 3101],
@@ -153,13 +150,13 @@ class SubjectGroupSeeder extends Seeder
             ['id' => 93, 'name' => 'Publicidad y Branding', 'description' => 'Curso técnico sobre gestión de marca, posicionamiento y desarrollo de identidad visual corporativa.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 3101],
             ['id' => 94, 'name' => 'Marketing en Redes Sociales', 'description' => 'Asignatura orientada a la creación de estrategias de marketing digital enfocadas en redes sociales.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 3101],
             ['id' => 98, 'name' => 'Creación de Contenido Digital', 'description' => 'Curso práctico para desarrollar estrategias de storytelling y producción multimedia para entornos digitales.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 3101],
-        ]);
+        ], ['id'], $columnsToUpdate);
 
 
         // -----------------------------------------------------
         // INSTITUTO → ARTE Y DISEÑO
         // -----------------------------------------------------
-        DB::table('subject_groups')->insert([
+        DB::table('subject_groups')->upsert([
             ['id' => 82,  'name' => 'Dibujo y Técnicas Básicas', 'description' => 'Curso introductorio que desarrolla habilidades de observación, bocetado y uso de materiales de dibujo artístico.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 3102],
             ['id' => 83,  'name' => 'Pintura y Color', 'description' => 'Asignatura enfocada en la teoría y práctica del color, aplicación de técnicas pictóricas y composición visual.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 3102],
             ['id' => 84,  'name' => 'Escultura y Modelado', 'description' => 'Curso práctico sobre técnicas tridimensionales de escultura, tallado y modelado con diversos materiales.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 3102],
@@ -177,13 +174,13 @@ class SubjectGroupSeeder extends Seeder
             ['id' => 100, 'name' => 'Expresión Artística y Cultura', 'description' => 'Curso sobre manifestaciones artísticas, apreciación estética y su relación con la identidad cultural.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 3102],
             ['id' => 113, 'name' => 'Artes Escénicas y Actuación', 'description' => 'Curso práctico sobre técnicas de expresión corporal, teatro y puesta en escena artística.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 3102],
             ['id' => 114, 'name' => 'Diseño y Producción de Videojuegos', 'description' => 'Asignatura técnica orientada al desarrollo conceptual, visual y funcional de videojuegos y entornos interactivos.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 3102],
-        ]);
+        ], ['id'], $columnsToUpdate);
 
 
         // -----------------------------------------------------
         // Gastronomía y Repostería
         // -----------------------------------------------------
-        DB::table('subject_groups')->insert([
+        DB::table('subject_groups')->upsert([
             ['id' => 67, 'name' => 'Fundamentos de Repostería', 'description' => 'Curso introductorio orientado a los principios básicos de la repostería profesional y la gestión de microemprendimientos gastronómicos.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 3103],
             ['id' => 68, 'name' => 'Ingredientes y Química de Alimentos', 'description' => 'Asignatura que estudia la composición química de los alimentos y su aplicación en la industria gastronómica y alimentaria.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 3103],
             ['id' => 69, 'name' => 'Técnicas de Repostería', 'description' => 'Curso práctico sobre técnicas, procedimientos y control de calidad en la elaboración de productos de repostería.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 3103],
@@ -192,13 +189,13 @@ class SubjectGroupSeeder extends Seeder
             ['id' => 72, 'name' => 'Dietas Especiales y Saludables', 'description' => 'Asignatura orientada a la preparación de alimentos y postres adaptados a necesidades nutricionales específicas.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 3103],
             ['id' => 73, 'name' => 'Gestión de Negocios de Repostería', 'description' => 'Curso sobre administración, costos y estrategias comerciales en negocios de repostería y gastronomía.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 3103],
             ['id' => 74, 'name' => 'Seguridad e Higiene en Repostería', 'description' => 'Asignatura que desarrolla competencias en normas sanitarias, control de higiene y seguridad alimentaria en entornos productivos.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 3103],
-        ]);
+        ], ['id'], $columnsToUpdate);
 
 
         // -----------------------------------------------------
         // INSTITUTO → INGENIERÍA Y TECNOLOGÍA
         // -----------------------------------------------------
-        DB::table('subject_groups')->insert([
+        DB::table('subject_groups')->upsert([
             ['id' => 32, 'name' => 'Fundamentos', 'description' => 'Curso base que introduce los principios teóricos y metodológicos comunes a las áreas de ingeniería y tecnología.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 3104],
             ['id' => 36, 'name' => 'Edición y Diseño', 'description' => 'Asignatura técnica orientada a la creación de interfaces visuales, material técnico y comunicación gráfica aplicada a proyectos tecnológicos.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 3104],
             ['id' => 37, 'name' => 'Aplicaciones', 'description' => 'Curso práctico sobre el desarrollo e implementación de aplicaciones informáticas y móviles con fines profesionales.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 3104],
@@ -213,12 +210,12 @@ class SubjectGroupSeeder extends Seeder
             ['id' => 105, 'name' => 'Análisis de Datos y Estadística', 'description' => 'Asignatura que introduce técnicas de procesamiento, visualización y análisis de datos aplicadas a proyectos tecnológicos.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 3104],
             ['id' => 106, 'name' => 'Construcción y Mantenimiento', 'description' => 'Curso técnico sobre gestión de proyectos constructivos, mantenimiento preventivo y seguridad industrial.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 3104],
             ['id' => 107, 'name' => 'Mecánica y Reparaciones', 'description' => 'Asignatura centrada en fundamentos de mecánica aplicada, diagnóstico y reparación de sistemas electromecánicos.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 3104],
-        ]);
+        ], ['id'], $columnsToUpdate);
 
         // -----------------------------------------------------
         // INSTITUTO → PSICOLOGÍA Y DESARROLLO PERSONAL
         // -----------------------------------------------------
-        DB::table('subject_groups')->insert([
+        DB::table('subject_groups')->upsert([
             ['id' => 75, 'name' => 'Psicología General', 'description' => 'Curso introductorio que aborda los fundamentos teóricos de la conducta humana, los procesos mentales y las bases de la psicología moderna.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 3105],
             ['id' => 76, 'name' => 'Psicología del Desarrollo', 'description' => 'Asignatura que estudia las etapas del desarrollo humano desde la infancia hasta la adultez, considerando factores biológicos y sociales.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 3105],
             ['id' => 77, 'name' => 'Psicología Clínica', 'description' => 'Curso orientado al estudio de los trastornos mentales, su diagnóstico y las principales corrientes terapéuticas utilizadas en la práctica clínica.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 3105],
@@ -229,17 +226,16 @@ class SubjectGroupSeeder extends Seeder
             ['id' => 101, 'name' => 'Filosofía y Desarrollo del Pensamiento', 'description' => 'Asignatura que promueve el pensamiento crítico y la reflexión ética a partir del estudio de corrientes filosóficas clásicas y contemporáneas.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 3105],
             ['id' => 102, 'name' => 'Formación Pedagógica y Didáctica', 'description' => 'Curso que fortalece las competencias docentes y estrategias didácticas aplicadas a procesos educativos y de formación humana.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 3105],
             ['id' => 112, 'name' => 'Desarrollo Personal y Espiritualidad', 'description' => 'Asignatura orientada al crecimiento personal, autoconocimiento y equilibrio emocional mediante herramientas de psicología y espiritualidad aplicada.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 3105],
-        ]);
-
+        ], ['id'], $columnsToUpdate);
 
         // -----------------------------------------------------
         // INSTITUTO → DEPORTE Y BIENESTAR
         // -----------------------------------------------------
-        DB::table('subject_groups')->insert([
+        DB::table('subject_groups')->upsert([
             ['id' => 108, 'name' => 'Gastronomía y Repostería', 'description' => 'Curso orientado a la preparación y presentación de alimentos saludables, integrando principios de nutrición y bienestar físico.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 3106],
             ['id' => 109, 'name' => 'Estética y Moda', 'description' => 'Asignatura que combina el cuidado personal, la imagen estética y las tendencias de la moda con un enfoque en el bienestar integral.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 3106],
             ['id' => 110, 'name' => 'Entrenamiento Físico y Bienestar', 'description' => 'Curso práctico enfocado en el desarrollo de rutinas de entrenamiento, nutrición deportiva y mantenimiento del bienestar corporal.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 3106],
             ['id' => 111, 'name' => 'Turismo y Naturaleza', 'description' => 'Asignatura que promueve el turismo sostenible, la recreación al aire libre y la conexión entre actividad física y medio ambiente.', 'status' => 'active', 'deleted_at' => null, 'id_padre' => 3106],
-        ]);
+        ], ['id'], $columnsToUpdate);
     }
 }

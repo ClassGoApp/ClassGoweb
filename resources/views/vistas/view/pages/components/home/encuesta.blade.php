@@ -1,11 +1,11 @@
 <div id="seccion-encuesta-wrapper">
     <div class="encuesta-card-dark">
-        <div class="encuesta-top-dark">
+        <div class="encuesta-top-dark fade-up">
             <span class="bar-accent"></span>
             <span class="top-text-dark"><span data-translate="encuesta_txt1"></span></span>
             <span class="bar-accent"></span>
         </div>
-        <h2 class="titulo-dark">
+        <h2 class="titulo-dark fade-up">
             <span data-translate="encuesta_txt2"></span>
             <br>
             <span class="subtitulo-dark"><span data-translate="encuesta_txt3"></span></span>
@@ -296,8 +296,13 @@
         margin-top: 5px;
     }
 
+    .mascot-wrap-dark{
+        display: flex;
+        justify-content: center
+    }
+
     .mascot-img-dark {
-        width: 180px;
+        width: 130px;
         max-width: 100%;
         height: auto;
         transform: scale(1.5);
@@ -801,8 +806,10 @@
 
 
     @media (max-width: 600px) {
+
         #seccion-encuesta-wrapper {
-            background-position: center calc(-10% + 500px);
+            /* background-image: linear-gradient(to right, #02011b, #054f72); */
+            background: linear-gradient(135deg, #219EBC 0%, #023047 100%);
         }
         .encuesta-modal-card {
             width: 90%;

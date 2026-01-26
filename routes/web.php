@@ -8,6 +8,7 @@ use App\Http\Controllers\GoogleController;
 
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\InstantTutoringController;
 use App\Http\Controllers\PromocionesController;
 use App\Http\Controllers\Impersonate;
 use App\Http\Controllers\OpenAiController;
@@ -62,6 +63,22 @@ use App\Http\Controllers\Api\SubjectPickerController;
 
 Route::view('/reserva', 'vistas.view.pages.e')->name('e');
 Route::view('/traduccion', 'vistas.view.pages.traduccion')->name('traduccion');
+
+Route::get('/admin-nueva-tutoria', function () {
+    $sessionDate = now()->format('Y-m-d H:i'); // ejemplo de fecha
+    $nombre_estudiante = 'Juan Pérez';
+    $nombre_tutor = 'María Gómez';
+    $nombre_materia = 'Matemáticas';
+
+    return view('emails.admin-nueva-tutoria', compact(
+        'sessionDate',
+        'nombre_estudiante',
+        'nombre_tutor',
+        'nombre_materia'
+    ));
+})->name('admin-nueva-tutoria');
+
+
 
 Route::get('/verify', function (\Illuminate\Http\Request $request) {
     $id = $request->query('id');
@@ -157,7 +174,8 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
     Route::get('/tutores/{slug}', [HomeController::class, 'tutor'])->name('tutor');
     Route::get('/tutors', [HomeController::class, 'buscarTutor'])->name('buscar.tutor'); //<---ojo
     Route::get('/buscar', [HomeController::class, 'buscar'])->name('buscar');
-    Route::get('/modal', [BookingController::class, 'create'])->name('modal');
+    Route::view('/modal', 'vistas.view.pages.modals.modal-reserva')->name('modal');
+    Route::get('/tutorias-instantaneas', [InstantTutoringController::class, 'index'])->name('tutorias-instantaneas');
 
     Route::post('/tutor/{tutorId}/review', [HomeController::class, 'storeReview'])
         ->name('tutor.review.store')
@@ -174,7 +192,8 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
 
     Route::get('/blogs/{blog:slug}', [BeforeBlogsController::class, 'showBySlug'])->name('blogs.show');
 
-
+    ///Ruta para la encuesta
+    Route::post('/encuesta/guardar', [HomeController::class, 'storeEncuesta'])->name('encuesta.store');
     //<===//////////////////////////////////////////===>
 
     //Route::get('/buscar-tutor', BuscarTutor::class)->name('buscar.tutor');
