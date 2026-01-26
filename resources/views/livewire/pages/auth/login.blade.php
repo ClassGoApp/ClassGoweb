@@ -631,7 +631,7 @@ new #[Layout('layouts.guest')] class extends Component
                 </a>
             </div>
         @endif
-    </x-auth-card>
+    
 </div>
 
 @push('scripts')
