@@ -205,7 +205,6 @@ new #[Layout('layouts.guest')] class extends Component
                         {{-- Mascota --}}
                         <img src="{{ asset('images/login/Tugosistemas.png') }}" class="cg-overlay-img" alt="Mascota Tugo">
 
-                        <h1 style="color: #fff; font-size: 2rem; font-weight: 700; margin: 0;">ClassGo!</h1>
                         <p style="color: #fff; font-size: 14px; margin-top: 10px;">Tu comunidad educativa</p>
                     </div>
                 </div>
