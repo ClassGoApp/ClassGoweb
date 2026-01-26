@@ -521,16 +521,29 @@ new #[Layout('layouts.guest')] class extends Component
 
                         <a href="#" @click.prevent="showForgot = true" class="cg-forgot">¿Olvidaste tu contraseña?</a>
 
-                        <button type="submit" class="cg-btn-primary" wire:loading.attr="disabled" wire:target="login">
-                            <span wire:loading.remove wire:target="login">INICIAR SESIÓN</span>
-                            <span wire:loading wire:target="login">...</span>
-                        </button>
+                        <x-primary-button wire:loading.class="am-btn_disable" wire:target="login"><span>{{ __('auth.login_btn') }}</span><i class="icon icon-arrow-right"></i></x-primary-button>
                         
-                        @if (!empty(setting('_api.enable_social_login')))      
-                            <div class="cg-divider"></div>
-                            <button type="button" class="cg-btn-google" wire:click.prevent="redirectGoogle">
-                                @include('components.icons.google') Continuar con Google
-                            </button>
+                        @if(isDemoSite())
+                            <div class="form-group">
+                                @php
+                                    $tutor_name   = !empty(setting('_lernen.tutor_display_name')) ? setting('_lernen.tutor_display_name') : __('general.tutor');
+                                    $student_name = !empty(setting('_lernen.student_display_name')) ? setting('_lernen.student_display_name') : __('general.student');
+                                @endphp
+                                <div class="am-login-options">
+                                    <em>{{ __('auth.login_as') }}</em>
+                                    <button type="button" class="am-btn" x-data @click="form.email = 'anthony@amentotech.com'; form.password = 'google'">
+                                        {{$tutor_name}}
+                                    </button>
+
+                                    <button type="button" class="am-btn" x-data @click="form.email = 'student@amentotech.com'; form.password = 'google'">
+                                        {{ $student_name }}
+                                    </button>
+
+                                    <button type="button" class="am-btn" x-data @click="form.email = 'admin@amentotech.com'; form.password = 'google'">
+                                        {{ __('auth.admin') }}
+                                    </button>
+                                </div>
+                            </div>
                         @endif
 
                         <p class="cg-mobile-toggle">¿Nuevo aquí? <a href="#" @click.prevent="isRegister = true">Crea una cuenta</a></p>
