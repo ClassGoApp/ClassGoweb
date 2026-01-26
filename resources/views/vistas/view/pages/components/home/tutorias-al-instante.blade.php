@@ -18,7 +18,7 @@
             y resuelve tus preguntas sin esperas ni citas largas.
         </p>
 
-        <a href="/tutorias-al-instante" class="instant-btn">
+        <a  class="instant-btn" style="cursor: pointer" onclick="window.location.href='{{ route('tutors.instant') }}'">
             <svg width="18" height="18" viewBox="0 0 24 24">
                 <path d="M13 2L3 14H11L9 22L21 10H13Z" fill="currentColor" />
             </svg>
@@ -475,7 +475,7 @@
     const avatar = $('.student-avatar');
     const line = $('#connectionLine');
 
-    const isMobile = innerWidth <= 768;
+    const isMobile = innerWidth <= 400;
 
     const CFG = {
         radius: isMobile ? 100 : 170,

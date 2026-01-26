@@ -51,6 +51,9 @@ use App\Http\Controllers\BookingController;
 Route::view('/reserva', 'vistas.view.pages.e')->name('e');
 Route::view('/traduccion', 'vistas.view.pages.traduccion')->name('traduccion');
 
+Route::view('/gg', 'vistas.view.pages.tutors-instant-cards')->name('tutors.instant');
+
+
 Route::get('/verify', function (\Illuminate\Http\Request $request) {
     $id = $request->query('id');
     $hash = $request->query('hash');
