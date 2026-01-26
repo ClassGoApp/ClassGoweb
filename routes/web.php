@@ -50,6 +50,22 @@ use App\Http\Controllers\BookingController;
 Route::view('/reserva', 'vistas.view.pages.e')->name('e');
 Route::view('/traduccion', 'vistas.view.pages.traduccion')->name('traduccion');
 
+Route::get('/admin-nueva-tutoria', function () {
+    $sessionDate = now()->format('Y-m-d H:i'); // ejemplo de fecha
+    $nombre_estudiante = 'Juan Pérez';
+    $nombre_tutor = 'María Gómez';
+    $nombre_materia = 'Matemáticas';
+
+    return view('emails.admin-nueva-tutoria', compact(
+        'sessionDate',
+        'nombre_estudiante',
+        'nombre_tutor',
+        'nombre_materia'
+    ));
+})->name('admin-nueva-tutoria');
+
+
+
 Route::get('/verify', function (\Illuminate\Http\Request $request) {
     $id = $request->query('id');
     $hash = $request->query('hash');
