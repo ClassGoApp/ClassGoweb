@@ -48,6 +48,19 @@ use App\Http\Controllers\TutorPerfilController;
 use App\Http\Controllers\BeforeBlogsController;
 use App\Http\Controllers\BookingController;
 
+use App\Http\Controllers\Api\SubjectPickerController;
+
+
+
+
+
+
+
+//////////////// OSCAR ///////////////////////
+
+
+//////////////// OSCAR ///////////////////////
+
 Route::view('/reserva', 'vistas.view.pages.e')->name('e');
 Route::view('/traduccion', 'vistas.view.pages.traduccion')->name('traduccion');
 
@@ -166,7 +179,8 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
 
     Route::get('/blogs/{blog:slug}', [BeforeBlogsController::class, 'showBySlug'])->name('blogs.show');
 
-
+    ///Ruta para la encuesta
+    Route::post('/encuesta/guardar', [HomeController::class, 'storeEncuesta'])->name('encuesta.store');
     //<===//////////////////////////////////////////===>
 
     //Route::get('/buscar-tutor', BuscarTutor::class)->name('buscar.tutor');
@@ -227,6 +241,32 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
         });
 
         Route::middleware('student')->prefix('student')->name('student.')->group(function () {
+
+            /////////////////////////////////////oscar tutor-instant//////////////////////////////////////////////
+            Route::get('/subject-groups/categorias-materias', [SubjectPickerController::class, 'categoriasMaterias']);
+
+
+            ROUTE::get('/materias/elegir', function () {
+                return view('vistas.view.pages.subjectPicker');
+            })
+                ->name('subjects.pick');
+
+
+
+            Route::get('/subjects/{subject_id}/tutors/available-now', [SubjectPickerController::class, 'tutorsAvailableNow']);
+            Route::get('/subjects/{subject_id}/tutors/not-available-now', [SubjectPickerController::class, 'tutorsNotAvailableNow']);
+
+            Route::post('/batches/start', [SubjectPickerController::class, 'start']);
+            Route::get('/batches/{batch}/status', [SubjectPickerController::class, 'status']);
+            Route::get('/batches/active', [SubjectPickerController::class, 'active']);
+
+            /////////// oscar api/endpoint ///////////////////////////////////////
+
+
+            Route::get('/subject', [SubjectPickerController::class, 'index']);
+            Route::get('/subjects/{subject_id}/tutors', [SubjectPickerController::class, 'tutorsBySubject']);
+            Route::post('/batches/start', [SubjectPickerController::class, 'start']);
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////
             Route::get('profile', fn() => redirect('tutor.profile.personal-details'))->name('profile');
             Route::prefix('profile')->name('profile.')->group(function () {
                 Route::get('personal-details', PersonalDetails::class)->name('personal-details');
@@ -248,7 +288,7 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
                 // Route::get('/niveles', [BookingController::class, 'getLevels'])->name('niveles');
                 // Route::get('/categorias', [BookingController::class, 'getCategories'])->name('categorias');
                 Route::get('/materias', [BookingController::class, 'getSubjects'])->name('materias');
-                
+
                 Route::get('/tutores', [BookingController::class, 'getTutors'])->name('tutores');
                 Route::get('/horarios/{tutor_id}', [BookingController::class, 'getSlots'])->name('horarios');
                 Route::get('/tutor-payment/{tutor_id}', [BookingController::class, 'getTutorPayment'])->name('tutor-payment');

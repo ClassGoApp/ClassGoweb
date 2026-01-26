@@ -1,0 +1,369 @@
+<?php
+
+namespace App\Http\Controllers\Api;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Collection;
+
+use App\Models\EmailBatch;
+use App\Models\EmailBatchItem;
+
+use Illuminate\Support\Facades\Auth;
+
+class SubjectPickerController extends Controller
+{
+    public function index()
+    {
+        $subjects = Cache::remember('subjects.all', 3600, function () {
+            return DB::table('subjects')
+                ->select('id', 'name')
+                ->orderBy('name')
+                ->get()
+                ->toArray(); // importante: se guarda como array en cache
+        });
+
+        return response()->json([
+            'ok' => true,
+            'data' => $subjects,
+        ]);
+    }
+
+    public function categoriasMaterias()
+    {
+        $data = Cache::remember('subject_groups:lvl2_with_subjects', now()->addHours(12), function () {
+
+            $rows = DB::select("
+            SELECT
+              lvl2.id          AS id_categoria,
+              lvl2.name        AS categoria,
+
+              s.id             AS id_materia,
+              s.name           AS materia
+            FROM subject_groups AS lvl2
+            JOIN subject_groups AS lvl3
+              ON lvl3.id_padre = lvl2.id
+              AND lvl3.deleted_at IS NULL
+            LEFT JOIN subjects AS s
+              ON s.subject_group_id = lvl3.id
+              AND s.deleted_at IS NULL
+            WHERE lvl2.id_padre IN (1000, 2000, 3000)
+              AND lvl2.deleted_at IS NULL
+            ORDER BY lvl2.id, lvl3.id, s.id
+        ");
+
+            return collect($rows)
+                ->groupBy('id_categoria')
+                ->map(function ($items) {
+                    return [
+                        'id_categoria' => $items->first()->id_categoria,
+                        'categoria'    => $items->first()->categoria,
+                        'materias'     => $items->whereNotNull('id_materia')->map(fn($r) => [
+                            'id_materia' => $r->id_materia,
+                            'materia'    => $r->materia,
+                        ])->values(),
+                    ];
+                })
+                ->values();
+        });
+
+        return response()->json(['data' => $data]);
+    }
+    // public function tutorsBySubject(Request $request, int $subject_id)
+    // {
+    //     $limit  = (int) $request->query('limit', 50);
+    //     $limit  = max(1, min($limit, 200));
+
+    //     // “Cursor” opcional (idea útil para lotes después): trae IDs mayores a X
+    //     $afterId = (int) $request->query('after_user_id', 0);
+
+    //     $tutors = DB::table('user_subject as us')
+    //         ->join('users as u', 'u.id', '=', 'us.user_id')
+    //         ->where('us.subject_id', $subject_id)
+    //         ->where('us.status', 'active')
+    //         ->where('us.user_id', '>', $afterId)
+    //         ->select([
+    //             'u.id',
+    //             'u.name',
+    //             'u.email',
+    //             // extra: si quieres devolver data del pivote
+    //             'us.description',
+    //             'us.image',
+    //         ])
+    //         ->orderBy('us.user_id')
+    //         ->limit($limit)
+    //         ->get();
+
+    //     return response()->json([
+    //         'success' => true,
+    //         'subject_id' => $subject_id,
+    //         'count' => $tutors->count(),
+    //         'data' => $tutors,
+    //         'next_after_user_id' => $tutors->last()->id ?? null, // para paginar por cursor
+    //     ]);
+    // }
+
+
+    private function getTutorsAvailableNow(int $subjectId): Collection
+    {
+        return DB::table('user_subject as us')
+            ->join('users as u', 'u.id', '=', 'us.user_id')
+            ->leftJoin('user_reviews as ur', 'ur.user_id', '=', 'us.user_id')
+            ->leftJoin('reviews as r', function ($join) {
+                $join->on('r.id', '=', 'ur.review_id');
+                // ->where('r.status', '=', 'active');
+            })
+            ->where('us.subject_id', $subjectId)
+            // ->where('us.status', 'active')
+            ->whereNotNull('u.email')
+            ->whereExists(function ($q) {
+                $q->select(DB::raw(1))
+                    ->from('user_subject_slots as s')
+                    ->whereColumn('s.user_id', 'us.user_id')
+                    ->whereRaw('s.date = CURDATE()')
+                    ->whereRaw('s.start_time <= CURTIME()')
+                    ->whereRaw('s.end_time > CURTIME()');
+            })
+            ->groupBy('us.user_id', 'u.email')
+            ->select([
+                'us.user_id',
+                'u.email',
+                DB::raw('ROUND(COALESCE(AVG(r.rating), 0), 1) as avg_rating'),
+            ])
+            ->orderByDesc('avg_rating')
+            ->get();
+    }
+    public function tutorsAvailableNow(int $subject_id)
+    {
+        $tutors = $this->getTutorsAvailableNow($subject_id);
+
+        return response()->json([
+            'success' => true,
+            'subject_id' => $subject_id,
+            'data' => $tutors,
+        ]);
+    }
+
+
+    private function getTutorsNotAvailableNow(int $subjectId): Collection
+    {
+        return DB::table('user_subject as us')
+            ->join('users as u', 'u.id', '=', 'us.user_id')
+            ->leftJoin('user_reviews as ur', 'ur.user_id', '=', 'us.user_id')
+            ->leftJoin('reviews as r', function ($join) {
+                $join->on('r.id', '=', 'ur.review_id');
+                // ->where('r.status', '=', 'active');
+            })
+            ->where('us.subject_id', $subjectId)
+            // ->where('us.status', 'active')
+            ->whereNotNull('u.email')
+            ->whereNotExists(function ($q) {
+                $q->select(DB::raw(1))
+                    ->from('user_subject_slots as s')
+                    ->whereColumn('s.user_id', 'us.user_id')
+                    ->whereRaw('s.date = CURDATE()')
+                    ->whereRaw('s.start_time <= CURTIME()')
+                    ->whereRaw('s.end_time > CURTIME()');
+            })
+            ->groupBy('us.user_id', 'u.email')
+            ->select([
+                'us.user_id',
+                'u.email',
+                DB::raw('ROUND(COALESCE(AVG(r.rating), 0), 1) as avg_rating'),
+            ])
+            ->orderByDesc('avg_rating')
+            ->get();
+    }
+
+
+    public function tutorsNotAvailableNow(int $subject_id)
+    {
+        $tutors = $this->getTutorsNotAvailableNow($subject_id);
+
+        return response()->json([
+            'success' => true,
+            'subject_id' => $subject_id,
+            'data' => $tutors,
+        ]);
+    }
+    public function start(Request $request)
+    {
+        $data = $request->validate([
+            'subject_id' => ['required', 'integer', 'min:1'],
+        ]);
+
+        $subjectId = (int) $data['subject_id'];
+
+
+        $studentId = (int) Auth::id();
+
+
+        // ⬅️ define tu tiempo de espera real
+        $timeoutMinutes = 5;
+
+        return DB::transaction(function () use ($subjectId, $studentId, $timeoutMinutes) {
+
+            // (Opcional pero recomendado) si el estudiante inicia otro batch,
+            // marcamos el anterior como done/expired para que no siga enviando.
+            EmailBatch::query()
+                ->where('created_by', $studentId)
+                ->whereIn('status', ['pending', 'running'])
+                ->update([
+                    'status' => 'done',
+                    'last_error' => 'restarted',
+                    'updated_at' => now(),
+                ]);
+
+            // 1) Crear batch
+            $batch = EmailBatch::create([
+                'subject_id' => $subjectId,
+                'created_by' => $studentId,
+                'status' => 'pending',
+                'last_tutor_id' => 0,
+                'sent_count' => 0,
+                'batch_size' => 2, // 1 email por minuto
+                'last_error' => null,
+                'expires_at' => now()->addMinutes($timeoutMinutes),
+            ]);
+
+            session([
+                'active_batch_id' => $batch->id,
+                'active_subject_id' => $subjectId,
+            ]);
+
+
+            // 2) Cola congelada: primero disponibles, luego no disponibles
+            $availableNow = $this->getTutorsAvailableNow($subjectId);     // Collection { user_id }
+            $notAvailable = $this->getTutorsNotAvailableNow($subjectId);  // Collection { user_id }
+
+            // 3) Unificar sin duplicados
+            $seen = [];
+            $queue = [];
+
+            foreach ($availableNow as $t) {
+                $uid = (int) $t->user_id;
+                if ($uid > 0 && !isset($seen[$uid])) {
+                    $seen[$uid] = true;
+                    $queue[] = $uid;
+                }
+            }
+
+            foreach ($notAvailable as $t) {
+                $uid = (int) $t->user_id;
+                if ($uid > 0 && !isset($seen[$uid])) {
+                    $seen[$uid] = true;
+                    $queue[] = $uid;
+                }
+            }
+
+            // 4) Insert masivo items
+            $items = [];
+            $pos = 1;
+            $now = now();
+
+            foreach ($queue as $uid) {
+                $items[] = [
+                    'batch_id' => $batch->id,
+                    'user_id' => $uid,
+                    'position' => $pos++,
+                    'status' => 'pending',
+                    'sent_at' => null,
+                    'last_error' => null,
+                    'created_at' => $now,
+                    'updated_at' => $now,
+                ];
+            }
+
+            if ($items) {
+                EmailBatchItem::insert($items);
+            } else {
+                $batch->update([
+                    'status' => 'done',
+                    'last_error' => 'no_candidates',
+                ]);
+            }
+
+            return response()->json([
+                'success' => true,
+                'batch_id' => $batch->id,
+                'subject_id' => $subjectId,
+                'queued' => count($items),
+                'expires_at' => optional($batch->expires_at)->toDateTimeString(),
+            ]);
+        });
+    }
+
+    public function status(EmailBatch $batch)
+    {
+        // (opcional) seguridad: solo el dueño del batch puede ver
+        if ((int)$batch->created_by !== (int) Auth::id()) {
+            return response()->json(['message' => 'Forbidden'], 403);
+        }
+
+        $items = EmailBatchItem::query()
+            ->where('batch_id', $batch->id)
+            ->orderBy('position')
+            ->limit(200) // suficiente para debug local
+            ->get()
+            ->map(function ($it) {
+                $email = DB::table('users')->where('id', $it->user_id)->value('email');
+
+                return [
+                    'id' => $it->id,
+                    'position' => $it->position,
+                    'user_id' => $it->user_id,
+                    'email' => $email,
+                    'status' => $it->status,
+                    'sent_at' => optional($it->sent_at)->toDateTimeString(),
+                    'last_error' => $it->last_error,
+                ];
+            });
+
+        $queued = EmailBatchItem::query()
+            ->where('batch_id', $batch->id)
+            ->count();
+
+        return response()->json([
+            'batch' => [
+                'id' => $batch->id,
+                'subject_id' => $batch->subject_id,
+                'status' => $batch->status,
+                'sent_count' => $batch->sent_count,
+                'batch_size' => $batch->batch_size,
+                'expires_at' => optional($batch->expires_at)->toDateTimeString(),
+                'queued' => $queued,
+                'last_error' => $batch->last_error,
+            ],
+            'items' => $items,
+        ]);
+    }
+
+
+    public function active()
+    {
+        $batchId = session('active_batch_id');
+
+        if (!$batchId) {
+            return response()->json(['active' => false]);
+        }
+
+        $batch = EmailBatch::query()->find($batchId);
+
+        if (!$batch || in_array($batch->status, ['done', 'failed'], true)) {
+            session()->forget(['active_batch_id', 'active_subject_id']);
+            return response()->json(['active' => false]);
+        }
+
+        return response()->json([
+            'active' => true,
+            'batch_id' => $batch->id,
+            'subject_id' => $batch->subject_id,
+            'status' => $batch->status,
+            'sent_count' => $batch->sent_count,
+            'batch_size' => $batch->batch_size,
+            'expires_at' => optional($batch->expires_at)->toDateTimeString(),
+        ]);
+    }
+}
