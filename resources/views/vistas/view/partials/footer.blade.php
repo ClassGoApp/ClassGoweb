@@ -17,7 +17,7 @@
                 <a href=" {{ route('buscar')}}"><button class="btn-registrate"><span data-translate="buscar_tutor"></span></button></a>
                 @endauth
                 @guest
-                <a href=" {{ route('register')}}"><button class="btn-registrate"><span data-translate="registrate_gratis"></span></button></a>
+                <a href=" {{ route('login', ['mode' => 'register'])}}"><button class="btn-registrate"><span data-translate="registrate_gratis"></span></button></a>
                 @endguest
 
             </div>
@@ -32,7 +32,7 @@
                 <div class="box">
                     <h1 data-translate="inicia_hoy"></h1>
 
-                    <a href=" {{ route('register')}}">
+                    <a href=" {{ route('login', ['mode' => 'register'])}}">
                         <p data-translate="registrate"></p>
                     </a>
                     <a href="{{ route('buscar')}}">
