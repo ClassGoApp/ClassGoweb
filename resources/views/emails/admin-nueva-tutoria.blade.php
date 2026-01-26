@@ -6,103 +6,96 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Nueva Tutoría Programada</title>
-    <style>
-        /* Estilos para admin-nueva-tutoria.blade.php - Mobile-first y responsive */
-
-        .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-        .gif-container {
-            margin-bottom: 20px;
-        }
-
-        .gif-container img {
-            max-width: 100%;
-            height: auto;
-            display: block;
-        }
-        .gif-container img {
-            width: 200px;
-            max-width: 100%;
-            height: auto;
-            display: block;
-            margin: 0 auto;
-        }
-
-        .text-block {
-            background-color: #219EBC; /* Celeste */
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            margin-bottom: 20px;
-            max-width: 90%;
-            box-sizing: border-box;
-        }
-
-        .button-container {
-            text-align: center;
-        }
-
-        .btn-primary {
-            background-color: #FB8500; /* Color del proyecto */
-            color: white;
-            padding: 15px 30px;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: bold;
-            text-decoration: none;
-            display: inline-block;
-            cursor: pointer;
-        }
-
-        /* Media queries para pantallas grandes */
-        @media (min-width: 768px) {
-            .container {
-                padding: 40px;
-            }
-
-            .text-block {
-                max-width: 600px;
-                padding: 30px;
-            }
-
-            .btn-primary {
-                padding: 20px 40px;
-                font-size: 18px;
-            }
-        }
-    </style>
 </head>
 
-<body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #023047;">
-    <div class="container">
-        <!-- Primer componente: GIF centrado -->
-        <div class="gif-container">
-            <img src="http://127.0.0.1:8000/storage/optionbuilder/uploads/740102-17-2025_0859pmTugo-saludando.webp" alt="GIF de bienvenida" />
-        </div>
-
-        <!-- Segundo componente: Bloque de texto -->
-        <div class="text-block">
-            <p style="font-size: 20px; font-weight: bold; margin: 0 0 12px 0;">Fuiste solicitado para una tutoría al instante</p>
-            <p style="font-size: 14px; margin: 0;">Un estudiante está buscando tutor y tu perfil coincide con sus necesidades.</p>
-        </div>
-
-        <!-- Tercer componente: Botón -->
-        <div class="button-container">
-            <button class="btn-primary">
-                Ir a lista de espera
-                {{-- Ruta comentada: <a href="{{ route('ruta.a.la.clase') }}"> --}}
-            </button>
-        </div>
-    </div>
-</body>
-</html>
+<body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #ffffff;">
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #CDD6DA; padding: 20px;">
+        <tr>
+            <td align="center">
+                <table width="100%" cellpadding="0" cellspacing="0" border="0"
+                    style="max-width: 600px; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                    <!-- Header -->
+                    <tr>
+                        <td style="background-color: #219EBC; padding: 24px; text-align: left;">
+                            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                                <tr>
+                                    <td style="color: #ffffff; font-size: 24px; font-weight: bold; margin: 0;">
+                                        ¡Nueva tutoría registrada!
+                                    </td>
+                                    <td align="right" style="color: #ffffff; font-size: 32px;">
+                                        📝
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <!-- Contenido principal -->
+                    <tr>
+                        <td style="padding: 32px;">
+                            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                                <tr>
+                                    <td
+                                        style="color: #374151; font-size: 18px; line-height: 1.6; margin-bottom: 24px; padding-bottom: 24px;">
+                                        📅 Se ha registrado una nueva tutoría para el <strong>{{ $sessionDate
+                                            }}</strong>.
+                                    </td>
+                                </tr>
+                            </table>
+                            <table width="100%" cellpadding="0" cellspacing="0" border="0"
+                                style="border-top: 1px solid #e5e7eb; border-bottom: 1px solid #e5e7eb; padding: 20px 0;">
+                                <tr>
+                                    <td align="center" style="padding: 16px 0;">
+                                        <img src="{{ $message->embed(storage_path('app/public/Tugoemail.png')) }}"
+                                            alt="ClassGo" width="200" height="auto"
+                                            style="display: block; margin: 0 auto 16px auto; max-width: 200px;" />
+                                        <p
+                                            style="font-size: 18px; color: #023047; text-align: center; margin: 16px 0; line-height: 1.5; font-weight: 600;">
+                                            Revisa el panel de administración para gestionar la tutoría.
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                            <!-- Detalles de la tutoría -->
+                            <table width="100%" cellpadding="0" cellspacing="0" border="0"
+                                style="background-color: #f9fafb; border-radius: 8px; margin: 24px 0;">
+                                <tr>
+                                    <td style="padding: 16px;">
+                                        <h3
+                                            style="font-weight: bold; color: #023047; margin: 0 0 8px 0; font-size: 16px;">
+                                            Detalles de la tutoría:
+                                        </h3>
+                                        <p style="margin: 4px 0; color: #374151;"><strong>Estudiante:</strong> {{
+                                            $nombre_estudiante }}</p>
+                                        <p style="margin: 4px 0; color: #374151;"><strong>Tutor:</strong> {{
+                                            $nombre_tutor }}</p>
+                                        <p style="margin: 4px 0; color: #374151;"><strong>Materia:</strong> {{
+                                            $nombre_materia ?? '-' }}</p>
+                                        <p style="margin: 4px 0; color: #374151;"><strong>Fecha y hora:</strong> {{
+                                            $sessionDate }}</p>
+                                    </td>
+                                </tr>
+                            </table>
+                            <!-- Botón principal -->
+                            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                                <tr>
+                                    <td>
+                                        <a href="https://www.classgoapp.com/admin/tutorias"
+                                            style="display: block; width: 100%; background-color: #219EBC; color: #ffffff; font-weight: bold; text-align: center; padding: 16px; border-radius: 8px; text-decoration: none; font-size: 16px; box-sizing: border-box;">
+                                            📋 Ir al panel de administración
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <!-- Footer -->
+                    <tr>
+                        <td
+                            style="background-color: #d6f7fd; padding: 16px 32px; text-align: center; font-size: 14px; color: #023047;">
+                            <p style="margin: 0;">
+                                Gracias por gestionar la comunidad educativa ClassGo ✨
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
