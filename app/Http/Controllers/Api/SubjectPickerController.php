@@ -30,6 +30,47 @@ class SubjectPickerController extends Controller
             'data' => $subjects,
         ]);
     }
+
+    public function categoriasMaterias()
+    {
+        $data = Cache::remember('subject_groups:lvl2_with_subjects', now()->addHours(12), function () {
+
+            $rows = DB::select("
+            SELECT
+              lvl2.id          AS id_categoria,
+              lvl2.name        AS categoria,
+
+              s.id             AS id_materia,
+              s.name           AS materia
+            FROM subject_groups AS lvl2
+            JOIN subject_groups AS lvl3
+              ON lvl3.id_padre = lvl2.id
+              AND lvl3.deleted_at IS NULL
+            LEFT JOIN subjects AS s
+              ON s.subject_group_id = lvl3.id
+              AND s.deleted_at IS NULL
+            WHERE lvl2.id_padre IN (1000, 2000, 3000)
+              AND lvl2.deleted_at IS NULL
+            ORDER BY lvl2.id, lvl3.id, s.id
+        ");
+
+            return collect($rows)
+                ->groupBy('id_categoria')
+                ->map(function ($items) {
+                    return [
+                        'id_categoria' => $items->first()->id_categoria,
+                        'categoria'    => $items->first()->categoria,
+                        'materias'     => $items->whereNotNull('id_materia')->map(fn($r) => [
+                            'id_materia' => $r->id_materia,
+                            'materia'    => $r->materia,
+                        ])->values(),
+                    ];
+                })
+                ->values();
+        });
+
+        return response()->json(['data' => $data]);
+    }
     // public function tutorsBySubject(Request $request, int $subject_id)
     // {
     //     $limit  = (int) $request->query('limit', 50);
@@ -188,9 +229,9 @@ class SubjectPickerController extends Controller
             ]);
 
             session([
-    'active_batch_id' => $batch->id,
-    'active_subject_id' => $subjectId,
-]);
+                'active_batch_id' => $batch->id,
+                'active_subject_id' => $subjectId,
+            ]);
 
 
             // 2) Cola congelada: primero disponibles, luego no disponibles
@@ -301,29 +342,28 @@ class SubjectPickerController extends Controller
 
 
     public function active()
-{
-    $batchId = session('active_batch_id');
+    {
+        $batchId = session('active_batch_id');
 
-    if (!$batchId) {
-        return response()->json(['active' => false]);
+        if (!$batchId) {
+            return response()->json(['active' => false]);
+        }
+
+        $batch = EmailBatch::query()->find($batchId);
+
+        if (!$batch || in_array($batch->status, ['done', 'failed'], true)) {
+            session()->forget(['active_batch_id', 'active_subject_id']);
+            return response()->json(['active' => false]);
+        }
+
+        return response()->json([
+            'active' => true,
+            'batch_id' => $batch->id,
+            'subject_id' => $batch->subject_id,
+            'status' => $batch->status,
+            'sent_count' => $batch->sent_count,
+            'batch_size' => $batch->batch_size,
+            'expires_at' => optional($batch->expires_at)->toDateTimeString(),
+        ]);
     }
-
-    $batch = EmailBatch::query()->find($batchId);
-
-    if (!$batch || in_array($batch->status, ['done','failed'], true)) {
-        session()->forget(['active_batch_id', 'active_subject_id']);
-        return response()->json(['active' => false]);
-    }
-
-    return response()->json([
-        'active' => true,
-        'batch_id' => $batch->id,
-        'subject_id' => $batch->subject_id,
-        'status' => $batch->status,
-        'sent_count' => $batch->sent_count,
-        'batch_size' => $batch->batch_size,
-        'expires_at' => optional($batch->expires_at)->toDateTimeString(),
-    ]);
-}
-
 }

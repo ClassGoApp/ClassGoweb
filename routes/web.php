@@ -256,6 +256,8 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
         Route::middleware('student')->prefix('student')->name('student.')->group(function () {
 
             /////////////////////////////////////oscar tutor-instant//////////////////////////////////////////////
+            Route::get('/subject-groups/categorias-materias', [SubjectPickerController::class, 'categoriasMaterias']);
+
 
             ROUTE::get('/materias/elegir', function () {
                 return view('vistas.view.pages.subjectPicker');
