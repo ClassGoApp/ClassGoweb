@@ -254,7 +254,7 @@
 			@else
 			<a href=" {{ route('login')}} "><button class="btn-outline"><span data-translate="ingre"></span></button></a>
 			<div class="navbar-icon">
-				<a href=" {{ route('register')}}"><i class="fa-solid fa-user-plus icon-white"></i></a>
+				<a href=" {{ route('login', ['mode' => 'register'])}}"><i class="fa-solid fa-user-plus icon-white"></i></a>
 			</div>
 			@endauth
 
@@ -285,7 +285,7 @@
 				@endrole
 				<li><a href="{{ route('logout')}}">Cerrar Sesión</a></li>
 				@else
-				<li><a href="{{ route('register')}}">Regístrate</a></li>
+				<li><a href="{{ route('login', ['mode' => 'register'])}}">Regístrate</a></li>
 				<li><a href="{{ route('login')}}">Ingresar</a></li>
 				@endauth
 
