@@ -47,16 +47,17 @@ use App\Http\Controllers\TutorPerfilController;
 use App\Http\Controllers\BeforeBlogsController;
 use App\Http\Controllers\BookingController;
 
-use App\Livewire\SubjectPicker;
+use App\Http\Controllers\Api\SubjectPickerController;
+
+
+
+
 
 
 
 //////////////// OSCAR ///////////////////////
 
-// Route::get('/materias/elegir', SubjectPicker::class)->name('subjects.pick');
-Route::get('/materias/elegir', function () {
-    return view('vistas.view.pages.subjectPicker');
-})->name('subjects.pick');
+
 //////////////// OSCAR ///////////////////////
 
 Route::view('/reserva', 'vistas.view.pages.e')->name('e');
@@ -237,12 +238,26 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
 
             /////////////////////////////////////oscar tutor-instant//////////////////////////////////////////////
 
-            ROUTE::get('/student/materias/elegir', function () {
-        return view('vistas.view.pages.subjectPicker');
-    })
-    ->name('student.subjects.pick');
+            ROUTE::get('/materias/elegir', function () {
+                return view('vistas.view.pages.subjectPicker');
+            })
+                ->name('subjects.pick');
 
 
+
+            Route::get('/subjects/{subject_id}/tutors/available-now', [SubjectPickerController::class, 'tutorsAvailableNow']);
+            Route::get('/subjects/{subject_id}/tutors/not-available-now', [SubjectPickerController::class, 'tutorsNotAvailableNow']);
+
+            Route::post('/batches/start', [SubjectPickerController::class, 'start']);
+            Route::get('/batches/{batch}/status', [SubjectPickerController::class, 'status']);
+            Route::get('/batches/active', [SubjectPickerController::class, 'active']);
+
+            /////////// oscar api/endpoint ///////////////////////////////////////
+
+
+            Route::get('/subject', [SubjectPickerController::class, 'index']);
+            Route::get('/subjects/{subject_id}/tutors', [SubjectPickerController::class, 'tutorsBySubject']);
+            Route::post('/batches/start', [SubjectPickerController::class, 'start']);
             /////////////////////////////////////////////////////////////////////////////////////////////////////////
             Route::get('profile', fn() => redirect('tutor.profile.personal-details'))->name('profile');
             Route::prefix('profile')->name('profile.')->group(function () {

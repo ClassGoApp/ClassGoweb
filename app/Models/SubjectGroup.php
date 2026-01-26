@@ -20,7 +20,7 @@ class SubjectGroup extends Model {
         'name', 
         'description', 
         'status',
-        'id_padre', // 👈 nuevo atributo agregado 
+        'id_padre', // nuevo atributo agregado 
         'deleted_at',
     ];
 
