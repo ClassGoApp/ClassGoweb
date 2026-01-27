@@ -3,7 +3,7 @@
     @include('components.floating-button.partials.ai-option')
     @include('components.floating-button.partials.support-option')
 
-    <button class="instant-btn-floating " onclick="window.location.href='{{ route('tutors.instant') }}'">
+    <button class="instant-btn-floating " onclick="window.location.href='{{ route('student.tutors.instant') }}'">
         <i>
             <svg class="bolt" viewBox="0 0 24 24">
                 <path d="M13 2L3 14h7l-1 8 10-12h-7z" />

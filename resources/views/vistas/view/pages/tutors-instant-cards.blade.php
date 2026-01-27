@@ -1,5 +1,7 @@
-@extends('vistas.view.layouts.test-instant-tutors')
+@extends('vistas.view.layouts.blank')
 @section('content')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <style>
         /* ================= VARIABLES DE PRODUCCIÓN ================= */
         :root {
@@ -197,31 +199,41 @@
 
         /* ================= NUEVO: SUBJECT GRID + CARDS COMPACTAS ================= */
         .subject-grid {
-            display: grid;
-            grid-template-columns: repeat(1, 1fr);
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+
+            /* 3 filas visibles */
+            height: calc(5 * 78px);
             gap: 0.7rem;
+
+            overflow-x: auto;
+            overflow-y: hidden;
+
+            align-content: flex-start;
+            scrollbar-width: none;
         }
 
         /* @media (max-width: 640px) {
-            .subject-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .subject-card-btn {
-                width: 100%;
-                flex-direction: column;
-                justify-content: center;
-            }
-            .subject-meta {
-                text-align: center;
-            }
-            
-        } */
+                                                .subject-grid {
+                                                    grid-template-columns: repeat(2, 1fr);
+                                                }
+                                                .subject-card-btn {
+                                                    width: 100%;
+                                                    flex-direction: column;
+                                                    justify-content: center;
+                                                }
+                                                .subject-meta {
+                                                    text-align: center;
+                                                }
+                                                
+                                            } */
 
-        @media (min-width: 1024px) {
-            .subject-grid {
-                grid-template-columns: repeat(5, 1fr);
-            }
-        }
+        /* @media (min-width: 1024px) {
+                        .subject-grid {
+                            grid-template-columns: repeat(5, 1fr);
+                        }
+                    } */
 
         .subject-card-btn {
             display: flex;
@@ -235,7 +247,6 @@
             cursor: pointer;
             text-align: left;
             transition: var(--transition);
-            width: 95%;
         }
 
         .subject-card-btn:hover {
@@ -986,114 +997,57 @@
         </div>
     </section>
     <script>
-        /* ================== DATA (materias) ================== */
-        const categories = ['Todas', 'Ciencias Exactas', 'Tecnología', 'Diseño', 'Ingeniería Avanzada',
-            'Ciencias Sociales y Económicas', 'Idiomas', 'Marketing y Comunicación Digital',
-            'Arte y Diseño', 'Gastronomía y Repostería', 'Ingeniería y Tecnología', 'Psicología y Desarrollo Personal',
-            'Deporte y Bienestar'
-        ];
+        let categories = ['Todas'];
+        let subjects = [];
 
-        const subjects = [{
-                id: 1,
-                name: 'MATEMÁTICAS',
-                category: 'Ciencias Exactas'
-            },
-            {
-                id: 2,
-                name: 'FÍSICA',
-                category: 'Ciencias Exactas'
-            },
-            {
-                id: 3,
-                name: 'PROGRAMACIÓN',
-                category: 'Tecnología'
-            },
-            {
-                id: 4,
-                name: 'DISEÑO UX/UI',
-                category: 'Diseño'
-            },
-            {
-                id: 5,
-                name: 'QUÍMICA',
-                category: 'Ciencias Exactas'
-            },
-            {
-                id: 6,
-                name: 'CÁLCULO',
-                category: 'Ciencias Exactas'
-            },
-            {
-                id: 7,
-                name: 'ÁLGEBRA LINEAL',
-                category: 'Ciencias Exactas'
-            },
-            {
-                id: 8,
-                name: 'ESTADÍSTICA',
-                category: 'Ciencias Exactas'
-            },
-            {
-                id: 9,
-                name: 'GEOMETRÍA',
-                category: 'Ciencias Exactas'
-            },
-            {
-                id: 10,
-                name: 'TRIGONOMETRÍA',
-                category: 'Ciencias Exactas'
-            },
-            {
-                id: 11,
-                name: 'BIOLOGÍA',
-                category: 'Ciencias Exactas'
-            },
-            {
-                id: 12,
-                name: 'ECONOMÍA',
-                category: 'Ciencias Sociales y Económicas'
-            },
-            {
-                id: 13,
-                name: 'HISTORIA',
-                category: 'Ciencias Sociales y Económicas'
-            },
-            {
-                id: 14,
-                name: 'INGLÉS',
-                category: 'Idiomas'
-            },
-            {
-                id: 15,
-                name: 'MARKETING DIGITAL',
-                category: 'Marketing y Comunicación Digital'
-            },
-            {
-                id: 16,
-                name: 'FOTOGRAFÍA',
-                category: 'Arte y Diseño'
-            },
-            {
-                id: 17,
-                name: 'GASTRONOMÍA',
-                category: 'Gastronomía y Repostería'
-            },
-            {
-                id: 18,
-                name: 'ROBÓTICA',
-                category: 'Ingeniería y Tecnología'
-            },
-            {
-                id: 19,
-                name: 'PSICOLOGÍA',
-                category: 'Psicología y Desarrollo Personal'
-            },
-            {
-                id: 20,
-                name: 'YOGA',
-                category: 'Deporte y Bienestar'
+        /* ================== DATA (materias) ================== */
+        async function loadCategoriasMaterias() {
+            const url = '/student/subject-groups/categorias-materias';
+
+            const res = await fetch(url, {
+                headers: {
+                    'Accept': 'application/json'
+                },
+                credentials: 'same-origin'
+            });
+
+            // Log básico
+            console.log('GET', url, 'status:', res.status, 'redirected:', res.redirected, 'finalURL:', res.url);
+
+            const ct = (res.headers.get('content-type') || '').toLowerCase();
+
+            // Si no es JSON, lee como texto y muéstralo (aquí normalmente verás el login HTML)
+            if (!ct.includes('application/json')) {
+                const text = await res.text();
+                console.error('Respuesta NO JSON. Content-Type:', ct);
+                console.error('Respuesta (primeros 300 chars):', text.slice(0, 300));
+                return;
             }
-        ];
+
+            const json = await res.json();
+            const data = Array.isArray(json.data) ? json.data : [];
+
+            console.log('categoriasMaterias data.length:', data.length);
+
+            categories = ['Todas', ...data.map(x => x.categoria)];
+
+            subjects = [];
+            for (const cat of data) {
+                const mats = Array.isArray(cat.materias) ? cat.materias : [];
+                for (const m of mats) {
+                    subjects.push({
+                        id: Number(m.id_materia),
+                        name: m.materia,
+                        category: cat.categoria,
+                        category_id: Number(cat.id_categoria),
+                    });
+                }
+            }
+
+            console.log('subjects.length:', subjects.length);
+        }
+
+
 
         const allTutors = [{
                 id: 99,
@@ -1211,8 +1165,10 @@
             searchQuery: ''
         };
 
-        function init() {
+        const fab = document.getElementById('tutoriaFab');
+        async function init() {
             wireSearch();
+            await loadCategoriasMaterias();
             renderCategoryPills();
             renderSubjectSections();
         }
@@ -1305,14 +1261,13 @@
 
           <div class="subject-grid">
             ${items.map(sub => `
-                          <button class="subject-card-btn" onclick="seleccionarMateria(this, '${sub.name}')">
-                            <div class="subject-initial">${sub.name.charAt(0)}</div>
-                            <div class="subject-meta">
-                              <div class="subject-title">${sub.name}</div>
-                              <div class="subject-category">${sub.category}</div>
-                            </div>
-                          </button>
-                        `).join('')}
+                                                              <button class="subject-card-btn" onclick="seleccionarMateria(this, ${sub.id}, '${sub.name}')">
+                                                                <div class="subject-initial">${sub.name.charAt(0)}</div>
+                                                                <div class="subject-meta">
+                                                                  <div class="subject-title">${sub.name}</div>
+                                                                </div>
+                                                              </button>
+                                                            `).join('')}
           </div>
         </section>
       `;
@@ -1320,49 +1275,119 @@
         }
 
         /* ================== TU FLOW: SELECT SUBJECT ================== */
-        function selectSubject(name) {
+        async function postJson(url, payload) {
+            const csrf = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+            const res = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    ...(csrf ? {
+                        'X-CSRF-TOKEN': csrf
+                    } : {}),
+                },
+                credentials: 'same-origin',
+                body: JSON.stringify(payload),
+            });
+
+            const json = await res.json().catch(() => ({}));
+
+            if (!res.ok) {
+                const msg = json?.message || `HTTP ${res.status}`;
+                throw new Error(msg);
+            }
+
+            return json;
+        }
+
+        /**
+         * ✅ Ahora SOLO inicia el batch (notifica tutores por correo)
+         * y deja el radar como pantalla de "espera".
+         */
+        async function selectSubject(subjectName, subjectId) {
             ocultarFabTutoria();
-            document.getElementById('selected-subject-name').innerText = name;
+
+            // 1) UI: cambiar a vista radar
+            document.getElementById('selected-subject-name').innerText = subjectName;
             document.getElementById('view-selection').classList.add('hidden');
             document.getElementById('view-browse').classList.remove('hidden');
 
             document.body.classList.add('lock-scroll');
 
-            setTimeout(() => {
-                const radar = document.getElementById('radar-ui');
+            // 2) UI: reset radar / mensajes
+            const radar = document.getElementById('radar-ui');
+            const status = document.getElementById('status-message');
+            const radarVisual = document.getElementById('radar-visual');
+            const grid = document.getElementById('tutor-results');
 
-                setTimeout(() => {
-                    radar.classList.add('results-found');
+            // No mostrar cards por ahora
+            if (grid) grid.innerHTML = '';
 
-                    const status = document.getElementById('status-message');
-                    if (status) status.innerText = 'Tutores disponibles encontrados:';
+            if (radar) radar.classList.remove('results-found');
+            if (radarVisual) radarVisual.classList.remove('is-hidden');
+            if (status) status.innerText = 'Notificando a los expertos...';
 
-                    const radarVisual = document.getElementById('radar-visual');
-                    if (radarVisual) radarVisual.classList.add('is-hidden');
+            try {
+                // 3) ✅ Llamar al backend para iniciar notificación / batch
+                // OJO: usa tu ruta real: /batches/start (según tu routes)
+                const json = await postJson('/batches/start', {
+                    subject_id: subjectId
+                });
 
-                    renderTutors(name);
+                // 4) UI: mostrar mensaje de éxito (sin cards)
+                // Si el backend te devuelve batch_id, guárdalo por si luego consultas status.
+                // Ej: json.data.batch_id (depende de tu backend)
+                const batchId = json?.data?.batch_id || json?.batch_id || null;
 
-                    const grid = document.getElementById('tutor-results');
+                if (status) {
+                    status.innerText = batchId ?
+                        `Solicitud enviada. Notificando tutores (Batch #${batchId})...` :
+                        `Solicitud enviada. Notificando tutores...`;
+                }
+
+                // Opcional: bajar radar a tamaño "pequeño" (como modo resultados)
+                // aunque todavía no haya cards, solo para que no sea full screen.
+                if (radar) radar.classList.add('results-found');
+                if (radarVisual) radarVisual.classList.add('is-hidden');
+
+                // Desbloquear scroll ya que ya no necesitas bloquear
+                document.body.classList.remove('lock-scroll');
+
+                // Si quieres, muestra un texto placeholder donde irían tutores
+                if (grid) {
+                    grid.innerHTML = `
+        <div style="padding:2rem; text-align:center; color: var(--text-muted); font-weight:800;">
+          Estamos contactando tutores disponibles para
+          <span style="color:var(--primary-color)">${subjectName}</span>.
+          <div style="margin-top:.7rem; font-size:.85rem; opacity:.85; font-weight:700;">
+            En breve verás opciones aquí.
+          </div>
+        </div>
+      `;
                     grid.classList.add('active');
+                }
 
-                    document.body.classList.remove('lock-scroll');
+            } catch (err) {
+                console.error(err);
 
-                    requestAnimationFrame(() => {
-                        window.scrollTo({
-                            top: 0,
-                            behavior: 'auto'
-                        });
-                        requestAnimationFrame(() => {
-                            grid.scrollIntoView({
-                                behavior: 'smooth',
-                                block: 'start'
-                            });
-                        });
-                    });
+                if (status) status.innerText = 'No se pudo iniciar la solicitud.';
+                if (grid) {
+                    grid.innerHTML = `
+        <div style="padding:2rem; text-align:center; color: var(--text-muted); font-weight:800;">
+          Ocurrió un error al notificar tutores.
+          <div style="margin-top:.6rem; font-size:.85rem; opacity:.85;">
+            ${String(err.message)}
+          </div>
+        </div>
+      `;
+                    grid.classList.add('active');
+                }
 
-                }, 600);
-            }, 900);
+                document.body.classList.remove('lock-scroll');
+            }
         }
+
 
         function renderTutors(subjectName) {
             const grid = document.getElementById('tutor-results');
@@ -1602,24 +1627,21 @@
         }
         /* ================= SELECCIÓN ÚNICA DE MATERIA ================= */
         let materiaSeleccionada = null;
+        let materiaSeleccionadaId = null;
         let materiaSeleccionadaNombre = null;
 
-        const fab = document.getElementById('tutoriaFab');
+        function seleccionarMateria(btn, id, nombre) {
+            if (materiaSeleccionada) materiaSeleccionada.classList.remove('is-selected');
 
-        function seleccionarMateria(btn, nombre) {
-            // Quitar selección previa
-            if (materiaSeleccionada) {
-                materiaSeleccionada.classList.remove('is-selected');
-            }
-
-            // Seleccionar nueva
             btn.classList.add('is-selected');
             materiaSeleccionada = btn;
+
+            materiaSeleccionadaId = id;
             materiaSeleccionadaNombre = nombre;
 
-            // Mostrar FAB
             fab.classList.add('visible');
         }
+
 
         function ocultarFabTutoria() {
             fab.classList.remove('visible');
@@ -1627,10 +1649,9 @@
 
 
         function confirmarMateria() {
-            if (!materiaSeleccionadaNombre) return;
-            selectSubject(materiaSeleccionadaNombre);
+            if (!materiaSeleccionadaId) return;
+            selectSubject(materiaSeleccionadaNombre, materiaSeleccionadaId);
         }
-
 
         init();
     </script>
