@@ -58,13 +58,17 @@ use App\Http\Controllers\Api\SubjectPickerController;
 
 //////////////// OSCAR ///////////////////////
 
+Route::get('/waitlist/accept', [SubjectPickerController::class, 'acceptWaitlist'])
+    ->name('waitlist.accept');
+
 
 //////////////// OSCAR ///////////////////////
 
 Route::view('/reserva', 'vistas.view.pages.e')->name('e');
 Route::view('/traduccion', 'vistas.view.pages.traduccion')->name('traduccion');
 
-Route::view('/gg', 'vistas.view.pages.tutors-instant-cards')->name('tutors.instant');
+
+
 
 
 Route::get('/verify', function (\Illuminate\Http\Request $request) {
@@ -259,13 +263,19 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
             Route::post('/batches/start', [SubjectPickerController::class, 'start']);
             Route::get('/batches/{batch}/status', [SubjectPickerController::class, 'status']);
             Route::get('/batches/active', [SubjectPickerController::class, 'active']);
-
+            Route::get('/subjects/{subject_id}/tutors', [SubjectPickerController::class, 'tutorsBySubject']);
             /////////// oscar api/endpoint ///////////////////////////////////////
 
 
             Route::get('/subject', [SubjectPickerController::class, 'index']);
-            Route::get('/subjects/{subject_id}/tutors', [SubjectPickerController::class, 'tutorsBySubject']);
+
             Route::post('/batches/start', [SubjectPickerController::class, 'start']);
+            
+            Route::post('/batches/{batch}/choose', [SubjectPickerController::class, 'chooseTutor'])
+                ->name('student.batches.choose');
+
+            Route::get('/batches/{batch}/accepted', [SubjectPickerController::class, 'acceptedTutors']);
+
             /////////////////////////////////////////////////////////////////////////////////////////////////////////
             Route::get('profile', fn() => redirect('tutor.profile.personal-details'))->name('profile');
             Route::prefix('profile')->name('profile.')->group(function () {

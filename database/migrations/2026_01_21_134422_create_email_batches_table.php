@@ -4,51 +4,48 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     public function up(): void
     {
         Schema::create('email_batches', function (Blueprint $table) {
-            $table->id(); // BIGINT unsigned auto increment
+            $table->bigIncrements('id');
 
-            // Materia elegida
             $table->unsignedBigInteger('subject_id');
+            $table->unsignedBigInteger('created_by');
 
-            // Estudiante que inició la búsqueda (para poder recuperar estado si recarga)
-            $table->unsignedBigInteger('created_by')->index();
+            $table->enum('status', ['pending', 'running', 'matched', 'done', 'failed'])
+                ->default('pending');
 
-            // Estado del batch
-            $table->enum('status', ['pending','running','done','failed'])->default('pending')->index();
-
-            // Para tu lógica anterior (si lo sigues usando)
-            $table->unsignedBigInteger('last_tutor_id')->default(0);
-
-            // Contador de enviados
             $table->unsignedInteger('sent_count')->default(0);
-
-            // Tamaño de lote (tú: 1 por minuto)
             $table->unsignedInteger('batch_size')->default(1);
 
-            // Si algo sale mal o si expiró: 'expired'
+            $table->timestamp('expires_at')->nullable();
             $table->text('last_error')->nullable();
 
-            // Tiempo límite de espera (cuando se pase, el batch se detiene solo)
-            $table->timestamp('expires_at')->nullable()->index();
+            $table->unsignedBigInteger('last_tutor_id')->default(0);
+
+            // opcional (si luego haces “primer tutor gana”)
+            $table->unsignedBigInteger('accepted_user_id')->nullable();
+            $table->unsignedBigInteger('accepted_item_id')->nullable();
+            $table->timestamp('accepted_at')->nullable();
 
             $table->timestamps();
 
-            // Foreign keys (ajusta onDelete según tu criterio)
-            $table->foreign('subject_id')
-                ->references('id')->on('subjects')
-                ->onDelete('cascade');
+            // performance
+            $table->index(['status', 'expires_at', 'id'], 'idx_batches_status_expires_id');
+            $table->index(['created_by', 'subject_id', 'status', 'expires_at'], 'idx_batches_reuse');
+            $table->index(['subject_id', 'status'], 'idx_batches_subject_status');
 
-            $table->foreign('created_by')
-                ->references('id')->on('users')
-                ->onDelete('cascade');
+            // FK
+            $table->foreign('subject_id')->references('id')->on('subjects')->cascadeOnDelete();
+            $table->foreign('created_by')->references('id')->on('users')->cascadeOnDelete();
         });
-    }
+}
 
     public function down(): void
     {
+        
         Schema::dropIfExists('email_batches');
     }
 };

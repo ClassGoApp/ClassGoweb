@@ -71,41 +71,6 @@ class SubjectPickerController extends Controller
 
         return response()->json(['data' => $data]);
     }
-    // public function tutorsBySubject(Request $request, int $subject_id)
-    // {
-    //     $limit  = (int) $request->query('limit', 50);
-    //     $limit  = max(1, min($limit, 200));
-
-    //     // “Cursor” opcional (idea útil para lotes después): trae IDs mayores a X
-    //     $afterId = (int) $request->query('after_user_id', 0);
-
-    //     $tutors = DB::table('user_subject as us')
-    //         ->join('users as u', 'u.id', '=', 'us.user_id')
-    //         ->where('us.subject_id', $subject_id)
-    //         ->where('us.status', 'active')
-    //         ->where('us.user_id', '>', $afterId)
-    //         ->select([
-    //             'u.id',
-    //             'u.name',
-    //             'u.email',
-    //             // extra: si quieres devolver data del pivote
-    //             'us.description',
-    //             'us.image',
-    //         ])
-    //         ->orderBy('us.user_id')
-    //         ->limit($limit)
-    //         ->get();
-
-    //     return response()->json([
-    //         'success' => true,
-    //         'subject_id' => $subject_id,
-    //         'count' => $tutors->count(),
-    //         'data' => $tutors,
-    //         'next_after_user_id' => $tutors->last()->id ?? null, // para paginar por cursor
-    //     ]);
-    // }
-
-
     private function getTutorsAvailableNow(int $subjectId): Collection
     {
         return DB::table('user_subject as us')
@@ -201,7 +166,7 @@ class SubjectPickerController extends Controller
 
 
         // ⬅️ define tu tiempo de espera real
-        $timeoutMinutes = 5;
+        $timeoutMinutes = 10;
 
         return DB::transaction(function () use ($subjectId, $studentId, $timeoutMinutes) {
 
@@ -223,7 +188,7 @@ class SubjectPickerController extends Controller
                 'status' => 'pending',
                 'last_tutor_id' => 0,
                 'sent_count' => 0,
-                'batch_size' => 2, // 1 email por minuto
+                'batch_size' => 2, // 2 email por minuto
                 'last_error' => null,
                 'expires_at' => now()->addMinutes($timeoutMinutes),
             ]);
@@ -341,20 +306,79 @@ class SubjectPickerController extends Controller
     }
 
 
+    // public function active()
+    // {
+    //     $batchId = session('active_batch_id');
+
+    //     if (!$batchId) {
+    //         return response()->json(['active' => false]);
+    //     }
+
+    //     $batch = EmailBatch::query()->find($batchId);
+
+    //     if (!$batch || in_array($batch->status, ['done', 'failed'], true)) {
+    //         session()->forget(['active_batch_id', 'active_subject_id']);
+    //         return response()->json(['active' => false]);
+    //     }
+
+    //     return response()->json([
+    //         'active' => true,
+    //         'batch_id' => $batch->id,
+    //         'subject_id' => $batch->subject_id,
+    //         'status' => $batch->status,
+    //         'sent_count' => $batch->sent_count,
+    //         'batch_size' => $batch->batch_size,
+    //         'expires_at' => optional($batch->expires_at)->toDateTimeString(),
+    //     ]);
+    // }
+
     public function active()
     {
+        $studentId = (int) Auth::id();
         $batchId = session('active_batch_id');
 
-        if (!$batchId) {
-            return response()->json(['active' => false]);
-        }
+        // 1) Intentar por sesión
+        if ($batchId) {
+            $batch = EmailBatch::query()->find($batchId);
 
-        $batch = EmailBatch::query()->find($batchId);
+            if ($batch && !in_array($batch->status, ['done', 'failed'], true)) {
+                if (!$batch->expires_at || now()->lt($batch->expires_at)) {
+                    return response()->json([
+                        'active' => true,
+                        'batch_id' => $batch->id,
+                        'subject_id' => $batch->subject_id,
+                        'status' => $batch->status,
+                        'sent_count' => $batch->sent_count,
+                        'batch_size' => $batch->batch_size,
+                        'expires_at' => optional($batch->expires_at)->toDateTimeString(),
+                    ]);
+                }
+            }
 
-        if (!$batch || in_array($batch->status, ['done', 'failed'], true)) {
+            // sesión apunta a algo inválido
             session()->forget(['active_batch_id', 'active_subject_id']);
+        }
+
+        // 2) Fallback por BD (más robusto)
+        $batch = EmailBatch::query()
+            ->where('created_by', '=', $studentId)
+            ->whereIn('status', ['pending', 'running'])
+            ->where(function ($q) {
+                $q->whereNull('expires_at')
+                    ->orWhere('expires_at', '>', now());
+            })
+            ->orderByDesc('id')
+            ->first();
+
+        if (!$batch) {
             return response()->json(['active' => false]);
         }
+
+        // rehidratar sesión
+        session([
+            'active_batch_id' => $batch->id,
+            'active_subject_id' => $batch->subject_id,
+        ]);
 
         return response()->json([
             'active' => true,
@@ -365,5 +389,201 @@ class SubjectPickerController extends Controller
             'batch_size' => $batch->batch_size,
             'expires_at' => optional($batch->expires_at)->toDateTimeString(),
         ]);
+    }
+
+    public function acceptWaitlist(Request $request)
+    {
+        $token = (string) $request->query('t');
+        if ($token === '') abort(404);
+
+        // 1) Buscar item por token
+        $item = EmailBatchItem::where('accept_token', $token)->first();
+        if (!$item) abort(404);
+
+        // 2) Buscar batch y validar expiración
+        $batch = EmailBatch::find($item->batch_id);
+        if (!$batch) abort(404);
+
+        if ($batch->expires_at && now()->greaterThanOrEqualTo($batch->expires_at)) {
+            return view('vistas.view.pages.waitlistTutor', [
+                'status' => 'expired',
+            ]);
+        }
+
+        // 3) Marcar accepted (idempotente)
+        if (!$item->accepted_at) {
+            $item->accepted_at = now();
+            $item->status = 'accepted';
+            $item->save();
+        }
+
+        // 4) Mostrar vista "En espera..."
+        return view('vistas.view.pages.waitlistTutor', [
+            'status' => 'ok',
+            'batch_id' => $batch->id,
+            'subject_id' => $batch->subject_id,
+        ]);
+    }
+
+    public function acceptedTutors(Request $request, EmailBatch $batch)
+    {
+        // seguridad: solo el dueño ve su batch
+        if ((int)$batch->created_by !== (int) Auth::id()) {
+            return response()->json(['message' => 'Forbidden'], 403);
+        }
+
+        $afterId = (int) $request->query('after_id', 0);
+        $limit = max(1, min((int)$request->query('limit', 20), 50));
+
+        $rows = DB::table('email_batch_items as ebi')
+            ->join('users as u', 'u.id', '=', 'ebi.user_id')
+            ->where('ebi.batch_id', $batch->id)
+            ->where('ebi.status', 'accepted')
+            ->where('ebi.id', '>', $afterId)
+            ->orderBy('ebi.id')
+            ->limit($limit)
+            ->select([
+                'ebi.id',
+                'ebi.user_id',
+                'u.email',
+                'ebi.accepted_at',
+            ])
+            ->get();
+
+        return response()->json([
+            'batch_id' => $batch->id,
+            'count' => $rows->count(),
+            'data' => $rows,
+            'next_after_id' => $rows->last()->id ?? $afterId,
+        ]);
+    }
+
+    public function chooseTutor(Request $request, EmailBatch $batch)
+    {
+        // seguridad: solo el dueño elige
+        if ((int) $batch->created_by !== (int) Auth::id()) {
+            return response()->json(['message' => 'Forbidden'], 403);
+        }
+
+        $data = $request->validate([
+            'item_id' => ['required', 'integer', 'min:1'],
+        ]);
+
+        $itemId = (int) $data['item_id'];
+
+        return DB::transaction(function () use ($batch, $itemId) {
+
+            // Lock del batch para evitar doble elección simultánea
+            $batch = EmailBatch::query()
+                ->whereKey($batch->id)
+                ->lockForUpdate()
+                ->firstOrFail();
+
+            // Si está expirado, no se puede elegir
+            if ($batch->expires_at && now()->greaterThanOrEqualTo($batch->expires_at)) {
+                $batch->update([
+                    'status' => 'done',
+                    'last_error' => 'expired',
+                ]);
+
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Batch expirado',
+                ], 409);
+            }
+
+            // Si ya hay uno elegido, responde idempotente
+            $alreadyChosen = EmailBatchItem::query()
+                ->where('batch_id', $batch->id)
+                ->where('status', 'chosen')
+                ->first();
+
+            if ($alreadyChosen) {
+                $u = DB::table('users')
+                    ->select('id', 'name', 'email')
+                    ->where('id', $alreadyChosen->user_id)
+                    ->first();
+
+                return response()->json([
+                    'success' => true,
+                    'batch_id' => $batch->id,
+                    'chosen' => [
+                        'item_id' => $alreadyChosen->id,
+                        'user_id' => $alreadyChosen->user_id,
+                        'user' => $u,
+                        'chosen_at' => optional($alreadyChosen->chosen_at)->toDateTimeString(),
+                    ],
+                    // AJUSTA ESTA RUTA A TU PROYECTO (o devuelve null si aún no existe)
+                    'redirect_to' =>null, 
+                    // route('student.payments.show', ['batch' => $batch->id]),
+                ]);
+            }
+
+            // Lock del item a elegir
+            $item = EmailBatchItem::query()
+                ->where('batch_id', $batch->id)
+                ->whereKey($itemId)
+                ->lockForUpdate()
+                ->first();
+
+            if (!$item) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Item no pertenece al batch',
+                ], 404);
+            }
+
+            // Solo se puede elegir entre aceptados
+            if ($item->status !== 'accepted') {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Solo puedes elegir un tutor que haya aceptado',
+                    'current_status' => $item->status,
+                ], 409);
+            }
+
+            // Marcar elegido
+            $item->status = 'chosen';
+            $item->chosen_at = now();
+            $item->save();
+
+            // Expirar a todos los demás (pendientes/enviados/aceptados)
+            EmailBatchItem::query()
+                ->where('batch_id', $batch->id)
+                ->where('id', '!=', $item->id)
+                ->whereIn('status', ['pending', 'sending', 'sent', 'accepted'])
+                ->update([
+                    'status' => 'expired',
+                    'last_error' => 'not_chosen',
+                    'updated_at' => now(),
+                ]);
+
+            // Marcar batch como matched (y guardar elegido en batch)
+            $batch->update([
+                'status' => 'matched',
+                'accepted_user_id' => $item->user_id,
+                'accepted_item_id' => $item->id,
+                'accepted_at' => now(),
+            ]);
+
+            $u = DB::table('users')
+                ->select('id', 'name', 'email')
+                ->where('id', $item->user_id)
+                ->first();
+
+            return response()->json([
+                'success' => true,
+                'batch_id' => $batch->id,
+                'chosen' => [
+                    'item_id' => $item->id,
+                    'user_id' => $item->user_id,
+                    'user' => $u,
+                    'chosen_at' => optional($item->chosen_at)->toDateTimeString(),
+                ],
+                // AJUSTA ESTA RUTA
+                'redirect_to' =>null, 
+                // route('student.payments.show', ['batch' => $batch->id]),
+            ]);
+        });
     }
 }
