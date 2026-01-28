@@ -254,7 +254,7 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
             //ruta final tutors instant
 
             /////////////////////////////////////oscar tutor-instant//////////////////////////////////////////////
-            Route::get('/subject-groups/categorias-materias', [SubjectPickerController::class, 'categoriasMaterias']); //categorias y materias
+            
 
 
             Route::get('/materias/elegir', function () {
@@ -264,24 +264,26 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
 
 
 
-            Route::get('/subjects/{subject_id}/tutors/available-now', [SubjectPickerController::class, 'tutorsAvailableNow']);
-            Route::get('/subjects/{subject_id}/tutors/not-available-now', [SubjectPickerController::class, 'tutorsNotAvailableNow']);
+            Route::get('/subjects/{subject_id}/tutors/available-now', [SubjectPickerController::class, 'tutorsAvailableNow']);//tutores disponibles ahora
+            Route::get('/subjects/{subject_id}/tutors/not-available-now', [SubjectPickerController::class, 'tutorsNotAvailableNow']); //tutores no disponibles ahora
 
             Route::post('/batches/start', [SubjectPickerController::class, 'start']); // este envia los emails para el boton go inicializa todo
-            Route::get('/batches/{batch}/status', [SubjectPickerController::class, 'status']);
-            Route::get('/batches/active', [SubjectPickerController::class, 'active']);
-            Route::get('/subjects/{subject_id}/tutors', [SubjectPickerController::class, 'tutorsBySubject']);
+            Route::get('/batches/{batch}/status', [SubjectPickerController::class, 'status']); //estado de la batch
+            Route::get('/batches/active', [SubjectPickerController::class, 'active']); //batch activa si hay
+            Route::get('/subjects/{subject_id}/tutors', [SubjectPickerController::class, 'tutorsBySubject']); //tutores por materia
             /////////// oscar api/endpoint ///////////////////////////////////////
 
+            Route::get('/subject-groups/categorias-materias', [SubjectPickerController::class, 'categoriasMaterias']); //categorias y materias finales (en uso)
 
-            Route::get('/subject', [SubjectPickerController::class, 'index']);
 
-            Route::post('/batches/start', [SubjectPickerController::class, 'start']);
+            //Route::get('/subject', [SubjectPickerController::class, 'index']); //lista de materias
+
+            Route::post('/batches/start', [SubjectPickerController::class, 'start']); //iniciar batch (este es para mi btn go)
             
-            Route::post('/batches/{batch}/choose', [SubjectPickerController::class, 'chooseTutor'])
+            Route::post('/batches/{batch}/choose', [SubjectPickerController::class, 'chooseTutor']) //elegir tutor (cuando el tutor para luego pagar)
                 ->name('student.batches.choose');
 
-            Route::get('/batches/{batch}/accepted', [SubjectPickerController::class, 'acceptedTutors']);
+            Route::get('/batches/{batch}/accepted', [SubjectPickerController::class, 'acceptedTutors']);//tutores que han aceptado(esto tiene datos para la card)
 
             /////////////////////////////////////////////////////////////////////////////////////////////////////////
             Route::get('profile', fn() => redirect('tutor.profile.personal-details'))->name('profile');
