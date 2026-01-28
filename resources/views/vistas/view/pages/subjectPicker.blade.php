@@ -308,8 +308,8 @@
 
     <script>
         /* ==========================================================
-                                               BLOQUE A) SELECCIÓN DE MATERIA
-                                            ========================================================== */
+                                                           BLOQUE A) SELECCIÓN DE MATERIA
+                                                        ========================================================== */
         let selectedSubjectId = null;
         let subjectsCache = [];
         let selectedCardEl = null;
@@ -527,14 +527,43 @@
                 card.className = 'card';
                 card.style.padding = '14px';
 
-                const name = t.name ? escapeHtml(t.name) : 'Tutor';
+                const name = escapeHtml(t.name || `${t.first_name || ''} ${t.last_name || ''}`.trim() || 'Tutor');
                 const email = escapeHtml(t.email || '');
                 const acceptedAt = escapeHtml(t.accepted_at || '');
 
+                const verified = (Number(t.is_verified) === 1 || !!t.verified_at) ?
+                    '✅ Verificado' :
+                    '⚠️ No verificado';
+
+                const price = (t.price !== null && t.price !== undefined && String(t.price) !== '') ?
+                    `${escapeHtml(String(t.price))} Bs` :
+                    'Sin precio';
+
+                const rating = (t.rating !== null && t.rating !== undefined) ?
+                    `${escapeHtml(String(t.rating))} ⭐` :
+                    '0.0 ⭐';
+
+                // imagen (URL absoluta si viene relativa)
+                let imgSrc = '';
+                if (t.image) {
+                    const raw = String(t.image);
+                    imgSrc = raw.startsWith('http') ? raw : `/${raw.replace(/^\/+/, '')}`;
+                }
+
                 card.innerHTML = `
-      <div style="font-weight:800;margin-bottom:6px;">${name}</div>
-      <div class="text-sm opacity-70">${email}</div>
-      <div class="text-sm opacity-70 mt-2">Aceptó: ${acceptedAt}</div>
+      <div style="display:flex;gap:12px;align-items:center;">
+        <div style="width:56px;height:56px;border-radius:999px;overflow:hidden;border:1px solid #e5e7eb;background:#f9fafb;flex:0 0 auto;">
+          ${imgSrc ? `<img src="${escapeHtml(imgSrc)}" style="width:100%;height:100%;object-fit:cover;">` : ''}
+        </div>
+
+        <div style="min-width:0;">
+          <div style="font-weight:800;">${name}</div>
+          <div class="text-sm opacity-70">${email}</div>
+          <div class="text-sm opacity-70">${escapeHtml(verified)} · ${price} · ${rating}</div>
+          <div class="text-sm opacity-70 mt-1">Aceptó: ${acceptedAt}</div>
+        </div>
+      </div>
+
       <div class="mt-3">
         <button type="button" class="border rounded-lg px-4 py-2">Elegir</button>
       </div>
@@ -544,6 +573,7 @@
                 acceptedList.appendChild(card);
             }
         }
+
 
         // async function fetchAcceptedTutors(batchId) {
         //     const res = await fetch(
@@ -565,9 +595,24 @@
         //     acceptedAfterId = Number(json.next_after_id || acceptedAfterId);
         //     renderAcceptedCards();
         // }
+async function fetchAcceptedTutors(batchId) {
+  const res = await fetch(`/student/batches/${batchId}/accepted-tutors?after_id=${acceptedAfterId}&limit=50`, {
+    headers: { 'Accept': 'application/json' },
+    credentials: 'same-origin'
+  });
+
+  const json = await res.json().catch(() => ({}));
+  if (!res.ok) return;
+
+  const data = Array.isArray(json.data) ? json.data : [];
+  for (const row of data) acceptedMap.set(row.id, row);
+
+  acceptedAfterId = Number(json.next_after_id || acceptedAfterId);
+  renderAcceptedCards();
+}
 
 
-        
+
         function startAcceptedPolling(batchId) {
             stopAcceptedPolling();
             fetchAcceptedTutors(batchId);
@@ -577,6 +622,88 @@
         /* ==========================================================
            STATUS fetch
         ========================================================== */
+        // async function fetchBatchStatus(batchId) {
+        //     const res = await fetch(`/student/batches/${batchId}/status`, {
+        //         headers: {
+        //             'Accept': 'application/json'
+        //         },
+        //         credentials: 'same-origin'
+        //     });
+
+        //     const json = await res.json().catch(() => ({}));
+        //     if (statusOut) statusOut.textContent = JSON.stringify(json, null, 2);
+
+        //     if (!res.ok) return;
+
+        //     // resumen (debug)
+        //     if (batchStatusLabel) batchStatusLabel.textContent = json.batch?.status ?? '-';
+        //     if (sentCountLabel) sentCountLabel.textContent = String(json.batch?.sent_count ?? 0);
+        //     const sentCountNow = Number(json.batch?.sent_count ?? 0);
+        //     const nowMs = Date.now();
+
+        //     // delta vs último tick
+        //     let sentThisMin = '-';
+        //     if (lastSentCount !== null) {
+        //         const diff = sentCountNow - lastSentCount;
+        //         sentThisMin = String(Math.max(0, diff));
+        //     }
+
+        //     // pintar
+        //     if (sentThisMinLabel) sentThisMinLabel.textContent = sentThisMin;
+        //     if (wSentThisMin) wSentThisMin.textContent = sentThisMin;
+
+        //     // actualizar memoria
+        //     lastSentCount = sentCountNow;
+        //     lastSentAtMs = nowMs;
+
+
+
+        //     if (queuedCountLabel) queuedCountLabel.textContent = String(json.batch?.queued ?? 0);
+        //     if (expiresAtLabel) expiresAtLabel.textContent = json.batch?.expires_at ?? '-';
+
+        //     // emails por minuto (batch_size)
+        //     const rate = json.batch?.batch_size ?? '-';
+        //     if (ratePerMinLabel) ratePerMinLabel.textContent = String(rate);
+        //     if (wRate) wRate.textContent = String(rate);
+
+        //     // resumen (pantalla espera)
+        //     if (wStatus) wStatus.textContent = json.batch?.status ?? '-';
+        //     if (wExpires) wExpires.textContent = json.batch?.expires_at ?? '-';
+
+        //     // tabla items (debug)
+        //     const items = Array.isArray(json.items) ? json.items : [];
+        //     if (itemsTbody) {
+        //         itemsTbody.innerHTML = '';
+
+        //         if (!items.length) {
+        //             itemsTbody.innerHTML = `<tr><td colspan="6" class="opacity-70">Sin items.</td></tr>`;
+        //         } else {
+        //             for (const it of items) {
+        //                 const tr = document.createElement('tr');
+        //                 tr.innerHTML = `
+    //   <td>${it.position ?? ''}</td>
+    //   <td>${it.user_id ?? ''}</td>
+    //   <td>${escapeHtml(it.email ?? '')}</td>
+    //   <td>${escapeHtml(it.status ?? '')}</td>
+    //   <td>${escapeHtml(it.sent_at ?? '')}</td>
+    //   <td>${escapeHtml(it.last_error ?? '')}</td>
+    // `;
+        //                 itemsTbody.appendChild(tr);
+        //             }
+        //         }
+        //     }
+
+        //     const st = (json.batch?.status ?? '').toLowerCase();
+        //     if (st === 'done' || st === 'failed' || st === 'matched') {
+        //         stopAcceptedPolling();
+        //         stopPollingUI();
+
+        //         if (btnNewSearch) btnNewSearch.classList.remove('hidden');
+        //         if (waitMsg) waitMsg.textContent = 'La búsqueda terminó. Puedes iniciar una nueva solicitud.';
+        //     }
+        // }
+
+
         async function fetchBatchStatus(batchId) {
             const res = await fetch(`/student/batches/${batchId}/status`, {
                 headers: {
@@ -590,42 +717,44 @@
 
             if (!res.ok) return;
 
-            // resumen (debug)
-            if (batchStatusLabel) batchStatusLabel.textContent = json.batch?.status ?? '-';
-            if (sentCountLabel) sentCountLabel.textContent = String(json.batch?.sent_count ?? 0);
-            const sentCountNow = Number(json.batch?.sent_count ?? 0);
-            const nowMs = Date.now();
+            const batch = json.batch || {};
 
-            // delta vs último tick
-            let sentThisMin = '-';
+            // ====== Emails/min (batch_size) ======
+            const rate = (batch.batch_size !== undefined && batch.batch_size !== null) ?
+                String(batch.batch_size) :
+                '0';
+
+            if (ratePerMinLabel) ratePerMinLabel.textContent = rate;
+            if (wRate) wRate.textContent = rate;
+
+            // ====== Resumen debug ======
+            if (batchStatusLabel) batchStatusLabel.textContent = batch.status ?? '-';
+            if (sentCountLabel) sentCountLabel.textContent = String(batch.sent_count ?? 0);
+            if (queuedCountLabel) queuedCountLabel.textContent = String(batch.queued ?? 0);
+            if (expiresAtLabel) expiresAtLabel.textContent = batch.expires_at ?? '-';
+
+            // ====== Resumen pantalla espera ======
+            if (wStatus) wStatus.textContent = batch.status ?? '-';
+            if (wExpires) wExpires.textContent = batch.expires_at ?? '-';
+
+            // ====== Enviados este minuto (delta) ======
+            const sentCountNow = Number(batch.sent_count ?? 0);
+
+            // En el primer fetch queremos mostrar 0 (no "-")
+            let sentThisMin = '0';
             if (lastSentCount !== null) {
                 const diff = sentCountNow - lastSentCount;
                 sentThisMin = String(Math.max(0, diff));
             }
 
-            // pintar
             if (sentThisMinLabel) sentThisMinLabel.textContent = sentThisMin;
             if (wSentThisMin) wSentThisMin.textContent = sentThisMin;
 
             // actualizar memoria
             lastSentCount = sentCountNow;
-            lastSentAtMs = nowMs;
+            lastSentAtMs = Date.now();
 
-
-
-            if (queuedCountLabel) queuedCountLabel.textContent = String(json.batch?.queued ?? 0);
-            if (expiresAtLabel) expiresAtLabel.textContent = json.batch?.expires_at ?? '-';
-
-            // emails por minuto (batch_size)
-            const rate = json.batch?.batch_size ?? '-';
-            if (ratePerMinLabel) ratePerMinLabel.textContent = String(rate);
-            if (wRate) wRate.textContent = String(rate);
-
-            // resumen (pantalla espera)
-            if (wStatus) wStatus.textContent = json.batch?.status ?? '-';
-            if (wExpires) wExpires.textContent = json.batch?.expires_at ?? '-';
-
-            // tabla items (debug)
+            // ====== Tabla items (debug) ======
             const items = Array.isArray(json.items) ? json.items : [];
             if (itemsTbody) {
                 itemsTbody.innerHTML = '';
@@ -648,7 +777,8 @@
                 }
             }
 
-            const st = (json.batch?.status ?? '').toLowerCase();
+            // ====== Si terminó ======
+            const st = String(batch.status ?? '').toLowerCase();
             if (st === 'done' || st === 'failed' || st === 'matched') {
                 stopAcceptedPolling();
                 stopPollingUI();
@@ -702,42 +832,86 @@
         /* ==========================================================
            Arrancar modo espera
         ========================================================== */
+        // function startPolling(batchId) {
+        //     currentBatchId = batchId;
+        //     lastSentCount = null;
+        //     lastSentAtMs = null;
+        //     if (sentThisMinLabel) sentThisMinLabel.textContent = '-';
+        //     if (wSentThisMin) wSentThisMin.textContent = '-';
+
+        //     // ✅ ocultar selección, mostrar espera
+        //     showWaitScreen();
+
+        //     if (wBatchId) wBatchId.textContent = String(batchId);
+        //     if (btnNewSearch) btnNewSearch.classList.add('hidden');
+        //     if (waitMsg) waitMsg.textContent = '';
+
+        //     // reset accepted
+        //     acceptedAfterId = 0;
+        //     acceptedMap.clear();
+        //     renderAcceptedCards();
+        //     startAcceptedPolling(batchId);
+
+        //     // debug / status
+        //     if (batchIdLabel) batchIdLabel.textContent = String(batchId);
+        //     if (stopPollingBtn) {
+        //         stopPollingBtn.disabled = false;
+        //         stopPollingBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+        //     }
+
+        //     fetchBatchStatus(batchId);
+        //     startCountdown();
+
+        //     if (pollTimer) clearInterval(pollTimer);
+        //     pollTimer = setInterval(() => {
+        //         fetchBatchStatus(batchId);
+        //         resetCountdown();
+        //     }, 60000);
+        // }
+
         function startPolling(batchId) {
             currentBatchId = batchId;
+
+            // reset contadores (para que no quede "-" por estados anteriores)
             lastSentCount = null;
             lastSentAtMs = null;
-            if (sentThisMinLabel) sentThisMinLabel.textContent = '-';
-            if (wSentThisMin) wSentThisMin.textContent = '-';
+            if (sentThisMinLabel) sentThisMinLabel.textContent = '0';
+            if (wSentThisMin) wSentThisMin.textContent = '0';
+            if (ratePerMinLabel) ratePerMinLabel.textContent = '-';
+            if (wRate) wRate.textContent = '-';
 
-            // ✅ ocultar selección, mostrar espera
+            // UI
             showWaitScreen();
 
             if (wBatchId) wBatchId.textContent = String(batchId);
             if (btnNewSearch) btnNewSearch.classList.add('hidden');
             if (waitMsg) waitMsg.textContent = '';
 
-            // reset accepted
+            // reset aceptados
             acceptedAfterId = 0;
             acceptedMap.clear();
             renderAcceptedCards();
             startAcceptedPolling(batchId);
 
-            // debug / status
+            // debug
             if (batchIdLabel) batchIdLabel.textContent = String(batchId);
             if (stopPollingBtn) {
                 stopPollingBtn.disabled = false;
                 stopPollingBtn.classList.remove('opacity-50', 'cursor-not-allowed');
             }
 
+            // primer fetch inmediato
             fetchBatchStatus(batchId);
             startCountdown();
 
+            // polling cada 60s
             if (pollTimer) clearInterval(pollTimer);
             pollTimer = setInterval(() => {
                 fetchBatchStatus(batchId);
                 resetCountdown();
             }, 60000);
         }
+
 
         stopPollingBtn?.addEventListener('click', () => stopPollingUI());
 
