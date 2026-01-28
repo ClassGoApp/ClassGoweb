@@ -77,10 +77,10 @@
                         Enviados: <span id="sentCountLabel">0</span>
                     </div>
                     <div class="text-sm opacity-70">
-                        Emails/min: <b id="ratePerMinLabel">-</b>
+                        Emails/min: <b id="wRate">-</b>
                     </div>
                     <div class="text-sm opacity-70">
-                        Enviados este minuto: <b id="sentThisMinLabel">-</b>
+                        Enviados este minuto: <b id="wSentThisMin">-</b>
                     </div>
 
                     <div class="text-sm opacity-70">
@@ -308,8 +308,8 @@
 
     <script>
         /* ==========================================================
-                                                           BLOQUE A) SELECCIÓN DE MATERIA
-                                                        ========================================================== */
+                                                               BLOQUE A) SELECCIÓN DE MATERIA
+                                                            ========================================================== */
         let selectedSubjectId = null;
         let subjectsCache = [];
         let selectedCardEl = null;
@@ -595,21 +595,24 @@
         //     acceptedAfterId = Number(json.next_after_id || acceptedAfterId);
         //     renderAcceptedCards();
         // }
-async function fetchAcceptedTutors(batchId) {
-  const res = await fetch(`/student/batches/${batchId}/accepted-tutors?after_id=${acceptedAfterId}&limit=50`, {
-    headers: { 'Accept': 'application/json' },
-    credentials: 'same-origin'
-  });
+        async function fetchAcceptedTutors(batchId) {
+            const res = await fetch(
+            `/student/batches/${batchId}/accepted-tutors?after_id=${acceptedAfterId}&limit=50`, {
+                headers: {
+                    'Accept': 'application/json'
+                },
+                credentials: 'same-origin'
+            });
 
-  const json = await res.json().catch(() => ({}));
-  if (!res.ok) return;
+            const json = await res.json().catch(() => ({}));
+            if (!res.ok) return;
 
-  const data = Array.isArray(json.data) ? json.data : [];
-  for (const row of data) acceptedMap.set(row.id, row);
+            const data = Array.isArray(json.data) ? json.data : [];
+            for (const row of data) acceptedMap.set(row.id, row);
 
-  acceptedAfterId = Number(json.next_after_id || acceptedAfterId);
-  renderAcceptedCards();
-}
+            acceptedAfterId = Number(json.next_after_id || acceptedAfterId);
+            renderAcceptedCards();
+        }
 
 
 
@@ -782,7 +785,7 @@ async function fetchAcceptedTutors(batchId) {
             if (st === 'done' || st === 'failed' || st === 'matched') {
                 stopAcceptedPolling();
                 stopPollingUI();
-
+                currentBatchId = null;
                 if (btnNewSearch) btnNewSearch.classList.remove('hidden');
                 if (waitMsg) waitMsg.textContent = 'La búsqueda terminó. Puedes iniciar una nueva solicitud.';
             }
