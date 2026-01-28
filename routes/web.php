@@ -280,8 +280,8 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
 
             Route::post('/batches/start', [SubjectPickerController::class, 'start']); //iniciar batch (este es para mi btn go)
             
-            Route::post('/batches/{batch}/choose', [SubjectPickerController::class, 'chooseTutor']) //elegir tutor (cuando el tutor para luego pagar)
-                ->name('student.batches.choose');
+            Route::post('/batches/{batch}/choose', [SubjectPickerController::class, 'chooseTutor'])
+                ->name('batches.choose');
 
             Route::get('/batches/{batch}/accepted-tutors', [SubjectPickerController::class, 'acceptedTutors']);
 
