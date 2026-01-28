@@ -260,7 +260,6 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
             Route::get('/subjects/{subject_id}/tutors/available-now', [SubjectPickerController::class, 'tutorsAvailableNow']);
             Route::get('/subjects/{subject_id}/tutors/not-available-now', [SubjectPickerController::class, 'tutorsNotAvailableNow']);
 
-            Route::post('/batches/start', [SubjectPickerController::class, 'start']);
             Route::get('/batches/{batch}/status', [SubjectPickerController::class, 'status']);
             Route::get('/batches/active', [SubjectPickerController::class, 'active']);
             Route::get('/subjects/{subject_id}/tutors', [SubjectPickerController::class, 'tutorsBySubject']);
@@ -272,7 +271,7 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
             Route::post('/batches/start', [SubjectPickerController::class, 'start']);
             
             Route::post('/batches/{batch}/choose', [SubjectPickerController::class, 'chooseTutor'])
-                ->name('student.batches.choose');
+                ->name('batches.choose');
 
             Route::get('/batches/{batch}/accepted-tutors', [SubjectPickerController::class, 'acceptedTutors']);
 

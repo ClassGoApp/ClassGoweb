@@ -426,62 +426,62 @@ class SubjectPickerController extends Controller
     }
 
     public function acceptedTutors(Request $request, EmailBatch $batch)
-{
-    // seguridad: solo el dueño ve su batch
-    if ((int)$batch->created_by !== (int) Auth::id()) {
-        return response()->json(['message' => 'Forbidden'], 403);
+    {
+        // seguridad: solo el dueño ve su batch
+        if ((int)$batch->created_by !== (int) Auth::id()) {
+            return response()->json(['message' => 'Forbidden'], 403);
+        }
+
+        $afterId = (int) $request->query('after_id', 0);
+        $limit   = max(1, min((int)$request->query('limit', 20), 50));
+
+        $rows = DB::table('email_batch_items as ebi')
+            ->join('users as u', 'u.id', '=', 'ebi.user_id')
+            ->leftJoin('profiles as p', 'p.user_id', '=', 'ebi.user_id')
+            ->leftJoin('user_reviews as ur', 'ur.user_id', '=', 'ebi.user_id')
+            ->leftJoin('reviews as r', function ($join) {
+                $join->on('r.id', '=', 'ur.review_id')
+                    ->where('r.status', '=', 'active');
+            })
+            ->where('ebi.batch_id', $batch->id)
+            ->whereNotNull('ebi.accepted_at')
+            ->where('ebi.id', '>', $afterId)
+            ->groupBy(
+                'ebi.id',
+                'ebi.user_id',
+                'ebi.accepted_at',
+                'u.email',
+                'p.first_name',
+                'p.last_name',
+                'p.image',
+                'p.verified_at',
+                'p.price'
+            )
+            ->orderBy('ebi.id')
+            ->limit($limit)
+            ->select([
+                'ebi.id',
+                'ebi.user_id',
+                'ebi.accepted_at',
+                'u.email',
+                'p.first_name',
+                'p.last_name',
+                'p.image',
+                'p.price',
+                'p.verified_at',
+                DB::raw("CASE WHEN p.verified_at IS NULL THEN 0 ELSE 1 END as is_verified"),
+
+                DB::raw('ROUND(COALESCE(AVG(r.rating), 0), 1) as rating'),
+            ])
+            ->get();
+
+        return response()->json([
+            'batch_id' => $batch->id,
+            'count' => $rows->count(),
+            'data' => $rows,
+            'next_after_id' => $rows->last()->id ?? $afterId,
+        ]);
     }
-
-    $afterId = (int) $request->query('after_id', 0);
-    $limit   = max(1, min((int)$request->query('limit', 20), 50));
-
-    $rows = DB::table('email_batch_items as ebi')
-        ->join('users as u', 'u.id', '=', 'ebi.user_id')
-        ->leftJoin('profiles as p', 'p.user_id', '=', 'ebi.user_id')
-        ->leftJoin('user_reviews as ur', 'ur.user_id', '=', 'ebi.user_id')
-        ->leftJoin('reviews as r', function ($join) {
-            $join->on('r.id', '=', 'ur.review_id')
-                 ->where('r.status', '=', 'active');
-        })
-        ->where('ebi.batch_id', $batch->id)
-        ->whereNotNull('ebi.accepted_at')
-        ->where('ebi.id', '>', $afterId)
-        ->groupBy(
-            'ebi.id',
-            'ebi.user_id',
-            'ebi.accepted_at',
-            'u.email',
-            'p.first_name',
-            'p.last_name',
-            'p.image',
-            'p.verified_at',
-            'p.price'
-        )
-        ->orderBy('ebi.id')
-        ->limit($limit)
-        ->select([
-            'ebi.id',
-            'ebi.user_id',
-            'ebi.accepted_at',
-
-            'p.first_name',
-            'p.last_name',
-            'p.image',
-            'p.price',
-            'p.verified_at',
-            DB::raw("CASE WHEN p.verified_at IS NULL THEN 0 ELSE 1 END as is_verified"),
-
-            DB::raw('ROUND(COALESCE(AVG(r.rating), 0), 1) as rating'),
-        ])
-        ->get();
-
-    return response()->json([
-        'batch_id' => $batch->id,
-        'count' => $rows->count(),
-        'data' => $rows,
-        'next_after_id' => $rows->last()->id ?? $afterId,
-    ]);
-}
 
 
     public function chooseTutor(Request $request, EmailBatch $batch)
@@ -540,7 +540,7 @@ class SubjectPickerController extends Controller
                         'chosen_at' => optional($alreadyChosen->chosen_at)->toDateTimeString(),
                     ],
                     // AJUSTA ESTA RUTA A TU PROYECTO (o devuelve null si aún no existe)
-                    'redirect_to' =>null, 
+                    'redirect_to' => null,
                     // route('student.payments.show', ['batch' => $batch->id]),
                 ]);
             }
@@ -607,7 +607,7 @@ class SubjectPickerController extends Controller
                     'chosen_at' => optional($item->chosen_at)->toDateTimeString(),
                 ],
                 // AJUSTA ESTA RUTA
-                'redirect_to' =>null, 
+                'redirect_to' => null,
                 // route('student.payments.show', ['batch' => $batch->id]),
             ]);
         });
