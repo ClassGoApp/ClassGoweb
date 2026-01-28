@@ -283,7 +283,7 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
             Route::post('/batches/{batch}/choose', [SubjectPickerController::class, 'chooseTutor']) //elegir tutor (cuando el tutor para luego pagar)
                 ->name('student.batches.choose');
 
-            Route::get('/batches/{batch}/accepted', [SubjectPickerController::class, 'acceptedTutors']);//tutores que han aceptado(esto tiene datos para la card)
+            Route::get('/batches/{batch}/accepted-tutors', [SubjectPickerController::class, 'acceptedTutors']);
 
             /////////////////////////////////////////////////////////////////////////////////////////////////////////
             Route::get('profile', fn() => redirect('tutor.profile.personal-details'))->name('profile');
