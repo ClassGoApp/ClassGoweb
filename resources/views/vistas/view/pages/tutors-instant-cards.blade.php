@@ -215,25 +215,25 @@
         }
 
         /* @media (max-width: 640px) {
-                                                .subject-grid {
-                                                    grid-template-columns: repeat(2, 1fr);
-                                                }
-                                                .subject-card-btn {
-                                                    width: 100%;
-                                                    flex-direction: column;
-                                                    justify-content: center;
-                                                }
-                                                .subject-meta {
-                                                    text-align: center;
-                                                }
-                                                
-                                            } */
+                                                        .subject-grid {
+                                                            grid-template-columns: repeat(2, 1fr);
+                                                        }
+                                                        .subject-card-btn {
+                                                            width: 100%;
+                                                            flex-direction: column;
+                                                            justify-content: center;
+                                                        }
+                                                        .subject-meta {
+                                                            text-align: center;
+                                                        }
+                                                        
+                                                    } */
 
         /* @media (min-width: 1024px) {
-                        .subject-grid {
-                            grid-template-columns: repeat(5, 1fr);
-                        }
-                    } */
+                                .subject-grid {
+                                    grid-template-columns: repeat(5, 1fr);
+                                }
+                            } */
 
         .subject-card-btn {
             display: flex;
@@ -1261,13 +1261,13 @@
 
           <div class="subject-grid">
             ${items.map(sub => `
-                                                              <button class="subject-card-btn" onclick="seleccionarMateria(this, ${sub.id}, '${sub.name}')">
-                                                                <div class="subject-initial">${sub.name.charAt(0)}</div>
-                                                                <div class="subject-meta">
-                                                                  <div class="subject-title">${sub.name}</div>
-                                                                </div>
-                                                              </button>
-                                                            `).join('')}
+                                                                      <button class="subject-card-btn" onclick="seleccionarMateria(this, ${sub.id}, '${sub.name}')">
+                                                                        <div class="subject-initial">${sub.name.charAt(0)}</div>
+                                                                        <div class="subject-meta">
+                                                                          <div class="subject-title">${sub.name}</div>
+                                                                        </div>
+                                                                      </button>
+                                                                    `).join('')}
           </div>
         </section>
       `;
@@ -1305,85 +1305,88 @@
          * ✅ Ahora SOLO inicia el batch (notifica tutores por correo)
          * y deja el radar como pantalla de "espera".
          */
-        async function selectSubject(subjectName, subjectId) {
-            ocultarFabTutoria();
+        let currentBatchId = null; // igual que tu vista de pruebas
 
-            // 1) UI: cambiar a vista radar
+        async function selectSubject(subjectName, subjectId) {
+            if (currentBatchId) {
+                alert('Ya hay una búsqueda activa. Continúa la espera.');
+                return;
+            }
+            if (!subjectId) {
+                alert('Selecciona una materia primero.');
+                return;
+            }
+
+            ocultarFabTutoria();
+            fab.disabled = true; // evita doble click
+            fab.style.opacity = '0.6';
+
+            // 1) UI: cambiar a radar
             document.getElementById('selected-subject-name').innerText = subjectName;
             document.getElementById('view-selection').classList.add('hidden');
             document.getElementById('view-browse').classList.remove('hidden');
-
             document.body.classList.add('lock-scroll');
 
-            // 2) UI: reset radar / mensajes
-            const radar = document.getElementById('radar-ui');
             const status = document.getElementById('status-message');
-            const radarVisual = document.getElementById('radar-visual');
-            const grid = document.getElementById('tutor-results');
-
-            // No mostrar cards por ahora
-            if (grid) grid.innerHTML = '';
-
-            if (radar) radar.classList.remove('results-found');
-            if (radarVisual) radarVisual.classList.remove('is-hidden');
-            if (status) status.innerText = 'Notificando a los expertos...';
+            if (status) status.innerText = 'Creando batch...';
 
             try {
-                // 3) ✅ Llamar al backend para iniciar notificación / batch
-                // OJO: usa tu ruta real: /batches/start (según tu routes)
-                const json = await postJson('/batches/start', {
-                    subject_id: subjectId
+                const csrf = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+                const res = await fetch('/student/batches/start', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        ...(csrf ? {
+                            'X-CSRF-TOKEN': csrf
+                        } : {}),
+                    },
+                    credentials: 'same-origin',
+                    body: JSON.stringify({
+                        subject_id: subjectId
+                    }),
                 });
 
-                // 4) UI: mostrar mensaje de éxito (sin cards)
-                // Si el backend te devuelve batch_id, guárdalo por si luego consultas status.
-                // Ej: json.data.batch_id (depende de tu backend)
-                const batchId = json?.data?.batch_id || json?.batch_id || null;
+                const json = await res.json().catch(() => ({}));
 
-                if (status) {
-                    status.innerText = batchId ?
-                        `Solicitud enviada. Notificando tutores (Batch #${batchId})...` :
-                        `Solicitud enviada. Notificando tutores...`;
+                if (!res.ok) {
+                    const msg = json.message ?? `HTTP ${res.status}`;
+                    if (status) status.innerText = 'No se pudo iniciar la solicitud.';
+                    alert('Error al iniciar batch: ' + msg);
+                    return;
                 }
 
-                // Opcional: bajar radar a tamaño "pequeño" (como modo resultados)
-                // aunque todavía no haya cards, solo para que no sea full screen.
-                if (radar) radar.classList.add('results-found');
-                if (radarVisual) radarVisual.classList.add('is-hidden');
+                // ✅ batch_id puede venir como json.batch_id (como tu vista test)
+                const batchId = json.batch_id ?? json?.data?.batch_id ?? null;
 
-                // Desbloquear scroll ya que ya no necesitas bloquear
-                document.body.classList.remove('lock-scroll');
-
-                // Si quieres, muestra un texto placeholder donde irían tutores
-                if (grid) {
-                    grid.innerHTML = `
-        <div style="padding:2rem; text-align:center; color: var(--text-muted); font-weight:800;">
-          Estamos contactando tutores disponibles para
-          <span style="color:var(--primary-color)">${subjectName}</span>.
-          <div style="margin-top:.7rem; font-size:.85rem; opacity:.85; font-weight:700;">
-            En breve verás opciones aquí.
-          </div>
-        </div>
-      `;
-                    grid.classList.add('active');
+                if (!batchId) {
+                    if (status) status.innerText = 'Batch creado, pero no llegó batch_id.';
+                    alert('Batch creado pero no llegó batch_id en respuesta.');
+                    return;
                 }
 
-            } catch (err) {
-                console.error(err);
+                // 2) ✅ Guardamos batch activo
+                currentBatchId = batchId;
 
-                if (status) status.innerText = 'No se pudo iniciar la solicitud.';
-                if (grid) {
-                    grid.innerHTML = `
-        <div style="padding:2rem; text-align:center; color: var(--text-muted); font-weight:800;">
-          Ocurrió un error al notificar tutores.
-          <div style="margin-top:.6rem; font-size:.85rem; opacity:.85;">
-            ${String(err.message)}
-          </div>
-        </div>
-      `;
-                    grid.classList.add('active');
+                // 3) UI: mostrar éxito
+                if (status) status.innerText = `Solicitud enviada. Notificando tutores (Batch #${batchId})...`;
+
+                // 4) (Opcional) aquí arrancas el polling real, como tu vista de pruebas
+                if (typeof startPolling === 'function') {
+                    startPolling(batchId);
+                } else {
+                    // si aún no copiaste polling, al menos desbloquea scroll
+                    document.body.classList.remove('lock-scroll');
                 }
 
+            } catch (e) {
+                console.error(e);
+                if (status) status.innerText = 'Error JS al iniciar la solicitud.';
+                alert('Error JS: ' + e.message);
+            } finally {
+                fab.disabled = false;
+                fab.style.opacity = '';
                 document.body.classList.remove('lock-scroll');
             }
         }
