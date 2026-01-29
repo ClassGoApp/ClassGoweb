@@ -146,7 +146,7 @@ new #[Layout('layouts.guest')] class extends Component
             overflow: hidden;
             width: 850px;
             max-width: 100%;
-            min-height: 600px;
+            min-height: 650px;
             box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
         }
 
@@ -156,6 +156,7 @@ new #[Layout('layouts.guest')] class extends Component
             transition: all 0.6s ease-in-out;
             background: #fff;
             display: flex; align-items: center; justify-content: center;
+            overflow-y: auto;
         }
 
         .cg-login { left: 0; width: 50%; z-index: 2; }
@@ -293,11 +294,31 @@ new #[Layout('layouts.guest')] class extends Component
             align-items: center;
         }
         .am-signinoption_br {
-            margin-bottom: 8px;
-            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            width: 100%;
+            margin-bottom: 15px;
+            font-size: 0.85rem;
             color: #888;
-            display: block;
+            font-weight: 500;
         }
+
+        .am-signinoption_br::before,
+        .am-signinoption_br::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #eee; /* La línea gris */
+        }
+
+        .am-signinoption_br:not(:empty)::before {
+            margin-right: 15px;
+        }
+
+        .am-signinoption_br:not(:empty)::after {
+            margin-left: 15px;
+        }
+
         .am-signinoption_btn {
             width: 100%; 
             padding: 8px; 
@@ -583,28 +604,7 @@ new #[Layout('layouts.guest')] class extends Component
                             </div>
                         @endif
 
-                        @if(isDemoSite())
-                            <div class="form-group" style="margin-top: 20px;">
-                                @php
-                                    $tutor_name   = !empty(setting('_lernen.tutor_display_name')) ? setting('_lernen.tutor_display_name') : __('general.tutor');
-                                    $student_name = !empty(setting('_lernen.student_display_name')) ? setting('_lernen.student_display_name') : __('general.student');
-                                @endphp
-                                <div class="am-login-options">
-                                    <em>{{ __('auth.login_as') }}</em>
-                                    <button type="button" class="am-btn" x-data @click="form.email = 'anthony@amentotech.com'; form.password = 'google'">
-                                        {{$tutor_name}}
-                                    </button>
-
-                                    <button type="button" class="am-btn" x-data @click="form.email = 'student@amentotech.com'; form.password = 'google'">
-                                        {{ $student_name }}
-                                    </button>
-
-                                    <button type="button" class="am-btn" x-data @click="form.email = 'admin@amentotech.com'; form.password = 'google'">
-                                        {{ __('auth.admin') }}
-                                    </button>
-                                </div>
-                            </div>
-                        @endif
+                        
 
                         <p class="cg-mobile-toggle">¿Nuevo aquí? <a href="#" @click.prevent="isRegister = true">Crea una cuenta</a></p>
                     </form>
