@@ -13,6 +13,9 @@ use App\Models\EmailBatchItem;
 
 use Illuminate\Support\Facades\Auth;
 
+
+use Illuminate\Support\Facades\Artisan;
+
 class SubjectPickerController extends Controller
 {
     public function index()
@@ -166,7 +169,7 @@ class SubjectPickerController extends Controller
 
 
         // ⬅️ define tu tiempo de espera real
-        $timeoutMinutes = 10;
+        $timeoutMinutes = 5;
 
         return DB::transaction(function () use ($subjectId, $studentId, $timeoutMinutes) {
 
@@ -249,6 +252,12 @@ class SubjectPickerController extends Controller
                     'last_error' => 'no_candidates',
                 ]);
             }
+            // ✅ Primer lote INSTANTÁNEO (solo si hubo candidatos)
+            if ($items) {
+                DB::afterCommit(function () use ($batch) {
+                    Artisan::call('batches:tick', ['--batch_id' => $batch->id]);
+                });
+            }
 
             return response()->json([
                 'success' => true,
@@ -262,6 +271,12 @@ class SubjectPickerController extends Controller
 
     public function status(EmailBatch $batch)
     {
+
+        $expiresAt = $batch->expires_at;
+
+        $expiresAtMs = $expiresAt ? $expiresAt->getTimestamp() * 1000 : null;
+        $secondsLeft = $expiresAt ? now()->diffInSeconds($expiresAt, false) : null;
+        $serverNowMs = now()->getTimestamp() * 1000;
         // (opcional) seguridad: solo el dueño del batch puede ver
         if ((int)$batch->created_by !== (int) Auth::id()) {
             return response()->json(['message' => 'Forbidden'], 403);
@@ -289,7 +304,7 @@ class SubjectPickerController extends Controller
         $queued = EmailBatchItem::query()
             ->where('batch_id', $batch->id)
             ->count();
-
+       
         return response()->json([
             'batch' => [
                 'id' => $batch->id,
@@ -300,6 +315,11 @@ class SubjectPickerController extends Controller
                 'expires_at' => optional($batch->expires_at)->toDateTimeString(),
                 'queued' => $queued,
                 'last_error' => $batch->last_error,
+
+                'expires_at_ms' => $expiresAt ? $expiresAt->getTimestamp() * 1000 : null,
+                'seconds_left' => $expiresAt ? now()->diffInSeconds($expiresAt, false) : null,
+
+                'server_now_ms' => $serverNowMs,
             ],
             'items' => $items,
         ]);
@@ -418,24 +438,98 @@ class SubjectPickerController extends Controller
         }
 
         // 4) Mostrar vista "En espera..."
+        // return view('vistas.view.pages.waitlistTutor', [
+        //     'status' => 'ok',
+        //     'batch_id' => $batch->id,
+        //     'subject_id' => $batch->subject_id,
+        // ]);
+
+        $expiresAt = $batch->expires_at;
+
+        $secondsLeft = $expiresAt ? now()->diffInSeconds($expiresAt, false) : null;
+
+        // ✅ timestamp absoluto (servidor) en milisegundos
+        $expiresAtMs = $expiresAt ? ($expiresAt->getTimestamp() * 1000) : null;
+
         return view('vistas.view.pages.waitlistTutor', [
-            'status' => 'ok',
+            'status' => ($secondsLeft !== null && $secondsLeft <= 0) ? 'expired' : 'ok',
             'batch_id' => $batch->id,
             'subject_id' => $batch->subject_id,
+            'expires_at' => optional($expiresAt)->toDateTimeString(),
+            'seconds_left' => $secondsLeft,
+            'expires_at_ms' => $expiresAtMs,   // ✅ NUEVO
         ]);
     }
 
+    // public function acceptedTutors(Request $request, EmailBatch $batch)
+    // {
+    //     // seguridad: solo el dueño ve su batch
+    //     if ((int)$batch->created_by !== (int) Auth::id()) {
+    //         return response()->json(['message' => 'Forbidden'], 403);
+    //     }
+
+    //     $afterId = (int) $request->query('after_id', 0);
+    //     $limit   = max(1, min((int)$request->query('limit', 20), 50));
+
+    //     $rows = DB::table('email_batch_items as ebi')
+    //         ->join('users as u', 'u.id', '=', 'ebi.user_id')
+    //         ->leftJoin('profiles as p', 'p.user_id', '=', 'ebi.user_id')
+    //         ->leftJoin('user_reviews as ur', 'ur.user_id', '=', 'ebi.user_id')
+    //         ->leftJoin('reviews as r', function ($join) {
+    //             $join->on('r.id', '=', 'ur.review_id')
+    //                 ->where('r.status', '=', 'active');
+    //         })
+    //         ->where('ebi.batch_id', $batch->id)
+    //         ->whereNotNull('ebi.accepted_at')
+    //         ->where('ebi.id', '>', $afterId)
+    //         ->groupBy(
+    //             'ebi.id',
+    //             'ebi.user_id',
+    //             'ebi.accepted_at',
+    //             'u.email',
+    //             'p.first_name',
+    //             'p.last_name',
+    //             'p.image',
+    //             'p.verified_at',
+    //             'p.price'
+    //         )
+    //         ->orderBy('ebi.id')
+    //         ->limit($limit)
+    //         ->select([
+    //             'ebi.id',
+    //             'ebi.user_id',
+    //             'ebi.accepted_at',
+    //             'u.email',
+    //             'p.first_name',
+    //             'p.last_name',
+    //             'p.image',
+    //             'p.price',
+    //             'p.verified_at',
+    //             DB::raw("CASE WHEN p.verified_at IS NULL THEN 0 ELSE 1 END as is_verified"),
+
+    //             DB::raw('ROUND(COALESCE(AVG(r.rating), 0), 1) as rating'),
+    //         ])
+    //         ->get();
+
+    //     return response()->json([
+    //         'batch_id' => $batch->id,
+    //         'count' => $rows->count(),
+    //         'data' => $rows,
+    //         'next_after_id' => $rows->last()->id ?? $afterId,
+    //     ]);
+    // }
+
     public function acceptedTutors(Request $request, EmailBatch $batch)
     {
-        // seguridad: solo el dueño ve su batch
         if ((int)$batch->created_by !== (int) Auth::id()) {
             return response()->json(['message' => 'Forbidden'], 403);
         }
 
+        $afterAt = $request->query('after_accepted_at'); // "2026-01-29 12:34:56"
         $afterId = (int) $request->query('after_id', 0);
         $limit   = max(1, min((int)$request->query('limit', 20), 50));
 
-        $rows = DB::table('email_batch_items as ebi')
+        $q = DB::table('email_batch_items as ebi')
             ->join('users as u', 'u.id', '=', 'ebi.user_id')
             ->leftJoin('profiles as p', 'p.user_id', '=', 'ebi.user_id')
             ->leftJoin('user_reviews as ur', 'ur.user_id', '=', 'ebi.user_id')
@@ -444,19 +538,31 @@ class SubjectPickerController extends Controller
                     ->where('r.status', '=', 'active');
             })
             ->where('ebi.batch_id', $batch->id)
-            ->whereNotNull('ebi.accepted_at')
-            ->where('ebi.id', '>', $afterId)
-            ->groupBy(
-                'ebi.id',
-                'ebi.user_id',
-                'ebi.accepted_at',
-                'u.email',
-                'p.first_name',
-                'p.last_name',
-                'p.image',
-                'p.verified_at',
-                'p.price'
-            )
+            ->whereNotNull('ebi.accepted_at');
+
+        // Cursor por accepted_at (y desempate por id)
+        if ($afterAt) {
+            $q->where(function ($w) use ($afterAt, $afterId) {
+                $w->where('ebi.accepted_at', '>', $afterAt)
+                    ->orWhere(function ($w2) use ($afterAt, $afterId) {
+                        $w2->where('ebi.accepted_at', '=', $afterAt)
+                            ->where('ebi.id', '>', $afterId);
+                    });
+            });
+        }
+
+        $rows = $q->groupBy(
+            'ebi.id',
+            'ebi.user_id',
+            'ebi.accepted_at',
+            'u.email',
+            'p.first_name',
+            'p.last_name',
+            'p.image',
+            'p.verified_at',
+            'p.price'
+        )
+            ->orderBy('ebi.accepted_at')   // 👈 clave
             ->orderBy('ebi.id')
             ->limit($limit)
             ->select([
@@ -470,18 +576,22 @@ class SubjectPickerController extends Controller
                 'p.price',
                 'p.verified_at',
                 DB::raw("CASE WHEN p.verified_at IS NULL THEN 0 ELSE 1 END as is_verified"),
-
                 DB::raw('ROUND(COALESCE(AVG(r.rating), 0), 1) as rating'),
             ])
             ->get();
+            
+
+        $last = $rows->last();
 
         return response()->json([
             'batch_id' => $batch->id,
             'count' => $rows->count(),
             'data' => $rows,
-            'next_after_id' => $rows->last()->id ?? $afterId,
+            'next_after_accepted_at' => $last?->accepted_at,
+            'next_after_id' => $last?->id ?? $afterId,
         ]);
     }
+
 
 
     public function chooseTutor(Request $request, EmailBatch $batch)
