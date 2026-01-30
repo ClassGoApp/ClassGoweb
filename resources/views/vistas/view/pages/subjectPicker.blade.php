@@ -11,7 +11,7 @@
 
             <!-- BLOQUE A) Selección de materia -->
             <div class="card">
-                <div class="card-title">1) Selecciona una materia</div>
+                <div class="card-title">1 Selecciona una materia</div>
 
                 <div class="flex flex-col md:flex-row gap-3 items-start md:items-center">
                     <input id="search" type="text" placeholder="Buscar materia..."
@@ -147,6 +147,10 @@
                     </div>
                     <div class="text-sm opacity-70">
                         Enviados este minuto: <b id="sentThisMinLabel">-</b>
+
+                    </div>
+                    <div class="text-sm opacity-70">
+                        Expira en: <b id="batchExpireCountdown" class="expire-normal">--:--</b>
                     </div>
                 </div>
 
@@ -302,17 +306,53 @@
             padding: 10px 12px;
             vertical-align: top;
         }
+
+        .expire-normal {}
+
+        .expire-soon {
+            color: #f59e0b;
+        }
+
+        /* naranja */
+        .expire-dead {
+            color: #ef4444;
+        }
+
+        /* rojo */
+
+
+        @keyframes pulseWarn {
+
+            0%,
+            100% {
+                transform: scale(1)
+            }
+
+            50% {
+                transform: scale(1.06)
+            }
+        }
+
+        .expire-pulse {
+            animation: pulseWarn 0.8s infinite;
+        }
     </style>
 
 
 
     <script>
         /* ==========================================================
-                                                               BLOQUE A) SELECCIÓN DE MATERIA
-                                                            ========================================================== */
+                                                                                                                       BLOQUE A) SELECCIÓN DE MATERIA
+                                                               ========================================================== */
         let selectedSubjectId = null;
         let subjectsCache = [];
         let selectedCardEl = null;
+
+
+
+        let batchExpiresAtMs = null;
+        let batchExpireTimer = null;
+        const batchExpireCountdownEl = document.getElementById('batchExpireCountdown');
 
         const grid = document.getElementById('grid');
         const search = document.getElementById('search');
@@ -473,6 +513,81 @@
             }, 1000);
         }
 
+        function parseExpiresAtToMs(expiresAtStr) {
+            if (!expiresAtStr) return null;
+
+            // Espera: "YYYY-MM-DD HH:mm:ss" (Laravel toDateTimeString)
+            const s = String(expiresAtStr).trim();
+            const [datePart, timePart] = s.split(' ');
+            if (!datePart || !timePart) return null;
+
+            const [Y, M, D] = datePart.split('-').map(Number);
+            const [h, m, sec] = timePart.split(':').map(Number);
+
+            if (![Y, M, D, h, m].every(Number.isFinite)) return null;
+
+            // Fecha/hora LOCAL del navegador (lo que ve el estudiante)
+            return new Date(Y, (M - 1), D, h, m, Number.isFinite(sec) ? sec : 0).getTime();
+        }
+
+
+        function fmtMMSS(totalSeconds) {
+            const s = Math.max(0, Math.floor(totalSeconds));
+            const m = String(Math.floor(s / 60)).padStart(2, '0');
+            const r = String(s % 60).padStart(2, '0');
+            return `${m}:${r}`;
+        }
+
+        function startBatchExpireCountdown() {
+            if (batchExpireTimer) clearInterval(batchExpireTimer);
+
+            // ✅ AQUÍ VA TU BLOQUE
+            batchExpireTimer = setInterval(() => {
+                if (!batchExpireCountdownEl) return;
+
+                if (!batchExpiresAtMs) {
+                    batchExpireCountdownEl.textContent = '--:--';
+                    batchExpireCountdownEl.classList.remove('expire-soon', 'expire-dead');
+                    batchExpireCountdownEl.classList.add('expire-normal');
+                    return;
+                }
+
+                const diffSec = Math.ceil((batchExpiresAtMs - Date.now()) / 1000);
+
+                if (diffSec <= 0) {
+                    batchExpireCountdownEl.textContent = '00:00';
+                    batchExpireCountdownEl.classList.remove('expire-normal', 'expire-soon');
+                    batchExpireCountdownEl.classList.add('expire-dead');
+                    if (waitMsg) waitMsg.textContent = 'El batch expiró. Inicia una nueva búsqueda.';
+                    return;
+                }
+
+                batchExpireCountdownEl.textContent = fmtMMSS(diffSec);
+
+                if (diffSec <= 30) {
+                    batchExpireCountdownEl.classList.remove('expire-normal', 'expire-dead');
+                    batchExpireCountdownEl.classList.add('expire-soon');
+                    if (waitMsg && !waitMsg.textContent) {
+                        waitMsg.textContent = '⚠️ Expira pronto...';
+                    }
+                } else {
+                    batchExpireCountdownEl.classList.remove('expire-soon', 'expire-dead');
+                    batchExpireCountdownEl.classList.add('expire-normal');
+                    if (waitMsg && waitMsg.textContent === '⚠️ Expira pronto...') {
+                        waitMsg.textContent = '';
+                    }
+                }
+            }, 1000);
+        }
+
+        function stopBatchExpireCountdown() {
+            if (batchExpireTimer) clearInterval(batchExpireTimer);
+            batchExpireTimer = null;
+            batchExpiresAtMs = null;
+            if (batchExpireCountdownEl) batchExpireCountdownEl.textContent = '--:--';
+        }
+
+
         function stopPollingUI() {
             if (pollTimer) clearInterval(pollTimer);
             if (countdownTimer) clearInterval(countdownTimer);
@@ -491,6 +606,8 @@
         let acceptedTimer = null;
         let acceptedAfterId = 0;
         let acceptedMap = new Map();
+        let acceptedAfterAcceptedAt = '';
+
         const sentThisMinLabel = document.getElementById('sentThisMinLabel');
         const wSentThisMin = document.getElementById('wSentThisMin');
 
@@ -577,7 +694,7 @@
 
         // async function fetchAcceptedTutors(batchId) {
         //     const res = await fetch(
-        //         `/student/batches/${batchId}/accepted?after_id=${acceptedAfterId}&limit=50`, {
+        //         `/student/batches/${batchId}/accepted-tutors?after_id=${acceptedAfterId}&limit=50`, {
         //             headers: {
         //                 'Accept': 'application/json'
         //             },
@@ -588,16 +705,21 @@
         //     if (!res.ok) return;
 
         //     const data = Array.isArray(json.data) ? json.data : [];
-        //     for (const row of data) {
-        //         acceptedMap.set(row.id, row);
-        //     }
+        //     for (const row of data) acceptedMap.set(row.id, row);
 
         //     acceptedAfterId = Number(json.next_after_id || acceptedAfterId);
         //     renderAcceptedCards();
         // }
+
         async function fetchAcceptedTutors(batchId) {
-            const res = await fetch(
-            `/student/batches/${batchId}/accepted-tutors?after_id=${acceptedAfterId}&limit=50`, {
+            const qs = new URLSearchParams({
+                limit: '50',
+                after_id: String(acceptedAfterId || 0),
+            });
+
+            if (acceptedAfterAcceptedAt) qs.set('after_accepted_at', acceptedAfterAcceptedAt);
+
+            const res = await fetch(`/student/batches/${batchId}/accepted-tutors?` + qs.toString(), {
                 headers: {
                     'Accept': 'application/json'
                 },
@@ -610,9 +732,13 @@
             const data = Array.isArray(json.data) ? json.data : [];
             for (const row of data) acceptedMap.set(row.id, row);
 
-            acceptedAfterId = Number(json.next_after_id || acceptedAfterId);
+            // 👇 actualizar cursores (debe venir del backend)
+            if (json.next_after_accepted_at) acceptedAfterAcceptedAt = String(json.next_after_accepted_at);
+            if (json.next_after_id) acceptedAfterId = Number(json.next_after_id);
+
             renderAcceptedCards();
         }
+
 
 
 
@@ -625,388 +751,11 @@
         /* ==========================================================
            STATUS fetch
         ========================================================== */
-        // async function fetchBatchStatus(batchId) {
-        //     const res = await fetch(`/student/batches/${batchId}/status`, {
-        //         headers: {
-        //             'Accept': 'application/json'
-        //         },
-        //         credentials: 'same-origin'
-        //     });
 
-        //     const json = await res.json().catch(() => ({}));
-        //     if (statusOut) statusOut.textContent = JSON.stringify(json, null, 2);
-
-        //     if (!res.ok) return;
-
-        //     // resumen (debug)
-        //     if (batchStatusLabel) batchStatusLabel.textContent = json.batch?.status ?? '-';
-        //     if (sentCountLabel) sentCountLabel.textContent = String(json.batch?.sent_count ?? 0);
-        //     const sentCountNow = Number(json.batch?.sent_count ?? 0);
-        //     const nowMs = Date.now();
-
-        //     // delta vs último tick
-        //     let sentThisMin = '-';
-        //     if (lastSentCount !== null) {
-        //         const diff = sentCountNow - lastSentCount;
-        //         sentThisMin = String(Math.max(0, diff));
-        //     }
-
-        //     // pintar
-        //     if (sentThisMinLabel) sentThisMinLabel.textContent = sentThisMin;
-        //     if (wSentThisMin) wSentThisMin.textContent = sentThisMin;
-
-        //     // actualizar memoria
-        //     lastSentCount = sentCountNow;
-        //     lastSentAtMs = nowMs;
-
-
-
-        //     if (queuedCountLabel) queuedCountLabel.textContent = String(json.batch?.queued ?? 0);
-        //     if (expiresAtLabel) expiresAtLabel.textContent = json.batch?.expires_at ?? '-';
-
-        //     // emails por minuto (batch_size)
-        //     const rate = json.batch?.batch_size ?? '-';
-        //     if (ratePerMinLabel) ratePerMinLabel.textContent = String(rate);
-        //     if (wRate) wRate.textContent = String(rate);
-
-        //     // resumen (pantalla espera)
-        //     if (wStatus) wStatus.textContent = json.batch?.status ?? '-';
-        //     if (wExpires) wExpires.textContent = json.batch?.expires_at ?? '-';
-
-        //     // tabla items (debug)
-        //     const items = Array.isArray(json.items) ? json.items : [];
-        //     if (itemsTbody) {
-        //         itemsTbody.innerHTML = '';
-
-        //         if (!items.length) {
-        //             itemsTbody.innerHTML = `<tr><td colspan="6" class="opacity-70">Sin items.</td></tr>`;
-        //         } else {
-        //             for (const it of items) {
-        //                 const tr = document.createElement('tr');
-        //                 tr.innerHTML = `
-    //   <td>${it.position ?? ''}</td>
-    //   <td>${it.user_id ?? ''}</td>
-    //   <td>${escapeHtml(it.email ?? '')}</td>
-    //   <td>${escapeHtml(it.status ?? '')}</td>
-    //   <td>${escapeHtml(it.sent_at ?? '')}</td>
-    //   <td>${escapeHtml(it.last_error ?? '')}</td>
-    // `;
-        //                 itemsTbody.appendChild(tr);
-        //             }
-        //         }
-        //     }
-
-        //     const st = (json.batch?.status ?? '').toLowerCase();
-        //     if (st === 'done' || st === 'failed' || st === 'matched') {
-        //         stopAcceptedPolling();
-        //         stopPollingUI();
-
-        //         if (btnNewSearch) btnNewSearch.classList.remove('hidden');
-        //         if (waitMsg) waitMsg.textContent = 'La búsqueda terminó. Puedes iniciar una nueva solicitud.';
-        //     }
-        // }
 
 
         async function fetchBatchStatus(batchId) {
-            const res = await fetch(`/student/batches/${batchId}/status`, {
-                headers: {
-                    'Accept': 'application/json'
-                },
-                credentials: 'same-origin'
-            });
-
-            const json = await res.json().catch(() => ({}));
-            if (statusOut) statusOut.textContent = JSON.stringify(json, null, 2);
-
-            if (!res.ok) return;
-
-            const batch = json.batch || {};
-
-            // ====== Emails/min (batch_size) ======
-            const rate = (batch.batch_size !== undefined && batch.batch_size !== null) ?
-                String(batch.batch_size) :
-                '0';
-
-            if (ratePerMinLabel) ratePerMinLabel.textContent = rate;
-            if (wRate) wRate.textContent = rate;
-
-            // ====== Resumen debug ======
-            if (batchStatusLabel) batchStatusLabel.textContent = batch.status ?? '-';
-            if (sentCountLabel) sentCountLabel.textContent = String(batch.sent_count ?? 0);
-            if (queuedCountLabel) queuedCountLabel.textContent = String(batch.queued ?? 0);
-            if (expiresAtLabel) expiresAtLabel.textContent = batch.expires_at ?? '-';
-
-            // ====== Resumen pantalla espera ======
-            if (wStatus) wStatus.textContent = batch.status ?? '-';
-            if (wExpires) wExpires.textContent = batch.expires_at ?? '-';
-
-            // ====== Enviados este minuto (delta) ======
-            const sentCountNow = Number(batch.sent_count ?? 0);
-
-            // En el primer fetch queremos mostrar 0 (no "-")
-            let sentThisMin = '0';
-            if (lastSentCount !== null) {
-                const diff = sentCountNow - lastSentCount;
-                sentThisMin = String(Math.max(0, diff));
-            }
-
-            if (sentThisMinLabel) sentThisMinLabel.textContent = sentThisMin;
-            if (wSentThisMin) wSentThisMin.textContent = sentThisMin;
-
-            // actualizar memoria
-            lastSentCount = sentCountNow;
-            lastSentAtMs = Date.now();
-
-            // ====== Tabla items (debug) ======
-            const items = Array.isArray(json.items) ? json.items : [];
-            if (itemsTbody) {
-                itemsTbody.innerHTML = '';
-
-                if (!items.length) {
-                    itemsTbody.innerHTML = `<tr><td colspan="6" class="opacity-70">Sin items.</td></tr>`;
-                } else {
-                    for (const it of items) {
-                        const tr = document.createElement('tr');
-                        tr.innerHTML = `
-          <td>${it.position ?? ''}</td>
-          <td>${it.user_id ?? ''}</td>
-          <td>${escapeHtml(it.email ?? '')}</td>
-          <td>${escapeHtml(it.status ?? '')}</td>
-          <td>${escapeHtml(it.sent_at ?? '')}</td>
-          <td>${escapeHtml(it.last_error ?? '')}</td>
-        `;
-                        itemsTbody.appendChild(tr);
-                    }
-                }
-            }
-
-            // ====== Si terminó ======
-            const st = String(batch.status ?? '').toLowerCase();
-            if (st === 'done' || st === 'failed' || st === 'matched') {
-                stopAcceptedPolling();
-                stopPollingUI();
-                currentBatchId = null;
-                if (btnNewSearch) btnNewSearch.classList.remove('hidden');
-                if (waitMsg) waitMsg.textContent = 'La búsqueda terminó. Puedes iniciar una nueva solicitud.';
-            }
-        }
-
-
-        /* ==========================================================
-           Elegir tutor
-        ========================================================== */
-        async function chooseTutor(itemId) {
-            const csrf = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
-
-            const res = await fetch(`/student/batches/${currentBatchId}/choose`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    ...(csrf ? {
-                        'X-CSRF-TOKEN': csrf
-                    } : {}),
-                },
-                credentials: 'same-origin',
-                body: JSON.stringify({
-                    item_id: itemId
-                })
-            });
-
-            const json = await res.json().catch(() => ({}));
-
-            if (!res.ok) {
-                alert(json.message || `No se pudo elegir (HTTP ${res.status})`);
-                return;
-            }
-
-            stopAcceptedPolling();
-            stopPollingUI();
-
-            if (waitMsg) waitMsg.textContent = 'Tutor elegido. Redirigiendo a pagos...';
-
-            if (json.redirect_to) {
-                window.location.href = json.redirect_to;
-            } else {
-                alert('Elegido, pero faltó redirect_to. Define tu ruta de pagos.');
-            }
-        }
-
-        /* ==========================================================
-           Arrancar modo espera
-        ========================================================== */
-        // function startPolling(batchId) {
-        //     currentBatchId = batchId;
-        //     lastSentCount = null;
-        //     lastSentAtMs = null;
-        //     if (sentThisMinLabel) sentThisMinLabel.textContent = '-';
-        //     if (wSentThisMin) wSentThisMin.textContent = '-';
-
-        //     // ✅ ocultar selección, mostrar espera
-        //     showWaitScreen();
-
-        //     if (wBatchId) wBatchId.textContent = String(batchId);
-        //     if (btnNewSearch) btnNewSearch.classList.add('hidden');
-        //     if (waitMsg) waitMsg.textContent = '';
-
-        //     // reset accepted
-        //     acceptedAfterId = 0;
-        //     acceptedMap.clear();
-        //     renderAcceptedCards();
-        //     startAcceptedPolling(batchId);
-
-        //     // debug / status
-        //     if (batchIdLabel) batchIdLabel.textContent = String(batchId);
-        //     if (stopPollingBtn) {
-        //         stopPollingBtn.disabled = false;
-        //         stopPollingBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-        //     }
-
-        //     fetchBatchStatus(batchId);
-        //     startCountdown();
-
-        //     if (pollTimer) clearInterval(pollTimer);
-        //     pollTimer = setInterval(() => {
-        //         fetchBatchStatus(batchId);
-        //         resetCountdown();
-        //     }, 60000);
-        // }
-
-        function startPolling(batchId) {
-            currentBatchId = batchId;
-
-            // reset contadores (para que no quede "-" por estados anteriores)
-            lastSentCount = null;
-            lastSentAtMs = null;
-            if (sentThisMinLabel) sentThisMinLabel.textContent = '0';
-            if (wSentThisMin) wSentThisMin.textContent = '0';
-            if (ratePerMinLabel) ratePerMinLabel.textContent = '-';
-            if (wRate) wRate.textContent = '-';
-
-            // UI
-            showWaitScreen();
-
-            if (wBatchId) wBatchId.textContent = String(batchId);
-            if (btnNewSearch) btnNewSearch.classList.add('hidden');
-            if (waitMsg) waitMsg.textContent = '';
-
-            // reset aceptados
-            acceptedAfterId = 0;
-            acceptedMap.clear();
-            renderAcceptedCards();
-            startAcceptedPolling(batchId);
-
-            // debug
-            if (batchIdLabel) batchIdLabel.textContent = String(batchId);
-            if (stopPollingBtn) {
-                stopPollingBtn.disabled = false;
-                stopPollingBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-            }
-
-            // primer fetch inmediato
-            fetchBatchStatus(batchId);
-            startCountdown();
-
-            // polling cada 60s
-            if (pollTimer) clearInterval(pollTimer);
-            pollTimer = setInterval(() => {
-                fetchBatchStatus(batchId);
-                resetCountdown();
-            }, 60000);
-        }
-
-
-        stopPollingBtn?.addEventListener('click', () => stopPollingUI());
-
-        /* ==========================================================
-           BOTÓN SOLICITAR
-        ========================================================== */
-        nextBtn.addEventListener('click', async () => {
-            if (currentBatchId) {
-                alert('Ya hay una búsqueda activa. Continúa la espera.');
-                return;
-            }
-            if (!selectedSubjectId) {
-                alert('Selecciona una materia primero.');
-                return;
-            }
-
-            nextBtn.disabled = true;
-            nextBtn.classList.add('opacity-50', 'cursor-not-allowed');
-            startOut.textContent = 'Creando batch...';
-
-            try {
-                const csrf = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
-
-                const res = await fetch('/student/batches/start', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        ...(csrf ? {
-                            'X-CSRF-TOKEN': csrf
-                        } : {}),
-                    },
-                    credentials: 'same-origin',
-                    body: JSON.stringify({
-                        subject_id: selectedSubjectId
-                    }),
-                });
-
-                const json = await res.json().catch(() => ({}));
-                startOut.textContent = JSON.stringify(json, null, 2);
-
-                if (!res.ok) {
-                    alert('Error al iniciar batch: ' + (json.message ?? `HTTP ${res.status}`));
-                    nextBtn.disabled = false;
-                    nextBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-                    return;
-                }
-
-                if (json.batch_id) {
-                    startPolling(json.batch_id);
-                } else {
-                    alert('Batch creado pero no llegó batch_id en respuesta.');
-                }
-
-            } catch (e) {
-                console.error(e);
-                alert('Error JS: ' + e.message);
-                nextBtn.disabled = false;
-                nextBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-            }
-        });
-
-        /* ==========================================================
-           BOTONES EN ESPERA
-        ========================================================== */
-        // btnCancel?.addEventListener('click', () => {
-        //     // solo cambia UI (no mata batch en backend)
-        //     showSelectScreen();
-        // });
-
-        btnNewSearch?.addEventListener('click', () => {
-            // reset UI
-            currentBatchId = null;
-            stopAcceptedPolling();
-            stopPollingUI();
-
-            nextBtn.disabled = true;
-            nextBtn.classList.add('opacity-50', 'cursor-not-allowed');
-            selectedSubjectId = null;
-            selectedNameEl.textContent = 'Ninguna';
-            selectedIdEl.textContent = 'null';
-
-            showSelectScreen();
-            loadSubjects();
-        });
-
-        /* ==========================================================
-           Reanudar batch si existe
-        ========================================================== */
-        async function resumeActiveBatchIfAny() {
-            try {
-                const res = await fetch('/student/batches/active', {
+                const res = await fetch(`/student/batches/${batchId}/status`, {
                     headers: {
                         'Accept': 'application/json'
                     },
@@ -1014,23 +763,305 @@
                 });
 
                 const json = await res.json().catch(() => ({}));
-                if (!res.ok || !json.active || !json.batch_id) return false;
+                if (statusOut) statusOut.textContent = JSON.stringify(json, null, 2);
 
-                selectedSubjectId = Number(json.subject_id || 0);
-                startOut.textContent = `Batch activo detectado (ID ${json.batch_id}). Reanudando...`;
+                if (!res.ok) return;
 
-                startPolling(json.batch_id);
-                return true;
+                const batch = json.batch || {};
 
-            } catch (e) {
-                console.error('resumeActiveBatchIfAny error:', e);
-                return false;
+                // ====== Emails/min (batch_size) ======
+                const rate = (batch.batch_size !== undefined && batch.batch_size !== null) ?
+                    String(batch.batch_size) :
+                    '0';
+
+                if (ratePerMinLabel) ratePerMinLabel.textContent = rate;
+                if (wRate) wRate.textContent = rate;
+
+                // ====== Resumen debug ======
+                if (batchStatusLabel) batchStatusLabel.textContent = batch.status ?? '-';
+                if (sentCountLabel) sentCountLabel.textContent = String(batch.sent_count ?? 0);
+                if (queuedCountLabel) queuedCountLabel.textContent = String(batch.queued ?? 0);
+                if (expiresAtLabel) expiresAtLabel.textContent = batch.expires_at ?? '-';
+
+                // ====== Resumen pantalla espera ======
+                if (wStatus) wStatus.textContent = batch.status ?? '-';
+                if (wExpires) wExpires.textContent = batch.expires_at ?? '-';
+                batchExpiresAtMs = Number(batch.expires_at_ms ?? null);
+
+                if (!batchExpiresAtMs && batch.seconds_left != null) {
+                    batchExpiresAtMs = Date.now() + (Number(batch.seconds_left) * 1000);
+                }
+
+                // ====== Enviados este minuto (delta) ======
+                const sentCountNow = Number(batch.sent_count ?? 0);
+
+                // En el primer fetch queremos mostrar 0 (no "-")
+                let sentThisMin = '0';
+                if (lastSentCount !== null) {
+                    const diff = sentCountNow - lastSentCount;
+                    sentThisMin = String(Math.max(0, diff));
+                }
+
+                if (sentThisMinLabel) sentThisMinLabel.textContent = sentThisMin;
+                if (wSentThisMin) wSentThisMin.textContent = sentThisMin;
+
+                // actualizar memoria
+                lastSentCount = sentCountNow;
+                lastSentAtMs = Date.now();
+
+                // ====== Tabla items (debug) ======
+                const items = Array.isArray(json.items) ? json.items : [];
+                if (itemsTbody) {
+                    itemsTbody.innerHTML = '';
+
+                    if (!items.length) {
+                        itemsTbody.innerHTML = `<tr><td colspan="6" class="opacity-70">Sin items.</td></tr>`;
+                    } else {
+                        for (const it of items) {
+                            const tr = document.createElement('tr');
+                            tr.innerHTML = `
+          <td>${it.position ?? ''}</td>
+          <td>${it.user_id ?? ''}</td>
+          <td>${escapeHtml(it.email ?? '')}</td>
+          <td>${escapeHtml(it.status ?? '')}</td>
+          <td>${escapeHtml(it.sent_at ?? '')}</td>
+          <td>${escapeHtml(it.last_error ?? '')}</td>
+        `;
+                            itemsTbody.appendChild(tr);
+                        }
+                    }
+                }
+
+                // ====== Si terminó ======
+                const st = String(batch.status ?? '').toLowerCase();
+                const secondsLeft = Number(batch.seconds_left ?? NaN);
+                if (st === 'failed' || st === 'matched') {
+                    stopAcceptedPolling();
+                    stopPollingUI();
+                    stopBatchExpireCountdown();
+                    currentBatchId = null;
+                    if (btnNewSearch) btnNewSearch.classList.remove('hidden');
+                    if (waitMsg) waitMsg.textContent = 'La búsqueda terminó. Puedes iniciar una nueva solicitud.';
+                }
+
+                if (Number.isFinite(secondsLeft) && secondsLeft <= 0) {
+                    stopAcceptedPolling();
+                    stopPollingUI();
+                    stopBatchExpireCountdown();
+                    currentBatchId = null;
+                    if (btnNewSearch) btnNewSearch.classList.remove('hidden');
+                    if (waitMsg) waitMsg.textContent = 'El tiempo terminó. Puedes iniciar una nueva solicitud.';
+                    return;
+                }
+
             }
-        }
 
-        document.addEventListener('DOMContentLoaded', async () => {
-            const resumed = await resumeActiveBatchIfAny();
-            if (!resumed) await loadSubjects();
-        });
+                /* ==========================================================
+                   Elegir tutor
+                ========================================================== */
+                async function chooseTutor(itemId) {
+                    const csrf = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+                    const res = await fetch(`/student/batches/${currentBatchId}/choose`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                            ...(csrf ? {
+                                'X-CSRF-TOKEN': csrf
+                            } : {}),
+                        },
+                        credentials: 'same-origin',
+                        body: JSON.stringify({
+                            item_id: itemId
+                        })
+                    });
+
+                    const json = await res.json().catch(() => ({}));
+
+                    if (!res.ok) {
+                        alert(json.message || `No se pudo elegir (HTTP ${res.status})`);
+                        return;
+                    }
+
+                    stopAcceptedPolling();
+                    stopPollingUI();
+
+                    if (waitMsg) waitMsg.textContent = 'Tutor elegido. Redirigiendo a pagos...';
+
+                    if (json.redirect_to) {
+                        window.location.href = json.redirect_to;
+                    } else {
+                        alert('Elegido, pero faltó redirect_to. Define tu ruta de pagos.');
+                    }
+                }
+
+                /* ==========================================================
+                   Arrancar modo espera
+                ========================================================== */
+
+
+                function startPolling(batchId) {
+                    currentBatchId = batchId;
+
+                    // reset contadores (para que no quede "-" por estados anteriores)
+                    lastSentCount = null;
+                    lastSentAtMs = null;
+                    if (sentThisMinLabel) sentThisMinLabel.textContent = '0';
+                    if (wSentThisMin) wSentThisMin.textContent = '0';
+                    if (ratePerMinLabel) ratePerMinLabel.textContent = '-';
+                    if (wRate) wRate.textContent = '-';
+
+                    // UI
+                    showWaitScreen();
+                    startBatchExpireCountdown();
+
+                    if (wBatchId) wBatchId.textContent = String(batchId);
+                    if (btnNewSearch) btnNewSearch.classList.add('hidden');
+                    if (waitMsg) waitMsg.textContent = '';
+
+                    // reset aceptados (nuevo cursor)
+                    acceptedAfterId = 0;
+                    acceptedAfterAcceptedAt = '';
+                    acceptedMap.clear();
+                    renderAcceptedCards();
+                    startAcceptedPolling(batchId);
+
+
+
+                    // debug
+                    if (batchIdLabel) batchIdLabel.textContent = String(batchId);
+                    if (stopPollingBtn) {
+                        stopPollingBtn.disabled = false;
+                        stopPollingBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                    }
+
+                    // primer fetch inmediato
+                    fetchBatchStatus(batchId);
+
+                    startCountdown();
+
+                    // polling cada 60s
+                    if (pollTimer) clearInterval(pollTimer);
+                    pollTimer = setInterval(() => {
+                        fetchBatchStatus(batchId);
+                        resetCountdown();
+                    }, 60000);
+                }
+
+
+                stopPollingBtn?.addEventListener('click', () => stopPollingUI());
+
+                /* ==========================================================
+                   BOTÓN SOLICITAR
+                ========================================================== */
+                nextBtn.addEventListener('click', async () => {
+                    if (currentBatchId) {
+                        alert('Ya hay una búsqueda activa. Continúa la espera.');
+                        return;
+                    }
+                    if (!selectedSubjectId) {
+                        alert('Selecciona una materia primero.');
+                        return;
+                    }
+
+                    nextBtn.disabled = true;
+                    nextBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                    startOut.textContent = 'Creando batch...';
+
+                    try {
+                        const csrf = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+                        const res = await fetch('/student/batches/start', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json',
+                                ...(csrf ? {
+                                    'X-CSRF-TOKEN': csrf
+                                } : {}),
+                            },
+                            credentials: 'same-origin',
+                            body: JSON.stringify({
+                                subject_id: selectedSubjectId
+                            }),
+                        });
+
+                        const json = await res.json().catch(() => ({}));
+                        startOut.textContent = JSON.stringify(json, null, 2);
+
+                        if (!res.ok) {
+                            alert('Error al iniciar batch: ' + (json.message ?? `HTTP ${res.status}`));
+                            nextBtn.disabled = false;
+                            nextBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                            return;
+                        }
+
+                        if (json.batch_id) {
+                            startPolling(json.batch_id);
+                        } else {
+                            alert('Batch creado pero no llegó batch_id en respuesta.');
+                        }
+
+                    } catch (e) {
+                        console.error(e);
+                        alert('Error JS: ' + e.message);
+                        nextBtn.disabled = false;
+                        nextBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                    }
+                });
+
+                /* ==========================================================
+                   BOTONES EN ESPERA
+                ========================================================== */
+
+
+                btnNewSearch?.addEventListener('click', () => {
+                    // reset UI
+                    currentBatchId = null;
+                    stopAcceptedPolling();
+                    stopPollingUI();
+                    stopBatchExpireCountdown();
+                    nextBtn.disabled = true;
+                    nextBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                    selectedSubjectId = null;
+                    selectedNameEl.textContent = 'Ninguna';
+                    selectedIdEl.textContent = 'null';
+
+                    showSelectScreen();
+                    loadSubjects();
+                });
+
+                /* ==========================================================
+                   Reanudar batch si existe
+                ========================================================== */
+                async function resumeActiveBatchIfAny() {
+                    try {
+                        const res = await fetch('/student/batches/active', {
+                            headers: {
+                                'Accept': 'application/json'
+                            },
+                            credentials: 'same-origin'
+                        });
+
+                        const json = await res.json().catch(() => ({}));
+                        if (!res.ok || !json.active || !json.batch_id) return false;
+
+                        selectedSubjectId = Number(json.subject_id || 0);
+                        startOut.textContent = `Batch activo detectado (ID ${json.batch_id}). Reanudando...`;
+
+                        startPolling(json.batch_id);
+                        return true;
+
+                    } catch (e) {
+                        console.error('resumeActiveBatchIfAny error:', e);
+                        return false;
+                    }
+                }
+
+                document.addEventListener('DOMContentLoaded', async () => {
+                    const resumed = await resumeActiveBatchIfAny();
+                    if (!resumed) await loadSubjects();
+                });
     </script>
 @endsection

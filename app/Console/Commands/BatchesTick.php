@@ -15,14 +15,21 @@ use Illuminate\Support\Str;
 
 class BatchesTick extends Command
 {
-    protected $signature = 'batches:tick';
+
+    // protected $signature = 'batches:tick';
+    protected $signature = 'batches:tick {--batch_id=}';
+
     protected $description = 'Envía emails por lotes desde email_batches/email_batch_items (tick cada minuto)';
 
     public function handle(): int
     {
-        $lockName = 'classgo_batches_tick';
-        $gotLock = (int) (DB::selectOne("SELECT GET_LOCK(?, 0) AS l", [$lockName])->l ?? 0);
+        $batchIdOpt = (int) ($this->option('batch_id') ?? 0);
 
+        $lockName = $batchIdOpt > 0
+            ? "classgo_batches_tick_batch_{$batchIdOpt}"
+            : 'classgo_batches_tick';
+
+        $gotLock = (int) (DB::selectOne("SELECT GET_LOCK(?, 0) AS l", [$lockName])->l ?? 0);
         if ($gotLock !== 1) return self::SUCCESS;
 
         try {
@@ -56,17 +63,77 @@ class BatchesTick extends Command
                         ->first();
                 }
 
+                // if (!$batch) {
+                //     return [null, collect()];
+                // }
+                // if ($batch->expires_at && now()->greaterThanOrEqualTo($batch->expires_at)) {
+                //     $batch->update(['status' => 'done', 'last_error' => 'expired']);
+                //     return [null, collect()];
+                // }
 
-                if ($batch->expires_at && now()->greaterThanOrEqualTo($batch->expires_at)) {
-                    $batch->update(['status' => 'done', 'last_error' => 'expired']);
+                // if ($batch->status === 'pending') {
+                //     $batch->update(['status' => 'running']);
+                // }
+
+                // $toSend = max(1, (int)$batch->batch_size);
+
+                // $items = EmailBatchItem::query()
+                //     ->where('batch_id', $batch->id)
+                //     ->where('status', 'pending')
+                //     ->orderBy('position')
+                //     ->lockForUpdate()
+                //     ->limit($toSend)
+                //     ->get();
+
+                // // if ($items->isEmpty()) {
+                // //     $batch->update(['status' => 'done']);
+                // //     return [$batch, collect()];
+                // // }
+
+
+                // if ($items->isEmpty()) {
+                //     // ✅ ya se enviaron todos, pero aún podemos recibir aceptaciones
+                //     // No cerramos hasta expires_at
+                //     $batch->update([
+                //         'status' => 'running',
+                //         'last_error' => 'all_sent_waiting_accepts',
+                //         'updated_at' => now(),
+                //     ]);
+                //     return [$batch, collect()];
+                // }
+                // // reservar: pending -> sending
+                // EmailBatchItem::query()
+                //     ->whereIn('id', $items->pluck('id'))
+                //     ->update([
+                //         'status' => 'sending',
+                //         'updated_at' => now(),
+                //     ]);
+
+                // return [$batch, $items];
+
+                if (!$batch) {
                     return [null, collect()];
                 }
 
-                if ($batch->status === 'pending') {
-                    $batch->update(['status' => 'running']);
+                // expirado => cerrar
+                if ($batch->expires_at && now()->greaterThanOrEqualTo($batch->expires_at)) {
+                    $batch->update([
+                        'status' => 'done',
+                        'last_error' => 'expired',
+                        'updated_at' => now(),
+                    ]);
+                    return [null, collect()];
                 }
 
-                $toSend = max(1, (int)$batch->batch_size);
+                // arrancar
+                if ($batch->status === 'pending') {
+                    $batch->update([
+                        'status' => 'running',
+                        'updated_at' => now(),
+                    ]);
+                }
+
+                $toSend = max(1, (int) $batch->batch_size);
 
                 $items = EmailBatchItem::query()
                     ->where('batch_id', $batch->id)
@@ -77,8 +144,10 @@ class BatchesTick extends Command
                     ->get();
 
                 if ($items->isEmpty()) {
-                    $batch->update(['status' => 'done']);
-                    return [$batch, collect()];
+                    // ✅ Ya no quedan pendientes por enviar.
+                    // No cierres el batch: seguir esperando aceptaciones hasta expires_at
+                    // Importante: devolvemos null para que no intente enviar nada afuera.
+                    return [null, collect()];
                 }
 
                 // reservar: pending -> sending
