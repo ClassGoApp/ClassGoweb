@@ -258,7 +258,7 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
 
 
             Route::get('/materias/elegir', function () {
-                return view('vistas.view.pages.subjectPicker');
+                return view('vistas.view.pages.pruebaInst');
             })
                 ->name('subjects.pick');
 
@@ -276,7 +276,7 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
             Route::get('/subject-groups/categorias-materias', [SubjectPickerController::class, 'categoriasMaterias']); //categorias y materias finales (en uso)
 
 
-            //Route::get('/subject', [SubjectPickerController::class, 'index']); //lista de materias
+            Route::get('/subject', [SubjectPickerController::class, 'index']); //lista de materias
 
             Route::post('/batches/start', [SubjectPickerController::class, 'start']); //iniciar batch (este es para mi btn go)
             
