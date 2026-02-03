@@ -75,7 +75,7 @@
 
         </div>
         <div class="container-redes">
-            <a href="https://www.facebook.com/profile.php?id=61578383078347" target="_blank">
+            <a href="https://www.facebook.com/profile.php?id=61586980560794&mibextid=wwXIfr&rdid=OkA2uwwur1Hu9lOu&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F12MTC15CJAi%2F%3Fmibextid%3DwwXIfr#" target="_blank">
                 <div class="circle-icon-f">
                     <img src="{{ asset('images/facebook.png')}}" alt="Facebook Link" class="icon-img">
                 </div>
