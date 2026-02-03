@@ -146,7 +146,7 @@ new #[Layout('layouts.guest')] class extends Component
             overflow: hidden;
             width: 850px;
             max-width: 100%;
-            min-height: 620px;
+            min-height: 650px;
             box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
         }
 
@@ -179,7 +179,7 @@ new #[Layout('layouts.guest')] class extends Component
             box-sizing: border-box;
         }
 
-        .cg-title { font-weight: 700; color: var(--cg-primary); font-size: 2.2rem; margin: 0 0 5px; }
+        .cg-title { font-weight: 700; color: var(--cg-primary); font-size: 2.2rem; margin: 0 0 10px; }
         .cg-desc { font-size: 1rem; color: #666; margin: 5px 0 20px; }
         
         .cg-input-row { display: flex; gap: 10px; width: 100%; margin-bottom: 0px; }
@@ -291,10 +291,7 @@ new #[Layout('layouts.guest')] class extends Component
         /* ESTILOS PARA BOTON GOOGLE (AÑADIDO PARA COMPATIBILIDAD) */
         .am-signinoption {
             width: 100%;
-            margin-top: 15px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            margin-top: 10px;
         }
         .am-signinoption_br {
             display: flex;
@@ -307,40 +304,51 @@ new #[Layout('layouts.guest')] class extends Component
             font-weight: 500;
         }
 
+        .am-signinoption_br {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            margin: 15px 0;
+            font-size: 0.8rem;
+            color: #999;
+            font-weight: 500;
+            text-align: center;
+        }
+
         .am-signinoption_br::before,
         .am-signinoption_br::after {
-            content: '';
+            content: "";
             flex: 1;
-            border-bottom: 1px solid #eee; /* La línea gris */
+            height: 1px;
+            background-color: #e5e7eb;
         }
 
-        .am-signinoption_br:not(:empty)::before {
-            margin-right: 15px;
-        }
-
-        .am-signinoption_br:not(:empty)::after {
-            margin-left: 15px;
+        .am-signinoption_br em {
+            padding: 0 200px;
+            font-style: normal;
         }
 
         .am-signinoption_btn {
-            width: 100%; 
-            padding: 8px; 
-            background: #fff; 
-            border: 1px solid #ddd;
-            border-radius: 50px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
+            width: 100%;
+            height: 40px;
+            padding: 0 16px;
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             gap: 10px;
-            font-weight: 500; 
-            color: #555; 
-            cursor: pointer; 
-            font-size: 0.85rem; 
-            font-family: inherit;
-            text-decoration: none;
-            transition: background 0.3s;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #555;
+            cursor: pointer;
+            transition: all 0.25s ease;
         }
-        .am-signinoption_btn:hover { background-color: #f9f9f9; }
+        .am-signinoption_btn:hover { 
+            background-color: #f9fafb;
+            border-color: #d1d5db; 
+        }
         .am-btn_disable { opacity: 0.6; pointer-events: none; }
 
         .cg-divider { margin: 15px 0 10px; width: 100%; border-bottom: 1px solid #eee; }
@@ -533,20 +541,18 @@ new #[Layout('layouts.guest')] class extends Component
                         <span wire:loading wire:target="register">...</span>
                     </button>
 
-                    @if (!empty(setting('_api.enable_social_login')) && ((!empty(setting('_api.social_google_client_id')) && !empty(setting('_api.social_google_client_secret')))))    
-                        <div class="am-signinoption">
-                            <span class="am-signinoption_br"><em>{{ __('auth.or') }}</em></span>
-                            <a href="#" wire:click.prevent="redirectGoogle" wire:target="redirectGoogle" wire:loading.class="am-btn_disable" class="am-signinoption_btn">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21" fill="none">
-                                    <path d="M19.3 10.708C19.3 10.058 19.2417 9.43301 19.1333 8.83301H10.5V12.3788H15.4333C15.2208 13.5247 14.575 14.4955 13.6042 15.1455V17.4455H16.5667C18.3 15.8497 19.3 13.4997 19.3 10.708Z" fill="#4285F4"/>
-                                    <path d="M10.5003 19.6662C12.9753 19.6662 15.0503 18.8454 16.5669 17.4454L13.6044 15.1454C12.7836 15.6954 11.7336 16.0204 10.5003 16.0204C8.11276 16.0204 6.09193 14.4079 5.37109 12.2412H2.30859V14.6162C3.81693 17.612 6.91693 19.6662 10.5003 19.6662Z" fill="#34A853"/>
-                                    <path d="M5.37148 12.2411C5.18815 11.6911 5.08399 11.1036 5.08399 10.4995C5.08399 9.89531 5.18815 9.30781 5.37148 8.75781V6.38281H2.30899C1.66732 7.66019 1.33342 9.06999 1.33399 10.4995C1.33399 11.9786 1.68815 13.3786 2.30899 14.6161L5.37148 12.2411Z" fill="#FBBC05"/>
-                                    <path d="M10.5003 4.97884C11.8461 4.97884 13.0544 5.44134 14.0044 6.34967L16.6336 3.72051C15.0461 2.24134 12.9711 1.33301 10.5003 1.33301C6.91693 1.33301 3.81693 3.38717 2.30859 6.38301L5.37109 8.75801C6.09193 6.59134 8.11276 4.97884 10.5003 4.97884Z" fill="#EA4335"/>
-                                </svg>
-                                {{ __('auth.sign_in_with_google') }}
-                            </a>
-                        </div>
-                    @endif
+                    <div class="am-signinoption">
+                                <span class="am-signinoption_br"><em>{{ __('auth.or') }}</em></span>
+                                <a href="#" wire:click.prevent="redirectGoogle" wire:target="redirectGoogle" wire:loading.class="am-btn_disable" class="am-signinoption_btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21" fill="none">
+                                        <path d="M19.3 10.708C19.3 10.058 19.2417 9.43301 19.1333 8.83301H10.5V12.3788H15.4333C15.2208 13.5247 14.575 14.4955 13.6042 15.1455V17.4455H16.5667C18.3 15.8497 19.3 13.4997 19.3 10.708Z" fill="#4285F4"/>
+                                        <path d="M10.5003 19.6662C12.9753 19.6662 15.0503 18.8454 16.5669 17.4454L13.6044 15.1454C12.7836 15.6954 11.7336 16.0204 10.5003 16.0204C8.11276 16.0204 6.09193 14.4079 5.37109 12.2412H2.30859V14.6162C3.81693 17.612 6.91693 19.6662 10.5003 19.6662Z" fill="#34A853"/>
+                                        <path d="M5.37148 12.2411C5.18815 11.6911 5.08399 11.1036 5.08399 10.4995C5.08399 9.89531 5.18815 9.30781 5.37148 8.75781V6.38281H2.30899C1.66732 7.66019 1.33342 9.06999 1.33399 10.4995C1.33399 11.9786 1.68815 13.3786 2.30899 14.6161L5.37148 12.2411Z" fill="#FBBC05"/>
+                                        <path d="M10.5003 4.97884C11.8461 4.97884 13.0544 5.44134 14.0044 6.34967L16.6336 3.72051C15.0461 2.24134 12.9711 1.33301 10.5003 1.33301C6.91693 1.33301 3.81693 3.38717 2.30859 6.38301L5.37109 8.75801C6.09193 6.59134 8.11276 4.97884 10.5003 4.97884Z" fill="#EA4335"/>
+                                    </svg>
+                                    {{ __('auth.sign_in_with_google') }}
+                                </a>
+                            </div>
                     
                     <p class="cg-mobile-toggle">¿Ya tienes cuenta? <a href="#" @click.prevent="isRegister = false; showForgot = false">Inicia Sesión</a></p>
                 </form>
@@ -592,8 +598,7 @@ new #[Layout('layouts.guest')] class extends Component
 
                         <x-primary-button wire:loading.class="am-btn_disable" wire:target="login"><span>{{ __('auth.login_btn') }}</span><i class="icon icon-arrow-right"></i></x-primary-button>
                         
-                        @if (!empty(setting('_api.enable_social_login')) && ((!empty(setting('_api.social_google_client_id')) && !empty(setting('_api.social_google_client_secret')))))    
-                            <div class="am-signinoption">
+                        <div class="am-signinoption">
                                 <span class="am-signinoption_br"><em>{{ __('auth.or') }}</em></span>
                                 <a href="#" wire:click.prevent="redirectGoogle" wire:target="redirectGoogle" wire:loading.class="am-btn_disable" class="am-signinoption_btn">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21" fill="none">
@@ -605,7 +610,6 @@ new #[Layout('layouts.guest')] class extends Component
                                     {{ __('auth.sign_in_with_google') }}
                                 </a>
                             </div>
-                        @endif
 
                         
 

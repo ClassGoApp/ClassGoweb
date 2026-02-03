@@ -77,7 +77,7 @@
             <div class="footer-blog">
                 <div class="social-bar">
                     <a href="https://www.linkedin.com/company/classgoapp/about/?viewAsMember=true" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
-                    <a href="https://www.facebook.com/profile.php?id=61578383078347" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://www.facebook.com/share/1D7ttw9Su1/" class="social-icon"><i class="fab fa-facebook-f"></i></a>
                     <a href="https://www.tiktok.com/@classgoapp" class="social-icon"><i class="fab fa-tiktok"></i></a>
                     <a href="https://www.instagram.com/classgo_app/" class="social-icon"><i class="fab fa-instagram"></i></a>
 
