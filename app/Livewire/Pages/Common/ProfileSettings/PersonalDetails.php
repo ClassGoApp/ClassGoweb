@@ -47,7 +47,7 @@ class PersonalDetails extends Component
     public $activeRoute1            = false;
     // Propiedades del formulario
     public $state;
-    public $first_name = '';
+    public $first_name = ''; 
     public $last_name = '';
     public $email = '';
     public $phone_number = '';
@@ -368,17 +368,17 @@ class PersonalDetails extends Component
             }
 
             
-            // 👉 Verificar estado de verificación
+            // 👉 Verificar estado de verificación solo para tutores
             $user = Auth::user();
 
-            if (!$user->verified) {
-                // 👉 REDIRECCIÓN CUANDO NO ESTÁ VERIFICADO
-                // DESTINO EN BLANCO COMO PEDISTE
-                $this->redirectRoute('tutor.profile.identification');//revisar esta redireccion
+            // Solo redireccionar si es tutor y no está verificado
+            if ($user->hasRole('tutor') && !$user->verified) {
+                // 👉 REDIRECCIÓN CUANDO NO ESTÁ VERIFICADO (solo para tutores)
+                $this->redirectRoute('tutor.profile.identification');
                 return;
             }
 
-            // 👉 SI ESTÁ VERIFICADO
+            // 👉 SI ESTÁ VERIFICADO O ES ESTUDIANTE
             $this->dispatch('showAlertMessage',type: 'success', message: __('general.success_message')
             );
 

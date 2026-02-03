@@ -2,7 +2,7 @@
 
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
-
+use Illuminate\Support\Facades\Schedule;
 
 use App\Models\User;
 Artisan::command('inspire', function () {
@@ -11,4 +11,9 @@ Artisan::command('inspire', function () {
 
 
 Schedule::command('app:complete-slot-bookings', )->everyMinute();
+
+
+
+Schedule::command('batches:tick')->everyMinute();
+
     
