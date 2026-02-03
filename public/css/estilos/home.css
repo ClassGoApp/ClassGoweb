@@ -1537,6 +1537,7 @@ body {
   margin-right: auto;
   padding: 4rem 1rem 1rem 1rem;
   background: white;
+  overflow: hidden;
 }
 
 .section-header {
