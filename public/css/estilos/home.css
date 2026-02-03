@@ -1579,7 +1579,7 @@ body {
 
 .client-carousel-container {
   width: 100%;
-  overflow: hidden;
+  
 }
 
 .client-carousel-track {
@@ -1588,6 +1588,7 @@ body {
   max-width: 100%;
   -webkit-mask-image: none;
   mask-image: none;
+  overflow: visible;
 }
 
 .client-carousel-track:hover {
@@ -1598,18 +1599,11 @@ body {
   animation-play-state: paused !important;
 }
 
-.client-carousel-track img {
-  height: 100px;
-  width: auto;
-  margin: 0 40px;
-  opacity: 0.6;
-  transition: all 0.3s ease;
-}
-
 .client-carousel-track img:hover {
   filter: grayscale(0%);
   opacity: 1;
-  transform: scale(1.1);
+  transform: scale(2.1);
+  z-index: 20;
 }
 
 .client-carousel-track img {
@@ -1618,12 +1612,9 @@ body {
   margin: 0 40px;
   opacity: 0.6;
   transition: all 0.3s ease;
-}
-
-.client-carousel-track img:hover {
-  filter: grayscale(0%);
-  opacity: 1;
-  transform: scale(1.1);
+  position: relative;
+  z-index: 10;
+  will-change: transform;
 }
 
 
