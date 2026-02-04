@@ -1,162 +1,516 @@
 @extends('vistas.view.layouts.blank')
 @section('content')
-<meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-<style>
-/* ================= VARIABLES (limpias, sin duplicados) ================= */
-:root{
-  --orange:#FB8500;
-  --bg-body:#f1f3f4;
-  --white:#ffffff;
-  --text-main:#023047;
-  --text-muted:#64748b;
-  --transition:all .35s cubic-bezier(.4,0,.2,1);
-  --transition-hero:all .6s cubic-bezier(.34,1.56,.64,1);
+    <style>
+        /* ================= VARIABLES (limpias, sin duplicados) ================= */
+        :root {
+            --orange: #FB8500;
+            --bg-body: #f1f3f4;
+            --white: #ffffff;
+            --text-main: #023047;
+            --text-muted: #64748b;
+            --transition: all .35s cubic-bezier(.4, 0, .2, 1);
+            --transition-hero: all .6s cubic-bezier(.34, 1.56, .64, 1);
 
-  --primary-color:#023047;
-  --secundary-color:#219EBC;
-  --terciary-color:#8ECAE6;
-  --terciary-color2:#FB8500;
+            --primary-color: #023047;
+            --secundary-color: #219EBC;
+            --terciary-color: #8ECAE6;
+            --terciary-color2: #FB8500;
 
-  --bg-gradient:linear-gradient(180deg,rgba(7,59,76,1) 64%,rgba(24,77,94,1) 77%,rgba(33,158,188,1) 100%);
-}
+            --bg-gradient: linear-gradient(180deg, rgba(7, 59, 76, 1) 64%, rgba(24, 77, 94, 1) 77%, rgba(33, 158, 188, 1) 100%);
+        }
 
-*{margin:0;padding:0;box-sizing:border-box;}
-body{
-  font-family:system-ui,-apple-system,sans-serif;
-  background:var(--bg-body);
-  color:var(--text-main);
-  line-height:1.5;
-  overflow-x:hidden;
-  scroll-behavior:smooth;
-}
-.container{max-width:1200px;margin:0 auto;padding:2rem 1rem;}
-.lock-scroll{overflow:hidden;height:100vh;}
-.hidden{display:none!important;}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-/* ================= HEADER & SEARCH ================= */
-header{display:flex;flex-direction:column;gap:1.5rem;margin-bottom:1rem;transition:var(--transition);}
-@media(min-width:768px){header{flex-direction:row;align-items:center;justify-content:space-between;}}
-.header-info h1{font-size:1.8rem;font-weight:900;letter-spacing:-.05em;text-transform:uppercase;}
-.header-info p{font-size:.7rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;letter-spacing:.2em;}
-.search-wrapper{position:relative;width:100%;max-width:360px;}
-.search-input{
-  width:100%;
-  padding:.9rem 1rem .9rem 2.8rem;
-  border:1px solid #e2e8f0;border-radius:1.2rem;background:var(--white);
-  font-size:.8rem;font-weight:800;outline:none;transition:var(--transition);
-  box-shadow:0 8px 20px rgba(2,48,71,.06);
-}
-.search-input:focus{border-color:rgba(33,158,188,.7);box-shadow:0 12px 30px rgba(33,158,188,.12);}
-.search-icon{position:absolute;left:.9rem;top:50%;transform:translateY(-50%);width:1.2rem;height:1.2rem;color:#94a3b8;}
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.5;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
 
-/* ================= CATEGORÍAS (PILLS) ================= */
-.category-bar{display:flex;align-items:center;gap:.6rem;overflow-x:auto;padding:1rem 0 1rem;margin-bottom:1rem;scrollbar-width:none;}
-.category-bar::-webkit-scrollbar{display:none;}
-.pill{
-  appearance:none;border:1px solid #e2e8f0;background:var(--white);color:#64748b;
-  padding:.55rem 1rem;border-radius:999px;cursor:pointer;transition:var(--transition);
-  font-size:.62rem;font-weight:900;text-transform:uppercase;letter-spacing:.18em;white-space:nowrap;
-  box-shadow:0 8px 16px rgba(2,48,71,.04);
-}
-.pill:hover{transform:translateY(-1px);border-color:rgba(33,158,188,.55);}
-.pill.active{background:var(--primary-color);border-color:var(--primary-color);color:#fff;}
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
 
-/* ================= GROUP HEADERS ================= */
-.subject-sections{padding-bottom:2rem;}
-.section-header{display:flex;align-items:center;gap:1rem;margin:1.8rem 0 1rem;}
-.section-header h3{font-size:.62rem;font-weight:900;color:#94a3b8;text-transform:uppercase;letter-spacing:.32em;white-space:nowrap;}
-.section-divider{height:1px;flex:1;background:#eaeef3;}
+        .lock-scroll {
+            overflow: hidden;
+            height: 100vh;
+        }
 
-/* ================= SUBJECT GRID ================= */
-.subject-grid{
-  display:flex;flex-direction:column;flex-wrap:wrap;
-  height:calc(5 * 78px);
-  gap:.7rem;
-  overflow-x:auto;overflow-y:hidden;
-  align-content:flex-start;scrollbar-width:none;
-}
-.subject-grid::-webkit-scrollbar{display:none;}
-.subject-card-btn{
-  display:flex;align-items:center;gap:.5rem;background:var(--white);
-  padding:1rem;border-radius:1.4rem;border:1px solid #f1f5f9;
-  box-shadow:0 10px 22px rgba(2,48,71,.06);
-  cursor:pointer;text-align:left;transition:var(--transition);
-}
-.subject-card-btn:hover{border-color:rgba(33,158,188,.55);transform:translateY(-3px);box-shadow:0 16px 34px rgba(33,158,188,.10);}
-.subject-initial{
-  width:44px;height:44px;border-radius:14px;background:#f8fafc;display:flex;align-items:center;justify-content:center;
-  font-weight:1000;color:var(--primary-color);transition:var(--transition);flex-shrink:0;
-}
-.subject-card-btn:hover .subject-initial{background:rgba(33,158,188,.98);color:#fff;}
-.subject-meta{min-width:0;overflow:hidden;}
-.subject-title{
-  font-size:.9rem;font-weight:900;color:var(--primary-color);
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-}
-.subject-card-btn.is-selected{border-color:var(--terciary-color2);box-shadow:0 18px 38px rgba(251,133,0,.25);}
-.subject-card-btn.is-selected .subject-initial{background:var(--terciary-color2);color:#fff;}
+        .hidden {
+            display: none !important;
+        }
 
-/* ================= RADAR ================= */
-#view-browse{position:relative;width:100%;}
-.radar-section{
-  height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  background:radial-gradient(circle,#f1f3f4 0%,#e2e8f0 100%);
-  transition:opacity .8s ease,transform .8s ease;
-}
-.radar-section.results-found{
-  height:auto;min-height:220px;padding:2rem 1rem 1.5rem;background:transparent;
-}
-.radar-visual-container{position:relative;width:320px;height:320px;display:flex;align-items:center;justify-content:center;}
-.radar-ripple{position:absolute;width:100%;height:100%;border:2px solid var(--secundary-color);border-radius:50%;opacity:0;animation:ripple 3s infinite cubic-bezier(.25,.46,.45,.94);}
-.ripple-2{animation-delay:1.5s;}
-@keyframes ripple{0%{transform:scale(.3);opacity:.8;}100%{transform:scale(1.6);opacity:0;}}
-.radar-sweep{position:absolute;width:50%;height:50%;top:0;left:50%;background:conic-gradient(from 180deg at 0% 100%,rgba(33,158,188,.3) 0deg,transparent 90deg);transform-origin:bottom left;animation:sweep 2s linear infinite;border-left:2px solid var(--secundary-color);}
-@keyframes sweep{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
-.radar-center{position:relative;z-index:10;width:6rem;height:6rem;background:var(--white);border-radius:50%;box-shadow:0 15px 35px rgba(0,0,0,.1);display:flex;align-items:center;justify-content:center;font-size:2.5rem;border:4px solid var(--bg-body);}
-.status-header{text-align:center;margin-top:2rem;}
-.status-header h2{font-size:1.5rem;font-weight:900;text-transform:uppercase;letter-spacing:-.02em;color:var(--primary-color);}
-.subject-badge{display:inline-flex;align-items:center;gap:.6rem;padding:.5rem 1.2rem;background:var(--white);border-radius:999px;margin-top:1rem;box-shadow:0 5px 15px rgba(0,0,0,.05);}
-.ping{width:.6rem;height:.6rem;background:var(--orange);border-radius:50%;animation:pulse 1.4s infinite;}
-@keyframes pulse{0%,100%{transform:scale(1);opacity:1;}50%{transform:scale(1.6);opacity:.4;}}
+        /* ================= HEADER & SEARCH ================= */
+        header {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+            transition: var(--transition);
+        }
 
-/* ================= TUTOR RESULTS (aceptados) ================= */
-.tutor-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:1rem;
-  width:100%;
-  padding:2rem 0;
-}
-.accept-card{
-  border:1px solid #e5e7eb;border-radius:1.4rem;background:#fff;padding:1rem;
-  box-shadow:0 10px 22px rgba(2,48,71,.06);
-}
-.accept-row{display:flex;gap:.8rem;align-items:center;}
-.accept-avatar{
-  width:56px;height:56px;border-radius:999px;overflow:hidden;border:1px solid #e5e7eb;background:#f9fafb;flex:0 0 auto;
-}
-.accept-avatar img{width:100%;height:100%;object-fit:cover;}
-.accept-name{font-weight:900;color:var(--primary-color);}
-.accept-meta{font-size:.8rem;color:var(--text-muted);margin-top:.2rem;line-height:1.3;}
-.accept-btn{
-  margin-top:.8rem;width:100%;
-  padding:.9rem 1rem;border:none;border-radius:1rem;
-  background:var(--primary-color);color:#fff;font-weight:900;cursor:pointer;transition:var(--transition);
-}
-.accept-btn:hover{background:var(--terciary-color2);}
-.small-pill{
-  display:inline-flex;gap:.5rem;align-items:center;
-  border:1px solid #e5e7eb;border-radius:999px;padding:.35rem .8rem;background:#fff;
-  font-size:.7rem;font-weight:900;color:#64748b;margin-top:.8rem;
-}
-.expire-normal{}
-.expire-soon{color:#f59e0b;}
-.expire-dead{color:#ef4444;}
-@keyframes pulseWarn{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
-.expire-pulse{animation:pulseWarn .8s infinite;}
 
-/* ================= TUTOR GRID & HERO CARDS ================= */
+
+        .header-info h1 {
+            font-size: 1.8rem;
+            font-weight: 900;
+            letter-spacing: -.05em;
+            text-transform: uppercase;
+        }
+
+        .header-info p {
+            font-size: .7rem;
+            font-weight: 800;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: .2em;
+        }
+
+        .search-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 360px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: .9rem 1rem .9rem 2.8rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 1.2rem;
+            background: var(--white);
+            font-size: .8rem;
+            font-weight: 800;
+            outline: none;
+            transition: var(--transition);
+            box-shadow: 0 8px 20px rgba(2, 48, 71, .06);
+        }
+
+        .search-input:focus {
+            border-color: rgba(33, 158, 188, .7);
+            box-shadow: 0 12px 30px rgba(33, 158, 188, .12);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: .9rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 1.2rem;
+            height: 1.2rem;
+            color: #94a3b8;
+        }
+
+        /* ================= CATEGORÍAS (PILLS) ================= */
+        .category-bar {
+            display: flex;
+            align-items: center;
+            gap: .6rem;
+            overflow-x: auto;
+            padding: 1rem 0 1rem;
+            margin-bottom: 1rem;
+            scrollbar-width: none;
+        }
+
+        .category-bar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .pill {
+            appearance: none;
+            border: 1px solid #e2e8f0;
+            background: var(--white);
+            color: #64748b;
+            padding: .55rem 1rem;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: .62rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: .18em;
+            white-space: nowrap;
+            box-shadow: 0 8px 16px rgba(2, 48, 71, .04);
+        }
+
+        .pill:hover {
+            transform: translateY(-1px);
+            border-color: rgba(33, 158, 188, .55);
+        }
+
+        .pill.active {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            color: #fff;
+        }
+
+        /* ================= GROUP HEADERS ================= */
+        .subject-sections {
+            padding-bottom: 2rem;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 1.8rem 0 1rem;
+        }
+
+        .section-header h3 {
+            font-size: .62rem;
+            font-weight: 900;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: .32em;
+            white-space: nowrap;
+        }
+
+        .section-divider {
+            height: 1px;
+            flex: 1;
+            background: #eaeef3;
+        }
+
+        /* ================= SUBJECT GRID ================= */
+        .subject-grid {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            height: calc(5 * 78px);
+            gap: .7rem;
+            overflow-x: auto;
+            overflow-y: hidden;
+            align-content: flex-start;
+            scrollbar-width: none;
+        }
+
+        .subject-grid::-webkit-scrollbar {
+            display: none;
+        }
+
+        .subject-card-btn {
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+            background: var(--white);
+            padding: 1rem;
+            border-radius: 1.4rem;
+            border: 1px solid #f1f5f9;
+            box-shadow: 0 10px 22px rgba(2, 48, 71, .06);
+            cursor: pointer;
+            text-align: left;
+            transition: var(--transition);
+        }
+
+        .subject-card-btn:hover {
+            border-color: rgba(33, 158, 188, .55);
+            transform: translateY(-3px);
+            box-shadow: 0 16px 34px rgba(33, 158, 188, .10);
+        }
+
+        .subject-initial {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            background: #f8fafc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 1000;
+            color: var(--primary-color);
+            transition: var(--transition);
+            flex-shrink: 0;
+        }
+
+        .subject-card-btn:hover .subject-initial {
+            background: rgba(33, 158, 188, .98);
+            color: #fff;
+        }
+
+        .subject-meta {
+            min-width: 0;
+            overflow: hidden;
+        }
+
+        .subject-title {
+            font-size: .9rem;
+            font-weight: 900;
+            color: var(--primary-color);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .subject-card-btn.is-selected {
+            border-color: var(--terciary-color2);
+            box-shadow: 0 18px 38px rgba(251, 133, 0, .25);
+        }
+
+        .subject-card-btn.is-selected .subject-initial {
+            background: var(--terciary-color2);
+            color: #fff;
+        }
+
+        /* ================= RADAR ================= */
+        #view-browse {
+            position: relative;
+            width: 100%;
+        }
+
+        .radar-section {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle, #f1f3f4 0%, #e2e8f0 100%);
+            transition: opacity .8s ease, transform .8s ease;
+        }
+
+        .radar-section.results-found {
+            height: auto;
+            min-height: 220px;
+            padding: 2rem 1rem 1.5rem;
+            background: transparent;
+        }
+
+        .radar-visual-container {
+            position: relative;
+            width: 320px;
+            height: 320px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .radar-ripple {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 2px solid var(--secundary-color);
+            border-radius: 50%;
+            opacity: 0;
+            animation: ripple 3s infinite cubic-bezier(.25, .46, .45, .94);
+        }
+
+        .ripple-2 {
+            animation-delay: 1.5s;
+        }
+
+        @keyframes ripple {
+            0% {
+                transform: scale(.3);
+                opacity: .8;
+            }
+
+            100% {
+                transform: scale(1.6);
+                opacity: 0;
+            }
+        }
+
+        .radar-sweep {
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            top: 0;
+            left: 50%;
+            background: conic-gradient(from 180deg at 0% 100%, rgba(33, 158, 188, .3) 0deg, transparent 90deg);
+            transform-origin: bottom left;
+            animation: sweep 2s linear infinite;
+            border-left: 2px solid var(--secundary-color);
+        }
+
+        @keyframes sweep {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .radar-center {
+            position: relative;
+            z-index: 10;
+            width: 6rem;
+            height: 6rem;
+            background: var(--white);
+            border-radius: 50%;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, .1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            border: 4px solid var(--bg-body);
+        }
+
+        .status-header {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .status-header h2 {
+            font-size: 1.5rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -.02em;
+            color: var(--primary-color);
+        }
+
+        .subject-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: .6rem;
+            padding: .5rem 1.2rem;
+            background: var(--white);
+            border-radius: 999px;
+            margin-top: 1rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, .05);
+        }
+
+        .ping {
+            width: .6rem;
+            height: .6rem;
+            background: var(--orange);
+            border-radius: 50%;
+            animation: pulse 1.4s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(1.6);
+                opacity: .4;
+            }
+        }
+
+        /* ================= TUTOR RESULTS (aceptados) ================= */
+        .tutor-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1rem;
+            width: 100%;
+            padding: 2rem 0;
+        }
+
+        .accept-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 1.4rem;
+            background: #fff;
+            padding: 1rem;
+            box-shadow: 0 10px 22px rgba(2, 48, 71, .06);
+        }
+
+        .accept-row {
+            display: flex;
+            gap: .8rem;
+            align-items: center;
+        }
+
+        .accept-avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 999px;
+            overflow: hidden;
+            border: 1px solid #e5e7eb;
+            background: #f9fafb;
+            flex: 0 0 auto;
+        }
+
+        .accept-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .accept-name {
+            font-weight: 900;
+            color: var(--primary-color);
+        }
+
+        .accept-meta {
+            font-size: .8rem;
+            color: var(--text-muted);
+            margin-top: .2rem;
+            line-height: 1.3;
+        }
+
+        .accept-btn {
+            margin-top: .8rem;
+            width: 100%;
+            padding: .9rem 1rem;
+            border: none;
+            border-radius: 1rem;
+            background: var(--primary-color);
+            color: #fff;
+            font-weight: 900;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .accept-btn:hover {
+            background: var(--terciary-color2);
+        }
+
+        .small-pill {
+            display: inline-flex;
+            gap: .5rem;
+            align-items: center;
+            border: 1px solid #e5e7eb;
+            border-radius: 999px;
+            padding: .35rem .8rem;
+            background: #fff;
+            font-size: .7rem;
+            font-weight: 900;
+            color: #64748b;
+            margin-top: .8rem;
+        }
+
+        .expire-normal {}
+
+        .expire-soon {
+            color: #f59e0b;
+        }
+
+        .expire-dead {
+            color: #ef4444;
+        }
+
+        @keyframes pulseWarn {
+
+            0%,
+            100% {
+                transform: scale(1)
+            }
+
+            50% {
+                transform: scale(1.06)
+            }
+        }
+
+        .expire-pulse {
+            animation: pulseWarn .8s infinite;
+        }
+
+        /* ================= TUTOR GRID & HERO CARDS ================= */
         .tutor-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -561,228 +915,296 @@ header{display:flex;flex-direction:column;gap:1.5rem;margin-bottom:1rem;transiti
             color: var(--text-muted);
         }
 
-</style>
+        @media(min-width:768px) {
+            header {
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+            }
+        }
 
-<section>
-  <button class="tutoria-fab" id="tutoriaFab" onclick="confirmarMateria()">Go!</button>
+        @media(max-width:600px) {
 
-  <div id="app">
-    <!-- VISTA 1: SELECCIÓN -->
-    <div id="view-selection" class="container">
-      <header>
-        <div class="header-info">
-          <h1>¿Qué necesitas aprender hoy?</h1>
-          <p>Más de 600 materias con la que un tutor puede ayudarte ahora</p>
+            /* SECCIÓN RADAR */
+            .radar-section {
+                height: 100svh;
+                /* mejor que 100vh en móviles */
+                padding: 1.5rem 1rem;
+                overflow: hidden;
+            }
+            
+        }
+    </style>
+
+    <section>
+        <button class="tutoria-fab" id="tutoriaFab" onclick="confirmarMateria()">Go!</button>
+
+        <div id="app">
+            <!-- VISTA 1: SELECCIÓN -->
+            <div id="view-selection" class="container">
+                <header>
+                    <div class="header-info">
+                        <h1>¿Qué necesitas aprender hoy?</h1>
+                        <p>Más de 600 materias con la que un tutor puede ayudarte ahora</p>
+                    </div>
+                    <div class="search-wrapper">
+                        <svg class="search-icon" width="20" height="20" fill="none" stroke="currentColor"
+                            stroke-width="2.5" viewBox="0 0 24 24">
+                            <circle cx="11" cy="11" r="8" />
+                            <path d="M21 21l-4.35-4.35" />
+                        </svg>
+                        <input type="text" id="search-input" class="search-input" placeholder="BUSCAR MATERIA...">
+                    </div>
+                </header>
+
+                <div class="category-bar" id="category-bar"></div>
+                <div class="subject-sections" id="subject-sections"></div>
+
+                <div class="empty-state hidden" id="empty-state"
+                    style="text-align:center;color:var(--text-muted);font-weight:900;padding:2rem;">
+                    <div style="font-size:2rem;">🔍</div>
+                    <h3 style="margin-top:.5rem;">No hay coincidencias</h3>
+                    <p style="font-weight:800;">Prueba con otro término o cambia el área.</p>
+                </div>
+            </div>
+
+            <!-- VISTA 2: RADAR + RESULTADOS -->
+            <div id="view-browse" class="hidden">
+                <div class="radar-section" id="radar-ui">
+                    <div class="radar-visual-container" id="radar-visual">
+                        <div class="radar-ripple"></div>
+                        <div class="radar-ripple ripple-2"></div>
+                        <div class="radar-sweep"></div>
+                        <div class="radar-center">🎓</div>
+                    </div>
+
+                    <div class="status-header">
+                        <h2 id="status-message">Notificando a los expertos...</h2>
+
+                        <div class="subject-badge">
+                            <div class="ping"></div>
+                            <span id="selected-subject-name"></span>
+                        </div>
+
+                        <div class="small-pill">
+                            Batch: <b id="wBatchId">-</b> · Estado: <b id="wStatus">-</b> · Expira: <b
+                                id="wExpires">-</b>
+                        </div>
+
+                        <div class="small-pill">
+                            Emails/min: <b id="ratePerMinLabel">-</b> · Enviados este minuto: <b id="sentThisMinLabel">0</b>
+                            · Expira en: <b id="batchExpireCountdown" class="expire-normal">--:--</b>
+                        </div>
+
+                        <div id="waitMsg"
+                            style="margin-top:.6rem;font-size:.85rem;color:var(--text-muted);font-weight:800;"></div>
+                    </div>
+                </div>
+
+                <div class="container">
+                    <div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;">
+                        <h3
+                            style="font-size:.8rem;font-weight:1000;letter-spacing:.22em;color:#94a3b8;text-transform:uppercase;">
+                            Tutores que aceptaron
+                        </h3>
+                        <button id="btnNewSearch" type="button" class="pill hidden"
+                            style="letter-spacing:.14em;font-size:.6rem;">
+                            Nueva solicitud
+                        </button>
+                    </div>
+
+                    <div id="tutor-results" class="tutor-grid"></div>
+                </div>
+            </div>
         </div>
-        <div class="search-wrapper">
-          <svg class="search-icon" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-            <circle cx="11" cy="11" r="8" />
-            <path d="M21 21l-4.35-4.35" />
-          </svg>
-          <input type="text" id="search-input" class="search-input" placeholder="BUSCAR MATERIA...">
-        </div>
-      </header>
+    </section>
 
-      <div class="category-bar" id="category-bar"></div>
-      <div class="subject-sections" id="subject-sections"></div>
+    <style>
+        /* FAB (del archivo 1) */
+        .tutoria-fab {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 100px;
+            height: 50px;
+            border-radius: 4rem;
+            border: none;
+            background: var(--terciary-color2);
+            color: #fff;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 200;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(20px);
+        }
 
-      <div class="empty-state hidden" id="empty-state" style="text-align:center;color:var(--text-muted);font-weight:900;padding:2rem;">
-        <div style="font-size:2rem;">🔍</div>
-        <h3 style="margin-top:.5rem;">No hay coincidencias</h3>
-        <p style="font-weight:800;">Prueba con otro término o cambia el área.</p>
-      </div>
-    </div>
+        .tutoria-fab.visible {
+            opacity: 1;
+            pointer-events: auto;
+            animation: tutoriaFadeUp .5s ease-out, tutoriaPulse 1.8s infinite;
+        }
 
-    <!-- VISTA 2: RADAR + RESULTADOS -->
-    <div id="view-browse" class="hidden">
-      <div class="radar-section" id="radar-ui">
-        <div class="radar-visual-container" id="radar-visual">
-          <div class="radar-ripple"></div>
-          <div class="radar-ripple ripple-2"></div>
-          <div class="radar-sweep"></div>
-          <div class="radar-center">🎓</div>
-        </div>
+        @keyframes tutoriaFadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
 
-        <div class="status-header">
-          <h2 id="status-message">Notificando a los expertos...</h2>
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-          <div class="subject-badge">
-            <div class="ping"></div>
-            <span id="selected-subject-name"></span>
-          </div>
+        @keyframes tutoriaPulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(251, 133, 0, .6);
+            }
 
-          <div class="small-pill">
-            Batch: <b id="wBatchId">-</b> · Estado: <b id="wStatus">-</b> · Expira: <b id="wExpires">-</b>
-          </div>
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 16px rgba(251, 133, 0, 0);
+            }
 
-          <div class="small-pill">
-            Emails/min: <b id="ratePerMinLabel">-</b> · Enviados este minuto: <b id="sentThisMinLabel">0</b> · Expira en: <b id="batchExpireCountdown" class="expire-normal">--:--</b>
-          </div>
+            100% {
+                transform: scale(1);
+            }
+        }
+    </style>
 
-          <div id="waitMsg" style="margin-top:.6rem;font-size:.85rem;color:var(--text-muted);font-weight:800;"></div>
-        </div>
-      </div>
+    <script>
+        /* ==========================================================
+           1) DATA: Materias (desde tu endpoint de categorías/materias)
+        ========================================================== */
+        let categories = ['Todas'];
+        let subjects = []; // {id, name, category, category_id}
+        let state = {
+            selectedCategory: 'Todas',
+            searchQuery: '',
+            receipts: {}, // (si luego reusas checkout)
+            activeHeroId: null,
+        };
 
-      <div class="container">
-        <div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;">
-          <h3 style="font-size:.8rem;font-weight:1000;letter-spacing:.22em;color:#94a3b8;text-transform:uppercase;">
-            Tutores que aceptaron
-          </h3>
-          <button id="btnNewSearch" type="button" class="pill hidden" style="letter-spacing:.14em;font-size:.6rem;">
-            Nueva solicitud
-          </button>
-        </div>
+        const fab = document.getElementById('tutoriaFab');
 
-        <div id="tutor-results" class="tutor-grid"></div>
-      </div>
-    </div>
-  </div>
-</section>
+        async function loadCategoriasMaterias() {
+            const url = '/student/subject-groups/categorias-materias';
 
-<style>
-/* FAB (del archivo 1) */
-.tutoria-fab{
-  position:fixed;bottom:24px;right:24px;width:100px;height:50px;border-radius:4rem;border:none;
-  background:var(--terciary-color2);color:#fff;font-size:24px;cursor:pointer;z-index:200;
-  opacity:0;pointer-events:none;transform:translateY(20px);
-}
-.tutoria-fab.visible{
-  opacity:1;pointer-events:auto;
-  animation:tutoriaFadeUp .5s ease-out,tutoriaPulse 1.8s infinite;
-}
-@keyframes tutoriaFadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
-@keyframes tutoriaPulse{0%{transform:scale(1);box-shadow:0 0 0 0 rgba(251,133,0,.6);}70%{transform:scale(1);box-shadow:0 0 0 16px rgba(251,133,0,0);}100%{transform:scale(1);}}
-</style>
+            const res = await fetch(url, {
+                headers: {
+                    'Accept': 'application/json'
+                },
+                credentials: 'same-origin'
+            });
 
-<script>
-/* ==========================================================
-   1) DATA: Materias (desde tu endpoint de categorías/materias)
-========================================================== */
-let categories = ['Todas'];
-let subjects = []; // {id, name, category, category_id}
-let state = {
-  selectedCategory: 'Todas',
-  searchQuery: '',
-  receipts: {}, // (si luego reusas checkout)
-  activeHeroId: null,
-};
+            const ct = (res.headers.get('content-type') || '').toLowerCase();
+            if (!ct.includes('application/json')) {
+                const text = await res.text();
+                console.error('Respuesta NO JSON', ct, text.slice(0, 300));
+                categories = ['Todas'];
+                subjects = [];
+                return;
+            }
 
-const fab = document.getElementById('tutoriaFab');
+            const json = await res.json().catch(() => ({}));
+            const data = Array.isArray(json.data) ? json.data : [];
 
-async function loadCategoriasMaterias() {
-  const url = '/student/subject-groups/categorias-materias';
+            categories = ['Todas', ...data.map(x => x.categoria)];
 
-  const res = await fetch(url, {
-    headers: { 'Accept':'application/json' },
-    credentials:'same-origin'
-  });
+            subjects = [];
+            for (const cat of data) {
+                const mats = Array.isArray(cat.materias) ? cat.materias : [];
+                for (const m of mats) {
+                    subjects.push({
+                        id: Number(m.id_materia),
+                        name: m.materia,
+                        category: cat.categoria,
+                        category_id: Number(cat.id_categoria),
+                    });
+                }
+            }
+        }
 
-  const ct = (res.headers.get('content-type') || '').toLowerCase();
-  if (!ct.includes('application/json')) {
-    const text = await res.text();
-    console.error('Respuesta NO JSON', ct, text.slice(0,300));
-    categories = ['Todas'];
-    subjects = [];
-    return;
-  }
+        /* ==========================================================
+           2) UI: buscador + pills + secciones
+        ========================================================== */
+        function wireSearch() {
+            const input = document.getElementById('search-input');
+            input.addEventListener('input', (e) => {
+                state.searchQuery = (e.target.value || '').trim();
+                renderSubjectSections();
+            });
+        }
 
-  const json = await res.json().catch(() => ({}));
-  const data = Array.isArray(json.data) ? json.data : [];
-
-  categories = ['Todas', ...data.map(x => x.categoria)];
-
-  subjects = [];
-  for (const cat of data) {
-    const mats = Array.isArray(cat.materias) ? cat.materias : [];
-    for (const m of mats) {
-      subjects.push({
-        id: Number(m.id_materia),
-        name: m.materia,
-        category: cat.categoria,
-        category_id: Number(cat.id_categoria),
-      });
-    }
-  }
-}
-
-/* ==========================================================
-   2) UI: buscador + pills + secciones
-========================================================== */
-function wireSearch(){
-  const input = document.getElementById('search-input');
-  input.addEventListener('input', (e) => {
-    state.searchQuery = (e.target.value || '').trim();
-    renderSubjectSections();
-  });
-}
-
-function renderCategoryPills(){
-  const bar = document.getElementById('category-bar');
-  bar.innerHTML = categories.map(cat => `
+        function renderCategoryPills() {
+            const bar = document.getElementById('category-bar');
+            bar.innerHTML = categories.map(cat => `
     <button class="pill ${state.selectedCategory === cat ? 'active':''}"
             onclick="setCategory('${cat.replaceAll("'", "\\'")}')">
       ${cat}
     </button>
   `).join('');
-}
+        }
 
-function setCategory(cat){
-  state.selectedCategory = cat;
-  renderCategoryPills();
-  renderSubjectSections();
-}
+        function setCategory(cat) {
+            state.selectedCategory = cat;
+            renderCategoryPills();
+            renderSubjectSections();
+        }
 
-function getFilteredSubjects(){
-  let filtered = [...subjects];
+        function getFilteredSubjects() {
+            let filtered = [...subjects];
 
-  if (state.selectedCategory !== 'Todas') {
-    filtered = filtered.filter(s => s.category === state.selectedCategory);
-  }
+            if (state.selectedCategory !== 'Todas') {
+                filtered = filtered.filter(s => s.category === state.selectedCategory);
+            }
 
-  if (state.searchQuery !== '') {
-    const q = state.searchQuery.toLowerCase();
-    filtered = filtered.filter(s => s.name.toLowerCase().includes(q));
-  }
+            if (state.searchQuery !== '') {
+                const q = state.searchQuery.toLowerCase();
+                filtered = filtered.filter(s => s.name.toLowerCase().includes(q));
+            }
 
-  return filtered;
-}
+            return filtered;
+        }
 
-function groupByCategory(items){
-  const groups = {};
-  items.forEach(s => {
-    if (!groups[s.category]) groups[s.category] = [];
-    groups[s.category].push(s);
-  });
-  return groups;
-}
+        function groupByCategory(items) {
+            const groups = {};
+            items.forEach(s => {
+                if (!groups[s.category]) groups[s.category] = [];
+                groups[s.category].push(s);
+            });
+            return groups;
+        }
 
-function renderSubjectSections(){
-  const sections = document.getElementById('subject-sections');
-  const empty = document.getElementById('empty-state');
-  const results = getFilteredSubjects();
+        function renderSubjectSections() {
+            const sections = document.getElementById('subject-sections');
+            const empty = document.getElementById('empty-state');
+            const results = getFilteredSubjects();
 
-  if (results.length === 0) {
-    sections.innerHTML = '';
-    empty.classList.remove('hidden');
-    return;
-  }
+            if (results.length === 0) {
+                sections.innerHTML = '';
+                empty.classList.remove('hidden');
+                return;
+            }
 
-  empty.classList.add('hidden');
+            empty.classList.add('hidden');
 
-  const grouped = groupByCategory(results);
+            const grouped = groupByCategory(results);
 
-  const orderedCats = Object.keys(grouped).sort((a,b) => {
-    const ia = categories.indexOf(a);
-    const ib = categories.indexOf(b);
-    if (ia === -1 && ib === -1) return a.localeCompare(b);
-    if (ia === -1) return 1;
-    if (ib === -1) return -1;
-    return ia - ib;
-  });
+            const orderedCats = Object.keys(grouped).sort((a, b) => {
+                const ia = categories.indexOf(a);
+                const ib = categories.indexOf(b);
+                if (ia === -1 && ib === -1) return a.localeCompare(b);
+                if (ia === -1) return 1;
+                if (ib === -1) return -1;
+                return ia - ib;
+            });
 
-  sections.innerHTML = orderedCats.map(cat => {
-    const items = grouped[cat];
-    return `
+            sections.innerHTML = orderedCats.map(cat => {
+                const items = grouped[cat];
+                return `
       <section>
         <div class="section-header">
           <h3>${cat}</h3>
@@ -791,283 +1213,292 @@ function renderSubjectSections(){
 
         <div class="subject-grid">
           ${items.map(sub => `
-            <button class="subject-card-btn" onclick="seleccionarMateria(this, ${sub.id}, '${sub.name.replaceAll("'", "\\'")}')">
-              <div class="subject-initial">${sub.name.charAt(0)}</div>
-              <div class="subject-meta">
-                <div class="subject-title">${sub.name}</div>
-              </div>
-            </button>
-          `).join('')}
+                    <button class="subject-card-btn" onclick="seleccionarMateria(this, ${sub.id}, '${sub.name.replaceAll("'", "\\'")}')">
+                      <div class="subject-initial">${sub.name.charAt(0)}</div>
+                      <div class="subject-meta">
+                        <div class="subject-title">${sub.name}</div>
+                      </div>
+                    </button>
+                  `).join('')}
         </div>
       </section>
     `;
-  }).join('');
-}
+            }).join('');
+        }
 
-/* ==========================================================
-   3) Selección única + FAB
-========================================================== */
-let materiaSeleccionada = null;
-let materiaSeleccionadaId = null;
-let materiaSeleccionadaNombre = null;
+        /* ==========================================================
+           3) Selección única + FAB
+        ========================================================== */
+        let materiaSeleccionada = null;
+        let materiaSeleccionadaId = null;
+        let materiaSeleccionadaNombre = null;
 
-function seleccionarMateria(btn, id, nombre){
-  if (materiaSeleccionada) materiaSeleccionada.classList.remove('is-selected');
+        function seleccionarMateria(btn, id, nombre) {
+            if (materiaSeleccionada) materiaSeleccionada.classList.remove('is-selected');
 
-  btn.classList.add('is-selected');
-  materiaSeleccionada = btn;
+            btn.classList.add('is-selected');
+            materiaSeleccionada = btn;
 
-  materiaSeleccionadaId = id;
-  materiaSeleccionadaNombre = nombre;
+            materiaSeleccionadaId = id;
+            materiaSeleccionadaNombre = nombre;
 
-  fab.classList.add('visible');
-}
+            fab.classList.add('visible');
+        }
 
-function ocultarFabTutoria(){ fab.classList.remove('visible'); }
+        function ocultarFabTutoria() {
+            fab.classList.remove('visible');
+        }
 
-function confirmarMateria(){
-  if (!materiaSeleccionadaId) return;
-  selectSubject(materiaSeleccionadaNombre, materiaSeleccionadaId);
-}
+        function confirmarMateria() {
+            if (!materiaSeleccionadaId) return;
+            selectSubject(materiaSeleccionadaNombre, materiaSeleccionadaId);
+        }
 
-/* ==========================================================
-   4) BATCH FLOW REAL (lógica del archivo 2)
-========================================================== */
-let currentBatchId = null;
-let pollTimer = null;
-let acceptedTimer = null;
-let acceptedAfterId = 0;
-let acceptedAfterAcceptedAt = '';
-let acceptedMap = new Map();
+        /* ==========================================================
+           4) BATCH FLOW REAL (lógica del archivo 2)
+        ========================================================== */
+        let currentBatchId = null;
+        let pollTimer = null;
+        let acceptedTimer = null;
+        let acceptedAfterId = 0;
+        let acceptedAfterAcceptedAt = '';
+        let acceptedMap = new Map();
 
-let batchExpiresAtMs = null;
-let batchExpireTimer = null;
+        let batchExpiresAtMs = null;
+        let batchExpireTimer = null;
 
-let lastSentCount = null;
+        let lastSentCount = null;
 
-const statusMsg = document.getElementById('status-message');
-const wBatchId = document.getElementById('wBatchId');
-const wStatus = document.getElementById('wStatus');
-const wExpires = document.getElementById('wExpires');
-const ratePerMinLabel = document.getElementById('ratePerMinLabel');
-const sentThisMinLabel = document.getElementById('sentThisMinLabel');
-const batchExpireCountdownEl = document.getElementById('batchExpireCountdown');
-const waitMsg = document.getElementById('waitMsg');
-const btnNewSearch = document.getElementById('btnNewSearch');
+        const statusMsg = document.getElementById('status-message');
+        const wBatchId = document.getElementById('wBatchId');
+        const wStatus = document.getElementById('wStatus');
+        const wExpires = document.getElementById('wExpires');
+        const ratePerMinLabel = document.getElementById('ratePerMinLabel');
+        const sentThisMinLabel = document.getElementById('sentThisMinLabel');
+        const batchExpireCountdownEl = document.getElementById('batchExpireCountdown');
+        const waitMsg = document.getElementById('waitMsg');
+        const btnNewSearch = document.getElementById('btnNewSearch');
 
-function escapeHtml(str){
-  return String(str ?? '')
-    .replaceAll('&','&amp;')
-    .replaceAll('<','&lt;')
-    .replaceAll('>','&gt;')
-    .replaceAll('"','&quot;')
-    .replaceAll("'","&#039;");
-}
+        function escapeHtml(str) {
+            return String(str ?? '')
+                .replaceAll('&', '&amp;')
+                .replaceAll('<', '&lt;')
+                .replaceAll('>', '&gt;')
+                .replaceAll('"', '&quot;')
+                .replaceAll("'", "&#039;");
+        }
 
-function showRadar(){
-  document.getElementById('view-selection').classList.add('hidden');
-  document.getElementById('view-browse').classList.remove('hidden');
-  
-}
-function showSelection(){
-  document.getElementById('view-browse').classList.add('hidden');
-  document.getElementById('view-selection').classList.remove('hidden');
-  document.body.classList.remove('lock-scroll');
-}
+        function showRadar() {
+            document.getElementById('view-selection').classList.add('hidden');
+            document.getElementById('view-browse').classList.remove('hidden');
 
-function fmtMMSS(totalSeconds){
-  const s = Math.max(0, Math.floor(totalSeconds));
-  const m = String(Math.floor(s/60)).padStart(2,'0');
-  const r = String(s%60).padStart(2,'0');
-  return `${m}:${r}`;
-}
+        }
 
-function startBatchExpireCountdown(){
-  if (batchExpireTimer) clearInterval(batchExpireTimer);
+        function showSelection() {
+            document.getElementById('view-browse').classList.add('hidden');
+            document.getElementById('view-selection').classList.remove('hidden');
+            document.body.classList.remove('lock-scroll');
+        }
 
-  batchExpireTimer = setInterval(() => {
-    if (!batchExpireCountdownEl) return;
+        function fmtMMSS(totalSeconds) {
+            const s = Math.max(0, Math.floor(totalSeconds));
+            const m = String(Math.floor(s / 60)).padStart(2, '0');
+            const r = String(s % 60).padStart(2, '0');
+            return `${m}:${r}`;
+        }
 
-    if (!batchExpiresAtMs) {
-      batchExpireCountdownEl.textContent = '--:--';
-      batchExpireCountdownEl.classList.remove('expire-soon','expire-dead','expire-pulse');
-      batchExpireCountdownEl.classList.add('expire-normal');
-      return;
-    }
+        function startBatchExpireCountdown() {
+            if (batchExpireTimer) clearInterval(batchExpireTimer);
 
-    const diffSec = Math.ceil((batchExpiresAtMs - Date.now())/1000);
+            batchExpireTimer = setInterval(() => {
+                if (!batchExpireCountdownEl) return;
 
-    if (diffSec <= 0) {
-      batchExpireCountdownEl.textContent = '00:00';
-      batchExpireCountdownEl.classList.remove('expire-normal','expire-soon');
-      batchExpireCountdownEl.classList.add('expire-dead','expire-pulse');
-      if (waitMsg) waitMsg.textContent = 'El batch expiró. Inicia una nueva solicitud.';
-      return;
-    }
+                if (!batchExpiresAtMs) {
+                    batchExpireCountdownEl.textContent = '--:--';
+                    batchExpireCountdownEl.classList.remove('expire-soon', 'expire-dead', 'expire-pulse');
+                    batchExpireCountdownEl.classList.add('expire-normal');
+                    return;
+                }
 
-    batchExpireCountdownEl.textContent = fmtMMSS(diffSec);
+                const diffSec = Math.ceil((batchExpiresAtMs - Date.now()) / 1000);
 
-    if (diffSec <= 30) {
-      batchExpireCountdownEl.classList.remove('expire-normal','expire-dead');
-      batchExpireCountdownEl.classList.add('expire-soon','expire-pulse');
-      if (waitMsg && !waitMsg.textContent) waitMsg.textContent = '⚠️ Expira pronto...';
-    } else {
-      batchExpireCountdownEl.classList.remove('expire-soon','expire-dead','expire-pulse');
-      batchExpireCountdownEl.classList.add('expire-normal');
-      if (waitMsg && waitMsg.textContent === '⚠️ Expira pronto...') waitMsg.textContent = '';
-    }
-  }, 1000);
-}
+                if (diffSec <= 0) {
+                    batchExpireCountdownEl.textContent = '00:00';
+                    batchExpireCountdownEl.classList.remove('expire-normal', 'expire-soon');
+                    batchExpireCountdownEl.classList.add('expire-dead', 'expire-pulse');
+                    if (waitMsg) waitMsg.textContent = 'El batch expiró. Inicia una nueva solicitud.';
+                    return;
+                }
 
-function stopBatchExpireCountdown(){
-  if (batchExpireTimer) clearInterval(batchExpireTimer);
-  batchExpireTimer = null;
-  batchExpiresAtMs = null;
-  if (batchExpireCountdownEl) batchExpireCountdownEl.textContent = '--:--';
-}
+                batchExpireCountdownEl.textContent = fmtMMSS(diffSec);
 
-function stopPollingAll(){
-  if (pollTimer) clearInterval(pollTimer);
-  pollTimer = null;
-  if (acceptedTimer) clearInterval(acceptedTimer);
-  acceptedTimer = null;
-  stopBatchExpireCountdown();
-}
+                if (diffSec <= 30) {
+                    batchExpireCountdownEl.classList.remove('expire-normal', 'expire-dead');
+                    batchExpireCountdownEl.classList.add('expire-soon', 'expire-pulse');
+                    if (waitMsg && !waitMsg.textContent) waitMsg.textContent = '⚠️ Expira pronto...';
+                } else {
+                    batchExpireCountdownEl.classList.remove('expire-soon', 'expire-dead', 'expire-pulse');
+                    batchExpireCountdownEl.classList.add('expire-normal');
+                    if (waitMsg && waitMsg.textContent === '⚠️ Expira pronto...') waitMsg.textContent = '';
+                }
+            }, 1000);
+        }
 
-async function fetchAcceptedTutors(batchId){
+        function stopBatchExpireCountdown() {
+            if (batchExpireTimer) clearInterval(batchExpireTimer);
+            batchExpireTimer = null;
+            batchExpiresAtMs = null;
+            if (batchExpireCountdownEl) batchExpireCountdownEl.textContent = '--:--';
+        }
 
-if (state.activeHeroId) return; // pausar si hay un hero activo
+        function stopPollingAll() {
+            if (pollTimer) clearInterval(pollTimer);
+            pollTimer = null;
+            if (acceptedTimer) clearInterval(acceptedTimer);
+            acceptedTimer = null;
+            stopBatchExpireCountdown();
+        }
 
-  const qs = new URLSearchParams({
-    limit:'50',
-    after_id:String(acceptedAfterId || 0),
-  });
-  if (acceptedAfterAcceptedAt) qs.set('after_accepted_at', acceptedAfterAcceptedAt);
+        async function fetchAcceptedTutors(batchId) {
 
-  const res = await fetch(`/student/batches/${batchId}/accepted-tutors?`+qs.toString(), {
-    headers:{'Accept':'application/json'},
-    credentials:'same-origin'
-  });
+            if (state.activeHeroId) return; // pausar si hay un hero activo
 
-  const json = await res.json().catch(()=>({}));
-  if (!res.ok) return;
+            const qs = new URLSearchParams({
+                limit: '50',
+                after_id: String(acceptedAfterId || 0),
+            });
+            if (acceptedAfterAcceptedAt) qs.set('after_accepted_at', acceptedAfterAcceptedAt);
 
-  const data = Array.isArray(json.data) ? json.data : [];
-  for (const row of data) acceptedMap.set(row.id, row);
+            const res = await fetch(`/student/batches/${batchId}/accepted-tutors?` + qs.toString(), {
+                headers: {
+                    'Accept': 'application/json'
+                },
+                credentials: 'same-origin'
+            });
 
-  if (json.next_after_accepted_at) acceptedAfterAcceptedAt = String(json.next_after_accepted_at);
-  if (json.next_after_id) acceptedAfterId = Number(json.next_after_id);
+            const json = await res.json().catch(() => ({}));
+            if (!res.ok) return;
 
-  renderAcceptedCards();
-}
+            const data = Array.isArray(json.data) ? json.data : [];
+            for (const row of data) acceptedMap.set(row.id, row);
 
-function startAcceptedPolling(batchId){
-  if (acceptedTimer) clearInterval(acceptedTimer);
-  fetchAcceptedTutors(batchId);
-  acceptedTimer = setInterval(()=>fetchAcceptedTutors(batchId), 5000);
-}
+            if (json.next_after_accepted_at) acceptedAfterAcceptedAt = String(json.next_after_accepted_at);
+            if (json.next_after_id) acceptedAfterId = Number(json.next_after_id);
 
-async function fetchBatchStatus(batchId){
-  const res = await fetch(`/student/batches/${batchId}/status`, {
-    headers:{'Accept':'application/json'},
-    credentials:'same-origin'
-  });
+            renderAcceptedCards();
+        }
 
-  const json = await res.json().catch(()=>({}));
-  if (!res.ok) return;
+        function startAcceptedPolling(batchId) {
+            if (acceptedTimer) clearInterval(acceptedTimer);
+            fetchAcceptedTutors(batchId);
+            acceptedTimer = setInterval(() => fetchAcceptedTutors(batchId), 5000);
+        }
 
-  const batch = json.batch || {};
-  const rate = (batch.batch_size !== undefined && batch.batch_size !== null) ? String(batch.batch_size) : '0';
+        async function fetchBatchStatus(batchId) {
+            const res = await fetch(`/student/batches/${batchId}/status`, {
+                headers: {
+                    'Accept': 'application/json'
+                },
+                credentials: 'same-origin'
+            });
 
-  if (ratePerMinLabel) ratePerMinLabel.textContent = rate;
+            const json = await res.json().catch(() => ({}));
+            if (!res.ok) return;
 
-  if (wStatus) wStatus.textContent = batch.status ?? '-';
-  if (wExpires) wExpires.textContent = batch.expires_at ?? '-';
+            const batch = json.batch || {};
+            const rate = (batch.batch_size !== undefined && batch.batch_size !== null) ? String(batch.batch_size) : '0';
 
-  batchExpiresAtMs = Number(batch.expires_at_ms ?? null);
-  if (!batchExpiresAtMs && batch.seconds_left != null) {
-    batchExpiresAtMs = Date.now() + (Number(batch.seconds_left) * 1000);
-  }
+            if (ratePerMinLabel) ratePerMinLabel.textContent = rate;
 
-  // enviados este minuto (delta)
-  const sentNow = Number(batch.sent_count ?? 0);
-  let sentThisMin = '0';
-  if (lastSentCount !== null) {
-    sentThisMin = String(Math.max(0, sentNow - lastSentCount));
-  }
-  lastSentCount = sentNow;
-  if (sentThisMinLabel) sentThisMinLabel.textContent = sentThisMin;
+            if (wStatus) wStatus.textContent = batch.status ?? '-';
+            if (wExpires) wExpires.textContent = batch.expires_at ?? '-';
 
-  const st = String(batch.status ?? '').toLowerCase();
-  const secondsLeft = Number(batch.seconds_left ?? NaN);
+            batchExpiresAtMs = Number(batch.expires_at_ms ?? null);
+            if (!batchExpiresAtMs && batch.seconds_left != null) {
+                batchExpiresAtMs = Date.now() + (Number(batch.seconds_left) * 1000);
+            }
 
-  if (st === 'failed' || st === 'matched' || (Number.isFinite(secondsLeft) && secondsLeft <= 0)) {
-    stopPollingAll();
-    currentBatchId = null;
-    if (btnNewSearch) btnNewSearch.classList.remove('hidden');
-    if (waitMsg) waitMsg.textContent = 'La búsqueda terminó. Puedes iniciar una nueva solicitud.';
-  }
-}
+            // enviados este minuto (delta)
+            const sentNow = Number(batch.sent_count ?? 0);
+            let sentThisMin = '0';
+            if (lastSentCount !== null) {
+                sentThisMin = String(Math.max(0, sentNow - lastSentCount));
+            }
+            lastSentCount = sentNow;
+            if (sentThisMinLabel) sentThisMinLabel.textContent = sentThisMin;
 
-function renderAcceptedCards() {
-  const grid = document.getElementById('tutor-results');
-  const items = Array.from(acceptedMap.values());
+            const st = String(batch.status ?? '').toLowerCase();
+            const secondsLeft = Number(batch.seconds_left ?? NaN);
 
-  if (!grid) return;
-  grid.innerHTML = '';
+            if (st === 'failed' || st === 'matched' || (Number.isFinite(secondsLeft) && secondsLeft <= 0)) {
+                stopPollingAll();
+                currentBatchId = null;
+                if (btnNewSearch) btnNewSearch.classList.remove('hidden');
+                if (waitMsg) waitMsg.textContent = 'La búsqueda terminó. Puedes iniciar una nueva solicitud.';
+            }
+        }
 
-  if (!items.length) {
-    grid.innerHTML = `<div style="padding:1.5rem;text-align:center;color:var(--text-muted);font-weight:900;">Aún nadie aceptó...</div>`;
-    grid.classList.remove('active');
-    return;
-  }
+        function renderAcceptedCards() {
+            const grid = document.getElementById('tutor-results');
+            const items = Array.from(acceptedMap.values());
 
-  // activar animación de entrada
-  grid.classList.add('active');
+            if (!grid) return;
+            grid.innerHTML = '';
 
-  for (const t of items) {
-    // ====== mapear datos del backend a variables del template ======
-    const name = escapeHtml(
-      t.name ||
-      `${t.first_name || ''} ${t.last_name || ''}`.trim() ||
-      'Tutor'
-    );
+            if (!items.length) {
+                grid.innerHTML =
+                    `<div style="padding:1.5rem;text-align:center;color:var(--text-muted);font-weight:900;">Aún nadie aceptó...</div>`;
+                grid.classList.remove('active');
+                return;
+            }
 
-    const rating = (t.rating !== null && t.rating !== undefined) ? escapeHtml(String(t.rating)) : '0.0';
+            // activar animación de entrada
+            grid.classList.add('active');
 
-    const verified = (Number(t.is_verified) === 1 || !!t.verified_at);
+            for (const t of items) {
+                // ====== mapear datos del backend a variables del template ======
+                const name = escapeHtml(
+                    t.name ||
+                    `${t.first_name || ''} ${t.last_name || ''}`.trim() ||
+                    'Tutor'
+                );
 
-    const priceNum =  t.price !== null && t.price !== undefined && String(t.price) !== ''? Number(t.price).toString(): '0';
-    
-    const price = escapeHtml(priceNum);
+                const rating = (t.rating !== null && t.rating !== undefined) ? escapeHtml(String(t.rating)) : '0.0';
 
-    // materia (badge): si backend manda subject_name úsalo; si no, usa la materia seleccionada
-/*     const subjectLabel = escapeHtml(
-      t.subject_name || t.subject || materiaSeleccionadaNombre
-    ); */
+                const verified = (Number(t.is_verified) === 1 || !!t.verified_at);
 
-    // degree (texto secundario): backend puede mandar degree/education/title, si no deja vacío
-    const degree = escapeHtml(
-      t.degree || t.education || t.title || ''
-    );
+                const priceNum = t.price !== null && t.price !== undefined && String(t.price) !== '' ? Number(t.price)
+                    .toString() : '0';
 
-    // imagen (URL absoluta si viene relativa)
-    let img = '';
-    if (t.image) {
-      const raw = String(t.image);
-      img = raw.startsWith('http') ? raw : `/${raw.replace(/^\/+/, '')}`;
-    } else {
-      img = ''; // si quieres un placeholder, pon aquí la ruta
-    }
+                const price = escapeHtml(priceNum);
 
-    // id para hero
-    const id = escapeHtml(String(t.id));
+                // materia (badge): si backend manda subject_name úsalo; si no, usa la materia seleccionada
+                /*     const subjectLabel = escapeHtml(
+                      t.subject_name || t.subject || materiaSeleccionadaNombre
+                    ); */
 
-    // ====== construir card ======
-    const wrapper = document.createElement('div');
-    wrapper.className = 'tutor-card-wrapper';
+                // degree (texto secundario): backend puede mandar degree/education/title, si no deja vacío
+                const degree = escapeHtml(
+                    t.degree || t.education || t.title || ''
+                );
 
-    wrapper.innerHTML = `
+                // imagen (URL absoluta si viene relativa)
+                let img = '';
+                if (t.image) {
+                    const raw = String(t.image);
+                    img = raw.startsWith('http') ? raw : `/${raw.replace(/^\/+/, '')}`;
+                } else {
+                    img = ''; // si quieres un placeholder, pon aquí la ruta
+                }
+
+                // id para hero
+                const id = escapeHtml(String(t.id));
+
+                // ====== construir card ======
+                const wrapper = document.createElement('div');
+                wrapper.className = 'tutor-card-wrapper';
+
+                wrapper.innerHTML = `
       <div class="tutor-card" id="hero-${id}">
         <div class="card-face card-face-front">
           <div class="card-header">
@@ -1081,13 +1512,13 @@ function renderAcceptedCards() {
               ${img ? `<img class="avatar" src="${escapeHtml(img)}" alt="${name}">` : ``}
 
               ${verified ? `
-                <span class="verified">
-                  <svg viewBox="0 0 24 24" class="verified-icon">
-                    <path d="M12 2l4 2 4 .6 1.4 4L22 12l-1.6 3.4L20 19l-4 .6-4 2-4-2-4-.6L3.6 15.4 2 12l1.4-3.4L4 4.6l4-.6 4-2z"/>
-                    <path d="M9.5 12.5l1.7 1.7 3.8-3.8"/>
-                  </svg>
-                </span>
-              ` : ``}
+                        <span class="verified">
+                          <svg viewBox="0 0 24 24" class="verified-icon">
+                            <path d="M12 2l4 2 4 .6 1.4 4L22 12l-1.6 3.4L20 19l-4 .6-4 2-4-2-4-.6L3.6 15.4 2 12l1.4-3.4L4 4.6l4-.6 4-2z"/>
+                            <path d="M9.5 12.5l1.7 1.7 3.8-3.8"/>
+                          </svg>
+                        </span>
+                      ` : ``}
             </div>
           </div>
 
@@ -1169,271 +1600,286 @@ function renderAcceptedCards() {
       </div>
     `;
 
-    // ====== wiring de eventos (SIN onclick inline, respetando JS actual) ======
-    const openBtn = wrapper.querySelector('[data-hero-open]');
-    const closeBtn = wrapper.querySelector('[data-hero-close]');
-    const payBtn = wrapper.querySelector('[data-pay]');
-    const fileInput = wrapper.querySelector('.real-file-input');
-    const fakePicker = wrapper.querySelector('.custom-file-input');
+                // ====== wiring de eventos (SIN onclick inline, respetando JS actual) ======
+                const openBtn = wrapper.querySelector('[data-hero-open]');
+                const closeBtn = wrapper.querySelector('[data-hero-close]');
+                const payBtn = wrapper.querySelector('[data-pay]');
+                const fileInput = wrapper.querySelector('.real-file-input');
+                const fakePicker = wrapper.querySelector('.custom-file-input');
 
-    openBtn?.addEventListener('click', () => openHero(id));
-    closeBtn?.addEventListener('click', () => closeHero());
+                openBtn?.addEventListener('click', () => openHero(id));
+                closeBtn?.addEventListener('click', () => closeHero());
 
-    fakePicker?.addEventListener('click', () => {
-      fileInput?.click();
-    });
+                fakePicker?.addEventListener('click', () => {
+                    fileInput?.click();
+                });
 
-    fileInput?.addEventListener('change', (ev) => {
-      handleReceiptUpload(ev, id);
-    });
+                fileInput?.addEventListener('change', (ev) => {
+                    handleReceiptUpload(ev, id);
+                });
 
-    payBtn?.addEventListener('click', () => finishPayment(payBtn, id));
+                payBtn?.addEventListener('click', () => finishPayment(payBtn, id));
 
-    grid.appendChild(wrapper);
-  }
+                grid.appendChild(wrapper);
+            }
 
-  // cuando hay resultados, achicar radar
-  document.getElementById('radar-ui')?.classList.add('results-found');
-}
-function openHero(id){
-  // Cerrar si había otra abierta
-  if (state.activeHeroId && state.activeHeroId !== id) {
-    closeHero(true);
-  }
+            // cuando hay resultados, achicar radar
+            document.getElementById('radar-ui')?.classList.add('results-found');
+        }
 
-  state.activeHeroId = id;
+        function openHero(id) {
+            // Cerrar si había otra abierta
+            if (state.activeHeroId && state.activeHeroId !== id) {
+                closeHero(true);
+            }
 
-  const grid = document.getElementById('tutor-results');
-  const card = document.getElementById(`hero-${id}`);
+            state.activeHeroId = id;
 
-  if (!grid || !card) {
-    console.warn('No se encontró grid/card para hero', { id, grid, card });
-    return;
-  }
+            const grid = document.getElementById('tutor-results');
+            const card = document.getElementById(`hero-${id}`);
 
-  // Ocultar otras cards y bloquear scroll
-  grid.classList.add('hide-others');
-  document.body.classList.add('lock-scroll');
+            if (!grid || !card) {
+                console.warn('No se encontró grid/card para hero', {
+                    id,
+                    grid,
+                    card
+                });
+                return;
+            }
 
-  // Activar centrado
-  card.classList.add('is-active');
+            // Ocultar otras cards y bloquear scroll
+            grid.classList.add('hide-others');
+            document.body.classList.add('lock-scroll');
 
-  // Dar un frame para que el browser "registre" el transform translate(-50%,-50%)
-  requestAnimationFrame(() => {
-    setTimeout(() => {
-      card.classList.add('is-flipped'); // ✅ aquí aparece checkout (back)
-    }, 60);
-  });
-}
+            // Activar centrado
+            card.classList.add('is-active');
 
-function closeHero(skipAnimation = false){
-  if (!state.activeHeroId) return;
+            // Dar un frame para que el browser "registre" el transform translate(-50%,-50%)
+            requestAnimationFrame(() => {
+                setTimeout(() => {
+                    card.classList.add('is-flipped'); // ✅ aquí aparece checkout (back)
+                }, 60);
+            });
+        }
 
-  const grid = document.getElementById('tutor-results');
-  const card = document.getElementById(`hero-${state.activeHeroId}`);
+        function closeHero(skipAnimation = false) {
+            if (!state.activeHeroId) return;
 
-  const finish = () => {
-    card?.classList.remove('is-active');
-    grid?.classList.remove('hide-others');
-    document.body.classList.remove('lock-scroll');
-    state.activeHeroId = null;
-  };
+            const grid = document.getElementById('tutor-results');
+            const card = document.getElementById(`hero-${state.activeHeroId}`);
 
-  // Quitar flip primero (vuelve al front)
-  card?.classList.remove('is-flipped');
+            const finish = () => {
+                card?.classList.remove('is-active');
+                grid?.classList.remove('hide-others');
+                document.body.classList.remove('lock-scroll');
+                state.activeHeroId = null;
+            };
 
-  if (skipAnimation) return finish();
+            // Quitar flip primero (vuelve al front)
+            card?.classList.remove('is-flipped');
 
-  // Espera la animación para que se vea smooth
-  setTimeout(finish, 450);
-}
+            if (skipAnimation) return finish();
+
+            // Espera la animación para que se vea smooth
+            setTimeout(finish, 450);
+        }
 
 
-async function chooseTutor(itemId){
-  if (!currentBatchId) return;
+        async function chooseTutor(itemId) {
+            if (!currentBatchId) return;
 
-  const csrf = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+            const csrf = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
 
-  const res = await fetch(`/student/batches/${currentBatchId}/choose`, {
-    method:'POST',
-    headers:{
-      'Content-Type':'application/json',
-      'Accept':'application/json',
-      ...(csrf ? {'X-CSRF-TOKEN':csrf} : {}),
-    },
-    credentials:'same-origin',
-    body: JSON.stringify({ item_id: itemId })
-  });
+            const res = await fetch(`/student/batches/${currentBatchId}/choose`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    ...(csrf ? {
+                        'X-CSRF-TOKEN': csrf
+                    } : {}),
+                },
+                credentials: 'same-origin',
+                body: JSON.stringify({
+                    item_id: itemId
+                })
+            });
 
-  const json = await res.json().catch(()=>({}));
+            const json = await res.json().catch(() => ({}));
 
-  if (!res.ok) {
-    alert(json.message || `No se pudo elegir (HTTP ${res.status})`);
-    return;
-  }
+            if (!res.ok) {
+                alert(json.message || `No se pudo elegir (HTTP ${res.status})`);
+                return;
+            }
 
-  stopPollingAll();
-  if (waitMsg) waitMsg.textContent = 'Tutor elegido. Redirigiendo...';
+            stopPollingAll();
+            if (waitMsg) waitMsg.textContent = 'Tutor elegido. Redirigiendo...';
 
-  if (json.redirect_to) {
-    window.location.href = json.redirect_to;
-  } else {
-    alert('Elegido, pero faltó redirect_to. Define tu ruta de pagos.');
-  }
-}
+            if (json.redirect_to) {
+                window.location.href = json.redirect_to;
+            } else {
+                alert('Elegido, pero faltó redirect_to. Define tu ruta de pagos.');
+            }
+        }
 
-function startPolling(batchId){
-  currentBatchId = batchId;
+        function startPolling(batchId) {
+            currentBatchId = batchId;
 
-  lastSentCount = null;
-  acceptedAfterId = 0;
-  acceptedAfterAcceptedAt = '';
-  acceptedMap.clear();
-  renderAcceptedCards();
+            lastSentCount = null;
+            acceptedAfterId = 0;
+            acceptedAfterAcceptedAt = '';
+            acceptedMap.clear();
+            renderAcceptedCards();
 
-  if (wBatchId) wBatchId.textContent = String(batchId);
-  if (btnNewSearch) btnNewSearch.classList.add('hidden');
-  if (waitMsg) waitMsg.textContent = '';
+            if (wBatchId) wBatchId.textContent = String(batchId);
+            if (btnNewSearch) btnNewSearch.classList.add('hidden');
+            if (waitMsg) waitMsg.textContent = '';
 
-  startBatchExpireCountdown();
-  startAcceptedPolling(batchId);
+            startBatchExpireCountdown();
+            startAcceptedPolling(batchId);
 
-  // primer fetch inmediato
-  fetchBatchStatus(batchId);
+            // primer fetch inmediato
+            fetchBatchStatus(batchId);
 
-  // polling cada 60s
-  if (pollTimer) clearInterval(pollTimer);
-  pollTimer = setInterval(() => fetchBatchStatus(batchId), 60000);
-}
+            // polling cada 60s
+            if (pollTimer) clearInterval(pollTimer);
+            pollTimer = setInterval(() => fetchBatchStatus(batchId), 60000);
+        }
 
-/* ==========================================================
-   5) selectSubject: crea batch y llama startPolling
-========================================================== */
-async function selectSubject(subjectName, subjectId){
-  if (currentBatchId) {
-    alert('Ya hay una búsqueda activa. Continúa la espera.');
-    return;
-  }
-  if (!subjectId) {
-    alert('Selecciona una materia primero.');
-    return;
-  }
+        /* ==========================================================
+           5) selectSubject: crea batch y llama startPolling
+        ========================================================== */
+        async function selectSubject(subjectName, subjectId) {
+            if (currentBatchId) {
+                alert('Ya hay una búsqueda activa. Continúa la espera.');
+                return;
+            }
+            if (!subjectId) {
+                alert('Selecciona una materia primero.');
+                return;
+            }
 
-  ocultarFabTutoria();
-  fab.disabled = true;
-  fab.style.opacity = '0.6';
+            ocultarFabTutoria();
+            fab.disabled = true;
+            fab.style.opacity = '0.6';
 
-  document.getElementById('selected-subject-name').innerText = subjectName;
+            document.getElementById('selected-subject-name').innerText = subjectName;
 
-  showRadar();
-  if (statusMsg) statusMsg.innerText = 'Creando batch...';
+            showRadar();
+            if (statusMsg) statusMsg.innerText = 'Creando batch...';
 
-  try {
-    const csrf = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+            try {
+                const csrf = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
 
-    const res = await fetch('/student/batches/start', {
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'Accept':'application/json',
-        ...(csrf ? {'X-CSRF-TOKEN':csrf} : {}),
-      },
-      credentials:'same-origin',
-      body: JSON.stringify({ subject_id: subjectId }),
-    });
+                const res = await fetch('/student/batches/start', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        ...(csrf ? {
+                            'X-CSRF-TOKEN': csrf
+                        } : {}),
+                    },
+                    credentials: 'same-origin',
+                    body: JSON.stringify({
+                        subject_id: subjectId
+                    }),
+                });
 
-    const json = await res.json().catch(()=>({}));
+                const json = await res.json().catch(() => ({}));
 
-    if (!res.ok) {
-      if (statusMsg) statusMsg.innerText = 'No se pudo iniciar la solicitud.';
-      alert('Error al iniciar batch: ' + (json.message ?? `HTTP ${res.status}`));
-      showSelection();
-      return;
-    }
+                if (!res.ok) {
+                    if (statusMsg) statusMsg.innerText = 'No se pudo iniciar la solicitud.';
+                    alert('Error al iniciar batch: ' + (json.message ?? `HTTP ${res.status}`));
+                    showSelection();
+                    return;
+                }
 
-    const batchId = json.batch_id ?? json?.data?.batch_id ?? null;
+                const batchId = json.batch_id ?? json?.data?.batch_id ?? null;
 
-    if (!batchId) {
-      if (statusMsg) statusMsg.innerText = 'Batch creado, pero no llegó batch_id.';
-      alert('Batch creado pero no llegó batch_id en respuesta.');
-      showSelection();
-      return;
-    }
+                if (!batchId) {
+                    if (statusMsg) statusMsg.innerText = 'Batch creado, pero no llegó batch_id.';
+                    alert('Batch creado pero no llegó batch_id en respuesta.');
+                    showSelection();
+                    return;
+                }
 
-    if (statusMsg) statusMsg.innerText = `Solicitud enviada. Notificando tutores (Batch #${batchId})...`;
-    startPolling(batchId);
+                if (statusMsg) statusMsg.innerText = `Solicitud enviada. Notificando tutores (Batch #${batchId})...`;
+                startPolling(batchId);
 
-  } catch(e) {
-    console.error(e);
-    if (statusMsg) statusMsg.innerText = 'Error JS al iniciar la solicitud.';
-    alert('Error JS: ' + e.message);
-    showSelection();
-  } finally {
-    fab.disabled = false;
-    fab.style.opacity = '';
-    document.body.classList.remove('lock-scroll');
-  }
-}
+            } catch (e) {
+                console.error(e);
+                if (statusMsg) statusMsg.innerText = 'Error JS al iniciar la solicitud.';
+                alert('Error JS: ' + e.message);
+                showSelection();
+            } finally {
+                fab.disabled = false;
+                fab.style.opacity = '';
+                document.body.classList.remove('lock-scroll');
+            }
+        }
 
-/* ==========================================================
-   6) Reanudar batch si existe
-========================================================== */
-async function resumeActiveBatchIfAny(){
-  try{
-    const res = await fetch('/student/batches/active', {
-      headers:{'Accept':'application/json'},
-      credentials:'same-origin'
-    });
-    const json = await res.json().catch(()=>({}));
-    if (!res.ok || !json.active || !json.batch_id) return false;
+        /* ==========================================================
+           6) Reanudar batch si existe
+        ========================================================== */
+        async function resumeActiveBatchIfAny() {
+            try {
+                const res = await fetch('/student/batches/active', {
+                    headers: {
+                        'Accept': 'application/json'
+                    },
+                    credentials: 'same-origin'
+                });
+                const json = await res.json().catch(() => ({}));
+                if (!res.ok || !json.active || !json.batch_id) return false;
 
-    // si quieres: mostrar materia en UI (opcional)
-    showRadar();
-    if (statusMsg) statusMsg.innerText = `Reanudando búsqueda activa (Batch #${json.batch_id})...`;
-    if (wBatchId) wBatchId.textContent = String(json.batch_id);
+                // si quieres: mostrar materia en UI (opcional)
+                showRadar();
+                if (statusMsg) statusMsg.innerText = `Reanudando búsqueda activa (Batch #${json.batch_id})...`;
+                if (wBatchId) wBatchId.textContent = String(json.batch_id);
 
-    startPolling(json.batch_id);
-    return true;
-  }catch(e){
-    console.error('resumeActiveBatchIfAny error:', e);
-    return false;
-  }
-}
+                startPolling(json.batch_id);
+                return true;
+            } catch (e) {
+                console.error('resumeActiveBatchIfAny error:', e);
+                return false;
+            }
+        }
 
-/* ==========================================================
-   7) Botón "Nueva solicitud"
-========================================================== */
-btnNewSearch?.addEventListener('click', async () => {
-  currentBatchId = null;
-  stopPollingAll();
+        /* ==========================================================
+           7) Botón "Nueva solicitud"
+        ========================================================== */
+        btnNewSearch?.addEventListener('click', async () => {
+            currentBatchId = null;
+            stopPollingAll();
 
-  document.getElementById('radar-ui')?.classList.remove('results-found');
-  document.getElementById('tutor-results').innerHTML = '';
+            document.getElementById('radar-ui')?.classList.remove('results-found');
+            document.getElementById('tutor-results').innerHTML = '';
 
-  materiaSeleccionada = null;
-  materiaSeleccionadaId = null;
-  materiaSeleccionadaNombre = null;
-  ocultarFabTutoria();
+            materiaSeleccionada = null;
+            materiaSeleccionadaId = null;
+            materiaSeleccionadaNombre = null;
+            ocultarFabTutoria();
 
-  showSelection();
-  await loadCategoriasMaterias();
-  renderCategoryPills();
-  renderSubjectSections();
-});
+            showSelection();
+            await loadCategoriasMaterias();
+            renderCategoryPills();
+            renderSubjectSections();
+        });
 
-/* ==========================================================
-   INIT
-========================================================== */
-async function init(){
-  wireSearch();
-  const resumed = await resumeActiveBatchIfAny();
-  if (!resumed) {
-    await loadCategoriasMaterias();
-    renderCategoryPills();
-    renderSubjectSections();
-  }
-}
+        /* ==========================================================
+           INIT
+        ========================================================== */
+        async function init() {
+            wireSearch();
+            const resumed = await resumeActiveBatchIfAny();
+            if (!resumed) {
+                await loadCategoriasMaterias();
+                renderCategoryPills();
+                renderSubjectSections();
+            }
+        }
 
-init();
-</script>
+        init();
+    </script>
 @endsection
