@@ -541,7 +541,8 @@ new #[Layout('layouts.guest')] class extends Component
                         <span wire:loading wire:target="register">...</span>
                     </button>
 
-                    <div class="am-signinoption">
+                    @if (!empty(setting('_api.enable_social_login')) && ((!empty(setting('_api.social_google_client_id')) && !empty(setting('_api.social_google_client_secret')))))    
+                            <div class="am-signinoption">
                                 <span class="am-signinoption_br"><em>{{ __('auth.or') }}</em></span>
                                 <a href="#" wire:click.prevent="redirectGoogle" wire:target="redirectGoogle" wire:loading.class="am-btn_disable" class="am-signinoption_btn">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21" fill="none">
@@ -553,6 +554,7 @@ new #[Layout('layouts.guest')] class extends Component
                                     {{ __('auth.sign_in_with_google') }}
                                 </a>
                             </div>
+                        @endif
                     
                     <p class="cg-mobile-toggle">¿Ya tienes cuenta? <a href="#" @click.prevent="isRegister = false; showForgot = false">Inicia Sesión</a></p>
                 </form>
@@ -598,7 +600,8 @@ new #[Layout('layouts.guest')] class extends Component
 
                         <x-primary-button wire:loading.class="am-btn_disable" wire:target="login"><span>{{ __('auth.login_btn') }}</span><i class="icon icon-arrow-right"></i></x-primary-button>
                         
-                        <div class="am-signinoption">
+                        @if (!empty(setting('_api.enable_social_login')) && ((!empty(setting('_api.social_google_client_id')) && !empty(setting('_api.social_google_client_secret')))))    
+                            <div class="am-signinoption">
                                 <span class="am-signinoption_br"><em>{{ __('auth.or') }}</em></span>
                                 <a href="#" wire:click.prevent="redirectGoogle" wire:target="redirectGoogle" wire:loading.class="am-btn_disable" class="am-signinoption_btn">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21" fill="none">
@@ -610,7 +613,7 @@ new #[Layout('layouts.guest')] class extends Component
                                     {{ __('auth.sign_in_with_google') }}
                                 </a>
                             </div>
-
+                        @endif
                         
 
                         <p class="cg-mobile-toggle">¿Nuevo aquí? <a href="#" @click.prevent="isRegister = true">Crea una cuenta</a></p>
