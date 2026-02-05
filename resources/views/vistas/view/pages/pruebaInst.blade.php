@@ -932,7 +932,7 @@
                 padding: 1.5rem 1rem;
                 overflow: hidden;
             }
-            
+
         }
     </style>
 
@@ -1076,8 +1076,8 @@
 
     <script>
         /* ==========================================================
-           1) DATA: Materias (desde tu endpoint de categorías/materias)
-        ========================================================== */
+                                   1) DATA: Materias (desde tu endpoint de categorías/materias)
+                                ========================================================== */
         let categories = ['Todas'];
         let subjects = []; // {id, name, category, category_id}
         let state = {
@@ -1086,6 +1086,12 @@
             receipts: {}, // (si luego reusas checkout)
             activeHeroId: null,
         };
+        // booking por item (heroId = item_id)
+        let bookingByHeroId = new Map();
+
+        // polling por booking (si luego lo activas)
+        let bookingPollTimers = new Map();
+
 
         const fab = document.getElementById('tutoriaFab');
 
@@ -1213,13 +1219,13 @@
 
         <div class="subject-grid">
           ${items.map(sub => `
-                    <button class="subject-card-btn" onclick="seleccionarMateria(this, ${sub.id}, '${sub.name.replaceAll("'", "\\'")}')">
-                      <div class="subject-initial">${sub.name.charAt(0)}</div>
-                      <div class="subject-meta">
-                        <div class="subject-title">${sub.name}</div>
-                      </div>
-                    </button>
-                  `).join('')}
+                                            <button class="subject-card-btn" onclick="seleccionarMateria(this, ${sub.id}, '${sub.name.replaceAll("'", "\\'")}')">
+                                              <div class="subject-initial">${sub.name.charAt(0)}</div>
+                                              <div class="subject-meta">
+                                                <div class="subject-title">${sub.name}</div>
+                                              </div>
+                                            </button>
+                                          `).join('')}
         </div>
       </section>
     `;
@@ -1360,16 +1366,9 @@
         }
 
         async function fetchAcceptedTutors(batchId) {
+            if (state.activeHeroId) return; // pausar si hay un hero activo (opcional)
 
-            if (state.activeHeroId) return; // pausar si hay un hero activo
-
-            const qs = new URLSearchParams({
-                limit: '50',
-                after_id: String(acceptedAfterId || 0),
-            });
-            if (acceptedAfterAcceptedAt) qs.set('after_accepted_at', acceptedAfterAcceptedAt);
-
-            const res = await fetch(`/student/batches/${batchId}/accepted-tutors?` + qs.toString(), {
+            const res = await fetch(`/student/batches/${batchId}/accepted-tutors?limit=50`, {
                 headers: {
                     'Accept': 'application/json'
                 },
@@ -1380,10 +1379,9 @@
             if (!res.ok) return;
 
             const data = Array.isArray(json.data) ? json.data : [];
-            for (const row of data) acceptedMap.set(row.id, row);
 
-            if (json.next_after_accepted_at) acceptedAfterAcceptedAt = String(json.next_after_accepted_at);
-            if (json.next_after_id) acceptedAfterId = Number(json.next_after_id);
+            // ✅ REEMPLAZAR COMPLETO (no acumular)
+            acceptedMap = new Map(data.map(row => [row.id, row]));
 
             renderAcceptedCards();
         }
@@ -1512,13 +1510,13 @@
               ${img ? `<img class="avatar" src="${escapeHtml(img)}" alt="${name}">` : ``}
 
               ${verified ? `
-                        <span class="verified">
-                          <svg viewBox="0 0 24 24" class="verified-icon">
-                            <path d="M12 2l4 2 4 .6 1.4 4L22 12l-1.6 3.4L20 19l-4 .6-4 2-4-2-4-.6L3.6 15.4 2 12l1.4-3.4L4 4.6l4-.6 4-2z"/>
-                            <path d="M9.5 12.5l1.7 1.7 3.8-3.8"/>
-                          </svg>
-                        </span>
-                      ` : ``}
+                                                <span class="verified">
+                                                  <svg viewBox="0 0 24 24" class="verified-icon">
+                                                    <path d="M12 2l4 2 4 .6 1.4 4L22 12l-1.6 3.4L20 19l-4 .6-4 2-4-2-4-.6L3.6 15.4 2 12l1.4-3.4L4 4.6l4-.6 4-2z"/>
+                                                    <path d="M9.5 12.5l1.7 1.7 3.8-3.8"/>
+                                                  </svg>
+                                                </span>
+                                              ` : ``}
             </div>
           </div>
 
@@ -1573,10 +1571,10 @@
               >
 
               <div class="custom-file-input">
-                <span class="file-label">Adjuntar captura o PDF...</span>
+                <div class="receipt-preview hidden"></div><span class="file-label">Adjuntar captura o PDF...</span>
               </div>
 
-              <div class="receipt-preview hidden"></div>
+              
             </div>
 
             <div style="display:flex; justify-content:space-between; margin-bottom:1rem;">
@@ -1605,7 +1603,7 @@
                 const fileInput = wrapper.querySelector('.real-file-input');
                 const fakePicker = wrapper.querySelector('.custom-file-input');
 
-                openBtn?.addEventListener('click', () => openHero(id));
+                openBtn?.addEventListener('click', () => reserveTutorAndOpen(id));
 
                 fakePicker?.addEventListener('click', () => {
                     fileInput?.click();
@@ -1657,6 +1655,49 @@
                     card.classList.add('is-flipped'); // ✅ aquí aparece checkout (back)
                 }, 60);
             });
+        }
+
+        async function reserveTutorAndOpen(heroId) {
+            state.activeHeroId = String(heroId);
+            if (!currentBatchId) {
+                alert('No hay batch activo.');
+                return;
+            }
+
+            const csrf = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+            const res = await fetch(`/student/batches/${currentBatchId}/reserve`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    ...(csrf ? {
+                        'X-CSRF-TOKEN': csrf
+                    } : {}),
+                },
+                credentials: 'same-origin',
+                body: JSON.stringify({
+                    item_id: Number(heroId)
+                }) // heroId = item_id ✅
+            });
+
+            const json = await res.json().catch(() => ({}));
+
+            if (!res.ok || !json.success) {
+                alert(json.message || `No se pudo reservar (HTTP ${res.status})`);
+                return;
+            }
+
+            const bookingId = Number(json.booking_id || json.booking?.id || 0);
+            if (!bookingId) {
+                alert('Reservó pero no llegó booking_id.');
+                return;
+            }
+
+            bookingByHeroId.set(String(heroId), bookingId);
+
+            // ✅ abrir checkout (flip)
+            openHero(heroId);
         }
 
 
@@ -1824,6 +1865,160 @@
         }
 
         /* ==========================================================
+           ) logica de pagos
+        ========================================================== */
+
+        function handleReceiptUpload(ev, heroId) {
+            const file = ev?.target?.files?.[0];
+            if (!file) return;
+
+            // guardar el archivo en memoria por hero
+            state.receipts[String(heroId)] = file;
+
+            const card = document.getElementById(`hero-${heroId}`);
+            if (!card) return;
+
+            const preview = card.querySelector('.receipt-preview');
+            const label = card.querySelector('.file-label');
+
+            if (label) label.textContent = file.name;
+
+            if (!preview) return;
+
+            preview.classList.remove('hidden');
+            preview.innerHTML = '';
+
+            // preview simple (imagen o pdf)
+            if (file.type.startsWith('image/')) {
+                const img = document.createElement('img');
+                img.style.width = '20%';
+                img.style.borderRadius = '12px';
+                img.style.border = '1px solid rgba(0,0,0,.08)';
+                img.src = URL.createObjectURL(file);
+                preview.appendChild(img);
+            } else {
+                preview.innerHTML =
+                    `<div style="font-size:.75rem;color:var(--text-muted);font-weight:80px;">📄 ${escapeHtml(file.name)}</div>`;
+            }
+        }
+
+        async function finishPayment(btn, heroId) {
+            const bookingId = bookingByHeroId.get(String(heroId));
+            if (!bookingId) {
+                alert('Primero debes SOLICITAR para generar la reserva.');
+                return;
+            }
+
+            const file = state.receipts[String(heroId)];
+            if (!file) {
+                alert('Adjunta tu comprobante primero.');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.classList.add('sp-disabled');
+
+            try {
+                const csrf = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+                const fd = new FormData();
+                fd.append('comprobante', file);
+
+                const res = await fetch(`/student/bookings/${bookingId}/receipt`, {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        ...(csrf ? {
+                            'X-CSRF-TOKEN': csrf
+                        } : {}),
+                    },
+                    credentials: 'same-origin',
+                    body: fd
+                });
+
+                const raw = await res.text();
+                let json = {};
+                try {
+                    json = JSON.parse(raw);
+                } catch {}
+
+                if (!res.ok || !json.ok) {
+                    const err =
+                        json?.errors?.comprobante?.[0] ||
+                        json?.message ||
+                        `No se pudo subir (HTTP ${res.status})`;
+                    alert(err);
+                    return;
+                }
+
+                // ✅ UI success (tu panel)
+                const okBox = document.getElementById(`payment-success-${heroId}`);
+                if (okBox) okBox.classList.remove('hidden');
+
+                // ✅ empezar polling hasta aprobado/rechazado
+                startStudentBookingPolling(bookingId, heroId);
+
+            } finally {
+                btn.disabled = false;
+                btn.classList.remove('sp-disabled');
+            }
+        }
+
+        function startStudentBookingPolling(bookingId, heroId) {
+            // limpia timer previo si existía
+            const key = String(heroId);
+            if (bookingPollTimers.has(key)) {
+                clearInterval(bookingPollTimers.get(key));
+                bookingPollTimers.delete(key);
+            }
+
+            const run = async () => {
+                const res = await fetch(`/student/bookings/${bookingId}/status`, {
+                    headers: {
+                        'Accept': 'application/json'
+                    },
+                    credentials: 'same-origin'
+                });
+
+                const json = await res.json().catch(() => ({}));
+                if (!res.ok || !json.ok) return;
+
+                const ui = String(json.ui_state || 'payment_phase');
+
+                if (ui === 'accepted') {
+                    // ✅ ir al meet
+                    window.location.href = `/student/bookings/${bookingId}/meet`;
+                    return;
+                }
+
+                if (ui === 'rejected') {
+                    alert('El tutor rechazó el pago. Puedes elegir otro tutor si el batch sigue activo.');
+
+                    // cerrar hero y permitir seguir
+                    closeHero(true);
+
+                    // liberar mapping + receipt para ese hero
+                    bookingByHeroId.delete(String(heroId));
+                    delete state.receipts[String(heroId)];
+
+                    // refrescar lista
+                    if (currentBatchId) fetchAcceptedTutors(currentBatchId);
+
+                    // parar timer
+                    if (bookingPollTimers.has(key)) {
+                        clearInterval(bookingPollTimers.get(key));
+                        bookingPollTimers.delete(key);
+                    }
+                }
+            };
+
+            run();
+            const t = setInterval(run, 2500);
+            bookingPollTimers.set(key, t);
+        }
+
+
+        /* ==========================================================
            7) Botón "Nueva solicitud"
         ========================================================== */
         btnNewSearch?.addEventListener('click', async () => {
@@ -1856,6 +2051,8 @@
                 renderSubjectSections();
             }
         }
+
+
 
         init();
     </script>
