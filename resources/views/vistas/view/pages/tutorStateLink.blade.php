@@ -17,6 +17,7 @@
       --slate-900: #0f172a;
       --emerald-400: #34d399;
       --error-color: #ef4444;
+      --bg-gradient2: linear-gradient(135deg, #023047 0%, #219EBC 100%);
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -37,7 +38,7 @@
     }
 
     .header{
-      background-color:var(--primary-color);
+      background:var(--bg-gradient2);
       padding:1.25rem;
       display:flex; align-items:center; justify-content:space-between;
       color:var(--white);
@@ -115,7 +116,7 @@
     }
 
     .action-card{
-      background-color:var(--primary-color);
+      background:var(--bg-gradient2);
       color:var(--white);
       padding:1.25rem;
       border-radius:1.5rem;

@@ -1587,7 +1587,6 @@
             <button class="btn-pay" type="button" data-pay="${id}">PAGAR AHORA</button>
           </div>
 
-          <button class="btn-cancel" type="button" data-hero-close="${id}">REGRESAR</button>
 
           <div class="payment-success hidden" id="payment-success-${id}">
             <div style="font-size:3rem;">✅</div>
@@ -1602,13 +1601,11 @@
 
                 // ====== wiring de eventos (SIN onclick inline, respetando JS actual) ======
                 const openBtn = wrapper.querySelector('[data-hero-open]');
-                const closeBtn = wrapper.querySelector('[data-hero-close]');
                 const payBtn = wrapper.querySelector('[data-pay]');
                 const fileInput = wrapper.querySelector('.real-file-input');
                 const fakePicker = wrapper.querySelector('.custom-file-input');
 
                 openBtn?.addEventListener('click', () => openHero(id));
-                closeBtn?.addEventListener('click', () => closeHero());
 
                 fakePicker?.addEventListener('click', () => {
                     fileInput?.click();
@@ -1662,27 +1659,7 @@
             });
         }
 
-        function closeHero(skipAnimation = false) {
-            if (!state.activeHeroId) return;
 
-            const grid = document.getElementById('tutor-results');
-            const card = document.getElementById(`hero-${state.activeHeroId}`);
-
-            const finish = () => {
-                card?.classList.remove('is-active');
-                grid?.classList.remove('hide-others');
-                document.body.classList.remove('lock-scroll');
-                state.activeHeroId = null;
-            };
-
-            // Quitar flip primero (vuelve al front)
-            card?.classList.remove('is-flipped');
-
-            if (skipAnimation) return finish();
-
-            // Espera la animación para que se vea smooth
-            setTimeout(finish, 450);
-        }
 
 
         async function chooseTutor(itemId) {
