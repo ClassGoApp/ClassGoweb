@@ -926,8 +926,8 @@
 
         // ✅ offsets para que funcione igual en cualquier dispositivo
         let serverOffsetMs = 0; // server_now_ms - Date.now()
-        let batchExpiresAtMs = null;
-        let batchExpireTimer = null;
+      
+ 
 
         // ✅ se llama cada vez que recibes JSON del backend con expires_at_ms y server_now_ms
         function applyBatchTimingFromJson(json) {
