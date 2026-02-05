@@ -553,6 +553,8 @@
             showPayBox(false);
             show(btnMeet, false);
             show(btnAccept, false);
+            show(btnReject, false);
+
 
             // states:
             // waiting
@@ -569,17 +571,39 @@
             }
 
             if (ui === 'batch_expired_waiting') {
-                setState(
-                    'Expirado',
-                    'El batch expiró y no fuiste elegido. Si el estudiante vuelve a solicitar, te llegará otra invitación.'
-                );
-                // limpia para futuros links
+                const st = String(json.batch?.status || '');
+                const msg = String(json.message || '');
+
+                // Si fue cerrado porque eligieron a otro (matched/done/failed) -> texto distinto
+                const closedByChoice = (st === 'matched' || st === 'done' || st === 'failed') && !/expir/i.test(msg);
+
+                if (closedByChoice) {
+                    setState(
+                        'Solicitud cerrada',
+                        msg || 'El estudiante ya eligió a otro tutor. Gracias.'
+                    );
+                    warnEl.style.display = 'inline';
+                    warnEl.style.color = '#6b7280';
+                    warnEl.textContent = 'ℹ️ Cerrado';
+                } else {
+                    setState(
+                        'Expirado',
+                        msg ||
+                        'El batch expiró y no fuiste elegido. Si el estudiante vuelve a solicitar, te llegará otra invitación.'
+                    );
+                    warnEl.style.display = 'inline';
+                    warnEl.style.color = '#ef4444';
+                    warnEl.textContent = '❌ Expirado';
+                }
+
+                showPayBox(false);
+                show(btnMeet, false);
+                show(btnAccept, false);
+                show(btnReject, false);
                 sessionStorage.removeItem('waitlist_reloaded');
-                warnEl.style.display = 'inline';
-                warnEl.style.color = '#ef4444';
-                warnEl.textContent = '❌ Link expirado';
                 return;
             }
+
 
             // Desde aquí en adelante: ya fuiste elegido
             const booking = json.booking || {};
@@ -730,6 +754,7 @@
             // ✅ REDIRECT DIRECTO AL MEET
             const link = json.meeting_link || json.booking?.meeting_link;
             if (link) {
+                if (pollTimer) clearInterval(pollTimer);
                 window.location.href = link;
                 return;
             }
@@ -744,6 +769,7 @@
             if (!token) return;
 
             const reason = String(rejectReasonEl.value || '').trim();
+            const csrf = document.querySelector('meta[name="csrf-token"]')?.content;
 
             btnReject.disabled = true;
             btnReject.style.opacity = '.6';
@@ -752,8 +778,11 @@
             const res = await fetch(`/tutor/waitlist/reject?t=${encodeURIComponent(token)}`, {
                 method: 'POST',
                 headers: {
+                    'Accept': 'application/json',
                     'Content-Type': 'application/json',
-                    'Accept': 'application/json'
+                    ...(csrf ? {
+                        'X-CSRF-TOKEN': csrf
+                    } : {}),
                 },
                 credentials: 'same-origin',
                 body: JSON.stringify({
@@ -776,6 +805,7 @@
             actionMsg.textContent = '❌ Rechazado. Actualizando...';
             await fetchStatus();
         });
+
 
         /* --- start polling --- */
         function startPolling() {
