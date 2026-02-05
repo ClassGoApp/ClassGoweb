@@ -14,5 +14,7 @@ class VerifyCsrfToken extends Middleware
     protected $except = [
         'api/payment-slot-bookings',
         'api/verify-email',
+        'tutor/waitlist/accept*',
+        'tutor/waitlist/reject*',
     ];
-} 
+}

@@ -3,367 +3,661 @@
 @section('content')
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <div class="max-w-5xl mx-auto p-6">
+    <div class="sp-wrap">
+        <!-- HEADER -->
+        <div class="sp-top">
+            <div>
+                <div class="sp-title">Elegir materia</div>
+                <div class="sp-sub">Selecciona una materia, inicia el batch y elige un tutor cuando acepte.</div>
+            </div>
+            <div class="sp-badges">
+                <span class="sp-badge">Endpoint materias: <code>/student/subject</code></span>
+                <span class="sp-badge">Batches: <code>/student/batches/*</code></span>
+            </div>
+        </div>
 
-        <!-- PANTALLA A: Selección + Debug -->
-        <div id="screenSelect">
-            <h2 class="text-xl font-bold mb-4">Elegir materia</h2>
+        <!-- SCREEN A: SELECT SUBJECT -->
+        <section id="screenSelect" class="sp-card">
+            <div class="sp-card-h">
+                <div class="sp-card-title">1) Selecciona una materia</div>
+                <div class="sp-row sp-row-gap">
+                    <input id="search" class="sp-in" type="text" placeholder="Buscar materia..." />
+                    <button id="reloadBtn" class="sp-btn" type="button">Recargar</button>
+                </div>
+            </div>
 
-            <!-- BLOQUE A) Selección de materia -->
-            <div class="card">
-                <div class="card-title">1 Selecciona una materia</div>
+            <div class="sp-list">
+                <div class="sp-list-h">Materias</div>
+                <div id="grid" class="sp-list-body"></div>
+            </div>
 
-                <div class="flex flex-col md:flex-row gap-3 items-start md:items-center">
-                    <input id="search" type="text" placeholder="Buscar materia..."
-                        class="w-full md:w-80 border rounded-lg px-3 py-2" />
+            <div class="sp-select-box">
+                <div class="sp-kv">
+                    <div class="sp-k">Materia seleccionada:</div>
+                    <div id="selectedName" class="sp-v">Ninguna</div>
+                </div>
+                <div class="sp-kv">
+                    <div class="sp-k">ID guardado:</div>
+                    <div id="selectedId" class="sp-v">null</div>
+                </div>
 
-                    <button id="reloadBtn" type="button" class="border rounded-lg px-4 py-2">
-                        Recargar
+                <div class="sp-row sp-row-gap sp-mt">
+                    <button id="nextBtn" class="sp-btn sp-btn-primary sp-disabled" type="button" disabled>
+                        Solicitar (iniciar búsqueda)
                     </button>
+                    <span class="sp-hint">Variable: <code>selectedSubjectId</code></span>
+                </div>
 
-                    <div class="text-sm opacity-70">
-                        Endpoint: <code>/student/subject</code>
+                <div class="sp-debug">
+                    <div class="sp-debug-lbl">Respuesta start:</div>
+                    <pre id="startOut" class="sp-code">Aún no se inicia.</pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- SCREEN B: WAIT + ACCEPTED -->
+        <section id="screenWait" class="sp-card sp-hide">
+            <div class="sp-card-h">
+                <div class="sp-card-title">Buscando tutores...</div>
+
+                <div class="sp-row sp-row-wrap sp-row-gap">
+                    <span class="sp-badge">Batch: <b id="wBatchId">-</b></span>
+                    <span class="sp-badge">Estado: <b id="wStatus">-</b></span>
+                    <span class="sp-badge">Expira: <b id="wExpires">-</b></span>
+                    <span class="sp-badge">Emails/min: <b id="wRate">-</b></span>
+                    <span class="sp-badge">Enviados este minuto: <b id="wSentThisMin">0</b></span>
+                    <span class="sp-badge">Expira en: <b id="batchExpireCountdown"
+                            class="sp-expire sp-expire-ok">--:--</b></span>
+                </div>
+            </div>
+
+            <div class="sp-split">
+                <!-- LEFT: accepted tutors -->
+                <div class="sp-col">
+                    <div class="sp-sec-title">Tutores que aceptaron</div>
+                    <div id="acceptedList" class="sp-grid-2">
+                        <div class="sp-muted">Aún nadie aceptó...</div>
+                    </div>
+
+                    <div class="sp-row sp-row-gap sp-mt">
+                        <button id="btnNewSearch" type="button" class="sp-btn sp-hide">Nueva solicitud</button>
+                        <div id="waitMsg" class="sp-muted"></div>
                     </div>
                 </div>
 
-                <div class="list-box">
-                    <div class="list-title">Materias</div>
-                    <div id="grid" class="subject-list"></div>
-                </div>
+                <!-- RIGHT: payment panel -->
+                <div class="sp-col">
+                    <div class="sp-sec-title">Pago / Reserva</div>
 
-                <div class="mt-6 border rounded-xl p-4">
-                    <div class="flex flex-wrap gap-3 items-center">
-                        <div class="font-semibold">Materia seleccionada:</div>
-                        <div id="selectedName" class="opacity-70">Ninguna</div>
-                    </div>
+                    <!-- STEP 1: booking created -->
+                    <div id="payBox" class="sp-pay sp-mutedbox sp-hide">
+                        <div class="sp-pay-top">
+                            <div>
+                                <div class="sp-pay-title">Reserva creada ✅</div>
+                                <div class="sp-muted">Sube el comprobante y espera aprobación del tutor.</div>
+                            </div>
+                            <div class="sp-pay-meta">
+                                <div><span class="sp-muted">Booking:</span> <b id="payBookingId">-</b></div>
+                                <div><span class="sp-muted">Monto:</span> <b id="payAmount">-</b></div>
+                                <div><span class="sp-muted">Horario:</span> <b id="payTime">-</b></div>
+                            </div>
+                        </div>
 
-                    <div class="flex flex-wrap gap-3 items-center mt-2">
-                        <div class="font-semibold">ID guardado:</div>
-                        <div id="selectedId" class="opacity-70">null</div>
-                    </div>
+                        <div class="sp-pay-body">
+                            <div class="sp-pay-left">
+                                <div class="sp-muted">Comprobante (jpg/png/pdf, máx 5MB)</div>
+                                <input id="receiptFile" class="sp-file" type="file" accept=".jpg,.jpeg,.png,.pdf" />
+                                <div class="sp-row sp-row-gap sp-mt">
+                                    <button id="btnUploadReceipt" class="sp-btn sp-btn-primary" type="button">Subir
+                                        comprobante</button>
+                                    <button id="btnCancelBookingUI" class="sp-btn" type="button">Volver a lista</button>
+                                </div>
+                                <div id="payNote" class="sp-note sp-mt"></div>
+                            </div>
 
-                    <div class="mt-4 flex flex-wrap gap-3 items-center">
-                        <button id="nextBtn" type="button"
-                            class="border rounded-lg px-4 py-2 opacity-50 cursor-not-allowed" disabled>
-                            Solicitar (iniciar envío por lotes)
-                        </button>
+                            <div class="sp-pay-right">
+                                <div class="sp-muted">Estado</div>
+                                <div class="sp-state">
+                                    <div class="sp-state-k">UI:</div>
+                                    <div class="sp-state-v" id="stuUiState">payment_phase</div>
+                                </div>
+                                <div class="sp-state">
+                                    <div class="sp-state-k">Comprobante:</div>
+                                    <div class="sp-state-v" id="stuHasReceipt">No</div>
+                                </div>
 
-                        <div class="text-sm opacity-70">
-                            Variable: <code>selectedSubjectId</code>
+                                <div class="sp-mt">
+                                    <button id="btnMeet" class="sp-btn sp-btn-success sp-hide" type="button">
+                                        Ir a Meet
+                                    </button>
+                                    <div id="stuStatusMsg" class="sp-muted sp-mt"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="sp-debug sp-mt">
+                            <div class="sp-debug-lbl">Respuesta booking/status (debug):</div>
+                            <pre id="payOut" class="sp-code">-</pre>
                         </div>
                     </div>
 
-                    <div class="mt-3 text-sm">
-                        <div class="opacity-70">Resultado start:</div>
-                        <pre id="startOut" class="codebox">Aún no se inicia.</pre>
+                    <!-- Debug batch status -->
+                    <div class="sp-debug">
+                        <div class="sp-debug-lbl">Respuesta status (debug):</div>
+                        <pre id="statusOut" class="sp-code">-</pre>
                     </div>
                 </div>
             </div>
-
-            <!-- BLOQUE B) Seguimiento debug -->
-            <div class="card mt-6">
-                <div class="card-title">2) Seguimiento de envíos (cada 1 minuto)</div>
-
-                <div class="flex flex-wrap gap-3 items-center">
-                    <div class="text-sm opacity-70">
-                        Batch activo: <code id="batchIdLabel">null</code>
-                    </div>
-
-                    <div class="text-sm opacity-70">
-                        Estado: <span id="batchStatusLabel">-</span>
-                    </div>
-
-                    <div class="text-sm opacity-70">
-                        Enviados: <span id="sentCountLabel">0</span>
-                    </div>
-                    <div class="text-sm opacity-70">
-                        Emails/min: <b id="wRate">-</b>
-                    </div>
-                    <div class="text-sm opacity-70">
-                        Enviados este minuto: <b id="wSentThisMin">-</b>
-                    </div>
-
-                    <div class="text-sm opacity-70">
-                        En cola: <span id="queuedCountLabel">0</span>
-                    </div>
-
-                    <div class="text-sm opacity-70">
-                        Expira: <span id="expiresAtLabel">-</span>
-                    </div>
-                </div>
-
-                <div class="mt-4 flex flex-wrap gap-3 items-center">
-                    <div class="pill">
-                        Próximo refresco en: <b id="countdown">60</b>s
-                    </div>
-
-                    <button id="stopPollingBtn" type="button" class="border rounded-lg px-4 py-2" disabled>
-                        Detener seguimiento
-                    </button>
-                </div>
-
-                <div class="mt-4">
-                    <div class="text-sm opacity-70 mb-2">Detalle de lotes (items del batch)</div>
-
-                    <div class="table-wrap">
-                        <table class="mini-table">
-                            <thead>
-                                <tr>
-                                    <th># Lote (position)</th>
-                                    <th>user_id</th>
-                                    <th>email</th>
-                                    <th>status</th>
-                                    <th>sent_at</th>
-                                    <th>error</th>
-                                </tr>
-                            </thead>
-                            <tbody id="itemsTbody">
-                                <tr>
-                                    <td colspan="6" class="opacity-70">Aún no hay batch iniciado.</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <div class="mt-3 text-sm">
-                    <div class="opacity-70">Respuesta status (debug):</div>
-                    <pre id="statusOut" class="codebox">-</pre>
-                </div>
-            </div>
-        </div>
-
-        <!-- PANTALLA B: Espera + tutores aceptados -->
-        <div id="screenWait" class="hidden">
-            <div class="card">
-                <div class="card-title">Buscando tutores...</div>
-
-                <div class="flex flex-wrap gap-3 items-center">
-                    <div class="text-sm opacity-70">Batch: <b id="wBatchId">-</b></div>
-                    <div class="text-sm opacity-70">Estado: <b id="wStatus">-</b></div>
-                    <div class="text-sm opacity-70">Expira: <b id="wExpires">-</b></div>
-                    <div class="text-sm opacity-70">
-                        Emails/min: <b id="ratePerMinLabel">-</b>
-                    </div>
-                    <div class="text-sm opacity-70">
-                        Enviados este minuto: <b id="sentThisMinLabel">-</b>
-
-                    </div>
-                    <div class="text-sm opacity-70">
-                        Expira en: <b id="batchExpireCountdown" class="expire-normal">--:--</b>
-                    </div>
-                </div>
-
-                <div class="mt-4">
-                    <div class="text-sm opacity-70 mb-2">Tutores que aceptaron</div>
-
-                    <div id="acceptedList" class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        <div class="opacity-70">Aún nadie aceptó...</div>
-                    </div>
-                </div>
-
-                <div class="mt-5 flex flex-wrap gap-3 items-center">
-                    {{-- <button id="btnCancel" type="button" class="border rounded-lg px-4 py-2">
-                        Volver
-                    </button> --}}
-
-                    <button id="btnNewSearch" type="button" class="border rounded-lg px-4 py-2 hidden">
-                        Nueva solicitud
-                    </button>
-
-                    <div id="waitMsg" class="text-sm opacity-70"></div>
-                </div>
-            </div>
-        </div>
-
+        </section>
     </div>
 
     <style>
-        .hidden {
-            display: none !important;
+        :root {
+            --b: #e5e7eb;
+            --bg: #ffffff;
+            --soft: #f9fafb;
+            --txt: #111827;
+            --muted: #6b7280;
+            --codebg: #0b1020;
+            --code: #dbeafe;
+            --ok: #16a34a;
+            --warn: #f59e0b;
+            --bad: #ef4444;
         }
 
-        /* fallback por si no tienes Tailwind */
-
-        .card {
-            border: 1px solid #e5e7eb;
-            border-radius: 14px;
-            background: #fff;
-            padding: 16px;
+        .sp-wrap {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 18px;
             font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+            color: var(--txt);
         }
 
-        .card-title {
-            font-weight: 800;
-            font-size: 14px;
+        .sp-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 14px;
+            align-items: flex-start;
+            margin-bottom: 14px;
+        }
+
+        .sp-title {
+            font-weight: 900;
+            font-size: 20px;
+            letter-spacing: -.3px;
+        }
+
+        .sp-sub {
+            color: var(--muted);
+            margin-top: 4px;
+            font-size: 13px;
+        }
+
+        .sp-badges {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .sp-badge {
+            border: 1px solid var(--b);
+            background: var(--soft);
+            padding: 8px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .sp-card {
+            border: 1px solid var(--b);
+            border-radius: 16px;
+            background: var(--bg);
+            padding: 16px;
+        }
+
+        .sp-card+.sp-card {
+            margin-top: 14px;
+        }
+
+        .sp-card-h {
             margin-bottom: 12px;
-            background: #f9fafb;
-            border: 1px solid #e5e7eb;
+        }
+
+        .sp-card-title {
+            display: inline-block;
+            font-weight: 900;
+            font-size: 13px;
+            border: 1px solid var(--b);
+            background: var(--soft);
+            padding: 9px 12px;
+            border-radius: 12px;
+        }
+
+        .sp-row {
+            display: flex;
+            align-items: center;
+        }
+
+        .sp-row-wrap {
+            flex-wrap: wrap;
+        }
+
+        .sp-row-gap {
+            gap: 10px;
+        }
+
+        .sp-in {
+            width: 100%;
+            max-width: 360px;
+            border: 1px solid var(--b);
             border-radius: 12px;
             padding: 10px 12px;
-            display: inline-block;
-        }
-
-        .list-box {
-            margin-top: 16px;
-            border: 1px solid #e5e7eb;
-            border-radius: 14px;
-            overflow: hidden;
-            background: #fff;
-        }
-
-        .list-title {
-            padding: 12px 16px;
-            font-weight: 700;
             font-size: 14px;
-            background: #f9fafb;
-            border-bottom: 1px solid #e5e7eb;
         }
 
-        .subject-list {
-            max-height: 420px;
-            overflow-y: auto;
-        }
-
-        .subject-row {
-            width: 100%;
-            text-align: left;
-            padding: 12px 16px;
-            border: 0;
+        .sp-btn {
+            border: 1px solid var(--b);
             background: #fff;
+            border-radius: 12px;
+            padding: 10px 12px;
+            font-weight: 800;
+            font-size: 13px;
             cursor: pointer;
+        }
+
+        .sp-btn:hover {
+            background: var(--soft);
+        }
+
+        .sp-btn-primary {
+            border-color: #111827;
+            background: #111827;
+            color: #fff;
+        }
+
+        .sp-btn-primary:hover {
+            background: #0b1020;
+        }
+
+        .sp-btn-success {
+            border-color: var(--ok);
+            background: var(--ok);
+            color: #fff;
+        }
+
+        .sp-btn-success:hover {
+            filter: brightness(.95);
+        }
+
+        .sp-disabled {
+            opacity: .5;
+            cursor: not-allowed;
+        }
+
+        .sp-list {
+            border: 1px solid var(--b);
+            border-radius: 16px;
+            overflow: hidden;
+            margin-top: 12px;
+            background: #fff;
+        }
+
+        .sp-list-h {
+            padding: 12px 14px;
+            font-weight: 900;
+            font-size: 13px;
+            background: var(--soft);
+            border-bottom: 1px solid var(--b);
+        }
+
+        .sp-list-body {
+            max-height: 420px;
+            overflow: auto;
+        }
+
+        .sp-item {
             display: flex;
             justify-content: space-between;
             gap: 12px;
-            border-bottom: 1px solid #e5e7eb;
+            width: 100%;
+            padding: 12px 14px;
+            border: 0;
+            border-bottom: 1px solid var(--b);
+            background: #fff;
+            text-align: left;
+            cursor: pointer;
         }
 
-        .subject-row:hover {
-            background: #f9fafb;
+        .sp-item:hover {
+            background: var(--soft);
         }
 
-        .subject-row.selected {
-            background: #f3f4f6;
-            outline: 2px solid #111;
+        .sp-item.sel {
+            outline: 2px solid #111827;
             outline-offset: -2px;
+            background: #f3f4f6;
         }
 
-        .subject-name {
-            font-weight: 700;
+        .sp-item-name {
+            font-weight: 900;
         }
 
-        .subject-meta {
+        .sp-item-meta {
             font-size: 12px;
-            opacity: .7;
+            color: var(--muted);
             margin-top: 2px;
         }
 
-        .codebox {
-            border: 1px solid #e5e7eb;
-            border-radius: 12px;
-            background: #0b1020;
-            color: #dbeafe;
+        .sp-select-box {
+            margin-top: 12px;
+            border: 1px solid var(--b);
+            border-radius: 16px;
+            padding: 14px;
+            background: #fff;
+        }
+
+        .sp-kv {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-top: 6px;
+        }
+
+        .sp-k {
+            font-weight: 900;
+        }
+
+        .sp-v {
+            color: var(--muted);
+        }
+
+        .sp-hint {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .sp-debug {
+            margin-top: 12px;
+        }
+
+        .sp-debug-lbl {
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 6px;
+        }
+
+        .sp-code {
+            border: 1px solid var(--b);
+            border-radius: 14px;
+            background: var(--codebg);
+            color: var(--code);
             padding: 12px;
+            max-height: 260px;
             overflow: auto;
-            max-height: 200px;
             font-size: 12px;
             white-space: pre-wrap;
             word-break: break-word;
         }
 
-        .pill {
-            border: 1px solid #e5e7eb;
+        .sp-hide {
+            display: none !important;
+        }
+
+        .sp-muted {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .sp-mt {
+            margin-top: 12px;
+        }
+
+        .sp-split {
+            display: grid;
+            grid-template-columns: 1.1fr .9fr;
+            gap: 14px;
+            margin-top: 10px;
+        }
+
+        @media(max-width:900px) {
+            .sp-split {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .sp-sec-title {
+            font-weight: 900;
+            margin: 8px 0 10px 0;
+        }
+
+        .sp-grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        @media(max-width:800px) {
+            .sp-grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .sp-tcard {
+            border: 1px solid var(--b);
+            border-radius: 16px;
+            background: #fff;
+            padding: 14px;
+        }
+
+        .sp-trow {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .sp-avatar {
+            width: 56px;
+            height: 56px;
             border-radius: 999px;
-            padding: 8px 12px;
-            background: #f9fafb;
-            font-size: 13px;
-        }
-
-        .table-wrap {
-            border: 1px solid #e5e7eb;
-            border-radius: 14px;
             overflow: hidden;
+            border: 1px solid var(--b);
+            background: var(--soft);
+            flex: 0 0 auto;
         }
 
-        .mini-table {
+        .sp-avatar img {
             width: 100%;
-            border-collapse: collapse;
-            font-size: 13px;
+            height: 100%;
+            object-fit: cover;
+            display: block;
         }
 
-        .mini-table thead th {
-            background: #f9fafb;
-            border-bottom: 1px solid #e5e7eb;
-            text-align: left;
-            padding: 10px 12px;
-            font-weight: 800;
+        .sp-tname {
+            font-weight: 900;
+        }
+
+        .sp-tmeta {
+            color: var(--muted);
             font-size: 12px;
-            white-space: nowrap;
+            margin-top: 2px;
         }
 
-        .mini-table tbody td {
-            border-bottom: 1px solid #eef2f7;
-            padding: 10px 12px;
-            vertical-align: top;
+        .sp-expire {
+            font-variant-numeric: tabular-nums;
         }
 
-        .expire-normal {}
-
-        .expire-soon {
-            color: #f59e0b;
+        .sp-expire-ok {
+            color: inherit;
         }
 
-        /* naranja */
-        .expire-dead {
-            color: #ef4444;
+        .sp-expire-warn {
+            color: var(--warn);
+            font-weight: 900;
         }
 
-        /* rojo */
+        .sp-expire-bad {
+            color: var(--bad);
+            font-weight: 900;
+        }
 
+        .sp-pay {
+            border: 1px dashed var(--b);
+            border-radius: 16px;
+            padding: 14px;
+            background: #fff;
+        }
 
-        @keyframes pulseWarn {
+        .sp-mutedbox {
+            background: linear-gradient(0deg, #fff, #fff), linear-gradient(90deg, transparent, transparent);
+        }
 
-            0%,
-            100% {
-                transform: scale(1)
+        .sp-pay-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .sp-pay-title {
+            font-weight: 900;
+        }
+
+        .sp-pay-meta {
+            font-size: 12px;
+            color: var(--muted);
+            display: grid;
+            gap: 4px;
+        }
+
+        .sp-pay-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        @media(max-width:900px) {
+            .sp-pay-body {
+                grid-template-columns: 1fr;
             }
-
-            50% {
-                transform: scale(1.06)
-            }
         }
 
-        .expire-pulse {
-            animation: pulseWarn 0.8s infinite;
+        .sp-file {
+            width: 100%;
+            border: 1px solid var(--b);
+            border-radius: 12px;
+            padding: 10px;
+            background: #fff;
+        }
+
+        .sp-note {
+            font-size: 12px;
+            color: var(--muted);
+            min-height: 18px;
+        }
+
+        .sp-state {
+            display: flex;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 6px;
+        }
+
+        .sp-state-k {
+            font-weight: 900;
+            color: var(--txt);
+        }
+
+        code {
+            background: #11182710;
+            border: 1px solid #11182720;
+            border-radius: 8px;
+            padding: 2px 6px;
+            font-size: 12px;
         }
     </style>
 
-
-
     <script>
-        /* ==========================================================
-                                                                                                                       BLOQUE A) SELECCIÓN DE MATERIA
-                                                               ========================================================== */
-        let selectedSubjectId = null;
+        /**
+         * ESTA VISTA USA SOLO TUS ENDPOINTS (ROL ESTUDIANTE):
+         *  - GET  /student/subject
+         *  - POST /student/batches/start
+         *  - GET  /student/batches/active
+         *  - GET  /student/batches/{batch}/status
+         *  - GET  /student/batches/{batch}/accepted-tutors
+         *  - POST /student/batches/{batch}/request-booking   (crea slot_booking RESERVED=4)
+         *  - POST /student/bookings/{booking}/receipt
+         *  - GET  /student/bookings/{booking}/status
+         *  - GET  /student/bookings/{booking}/meet
+         *
+         * IMPORTANTE PARA QUE "DESAPAREZCAN" CARDS:
+         *  - backend debe filtrar tutores ya reservados/activos (status 4/1) con overlap
+         *  - frontend NO acumula, reemplaza lista completa cada 5s
+         */
+
+        const API = '/student';
+
+        const $ = (id) => document.getElementById(id);
+        const csrf = () => document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+        const screenSelect = $('screenSelect');
+        const screenWait = $('screenWait');
+
+        const grid = $('grid');
+        const search = $('search');
+        const reloadBtn = $('reloadBtn');
+
+        const selectedNameEl = $('selectedName');
+        const selectedIdEl = $('selectedId');
+        const nextBtn = $('nextBtn');
+        const startOut = $('startOut');
+
+        const wBatchId = $('wBatchId');
+        const wStatus = $('wStatus');
+        const wExpires = $('wExpires');
+        const wRate = $('wRate');
+        const wSentThisMin = $('wSentThisMin');
+        const waitMsg = $('waitMsg');
+        const btnNewSearch = $('btnNewSearch');
+
+        const statusOut = $('statusOut');
+
+        const batchExpireCountdownEl = $('batchExpireCountdown');
+
+        const acceptedList = $('acceptedList');
+
+        const payBox = $('payBox');
+        const payBookingId = $('payBookingId');
+        const payAmount = $('payAmount');
+        const payTime = $('payTime');
+        const receiptFile = $('receiptFile');
+        const btnUploadReceipt = $('btnUploadReceipt');
+        const btnCancelBookingUI = $('btnCancelBookingUI');
+
+        const stuUiState = $('stuUiState');
+        const stuHasReceipt = $('stuHasReceipt');
+        const btnMeet = $('btnMeet');
+        const stuStatusMsg = $('stuStatusMsg');
+        const payOut = $('payOut');
+
         let subjectsCache = [];
+        let selectedSubjectId = null;
         let selectedCardEl = null;
 
+        let currentBatchId = null;
+        let pollBatchTimer = null;
+        let pollAcceptedTimer = null;
+        let pollBookingTimer = null;
 
+        let lastSentCount = null;
 
         let batchExpiresAtMs = null;
         let batchExpireTimer = null;
-        const batchExpireCountdownEl = document.getElementById('batchExpireCountdown');
 
-        const grid = document.getElementById('grid');
-        const search = document.getElementById('search');
-        const reloadBtn = document.getElementById('reloadBtn');
-        const selectedNameEl = document.getElementById('selectedName');
-        const selectedIdEl = document.getElementById('selectedId');
-        const nextBtn = document.getElementById('nextBtn');
-        const startOut = document.getElementById('startOut');
-
-        const screenSelect = document.getElementById('screenSelect');
-        const screenWait = document.getElementById('screenWait');
+        let currentBookingId = null;
 
         function escapeHtml(str) {
             return String(str ?? '')
@@ -375,162 +669,112 @@
         }
 
         function showSelectScreen() {
-            screenWait?.classList.add('hidden');
-            screenSelect?.classList.remove('hidden');
+            screenWait.classList.add('sp-hide');
+            screenSelect.classList.remove('sp-hide');
         }
 
         function showWaitScreen() {
-            screenSelect?.classList.add('hidden');
-            screenWait?.classList.remove('hidden');
+            screenSelect.classList.add('sp-hide');
+            screenWait.classList.remove('sp-hide');
         }
 
-        function setSelected(subject, cardEl) {
-            selectedSubjectId = Number(subject.id);
+        /** /storage/profile_images/... */
+        function profileImageUrl(image) {
+            if (!image) return '';
+            let p = String(image).replaceAll('\\', '/');
+            p = p.replace(/^\/+/, '');
+            return `/storage/${p}`;
+        }
 
+        /* -------------------- SUBJECTS -------------------- */
+        function setSelectedSubject(subject, btnEl) {
+            selectedSubjectId = Number(subject.id);
             selectedNameEl.textContent = subject.name;
             selectedIdEl.textContent = String(selectedSubjectId);
 
             nextBtn.disabled = false;
-            nextBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            nextBtn.classList.remove('sp-disabled');
 
-            if (selectedCardEl) selectedCardEl.classList.remove('selected');
-            selectedCardEl = cardEl;
-            selectedCardEl.classList.add('selected');
+            if (selectedCardEl) selectedCardEl.classList.remove('sel');
+            selectedCardEl = btnEl;
+            selectedCardEl.classList.add('sel');
         }
 
-        function render(list) {
+        function renderSubjects(list) {
             grid.innerHTML = '';
-
             if (!list.length) {
-                grid.innerHTML = `<div style="padding:16px;opacity:.7">No hay materias para mostrar.</div>`;
+                grid.innerHTML = `<div style="padding:14px;color:#6b7280;">No hay materias para mostrar.</div>`;
                 return;
             }
 
             const frag = document.createDocumentFragment();
-
             for (const s of list) {
-                const row = document.createElement('button');
-                row.type = 'button';
-
-                const isSelected = selectedSubjectId === Number(s.id);
-                row.className = 'subject-row' + (isSelected ? ' selected' : '');
-
-                row.innerHTML = `
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'sp-item' + (selectedSubjectId === Number(s.id) ? ' sel' : '');
+                btn.innerHTML = `
       <div>
-        <div class="subject-name">${escapeHtml(s.name)}</div>
-        <div class="subject-meta">ID: ${s.id}</div>
+        <div class="sp-item-name">${escapeHtml(s.name)}</div>
+        <div class="sp-item-meta">ID: ${escapeHtml(s.id)}</div>
       </div>
-      <div class="subject-meta">Seleccionar</div>
+      <div class="sp-item-meta">Seleccionar</div>
     `;
-
-                row.addEventListener('click', () => setSelected(s, row));
-                frag.appendChild(row);
-
-                if (isSelected) selectedCardEl = row;
+                btn.addEventListener('click', () => setSelectedSubject(s, btn));
+                frag.appendChild(btn);
             }
-
-            // ✅ BUG FIX: esto faltaba
             grid.appendChild(frag);
         }
 
         function normalizeApiSubjects(json) {
-            if (Array.isArray(json?.data)) return json.data;
-            if (Array.isArray(json?.data?.data)) return json.data.data;
-            if (Array.isArray(json?.data?.items)) return json.data.items;
-            return [];
+            const arr =
+                Array.isArray(json) ? json :
+                Array.isArray(json?.data) ? json.data :
+                Array.isArray(json?.subjects) ? json.subjects :
+                Array.isArray(json?.items) ? json.items :
+                Array.isArray(json?.data?.data) ? json.data.data :
+                Array.isArray(json?.data?.items) ? json.data.items : [];
+
+            return arr
+                .map(s => ({
+                    id: s?.id ?? s?.subject_id ?? s?.value ?? null,
+                    name: s?.name ?? s?.materia ?? s?.label ?? s?.title ?? '',
+                }))
+                .filter(s => s.id != null && String(s.name).trim() !== '');
         }
 
         async function loadSubjects() {
-            grid.innerHTML = `<div class="opacity-70" style="padding:16px;">Cargando materias...</div>`;
-
-            const res = await fetch('/student/subject', {
+            grid.innerHTML = `<div style="padding:14px;color:#6b7280;">Cargando materias...</div>`;
+            const res = await fetch(`${API}/subject`, {
                 headers: {
                     'Accept': 'application/json'
                 },
                 credentials: 'same-origin'
             });
-
             if (!res.ok) {
                 grid.innerHTML =
-                    `<div class="opacity-70" style="padding:16px;">Error cargando materias (HTTP ${res.status}).</div>`;
+                    `<div style="padding:14px;color:#6b7280;">Error cargando materias (HTTP ${res.status}).</div>`;
                 return;
             }
-
-            const json = await res.json();
+            const json = await res.json().catch(() => ({}));
             subjectsCache = normalizeApiSubjects(json);
-            render(subjectsCache);
+            renderSubjects(subjectsCache);
         }
 
         function filterSubjects() {
             const q = search.value.trim().toLowerCase();
-            if (!q) return render(subjectsCache);
-
+            if (!q) return renderSubjects(subjectsCache);
             const filtered = subjectsCache.filter(s => String(s.name).toLowerCase().includes(q));
-            render(filtered);
+            renderSubjects(filtered);
         }
 
-        reloadBtn.addEventListener('click', () => render(subjectsCache));
-
+        reloadBtn.addEventListener('click', () => renderSubjects(subjectsCache));
         let searchDebounce = null;
         search.addEventListener('input', () => {
             clearTimeout(searchDebounce);
             searchDebounce = setTimeout(filterSubjects, 120);
         });
 
-        /* ==========================================================
-           BLOQUE B) BATCH STATUS (polling cada 60s)
-        ========================================================== */
-        let currentBatchId = null;
-        let pollTimer = null;
-        let countdownTimer = null;
-        let secondsLeft = 60;
-
-        const ratePerMinLabel = document.getElementById('ratePerMinLabel');
-        const wRate = document.getElementById('wRate');
-
-        const batchIdLabel = document.getElementById('batchIdLabel');
-        const batchStatusLabel = document.getElementById('batchStatusLabel');
-        const sentCountLabel = document.getElementById('sentCountLabel');
-        const queuedCountLabel = document.getElementById('queuedCountLabel');
-        const expiresAtLabel = document.getElementById('expiresAtLabel');
-        const countdownEl = document.getElementById('countdown');
-        const stopPollingBtn = document.getElementById('stopPollingBtn');
-        const itemsTbody = document.getElementById('itemsTbody');
-        const statusOut = document.getElementById('statusOut');
-
-        function resetCountdown() {
-            secondsLeft = 60;
-            if (countdownEl) countdownEl.textContent = secondsLeft;
-        }
-
-        function startCountdown() {
-            if (countdownTimer) clearInterval(countdownTimer);
-            resetCountdown();
-            countdownTimer = setInterval(() => {
-                secondsLeft--;
-                if (secondsLeft <= 0) secondsLeft = 60;
-                if (countdownEl) countdownEl.textContent = secondsLeft;
-            }, 1000);
-        }
-
-        function parseExpiresAtToMs(expiresAtStr) {
-            if (!expiresAtStr) return null;
-
-            // Espera: "YYYY-MM-DD HH:mm:ss" (Laravel toDateTimeString)
-            const s = String(expiresAtStr).trim();
-            const [datePart, timePart] = s.split(' ');
-            if (!datePart || !timePart) return null;
-
-            const [Y, M, D] = datePart.split('-').map(Number);
-            const [h, m, sec] = timePart.split(':').map(Number);
-
-            if (![Y, M, D, h, m].every(Number.isFinite)) return null;
-
-            // Fecha/hora LOCAL del navegador (lo que ve el estudiante)
-            return new Date(Y, (M - 1), D, h, m, Number.isFinite(sec) ? sec : 0).getTime();
-        }
-
-
+        /* -------------------- BATCH EXPIRE COUNTDOWN -------------------- */
         function fmtMMSS(totalSeconds) {
             const s = Math.max(0, Math.floor(totalSeconds));
             const m = String(Math.floor(s / 60)).padStart(2, '0');
@@ -541,14 +785,13 @@
         function startBatchExpireCountdown() {
             if (batchExpireTimer) clearInterval(batchExpireTimer);
 
-            // ✅ AQUÍ VA TU BLOQUE
             batchExpireTimer = setInterval(() => {
                 if (!batchExpireCountdownEl) return;
 
                 if (!batchExpiresAtMs) {
                     batchExpireCountdownEl.textContent = '--:--';
-                    batchExpireCountdownEl.classList.remove('expire-soon', 'expire-dead');
-                    batchExpireCountdownEl.classList.add('expire-normal');
+                    batchExpireCountdownEl.classList.remove('sp-expire-warn', 'sp-expire-bad');
+                    batchExpireCountdownEl.classList.add('sp-expire-ok');
                     return;
                 }
 
@@ -556,26 +799,23 @@
 
                 if (diffSec <= 0) {
                     batchExpireCountdownEl.textContent = '00:00';
-                    batchExpireCountdownEl.classList.remove('expire-normal', 'expire-soon');
-                    batchExpireCountdownEl.classList.add('expire-dead');
+                    batchExpireCountdownEl.classList.remove('sp-expire-ok', 'sp-expire-warn');
+                    batchExpireCountdownEl.classList.add('sp-expire-bad');
                     if (waitMsg) waitMsg.textContent = 'El batch expiró. Inicia una nueva búsqueda.';
+                    btnNewSearch.classList.remove('sp-hide');
                     return;
                 }
 
                 batchExpireCountdownEl.textContent = fmtMMSS(diffSec);
 
                 if (diffSec <= 30) {
-                    batchExpireCountdownEl.classList.remove('expire-normal', 'expire-dead');
-                    batchExpireCountdownEl.classList.add('expire-soon');
-                    if (waitMsg && !waitMsg.textContent) {
-                        waitMsg.textContent = '⚠️ Expira pronto...';
-                    }
+                    batchExpireCountdownEl.classList.remove('sp-expire-ok', 'sp-expire-bad');
+                    batchExpireCountdownEl.classList.add('sp-expire-warn');
+                    if (waitMsg && !waitMsg.textContent) waitMsg.textContent = '⚠️ Expira pronto...';
                 } else {
-                    batchExpireCountdownEl.classList.remove('expire-soon', 'expire-dead');
-                    batchExpireCountdownEl.classList.add('expire-normal');
-                    if (waitMsg && waitMsg.textContent === '⚠️ Expira pronto...') {
-                        waitMsg.textContent = '';
-                    }
+                    batchExpireCountdownEl.classList.remove('sp-expire-warn', 'sp-expire-bad');
+                    batchExpireCountdownEl.classList.add('sp-expire-ok');
+                    if (waitMsg && waitMsg.textContent === '⚠️ Expira pronto...') waitMsg.textContent = '';
                 }
             }, 1000);
         }
@@ -584,142 +824,69 @@
             if (batchExpireTimer) clearInterval(batchExpireTimer);
             batchExpireTimer = null;
             batchExpiresAtMs = null;
-            if (batchExpireCountdownEl) batchExpireCountdownEl.textContent = '--:--';
+            batchExpireCountdownEl.textContent = '--:--';
+            batchExpireCountdownEl.classList.remove('sp-expire-warn', 'sp-expire-bad');
+            batchExpireCountdownEl.classList.add('sp-expire-ok');
         }
 
-
-        function stopPollingUI() {
-            if (pollTimer) clearInterval(pollTimer);
-            if (countdownTimer) clearInterval(countdownTimer);
-            pollTimer = null;
-            countdownTimer = null;
-
-            if (stopPollingBtn) {
-                stopPollingBtn.disabled = true;
-                stopPollingBtn.classList.add('opacity-50', 'cursor-not-allowed');
-            }
-        }
-
-        /* ==========================================================
-           BLOQUE C) ACEPTADOS (polling cada 5s)
-        ========================================================== */
-        let acceptedTimer = null;
-        let acceptedAfterId = 0;
-        let acceptedMap = new Map();
-        let acceptedAfterAcceptedAt = '';
-
-        const sentThisMinLabel = document.getElementById('sentThisMinLabel');
-        const wSentThisMin = document.getElementById('wSentThisMin');
-
-        let lastSentCount = null;
-        let lastSentAtMs = null;
-
-
-        const wBatchId = document.getElementById('wBatchId');
-        const wStatus = document.getElementById('wStatus');
-        const wExpires = document.getElementById('wExpires');
-        const acceptedList = document.getElementById('acceptedList');
-        const waitMsg = document.getElementById('waitMsg');
-        const btnCancel = document.getElementById('btnCancel');
-        const btnNewSearch = document.getElementById('btnNewSearch');
-
-        function stopAcceptedPolling() {
-            if (acceptedTimer) clearInterval(acceptedTimer);
-            acceptedTimer = null;
-        }
-
-        function renderAcceptedCards() {
-            const items = Array.from(acceptedMap.values());
-
+        /* -------------------- ACCEPTED TUTORS -------------------- */
+        /**
+         * CLAVE: NO acumulamos. Reemplazamos lista completa cada 5s.
+         * Así cuando el backend deje de devolver un tutor (porque ya fue reservado por otro estudiante),
+         * la card desaparece.
+         */
+        function renderAcceptedCards(items) {
             if (!acceptedList) return;
             acceptedList.innerHTML = '';
 
             if (!items.length) {
-                acceptedList.innerHTML = `<div class="opacity-70">Aún nadie aceptó...</div>`;
+                acceptedList.innerHTML = `<div class="sp-muted">Aún nadie aceptó...</div>`;
                 return;
             }
 
             for (const t of items) {
                 const card = document.createElement('div');
-                card.className = 'card';
-                card.style.padding = '14px';
+                card.className = 'sp-tcard';
 
                 const name = escapeHtml(t.name || `${t.first_name || ''} ${t.last_name || ''}`.trim() || 'Tutor');
                 const email = escapeHtml(t.email || '');
                 const acceptedAt = escapeHtml(t.accepted_at || '');
 
-                const verified = (Number(t.is_verified) === 1 || !!t.verified_at) ?
-                    '✅ Verificado' :
-                    '⚠️ No verificado';
-
+                const verified = (Number(t.is_verified) === 1 || !!t.verified_at) ? '✅ Verificado' : '⚠️ No verificado';
                 const price = (t.price !== null && t.price !== undefined && String(t.price) !== '') ?
-                    `${escapeHtml(String(t.price))} Bs` :
-                    'Sin precio';
-
-                const rating = (t.rating !== null && t.rating !== undefined) ?
-                    `${escapeHtml(String(t.rating))} ⭐` :
+                    `${escapeHtml(String(t.price))} Bs` : 'Sin precio';
+                const rating = (t.rating !== null && t.rating !== undefined) ? `${escapeHtml(String(t.rating))} ⭐` :
                     '0.0 ⭐';
 
-                // imagen (URL absoluta si viene relativa)
-                let imgSrc = '';
-                if (t.image) {
-                    const raw = String(t.image);
-                    imgSrc = raw.startsWith('http') ? raw : `/${raw.replace(/^\/+/, '')}`;
-                }
+                const imgSrc = profileImageUrl(t.image);
 
                 card.innerHTML = `
-      <div style="display:flex;gap:12px;align-items:center;">
-        <div style="width:56px;height:56px;border-radius:999px;overflow:hidden;border:1px solid #e5e7eb;background:#f9fafb;flex:0 0 auto;">
-          ${imgSrc ? `<img src="${escapeHtml(imgSrc)}" style="width:100%;height:100%;object-fit:cover;">` : ''}
+      <div class="sp-trow">
+        <div class="sp-avatar">
+          ${imgSrc ? `<img src="${escapeHtml(imgSrc)}" alt="perfil">` : ``}
         </div>
-
         <div style="min-width:0;">
-          <div style="font-weight:800;">${name}</div>
-          <div class="text-sm opacity-70">${email}</div>
-          <div class="text-sm opacity-70">${escapeHtml(verified)} · ${price} · ${rating}</div>
-          <div class="text-sm opacity-70 mt-1">Aceptó: ${acceptedAt}</div>
+          <div class="sp-tname">${name}</div>
+          <div class="sp-tmeta">${email}</div>
+          <div class="sp-tmeta">${escapeHtml(verified)} · ${price} · ${rating}</div>
+          <div class="sp-tmeta">Aceptó: ${acceptedAt}</div>
         </div>
       </div>
 
-      <div class="mt-3">
-        <button type="button" class="border rounded-lg px-4 py-2">Elegir</button>
+      <div class="sp-mt">
+        <button type="button" class="sp-btn sp-btn-primary" data-item="${escapeHtml(t.id)}">
+          Elegir
+        </button>
       </div>
     `;
 
-                card.querySelector('button').addEventListener('click', () => chooseTutor(t.id));
+                card.querySelector('button').addEventListener('click', () => requestBooking(t.id));
                 acceptedList.appendChild(card);
             }
         }
 
-
-        // async function fetchAcceptedTutors(batchId) {
-        //     const res = await fetch(
-        //         `/student/batches/${batchId}/accepted-tutors?after_id=${acceptedAfterId}&limit=50`, {
-        //             headers: {
-        //                 'Accept': 'application/json'
-        //             },
-        //             credentials: 'same-origin'
-        //         });
-
-        //     const json = await res.json().catch(() => ({}));
-        //     if (!res.ok) return;
-
-        //     const data = Array.isArray(json.data) ? json.data : [];
-        //     for (const row of data) acceptedMap.set(row.id, row);
-
-        //     acceptedAfterId = Number(json.next_after_id || acceptedAfterId);
-        //     renderAcceptedCards();
-        // }
-
         async function fetchAcceptedTutors(batchId) {
-            const qs = new URLSearchParams({
-                limit: '50',
-                after_id: String(acceptedAfterId || 0),
-            });
-
-            if (acceptedAfterAcceptedAt) qs.set('after_accepted_at', acceptedAfterAcceptedAt);
-
-            const res = await fetch(`/student/batches/${batchId}/accepted-tutors?` + qs.toString(), {
+            const res = await fetch(`${API}/batches/${batchId}/accepted-tutors?limit=50`, {
                 headers: {
                     'Accept': 'application/json'
                 },
@@ -730,338 +897,378 @@
             if (!res.ok) return;
 
             const data = Array.isArray(json.data) ? json.data : [];
-            for (const row of data) acceptedMap.set(row.id, row);
-
-            // 👇 actualizar cursores (debe venir del backend)
-            if (json.next_after_accepted_at) acceptedAfterAcceptedAt = String(json.next_after_accepted_at);
-            if (json.next_after_id) acceptedAfterId = Number(json.next_after_id);
-
-            renderAcceptedCards();
+            renderAcceptedCards(data);
         }
-
-
-
 
         function startAcceptedPolling(batchId) {
             stopAcceptedPolling();
             fetchAcceptedTutors(batchId);
-            acceptedTimer = setInterval(() => fetchAcceptedTutors(batchId), 5000);
+            pollAcceptedTimer = setInterval(() => fetchAcceptedTutors(batchId), 5000);
         }
 
-        /* ==========================================================
-           STATUS fetch
-        ========================================================== */
+        function stopAcceptedPolling() {
+            if (pollAcceptedTimer) clearInterval(pollAcceptedTimer);
+            pollAcceptedTimer = null;
+        }
 
-
-
+        /* -------------------- BATCH STATUS -------------------- */
         async function fetchBatchStatus(batchId) {
-                const res = await fetch(`/student/batches/${batchId}/status`, {
-                    headers: {
-                        'Accept': 'application/json'
-                    },
-                    credentials: 'same-origin'
-                });
+            const res = await fetch(`${API}/batches/${batchId}/status`, {
+                headers: {
+                    'Accept': 'application/json'
+                },
+                credentials: 'same-origin'
+            });
 
-                const json = await res.json().catch(() => ({}));
-                if (statusOut) statusOut.textContent = JSON.stringify(json, null, 2);
+            const json = await res.json().catch(() => ({}));
+            if (statusOut) statusOut.textContent = JSON.stringify(json, null, 2);
+            if (!res.ok) return;
 
-                if (!res.ok) return;
+            const batch = json.batch || {};
 
-                const batch = json.batch || {};
+            // labels
+            wBatchId.textContent = String(batch.id ?? batchId);
+            wStatus.textContent = batch.status ?? '-';
+            wExpires.textContent = batch.expires_at ?? '-';
+            wRate.textContent = (batch.batch_size ?? '-') + '';
 
-                // ====== Emails/min (batch_size) ======
-                const rate = (batch.batch_size !== undefined && batch.batch_size !== null) ?
-                    String(batch.batch_size) :
-                    '0';
-
-                if (ratePerMinLabel) ratePerMinLabel.textContent = rate;
-                if (wRate) wRate.textContent = rate;
-
-                // ====== Resumen debug ======
-                if (batchStatusLabel) batchStatusLabel.textContent = batch.status ?? '-';
-                if (sentCountLabel) sentCountLabel.textContent = String(batch.sent_count ?? 0);
-                if (queuedCountLabel) queuedCountLabel.textContent = String(batch.queued ?? 0);
-                if (expiresAtLabel) expiresAtLabel.textContent = batch.expires_at ?? '-';
-
-                // ====== Resumen pantalla espera ======
-                if (wStatus) wStatus.textContent = batch.status ?? '-';
-                if (wExpires) wExpires.textContent = batch.expires_at ?? '-';
-                batchExpiresAtMs = Number(batch.expires_at_ms ?? null);
-
-                if (!batchExpiresAtMs && batch.seconds_left != null) {
-                    batchExpiresAtMs = Date.now() + (Number(batch.seconds_left) * 1000);
-                }
-
-                // ====== Enviados este minuto (delta) ======
-                const sentCountNow = Number(batch.sent_count ?? 0);
-
-                // En el primer fetch queremos mostrar 0 (no "-")
-                let sentThisMin = '0';
-                if (lastSentCount !== null) {
-                    const diff = sentCountNow - lastSentCount;
-                    sentThisMin = String(Math.max(0, diff));
-                }
-
-                if (sentThisMinLabel) sentThisMinLabel.textContent = sentThisMin;
-                if (wSentThisMin) wSentThisMin.textContent = sentThisMin;
-
-                // actualizar memoria
-                lastSentCount = sentCountNow;
-                lastSentAtMs = Date.now();
-
-                // ====== Tabla items (debug) ======
-                const items = Array.isArray(json.items) ? json.items : [];
-                if (itemsTbody) {
-                    itemsTbody.innerHTML = '';
-
-                    if (!items.length) {
-                        itemsTbody.innerHTML = `<tr><td colspan="6" class="opacity-70">Sin items.</td></tr>`;
-                    } else {
-                        for (const it of items) {
-                            const tr = document.createElement('tr');
-                            tr.innerHTML = `
-          <td>${it.position ?? ''}</td>
-          <td>${it.user_id ?? ''}</td>
-          <td>${escapeHtml(it.email ?? '')}</td>
-          <td>${escapeHtml(it.status ?? '')}</td>
-          <td>${escapeHtml(it.sent_at ?? '')}</td>
-          <td>${escapeHtml(it.last_error ?? '')}</td>
-        `;
-                            itemsTbody.appendChild(tr);
-                        }
-                    }
-                }
-
-                // ====== Si terminó ======
-                const st = String(batch.status ?? '').toLowerCase();
-                const secondsLeft = Number(batch.seconds_left ?? NaN);
-                if (st === 'failed' || st === 'matched') {
-                    stopAcceptedPolling();
-                    stopPollingUI();
-                    stopBatchExpireCountdown();
-                    currentBatchId = null;
-                    if (btnNewSearch) btnNewSearch.classList.remove('hidden');
-                    if (waitMsg) waitMsg.textContent = 'La búsqueda terminó. Puedes iniciar una nueva solicitud.';
-                }
-
-                if (Number.isFinite(secondsLeft) && secondsLeft <= 0) {
-                    stopAcceptedPolling();
-                    stopPollingUI();
-                    stopBatchExpireCountdown();
-                    currentBatchId = null;
-                    if (btnNewSearch) btnNewSearch.classList.remove('hidden');
-                    if (waitMsg) waitMsg.textContent = 'El tiempo terminó. Puedes iniciar una nueva solicitud.';
-                    return;
-                }
-
+            // expire ms
+            batchExpiresAtMs = Number(batch.expires_at_ms ?? null);
+            if (!batchExpiresAtMs && batch.seconds_left != null) {
+                batchExpiresAtMs = Date.now() + (Number(batch.seconds_left) * 1000);
             }
 
-                /* ==========================================================
-                   Elegir tutor
-                ========================================================== */
-                async function chooseTutor(itemId) {
-                    const csrf = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+            // sent this minute (delta)
+            const sentCountNow = Number(batch.sent_count ?? 0);
+            let sentThisMin = '0';
+            if (lastSentCount !== null) sentThisMin = String(Math.max(0, sentCountNow - lastSentCount));
+            wSentThisMin.textContent = sentThisMin;
+            lastSentCount = sentCountNow;
 
-                    const res = await fetch(`/student/batches/${currentBatchId}/choose`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json',
-                            ...(csrf ? {
-                                'X-CSRF-TOKEN': csrf
-                            } : {}),
-                        },
-                        credentials: 'same-origin',
-                        body: JSON.stringify({
-                            item_id: itemId
-                        })
-                    });
+            // finished?
+            const st = String(batch.status ?? '').toLowerCase();
+            const secLeft = Number(batch.seconds_left ?? NaN);
 
-                    const json = await res.json().catch(() => ({}));
+            if (st === 'failed' || st === 'matched') {
+                btnNewSearch.classList.remove('sp-hide');
+                if (waitMsg) waitMsg.textContent = 'La búsqueda terminó. Puedes iniciar una nueva solicitud.';
+            }
+            if (Number.isFinite(secLeft) && secLeft <= 0) {
+                btnNewSearch.classList.remove('sp-hide');
+                if (waitMsg) waitMsg.textContent = 'El tiempo terminó. Puedes iniciar una nueva solicitud.';
+            }
+        }
 
-                    if (!res.ok) {
-                        alert(json.message || `No se pudo elegir (HTTP ${res.status})`);
-                        return;
-                    }
+        function startBatchPolling(batchId) {
+            stopBatchPolling();
+            currentBatchId = batchId;
 
-                    stopAcceptedPolling();
-                    stopPollingUI();
+            lastSentCount = null;
+            btnNewSearch.classList.add('sp-hide');
+            if (waitMsg) waitMsg.textContent = '';
 
-                    if (waitMsg) waitMsg.textContent = 'Tutor elegido. Redirigiendo a pagos...';
+            showWaitScreen();
+            startBatchExpireCountdown();
 
-                    if (json.redirect_to) {
-                        window.location.href = json.redirect_to;
-                    } else {
-                        alert('Elegido, pero faltó redirect_to. Define tu ruta de pagos.');
-                    }
-                }
+            fetchBatchStatus(batchId);
+            pollBatchTimer = setInterval(() => fetchBatchStatus(batchId), 60000);
+        }
 
-                /* ==========================================================
-                   Arrancar modo espera
-                ========================================================== */
+        function stopBatchPolling() {
+            if (pollBatchTimer) clearInterval(pollBatchTimer);
+            pollBatchTimer = null;
+        }
 
+        /* -------------------- CREATE BOOKING (RESERVE) -------------------- */
+        async function requestBooking(itemId) {
+            if (!currentBatchId) return;
 
-                function startPolling(batchId) {
-                    currentBatchId = batchId;
+            // bloquea doble click
+            if (waitMsg) waitMsg.textContent = 'Creando reserva...';
 
-                    // reset contadores (para que no quede "-" por estados anteriores)
-                    lastSentCount = null;
-                    lastSentAtMs = null;
-                    if (sentThisMinLabel) sentThisMinLabel.textContent = '0';
-                    if (wSentThisMin) wSentThisMin.textContent = '0';
-                    if (ratePerMinLabel) ratePerMinLabel.textContent = '-';
-                    if (wRate) wRate.textContent = '-';
+            const res = await fetch(`${API}/batches/${currentBatchId}/request-booking`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    ...(csrf() ? {
+                        'X-CSRF-TOKEN': csrf()
+                    } : {}),
+                },
+                credentials: 'same-origin',
+                body: JSON.stringify({
+                    item_id: itemId
+                })
+            });
 
-                    // UI
-                    showWaitScreen();
-                    startBatchExpireCountdown();
+            const json = await res.json().catch(() => ({}));
+            if (payOut) payOut.textContent = JSON.stringify(json, null, 2);
 
-                    if (wBatchId) wBatchId.textContent = String(batchId);
-                    if (btnNewSearch) btnNewSearch.classList.add('hidden');
-                    if (waitMsg) waitMsg.textContent = '';
+            if (!res.ok || !json.ok) {
+                if (waitMsg) waitMsg.textContent = '';
+                alert(json.message || `No se pudo reservar (HTTP ${res.status})`);
+                return;
+            }
 
-                    // reset aceptados (nuevo cursor)
-                    acceptedAfterId = 0;
-                    acceptedAfterAcceptedAt = '';
-                    acceptedMap.clear();
-                    renderAcceptedCards();
-                    startAcceptedPolling(batchId);
+            // booking creado
+            const b = json.booking || {};
+            currentBookingId = Number(b.id || 0);
+            if (!currentBookingId) {
+                alert('Reserva creada, pero no llegó booking.id');
+                return;
+            }
 
+            // mostrar panel pago
+            openPaymentPanel(b);
 
+            // refrescar aceptados ya (para que también se esconda en tu propia lista si backend filtra)
+            fetchAcceptedTutors(currentBatchId);
+        }
 
-                    // debug
-                    if (batchIdLabel) batchIdLabel.textContent = String(batchId);
-                    if (stopPollingBtn) {
-                        stopPollingBtn.disabled = false;
-                        stopPollingBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-                    }
+        function openPaymentPanel(booking) {
+            payBox.classList.remove('sp-hide');
 
-                    // primer fetch inmediato
-                    fetchBatchStatus(batchId);
+            payBookingId.textContent = String(booking.id ?? '-');
+            payAmount.textContent = booking.session_fee != null ? String(booking.session_fee) + ' Bs' : '-';
+            payTime.textContent = (booking.start_time && booking.end_time) ? `${booking.start_time} → ${booking.end_time}` :
+                '-';
 
-                    startCountdown();
+            stuUiState.textContent = 'payment_phase';
+            stuHasReceipt.textContent = 'No';
+            stuStatusMsg.textContent = 'Sube tu comprobante. Luego espera la aprobación del tutor.';
+            btnMeet.classList.add('sp-hide');
 
-                    // polling cada 60s
-                    if (pollTimer) clearInterval(pollTimer);
-                    pollTimer = setInterval(() => {
-                        fetchBatchStatus(batchId);
-                        resetCountdown();
-                    }, 60000);
-                }
+            // empezar polling de booking status
+            startBookingPolling(currentBookingId);
+        }
 
+        btnCancelBookingUI.addEventListener('click', () => {
+            // solo UI: volver a la lista (NO cancela booking en backend)
+            payBox.classList.add('sp-hide');
+            stuStatusMsg.textContent = '';
+        });
 
-                stopPollingBtn?.addEventListener('click', () => stopPollingUI());
+        btnUploadReceipt.addEventListener('click', async () => {
+            if (!currentBookingId) return alert('No hay booking activo.');
+            const f = receiptFile.files?.[0];
+            if (!f) return alert('Selecciona un archivo primero.');
 
-                /* ==========================================================
-                   BOTÓN SOLICITAR
-                ========================================================== */
-                nextBtn.addEventListener('click', async () => {
-                    if (currentBatchId) {
-                        alert('Ya hay una búsqueda activa. Continúa la espera.');
-                        return;
-                    }
-                    if (!selectedSubjectId) {
-                        alert('Selecciona una materia primero.');
-                        return;
-                    }
+            btnUploadReceipt.disabled = true;
+            btnUploadReceipt.classList.add('sp-disabled');
+            $('payNote').textContent = 'Subiendo...';
+            console.log('FILE:', f, f?.name, f?.type, f?.size);
+            const fd = new FormData();
+            fd.append('comprobante', f);
+console.log([...fd.entries()]);
+            const res = await fetch(`${API}/bookings/${currentBookingId}/receipt`, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    ...(csrf() ? {
+                        'X-CSRF-TOKEN': csrf()
+                    } : {}),
+                },
+                credentials: 'same-origin',
+                body: fd
+            });
 
-                    nextBtn.disabled = true;
-                    nextBtn.classList.add('opacity-50', 'cursor-not-allowed');
-                    startOut.textContent = 'Creando batch...';
+            const raw = await res.text();
+            let json = {};
+            try {
+                json = JSON.parse(raw);
+            } catch {}
 
-                    try {
-                        const csrf = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+            console.log('STATUS:', res.status);
+            console.log('RAW:', raw);
+            console.log('UPLOAD JSON:', json);
 
-                        const res = await fetch('/student/batches/start', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Accept': 'application/json',
-                                ...(csrf ? {
-                                    'X-CSRF-TOKEN': csrf
-                                } : {}),
-                            },
-                            credentials: 'same-origin',
-                            body: JSON.stringify({
-                                subject_id: selectedSubjectId
-                            }),
-                        });
+            if (payOut) payOut.textContent = JSON.stringify(json, null, 2);
 
-                        const json = await res.json().catch(() => ({}));
-                        startOut.textContent = JSON.stringify(json, null, 2);
+            btnUploadReceipt.disabled = false;
+            btnUploadReceipt.classList.remove('sp-disabled');
+            $('payNote').textContent = '';
 
-                        if (!res.ok) {
-                            alert('Error al iniciar batch: ' + (json.message ?? `HTTP ${res.status}`));
-                            nextBtn.disabled = false;
-                            nextBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-                            return;
-                        }
+            if (!res.ok || !json.ok) {
+                const err =
+                    json?.errors?.comprobante?.[0] ||
+                    json?.message ||
+                    `No se pudo subir (HTTP ${res.status})`;
+                alert(err);
+                return;
+            }
 
-                        if (json.batch_id) {
-                            startPolling(json.batch_id);
-                        } else {
-                            alert('Batch creado pero no llegó batch_id en respuesta.');
-                        }
+            $('payNote').textContent = '✅ Comprobante subido. Espera revisión del tutor.';
+        });
 
-                    } catch (e) {
-                        console.error(e);
-                        alert('Error JS: ' + e.message);
-                        nextBtn.disabled = false;
-                        nextBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-                    }
-                });
+        /* -------------------- BOOKING STATUS (STUDENT) -------------------- */
+        async function fetchBookingStatus(bookingId) {
+            const res = await fetch(`${API}/bookings/${bookingId}/status`, {
+                headers: {
+                    'Accept': 'application/json'
+                },
+                credentials: 'same-origin'
+            });
 
-                /* ==========================================================
-                   BOTONES EN ESPERA
-                ========================================================== */
+            const json = await res.json().catch(() => ({}));
+            if (payOut) payOut.textContent = JSON.stringify(json, null, 2);
+            if (!res.ok || !json.ok) return;
 
+            const ui = String(json.ui_state || 'payment_phase');
+            stuUiState.textContent = ui;
 
-                btnNewSearch?.addEventListener('click', () => {
-                    // reset UI
-                    currentBatchId = null;
-                    stopAcceptedPolling();
-                    stopPollingUI();
-                    stopBatchExpireCountdown();
-                    nextBtn.disabled = true;
-                    nextBtn.classList.add('opacity-50', 'cursor-not-allowed');
-                    selectedSubjectId = null;
-                    selectedNameEl.textContent = 'Ninguna';
-                    selectedIdEl.textContent = 'null';
+            const hasReceipt = !!json.payment?.has_receipt;
+            stuHasReceipt.textContent = hasReceipt ? 'Sí' : 'No';
 
-                    showSelectScreen();
-                    loadSubjects();
-                });
+            // accepted => habilitar meet
+            if (ui === 'accepted') {
+                stuStatusMsg.textContent = '✅ Aprobado por el tutor. Ya puedes entrar al Meet.';
+                btnMeet.classList.remove('sp-hide');
+            } else if (ui === 'rejected') {
+                stuStatusMsg.textContent = '❌ El tutor rechazó. Puedes elegir otro tutor si el batch sigue activo.';
+                btnMeet.classList.add('sp-hide');
 
-                /* ==========================================================
-                   Reanudar batch si existe
-                ========================================================== */
-                async function resumeActiveBatchIfAny() {
-                    try {
-                        const res = await fetch('/student/batches/active', {
-                            headers: {
-                                'Accept': 'application/json'
-                            },
-                            credentials: 'same-origin'
-                        });
+                // volver a la lista de aceptados automáticamente
+                payBox.classList.add('sp-hide');
+                currentBookingId = null;
 
-                        const json = await res.json().catch(() => ({}));
-                        if (!res.ok || !json.active || !json.batch_id) return false;
+                // refrescar lista aceptados (como el booking quedó cancelado, el tutor puede reaparecer si sigue accepted y el batch sigue vivo)
+                if (currentBatchId) fetchAcceptedTutors(currentBatchId);
+            } else {
+                // payment_phase
+                btnMeet.classList.add('sp-hide');
+                stuStatusMsg.textContent = hasReceipt ?
+                    'Comprobante enviado. Esperando aprobación del tutor...' :
+                    'Sube el comprobante para que el tutor pueda aprobar.';
+            }
+        }
 
-                        selectedSubjectId = Number(json.subject_id || 0);
-                        startOut.textContent = `Batch activo detectado (ID ${json.batch_id}). Reanudando...`;
+        function startBookingPolling(bookingId) {
+            stopBookingPolling();
+            fetchBookingStatus(bookingId);
+            pollBookingTimer = setInterval(() => fetchBookingStatus(bookingId), 2500);
+        }
 
-                        startPolling(json.batch_id);
-                        return true;
+        function stopBookingPolling() {
+            if (pollBookingTimer) clearInterval(pollBookingTimer);
+            pollBookingTimer = null;
+        }
 
-                    } catch (e) {
-                        console.error('resumeActiveBatchIfAny error:', e);
-                        return false;
-                    }
-                }
+        /* meet */
+        btnMeet.addEventListener('click', () => {
+            if (!currentBookingId) return;
+            // tu endpoint existente
+            window.location.href = `${API}/bookings/${currentBookingId}/meet`;
+        });
 
-                document.addEventListener('DOMContentLoaded', async () => {
-                    const resumed = await resumeActiveBatchIfAny();
-                    if (!resumed) await loadSubjects();
-                });
+        /* -------------------- START BATCH -------------------- */
+        nextBtn.addEventListener('click', async () => {
+            if (currentBatchId) {
+                alert('Ya hay una búsqueda activa.');
+                return;
+            }
+            if (!selectedSubjectId) {
+                alert('Selecciona una materia primero.');
+                return;
+            }
+
+            nextBtn.disabled = true;
+            nextBtn.classList.add('sp-disabled');
+            startOut.textContent = 'Creando batch...';
+
+            const res = await fetch(`${API}/batches/start`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    ...(csrf() ? {
+                        'X-CSRF-TOKEN': csrf()
+                    } : {}),
+                },
+                credentials: 'same-origin',
+                body: JSON.stringify({
+                    subject_id: selectedSubjectId
+                }),
+            });
+
+            const json = await res.json().catch(() => ({}));
+            startOut.textContent = JSON.stringify(json, null, 2);
+
+            if (!res.ok || !json.success || !json.batch_id) {
+                alert(json.message || `Error al iniciar (HTTP ${res.status})`);
+                nextBtn.disabled = false;
+                nextBtn.classList.remove('sp-disabled');
+                return;
+            }
+
+            // arrancar wait
+            startFlowWithBatch(json.batch_id);
+        });
+
+        /* -------------------- RESUME ACTIVE BATCH -------------------- */
+        async function resumeActiveBatchIfAny() {
+            const res = await fetch(`${API}/batches/active`, {
+                headers: {
+                    'Accept': 'application/json'
+                },
+                credentials: 'same-origin'
+            });
+
+            const json = await res.json().catch(() => ({}));
+            if (!res.ok || !json.active || !json.batch_id) return false;
+
+            selectedSubjectId = Number(json.subject_id || 0);
+            startOut.textContent = `Batch activo detectado (ID ${json.batch_id}). Reanudando...`;
+
+            startFlowWithBatch(json.batch_id);
+            return true;
+        }
+
+        /* -------------------- FLOW START -------------------- */
+        function startFlowWithBatch(batchId) {
+            currentBatchId = Number(batchId);
+            wBatchId.textContent = String(currentBatchId);
+
+            // UI
+            showWaitScreen();
+            btnNewSearch.classList.add('sp-hide');
+            if (waitMsg) waitMsg.textContent = '';
+
+            // polling
+            startBatchPolling(currentBatchId);
+            startAcceptedPolling(currentBatchId);
+
+            // habilitar panel pago si ya tenías booking en otro intento? (si lo necesitas, se puede “rehidratar” desde tu backend)
+        }
+
+        /* reset */
+        btnNewSearch.addEventListener('click', () => {
+            // reset state
+            stopBatchPolling();
+            stopAcceptedPolling();
+            stopBatchExpireCountdown();
+            stopBookingPolling();
+
+            currentBatchId = null;
+            currentBookingId = null;
+
+            // UI reset
+            payBox.classList.add('sp-hide');
+            nextBtn.disabled = true;
+            nextBtn.classList.add('sp-disabled');
+
+            selectedSubjectId = null;
+            selectedNameEl.textContent = 'Ninguna';
+            selectedIdEl.textContent = 'null';
+            if (selectedCardEl) selectedCardEl.classList.remove('sel');
+            selectedCardEl = null;
+
+            showSelectScreen();
+            loadSubjects();
+        });
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const resumed = await resumeActiveBatchIfAny();
+            if (!resumed) await loadSubjects();
+        });
     </script>
 @endsection
