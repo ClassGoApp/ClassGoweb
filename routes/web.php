@@ -58,8 +58,17 @@ use App\Http\Controllers\Api\SubjectPickerController;
 
 //////////////// OSCAR ///////////////////////
 
-Route::get('/waitlist/accept', [SubjectPickerController::class, 'acceptWaitlist'])
-    ->name('waitlist.accept');
+// Route::get('/waitlist/accept', [SubjectPickerController::class, 'acceptWaitlist'])
+//     ->name('waitlist.accept');
+
+    // ==================== TUTOR (NO middleware, token) ====================
+Route::get('/tutor/waitlist/accept', [SubjectPickerController::class, 'acceptWaitlist'])->name('waitlist.accept');
+
+Route::get('/tutor/waitlist/status', [SubjectPickerController::class, 'tutorWaitlistStatus']);
+
+Route::post('/tutor/waitlist/accept', [SubjectPickerController::class, 'tutorAcceptBooking']);
+
+Route::post('/tutor/waitlist/reject', [SubjectPickerController::class, 'tutorRejectBooking']);
 
 
 //////////////// OSCAR ///////////////////////
@@ -284,6 +293,20 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
                 ->name('batches.choose');
 
             Route::get('/batches/{batch}/accepted-tutors', [SubjectPickerController::class, 'acceptedTutors']);
+
+              Route::post('/batches/{batch}/reserve', [SubjectPickerController::class, 'reserveTutor']);
+
+    // Route::post('/bookings/{booking}/receipt', [SubjectPickerController::class, 'uploadReceipt']);
+
+    // Route::get('/bookings/{booking}/status', [SubjectPickerController::class, 'studentBookingStatus']);
+
+    Route::post('/bookings/{booking}/receipt', [SubjectPickerController::class, 'studentUploadReceipt']);
+    Route::get('/bookings/{booking}/status', [SubjectPickerController::class, 'studentBookingStatus']);
+
+     Route::post('/batches/{batch}/request-booking', [SubjectPickerController::class, 'requestBooking']);
+
+
+    Route::get('/bookings/{booking}/meet', [SubjectPickerController::class, 'studentMeet']);
 
             /////////////////////////////////////////////////////////////////////////////////////////////////////////
             Route::get('profile', fn() => redirect('tutor.profile.personal-details'))->name('profile');

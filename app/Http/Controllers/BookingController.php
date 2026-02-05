@@ -409,7 +409,7 @@ class BookingController extends Controller
         }
     }
 
-    public function storeBooking(Request $request, \App\Services\CuponesService $cuponesService)
+    public function storeBooking(Request $request, CuponesService $cuponesService)
     {
         $request->validate([
             'subject_id'  => 'required|exists:subjects,id',
