@@ -775,11 +775,192 @@
         });
 
         /* -------------------- BATCH EXPIRE COUNTDOWN -------------------- */
+        // function fmtMMSS(totalSeconds) {
+        //     const s = Math.max(0, Math.floor(totalSeconds));
+        //     const m = String(Math.floor(s / 60)).padStart(2, '0');
+        //     const r = String(s % 60).padStart(2, '0');
+        //     return `${m}:${r}`;
+        // }
+
+        // // function startBatchExpireCountdown() {
+        // //     if (batchExpireTimer) clearInterval(batchExpireTimer);
+
+        // //     batchExpireTimer = setInterval(() => {
+        // //         if (!batchExpireCountdownEl) return;
+
+        // //         if (!batchExpiresAtMs) {
+        // //             batchExpireCountdownEl.textContent = '--:--';
+        // //             batchExpireCountdownEl.classList.remove('sp-expire-warn', 'sp-expire-bad');
+        // //             batchExpireCountdownEl.classList.add('sp-expire-ok');
+        // //             return;
+        // //         }
+
+        // //         const diffSec = Math.ceil((batchExpiresAtMs - Date.now()) / 1000);
+
+        // //         if (diffSec <= 0) {
+        // //             batchExpireCountdownEl.textContent = '00:00';
+        // //             batchExpireCountdownEl.classList.remove('sp-expire-ok', 'sp-expire-warn');
+        // //             batchExpireCountdownEl.classList.add('sp-expire-bad');
+        // //             if (waitMsg) waitMsg.textContent = 'El batch expiró. Inicia una nueva búsqueda.';
+        // //             btnNewSearch.classList.remove('sp-hide');
+        // //             return;
+        // //         }
+
+        // //         batchExpireCountdownEl.textContent = fmtMMSS(diffSec);
+
+        // //         if (diffSec <= 30) {
+        // //             batchExpireCountdownEl.classList.remove('sp-expire-ok', 'sp-expire-bad');
+        // //             batchExpireCountdownEl.classList.add('sp-expire-warn');
+        // //             if (waitMsg && !waitMsg.textContent) waitMsg.textContent = '⚠️ Expira pronto...';
+        // //         } else {
+        // //             batchExpireCountdownEl.classList.remove('sp-expire-warn', 'sp-expire-bad');
+        // //             batchExpireCountdownEl.classList.add('sp-expire-ok');
+        // //             if (waitMsg && waitMsg.textContent === '⚠️ Expira pronto...') waitMsg.textContent = '';
+        // //         }
+        // //     }, 1000);
+        // // }
+
+        // function startBatchExpireCountdown() {
+        //     if (batchExpireTimer) clearInterval(batchExpireTimer);
+
+        //     batchExpireTimer = setInterval(() => {
+        //         if (!batchExpireCountdownEl) return;
+
+        //         if (!batchExpiresAtMs) {
+        //             batchExpireCountdownEl.textContent = '--:--';
+        //             batchExpireCountdownEl.classList.remove('sp-expire-warn', 'sp-expire-bad');
+        //             batchExpireCountdownEl.classList.add('sp-expire-ok');
+        //             return;
+        //         }
+
+        //         const nowMs = Date.now() + (serverOffsetMs || 0);
+        //         const diffSec = Math.ceil((batchExpiresAtMs - nowMs) / 1000);
+
+        //         if (diffSec <= 0) {
+        //             batchExpireCountdownEl.textContent = '00:00';
+        //             batchExpireCountdownEl.classList.remove('sp-expire-ok', 'sp-expire-warn');
+        //             batchExpireCountdownEl.classList.add('sp-expire-bad');
+        //             if (waitMsg) waitMsg.textContent = 'El batch expiró. Inicia una nueva búsqueda.';
+        //             btnNewSearch.classList.remove('sp-hide');
+        //             return;
+        //         }
+
+        //         batchExpireCountdownEl.textContent = fmtMMSS(diffSec);
+
+        //         if (diffSec <= 30) {
+        //             batchExpireCountdownEl.classList.remove('sp-expire-ok', 'sp-expire-bad');
+        //             batchExpireCountdownEl.classList.add('sp-expire-warn');
+        //             if (waitMsg && !waitMsg.textContent) waitMsg.textContent = '⚠️ Expira pronto...';
+        //         } else {
+        //             batchExpireCountdownEl.classList.remove('sp-expire-warn', 'sp-expire-bad');
+        //             batchExpireCountdownEl.classList.add('sp-expire-ok');
+        //             if (waitMsg && waitMsg.textContent === '⚠️ Expira pronto...') waitMsg.textContent = '';
+        //         }
+        //     }, 1000);
+        // }
+
+
+        // function stopBatchExpireCountdown() {
+        //     if (batchExpireTimer) clearInterval(batchExpireTimer);
+        //     batchExpireTimer = null;
+        //     batchExpiresAtMs = null;
+        //     batchExpireCountdownEl.textContent = '--:--';
+        //     batchExpireCountdownEl.classList.remove('sp-expire-warn', 'sp-expire-bad');
+        //     batchExpireCountdownEl.classList.add('sp-expire-ok');
+        // }
+
+        // function startBatchExpireCountdown() {
+        //     if (batchExpireTimer) clearInterval(batchExpireTimer);
+
+        //     batchExpireTimer = setInterval(() => {
+        //         if (!batchExpireCountdownEl) return;
+
+        //         if (!batchExpiresAtMs) {
+        //             batchExpireCountdownEl.textContent = '--:--';
+        //             batchExpireCountdownEl.classList.remove('sp-expire-warn', 'sp-expire-bad');
+        //             batchExpireCountdownEl.classList.add('sp-expire-ok');
+        //             return;
+        //         }
+
+        //         const diffSec = Math.ceil((batchExpiresAtMs - Date.now()) / 1000);
+
+        //         if (diffSec <= 0) {
+        //             batchExpireCountdownEl.textContent = '00:00';
+        //             batchExpireCountdownEl.classList.remove('sp-expire-ok', 'sp-expire-warn');
+        //             batchExpireCountdownEl.classList.add('sp-expire-bad');
+        //             if (waitMsg) waitMsg.textContent = 'El batch expiró. Inicia una nueva búsqueda.';
+        //             btnNewSearch.classList.remove('sp-hide');
+        //             return;
+        //         }
+
+        //         batchExpireCountdownEl.textContent = fmtMMSS(diffSec);
+
+        //         if (diffSec <= 30) {
+        //             batchExpireCountdownEl.classList.remove('sp-expire-ok', 'sp-expire-bad');
+        //             batchExpireCountdownEl.classList.add('sp-expire-warn');
+        //             if (waitMsg && !waitMsg.textContent) waitMsg.textContent = '⚠️ Expira pronto...';
+        //         } else {
+        //             batchExpireCountdownEl.classList.remove('sp-expire-warn', 'sp-expire-bad');
+        //             batchExpireCountdownEl.classList.add('sp-expire-ok');
+        //             if (waitMsg && waitMsg.textContent === '⚠️ Expira pronto...') waitMsg.textContent = '';
+        //         }
+        //     }, 1000);
+        // }
+
+        // function stopBatchExpireCountdown() {
+        //     if (batchExpireTimer) clearInterval(batchExpireTimer);
+        //     batchExpireTimer = null;
+        //     batchExpiresAtMs = null;
+        //     batchExpireCountdownEl.textContent = '--:--';
+        //     batchExpireCountdownEl.classList.remove('sp-expire-warn', 'sp-expire-bad');
+        //     batchExpireCountdownEl.classList.add('sp-expire-ok');
+        // }
+
+        /* -------------------- BATCH EXPIRE COUNTDOWN -------------------- */
         function fmtMMSS(totalSeconds) {
             const s = Math.max(0, Math.floor(totalSeconds));
             const m = String(Math.floor(s / 60)).padStart(2, '0');
             const r = String(s % 60).padStart(2, '0');
             return `${m}:${r}`;
+        }
+
+        // ✅ offsets para que funcione igual en cualquier dispositivo
+        let serverOffsetMs = 0; // server_now_ms - Date.now()
+        let batchExpiresAtMs = null;
+        let batchExpireTimer = null;
+
+        // ✅ se llama cada vez que recibes JSON del backend con expires_at_ms y server_now_ms
+        function applyBatchTimingFromJson(json) {
+            // puede venir en root (/active) o dentro de batch (/status)
+            const expiresMs = Number(
+                json?.expires_at_ms ??
+                json?.batch?.expires_at_ms ??
+                null
+            );
+
+            const serverNow = Number(
+                json?.server_now_ms ??
+                json?.batch?.server_now_ms ??
+                null
+            );
+
+            if (Number.isFinite(serverNow) && serverNow > 0) {
+                serverOffsetMs = serverNow - Date.now();
+            }
+
+            if (Number.isFinite(expiresMs) && expiresMs > 0) {
+                batchExpiresAtMs = expiresMs;
+                return;
+            }
+
+            // fallback si solo llega seconds_left
+            const secLeft = Number(json?.seconds_left ?? json?.batch?.seconds_left ?? NaN);
+            if (Number.isFinite(secLeft)) {
+                const nowMs = Date.now() + (serverOffsetMs || 0);
+                batchExpiresAtMs = nowMs + (secLeft * 1000);
+            } else {
+                batchExpiresAtMs = null;
+            }
         }
 
         function startBatchExpireCountdown() {
@@ -795,7 +976,8 @@
                     return;
                 }
 
-                const diffSec = Math.ceil((batchExpiresAtMs - Date.now()) / 1000);
+                const nowMs = Date.now() + (serverOffsetMs || 0);
+                const diffSec = Math.ceil((batchExpiresAtMs - nowMs) / 1000);
 
                 if (diffSec <= 0) {
                     batchExpireCountdownEl.textContent = '00:00';
@@ -824,10 +1006,15 @@
             if (batchExpireTimer) clearInterval(batchExpireTimer);
             batchExpireTimer = null;
             batchExpiresAtMs = null;
-            batchExpireCountdownEl.textContent = '--:--';
-            batchExpireCountdownEl.classList.remove('sp-expire-warn', 'sp-expire-bad');
-            batchExpireCountdownEl.classList.add('sp-expire-ok');
+            serverOffsetMs = 0;
+
+            if (batchExpireCountdownEl) {
+                batchExpireCountdownEl.textContent = '--:--';
+                batchExpireCountdownEl.classList.remove('sp-expire-warn', 'sp-expire-bad');
+                batchExpireCountdownEl.classList.add('sp-expire-ok');
+            }
         }
+
 
         /* -------------------- ACCEPTED TUTORS -------------------- */
         /**
@@ -933,10 +1120,12 @@
             wRate.textContent = (batch.batch_size ?? '-') + '';
 
             // expire ms
-            batchExpiresAtMs = Number(batch.expires_at_ms ?? null);
-            if (!batchExpiresAtMs && batch.seconds_left != null) {
-                batchExpiresAtMs = Date.now() + (Number(batch.seconds_left) * 1000);
-            }
+            // batchExpiresAtMs = Number(batch.expires_at_ms ?? null);
+            // if (!batchExpiresAtMs && batch.seconds_left != null) {
+            //     batchExpiresAtMs = Date.now() + (Number(batch.seconds_left) * 1000);
+            // }
+
+            applyBatchTimingFromJson(json);
 
             // sent this minute (delta)
             const sentCountNow = Number(batch.sent_count ?? 0);
@@ -967,10 +1156,15 @@
             btnNewSearch.classList.add('sp-hide');
             if (waitMsg) waitMsg.textContent = '';
 
-            showWaitScreen();
-            startBatchExpireCountdown();
+            // showWaitScreen();
+            // startBatchExpireCountdown();
 
-            fetchBatchStatus(batchId);
+            // fetchBatchStatus(batchId);
+
+            showWaitScreen();
+fetchBatchStatus(batchId);
+startBatchExpireCountdown();
+
             pollBatchTimer = setInterval(() => fetchBatchStatus(batchId), 60000);
         }
 
@@ -1059,7 +1253,7 @@
             console.log('FILE:', f, f?.name, f?.type, f?.size);
             const fd = new FormData();
             fd.append('comprobante', f);
-console.log([...fd.entries()]);
+            console.log([...fd.entries()]);
             const res = await fetch(`${API}/bookings/${currentBookingId}/receipt`, {
                 method: 'POST',
                 headers: {
@@ -1215,7 +1409,7 @@ console.log([...fd.entries()]);
 
             const json = await res.json().catch(() => ({}));
             if (!res.ok || !json.active || !json.batch_id) return false;
-
+applyBatchTimingFromJson(json);
             selectedSubjectId = Number(json.subject_id || 0);
             startOut.textContent = `Batch activo detectado (ID ${json.batch_id}). Reanudando...`;
 

@@ -127,6 +127,134 @@ class SubjectPickerController extends Controller
             'data' => $tutors,
         ]);
     }
+    // public function start(Request $request)
+    // {
+    //     $data = $request->validate([
+    //         'subject_id' => ['required', 'integer', 'min:1'],
+    //     ]);
+
+    //     $subjectId = (int) $data['subject_id'];
+
+
+    //     $studentId = (int) Auth::id();
+    //     // ✅ Si ya tiene tutoría activa o pendiente, NO iniciar batch (evita emails en vano)
+    //     $hasActiveBooking = DB::table('slot_bookings')
+    //         ->where('student_id', $studentId)
+    //         ->whereIn('status', [1, 4, 2]) // 1 Active, 4 Reserved, 2 Rescheduled (ajusta según tus estados reales)
+    //         ->where('end_time', '>', now()) // todavía no terminó
+    //         ->exists();
+
+    //     if ($hasActiveBooking) {
+    //         return response()->json([
+    //             'success' => false,
+    //             'code' => 'has_active_booking',
+    //             'message' => 'Ya tienes una tutoría activa o pendiente. Finaliza o cancela antes de iniciar otra.',
+    //         ], 409);
+    //     }
+
+
+    //     // ⬅️ define tu tiempo de espera real
+    //     $timeoutMinutes = 5;
+
+    //     return DB::transaction(function () use ($subjectId, $studentId, $timeoutMinutes) {
+
+    //         // (Opcional pero recomendado) si el estudiante inicia otro batch,
+    //         // marcamos el anterior como done/expired para que no siga enviando.
+    //         EmailBatch::query()
+    //             ->where('created_by', $studentId)
+    //             ->whereIn('status', ['pending', 'running'])
+    //             ->update([
+    //                 'status' => 'done',
+    //                 'last_error' => 'restarted',
+    //                 'updated_at' => now(),
+    //             ]);
+
+    //         // 1) Crear batch
+    //         $batch = EmailBatch::create([
+    //             'subject_id' => $subjectId,
+    //             'created_by' => $studentId,
+    //             // 'status' => 'pending',
+    //             'status' => 'running',
+    //             'last_tutor_id' => 0,
+    //             'sent_count' => 0,
+    //             'batch_size' => 2, // 2 email por minuto
+    //             'last_error' => null,
+    //             'expires_at' => now()->addMinutes($timeoutMinutes),
+    //         ]);
+
+    //         session([
+    //             'active_batch_id' => $batch->id,
+    //             'active_subject_id' => $subjectId,
+    //         ]);
+
+
+    //         // 2) Cola congelada: primero disponibles, luego no disponibles
+    //         $availableNow = $this->getTutorsAvailableNow($subjectId);     // Collection { user_id }
+    //         $notAvailable = $this->getTutorsNotAvailableNow($subjectId);  // Collection { user_id }
+
+    //         // 3) Unificar sin duplicados
+    //         $seen = [];
+    //         $queue = [];
+
+    //         foreach ($availableNow as $t) {
+    //             $uid = (int) $t->user_id;
+    //             if ($uid > 0 && !isset($seen[$uid])) {
+    //                 $seen[$uid] = true;
+    //                 $queue[] = $uid;
+    //             }
+    //         }
+
+    //         foreach ($notAvailable as $t) {
+    //             $uid = (int) $t->user_id;
+    //             if ($uid > 0 && !isset($seen[$uid])) {
+    //                 $seen[$uid] = true;
+    //                 $queue[] = $uid;
+    //             }
+    //         }
+
+    //         // 4) Insert masivo items
+    //         $items = [];
+    //         $pos = 1;
+    //         $now = now();
+
+    //         foreach ($queue as $uid) {
+    //             $items[] = [
+    //                 'batch_id' => $batch->id,
+    //                 'user_id' => $uid,
+    //                 'position' => $pos++,
+    //                 'status' => 'pending',
+    //                 'sent_at' => null,
+    //                 'last_error' => null,
+    //                 'created_at' => $now,
+    //                 'updated_at' => $now,
+    //             ];
+    //         }
+
+    //         if ($items) {
+    //             EmailBatchItem::insert($items);
+    //         } else {
+    //             $batch->update([
+    //                 'status' => 'done',
+    //                 'last_error' => 'no_candidates',
+    //             ]);
+    //         }
+    //         // ✅ Primer lote INSTANTÁNEO (solo si hubo candidatos)
+    //         if ($items) {
+    //             DB::afterCommit(function () use ($batch) {
+    //                 Artisan::call('batches:tick', ['--batch_id' => $batch->id]);
+    //             });
+    //         }
+
+    //         return response()->json([
+    //             'success' => true,
+    //             'batch_id' => $batch->id,
+    //             'subject_id' => $subjectId,
+    //             'queued' => count($items),
+    //             'expires_at' => optional($batch->expires_at)->toDateTimeString(),
+    //         ]);
+    //     });
+    // }
+
     public function start(Request $request)
     {
         $data = $request->validate([
@@ -134,50 +262,49 @@ class SubjectPickerController extends Controller
         ]);
 
         $subjectId = (int) $data['subject_id'];
-
-
         $studentId = (int) Auth::id();
-// ✅ Si ya tiene tutoría activa o pendiente, NO iniciar batch (evita emails en vano)
-$hasActiveBooking = DB::table('slot_bookings')
-    ->where('student_id', $studentId)
-    ->whereIn('status', [1, 4, 2]) // 1 Active, 4 Reserved, 2 Rescheduled (ajusta según tus estados reales)
-    ->where('end_time', '>', now()) // todavía no terminó
-    ->exists();
 
-if ($hasActiveBooking) {
-    return response()->json([
-        'success' => false,
-        'code' => 'has_active_booking',
-        'message' => 'Ya tienes una tutoría activa o pendiente. Finaliza o cancela antes de iniciar otra.',
-    ], 409);
-}
-
-
-        // ⬅️ define tu tiempo de espera real
         $timeoutMinutes = 5;
 
         return DB::transaction(function () use ($subjectId, $studentId, $timeoutMinutes) {
 
-            // (Opcional pero recomendado) si el estudiante inicia otro batch,
-            // marcamos el anterior como done/expired para que no siga enviando.
-            EmailBatch::query()
+            // ✅ 0) Si ya hay batch activo NO expirado, devolverlo (NO crear otro)
+            $active = EmailBatch::query()
                 ->where('created_by', $studentId)
-                ->whereIn('status', ['pending', 'running'])
-                ->update([
-                    'status' => 'done',
-                    'last_error' => 'restarted',
-                    'updated_at' => now(),
+                ->whereIn('status', ['pending', 'running', 'matched']) // matched aún “vive” hasta que se cierre
+                ->where(function ($q) {
+                    $q->whereNull('expires_at')
+                        ->orWhere('expires_at', '>', now());
+                })
+                ->lockForUpdate()
+                ->orderByDesc('id')
+                ->first();
+
+            if ($active) {
+                // rehidratar sesión en este dispositivo (opcional)
+                session([
+                    'active_batch_id' => $active->id,
+                    'active_subject_id' => $active->subject_id,
                 ]);
 
-            // 1) Crear batch
+                return response()->json([
+                    'success' => true,
+                    'already_active' => true,
+                    'batch_id' => $active->id,
+                    'subject_id' => $active->subject_id,
+                    'status' => $active->status,
+                    'expires_at' => optional($active->expires_at)->toDateTimeString(),
+                ]);
+            }
+
+            // ✅ 1) Crear batch
             $batch = EmailBatch::create([
                 'subject_id' => $subjectId,
                 'created_by' => $studentId,
-                // 'status' => 'pending',
                 'status' => 'running',
                 'last_tutor_id' => 0,
                 'sent_count' => 0,
-                'batch_size' => 2, // 2 email por minuto
+                'batch_size' => 2,
                 'last_error' => null,
                 'expires_at' => now()->addMinutes($timeoutMinutes),
             ]);
@@ -187,12 +314,10 @@ if ($hasActiveBooking) {
                 'active_subject_id' => $subjectId,
             ]);
 
+            // ✅ 2) Cola congelada
+            $availableNow = $this->getTutorsAvailableNow($subjectId);
+            $notAvailable = $this->getTutorsNotAvailableNow($subjectId);
 
-            // 2) Cola congelada: primero disponibles, luego no disponibles
-            $availableNow = $this->getTutorsAvailableNow($subjectId);     // Collection { user_id }
-            $notAvailable = $this->getTutorsNotAvailableNow($subjectId);  // Collection { user_id }
-
-            // 3) Unificar sin duplicados
             $seen = [];
             $queue = [];
 
@@ -203,7 +328,6 @@ if ($hasActiveBooking) {
                     $queue[] = $uid;
                 }
             }
-
             foreach ($notAvailable as $t) {
                 $uid = (int) $t->user_id;
                 if ($uid > 0 && !isset($seen[$uid])) {
@@ -212,7 +336,7 @@ if ($hasActiveBooking) {
                 }
             }
 
-            // 4) Insert masivo items
+            // ✅ 3) Insert masivo items
             $items = [];
             $pos = 1;
             $now = now();
@@ -238,7 +362,8 @@ if ($hasActiveBooking) {
                     'last_error' => 'no_candidates',
                 ]);
             }
-            // ✅ Primer lote INSTANTÁNEO (solo si hubo candidatos)
+
+            // ✅ 4) Primer tick inmediato (solo si hay candidatos)
             if ($items) {
                 DB::afterCommit(function () use ($batch) {
                     Artisan::call('batches:tick', ['--batch_id' => $batch->id]);
@@ -247,6 +372,7 @@ if ($hasActiveBooking) {
 
             return response()->json([
                 'success' => true,
+                'already_active' => false,
                 'batch_id' => $batch->id,
                 'subject_id' => $subjectId,
                 'queued' => count($items),
@@ -254,6 +380,7 @@ if ($hasActiveBooking) {
             ]);
         });
     }
+
 
 
 
@@ -313,64 +440,139 @@ if ($hasActiveBooking) {
 
 
 
+    // public function active()
+    // {
+    //     $studentId = (int) Auth::id();
+    //     $batchId = session('active_batch_id');
+
+    //     // 1) Intentar por sesión
+    //     if ($batchId) {
+    //         $batch = EmailBatch::query()->find($batchId);
+
+    //         if ($batch && !in_array($batch->status, ['done', 'failed'], true)) {
+    //             if (!$batch->expires_at || now()->lt($batch->expires_at)) {
+    //                 return response()->json([
+    //                     'active' => true,
+    //                     'batch_id' => $batch->id,
+    //                     'subject_id' => $batch->subject_id,
+    //                     'status' => $batch->status,
+    //                     'sent_count' => $batch->sent_count,
+    //                     'batch_size' => $batch->batch_size,
+    //                     'expires_at' => optional($batch->expires_at)->toDateTimeString(),
+    //                 ]);
+    //             }
+    //         }
+
+    //         // sesión apunta a algo inválido
+    //         session()->forget(['active_batch_id', 'active_subject_id']);
+    //     }
+
+    //     // 2) Fallback por BD (más robusto)
+    //     $batch = EmailBatch::query()
+    //         ->where('created_by', '=', $studentId)
+    //         ->whereIn('status', ['pending', 'running'])
+    //         ->where(function ($q) {
+    //             $q->whereNull('expires_at')
+    //                 ->orWhere('expires_at', '>', now());
+    //         })
+    //         ->orderByDesc('id')
+    //         ->first();
+
+    //     if (!$batch) {
+    //         return response()->json(['active' => false]);
+    //     }
+
+    //     // rehidratar sesión
+    //     session([
+    //         'active_batch_id' => $batch->id,
+    //         'active_subject_id' => $batch->subject_id,
+    //     ]);
+
+    //     return response()->json([
+    //         'active' => true,
+    //         'batch_id' => $batch->id,
+    //         'subject_id' => $batch->subject_id,
+    //         'status' => $batch->status,
+    //         'sent_count' => $batch->sent_count,
+    //         'batch_size' => $batch->batch_size,
+    //         'expires_at' => optional($batch->expires_at)->toDateTimeString(),
+    //     ]);
+    // }
+
+
     public function active()
-    {
-        $studentId = (int) Auth::id();
-        $batchId = session('active_batch_id');
+{
+    $studentId = (int) Auth::id();
+    $batchId = session('active_batch_id');
 
-        // 1) Intentar por sesión
-        if ($batchId) {
-            $batch = EmailBatch::query()->find($batchId);
+    // 1) Intentar por sesión
+    if ($batchId) {
+        $batch = EmailBatch::query()->find($batchId);
 
-            if ($batch && !in_array($batch->status, ['done', 'failed'], true)) {
-                if (!$batch->expires_at || now()->lt($batch->expires_at)) {
-                    return response()->json([
-                        'active' => true,
-                        'batch_id' => $batch->id,
-                        'subject_id' => $batch->subject_id,
-                        'status' => $batch->status,
-                        'sent_count' => $batch->sent_count,
-                        'batch_size' => $batch->batch_size,
-                        'expires_at' => optional($batch->expires_at)->toDateTimeString(),
-                    ]);
-                }
+        if ($batch && !in_array($batch->status, ['done', 'failed'], true)) {
+            if (!$batch->expires_at || now()->lt($batch->expires_at)) {
+
+                $timing = $this->batchTimingPayload($batch);
+
+                return response()->json([
+                    'active' => true,
+                    'batch_id' => $batch->id,
+                    'subject_id' => $batch->subject_id,
+                    'status' => $batch->status,
+                    'sent_count' => $batch->sent_count,
+                    'batch_size' => $batch->batch_size,
+                    'expires_at' => optional($batch->expires_at)->toDateTimeString(),
+
+                    // ✅ CLAVE para contador cross-device
+                    'expires_at_ms' => $timing['expires_at_ms'],
+                    'seconds_left'  => $timing['seconds_left'],
+                    'server_now_ms' => $timing['server_now_ms'],
+                ]);
             }
-
-            // sesión apunta a algo inválido
-            session()->forget(['active_batch_id', 'active_subject_id']);
         }
 
-        // 2) Fallback por BD (más robusto)
-        $batch = EmailBatch::query()
-            ->where('created_by', '=', $studentId)
-            ->whereIn('status', ['pending', 'running'])
-            ->where(function ($q) {
-                $q->whereNull('expires_at')
-                    ->orWhere('expires_at', '>', now());
-            })
-            ->orderByDesc('id')
-            ->first();
-
-        if (!$batch) {
-            return response()->json(['active' => false]);
-        }
-
-        // rehidratar sesión
-        session([
-            'active_batch_id' => $batch->id,
-            'active_subject_id' => $batch->subject_id,
-        ]);
-
-        return response()->json([
-            'active' => true,
-            'batch_id' => $batch->id,
-            'subject_id' => $batch->subject_id,
-            'status' => $batch->status,
-            'sent_count' => $batch->sent_count,
-            'batch_size' => $batch->batch_size,
-            'expires_at' => optional($batch->expires_at)->toDateTimeString(),
-        ]);
+        // sesión apunta a algo inválido
+        session()->forget(['active_batch_id', 'active_subject_id']);
     }
+
+    // 2) Fallback por BD (más robusto)
+    $batch = EmailBatch::query()
+        ->where('created_by', '=', $studentId)
+        ->whereIn('status', ['pending', 'running'])
+        ->where(function ($q) {
+            $q->whereNull('expires_at')
+              ->orWhere('expires_at', '>', now());
+        })
+        ->orderByDesc('id')
+        ->first();
+
+    if (!$batch) {
+        return response()->json(['active' => false]);
+    }
+
+    // rehidratar sesión
+    session([
+        'active_batch_id' => $batch->id,
+        'active_subject_id' => $batch->subject_id,
+    ]);
+
+    $timing = $this->batchTimingPayload($batch);
+
+    return response()->json([
+        'active' => true,
+        'batch_id' => $batch->id,
+        'subject_id' => $batch->subject_id,
+        'status' => $batch->status,
+        'sent_count' => $batch->sent_count,
+        'batch_size' => $batch->batch_size,
+        'expires_at' => optional($batch->expires_at)->toDateTimeString(),
+
+        // ✅ CLAVE para contador cross-device
+        'expires_at_ms' => $timing['expires_at_ms'],
+        'seconds_left'  => $timing['seconds_left'],
+        'server_now_ms' => $timing['server_now_ms'],
+    ]);
+}
 
     public function acceptWaitlist(Request $request)
     {
@@ -637,6 +839,9 @@ if ($hasActiveBooking) {
     }
 
     // ✅ Base query para tutores por materia (solo cambia available vs notAvailable)
+    // ✅ Base query para tutores por materia
+    // - availableNow: tiene slot ahora Y NO está ocupado en slot_bookings
+    // - notAvailableNow: no tiene slot ahora (y también excluimos ocupados para no spamear)
     private function baseTutorsBySubjectQuery(int $subjectId, bool $mustBeAvailableNow)
     {
         $q = DB::table('user_subject as us')
@@ -644,12 +849,13 @@ if ($hasActiveBooking) {
             ->leftJoin('user_reviews as ur', 'ur.user_id', '=', 'us.user_id')
             ->leftJoin('reviews as r', function ($join) {
                 $join->on('r.id', '=', 'ur.review_id');
-                // si quieres activar solo reviews activas aquí, habilita:
+                // Si quieres solo reviews activas:
                 // $join->where('r.status', '=', 'active');
             })
             ->where('us.subject_id', $subjectId)
             ->whereNotNull('u.email');
 
+        // ✅ Disponible según horario (user_subject_slots)
         $slotSub = DB::table('user_subject_slots as s')
             ->select(DB::raw(1))
             ->whereColumn('s.user_id', 'us.user_id')
@@ -657,14 +863,59 @@ if ($hasActiveBooking) {
             ->whereRaw('s.start_time <= CURTIME()')
             ->whereRaw('s.end_time > CURTIME()');
 
+        // ✅ Ocupado AHORA según bookings (slot_bookings)
+        // (en curso o reservado/pending de pago)
+        $busyNowSub = DB::table('slot_bookings as sb')
+            ->select(DB::raw(1))
+            ->whereColumn('sb.tutor_id', 'us.user_id')
+            ->whereIn('sb.status', [1, 2, 4]) // 1 Active, 2 Rescheduled, 4 Reserved
+            ->where('sb.start_time', '<=', now())
+            ->where('sb.end_time', '>', now());
+
         if ($mustBeAvailableNow) {
-            $q->whereExists($slotSub);
+            // ✅ SOLO: con slot ahora y NO ocupado
+            $q->whereExists($slotSub)
+                ->whereNotExists($busyNowSub);
         } else {
-            $q->whereNotExists($slotSub);
+            // ✅ NO disponible por slot (y además NO ocupado para no spamear)
+            $q->whereNotExists($slotSub)
+                ->whereNotExists($busyNowSub);
         }
 
         return $q;
     }
+
+
+    // private function baseTutorsBySubjectQuery(int $subjectId, bool $mustBeAvailableNow)
+    // {
+    //     $q = DB::table('user_subject as us')
+    //         ->join('users as u', 'u.id', '=', 'us.user_id')
+    //         ->leftJoin('user_reviews as ur', 'ur.user_id', '=', 'us.user_id')
+    //         ->leftJoin('reviews as r', function ($join) {
+    //             $join->on('r.id', '=', 'ur.review_id');
+    //             // si quieres activar solo reviews activas aquí, habilita:
+    //             // $join->where('r.status', '=', 'active');
+    //         })
+    //         ->where('us.subject_id', $subjectId)
+    //         ->whereNotNull('u.email');
+
+    //     $slotSub = DB::table('user_subject_slots as s')
+    //         ->select(DB::raw(1))
+    //         ->whereColumn('s.user_id', 'us.user_id')
+    //         ->whereRaw('s.date = CURDATE()')
+    //         ->whereRaw('s.start_time <= CURTIME()')
+    //         ->whereRaw('s.end_time > CURTIME()');
+
+    //     if ($mustBeAvailableNow) {
+    //         $q->whereExists($slotSub);
+    //     } else {
+    //         $q->whereNotExists($slotSub);
+    //     }
+
+    //     return $q;
+    // }
+
+
 
     // ✅ Cursor reusable para acceptedTutors
     private function applyAcceptedCursor($q, ?string $afterAt, int $afterId): void
@@ -931,40 +1182,6 @@ if ($hasActiveBooking) {
                 ->where('id', (int) $booking->subject_id)
                 ->value('name');
 
-            $tutorName    = trim(($tutor->first_name ?? '') . ' ' . ($tutor->last_name ?? ''));
-            $studentName  = trim(($student->first_name ?? '') . ' ' . ($student->last_name ?? ''));
-            $studentPhone = $student->phone_number ?? '-';
-
-            $amount = number_format((float) ($booking->session_fee ?? 0), 2, '.', '');
-            $start  = (string) ($booking->start_time ?? '-');
-            $end    = (string) ($booking->end_time ?? '-');
-
-            // 6) Email al tutor SIN adjunto (solo datos)
-            Mail::send([], [], function ($message) use (
-                $tutor,
-                $bookingId,
-                $tutorName,
-                $studentName,
-                $studentPhone,
-                $subjectName,
-                $amount,
-                $start,
-                $end
-            ) {
-                $message->to($tutor->email)
-                    ->subject("Pago reportado - Tutoría #{$bookingId}")
-                    ->setBody(
-                        "<h3>Pago reportado (pendiente de tu aprobación)</h3>
-                    <p><b>Booking:</b> #{$bookingId}</p>
-                    <p><b>Estudiante:</b> " . e($studentName ?: '-') . "</p>
-                    <p><b>Teléfono:</b> " . e($studentPhone) . "</p>
-                    <p><b>Materia:</b> " . e($subjectName ?: '-') . "</p>
-                    <p><b>Horario:</b> " . e($start) . " - " . e($end) . "</p>
-                    <p><b>Monto:</b> {$amount} Bs</p>
-                    <p><b>Acción:</b> Ingresa a la plataforma para ver el comprobante y presiona <b>“Aceptar tutoría”</b> o <b>“Rechazar”</b>.</p>",
-                        'text/html'
-                    );
-            });
 
             DB::commit();
 
@@ -1035,13 +1252,53 @@ if ($hasActiveBooking) {
             return response()->json(['ok' => false, 'message' => 'Batch not found'], 404);
         }
 
+        $batchStatus  = (string) ($batch->status ?? '');
         $batchExpired = !empty($batch->expires_at) && now()->greaterThanOrEqualTo($batch->expires_at);
 
         // 3) ¿Este tutor fue elegido?
-        $isChosen = ((string)$batch->status === 'matched' && (int)$batch->accepted_item_id === (int)$item->id);
+        $isChosen = ($batchStatus === 'matched' && (int)$batch->accepted_item_id === (int)$item->id);
 
         // 4) bookingId (si ya estamos en fase de pago/meet)
         $bookingId = (int)($batch->booking_id ?? 0);
+
+        // ✅ NUEVO: Si el batch ya está matched y este tutor NO es el elegido => terminar YA su espera
+        // (evita que se queden en "waiting" hasta que expire el tiempo)
+        if (!$isChosen && $batchStatus === 'matched') {
+            return response()->json([
+                'ok' => true,
+                'ui_state' => 'batch_expired_waiting',
+                'batch' => [
+                    'id' => (int)$batch->id,
+                    'status' => $batchStatus,
+                    'expires_at' => $batch->expires_at,
+                    'expired' => true,
+                ],
+                'chosen' => [
+                    'is_chosen' => false,
+                    'booking_id' => null,
+                ],
+                'message' => 'El estudiante ya eligió a otro tutor. Gracias.',
+            ]);
+        }
+
+        // ✅ NUEVO: Si el batch ya terminó (done/failed) y este tutor NO fue elegido => terminar YA
+        if (!$isChosen && in_array($batchStatus, ['done', 'failed'], true)) {
+            return response()->json([
+                'ok' => true,
+                'ui_state' => 'batch_expired_waiting',
+                'batch' => [
+                    'id' => (int)$batch->id,
+                    'status' => $batchStatus,
+                    'expires_at' => $batch->expires_at,
+                    'expired' => true,
+                ],
+                'chosen' => [
+                    'is_chosen' => false,
+                    'booking_id' => null,
+                ],
+                'message' => 'Esta solicitud ya terminó.',
+            ]);
+        }
 
         // Caso A: NO elegido y batch expiró = fin de espera
         if (!$isChosen && $batchExpired) {
@@ -1050,7 +1307,7 @@ if ($hasActiveBooking) {
                 'ui_state' => 'batch_expired_waiting',
                 'batch' => [
                     'id' => (int)$batch->id,
-                    'status' => (string)$batch->status,
+                    'status' => $batchStatus,
                     'expires_at' => $batch->expires_at,
                     'expired' => true,
                 ],
@@ -1069,7 +1326,7 @@ if ($hasActiveBooking) {
                 'ui_state' => 'waiting',
                 'batch' => [
                     'id' => (int)$batch->id,
-                    'status' => (string)$batch->status,
+                    'status' => $batchStatus,
                     'expires_at' => $batch->expires_at,
                     'expired' => $batchExpired,
                 ],
@@ -1081,6 +1338,8 @@ if ($hasActiveBooking) {
             ]);
         }
 
+        // Desde aquí: ES el tutor elegido (isChosen = true)
+
         // Caso C: Fue elegido pero aún NO hay booking_id
         if ($bookingId <= 0) {
             return response()->json([
@@ -1088,7 +1347,7 @@ if ($hasActiveBooking) {
                 'ui_state' => 'payment_phase',
                 'batch' => [
                     'id' => (int)$batch->id,
-                    'status' => (string)$batch->status,
+                    'status' => $batchStatus,
                     'expires_at' => $batch->expires_at,
                     'expired' => $batchExpired,
                 ],
@@ -1125,7 +1384,6 @@ if ($hasActiveBooking) {
             ->where('u.id', (int)$booking->student_id)
             ->first(['u.email', 'p.first_name', 'p.last_name', 'p.phone_number']);
 
-
         $studentName = $student ? trim(($student->first_name ?? '') . ' ' . ($student->last_name ?? '')) : null;
 
         // 8) estado booking
@@ -1137,8 +1395,8 @@ if ($hasActiveBooking) {
         if ($status === 0) $uiState = 'rejected';
 
         // Acciones
-        $canAccept = ($status === 4) && $hasReceipt;
-        $canReject = ($status === 4);
+        $canAccept  = ($status === 4) && $hasReceipt;
+        $canReject  = ($status === 4);
         $canJoinMeet = ($status === 1) && !empty($booking->meeting_link);
 
         return response()->json([
@@ -1146,7 +1404,7 @@ if ($hasActiveBooking) {
             'ui_state' => $uiState,
             'batch' => [
                 'id' => (int)$batch->id,
-                'status' => (string)$batch->status,
+                'status' => $batchStatus,
                 'expires_at' => $batch->expires_at,
                 'expired' => $batchExpired,
             ],
@@ -1178,6 +1436,7 @@ if ($hasActiveBooking) {
             ],
         ]);
     }
+
 
 
     // Valida token
@@ -1270,34 +1529,59 @@ if ($hasActiveBooking) {
 
 
             //////////////// despues reemplazar por link real de vista/email ////////////////
-// Datos estudiante
-$student = DB::table('users as u')
-    ->leftJoin('profiles as p', 'p.user_id', '=', 'u.id')
-    ->where('u.id', (int)$booking->student_id)
-    ->first(['u.email', 'p.first_name', 'p.last_name']);
+            // Datos estudiante
+            $info = $this->bookingEmailData($bookingId);
+            if ($info) {
+                $b = $info['booking'];
+                $meet = $meetingLink;
 
-$studentEmail = $student->email ?? null;
+                // ✅ Mail al estudiante
+                $htmlStudent = "
+        <h3>✅ Tutoría aceptada</h3>
+        <p><b>Booking:</b> #{$bookingId}</p>
+        <p><b>Materia:</b> " . e($info['subject_name']) . "</p>
+        <p><b>Tutor:</b> " . e($info['tutor_name'] ?: '-') . "</p>
+        <p><b>Horario:</b> " . e($b->start_time) . " - " . e($b->end_time) . "</p>
+        <p><b>Meet:</b> <a href='{$meet}'>" . e($meet) . "</a></p>
+        <p>Ya puedes ingresar cuando corresponda.</p>
+    ";
 
-if ($studentEmail) {
-    $studentName = trim(($student->first_name ?? '') . ' ' . ($student->last_name ?? ''));
-    $subjectName = DB::table('subjects')->where('id', (int)$booking->subject_id)->value('name');
+                $this->mailHtml(
+                    $info['student_email'],
+                    "Tutoría aceptada #{$bookingId}",
+                    $htmlStudent
+                );
 
-    Mail::send([], [], function ($message) use ($studentEmail, $studentName, $bookingId, $meetingLink, $subjectName, $booking) {
-        $message->to($studentEmail)
-            ->subject("Tutoría aceptada #{$bookingId}")
-            ->setBody(
-                "<h3>✅ Tu tutoría fue aceptada</h3>
-                 <p><b>Booking:</b> #{$bookingId}</p>
-                 <p><b>Estudiante:</b> " . e($studentName ?: '-') . "</p>
-                 <p><b>Materia:</b> " . e($subjectName ?: '-') . "</p>
-                 <p><b>Horario:</b> " . e($booking->start_time) . " - " . e($booking->end_time) . "</p>
-                 <p><b>Meet:</b> <a href='{$meetingLink}'>" . e($meetingLink) . "</a></p>",
-                'text/html'
-            );
-    });
-}
+                // ✅ Mail al tutor (confirmación)
+                $htmlTutor = "
+        <h3>✅ Aceptaste la tutoría</h3>
+        <p><b>Booking:</b> #{$bookingId}</p>
+        <p><b>Materia:</b> " . e($info['subject_name']) . "</p>
+        <p><b>Estudiante:</b> " . e($info['student_name'] ?: '-') . "</p>
+        <p><b>Teléfono:</b> " . e($info['student_phone'] ?: '-') . "</p>
+        <p><b>Horario:</b> " . e($b->start_time) . " - " . e($b->end_time) . "</p>
+        <p><b>Meet:</b> <a href='{$meet}'>" . e($meet) . "</a></p>
+    ";
+
+                $this->mailHtml(
+                    $info['tutor_email'],
+                    "Confirmación: tutoría aceptada #{$bookingId}",
+                    $htmlTutor
+                );
+            }
+
             ////////////////////////////////////////////////////////////////////////////////
 
+            // Marcar a todos los demás como no elegidos (para que su UI deje de esperar)
+            DB::table('email_batch_items')
+                ->where('batch_id', (int)$batch->id)
+                ->where('id', '!=', (int)$item->id)
+                ->whereIn('status', ['pending', 'sending', 'sent', 'accepted', 'chosen'])
+                ->update([
+                    'status' => 'expired',
+                    'last_error' => 'chosen_other_tutor',
+                    'updated_at' => now(),
+                ]);
 
             // ✅ NO tocamos email_batch_items a "approved" (no existe)
             return response()->json([
@@ -1400,6 +1684,51 @@ if ($studentEmail) {
                 'last_error' => 'rejected_by_tutor',
                 'updated_at' => now(),
             ]);
+
+            /////////////////// correo gmail/////////////////////////
+            $info = $this->bookingEmailData($bookingId);
+            if ($info) {
+                $b = $info['booking'];
+
+                // ✅ Mail al estudiante (rechazo)
+                $htmlStudent = "
+        <h3>❌ Tutoría rechazada</h3>
+        <p><b>Booking:</b> #{$bookingId}</p>
+        <p><b>Materia:</b> " . e($info['subject_name']) . "</p>
+        <p><b>Tutor:</b> " . e($info['tutor_name'] ?: '-') . "</p>
+        <p><b>Motivo:</b> " . e($reason) . "</p>
+        <p>Puedes volver y elegir otro tutor.</p>
+    ";
+
+                $this->mailHtml(
+                    $info['student_email'],
+                    "Tutoría rechazada #{$bookingId}",
+                    $htmlStudent
+                );
+
+                // ✅ Mail al tutor (confirmación del rechazo)
+                $htmlTutor = "
+        <h3>❌ Rechazaste la tutoría</h3>
+        <p><b>Booking:</b> #{$bookingId}</p>
+        <p><b>Materia:</b> " . e($info['subject_name']) . "</p>
+        <p><b>Estudiante:</b> " . e($info['student_name'] ?: '-') . "</p>
+        <p><b>Motivo:</b> " . e($reason) . "</p>
+    ";
+
+                $this->mailHtml(
+                    $info['tutor_email'],
+                    "Confirmación: tutoría rechazada #{$bookingId}",
+                    $htmlTutor
+                );
+            }
+            /////////////////////cambiar por vista/email /////////////////////////
+            DB::table('email_batch_items')
+                ->where('batch_id', (int)$batch->id)
+                ->update([
+                    'status' => 'expired',
+                    'last_error' => 'batch_closed_rejected',
+                    'updated_at' => now(),
+                ]);
 
             return response()->json([
                 'ok' => true,
@@ -1760,35 +2089,77 @@ if ($studentEmail) {
 
 
     public function studentMeet(Request $request, $booking)
-{
-    $studentId = (int) Auth::id();
-    $bookingId = (int) $booking;
+    {
+        $studentId = (int) Auth::id();
+        $bookingId = (int) $booking;
 
-    $b = DB::table('slot_bookings')
-        ->where('id', $bookingId)
-        ->first();
+        $b = DB::table('slot_bookings')
+            ->where('id', $bookingId)
+            ->first();
 
-    if (!$b) {
-        abort(404, 'Booking no encontrado');
+        if (!$b) {
+            abort(404, 'Booking no encontrado');
+        }
+
+        // Seguridad: solo el dueño (estudiante) puede abrir su meet
+        if ((int)$b->student_id !== $studentId) {
+            abort(403, 'Forbidden');
+        }
+
+        // Solo permitir si ya está aceptado (Active=1)
+        if ((int)$b->status !== 1) {
+            abort(409, 'Aún no está confirmada la tutoría');
+        }
+
+        $link = (string) ($b->meeting_link ?? '');
+
+        // Si no hay link, usa el genérico (o aborta si prefieres)
+        if ($link === '') {
+            $link = env('MEET_GENERIC_LINK') ?: 'https://meet.google.com/upy-mxim-nrm';
+        }
+
+        return redirect()->away($link);
     }
 
-    // Seguridad: solo el dueño (estudiante) puede abrir su meet
-    if ((int)$b->student_id !== $studentId) {
-        abort(403, 'Forbidden');
+
+
+
+
+    ////////////////////para emails/////////////////////
+    private function mailHtml(?string $to, string $subject, string $html): void
+    {
+        if (!$to) return;
+
+        Mail::html($html, function ($m) use ($to, $subject) {
+            $m->to($to)->subject($subject);
+        });
     }
 
-    // Solo permitir si ya está aceptado (Active=1)
-    if ((int)$b->status !== 1) {
-        abort(409, 'Aún no está confirmada la tutoría');
+    private function bookingEmailData(int $bookingId): array
+    {
+        $b = DB::table('slot_bookings as sb')->where('sb.id', $bookingId)->first();
+        if (!$b) return [];
+
+        $tutor = DB::table('users as u')
+            ->leftJoin('profiles as p', 'p.user_id', '=', 'u.id')
+            ->where('u.id', (int)$b->tutor_id)
+            ->first(['u.email', 'p.first_name', 'p.last_name']);
+
+        $student = DB::table('users as u')
+            ->leftJoin('profiles as p', 'p.user_id', '=', 'u.id')
+            ->where('u.id', (int)$b->student_id)
+            ->first(['u.email', 'p.first_name', 'p.last_name', 'p.phone_number']);
+
+        $subjectName = DB::table('subjects')->where('id', (int)$b->subject_id)->value('name');
+
+        return [
+            'booking' => $b,
+            'tutor_email' => $tutor->email ?? null,
+            'tutor_name' => trim(($tutor->first_name ?? '') . ' ' . ($tutor->last_name ?? '')),
+            'student_email' => $student->email ?? null,
+            'student_name' => trim(($student->first_name ?? '') . ' ' . ($student->last_name ?? '')),
+            'student_phone' => $student->phone_number ?? '-',
+            'subject_name' => $subjectName ?: '-',
+        ];
     }
-
-    $link = (string) ($b->meeting_link ?? '');
-
-    // Si no hay link, usa el genérico (o aborta si prefieres)
-    if ($link === '') {
-        $link = env('MEET_GENERIC_LINK') ?: 'https://meet.google.com/upy-mxim-nrm';
-    }
-
-    return redirect()->away($link);
-}
 }
