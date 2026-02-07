@@ -103,7 +103,7 @@
 
         .search-icon {
             position: absolute;
-            left: .9rem;
+            left: .1rem;
             top: 50%;
             transform: translateY(-50%);
             width: 1.2rem;
@@ -905,14 +905,14 @@
         }
 
         .receipt-preview {
-            margin-top: .8rem;
             border-radius: .9rem;
-            padding: .8rem;
+            padding: .1rem;
             background: #f8fafc;
             border: 1px solid #e2e8f0;
             text-align: left;
             font-size: .75rem;
             color: var(--text-muted);
+            width: 20%;
         }
 
         @media(min-width:768px) {
@@ -1076,8 +1076,8 @@
 
     <script>
         /* ==========================================================
-                                   1) DATA: Materias (desde tu endpoint de categorías/materias)
-                                ========================================================== */
+        1) DATA: Materias (desde tu endpoint de categorías/materias)
+        ========================================================== */
         let categories = ['Todas'];
         let subjects = []; // {id, name, category, category_id}
         let state = {
@@ -1219,13 +1219,13 @@
 
         <div class="subject-grid">
           ${items.map(sub => `
-                                            <button class="subject-card-btn" onclick="seleccionarMateria(this, ${sub.id}, '${sub.name.replaceAll("'", "\\'")}')">
-                                              <div class="subject-initial">${sub.name.charAt(0)}</div>
-                                              <div class="subject-meta">
-                                                <div class="subject-title">${sub.name}</div>
-                                              </div>
-                                            </button>
-                                          `).join('')}
+                                                                    <button class="subject-card-btn" onclick="seleccionarMateria(this, ${sub.id}, '${sub.name.replaceAll("'", "\\'")}')">
+                                                                      <div class="subject-initial">${sub.name.charAt(0)}</div>
+                                                                      <div class="subject-meta">
+                                                                        <div class="subject-title">${sub.name}</div>
+                                                                      </div>
+                                                                    </button>
+                                                                  `).join('')}
         </div>
       </section>
     `;
@@ -1293,6 +1293,39 @@
                 .replaceAll('"', '&quot;')
                 .replaceAll("'", "&#039;");
         }
+
+        function setReceiptError(heroId, on) {
+            const card = document.getElementById(`hero-${heroId}`);
+            if (!card) return;
+
+            const label = card.querySelector('.file-label');
+            const picker = card.querySelector('.custom-file-input');
+
+            if (on) {
+                if (label) {
+                    label.style.color = '#ef4444';
+                    label.style.fontWeight = '900';
+                    label.textContent = '⚠️ Debes adjuntar el comprobante';
+                }
+                if (picker) {
+                    picker.style.border = '2px solid #ef4444';
+                    picker.style.background = '#fee2e2';
+                }
+            } else {
+                if (label) {
+                    label.style.color = '';
+                    label.style.fontWeight = '';
+                    if (!label.textContent || label.textContent.includes('⚠️')) {
+                        label.textContent = 'Adjuntar captura o PDF...';
+                    }
+                }
+                if (picker) {
+                    picker.style.border = '';
+                    picker.style.background = '';
+                }
+            }
+        }
+
 
         function showRadar() {
             document.getElementById('view-selection').classList.add('hidden');
@@ -1483,10 +1516,14 @@
                 // imagen (URL absoluta si viene relativa)
                 let img = '';
                 if (t.image) {
-                    const raw = String(t.image);
-                    img = raw.startsWith('http') ? raw : `/${raw.replace(/^\/+/, '')}`;
-                } else {
-                    img = ''; // si quieres un placeholder, pon aquí la ruta
+                    const raw = String(t.image).replace(/^\/+/, '');
+                    if (raw.startsWith('http')) {
+                        img = raw;
+                    } else if (raw.startsWith('storage/')) {
+                        img = '/' + raw;
+                    } else {
+                        img = '/storage/' + raw; // ✅ para profile_images/...
+                    }
                 }
 
                 // id para hero
@@ -1510,13 +1547,13 @@
               ${img ? `<img class="avatar" src="${escapeHtml(img)}" alt="${name}">` : ``}
 
               ${verified ? `
-                                                <span class="verified">
-                                                  <svg viewBox="0 0 24 24" class="verified-icon">
-                                                    <path d="M12 2l4 2 4 .6 1.4 4L22 12l-1.6 3.4L20 19l-4 .6-4 2-4-2-4-.6L3.6 15.4 2 12l1.4-3.4L4 4.6l4-.6 4-2z"/>
-                                                    <path d="M9.5 12.5l1.7 1.7 3.8-3.8"/>
-                                                  </svg>
-                                                </span>
-                                              ` : ``}
+                                                                        <span class="verified">
+                                                                          <svg viewBox="0 0 24 24" class="verified-icon">
+                                                                            <path d="M12 2l4 2 4 .6 1.4 4L22 12l-1.6 3.4L20 19l-4 .6-4 2-4-2-4-.6L3.6 15.4 2 12l1.4-3.4L4 4.6l4-.6 4-2z"/>
+                                                                            <path d="M9.5 12.5l1.7 1.7 3.8-3.8"/>
+                                                                          </svg>
+                                                                        </span>
+                                                                      ` : ``}
             </div>
           </div>
 
@@ -1606,8 +1643,10 @@
                 openBtn?.addEventListener('click', () => reserveTutorAndOpen(id));
 
                 fakePicker?.addEventListener('click', () => {
+                    setReceiptError(id, false);
                     fileInput?.click();
                 });
+
 
                 fileInput?.addEventListener('change', (ev) => {
                     handleReceiptUpload(ev, id);
@@ -1891,15 +1930,17 @@
             // preview simple (imagen o pdf)
             if (file.type.startsWith('image/')) {
                 const img = document.createElement('img');
-                img.style.width = '20%';
+                img.style.width = '100%';
                 img.style.borderRadius = '12px';
                 img.style.border = '1px solid rgba(0,0,0,.08)';
                 img.src = URL.createObjectURL(file);
                 preview.appendChild(img);
             } else {
                 preview.innerHTML =
-                    `<div style="font-size:.75rem;color:var(--text-muted);font-weight:80px;">📄 ${escapeHtml(file.name)}</div>`;
+                    `<div style="font-size:.75rem;color:var(--text-muted);font-weight:20px;">📄 ${escapeHtml(file.name)}</div>`;
             }
+            setReceiptError(heroId, false);
+
         }
 
         async function finishPayment(btn, heroId) {
@@ -1911,9 +1952,17 @@
 
             const file = state.receipts[String(heroId)];
             if (!file) {
-                alert('Adjunta tu comprobante primero.');
+                setReceiptError(heroId, true);
+                document
+                    .getElementById(`hero-${heroId}`)
+                    ?.querySelector('.upload-field')
+                    ?.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
                 return;
             }
+
 
             btn.disabled = true;
             btn.classList.add('sp-disabled');
@@ -1954,6 +2003,11 @@
                 // ✅ UI success (tu panel)
                 const okBox = document.getElementById(`payment-success-${heroId}`);
                 if (okBox) okBox.classList.remove('hidden');
+
+
+                const card = document.getElementById(`hero-${heroId}`);
+                card?.querySelector('.checkout-content')?.classList.add('hidden');
+
 
                 // ✅ empezar polling hasta aprobado/rechazado
                 startStudentBookingPolling(bookingId, heroId);
