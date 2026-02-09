@@ -1017,8 +1017,8 @@ class SubjectPickerController extends Controller
                     'batch_id' => (int)$batchRow->id,
                     'item_id'  => (int)$item->id,
                 ]),
-                'created_at' => now(),
-                'updated_at' => now(),
+                //'created_at' => now(),
+                //'updated_at' => now(),
             ]);
 
             // ✅ OJO: email_batch_items enum NO tiene "reserved" => usamos chosen
@@ -1512,7 +1512,7 @@ class SubjectPickerController extends Controller
                 ->update([
                     'status' => 2, // Pagado
                     'message' => 'Pago verificado por el tutor',
-                    'updated_at' => now(),
+                    //'updated_at' => now(),
                 ]);
 
 
@@ -1522,7 +1522,7 @@ class SubjectPickerController extends Controller
                 ->update([
                     'status' => 'done',
                     // 'last_error' => null,
-                    'updated_at' => now(),
+                    //'updated_at' => now(),
                 ]);
 
 
@@ -1819,7 +1819,7 @@ class SubjectPickerController extends Controller
                     ->where('id', $bookingId)
                     ->update([
                         'meeting_link' => $genericMeet,
-                        'updated_at' => now(),
+                        //'updated_at' => now(),
                     ]);
             } else {
                 $genericMeet = $b->meeting_link;

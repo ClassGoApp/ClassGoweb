@@ -103,7 +103,7 @@
 
         .search-icon {
             position: absolute;
-            left: .1rem;
+            left: 1.1rem;
             top: 50%;
             transform: translateY(-50%);
             width: 1.2rem;
@@ -214,7 +214,6 @@
 
         .subject-card-btn:hover {
             border-color: rgba(33, 158, 188, .55);
-            transform: translateY(-3px);
             box-shadow: 0 16px 34px rgba(33, 158, 188, .10);
         }
 
@@ -1075,26 +1074,62 @@
     </style>
 
     <script>
-        /* ==========================================================
-        1) DATA: Materias (desde tu endpoint de categorías/materias)
-        ========================================================== */
+        /* ========================================================================
+      CLASSGO | Student - Instant Tutors Script
+      ------------------------------------------------------------------------
+      FLUJO:
+      1) Cargar Categorías/Materias
+      2) Seleccionar Materia (solo una) + mostrar FAB
+      3) Crear Batch + mostrar Radar + polling:
+          - status (cada 60s)
+          - tutores aceptados (cada 5s)
+          - countdown expiración (cada 1s)
+      4) Mostrar cards de tutores + reservar + abrir checkout (flip)
+      5) Subir comprobante + pagar + polling booking (cada 2.5s)
+      6) Nueva solicitud / reset
+
+      ENDPOINTS:
+      - GET  /student/subject-groups/categorias-materias
+      - POST /student/batches/start
+      - GET  /student/batches/active
+      - GET  /student/batches/{batchId}/status
+      - GET  /student/batches/{batchId}/accepted-tutors?limit=50
+      - POST /student/batches/{batchId}/reserve
+      - POST /student/bookings/{bookingId}/receipt
+      - GET  /student/bookings/{bookingId}/status
+      - GET  /student/bookings/{bookingId}/meet
+
+      NOTAS:
+      - fetchAcceptedTutors() se pausa si state.activeHeroId existe (checkout abierto)
+      - closeHero(true) debe existir en otro lado o aquí (si no, revienta)
+    ======================================================================== */
+
+
+        /* ========================================================================
+          0) STATE GLOBAL + MEMORIA
+        ======================================================================== */
         let categories = ['Todas'];
         let subjects = []; // {id, name, category, category_id}
+
         let state = {
             selectedCategory: 'Todas',
             searchQuery: '',
-            receipts: {}, // (si luego reusas checkout)
-            activeHeroId: null,
+            receipts: {}, // heroId -> File
+            activeHeroId: null, // heroId activo (checkout abierto)
         };
+
         // booking por item (heroId = item_id)
         let bookingByHeroId = new Map();
 
-        // polling por booking (si luego lo activas)
+        // polling por booking (heroId -> interval)
         let bookingPollTimers = new Map();
-
 
         const fab = document.getElementById('tutoriaFab');
 
+
+        /* ========================================================================
+          1) API: CATEGORÍAS + MATERIAS
+        ======================================================================== */
         async function loadCategoriasMaterias() {
             const url = '/student/subject-groups/categorias-materias';
 
@@ -1133,9 +1168,10 @@
             }
         }
 
-        /* ==========================================================
-           2) UI: buscador + pills + secciones
-        ========================================================== */
+
+        /* ========================================================================
+          2) UI: BUSCADOR + PILLS + SECCIONES
+        ======================================================================== */
         function wireSearch() {
             const input = document.getElementById('search-input');
             input.addEventListener('input', (e) => {
@@ -1219,22 +1255,24 @@
 
         <div class="subject-grid">
           ${items.map(sub => `
-                                                                    <button class="subject-card-btn" onclick="seleccionarMateria(this, ${sub.id}, '${sub.name.replaceAll("'", "\\'")}')">
-                                                                      <div class="subject-initial">${sub.name.charAt(0)}</div>
-                                                                      <div class="subject-meta">
-                                                                        <div class="subject-title">${sub.name}</div>
-                                                                      </div>
-                                                                    </button>
-                                                                  `).join('')}
+                <button class="subject-card-btn"
+                  onclick="seleccionarMateria(this, ${sub.id}, '${sub.name.replaceAll("'", "\\'")}')">
+                  <div class="subject-initial">${sub.name.charAt(0)}</div>
+                  <div class="subject-meta">
+                    <div class="subject-title">${sub.name}</div>
+                  </div>
+                </button>
+              `).join('')}
         </div>
       </section>
     `;
             }).join('');
         }
 
-        /* ==========================================================
-           3) Selección única + FAB
-        ========================================================== */
+
+        /* ========================================================================
+          3) SELECCIÓN ÚNICA + FAB
+        ======================================================================== */
         let materiaSeleccionada = null;
         let materiaSeleccionadaId = null;
         let materiaSeleccionadaNombre = null;
@@ -1260,21 +1298,29 @@
             selectSubject(materiaSeleccionadaNombre, materiaSeleccionadaId);
         }
 
-        /* ==========================================================
-           4) BATCH FLOW REAL (lógica del archivo 2)
-        ========================================================== */
+
+        /* ========================================================================
+          4) BATCH FLOW: POLLING + COUNTDOWN + RESUME
+        ======================================================================== */
         let currentBatchId = null;
-        let pollTimer = null;
-        let acceptedTimer = null;
-        let acceptedAfterId = 0;
-        let acceptedAfterAcceptedAt = '';
-        let acceptedMap = new Map();
 
+        // timers
+        let pollTimer = null; // batch status cada 60s
+        let acceptedTimer = null; // accepted tutors cada 5s
+        let batchExpireTimer = null; // countdown cada 1s
+
+        // accepted list
+        let acceptedAfterId = 0; // (no usado ahora, pero lo dejas)
+        let acceptedAfterAcceptedAt = ''; // (no usado ahora, pero lo dejas)
+        let acceptedMap = new Map(); // tutorId -> tutorData
+
+        // expiración
         let batchExpiresAtMs = null;
-        let batchExpireTimer = null;
 
+        // delta enviados
         let lastSentCount = null;
 
+        // DOM refs (status panel)
         const statusMsg = document.getElementById('status-message');
         const wBatchId = document.getElementById('wBatchId');
         const wStatus = document.getElementById('wStatus');
@@ -1285,6 +1331,10 @@
         const waitMsg = document.getElementById('waitMsg');
         const btnNewSearch = document.getElementById('btnNewSearch');
 
+
+        /* ========================================================================
+          4.1) UTILS: escape + countdown format
+        ======================================================================== */
         function escapeHtml(str) {
             return String(str ?? '')
                 .replaceAll('&', '&amp;')
@@ -1294,43 +1344,20 @@
                 .replaceAll("'", "&#039;");
         }
 
-        function setReceiptError(heroId, on) {
-            const card = document.getElementById(`hero-${heroId}`);
-            if (!card) return;
-
-            const label = card.querySelector('.file-label');
-            const picker = card.querySelector('.custom-file-input');
-
-            if (on) {
-                if (label) {
-                    label.style.color = '#ef4444';
-                    label.style.fontWeight = '900';
-                    label.textContent = '⚠️ Debes adjuntar el comprobante';
-                }
-                if (picker) {
-                    picker.style.border = '2px solid #ef4444';
-                    picker.style.background = '#fee2e2';
-                }
-            } else {
-                if (label) {
-                    label.style.color = '';
-                    label.style.fontWeight = '';
-                    if (!label.textContent || label.textContent.includes('⚠️')) {
-                        label.textContent = 'Adjuntar captura o PDF...';
-                    }
-                }
-                if (picker) {
-                    picker.style.border = '';
-                    picker.style.background = '';
-                }
-            }
+        function fmtMMSS(totalSeconds) {
+            const s = Math.max(0, Math.floor(totalSeconds));
+            const m = String(Math.floor(s / 60)).padStart(2, '0');
+            const r = String(s % 60).padStart(2, '0');
+            return `${m}:${r}`;
         }
 
 
+        /* ========================================================================
+          4.2) UI: show/hide views
+        ======================================================================== */
         function showRadar() {
             document.getElementById('view-selection').classList.add('hidden');
             document.getElementById('view-browse').classList.remove('hidden');
-
         }
 
         function showSelection() {
@@ -1339,13 +1366,10 @@
             document.body.classList.remove('lock-scroll');
         }
 
-        function fmtMMSS(totalSeconds) {
-            const s = Math.max(0, Math.floor(totalSeconds));
-            const m = String(Math.floor(s / 60)).padStart(2, '0');
-            const r = String(s % 60).padStart(2, '0');
-            return `${m}:${r}`;
-        }
 
+        /* ========================================================================
+          4.3) Countdown batch expiración
+        ======================================================================== */
         function startBatchExpireCountdown() {
             if (batchExpireTimer) clearInterval(batchExpireTimer);
 
@@ -1390,16 +1414,26 @@
             if (batchExpireCountdownEl) batchExpireCountdownEl.textContent = '--:--';
         }
 
+
+        /* ========================================================================
+          4.4) Stop polling (limpieza global)
+        ======================================================================== */
         function stopPollingAll() {
             if (pollTimer) clearInterval(pollTimer);
             pollTimer = null;
+
             if (acceptedTimer) clearInterval(acceptedTimer);
             acceptedTimer = null;
+
             stopBatchExpireCountdown();
         }
 
+
+        /* ========================================================================
+          4.5) Polling: Accepted Tutors (cada 5s)
+        ======================================================================== */
         async function fetchAcceptedTutors(batchId) {
-            if (state.activeHeroId) return; // pausar si hay un hero activo (opcional)
+            if (state.activeHeroId) return; // pausar si hay un hero activo (checkout abierto)
 
             const res = await fetch(`/student/batches/${batchId}/accepted-tutors?limit=50`, {
                 headers: {
@@ -1425,6 +1459,10 @@
             acceptedTimer = setInterval(() => fetchAcceptedTutors(batchId), 5000);
         }
 
+
+        /* ========================================================================
+          4.6) Polling: Batch Status (cada 60s)
+        ======================================================================== */
         async function fetchBatchStatus(batchId) {
             const res = await fetch(`/student/batches/${batchId}/status`, {
                 headers: {
@@ -1440,7 +1478,6 @@
             const rate = (batch.batch_size !== undefined && batch.batch_size !== null) ? String(batch.batch_size) : '0';
 
             if (ratePerMinLabel) ratePerMinLabel.textContent = rate;
-
             if (wStatus) wStatus.textContent = batch.status ?? '-';
             if (wExpires) wExpires.textContent = batch.expires_at ?? '-';
 
@@ -1469,319 +1506,14 @@
             }
         }
 
-        function renderAcceptedCards() {
-            const grid = document.getElementById('tutor-results');
-            const items = Array.from(acceptedMap.values());
 
-            if (!grid) return;
-            grid.innerHTML = '';
-
-            if (!items.length) {
-                grid.innerHTML =
-                    `<div style="padding:1.5rem;text-align:center;color:var(--text-muted);font-weight:900;">Aún nadie aceptó...</div>`;
-                grid.classList.remove('active');
-                return;
-            }
-
-            // activar animación de entrada
-            grid.classList.add('active');
-
-            for (const t of items) {
-                // ====== mapear datos del backend a variables del template ======
-                const name = escapeHtml(
-                    t.name ||
-                    `${t.first_name || ''} ${t.last_name || ''}`.trim() ||
-                    'Tutor'
-                );
-
-                const rating = (t.rating !== null && t.rating !== undefined) ? escapeHtml(String(t.rating)) : '0.0';
-
-                const verified = (Number(t.is_verified) === 1 || !!t.verified_at);
-
-                const priceNum = t.price !== null && t.price !== undefined && String(t.price) !== '' ? Number(t.price)
-                    .toString() : '0';
-
-                const price = escapeHtml(priceNum);
-
-                // materia (badge): si backend manda subject_name úsalo; si no, usa la materia seleccionada
-                /*     const subjectLabel = escapeHtml(
-                      t.subject_name || t.subject || materiaSeleccionadaNombre
-                    ); */
-
-                // degree (texto secundario): backend puede mandar degree/education/title, si no deja vacío
-                const degree = escapeHtml(
-                    t.degree || t.education || t.title || ''
-                );
-
-                // imagen (URL absoluta si viene relativa)
-                let img = '';
-                if (t.image) {
-                    const raw = String(t.image).replace(/^\/+/, '');
-                    if (raw.startsWith('http')) {
-                        img = raw;
-                    } else if (raw.startsWith('storage/')) {
-                        img = '/' + raw;
-                    } else {
-                        img = '/storage/' + raw; // ✅ para profile_images/...
-                    }
-                }
-
-                // id para hero
-                const id = escapeHtml(String(t.id));
-
-                // ====== construir card ======
-                const wrapper = document.createElement('div');
-                wrapper.className = 'tutor-card-wrapper';
-
-                wrapper.innerHTML = `
-      <div class="tutor-card" id="hero-${id}">
-        <div class="card-face card-face-front">
-          <div class="card-header">
-            <span class="badge">${materiaSeleccionadaNombre}</span>
-            <span class="rating">★ ${rating}</span>
-          </div>
-
-          <div class="avatar-wrapper">
-            <div class="avatar-halo"></div>
-            <div class="avatar-container">
-              ${img ? `<img class="avatar" src="${escapeHtml(img)}" alt="${name}">` : ``}
-
-              ${verified ? `
-                                                                        <span class="verified">
-                                                                          <svg viewBox="0 0 24 24" class="verified-icon">
-                                                                            <path d="M12 2l4 2 4 .6 1.4 4L22 12l-1.6 3.4L20 19l-4 .6-4 2-4-2-4-.6L3.6 15.4 2 12l1.4-3.4L4 4.6l4-.6 4-2z"/>
-                                                                            <path d="M9.5 12.5l1.7 1.7 3.8-3.8"/>
-                                                                          </svg>
-                                                                        </span>
-                                                                      ` : ``}
-            </div>
-          </div>
-
-          <div class="card-body">
-            <h3>${name}</h3>
-            <p style="font-size:0.8rem; color:var(--text-muted);">${degree}</p>
-
-            <div class="card-footer">
-              <div style="text-align:left;">
-                <small>PRECIO</small>
-                <div class="price">${price} Bs</div>
-              </div>
-
-              <button class="btn" type="button" data-hero-open="${id}">
-                SOLICITAR
-                <svg class="bolt" viewBox="0 0 24 24">
-                  <path d="M13 2L3 14h7l-1 8 10-12h-7z"/>
-                </svg>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div class="card-face card-face-back">
-          <div class="checkout-content">
-            <h2 style="font-size: 1rem; text-transform: uppercase; color:var(--primary-color);">
-              Checkout Seguro
-            </h2>
-
-            <div class="summary-box">
-              ${img ? `<img src="${escapeHtml(img)}">` : ``}
-              <div>
-                <h4 style="font-size:0.8rem;">${name}</h4>
-                <span style="font-size:0.6rem; color:var(--secundary-color);">
-                  Conexión Segura
-                </span>
-              </div>
-            </div>
-
-            <div class="qr-wrapper">
-              <img src="https://api.qrserver.com/v1/create-qr-code/?size=110x110&data=Pay-${id}">
-            </div>
-
-            <div class="upload-field">
-              <label>Comprobante de pago</label>
-
-              <input
-                type="file"
-                class="real-file-input"
-                accept="image/*,application/pdf"
-                hidden
-              >
-
-              <div class="custom-file-input">
-                <div class="receipt-preview hidden"></div><span class="file-label">Adjuntar captura o PDF...</span>
-              </div>
-
-              
-            </div>
-
-            <div style="display:flex; justify-content:space-between; margin-bottom:1rem;">
-              <span style="font-size:0.65rem; font-weight:800; color:var(--text-muted);">TOTAL</span>
-              <div style="font-size:1.6rem; font-weight:900;">${price} Bs</div>
-            </div>
-
-            <button class="btn-pay" type="button" data-pay="${id}">PAGAR AHORA</button>
-          </div>
-
-
-          <div class="payment-success hidden" id="payment-success-${id}">
-            <div style="font-size:3rem;">✅</div>
-            <h2 style="margin-top:1rem;">Pago exitoso</h2>
-            <p style="font-size:0.75rem; color:var(--text-muted);">
-              Redirigiendo a la tutoría...
-            </p>
-          </div>
-        </div>
-      </div>
-    `;
-
-                // ====== wiring de eventos (SIN onclick inline, respetando JS actual) ======
-                const openBtn = wrapper.querySelector('[data-hero-open]');
-                const payBtn = wrapper.querySelector('[data-pay]');
-                const fileInput = wrapper.querySelector('.real-file-input');
-                const fakePicker = wrapper.querySelector('.custom-file-input');
-
-                openBtn?.addEventListener('click', () => reserveTutorAndOpen(id));
-
-                fakePicker?.addEventListener('click', () => {
-                    setReceiptError(id, false);
-                    fileInput?.click();
-                });
-
-
-                fileInput?.addEventListener('change', (ev) => {
-                    handleReceiptUpload(ev, id);
-                });
-
-                payBtn?.addEventListener('click', () => finishPayment(payBtn, id));
-
-                grid.appendChild(wrapper);
-            }
-
-            // cuando hay resultados, achicar radar
-            document.getElementById('radar-ui')?.classList.add('results-found');
-        }
-
-        function openHero(id) {
-            // Cerrar si había otra abierta
-            if (state.activeHeroId && state.activeHeroId !== id) {
-                closeHero(true);
-            }
-
-            state.activeHeroId = id;
-
-            const grid = document.getElementById('tutor-results');
-            const card = document.getElementById(`hero-${id}`);
-
-            if (!grid || !card) {
-                console.warn('No se encontró grid/card para hero', {
-                    id,
-                    grid,
-                    card
-                });
-                return;
-            }
-
-            // Ocultar otras cards y bloquear scroll
-            grid.classList.add('hide-others');
-            document.body.classList.add('lock-scroll');
-
-            // Activar centrado
-            card.classList.add('is-active');
-
-            // Dar un frame para que el browser "registre" el transform translate(-50%,-50%)
-            requestAnimationFrame(() => {
-                setTimeout(() => {
-                    card.classList.add('is-flipped'); // ✅ aquí aparece checkout (back)
-                }, 60);
-            });
-        }
-
-        async function reserveTutorAndOpen(heroId) {
-            state.activeHeroId = String(heroId);
-            if (!currentBatchId) {
-                alert('No hay batch activo.');
-                return;
-            }
-
-            const csrf = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
-
-            const res = await fetch(`/student/batches/${currentBatchId}/reserve`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    ...(csrf ? {
-                        'X-CSRF-TOKEN': csrf
-                    } : {}),
-                },
-                credentials: 'same-origin',
-                body: JSON.stringify({
-                    item_id: Number(heroId)
-                }) // heroId = item_id ✅
-            });
-
-            const json = await res.json().catch(() => ({}));
-
-            if (!res.ok || !json.success) {
-                alert(json.message || `No se pudo reservar (HTTP ${res.status})`);
-                return;
-            }
-
-            const bookingId = Number(json.booking_id || json.booking?.id || 0);
-            if (!bookingId) {
-                alert('Reservó pero no llegó booking_id.');
-                return;
-            }
-
-            bookingByHeroId.set(String(heroId), bookingId);
-
-            // ✅ abrir checkout (flip)
-            openHero(heroId);
-        }
-
-
-
-
-        async function chooseTutor(itemId) {
-            if (!currentBatchId) return;
-
-            const csrf = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
-
-            const res = await fetch(`/student/batches/${currentBatchId}/choose`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    ...(csrf ? {
-                        'X-CSRF-TOKEN': csrf
-                    } : {}),
-                },
-                credentials: 'same-origin',
-                body: JSON.stringify({
-                    item_id: itemId
-                })
-            });
-
-            const json = await res.json().catch(() => ({}));
-
-            if (!res.ok) {
-                alert(json.message || `No se pudo elegir (HTTP ${res.status})`);
-                return;
-            }
-
-            stopPollingAll();
-            if (waitMsg) waitMsg.textContent = 'Tutor elegido. Redirigiendo...';
-
-            if (json.redirect_to) {
-                window.location.href = json.redirect_to;
-            } else {
-                alert('Elegido, pero faltó redirect_to. Define tu ruta de pagos.');
-            }
-        }
-
+        /* ========================================================================
+          4.7) Start polling (batch bootstrap)
+        ======================================================================== */
         function startPolling(batchId) {
             currentBatchId = batchId;
 
+            // reset deltas y accepted
             lastSentCount = null;
             acceptedAfterId = 0;
             acceptedAfterAcceptedAt = '';
@@ -1798,14 +1530,15 @@
             // primer fetch inmediato
             fetchBatchStatus(batchId);
 
-            // polling cada 60s
+            // status cada 60s
             if (pollTimer) clearInterval(pollTimer);
             pollTimer = setInterval(() => fetchBatchStatus(batchId), 60000);
         }
 
-        /* ==========================================================
-           5) selectSubject: crea batch y llama startPolling
-        ========================================================== */
+
+        /* ========================================================================
+          5) selectSubject: crea batch + startPolling
+        ======================================================================== */
         async function selectSubject(subjectName, subjectId) {
             if (currentBatchId) {
                 alert('Ya hay una búsqueda activa. Continúa la espera.');
@@ -1876,9 +1609,10 @@
             }
         }
 
-        /* ==========================================================
-           6) Reanudar batch si existe
-        ========================================================== */
+
+        /* ========================================================================
+          6) Reanudar batch si existe
+        ======================================================================== */
         async function resumeActiveBatchIfAny() {
             try {
                 const res = await fetch('/student/batches/active', {
@@ -1887,10 +1621,10 @@
                     },
                     credentials: 'same-origin'
                 });
+
                 const json = await res.json().catch(() => ({}));
                 if (!res.ok || !json.active || !json.batch_id) return false;
 
-                // si quieres: mostrar materia en UI (opcional)
                 showRadar();
                 if (statusMsg) statusMsg.innerText = `Reanudando búsqueda activa (Batch #${json.batch_id})...`;
                 if (wBatchId) wBatchId.textContent = String(json.batch_id);
@@ -1903,15 +1637,331 @@
             }
         }
 
-        /* ==========================================================
-           ) logica de pagos
-        ========================================================== */
 
+        /* ========================================================================
+          7) UI + CARDS: Accepted Tutors + Hero Flip + Reservas
+        ======================================================================== */
+        function setReceiptError(heroId, on) {
+            const card = document.getElementById(`hero-${heroId}`);
+            if (!card) return;
+
+            const label = card.querySelector('.file-label');
+            const picker = card.querySelector('.custom-file-input');
+
+            if (on) {
+                if (label) {
+                    label.style.color = '#ef4444';
+                    label.style.fontWeight = '900';
+                    label.textContent = '⚠️ Debes adjuntar el comprobante';
+                }
+                if (picker) {
+                    picker.style.border = '2px solid #ef4444';
+                }
+            } else {
+                if (label) {
+                    label.style.color = '';
+                    label.style.fontWeight = '';
+                    if (!label.textContent || label.textContent.includes('⚠️')) {
+                        label.textContent = 'Adjuntar captura o PDF...';
+                    }
+                }
+                if (picker) {
+                    picker.style.border = '';
+                    picker.style.background = '';
+                }
+            }
+        }
+
+        function renderAcceptedCards() {
+            const grid = document.getElementById('tutor-results');
+            const items = Array.from(acceptedMap.values());
+
+            if (!grid) return;
+            grid.innerHTML = '';
+
+            if (!items.length) {
+                grid.innerHTML =
+                    `<div style="padding:1.5rem;text-align:center;color:var(--text-muted);font-weight:900;">Aún nadie aceptó...</div>`;
+                grid.classList.remove('active');
+                return;
+            }
+
+            grid.classList.add('active');
+
+            for (const t of items) {
+                const name = escapeHtml(
+                    t.name ||
+                    `${t.first_name || ''} ${t.last_name || ''}`.trim() ||
+                    'Tutor'
+                );
+
+                const rating = (t.rating !== null && t.rating !== undefined) ? escapeHtml(String(t.rating)) : '0.0';
+                const verified = (Number(t.is_verified) === 1 || !!t.verified_at);
+
+                const priceNum = t.price !== null && t.price !== undefined && String(t.price) !== '' ?
+                    Number(t.price).toString() :
+                    '0';
+
+                const price = escapeHtml(priceNum);
+
+                const degree = escapeHtml(t.degree || t.education || t.title || '');
+
+                // imagen (URL absoluta si viene relativa)
+                let img = '';
+                if (t.image) {
+                    const raw = String(t.image).replace(/^\/+/, '');
+                    if (raw.startsWith('http')) img = raw;
+                    else if (raw.startsWith('storage/')) img = '/' + raw;
+                    else img = '/storage/' + raw; // profile_images/...
+                }
+
+                const id = escapeHtml(String(t.id));
+
+                const wrapper = document.createElement('div');
+                wrapper.className = 'tutor-card-wrapper';
+
+                wrapper.innerHTML = `
+      <div class="tutor-card" id="hero-${id}">
+        <div class="card-face card-face-front">
+          <div class="card-header">
+            <span class="badge">${materiaSeleccionadaNombre}</span>
+            <span class="rating">★ ${rating}</span>
+          </div>
+
+          <div class="avatar-wrapper">
+            <div class="avatar-halo"></div>
+            <div class="avatar-container">
+              ${img ? `<img class="avatar" src="${escapeHtml(img)}" alt="${name}">` : ``}
+
+              ${verified ? `
+                    <span class="verified">
+                      <svg viewBox="0 0 24 24" class="verified-icon">
+                        <path d="M12 2l4 2 4 .6 1.4 4L22 12l-1.6 3.4L20 19l-4 .6-4 2-4-2-4-.6L3.6 15.4 2 12l1.4-3.4L4 4.6l4-.6 4-2z"/>
+                        <path d="M9.5 12.5l1.7 1.7 3.8-3.8"/>
+                      </svg>
+                    </span>
+                  ` : ``}
+            </div>
+          </div>
+
+          <div class="card-body">
+            <h3>${name}</h3>
+            <p style="font-size:0.8rem; color:var(--text-muted);">${degree}</p>
+
+            <div class="card-footer">
+              <div style="text-align:left;">
+                <small>PRECIO</small>
+                <div class="price">${price} Bs</div>
+              </div>
+
+              <button class="btn" type="button" data-hero-open="${id}">
+                SOLICITAR
+                <svg class="bolt" viewBox="0 0 24 24">
+                  <path d="M13 2L3 14h7l-1 8 10-12h-7z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-face card-face-back">
+          <div class="checkout-content">
+            <h2 style="font-size: 1rem; text-transform: uppercase; color:var(--primary-color);">
+              Checkout Seguro
+            </h2>
+
+            <div class="summary-box">
+              ${img ? `<img src="${escapeHtml(img)}">` : ``}
+              <div>
+                <h4 style="font-size:0.8rem;">${name}</h4>
+                <span style="font-size:0.6rem; color:var(--secundary-color);">
+                  Conexión Segura
+                </span>
+              </div>
+            </div>
+
+            <div class="qr-wrapper">
+              <img src="https://api.qrserver.com/v1/create-qr-code/?size=110x110&data=Pay-${id}">
+            </div>
+
+            <div class="upload-field">
+              <label>Comprobante de pago</label>
+
+              <input type="file" class="real-file-input"
+                accept="image/*,application/pdf" hidden>
+
+              <div class="custom-file-input">
+                <div class="receipt-preview hidden"></div>
+                <span class="file-label">Adjuntar captura o PDF...</span>
+              </div>
+            </div>
+
+            <div style="display:flex; justify-content:space-between; margin-bottom:1rem;">
+              <span style="font-size:0.65rem; font-weight:800; color:var(--text-muted);">TOTAL</span>
+              <div style="font-size:1.6rem; font-weight:900;">${price} Bs</div>
+            </div>
+
+            <button class="btn-pay" type="button" data-pay="${id}">PAGAR AHORA</button>
+          </div>
+
+          <div class="payment-success hidden" id="payment-success-${id}">
+            <div style="font-size:3rem;">✅</div>
+            <h2 style="margin-top:1rem;">Pago exitoso</h2>
+            <p style="font-size:0.75rem; color:var(--text-muted);">
+              Redirigiendo a la tutoría...
+            </p>
+          </div>
+        </div>
+      </div>
+    `;
+
+                const openBtn = wrapper.querySelector('[data-hero-open]');
+                const payBtn = wrapper.querySelector('[data-pay]');
+                const fileInput = wrapper.querySelector('.real-file-input');
+                const fakePicker = wrapper.querySelector('.custom-file-input');
+
+                openBtn?.addEventListener('click', () => reserveTutorAndOpen(id));
+
+                fakePicker?.addEventListener('click', () => {
+                    setReceiptError(id, false);
+                    fileInput?.click();
+                });
+
+                fileInput?.addEventListener('change', (ev) => {
+                    handleReceiptUpload(ev, id);
+                });
+
+                payBtn?.addEventListener('click', () => finishPayment(payBtn, id));
+
+                grid.appendChild(wrapper);
+            }
+
+            document.getElementById('radar-ui')?.classList.add('results-found');
+        }
+
+        function openHero(id) {
+            if (state.activeHeroId && state.activeHeroId !== id) {
+                closeHero(true); // ⚠️ Debe existir
+            }
+
+            state.activeHeroId = id;
+
+            const grid = document.getElementById('tutor-results');
+            const card = document.getElementById(`hero-${id}`);
+
+            if (!grid || !card) {
+                console.warn('No se encontró grid/card para hero', {
+                    id,
+                    grid,
+                    card
+                });
+                return;
+            }
+
+            grid.classList.add('hide-others');
+            document.body.classList.add('lock-scroll');
+
+            card.classList.add('is-active');
+
+            requestAnimationFrame(() => {
+                setTimeout(() => {
+                    card.classList.add('is-flipped');
+                }, 60);
+            });
+        }
+
+        async function reserveTutorAndOpen(heroId) {
+            state.activeHeroId = String(heroId);
+
+            if (!currentBatchId) {
+                alert('No hay batch activo.');
+                return;
+            }
+
+            const csrf = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+            const res = await fetch(`/student/batches/${currentBatchId}/reserve`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    ...(csrf ? {
+                        'X-CSRF-TOKEN': csrf
+                    } : {}),
+                },
+                credentials: 'same-origin',
+                body: JSON.stringify({
+                    item_id: Number(heroId)
+                })
+            });
+
+            const json = await res.json().catch(() => ({}));
+
+            if (!res.ok || !json.success) {
+                alert(json.message || `No se pudo reservar (HTTP ${res.status})`);
+                return;
+            }
+
+            const bookingId = Number(json.booking_id || json.booking?.id || 0);
+            if (!bookingId) {
+                alert('Reservó pero no llegó booking_id.');
+                return;
+            }
+
+            bookingByHeroId.set(String(heroId), bookingId);
+
+            openHero(heroId);
+        }
+
+
+        /* ========================================================================
+          8) (OPCIONAL) chooseTutor (no usado en este flujo)
+        ======================================================================== */
+        async function chooseTutor(itemId) {
+            if (!currentBatchId) return;
+
+            const csrf = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+            const res = await fetch(`/student/batches/${currentBatchId}/choose`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    ...(csrf ? {
+                        'X-CSRF-TOKEN': csrf
+                    } : {}),
+                },
+                credentials: 'same-origin',
+                body: JSON.stringify({
+                    item_id: itemId
+                })
+            });
+
+            const json = await res.json().catch(() => ({}));
+
+            if (!res.ok) {
+                alert(json.message || `No se pudo elegir (HTTP ${res.status})`);
+                return;
+            }
+
+            stopPollingAll();
+            if (waitMsg) waitMsg.textContent = 'Tutor elegido. Redirigiendo...';
+
+            if (json.redirect_to) {
+                window.location.href = json.redirect_to;
+            } else {
+                alert('Elegido, pero faltó redirect_to. Define tu ruta de pagos.');
+            }
+        }
+
+
+        /* ========================================================================
+          9) PAGOS: upload receipt + submit + polling booking
+        ======================================================================== */
         function handleReceiptUpload(ev, heroId) {
             const file = ev?.target?.files?.[0];
             if (!file) return;
 
-            // guardar el archivo en memoria por hero
             state.receipts[String(heroId)] = file;
 
             const card = document.getElementById(`hero-${heroId}`);
@@ -1921,13 +1971,11 @@
             const label = card.querySelector('.file-label');
 
             if (label) label.textContent = file.name;
-
             if (!preview) return;
 
             preview.classList.remove('hidden');
             preview.innerHTML = '';
 
-            // preview simple (imagen o pdf)
             if (file.type.startsWith('image/')) {
                 const img = document.createElement('img');
                 img.style.width = '100%';
@@ -1939,8 +1987,8 @@
                 preview.innerHTML =
                     `<div style="font-size:.75rem;color:var(--text-muted);font-weight:20px;">📄 ${escapeHtml(file.name)}</div>`;
             }
-            setReceiptError(heroId, false);
 
+            setReceiptError(heroId, false);
         }
 
         async function finishPayment(btn, heroId) {
@@ -1953,8 +2001,7 @@
             const file = state.receipts[String(heroId)];
             if (!file) {
                 setReceiptError(heroId, true);
-                document
-                    .getElementById(`hero-${heroId}`)
+                document.getElementById(`hero-${heroId}`)
                     ?.querySelector('.upload-field')
                     ?.scrollIntoView({
                         behavior: 'smooth',
@@ -1962,7 +2009,6 @@
                     });
                 return;
             }
-
 
             btn.disabled = true;
             btn.classList.add('sp-disabled');
@@ -2000,16 +2046,12 @@
                     return;
                 }
 
-                // ✅ UI success (tu panel)
                 const okBox = document.getElementById(`payment-success-${heroId}`);
                 if (okBox) okBox.classList.remove('hidden');
-
 
                 const card = document.getElementById(`hero-${heroId}`);
                 card?.querySelector('.checkout-content')?.classList.add('hidden');
 
-
-                // ✅ empezar polling hasta aprobado/rechazado
                 startStudentBookingPolling(bookingId, heroId);
 
             } finally {
@@ -2019,8 +2061,8 @@
         }
 
         function startStudentBookingPolling(bookingId, heroId) {
-            // limpia timer previo si existía
             const key = String(heroId);
+
             if (bookingPollTimers.has(key)) {
                 clearInterval(bookingPollTimers.get(key));
                 bookingPollTimers.delete(key);
@@ -2040,7 +2082,6 @@
                 const ui = String(json.ui_state || 'payment_phase');
 
                 if (ui === 'accepted') {
-                    // ✅ ir al meet
                     window.location.href = `/student/bookings/${bookingId}/meet`;
                     return;
                 }
@@ -2048,17 +2089,13 @@
                 if (ui === 'rejected') {
                     alert('El tutor rechazó el pago. Puedes elegir otro tutor si el batch sigue activo.');
 
-                    // cerrar hero y permitir seguir
-                    closeHero(true);
+                    closeHero(true); // ⚠️ Debe existir
 
-                    // liberar mapping + receipt para ese hero
                     bookingByHeroId.delete(String(heroId));
                     delete state.receipts[String(heroId)];
 
-                    // refrescar lista
                     if (currentBatchId) fetchAcceptedTutors(currentBatchId);
 
-                    // parar timer
                     if (bookingPollTimers.has(key)) {
                         clearInterval(bookingPollTimers.get(key));
                         bookingPollTimers.delete(key);
@@ -2072,9 +2109,9 @@
         }
 
 
-        /* ==========================================================
-           7) Botón "Nueva solicitud"
-        ========================================================== */
+        /* ========================================================================
+          10) BOTÓN: Nueva solicitud (reset total)
+        ======================================================================== */
         btnNewSearch?.addEventListener('click', async () => {
             currentBatchId = null;
             stopPollingAll();
@@ -2093,20 +2130,20 @@
             renderSubjectSections();
         });
 
-        /* ==========================================================
-           INIT
-        ========================================================== */
+
+        /* ========================================================================
+          11) INIT
+        ======================================================================== */
         async function init() {
             wireSearch();
             const resumed = await resumeActiveBatchIfAny();
+
             if (!resumed) {
                 await loadCategoriasMaterias();
                 renderCategoryPills();
                 renderSubjectSections();
             }
         }
-
-
 
         init();
     </script>
