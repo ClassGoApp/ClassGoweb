@@ -284,7 +284,7 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
 
             Route::get('/batches/{batch}/accepted-tutors', [SubjectPickerController::class, 'acceptedTutors']);
 
-              Route::post('/batches/{batch}/reserve', [SubjectPickerController::class, 'reserveTutor']);
+            //   Route::post('/batches/{batch}/reserve', [SubjectPickerController::class, 'reserveTutor']);
 
     // Route::post('/bookings/{booking}/receipt', [SubjectPickerController::class, 'uploadReceipt']);
 

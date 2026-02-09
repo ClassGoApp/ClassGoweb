@@ -52,7 +52,6 @@ class SlotBookingService implements interfaces\ISlotBookingService
         $booking->booked_at = now();
         $booking->user_subject_slot_id = null; // Asignar el ID del slot creado
         $booking->status = 1; // Estado inicial
-  
 
         $link = $this->generarlink($booking);
         $booking->meeting_link = $link;

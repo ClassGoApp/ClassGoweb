@@ -12,7 +12,7 @@ use App\Services\CuponesService;
 use Illuminate\Database\QueryException;
 use App\Models\UserCoupon;
 use Illuminate\Support\Facades\Storage;
-
+use App\Services\SlotBookingService;
 
 
 class BookingController extends Controller
@@ -612,6 +612,8 @@ class BookingController extends Controller
             ]);
 
             
+
+
             DB::table('slot_payments')->insert([
                 'slot_booking_id' => $bookingId,
                 'payment_date'    => now()->toDateString(),
