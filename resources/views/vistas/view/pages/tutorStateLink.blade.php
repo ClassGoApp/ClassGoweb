@@ -365,71 +365,49 @@
                 </div>
             </div>
 
-            <!-- ESTADO 2: paid -->
+            <!-- ESTADO 2: paid (solo entrar al aula) -->
             <div id="state-paid" class="state-container hidden-state fade-in">
                 <div class="icon-wrapper">
                     <div class="glow-success"></div>
-                    <div class="icon-bg"
-                        style="background-color:#11182708; border:2px solid #11182720; overflow:hidden; cursor:pointer;"
-                        id="receiptThumbWrap" title="Ver comprobante">
-                        <img id="receiptThumb" src="" alt="Comprobante"
-                            style="width:100%; height:100%; object-fit:cover; display:none;">
-                        <div id="receiptThumbEmpty"
-                            style=" width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:var(--slate-500); font-weight:900; font-size:12px; text-align:center; padding:12px;">
-                            Sin comprobante
-                        </div>
+                    <div class="icon-bg" style="background-color: #16a34a10; border: 2px solid #16a34a30">
+                        <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#16a34a"
+                            stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
                     </div>
-
                 </div>
 
                 <div class="text-block">
-                    <h2 class="title">¡Pago Confirmado!</h2>
-                    <p class="description">El estudiante ha completado el pago. Puedes iniciar la clase ahora mismo.</p>
+                    <h2 class="title">Tutoría lista</h2>
+                    <p class="description">El estudiante ya completó el proceso. Puedes iniciar la clase ahora mismo.</p>
                 </div>
 
-                <div class="action-card" style="flex-direction:column; gap:.75rem;">
-                    <div class="action-info" style="width:100%; justify-content:space-between;">
-                        <div style="display:flex; align-items:center; gap:.75rem;">
-                            <div class="action-icon-box">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <rect width="20" height="14" x="2" y="5" rx="2" />
-                                    <line x1="2" x2="22" y1="10" y2="10" />
-                                </svg>
-                            </div>
-                            <div>
-                                <p class="action-label">COMPROBANTE</p>
-                                <p class="action-status" id="paymentLabel">Esperando comprobante...</p>
-                            </div>
-                        </div>
-
-                        <button id="btnGoMeet" class="btn-action hidden-state" type="button">
-                            Entrar al Aula
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                <div class="action-card">
+                    <div class="action-info">
+                        <div class="action-icon-box">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M5 12h14" />
-                                <path d="m12 5 7 7-7 7" />
+                                <rect width="20" height="14" x="2" y="5" rx="2" />
+                                <line x1="2" x2="22" y1="10" y2="10" />
                             </svg>
-                        </button>
+                        </div>
+                        <div>
+                            <p class="action-label">CLASE</p>
+                            <p class="action-status">Lista para iniciar</p>
+                        </div>
                     </div>
 
-                    <div style="width:100%; display:flex; gap:.75rem;">
-                        <button id="btnAccept" class="btn-action" type="button" style="flex:1;">
-                            Aceptar
-                        </button>
-                        <button id="btnReject" class="btn-action" type="button"
-                            style="flex:1; background:#ef4444; color:#fff;">
-                            Rechazar
-                        </button>
-                    </div>
-
-                    <input id="rejectReason" type="text" placeholder="Motivo (opcional) ej: comprobante no coincide"
-                        style="width:100%; border:1px solid var(--slate-200); border-radius:.75rem; padding:.65rem .9rem; font-size:.85rem;" />
-
-                    <div id="actionMsg" style="width:100%; font-size:.85rem; opacity:.9;"></div>
+                    <button id="btnGoMeet" class="btn-action" type="button">
+                        Entrar al Aula
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M5 12h14" />
+                            <path d="m12 5 7 7-7 7" />
+                        </svg>
+                    </button>
                 </div>
-
             </div>
+
 
             <!-- ESTADO 3: rejected -->
             <div id="state-rejected" class="state-container hidden-state fade-in">
@@ -480,44 +458,7 @@
                     Volver al Inicio
                 </button>
             </div>
-            <!-- ESTADO 5: accepted (tutoría confirmada) -->
-            <div id="state-accepted" class="state-container hidden-state fade-in">
-                <div class="icon-wrapper">
-                    <div class="glow-success"></div>
-                    <div class="icon-bg" style="background-color: #16a34a10; border: 2px solid #16a34a30">
-                        <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#16a34a"
-                            stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                        </svg>
-                    </div>
-                </div>
 
-                <div class="text-block">
-                    <h2 class="title">Tutoría confirmada</h2>
-                    <p class="description">Ya aceptaste la sesión. Puedes entrar al aula.</p>
-                </div>
-
-                <button id="btnJoinMeet" class="btn-action" style="width:100%">
-                    Entrar al Aula
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M5 12h14" />
-                        <path d="m12 5 7 7-7 7" />
-                    </svg>
-                </button>
-            </div>
-            <!-- MODAL LIGHTBOX -->
-            <div id="receiptModal" class="hidden-state"
-                style="position:fixed; inset:0; background:rgba(0,0,0,.75);display:flex; align-items:center; justify-content:center;padding:18px; z-index:9999;">
-                <div style="max-width:900px; width:100%; position:relative;">
-                    <button id="closeReceiptModal" type="button"
-                        style="position:absolute; right:0; top:-46px;background:#ffffff; border:none; border-radius:12px;padding:10px 12px; font-weight:900; cursor:pointer;">
-                        Cerrar ✕
-                    </button>
-                    <img id="receiptModalImg" src="" alt="Comprobante"
-                        style="width:100%; max-height:85vh; object-fit:contain; border-radius:18px; border:1px solid rgba(255,255,255,.25);background:#0b1020;">
-                </div>
-            </div>
 
 
         </div>
@@ -526,7 +467,7 @@
     <!-- 🔧 Mock (solo para pruebas; puedes borrar en producción) -->
     <div class="mock-container">
         <button onclick="setState('choosing')" class="btn-mock">Esperando</button>
-        <button onclick="setState('paid')" class="btn-mock">Pago Recibido</button>
+        <button onclick="setState('payment_phase')" class="btn-mock">Listo (Ir a clase)</button>
         <button onclick="setState('rejected')" class="btn-mock">Elegido Otro</button>
         <button onclick="setState('expired')" class="btn-mock">Solicitud Expirada</button>
     </div>
@@ -537,34 +478,49 @@
 
         const expiresAtMsRaw = @json($expires_at_ms ?? null);
         const secondsLeftRaw = @json($seconds_left ?? null);
-
-        const receiptUrl = @json($receipt_url ?? null); // url del comprobante (imagen)
-        let currentReceiptUrl = receiptUrl;
         const meetLink = @json($meeting_link ?? null); // cuando accepted
 
         // ================== UI STATE ==================
-        const STATES = ['choosing', 'payment_phase', 'accepted', 'rejected', 'expired'];
+        const STATES = ['choosing', 'payment_phase', 'rejected', 'expired'];
 
         function hideAllStates() {
             document.getElementById('state-choosing').classList.add('hidden-state');
-            document.getElementById('state-paid').classList.add(
-                'hidden-state'); // lo usarás como payment_phase (o renómbralo)
-            document.getElementById('state-accepted').classList.add('hidden-state'); // NUEVO
+            document.getElementById('state-paid').classList.add('hidden-state');
             document.getElementById('state-rejected').classList.add('hidden-state');
             document.getElementById('state-expired').classList.add('hidden-state');
         }
 
 
+
         function setState(s) {
+            // accepted lo tratamos como payment_phase para mostrar "state-paid"
+            if (s === 'accepted') s = 'payment_phase';
+
             if (!STATES.includes(s)) s = 'choosing';
             hideAllStates();
-            document.getElementById(`state-${s === 'payment_phase' ? 'paid' : s}`).classList.remove('hidden-state');
 
-            // si ya es expired desde backend => limpia el flag para futuros links
+            document.getElementById(`state-${s === 'payment_phase' ? 'paid' : s}`)
+                .classList.remove('hidden-state');
+
             if (s === 'expired') {
                 sessionStorage.removeItem('waitlist_reloaded');
             }
         }
+
+        const btnGoMeet = document.getElementById('btnGoMeet');
+
+        function goMeet(link) {
+            if (link) window.location.href = link;
+            else alert('Aún no hay link de Meet.');
+        }
+
+        // click inicial (por si meetLink ya viene desde Blade)
+        /* if (btnGoMeet) {
+            btnGoMeet.addEventListener('click', () => goMeet(meetLink));
+        } */
+        let accepting = false;
+
+
 
         // ================== COUNTDOWN ROBUSTO ==================
         let expiresAtMs = (expiresAtMsRaw !== null) ? Number(expiresAtMsRaw) : null;
@@ -634,58 +590,6 @@
             }
         }
 
-        const thumb = document.getElementById('receiptThumb');
-        const thumbEmpty = document.getElementById('receiptThumbEmpty');
-        const thumbWrap = document.getElementById('receiptThumbWrap');
-
-        const modal = document.getElementById('receiptModal');
-        const modalImg = document.getElementById('receiptModalImg');
-        const closeModalBtn = document.getElementById('closeReceiptModal');
-
-        function renderReceiptThumb(url) {
-            currentReceiptUrl = url || null;
-
-            if (!thumb || !thumbEmpty) return;
-
-            if (!url) {
-                thumb.style.display = 'none';
-                thumbEmpty.style.display = 'flex';
-                return;
-            }
-
-            thumb.src = url;
-            thumb.style.display = 'block';
-            thumbEmpty.style.display = 'none';
-        }
-
-
-        function openReceiptModal(url) {
-            if (!url) return;
-            modalImg.src = url;
-            modal.classList.remove('hidden-state');
-        }
-
-        function closeReceiptModal() {
-            modal.classList.add('hidden-state');
-            modalImg.src = '';
-        }
-
-        if (thumbWrap) {
-            thumbWrap.addEventListener('click', () => openReceiptModal(currentReceiptUrl));
-        }
-        if (closeModalBtn) closeModalBtn.addEventListener('click', closeReceiptModal);
-        if (modal) modal.addEventListener('click', (e) => {
-            if (e.target === modal) closeReceiptModal();
-        });
-
-        // botón meet en accepted
-        const btnJoinMeet = document.getElementById('btnJoinMeet');
-        if (btnJoinMeet) {
-            btnJoinMeet.addEventListener('click', () => {
-                if (meetLink) window.location.href = meetLink;
-                else alert('Aún no hay link de Meet.');
-            });
-        }
         // ====== TOKEN (igual que vista de prueba) ======
         window.WAITLIST_TOKEN = @json($token ?? request()->query('t', ''));
         const token = String(window.WAITLIST_TOKEN || '').trim();
@@ -734,30 +638,9 @@
                 setState(closedByChoice ? 'rejected' : 'expired');
                 return;
             }
-
-            if (ui === 'payment_phase') {
+            if (ui === 'payment_phase' || ui === 'accepted') {
                 setState('payment_phase');
 
-                // actualizar comprobante
-                const payment = json.payment || {};
-                const url = payment.receipt_url || null;
-                renderReceiptThumb(url);
-
-                return;
-            }
-
-            if (ui === 'accepted') {
-                setState('accepted');
-
-                // link meet
-                const link = json.booking?.meeting_link || null;
-                const btnJoinMeet = document.getElementById('btnJoinMeet');
-                if (btnJoinMeet) {
-                    btnJoinMeet.onclick = () => {
-                        if (link) window.location.href = link;
-                        else alert('Aún no hay link de Meet.');
-                    };
-                }
                 return;
             }
 
@@ -771,7 +654,6 @@
         const rejectReasonEl = document.getElementById('rejectReason');
         const actionMsg = document.getElementById('actionMsg');
         const paymentLabel = document.getElementById('paymentLabel');
-        const btnGoMeet = document.getElementById('btnGoMeet');
 
         function setActionMsg(text) {
             if (actionMsg) actionMsg.textContent = text || '';
@@ -865,6 +747,55 @@
                 fetchStatusNice();
             });
         }
+        let joining = false;
+
+        async function acceptThenGoMeet() {
+            if (!token || joining) return;
+            joining = true;
+
+            if (btnGoMeet) {
+                btnGoMeet.disabled = true;
+                btnGoMeet.style.opacity = '.75';
+                btnGoMeet.style.cursor = 'not-allowed';
+            }
+
+            const {
+                res,
+                json
+            } = await postJSON(`/tutor/waitlist/accept?t=${encodeURIComponent(token)}`, {});
+
+            if (!res.ok || !json.ok) {
+                joining = false;
+                if (btnGoMeet) {
+                    btnGoMeet.disabled = false;
+                    btnGoMeet.style.opacity = '1';
+                    btnGoMeet.style.cursor = 'pointer';
+                }
+                alert(json.message || `No se pudo aceptar (HTTP ${res.status})`);
+                return;
+            }
+
+            const link = json.meeting_link || json.booking?.meeting_link || meetLink || null;
+
+            if (!link) {
+                joining = false;
+                if (btnGoMeet) {
+                    btnGoMeet.disabled = false;
+                    btnGoMeet.style.opacity = '1';
+                    btnGoMeet.style.cursor = 'pointer';
+                }
+                alert('Aún no hay link de Meet.');
+                return;
+            }
+
+            window.location.href = link;
+        }
+
+        if (btnGoMeet) {
+            btnGoMeet.onclick = acceptThenGoMeet;
+        }
+
+
 
 
         // ====== START POLLING ======
@@ -883,14 +814,11 @@
         });
 
 
-
-        // pintar miniatura al inicio (si estás en payment_phase)
-        renderReceiptThumb(receiptUrl);
-
-
         // ================== INIT ==================
         // Si el backend manda expired, muestra expired. Si no, muestra lo que venga.
-        setState(initialStatus === 'expired' ? 'expired' : initialStatus);
+        const init = (initialStatus === 'accepted') ? 'payment_phase' : initialStatus;
+        setState(init === 'expired' ? 'expired' : init);
+
 
         // render inmediato
         renderCountdown();

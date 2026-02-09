@@ -588,7 +588,7 @@ class SubjectPickerController extends Controller
         if (!$batch) abort(404);
 
         if ($batch->expires_at && now()->greaterThanOrEqualTo($batch->expires_at)) {
-            return view('vistas.view.pages.waitlistTutor', [
+            return view('vistas.view.pages.tutorStateLink', [
                 'status' => 'expired',
             ]);
         }
@@ -609,7 +609,7 @@ class SubjectPickerController extends Controller
         // ✅ timestamp absoluto (servidor) en milisegundos
         $expiresAtMs = $expiresAt ? ($expiresAt->getTimestamp() * 1000) : null;
 
-        return view('vistas.view.pages.waitlistTutor', [
+        return view('vistas.view.pages.tutorStateLink', [
             'status' => ($secondsLeft !== null && $secondsLeft <= 0) ? 'expired' : 'ok',
             'batch_id' => $batch->id,
             'subject_id' => $batch->subject_id,
