@@ -608,6 +608,15 @@
             if (!res.ok || !json.ok) return;
 
             const ui = String(json.ui_state || 'waiting');
+            // ✅ Opción B: si ya mostraste EXPIRED, no permitas que el polling lo cambie a REJECTED
+            const expiredVisible = !document
+                .getElementById('state-expired')
+                .classList.contains('hidden-state');
+
+            if (expiredVisible && (ui === 'batch_expired_waiting' || ui === 'rejected')) {
+                return;
+            }
+
 
             // 🔄 Re-sincronizar temporizador desde backend si llega info nueva
             if (json.expires_at_ms != null) {

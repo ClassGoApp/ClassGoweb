@@ -52,6 +52,17 @@ use App\Http\Controllers\Api\SubjectPickerController;
 
 
 
+use Illuminate\Support\Facades\Mail;
+
+Route::get('/probar-correo', function () {
+
+    Mail::send('emails.confirmationTutorInstant', [], function ($message) {
+        $message->to('ronaldflores200403@gmail.com')
+                ->subject('Prueba de diseño');
+    });
+
+    return 'Correo enviado';
+});
 
 
 
