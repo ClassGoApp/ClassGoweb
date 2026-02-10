@@ -179,6 +179,7 @@ class PersonalDetails extends Component
     public $maxVideoSize = 50; // MB
     public $enableGooglePlaces = false;
     public $select_lema;
+    public bool $attemptedSave = false;
     /**
      * Inicializa el componente
      */
@@ -292,6 +293,7 @@ class PersonalDetails extends Component
      */
     public function updateInfo()
     {
+        $this->attemptedSave  = true;
         try {
             $this->ensureProfileService();
             $this->validate([
@@ -299,6 +301,7 @@ class PersonalDetails extends Component
                 'last_name' => 'required|string|max:100',
                 'phone_number' => 'required|string|max:20',
                 'description' => 'string|max:500',
+                'image' => 'required',
             ], [
                 // Mensajes personalizados (opcional)
             ], [
@@ -306,6 +309,7 @@ class PersonalDetails extends Component
                 'last_name' => __('profile.last_name'),
                 'phone_number' => __('profile.phone_number'),
                 'description' => __('profile.description'),
+                'image' => 'Foto de perfil',
             ]);
 
             // El valor de género ya es int desde el front
@@ -370,7 +374,7 @@ class PersonalDetails extends Component
             
             // 👉 Verificar estado de verificación solo para tutores
             $user = Auth::user();
-
+            if ($this)
             // Solo redireccionar si es tutor y no está verificado
             if ($user->hasRole('tutor') && !$user->verified) {
                 // 👉 REDIRECCIÓN CUANDO NO ESTÁ VERIFICADO (solo para tutores)
