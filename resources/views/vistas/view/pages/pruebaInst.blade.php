@@ -1796,7 +1796,7 @@
               </div>
             </div>
 
-            <div style="display:flex; justify-content:space-between; margin-bottom:1rem;">
+            <div style="display:flex; justify-content:space-between; margin-bottom:0.5rem;">
               <span style="font-size:0.65rem; font-weight:800; color:var(--text-muted);">TOTAL</span>
               <div style="font-size:1.6rem; font-weight:900;">${price} Bs</div>
             </div>
@@ -1967,26 +1967,9 @@
             const card = document.getElementById(`hero-${heroId}`);
             if (!card) return;
 
-            const preview = card.querySelector('.receipt-preview');
             const label = card.querySelector('.file-label');
 
             if (label) label.textContent = file.name;
-            if (!preview) return;
-
-            preview.classList.remove('hidden');
-            preview.innerHTML = '';
-
-            if (file.type.startsWith('image/')) {
-                const img = document.createElement('img');
-                img.style.width = '100%';
-                img.style.borderRadius = '12px';
-                img.style.border = '1px solid rgba(0,0,0,.08)';
-                img.src = URL.createObjectURL(file);
-                preview.appendChild(img);
-            } else {
-                preview.innerHTML =
-                    `<div style="font-size:.75rem;color:var(--text-muted);font-weight:20px;">📄 ${escapeHtml(file.name)}</div>`;
-            }
 
             setReceiptError(heroId, false);
         }
