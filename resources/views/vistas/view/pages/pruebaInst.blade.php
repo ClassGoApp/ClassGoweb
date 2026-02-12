@@ -313,7 +313,7 @@
             }
 
             100% {
-                transform: scale(1.6);
+                transform: scale(3.2);
                 opacity: 0;
             }
         }
@@ -328,6 +328,18 @@
             transform-origin: bottom left;
             animation: sweep 2s linear infinite;
             border-left: 2px solid var(--secundary-color);
+        }
+
+        .radar-sweep::after {
+            content: "";
+            position: absolute;
+            left: -2px;
+            /* pegado al borde */
+            bottom: 0;
+            width: 2px;
+            height: 200%;
+            /* 👈 más alto = más largo */
+            background: var(--secundary-color);
         }
 
         @keyframes sweep {
@@ -933,6 +945,57 @@
             }
 
         }
+
+        /* ================= RADAR como fondo opaco ================= */
+        .radar-section.is-backdrop {
+            position: fixed;
+            inset: 0;
+            z-index: 20;
+            /* detrás de cards */
+            height: 100vh;
+            padding: 0;
+            /* opaco */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity .35s ease, transform .35s ease;
+        }
+
+        /* el contenido del radar (animación) más pequeño cuando está de fondo */
+
+
+        /* el panel de textos del radar se oculta en modo backdrop */
+        .radar-section.is-backdrop .status-header {
+            display: none;
+        }
+
+        /* cards arriba del radar */
+        #tutor-results {
+            position: relative;
+            z-index: 30;
+        }
+
+        /* ocultar radar por completo (sin afectar el flujo) */
+        .radar-section.is-hidden-fully {
+            display: none !important;
+        }
+
+        /* Radar fijo pero atrás */
+        #radar-ui.is-backdrop {
+            z-index: 10;
+        }
+
+        /* Contenedor de resultados y header arriba del radar */
+        #view-browse .container {
+            position: relative;
+            z-index: 30;
+        }
+
+        /* Por si acaso: el header donde vive el botón */
+        #btnNewSearch {
+            position: relative;
+            z-index: 40;
+        }
     </style>
 
     <section>
@@ -1075,34 +1138,34 @@
 
     <script>
         /* ========================================================================
-      CLASSGO | Student - Instant Tutors Script
-      ------------------------------------------------------------------------
-      FLUJO:
-      1) Cargar Categorías/Materias
-      2) Seleccionar Materia (solo una) + mostrar FAB
-      3) Crear Batch + mostrar Radar + polling:
-          - status (cada 60s)
-          - tutores aceptados (cada 5s)
-          - countdown expiración (cada 1s)
-      4) Mostrar cards de tutores + reservar + abrir checkout (flip)
-      5) Subir comprobante + pagar + polling booking (cada 2.5s)
-      6) Nueva solicitud / reset
+                          CLASSGO | Student - Instant Tutors Script
+                          ------------------------------------------------------------------------
+                          FLUJO:
+                          1) Cargar Categorías/Materias
+                          2) Seleccionar Materia (solo una) + mostrar FAB
+                          3) Crear Batch + mostrar Radar + polling:
+                              - status (cada 60s)
+                              - tutores aceptados (cada 5s)
+                              - countdown expiración (cada 1s)
+                          4) Mostrar cards de tutores + reservar + abrir checkout (flip)
+                          5) Subir comprobante + pagar + polling booking (cada 2.5s)
+                          6) Nueva solicitud / reset
 
-      ENDPOINTS:
-      - GET  /student/subject-groups/categorias-materias
-      - POST /student/batches/start
-      - GET  /student/batches/active
-      - GET  /student/batches/{batchId}/status
-      - GET  /student/batches/{batchId}/accepted-tutors?limit=50
-      - POST /student/batches/{batchId}/reserve
-      - POST /student/bookings/{bookingId}/receipt
-      - GET  /student/bookings/{bookingId}/status
-      - GET  /student/bookings/{bookingId}/meet
+                          ENDPOINTS:
+                          - GET  /student/subject-groups/categorias-materias
+                          - POST /student/batches/start
+                          - GET  /student/batches/active
+                          - GET  /student/batches/{batchId}/status
+                          - GET  /student/batches/{batchId}/accepted-tutors?limit=50
+                          - POST /student/batches/{batchId}/reserve
+                          - POST /student/bookings/{bookingId}/receipt
+                          - GET  /student/bookings/{bookingId}/status
+                          - GET  /student/bookings/{bookingId}/meet
 
-      NOTAS:
-      - fetchAcceptedTutors() se pausa si state.activeHeroId existe (checkout abierto)
-      - closeHero(true) debe existir en otro lado o aquí (si no, revienta)
-    ======================================================================== */
+                          NOTAS:
+                          - fetchAcceptedTutors() se pausa si state.activeHeroId existe (checkout abierto)
+                          - closeHero(true) debe existir en otro lado o aquí (si no, revienta)
+                        ======================================================================== */
 
 
         /* ========================================================================
@@ -1255,14 +1318,14 @@
 
         <div class="subject-grid">
           ${items.map(sub => `
-                <button class="subject-card-btn"
-                  onclick="seleccionarMateria(this, ${sub.id}, '${sub.name.replaceAll("'", "\\'")}')">
-                  <div class="subject-initial">${sub.name.charAt(0)}</div>
-                  <div class="subject-meta">
-                    <div class="subject-title">${sub.name}</div>
-                  </div>
-                </button>
-              `).join('')}
+                                    <button class="subject-card-btn"
+                                      onclick="seleccionarMateria(this, ${sub.id}, '${sub.name.replaceAll("'", "\\'")}')">
+                                      <div class="subject-initial">${sub.name.charAt(0)}</div>
+                                      <div class="subject-meta">
+                                        <div class="subject-title">${sub.name}</div>
+                                      </div>
+                                    </button>
+                                  `).join('')}
         </div>
       </section>
     `;
@@ -1365,6 +1428,37 @@
             document.getElementById('view-selection').classList.remove('hidden');
             document.body.classList.remove('lock-scroll');
         }
+
+        // ================= Radar UI helpers (GLOBAL) =================
+        function setRadarBackdrop(on) {
+            const radar = document.getElementById('radar-ui');
+            if (!radar) return;
+
+            if (on) {
+                radar.classList.remove('results-found');
+                radar.classList.add('is-backdrop');
+                radar.classList.remove('is-hidden-fully');
+            } else {
+                radar.classList.remove('is-backdrop');
+            }
+        }
+
+        function hideRadarFully() {
+            const radar = document.getElementById('radar-ui');
+            if (!radar) return;
+
+            radar.classList.remove('is-backdrop', 'results-found');
+            radar.classList.add('is-hidden-fully');
+        }
+
+        function showRadarFully() {
+            const radar = document.getElementById('radar-ui');
+            if (!radar) return;
+
+            radar.classList.remove('is-hidden-fully');
+            radar.classList.remove('is-backdrop');
+        }
+
 
 
         /* ========================================================================
@@ -1680,11 +1774,17 @@
             grid.innerHTML = '';
 
             if (!items.length) {
+                showRadarFully(); // radar normal mientras no hay tutores
+                setRadarBackdrop(false);
                 grid.innerHTML =
                     `<div style="padding:1.5rem;text-align:center;color:var(--text-muted);font-weight:900;">Aún nadie aceptó...</div>`;
                 grid.classList.remove('active');
                 return;
             }
+
+            // ✅ ya hay tutores: radar como fondo opaco
+            showRadarFully();
+            setRadarBackdrop(true);
 
             grid.classList.add('active');
 
@@ -1725,7 +1825,7 @@
         <div class="card-face card-face-front">
           <div class="card-header">
             <span class="badge">${materiaSeleccionadaNombre}</span>
-            <span class="rating">★ ${rating}</span>
+
           </div>
 
           <div class="avatar-wrapper">
@@ -1734,13 +1834,13 @@
               ${img ? `<img class="avatar" src="${escapeHtml(img)}" alt="${name}">` : ``}
 
               ${verified ? `
-                    <span class="verified">
-                      <svg viewBox="0 0 24 24" class="verified-icon">
-                        <path d="M12 2l4 2 4 .6 1.4 4L22 12l-1.6 3.4L20 19l-4 .6-4 2-4-2-4-.6L3.6 15.4 2 12l1.4-3.4L4 4.6l4-.6 4-2z"/>
-                        <path d="M9.5 12.5l1.7 1.7 3.8-3.8"/>
-                      </svg>
-                    </span>
-                  ` : ``}
+                                        <span class="verified">
+                                          <svg viewBox="0 0 24 24" class="verified-icon">
+                                            <path d="M12 2l4 2 4 .6 1.4 4L22 12l-1.6 3.4L20 19l-4 .6-4 2-4-2-4-.6L3.6 15.4 2 12l1.4-3.4L4 4.6l4-.6 4-2z"/>
+                                            <path d="M9.5 12.5l1.7 1.7 3.8-3.8"/>
+                                          </svg>
+                                        </span>
+                                      ` : ``}
             </div>
           </div>
 
