@@ -84,6 +84,9 @@ return [
     'other_languages' => 'otros idiomas',
     'remove' => 'Eliminar',
     'change_photo' => 'Cambiar foto',
+    'Add_Matters' => 'Agregar materias',
+    'Subjects' => 'Materias',
+    
     
     // Mensajes de perfil incompleto
     'complete_profile_requirements' => 'Para verificar tu identidad, primero debes completar los siguientes requisitos:',
@@ -92,6 +95,7 @@ return [
     'missing_gender' => 'Género',
     'missing_google_calendar' => 'Conexión con Google Calendar (Ve a Configuración de Cuenta)',
     'missing_payout_method' => 'Método de pago configurado (Ve a Panel > Preferencias > QR)',
+    'missing_subjects' => 'Materias agregadas al perfil',
     'complete_now' => 'Completar ahora',
    
 ];
