@@ -21,10 +21,18 @@
             x-data="{
                 form: @entangle('form'),
                 charLeft: 500,
-                init() {
-                    this.updateCharLeft();
-                },
+                showModal: false,
+                selectedTutoria: {},
                 tutorInfo: {},
+                init() {
+                    this.showModal = false;
+                    this.selectedTutoria = {};
+                    this.updateCharLeft();
+                    // Escuchar cambios de Livewire para resetear el modal
+                    Livewire.hook('effect', () => {
+                        this.showModal = false;
+                    });
+                },
                 updateCharLeft() {
                     let maxLength = 500;
                     if (this.form.comment.length > maxLength) {
@@ -32,14 +40,13 @@
                     }
                     this.charLeft = maxLength - this.form.comment.length;
                 },
-                showModal: false,
-                selectedTutoria: {},
                 openModal(tutoria) {
                     this.selectedTutoria = tutoria;
                     this.showModal = true;
                 },
                 closeModal() {
                     this.showModal = false;
+                    this.selectedTutoria = {};
                 }
             }">
             <!--Upcomming Bookings-->
@@ -284,7 +291,7 @@
                                             <tr>
                                                 @for ($date = $currentDate->copy()->startOfWeek($startOfWeek); $date->lte($currentDate->copy()->endOfWeek(getEndOfWeek($startOfWeek))); $date->addDay())
                                                     <th style="min-width:120px;">
-                                                        <div class="am-booking-calander-title">
+                                                        <div class="    -title">
                                                             <strong>{{ $date->format('j F') }}</strong>
                                                             <span>{{ $date->format('D') }}</span>
                                                         </div>
@@ -422,22 +429,22 @@
             </div>
 
             <!-- Modal de detalles de tutoría -->
-            <div x-show="showModal" class="am-modal-overlay" x-transition>
+            <div x-show="showModal && selectedTutoria && Object.keys(selectedTutoria).length > 0" class="am-modal-overlay" x-transition x-cloak>
                 <div
                     style="
-      background: #fff; 
-      border-radius: 12px; 
-      padding: 24px 30px; 
-      max-width: 400px; 
-      width: 100%; 
-      box-shadow: 0 10px 25px rgba(0,0,0,0.15); 
-      display: flex; 
-      flex-direction: column; 
-      align-items: stretch;
-      position: relative;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      color: #333;
-    ">
+                    background: #fff; 
+                    border-radius: 12px; 
+                    padding: 24px 30px; 
+                    max-width: 400px; 
+                    width: 100%; 
+                    box-shadow: 0 10px 25px rgba(0,0,0,0.15); 
+                    display: flex; 
+                    flex-direction: column; 
+                    align-items: stretch;
+                    position: relative;
+                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                    color: #333;
+                    ">
                     <h3
                         style="font-size: 1.4rem; font-weight: 600; margin-bottom: 20px; text-align: center; color: #222;">
                         Detalles de la tutoría
@@ -474,16 +481,16 @@
 
                     <button @click="closeModal"
                         style="
-        margin-top: 24px; 
-        padding: 10px 20px; 
-        background-color: #007BFF; 
-        color: white; 
-        border: none; 
-        border-radius: 6px; 
-        cursor: pointer; 
-        font-weight: 600;
-        transition: background-color 0.3s ease;
-      "
+                        margin-top: 24px; 
+                        padding: 10px 20px; 
+                        background-color: #007BFF; 
+                        color: white; 
+                        border: none; 
+                        border-radius: 6px; 
+                        cursor: pointer; 
+                        font-weight: 600;
+                        transition: background-color 0.3s ease;
+                    "
                         onmouseover="this.style.backgroundColor='#0056b3'"
                         onmouseout="this.style.backgroundColor='#007BFF'">
                         Cerrar
@@ -504,6 +511,10 @@
 @push('styles')
     @vite(['public/css/flatpicker.css', 'public/css/flatpicker-month-year-plugin.css'])
     <style>
+        [x-cloak] {
+            display: none !important;
+        }
+
         .am-modal-overlay {
             background: rgba(0, 0, 0, 0.5);
             position: fixed;

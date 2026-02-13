@@ -160,7 +160,7 @@ break;
             <ul class="am-socialmedia">
                 @if ( !empty( setting('_general.fb_link')))
                 <li>
-                    <a href="https://www.facebook.com/profile.php?id=61567352882531&amp;amp;mibextid=ZbWKwL">
+                    <a href="https://www.facebook.com/share/1D7ttw9Su1/">
                         <img src="{{ asset('images/facebook.png') }}" alt="Facebook" style="width: 50px; height: 50px;">
                     </a>
                 </li>
