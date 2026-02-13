@@ -24,7 +24,9 @@ use App\Models\AccountSetting;
 use App\Models\UserPayoutMethod;
 use Illuminate\Support\Str;
 use App\Models\UserCoupon;
-
+use App\Models\UserSubject;
+//use Google\Service\Analytics\Profiles;
+use App\Models\profiles;
 
 /**
  * Componente Livewire para la verificación de identidad del usuario.
@@ -54,6 +56,7 @@ class IdentityVerification extends Component
     public $emailTemplate;
     public $hasStates = false;
     public $activeRoute;
+    public $userSubjectsCount = 0;
     private ?IdentityService $userIdentity = null;
     private ?ProfileService $profileService = null;
 
@@ -128,6 +131,7 @@ class IdentityVerification extends Component
     {
         $this->states = null;
         $this->identity = $this->userIdentity->getUserIdentityVerification();
+        $this->userSubjectsCount = UserSubject::where('user_id', Auth::id())->count();
         if (!empty($this->form->country)) {
             /*             dd( $this->states =$this->userIdentity->countryStates($this->form->country)
                        ,"se seleccionó un país"); */
@@ -185,7 +189,10 @@ class IdentityVerification extends Component
 
         $perfil= Auth::user()->profile;
         $googlecalendar = AccountSetting::where('user_id', Auth::user()->id)->first();
-        $cuentatutor=UserPayoutMethod::where('user_id', Auth::user()->id)->first();      
+        $cuentatutor=UserPayoutMethod::where('user_id', Auth::user()->id)->first();
+        $userSubjects = UserSubject::where('user_id', Auth::user()->id)->count();      
+        $celular = $perfil->phone_number ?? '';
+
  
         // Validar requisitos de perfil y generar mensaje descriptivo
         $errores = [];
@@ -194,20 +201,30 @@ class IdentityVerification extends Component
             $errores[] = '• ' . __('profile.missing_profile_photo');
         }
         
-        if ($perfil->intro_video == null) {
+        /* if ($perfil->intro_video == null) {
             $errores[] = '• ' . __('profile.missing_intro_video');
-        }
+        } */
         
+        $celular = trim((string) $celular); //borra espacios de los extremos
+        if (!preg_match('/^[67]\d{7}$/', $celular)) { // Valida que el número tenga 8 dígitos y comience con 6 o 7
+            $errores[] = '• El número de celular debe tener 8 dígitos y comenzar con 6 o 7';
+        }
+
         if ($perfil->gender == null) {
             $errores[] = '• ' . __('profile.missing_gender');
-        }
+        } 
         
-        if ($googlecalendar == null) {
+        //descomentar si se requiere calendario de google para la verificación de identidad
+         if ($googlecalendar == null) {
             $errores[] = '• ' . __('profile.missing_google_calendar');
-        }
+        } 
         
-        if ($cuentatutor == null) {
+        /* if ($cuentatutor == null) {
             $errores[] = '• ' . __('profile.missing_payout_method');
+        } */
+        
+        if ($userSubjects == 0) {
+            $errores[] = '• Materias agregadas al perfil (Ve a Manage Booking > Selecciona tus materias)'; 
         }
 
         if (!empty($errores)) {
