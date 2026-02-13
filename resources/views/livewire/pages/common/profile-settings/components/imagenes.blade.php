@@ -1,4 +1,8 @@
-
+@if(!$attemptedSave && !$image)
+    <h1  style="font-size: 14px; font-weight: 600; color: #f02f04; text-align: left; margin-bottom: 8px;">
+        perfil obligatorio!. Por favor sube una imagen de perfil.
+    </h1>
+@endif
 <div class="profile-photo-card">
     <div class="profile-photo-content">
         <h3 class="profile-photo-title"> {{__('profile.upload_image')}} </h3>
