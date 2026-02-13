@@ -27,7 +27,7 @@
                         <p style="color: black">{{ __('profile.identity_detail_desc') }}</p> {{-- Descripción --}}
                     </div>
                 </div>
-                <form wire:submit="updateInfo" class="am-themeform am-themeform_personalinfo">
+                <form wire:submit.prevent="updateInfo" class="am-themeform am-themeform_personalinfo">
                     @if ($isLoading)
                         {{-- Skeleton de carga mientras se obtienen los datos --}}
                         @include('skeletons.identity-verification')
@@ -318,8 +318,12 @@
                             {{-- Botón para guardar cambios --}}
                             <div class="form-group am-form-btns">
                                 <span style="color: black">{{ __('profile.latest_changes_the_live') }}</span>
-                                <x-primary-button wire:target="updateInfo"
-                                    wire:loading.class="am-btn_disable">{{ __('profile.save_update') }}</x-primary-button>
+                                <x-primary-button
+                                    type="submit"
+                                    wire:target="updateInfo"
+                                    wire:loading.class="am-btn_disable">
+                                    {{ __('profile.save_update') }}
+                                </x-primary-button>
                             </div>
                         </fieldset>
                     @endif
