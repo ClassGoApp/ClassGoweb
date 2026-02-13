@@ -297,6 +297,23 @@
                                     @endif
                                 </div>
                             </div>
+                            
+
+                            {{-- Si el usuario no ha agregado materias, muestra mensaje y botón para agregar --}}
+                            @if($userSubjectsCount == 0)
+                            <div class="form-group am-addressform">
+                                <x-input-label style="color: black" for="Subjects" class="am-important"
+                                    :value="__('Subjects')" />
+                                <span style="color: black"> Debes agregar materias antes de continuar.</span>
+                                <div style="margin-top: 1rem;">
+                                    <a href="{{ url('/tutor/bookings/manage-subjects') }}" style="text-decoration: none;">
+                                        <x-primary-button type="button">
+                                            Agregar Materias
+                                        </x-primary-button>
+                                    </a>
+                                </div>
+                            </div>
+                            @endif
 
                             {{-- Botón para guardar cambios --}}
                             <div class="form-group am-form-btns">
