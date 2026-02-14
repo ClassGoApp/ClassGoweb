@@ -1940,6 +1940,8 @@
         }
 
         function openHero(id) {
+            hideRadarFully(); 
+            
             if (state.activeHeroId && state.activeHeroId !== id) {
                 closeHero(true); // ⚠️ Debe existir
             }

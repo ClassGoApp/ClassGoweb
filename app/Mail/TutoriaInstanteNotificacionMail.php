@@ -11,6 +11,8 @@ class TutoriaInstanteNotificacionMail extends Mailable
     use Queueable, SerializesModels;
 
     public function __construct(
+        public string $tutorName,
+        public string $subjectName,
         public int $subjectId,
         public string $gifUrl,
         public string $description,
@@ -23,6 +25,8 @@ class TutoriaInstanteNotificacionMail extends Mailable
         return $this->subject("ClassGo | Tutoría instantánea (Materia {$this->subjectId})")
             ->view('emails.tutoria-instante-notificacion')
             ->with([
+                'tutorName'   => $this->tutorName,
+                'subjectName' => $this->subjectName,
                 'subjectId'   => $this->subjectId,
                 'gifUrl'      => $this->gifUrl,
                 'description' => $this->description,

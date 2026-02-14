@@ -334,7 +334,28 @@ class BatchesTick extends Command
                 // 3) Enviar fuera de TX
                 foreach ($items as $item) {
 
-                    $email = DB::table('users')->where('id', $item->user_id)->value('email');
+                    $user = DB::table('users')
+                        ->join('profiles', 'profiles.user_id', '=', 'users.id')
+                        ->where('users.id', $item->user_id)
+                        ->select(
+                            'users.email',
+                            'profiles.first_name',
+                            'profiles.last_name'
+                        )
+                        ->first();
+
+                    if (!$user || !$user->email) {
+                        EmailBatchItem::whereKey($item->id)->update([
+                            'status' => 'failed',
+                            'last_error' => 'User sin email',
+                            'updated_at' => now(),
+                        ]);
+                        continue;
+                    }
+
+                    $email = $user->email;
+                    $tutorName = trim($user->first_name . ' ' . $user->last_name);
+
 
                     if (!$email) {
                         EmailBatchItem::whereKey($item->id)->update([
@@ -357,11 +378,16 @@ class BatchesTick extends Command
                             ]);
                             $item->accept_token = EmailBatchItem::whereKey($item->id)->value('accept_token');
                         }
+                        $subjectName = DB::table('subjects')
+                            ->where('id', $batch->subject_id)
+                            ->value('name');
 
                         $buttonUrl  = route('waitlist.accept', ['t' => $item->accept_token]);
                         $buttonText = 'Ir a lista de espera';
 
                         Mail::to($email)->send(new TutoriaInstanteNotificacionMail(
+                            tutorName: $tutorName,
+                            subjectName: $subjectName,
                             subjectId: (int)$batch->subject_id,
                             gifUrl: $gifUrl,
                             description: $description,
