@@ -26,7 +26,7 @@
                                         </div>
                                         <div
                                             style="margin-top:6px;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#8ECAE6;font-weight:700;">
-                                            ID: #{{ $sessionId ?? '82358239' }}
+                                            ID: #{{ $sessionId }}
                                         </div>
                                     </td>
                                     <td align="right" valign="top">

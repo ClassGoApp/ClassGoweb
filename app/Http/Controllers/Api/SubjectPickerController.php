@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Mail;
 
+use App\mail\TutoriaInstanteAceptada;
+
 class SubjectPickerController extends Controller
 {
     public function index()
@@ -501,78 +503,78 @@ class SubjectPickerController extends Controller
 
 
     public function active()
-{
-    $studentId = (int) Auth::id();
-    $batchId = session('active_batch_id');
+    {
+        $studentId = (int) Auth::id();
+        $batchId = session('active_batch_id');
 
-    // 1) Intentar por sesión
-    if ($batchId) {
-        $batch = EmailBatch::query()->find($batchId);
+        // 1) Intentar por sesión
+        if ($batchId) {
+            $batch = EmailBatch::query()->find($batchId);
 
-        if ($batch && !in_array($batch->status, ['done', 'failed'], true)) {
-            if (!$batch->expires_at || now()->lt($batch->expires_at)) {
+            if ($batch && !in_array($batch->status, ['done', 'failed'], true)) {
+                if (!$batch->expires_at || now()->lt($batch->expires_at)) {
 
-                $timing = $this->batchTimingPayload($batch);
+                    $timing = $this->batchTimingPayload($batch);
 
-                return response()->json([
-                    'active' => true,
-                    'batch_id' => $batch->id,
-                    'subject_id' => $batch->subject_id,
-                    'status' => $batch->status,
-                    'sent_count' => $batch->sent_count,
-                    'batch_size' => $batch->batch_size,
-                    'expires_at' => optional($batch->expires_at)->toDateTimeString(),
+                    return response()->json([
+                        'active' => true,
+                        'batch_id' => $batch->id,
+                        'subject_id' => $batch->subject_id,
+                        'status' => $batch->status,
+                        'sent_count' => $batch->sent_count,
+                        'batch_size' => $batch->batch_size,
+                        'expires_at' => optional($batch->expires_at)->toDateTimeString(),
 
-                    // ✅ CLAVE para contador cross-device
-                    'expires_at_ms' => $timing['expires_at_ms'],
-                    'seconds_left'  => $timing['seconds_left'],
-                    'server_now_ms' => $timing['server_now_ms'],
-                ]);
+                        // ✅ CLAVE para contador cross-device
+                        'expires_at_ms' => $timing['expires_at_ms'],
+                        'seconds_left'  => $timing['seconds_left'],
+                        'server_now_ms' => $timing['server_now_ms'],
+                    ]);
+                }
             }
+
+            // sesión apunta a algo inválido
+            session()->forget(['active_batch_id', 'active_subject_id']);
         }
 
-        // sesión apunta a algo inválido
-        session()->forget(['active_batch_id', 'active_subject_id']);
+        // 2) Fallback por BD (más robusto)
+        $batch = EmailBatch::query()
+            ->where('created_by', '=', $studentId)
+            ->whereIn('status', ['pending', 'running'])
+            ->where(function ($q) {
+                $q->whereNull('expires_at')
+                    ->orWhere('expires_at', '>', now());
+            })
+            ->orderByDesc('id')
+            ->first();
+
+        if (!$batch) {
+            return response()->json(['active' => false]);
+        }
+
+        // rehidratar sesión
+        session([
+            'active_batch_id' => $batch->id,
+            'active_subject_id' => $batch->subject_id,
+        ]);
+
+        $timing = $this->batchTimingPayload($batch);
+
+        return response()->json([
+            'active' => true,
+            'batch_id' => $batch->id,
+            'subject_id' => $batch->subject_id,
+            'status' => $batch->status,
+            'sent_count' => $batch->sent_count,
+            'batch_size' => $batch->batch_size,
+            'expires_at' => optional($batch->expires_at)->toDateTimeString(),
+
+            // ✅ CLAVE para contador cross-device
+            'expires_at_ms' => $timing['expires_at_ms'],
+            'seconds_left'  => $timing['seconds_left'],
+            'server_now_ms' => $timing['server_now_ms'],
+        ]);
     }
-
-    // 2) Fallback por BD (más robusto)
-    $batch = EmailBatch::query()
-        ->where('created_by', '=', $studentId)
-        ->whereIn('status', ['pending', 'running'])
-        ->where(function ($q) {
-            $q->whereNull('expires_at')
-              ->orWhere('expires_at', '>', now());
-        })
-        ->orderByDesc('id')
-        ->first();
-
-    if (!$batch) {
-        return response()->json(['active' => false]);
-    }
-
-    // rehidratar sesión
-    session([
-        'active_batch_id' => $batch->id,
-        'active_subject_id' => $batch->subject_id,
-    ]);
-
-    $timing = $this->batchTimingPayload($batch);
-
-    return response()->json([
-        'active' => true,
-        'batch_id' => $batch->id,
-        'subject_id' => $batch->subject_id,
-        'status' => $batch->status,
-        'sent_count' => $batch->sent_count,
-        'batch_size' => $batch->batch_size,
-        'expires_at' => optional($batch->expires_at)->toDateTimeString(),
-
-        // ✅ CLAVE para contador cross-device
-        'expires_at_ms' => $timing['expires_at_ms'],
-        'seconds_left'  => $timing['seconds_left'],
-        'server_now_ms' => $timing['server_now_ms'],
-    ]);
-}
 
     public function acceptWaitlist(Request $request)
     {
@@ -1531,43 +1533,25 @@ class SubjectPickerController extends Controller
             //////////////// despues reemplazar por link real de vista/email ////////////////
             // Datos estudiante
             $info = $this->bookingEmailData($bookingId);
+
             if ($info) {
                 $b = $info['booking'];
-                $meet = $meetingLink;
+                $emails = [$info['student_email'], $info['tutor_email']];
+                // Formatear las horas ANTES de pasarlas al Mailable
+                $startTimeFormatted = \Carbon\Carbon::parse($b->start_time)->format('H:i');
+                $endTimeFormatted   = \Carbon\Carbon::parse($b->end_time)->format('H:i');
 
-                // ✅ Mail al estudiante
-                $htmlStudent = "
-        <h3>✅ Tutoría aceptada</h3>
-        <p><b>Booking:</b> #{$bookingId}</p>
-        <p><b>Materia:</b> " . e($info['subject_name']) . "</p>
-        <p><b>Tutor:</b> " . e($info['tutor_name'] ?: '-') . "</p>
-        <p><b>Horario:</b> " . e($b->start_time) . " - " . e($b->end_time) . "</p>
-        <p><b>Meet:</b> <a href='{$meet}'>" . e($meet) . "</a></p>
-        <p>Ya puedes ingresar cuando corresponda.</p>
-    ";
-
-                $this->mailHtml(
-                    $info['student_email'],
-                    "Tutoría aceptada #{$bookingId}",
-                    $htmlStudent
-                );
-
-                // ✅ Mail al tutor (confirmación)
-                $htmlTutor = "
-        <h3>✅ Aceptaste la tutoría</h3>
-        <p><b>Booking:</b> #{$bookingId}</p>
-        <p><b>Materia:</b> " . e($info['subject_name']) . "</p>
-        <p><b>Estudiante:</b> " . e($info['student_name'] ?: '-') . "</p>
-        <p><b>Teléfono:</b> " . e($info['student_phone'] ?: '-') . "</p>
-        <p><b>Horario:</b> " . e($b->start_time) . " - " . e($b->end_time) . "</p>
-        <p><b>Meet:</b> <a href='{$meet}'>" . e($meet) . "</a></p>
-    ";
-
-                $this->mailHtml(
-                    $info['tutor_email'],
-                    "Confirmación: tutoría aceptada #{$bookingId}",
-                    $htmlTutor
-                );
+                foreach ($emails as $email) {
+                    Mail::to($email)->queue(new TutoriaInstanteAceptada(
+                        bookingId: $bookingId,
+                        subjectName: $info['subject_name'],
+                        tutorName: $info['tutor_name'] ?? '-',
+                        studentName: $info['student_name'] ?? '-',
+                        startTime: $startTimeFormatted,
+                        endTime: $endTimeFormatted,
+                        meetingLink: $b->meeting_link ?: env('MEET_GENERIC_LINK', 'https://meet.google.com/upy-mxim-nrm')
+                    ));
+                }
             }
 
             ////////////////////////////////////////////////////////////////////////////////
