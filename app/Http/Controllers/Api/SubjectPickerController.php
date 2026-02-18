@@ -2011,7 +2011,7 @@ class SubjectPickerController extends Controller
                 // Llamar al servicio (DI rápido con app())
                 $slotBookingService = app(SlotBookingService::class);
 
-                $meetingLink = $slotBookingService->generarlink($bookingModel);
+                $meetingLink = $slotBookingService->generarlink($bookingModel) ?: 'http://meet.google.com/upy-mxim-nrm';
 
                 if (!empty($meetingLink)) {
                     DB::table('slot_bookings')
@@ -2028,7 +2028,7 @@ class SubjectPickerController extends Controller
                 'booking_id' => $bookingId,
                 'message' => 'Comprobante subido. Esperando aprobación del tutor.',
                 'receipt_url' => '/storage/' . ltrim($imageUrl, '/'),
-                'meeting_link' => $genericMeet,
+                'meeting_link' => $meetingLink,
             ]);
         });
     }
