@@ -926,8 +926,8 @@
 
         // ✅ offsets para que funcione igual en cualquier dispositivo
         let serverOffsetMs = 0; // server_now_ms - Date.now()
-      
- 
+
+
 
         // ✅ se llama cada vez que recibes JSON del backend con expires_at_ms y server_now_ms
         function applyBatchTimingFromJson(json) {
@@ -1162,8 +1162,8 @@
             // fetchBatchStatus(batchId);
 
             showWaitScreen();
-fetchBatchStatus(batchId);
-startBatchExpireCountdown();
+            fetchBatchStatus(batchId);
+            startBatchExpireCountdown();
 
             pollBatchTimer = setInterval(() => fetchBatchStatus(batchId), 60000);
         }
@@ -1355,6 +1355,64 @@ startBatchExpireCountdown();
         });
 
         /* -------------------- START BATCH -------------------- */
+        // nextBtn.addEventListener('click', async () => {
+        //     if (currentBatchId) {
+        //         alert('Ya hay una búsqueda activa.');
+        //         return;
+        //     }
+        //     if (!selectedSubjectId) {
+        //         alert('Selecciona una materia primero.');
+        //         return;
+        //     }
+
+        //     nextBtn.disabled = true;
+        //     nextBtn.classList.add('sp-disabled');
+        //     startOut.textContent = 'Creando batch...';
+
+        //     const res = await fetch(`${API}/batches/start`, {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //             'Accept': 'application/json',
+        //             ...(csrf() ? {
+        //                 'X-CSRF-TOKEN': csrf()
+        //             } : {}),
+        //         },
+        //         credentials: 'same-origin',
+        //         body: JSON.stringify({
+        //             subject_id: selectedSubjectId
+        //         }),
+        //     });
+
+        //     const json = await res.json().catch(() => ({}));
+        //     startOut.textContent = JSON.stringify(json, null, 2);
+
+        //     if (!res.ok || !json.success || !json.batch_id) {
+        //         alert(json.message || `Error al iniciar (HTTP ${res.status})`);
+        //         nextBtn.disabled = false;
+        //         nextBtn.classList.remove('sp-disabled');
+        //         return;
+        //     }
+
+        //     const batchId = json.batch_id;
+
+        //     // Dispara envío de emails (no bloquea la UI)
+        //     const res = await fetch(`${API}/batches/${batchId}/dispatch`, {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //             'Accept': 'application/json',
+        //             ...(csrf() ? {
+        //                 'X-CSRF-TOKEN': csrf()
+        //             } : {}),
+        //         },
+        //         credentials: 'same-origin',
+        //     }).catch(() => {
+        //         /* opcional: log */ });
+
+        //     // arrancar wait
+        //     startFlowWithBatch(batchId);
+        // });
         nextBtn.addEventListener('click', async () => {
             if (currentBatchId) {
                 alert('Ya hay una búsqueda activa.');
@@ -1369,34 +1427,72 @@ startBatchExpireCountdown();
             nextBtn.classList.add('sp-disabled');
             startOut.textContent = 'Creando batch...';
 
-            const res = await fetch(`${API}/batches/start`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    ...(csrf() ? {
-                        'X-CSRF-TOKEN': csrf()
-                    } : {}),
-                },
-                credentials: 'same-origin',
-                body: JSON.stringify({
-                    subject_id: selectedSubjectId
-                }),
-            });
+            // 1) START
+            let resStart;
+            try {
+                console.log("✅ script cargado");
 
-            const json = await res.json().catch(() => ({}));
-            startOut.textContent = JSON.stringify(json, null, 2);
-
-            if (!res.ok || !json.success || !json.batch_id) {
-                alert(json.message || `Error al iniciar (HTTP ${res.status})`);
+                resStart = await fetch(`${API}/batches/start`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        ...(csrf() ? {
+                            'X-CSRF-TOKEN': csrf()
+                        } : {}),
+                    },
+                    credentials: 'same-origin',
+                    body: JSON.stringify({
+                        subject_id: selectedSubjectId
+                    }),
+                });
+            } catch (e) {
+                alert('No se pudo conectar con el servidor.');
                 nextBtn.disabled = false;
                 nextBtn.classList.remove('sp-disabled');
                 return;
             }
 
-            // arrancar wait
-            startFlowWithBatch(json.batch_id);
+            const jsonStart = await resStart.json().catch(() => ({}));
+            startOut.textContent = JSON.stringify(jsonStart, null, 2);
+
+            if (!resStart.ok || !jsonStart.success || !jsonStart.batch_id) {
+                alert(jsonStart.message || `Error al iniciar (HTTP ${resStart.status})`);
+                nextBtn.disabled = false;
+                nextBtn.classList.remove('sp-disabled');
+                return;
+            }
+
+            const batchId = Number(jsonStart.batch_id);
+            currentBatchId = batchId;
+            console.log("jsonStart:", jsonStart);
+            console.log("batch_id raw:", jsonStart?.batch_id, "as Number:", Number(jsonStart?.batch_id));
+            // 2) SEND EMAILS (fire-and-forget)
+            fetch(`${API}/batches/send-emails`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    ...(csrf() ? {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                            .getAttribute('content'),
+                    } : {}),
+                },
+                credentials: 'same-origin',
+                body: JSON.stringify({
+                    batch_id: batchId,
+                    limit: 10
+                }),
+            }).catch(() => {
+                // opcional: console.warn('send-emails failed');
+            });
+
+            // 3) ARRANCA FLOW
+            startFlowWithBatch(batchId);
         });
+
+
+
 
         /* -------------------- RESUME ACTIVE BATCH -------------------- */
         async function resumeActiveBatchIfAny() {
@@ -1409,7 +1505,7 @@ startBatchExpireCountdown();
 
             const json = await res.json().catch(() => ({}));
             if (!res.ok || !json.active || !json.batch_id) return false;
-applyBatchTimingFromJson(json);
+            applyBatchTimingFromJson(json);
             selectedSubjectId = Number(json.subject_id || 0);
             startOut.textContent = `Batch activo detectado (ID ${json.batch_id}). Reanudando...`;
 

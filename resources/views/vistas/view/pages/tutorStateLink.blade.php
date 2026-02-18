@@ -365,6 +365,37 @@
                 </div>
             </div>
 
+            <!-- ESTADO NUEVO: paying (elegido, esperando pago) -->
+            <div id="state-paying" class="state-container hidden-state fade-in">
+                <div class="icon-wrapper">
+                    <div class="ping-animation" style="background-color: var(--terciary-color2)"></div>
+                    <div class="icon-bg" style="background-color: #FB850015; border: 2px solid #FB850030">
+                        <svg width="56" height="56" viewBox="0 0 24 24" fill="none"
+                            stroke="var(--terciary-color2)" stroke-width="2.5" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <path d="M20 7l-8-4-8 4v10l8 4 8-4V7z"></path>
+                            <path d="M12 22V12"></path>
+                            <path d="M20 7l-8 5-8-5"></path>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="text-block">
+                    <h2 class="title">¡Fuiste elegido!</h2>
+                    <p class="description">El estudiante está realizando el pago. Mantente en línea, en breve podrás iniciar
+                        la tutoría.</p>
+                </div>
+
+                <div class="status-badge"
+                    style="color: var(--terciary-color2); background-color: #FB850010; border: 1px solid #FB850020">
+                    <svg class="animate-spin" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+                    </svg>
+                    <span>ESPERANDO COMPROBANTE...</span>
+                </div>
+            </div>
+
             <!-- ESTADO 2: paid (solo entrar al aula) -->
             <div id="state-paid" class="state-container hidden-state fade-in">
                 <div class="icon-wrapper">
@@ -467,6 +498,7 @@
     <!-- 🔧 Mock (solo para pruebas; puedes borrar en producción) -->
     <div class="mock-container">
         <button onclick="setState('choosing')" class="btn-mock">Esperando</button>
+        <button onclick="setState('paying')" class="btn-mock">Elegido (Esperando pago)</button>
         <button onclick="setState('payment_phase')" class="btn-mock">Listo (Ir a clase)</button>
         <button onclick="setState('rejected')" class="btn-mock">Elegido Otro</button>
         <button onclick="setState('expired')" class="btn-mock">Solicitud Expirada</button>
@@ -481,10 +513,11 @@
         const meetLink = @json($meeting_link ?? null); // cuando accepted
 
         // ================== UI STATE ==================
-        const STATES = ['choosing', 'payment_phase', 'rejected', 'expired'];
+        const STATES = ['choosing', 'paying', 'paid', 'rejected', 'expired'];
 
         function hideAllStates() {
             document.getElementById('state-choosing').classList.add('hidden-state');
+            document.getElementById('state-paying').classList.add('hidden-state');
             document.getElementById('state-paid').classList.add('hidden-state');
             document.getElementById('state-rejected').classList.add('hidden-state');
             document.getElementById('state-expired').classList.add('hidden-state');
@@ -493,19 +526,19 @@
 
 
         function setState(s) {
-            // accepted lo tratamos como payment_phase para mostrar "state-paid"
-            if (s === 'accepted') s = 'payment_phase';
-
+            // normaliza
             if (!STATES.includes(s)) s = 'choosing';
+
             hideAllStates();
 
-            document.getElementById(`state-${s === 'payment_phase' ? 'paid' : s}`)
-                .classList.remove('hidden-state');
+            // mostrar el correcto
+            document.getElementById(`state-${s}`).classList.remove('hidden-state');
 
             if (s === 'expired') {
                 sessionStorage.removeItem('waitlist_reloaded');
             }
         }
+
 
         const btnGoMeet = document.getElementById('btnGoMeet');
 
@@ -648,8 +681,8 @@
                 return;
             }
             if (ui === 'payment_phase' || ui === 'accepted') {
-                setState('payment_phase');
-
+                const hasReceipt = !!(json.payment && json.payment.has_receipt);
+                setState(hasReceipt ? 'paid' : 'paying');
                 return;
             }
 
@@ -825,9 +858,12 @@
 
         // ================== INIT ==================
         // Si el backend manda expired, muestra expired. Si no, muestra lo que venga.
-        const init = (initialStatus === 'accepted') ? 'payment_phase' : initialStatus;
+        let init = initialStatus;
+        if (init === 'accepted' || init === 'payment_phase') {
+            // en carga inicial, si aún no sabemos has_receipt, mostramos paying por defecto
+            init = 'paying';
+        }
         setState(init === 'expired' ? 'expired' : init);
-
 
         // render inmediato
         renderCountdown();

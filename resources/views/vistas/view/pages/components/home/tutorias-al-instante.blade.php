@@ -18,7 +18,7 @@
             y resuelve tus preguntas sin esperas ni citas largas.
         </p>
 
-        <a  class="instant-btn" style="cursor: pointer" href="{{ route('student.tutors.instant') }}">
+        <a  class="instant-btn" style="cursor: pointer" href="{{ route('student.subjects.pick') }}">
             <svg width="18" height="18" viewBox="0 0 24 24">
                 <path d="M13 2L3 14H11L9 22L21 10H13Z" fill="currentColor" />
             </svg>
