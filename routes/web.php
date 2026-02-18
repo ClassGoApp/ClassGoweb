@@ -325,7 +325,7 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
             Route::post('/batches/{batch}/dispatch', [SubjectPickerController::class, 'dispatchEmails'])
                 ->name('batches.dispatch');
             Route::get('/batches/{batch}/dispatch', [SubjectPickerController::class, 'dispatchEmails'])
-                ->name('batches.dispatch');
+                ->name('batches.dispatchd');
             Route::post('/batches/{batch}/choose', [SubjectPickerController::class, 'chooseTutor'])
                 ->name('batches.choose');
 
