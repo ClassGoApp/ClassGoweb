@@ -22,6 +22,9 @@ use Illuminate\Support\Str;
 
 use App\mail\TutoriaInstanteAceptada;
 
+use App\Models\SlotBooking;
+use App\Services\SlotBookingService;
+
 class SubjectPickerController extends Controller
 {
 
@@ -543,7 +546,7 @@ class SubjectPickerController extends Controller
                 'active_subject_id' => $subjectId,
             ]);
 
-           
+
             $availableNow = $this->getTutorsAvailableNow($subjectId);
 
             $seen = [];
@@ -609,7 +612,7 @@ class SubjectPickerController extends Controller
     //         if (!$batch) {
     //             return response()->json(['ok' => false, 'message' => 'Batch no existe'], 404);
     //         }
-    
+
     //         $subjectId = (int) $batch->subject_id;
     //     $availableNow = $this->getTutorsAvailableNow($subjectId);
 
@@ -716,7 +719,7 @@ class SubjectPickerController extends Controller
 
 
 
-  
+
 
     public function active()
     {
@@ -1104,7 +1107,7 @@ class SubjectPickerController extends Controller
     }
 
 
-    
+
 
 
     // ✅ Cursor reusable para acceptedTutors
@@ -1985,16 +1988,39 @@ class SubjectPickerController extends Controller
             );
 
             // meet link genérico (opcional)
-            $genericMeet = 'https://meet.google.com/upy-mxim-nrm';
-            if (empty($b->meeting_link)) {
-                DB::table('slot_bookings')
-                    ->where('id', $bookingId)
-                    ->update([
-                        'meeting_link' => $genericMeet,
-                        //'updated_at' => now(),
-                    ]);
-            } else {
-                $genericMeet = $b->meeting_link;
+            // $genericMeet = ;
+            // if (empty($b->meeting_link)) {
+            //     DB::table('slot_bookings')
+            //         ->where('id', $bookingId)
+            //         ->update([
+            //             'meeting_link' => $genericMeet,
+            //             //'updated_at' => now(),
+            //         ]);
+            // } else {
+            //     $genericMeet = $b->meeting_link;
+            // }
+            $meetingLink = $b->meeting_link; // $b viene de DB::table, puede ser null
+
+            if (empty($meetingLink)) {
+
+                // Cargar booking como Eloquent (para usar tu service tal cual lo tienes)
+                $bookingModel = SlotBooking::where('id', $bookingId)
+                    ->lockForUpdate()
+                    ->first();
+
+                // Llamar al servicio (DI rápido con app())
+                $slotBookingService = app(SlotBookingService::class);
+
+                $meetingLink = $slotBookingService->generarlink($bookingModel);
+
+                if (!empty($meetingLink)) {
+                    DB::table('slot_bookings')
+                        ->where('id', $bookingId)
+                        ->update([
+                            'meeting_link' => $meetingLink,
+                            // 'updated_at' => now(),
+                        ]);
+                }
             }
 
             return response()->json([
