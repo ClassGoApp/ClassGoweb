@@ -16,5 +16,6 @@ class VerifyCsrfToken extends Middleware
         'api/verify-email',
         'tutor/waitlist/accept*',
         'tutor/waitlist/reject*',
+        'batches/send-emails',
     ];
 }

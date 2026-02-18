@@ -1138,34 +1138,34 @@
 
     <script>
         /* ========================================================================
-                          CLASSGO | Student - Instant Tutors Script
-                          ------------------------------------------------------------------------
-                          FLUJO:
-                          1) Cargar Categorías/Materias
-                          2) Seleccionar Materia (solo una) + mostrar FAB
-                          3) Crear Batch + mostrar Radar + polling:
-                              - status (cada 60s)
-                              - tutores aceptados (cada 5s)
-                              - countdown expiración (cada 1s)
-                          4) Mostrar cards de tutores + reservar + abrir checkout (flip)
-                          5) Subir comprobante + pagar + polling booking (cada 2.5s)
-                          6) Nueva solicitud / reset
+                                  CLASSGO | Student - Instant Tutors Script
+                                  ------------------------------------------------------------------------
+                                  FLUJO:
+                                  1) Cargar Categorías/Materias
+                                  2) Seleccionar Materia (solo una) + mostrar FAB
+                                  3) Crear Batch + mostrar Radar + polling:
+                                      - status (cada 60s)
+                                      - tutores aceptados (cada 5s)
+                                      - countdown expiración (cada 1s)
+                                  4) Mostrar cards de tutores + reservar + abrir checkout (flip)
+                                  5) Subir comprobante + pagar + polling booking (cada 2.5s)
+                                  6) Nueva solicitud / reset
 
-                          ENDPOINTS:
-                          - GET  /student/subject-groups/categorias-materias
-                          - POST /student/batches/start
-                          - GET  /student/batches/active
-                          - GET  /student/batches/{batchId}/status
-                          - GET  /student/batches/{batchId}/accepted-tutors?limit=50
-                          - POST /student/batches/{batchId}/reserve
-                          - POST /student/bookings/{bookingId}/receipt
-                          - GET  /student/bookings/{bookingId}/status
-                          - GET  /student/bookings/{bookingId}/meet
+                                  ENDPOINTS:
+                                  - GET  /student/subject-groups/categorias-materias
+                                  - POST /student/batches/start
+                                  - GET  /student/batches/active
+                                  - GET  /student/batches/{batchId}/status
+                                  - GET  /student/batches/{batchId}/accepted-tutors?limit=50
+                                  - POST /student/batches/{batchId}/reserve
+                                  - POST /student/bookings/{bookingId}/receipt
+                                  - GET  /student/bookings/{bookingId}/status
+                                  - GET  /student/bookings/{bookingId}/meet
 
-                          NOTAS:
-                          - fetchAcceptedTutors() se pausa si state.activeHeroId existe (checkout abierto)
-                          - closeHero(true) debe existir en otro lado o aquí (si no, revienta)
-                        ======================================================================== */
+                                  NOTAS:
+                                  - fetchAcceptedTutors() se pausa si state.activeHeroId existe (checkout abierto)
+                                  - closeHero(true) debe existir en otro lado o aquí (si no, revienta)
+                                ======================================================================== */
 
 
         /* ========================================================================
@@ -1318,14 +1318,14 @@
 
         <div class="subject-grid">
           ${items.map(sub => `
-                                    <button class="subject-card-btn"
-                                      onclick="seleccionarMateria(this, ${sub.id}, '${sub.name.replaceAll("'", "\\'")}')">
-                                      <div class="subject-initial">${sub.name.charAt(0)}</div>
-                                      <div class="subject-meta">
-                                        <div class="subject-title">${sub.name}</div>
-                                      </div>
-                                    </button>
-                                  `).join('')}
+                                            <button class="subject-card-btn"
+                                              onclick="seleccionarMateria(this, ${sub.id}, '${sub.name.replaceAll("'", "\\'")}')">
+                                              <div class="subject-initial">${sub.name.charAt(0)}</div>
+                                              <div class="subject-meta">
+                                                <div class="subject-title">${sub.name}</div>
+                                              </div>
+                                            </button>
+                                          `).join('')}
         </div>
       </section>
     `;
@@ -1690,7 +1690,26 @@
 
                 if (statusMsg) statusMsg.innerText = `Solicitud enviada. Notificando tutores (Batch #${batchId})...`;
                 startPolling(batchId);
-
+                fetch('/student/batches/send-emails', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                            ...(csrf ? {
+                                'X-CSRF-TOKEN': csrf
+                            } : {}),
+                        },
+                        credentials: 'same-origin',
+                        body: JSON.stringify({
+                            batch_id: batchId,
+                            limit: 10
+                        }),
+                    })
+                    .then(async r => {
+                        const t = await r.text();
+                        console.log('send-emails:', r.status, t);
+                    })
+                    .catch(err => console.error('send-emails network error:', err));
             } catch (e) {
                 console.error(e);
                 if (statusMsg) statusMsg.innerText = 'Error JS al iniciar la solicitud.';
@@ -1834,13 +1853,13 @@
               ${img ? `<img class="avatar" src="${escapeHtml(img)}" alt="${name}">` : ``}
 
               ${verified ? `
-                                        <span class="verified">
-                                          <svg viewBox="0 0 24 24" class="verified-icon">
-                                            <path d="M12 2l4 2 4 .6 1.4 4L22 12l-1.6 3.4L20 19l-4 .6-4 2-4-2-4-.6L3.6 15.4 2 12l1.4-3.4L4 4.6l4-.6 4-2z"/>
-                                            <path d="M9.5 12.5l1.7 1.7 3.8-3.8"/>
-                                          </svg>
-                                        </span>
-                                      ` : ``}
+                                                <span class="verified">
+                                                  <svg viewBox="0 0 24 24" class="verified-icon">
+                                                    <path d="M12 2l4 2 4 .6 1.4 4L22 12l-1.6 3.4L20 19l-4 .6-4 2-4-2-4-.6L3.6 15.4 2 12l1.4-3.4L4 4.6l4-.6 4-2z"/>
+                                                    <path d="M9.5 12.5l1.7 1.7 3.8-3.8"/>
+                                                  </svg>
+                                                </span>
+                                              ` : ``}
             </div>
           </div>
 
@@ -1940,8 +1959,8 @@
         }
 
         function openHero(id) {
-            hideRadarFully(); 
-            
+            hideRadarFully();
+
             if (state.activeHeroId && state.activeHeroId !== id) {
                 closeHero(true); // ⚠️ Debe existir
             }
