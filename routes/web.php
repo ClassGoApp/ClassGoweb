@@ -54,14 +54,34 @@ use App\Mail\TutoriaInstanteNotificacionMail;
 
 use Illuminate\Support\Facades\Mail;
 
+// Route::get('/probar-correo', function () {
+
+//     Mail::send('emails.confirmationTutorInstant', [], function ($message) {
+//         $message->to('ronaldflores200403@gmail.com')
+//             ->subject('Prueba de diseño');
+//     });
+
+//     return 'Correo enviado';
+// });
+
 Route::get('/probar-correo', function () {
 
-    Mail::send('emails.confirmationTutorInstant', [], function ($message) {
-        $message->to('ronaldflores200403@gmail.com')
-            ->subject('Prueba de diseño');
+    $to = 'ronaldflores200403@gmail.com';
+
+    $random = "hola mundo";
+    $lines = [
+        "Hola 👋",
+        "Tu código random es: {$random}",
+        "Hora servidor: " . now()->toDateTimeString(),
+        "Fin ✅",
+    ];
+
+    Mail::raw(implode("\n", $lines), function ($message) use ($to, $random) {
+        $message->to($to)
+            ->subject("Prueba random {$random}");
     });
 
-    return 'Correo enviado';
+    return "Correo enviado a {$to} (código: {$random})";
 });
 
 
@@ -324,7 +344,7 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
 
             Route::post('/batches/{batch}/dispatch', [SubjectPickerController::class, 'dispatchEmails'])
                 ->name('batches.dispatch');
-            Route::get('/batches/{batch}/dispatch', [SubjectPickerController::class, 'dispatchEmails'])
+            Route::get('/batches/{batch}/dispatch',     [SubjectPickerController::class, 'dispatchEmails'])
                 ->name('batches.dispatchd');
             Route::post('/batches/{batch}/choose', [SubjectPickerController::class, 'chooseTutor'])
                 ->name('batches.choose');
