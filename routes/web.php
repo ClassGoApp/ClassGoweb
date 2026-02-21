@@ -54,6 +54,11 @@ use App\Mail\TutoriaInstanteNotificacionMail;
 
 use Illuminate\Support\Facades\Mail;
 
+
+use App\Http\Controllers\pruebaController;
+
+Route::get('/prueba/{id}', [pruebaController::class, 'debugMeetLink']);
+
 // Route::get('/probar-correo', function () {
 
 //     Mail::send('emails.confirmationTutorInstant', [], function ($message) {
