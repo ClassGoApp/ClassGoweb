@@ -104,12 +104,13 @@
                             </tbody>
                         </table>
 
-                        {{ $cupones->links('pagination.custom') }}
+                        
                     @else
                         <x-no-record :image="asset('images/empty.png')" :title="__('general.no_record_title')" />
                     @endif
                 </div>
             </div>
+            {{ $cupones->links('pagination.custom') }}
         </div>
         <div wire:ignore.self class="modal fade tb-addonpopup" id="tb-add-user" aria-labelledby="tb_coupon_label"
             role="dialog" aria-hidden="true">

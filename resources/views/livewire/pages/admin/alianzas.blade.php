@@ -156,12 +156,12 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        {{ $alianzas->links('pagination.custom') }}
                     @else
                         <x-no-record :image="asset('images/empty.png')" :title="__('general.no_record_title')"/>
                     @endif
                 </div>
             </div>
+            {{ $alianzas->links('pagination.custom') }}
         </div>
     </div>
 </main>
