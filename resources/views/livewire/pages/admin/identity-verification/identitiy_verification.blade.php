@@ -62,7 +62,7 @@
                         </thead>
                         <tbody>
                             @foreach($users as $single)
-                            <tr>
+                            <tr wire:key="identity-{{ $single->id }}">
                                 <td data-label="{{ __('#' )}}"><span>{{ $single?->id }}</span></td>
                                 <td data-label="{{ __('Name' )}}">
                                     <div class="tb-varification_userinfo">
