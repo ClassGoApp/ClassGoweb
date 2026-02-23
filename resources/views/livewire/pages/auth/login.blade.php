@@ -89,7 +89,7 @@ new #[Layout('layouts.guest')] class extends Component
             'terms'          => ['accepted'],
             'phone_number'   => $this->isProfilePhoneMendatory ? ['required'] : ['nullable'],
         ], [
-            'reg_password.confirmed' => __('auth.password_confirmation_mismatch')
+            'reg_password.confirmed' => __('Las contraseñas no coinciden'),
         ]);
 
         $data = [
@@ -476,7 +476,7 @@ new #[Layout('layouts.guest')] class extends Component
                             <svg class="cg-icon" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
                             <input type="email" wire:model="reg_email" placeholder="Correo electrónico" />
                         </div>
-                        @error('reg_email') <span class="cg-error-text">{{ $message }}</span> @enderror
+                        @error("reg_email") <span class="cg-error-text">El email ya esta en uso</span> @enderror
                     </div>
 
                     @if($isProfilePhoneMendatory)
