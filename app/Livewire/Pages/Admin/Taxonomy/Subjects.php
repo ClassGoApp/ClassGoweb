@@ -154,10 +154,8 @@ class Subjects extends Component
         $isDeleteRec = false;
         $subjectId  = $params['id'] ?? null;
         if ($subjectId) {
-            $subject = Subject::whereId($subjectId)->with(['subjectGroups' => function ($query) {
-                $query->with('slots');
-            }])->first();
-            if ($subject && $subject->subjectGroups()->whereHas('slots')->exists()) {
+            $subject = Subject::whereId($subjectId)->with('slotBookings')->first();
+            if ($subject && $subject->slotBookings()->exists()) {
                 $this->dispatch('showAlertMessage', type: 'error', message: __('general.unable_to_delete_subject'));
                 return;
             }
@@ -165,7 +163,7 @@ class Subjects extends Component
         } elseif (!empty($this->selectedSubjects)) {
             $subjects = Subject::whereIn('id', $this->selectedSubjects)->get();
             foreach ($subjects as $subject) {
-                if ($subject->subjectGroups()->whereHas('slots')->exists()) {
+                if ($subject->slotBookings()->exists()) {
                     $this->dispatch('showAlertMessage', type: 'error', message: __('general.unable_to_delete_subject'));
                     return;
                 }
