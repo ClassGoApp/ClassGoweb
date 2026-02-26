@@ -1,5 +1,15 @@
 <!--Los estilos de reserva.blade.php se encuentran en tutor-perfil.css-->
 <div>
+    @if ($showModal)
+        <style>
+            .tutor-actions-card,
+            .tutor-pay-btn-box,
+            .favorite-button-container-blue,
+            .tutor-btn-reservar {
+                display: none !important;
+            }
+        </style>
+    @endif
     <div class="section-reserva">
         {{-- Mensaje de éxito tras reservar --}}
         @if (session()->has('success_message'))
