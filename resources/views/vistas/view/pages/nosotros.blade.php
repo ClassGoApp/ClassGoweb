@@ -67,44 +67,84 @@
                         <span data-translate="alianzas_Classgo"></span>
                     </p>
                 </div>
-
-                <div class="alianzas-eventos-grid">
+                <!-- Grid de las alianzas -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
                     @foreach ($alianzas as $alianza)
+                        <!--card de alianzas-->
                         <div class="fade-up">
-                            <div class="alianza-evento-card animate-in">
-                                @if ($alianza->imagen)
-                                    @php
-                                        $imagePath = storage_path('app/public/' . $alianza->imagen);
-                                        $imageExists = file_exists($imagePath);
-                                    @endphp
+                            <div class="alliance-card" id="card-{{ $alianza->id }}">
+                                <div class="logo-circle-container">
+                                    <div class="logo-circle" onclick="window.open('{{ $alianza->enlace }}', '_blank')">
+                                        @if ($alianza->imagen)
+                                            @php
+                                                $imagePath = storage_path('app/public/' . $alianza->imagen);
+                                                $imageExists = file_exists($imagePath);
+                                            @endphp
 
-                                    @if ($imageExists)
+                                            @if ($imageExists)
+                                                @php
+                                                    $imageData = base64_encode(file_get_contents($imagePath));
+                                                    $imageType = pathinfo($imagePath, PATHINFO_EXTENSION);
+                                                    $imageSrc = 'data:image/' . $imageType . ';base64,' . $imageData;
+                                                @endphp
+                                                <img src="{{ $imageSrc }}" alt="{{ $alianza->titulo }}">
+                                            @else
+                                                <img src="{{ asset('storage/' . $alianza->imagen) }}" alt="{{ $alianza->titulo }}">
+                                            @endif
+                                        @else
+                                            <img src="{{ asset('storage/' . $alianza->imagen) }}" alt="{{ $alianza->titulo }}">
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="front-footer">
+                                    <h3 class="alliance-name-front">{{ $alianza->titulo }}</h3>
+                                    <button class="btn-base btn-more" onclick="toggleDetails('card-{{ $alianza->id }}')">
+                                        <i class="fas fa-plus-circle text-[10px]"></i> Ver detalles
+                                    </button>
+                                </div>
+                                <!-- CAPA DE DESCRIPCIÓN  -->
+                                <div class="detail-layer">
+                                    @if ($alianza->imagen)
                                         @php
-                                            $imageData = base64_encode(file_get_contents($imagePath));
-                                            $imageType = pathinfo($imagePath, PATHINFO_EXTENSION);
-                                            $imageSrc = 'data:image/' . $imageType . ';base64,' . $imageData;
+                                            $imagePath = storage_path('app/public/' . $alianza->imagen);
+                                            $imageExists = file_exists($imagePath);
                                         @endphp
-                                        <img src="{{ $imageSrc }}" alt="{{ $alianza->titulo }}"
-                                            class="client-logo alianza-evento-imagen">
+
+                                        @if ($imageExists)
+                                            @php
+                                                $imageData = base64_encode(file_get_contents($imagePath));
+                                                $imageType = pathinfo($imagePath, PATHINFO_EXTENSION);
+                                                $imageSrc = 'data:image/' . $imageType . ';base64,' . $imageData;
+                                            @endphp
+                                            <img src="{{ $imageSrc }}" alt="{{ $alianza->titulo }}"
+                                                class="detail-watermark">
+                                        @else
+                                            <img src="{{ asset('storage/' . $alianza->imagen) }}" alt="{{ $alianza->titulo }}"
+                                                class="detail-watermark">
+                                        @endif
                                     @else
                                         <img src="{{ asset('storage/' . $alianza->imagen) }}" alt="{{ $alianza->titulo }}"
-                                            class="client-logo alianza-evento-imagen">
+                                            class="detail-watermark">
                                     @endif
-                                    {{-- <img 
-                            src="{{ $alianza->imagen ? asset('storage/' . $alianza->imagen) : asset('images/tutors/default.png') }}" 
-                            alt="Imagen de {{ $alianza->titulo }}" 
-                            class="client-logo alianza-evento-imagen"> --}}
-                                @else
-                                    <img src="{{ asset('storage/' . $alianza->imagen) }}" alt="{{ $alianza->titulo }}"
-                                        class="client-logo alianza-evento-imagen">
-                                @endif
-
-                                <div class="alianza-evento-info">
-                                    <h3>{{ $alianza->titulo }}</h3>
-                                    <p class="alianza-descripcion">{{ $alianza->descripcion }}</p>
-                                    <button class="btn-blanco" onclick="window.open('{{ $alianza->enlace }}', '_blank')">
-                                        Visitar sitio
-                                    </button>
+                                    <div class="detail-content">
+                                        <span class="detail-tag">Información Detallada</span>
+                                        <h3 class="mt-1" style="font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 1.3rem; color: var(--dark-teal); text-align: center; line-height: 1.2;">
+                                            {{ $alianza->titulo }}
+                                        </h3>
+                                        
+                                        <div class="description-text">
+                                            {{ $alianza->descripcion }}
+                                        </div>
+                                        
+                                        <div class="flex flex-col w-full px-4 mt-auto">
+                                            <a onclick="window.open('{{ $alianza->enlace }}', '_blank')" target="_blank" class="btn-base btn-visit shadow-xl">
+                                                Visitar sitio oficial <i class="fas fa-external-link-alt ml-2 text-[10px]"></i>
+                                            </a>
+                                            <button class="btn-base btn-return mx-auto" onclick="toggleDetails('card-{{ $alianza->id }}')">
+                                                Regresar
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -207,125 +247,19 @@
                     </div>
                 @endforeach
             </div>
-
-
+            
     </section>
-    <style>
-        /* =========================================
-        ESTILOS DE ESTRUCTURA
-        ========================================= */
-        
-        /* Clase para el CEO (Orden 1) */
-        .team-row-centered {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            margin-bottom: 20px;
-        }
-
-        /* Flexbox */
-        .team-grid {
-            display: flex;             
-            flex-wrap: wrap;           
-            justify-content: center;    
-            gap: 30px;                  
-            width: 100%;
-            max-width: 1200px;          
-            margin: 0 auto;           
-        }
-
-        .team-member {
-            /* Controlamos el ancho de cada tarjeta */
-            flex: 0 0 auto;             
-            width: 250px;               
-            text-align: center;
-            position: relative; 
-        }
-
-        /* Ajuste responsivo para móviles: que ocupen todo el ancho si la pantalla es muy pequeña */
-        @media (max-width: 600px) {
-            .team-member {
-                width: 100%;
-                max-width: 300px;
+    {{-- estilos en nosotros.css --}}
+    <script>
+        /// ===========================
+        /// FUNCIONALIDAD DE LAS TARJETAS DE ALIANZAS
+        /// ===========================
+        function toggleDetails(id) {
+            const card = document.getElementById(id);
+            if (card) {
+                card.classList.toggle('is-active');
             }
         }
-
-        .member-item {
-            position: relative; 
-            display: inline-block; 
-            margin-bottom: 15px;
-        }
-        
-        /* 1. El contenedor del enlace */
-        .member-link {
-            position: absolute;
-            bottom: 0;
-            right: 0; 
-            
-            width: 40px; 
-            height: 40px;
-            
-            background-color: #ffffff; 
-            border-radius: 50%; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15); 
-            
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            
-            transition: transform 0.3s ease;
-            text-decoration: none;
-            z-index: 10;
-            overflow: hidden; 
-        }
-
-        .member-link:hover {
-            transform: translateY(-3px) scale(1.1);
-        }
-
-        /* 2. La imagen del logo */
-        .arrow-icon {
-            width: 80%; 
-            height: 80%;
-            object-fit: cover; 
-            border-radius: 50%; 
-            padding: 2px; 
-            background: transparent !important; 
-            display: block;
-        }
-
-        /* Estilos de la foto de perfil */
-        .member-photo-wrapper {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            overflow: hidden;
-            margin: 0 auto;
-            border: 4px solid #fff;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        .member-photo {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .member-name {
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 5px;
-            color: #333;
-        }
-
-        .member-title {
-            font-size: 0.9rem;
-            color: #666;
-            font-weight: 500;
-        }
-    </style>
-    <script>
         // ===========================
         // 1. ANIMACIONES AL HACER SCROLL
         // ===========================
