@@ -6,6 +6,9 @@ use App\Models\Scopes\ActiveScope;
 use App\Models\Subject;
 use App\Models\SubjectGroup;
 use Illuminate\View\View;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Collection;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
@@ -23,6 +26,8 @@ class Subjects extends Component
     public $search              = '';
     public $sortby              = 'asc';
     public $perPage             = 10;
+    // cache de todos los registros traídos para filtrado en memoria
+    public $allSubjects         = null;
     public $per_page_opt        = [];
     public $selectedSubjects    = [];
     public $selectAll           = false;
@@ -33,6 +38,11 @@ class Subjects extends Component
         $this->per_page_opt = perPageOpt();
         $per_page_record    = setting('_general.per_page_record');
         $this->perPage      = !empty( $per_page_record ) ? $per_page_record : 10;
+        // Cargar todos los subjects una sola vez para filtrar en memoria
+        $this->allSubjects = Subject::withoutGlobalScope(ActiveScope::class)
+            ->with('group')
+            ->orderBy('name')
+            ->get();
     }
 
     #[Layout('layouts.admin-app')]
@@ -49,35 +59,65 @@ class Subjects extends Component
 
     #[Computed]
     public function subjects(){
-        $subjects = Subject::withoutGlobalScope(ActiveScope::class)
-            ->with('group');
+        // Filtrado en memoria usando la colección previamente cargada
+        $collection = $this->filteredCollection;
 
-        if( !empty($this->search) ){
-            $subjects = $subjects->where(function($query){
-                $query->whereFullText('name', $this->search);
-                $query->orWhereFullText('description', $this->search);
-            });
+        // Paginación en el lado cliente usando LengthAwarePaginator
+        $total = $collection->count();
+        $currentPage = Paginator::resolveCurrentPage() ?: 1;
+        $perPage = $this->perPage ?: 10;
+        $items = $collection->slice(($currentPage - 1) * $perPage, $perPage)->values();
+
+        return new LengthAwarePaginator($items, $total, $perPage, $currentPage, [
+            'path' => Paginator::resolveCurrentPath(),
+        ]);
+    }
+
+    #[Computed]
+    public function filteredCollection(): Collection
+    {
+        $collection = $this->allSubjects ?? collect();
+
+        if (empty($this->search)) {
+            return $collection->values();
         }
 
-        return $subjects->orderBy('name', $this->sortby)->paginate($this->perPage);
+        $query = mb_strtolower(trim($this->search));
+        // dividir por espacios para respetar múltiples términos, pero permitiendo coincidencias parciales
+        $tokens = preg_split('/\s+/', $query);
+
+        $filtered = $collection->filter(function ($item) use ($tokens) {
+            $hay = mb_strtolower(($item->name ?? '') . ' ' . ($item->description ?? ''));
+            foreach ($tokens as $token) {
+                if ($token === '') {
+                    continue;
+                }
+                if (mb_strpos($hay, $token) === false) {
+                    return false;
+                }
+            }
+            return true;
+        });
+
+        return $filtered->values();
     }
 
     public function updatedPage($page)
     {
-        if($this->selectAll){
-            $this->selectedSubjects = $this->subjects->pluck('id')->toArray();
+        if ($this->selectAll) {
+            $this->selectedSubjects = $this->filteredCollection->pluck('id')->toArray();
         }
     }
 
 
-    public function updatedSearch()
+    public function updatedSearch() 
     {
         $this->resetPage();
     }
 
     public function updatedSelectAll($value){
         if($value){
-            $this->selectedSubjects = $this->subjects->pluck('id')->toArray();
+            $this->selectedSubjects = $this->filteredCollection->pluck('id')->toArray();
         }else{
             $this->selectedSubjects = [];
         }
