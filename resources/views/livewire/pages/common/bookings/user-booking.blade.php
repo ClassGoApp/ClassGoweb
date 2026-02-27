@@ -78,10 +78,6 @@
                             </a>
                         </div>
                         <div class="am-booking-filter-wrapper">
-                            <a class="am-booking-filter" href="#" data-bs-toggle="dropdown" aria-haspopup="true"
-                                aria-expanded="false" data-bs-auto-close="outside">
-                                <i class="am-icon-sliders-horiz-01"></i>
-                            </a>
                             <form class="am-itemdropdown_list am-filter-list dropdown-menu"
                                 aria-labelledby="dropdownMenuLink" x-on:submit.prevent x-data="{
                                     selectedValues: [],
@@ -240,8 +236,15 @@
                                     </thead>
                                     <tbody>
                                         @php
-                                            $startTime = \Carbon\Carbon::parse($selectedDay)->setTime(0, 0, 0);
-                                            $endTime = \Carbon\Carbon::parse($selectedDay)->setTime(23, 59, 0);
+                                            $startOfDay = \Carbon\Carbon::parse($selectedDay);
+                                            if (!empty($visibleStartTime)) {
+                                                [$vh, $vm] = explode(':', $visibleStartTime);
+                                                $vm = (int)$vm >= 30 ? 30 : 0; // redondear a la franja de 30 minutos
+                                                $startTime = $startOfDay->copy()->setTime((int)$vh, $vm, 0);
+                                            } else {
+                                                $startTime = $startOfDay->copy()->setTime(0, 0, 0);
+                                            }
+                                            $endTime = $startOfDay->copy()->setTime(23, 59, 0);
                                         @endphp
                                         @while ($startTime <= $endTime)
                                             @php
@@ -289,24 +292,31 @@
                                     <table class="am-booking-weekly-clander" style="min-width:900px; width:100%;">
                                         <thead>
                                             <tr>
-                                                @for ($date = $currentDate->copy()->startOfWeek($startOfWeek); $date->lte($currentDate->copy()->endOfWeek(getEndOfWeek($startOfWeek))); $date->addDay())
+                                                @php
+                                                    $weekStart = $currentDate->copy()->startOfWeek($startOfWeek);
+                                                    $weekEnd = $currentDate->copy()->endOfWeek(getEndOfWeek($startOfWeek));
+                                                    $d = $weekStart->copy();
+                                                @endphp
+                                                @while($d->lte($weekEnd))
                                                     <th style="min-width:120px;">
                                                         <div class="    -title">
-                                                            <strong>{{ $date->format('j F') }}</strong>
-                                                            <span>{{ $date->format('D') }}</span>
+                                                            <strong>{{ $d->format('j F') }}</strong>
+                                                            <span>{{ $d->format('D') }}</span>
                                                         </div>
                                                     </th>
-                                                @endfor
+                                                    @php $d->addDay(); @endphp
+                                                @endwhile
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                @for ($date = $currentDate->copy()->startOfWeek($startOfWeek); $date->lte($currentDate->copy()->endOfWeek(getEndOfWeek($startOfWeek))); $date->addDay())
+                                                @php $d = $weekStart->copy(); @endphp
+                                                @while($d->lte($weekEnd))
                                                     <td style="min-width:120px; vertical-align:top;">
                                                         <div class="am-weekly-slots_wrap">
                                                             <div class="am-weekly-slots">
-                                                                @if (isset($upcomingBookings[$date->toDateString()]))
-                                                                    @foreach ($upcomingBookings[$date->toDateString()] as $booking)
+                                                                @if (isset($upcomingBookings[$d->toDateString()]))
+                                                                    @foreach ($upcomingBookings[$d->toDateString()] as $booking)
                                                                         <div style="background:{{ $statusColors[strtolower(trim($booking['status']))] ?? '#FACC15' }} !important;color:black;padding:5px 8px;border-radius:5px;margin-bottom:5px; font-size:14px; cursor:pointer;"
                                                                             @click="openModal({
                                                                     estado: '{{ $statusMap[$booking['status_num']] ?? $booking['status_num'] }}',
@@ -330,7 +340,8 @@
                                                             </div>
                                                         </div>
                                                     </td>
-                                                @endfor
+                                                    @php $d->addDay(); @endphp
+                                                @endwhile
                                             </tr>
                                         </tbody>
                                     </table>
@@ -348,14 +359,14 @@
                                     </thead>
                                     <tbody>
                                         @php
-                                            $startOfCalendar = $currentDate
-                                                ->copy()
-                                                ->firstOfMonth()
-                                                ->startOfWeek($startOfWeek);
-                                            $endOfCalendar = $currentDate
-                                                ->copy()
-                                                ->lastOfMonth()
-                                                ->endOfWeek(getEndOfWeek($startOfWeek));
+                                            $origStart = $currentDate->copy()->firstOfMonth()->startOfWeek($startOfWeek);
+                                            $endOfCalendar = $currentDate->copy()->lastOfMonth()->endOfWeek(getEndOfWeek($startOfWeek));
+                                            if (!empty($earliestDate)) {
+                                                $earliest = \Carbon\Carbon::parse($earliestDate)->startOfWeek($startOfWeek);
+                                                $startOfCalendar = $earliest->gt($origStart) ? $earliest->copy() : $origStart->copy();
+                                            } else {
+                                                $startOfCalendar = $origStart->copy();
+                                            }
                                         @endphp
                                         @while ($startOfCalendar <= $endOfCalendar)
                                             <tr>
