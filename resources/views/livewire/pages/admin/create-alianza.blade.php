@@ -28,6 +28,20 @@
                                         </div>
                                         @enderror
                                     </div>
+                                    <div class="form-group">
+                                        <label class="tb-label">{{ __('alianza.categoria') }}</label>
+                                        <select class="form-control @error('categoria') tk-invalid @enderror" wire:model="categoria">
+                                            <option value=""> {{ __('general.select') }} </option>
+                                            @foreach($categoriaOptions as $key => $label)
+                                                <option value="{{ $key }}">{{ $label }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('categoria')
+                                        <div class="tk-errormsg">
+                                            <span>{{ $message }}</span>
+                                        </div>
+                                        @enderror
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="tk-blog-content">

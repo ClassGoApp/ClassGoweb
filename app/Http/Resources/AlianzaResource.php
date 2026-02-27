@@ -21,6 +21,7 @@ class AlianzaResource extends JsonResource
             'imagen'     => $this->imagen ? asset('storage/' . $this->imagen) : null,
             'enlace'     => $this->enlace,
             'descripcion'=> $this->when(isset($this->descripcion), $this->descripcion),
+            'categoria'  => $this->categoria,
             'activo'     => $this->activo,
             'orden'      => $this->orden,
             'created_at' => $this->created_at,

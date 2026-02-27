@@ -53,6 +53,7 @@
                                     </th>
                                     <th style="width: 100px;">{{ __('alianza.image') }}</th>
                                     <th style="width: 220px;">{{ __('general.title') }}</th>
+                                    <th style="width: 140px;">{{ __('alianza.categoria') }}</th>
                                     <th style="width: 240px;">{{ __('general.description') }}</th>
                                     <th style="width: 180px;">{{ __('alianza.link') }}</th>
                                     <th style="width: 90px;">{{ __('general.status') }}</th>
@@ -105,6 +106,9 @@
                                             <div class="tb-blog-title">
                                                 <h6 class="tb-title">{{ $single->titulo }}</h6>
                                             </div>
+                                        </td>
+                                        <td data-label="{{ __('alianza.categoria') }}">
+                                            <span>{{ $single->categoria ?? '—' }}</span>
                                         </td>
                                         <td data-label="{{ __('general.description') }}">
                                             <span class="fw-form-description">
