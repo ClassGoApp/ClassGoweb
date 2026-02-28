@@ -68,22 +68,31 @@
                     </p>
                 </div>
                 <!-- Grid de las alianzas agrupadas por categoría -->
+                <script>console.log('Categoría:', @json($alianzas));</script>
                 @php
                     $groups = $alianzas->groupBy(function($item) {
-                        return $item->categoria ?: 'Sin categoría';
+                        $cat = strtolower(trim($item->categoria ?: 'otros'));
+                        
+                        return match($cat) {
+                            'empresas' => 'Empresas',
+                            'colegio de profesionales' => 'Colegio de Profesionales',
+                            'universidad e instituto' => 'Universidad e Instituto',
+                            'otros' => 'Otros',
+                            default => ucwords($cat) // Para los "etc", pone la primera letra en mayúscula
+                        };
                     });
                     
-                    // Reordenar para que "Sin categoría" aparezca al final
-                    $orderedGroups = collect();
-                    foreach($groups as $categoria => $items) {
-                        if($categoria !== 'Sin categoría') {
-                            $orderedGroups[$categoria] = $items;
-                        }
-                    }
-                    if($groups->has('Sin categoría')) {
-                        $orderedGroups['Sin categoría'] = $groups['Sin categoría'];
-                    }
-                    $groups = $orderedGroups;
+                    // Reordenar para que "Otros" aparezca al final y el orden de las catergorias
+                    $groups = $groups->sortBy(function($items, $categoria){
+                        return match($categoria){
+                            'Colegio de Profesionales' => 1,
+                            'Universidad e Instituto' => 2,
+                            'Empresas' => 3,
+                            'Otros' => 999,
+                            default => 50
+                        };
+                    });
+                   
                 @endphp
 
                 @foreach($groups as $categoria => $items)
