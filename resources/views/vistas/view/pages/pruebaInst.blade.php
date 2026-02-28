@@ -37,9 +37,9 @@
         }
 
         .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem 1rem;
+            /* max-width: 1200px; */
+            margin: 0;
+            padding: 0;
         }
 
         .lock-scroll {
@@ -52,6 +52,14 @@
         }
 
         /* ================= HEADER & SEARCH ================= */
+        .head {
+            padding: .3rem clamp(1rem, 3vw, 3rem);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: white;
+        }
+
         header {
             display: flex;
             flex-direction: column;
@@ -112,14 +120,40 @@
         }
 
         /* ================= CATEGORÍAS (PILLS) ================= */
+        .cat-bar {
+            /* padding: clamp(1rem, 3vw, 3rem); */
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: white;
+        }
+
+        /* .category-bar {
+                display: flex;
+                align-items: center;
+                gap: .6rem;
+                overflow-x: auto;
+                padding: 1rem 0 1rem;
+                margin-bottom: 1rem;
+                scrollbar-width: none;
+            } */
+
         .category-bar {
             display: flex;
             align-items: center;
             gap: .6rem;
             overflow-x: auto;
-            padding: 1rem 0 1rem;
-            margin-bottom: 1rem;
+            /* padding: 1rem 0 1rem; */
+            margin-top: .4rem;
             scrollbar-width: none;
+            /* padding: 0 clamp(.5rem, 1vw, 3rem); */
+        }
+
+        .category-bar {
+            display: flex;
+            overflow-x: auto;
+            white-space: nowrap;
+            cursor: grab;
         }
 
         .category-bar::-webkit-scrollbar {
@@ -128,7 +162,7 @@
 
         .pill {
             appearance: none;
-            border: 1px solid #e2e8f0;
+            /* border: 1px solid #e2e8f0; */
             background: var(--white);
             color: #64748b;
             padding: .55rem 1rem;
@@ -156,7 +190,8 @@
 
         /* ================= GROUP HEADERS ================= */
         .subject-sections {
-            padding-bottom: 2rem;
+            /* padding-bottom: 2rem; */
+              padding: .3rem clamp(1rem, 3vw, 3rem);
         }
 
         .section-header {
@@ -172,7 +207,7 @@
             color: #94a3b8;
             text-transform: uppercase;
             letter-spacing: .32em;
-            white-space: nowrap;
+            white-space: wrap;
         }
 
         .section-divider {
@@ -182,7 +217,7 @@
         }
 
         /* ================= SUBJECT GRID ================= */
-        .subject-grid {
+        /* .subject-grid {
             display: flex;
             flex-direction: column;
             flex-wrap: wrap;
@@ -192,47 +227,103 @@
             overflow-y: hidden;
             align-content: flex-start;
             scrollbar-width: none;
+        } */
+
+        .subject-grid {
+    display: grid;
+    /* CAMBIO CLAVE: auto para que no reserve espacio vacío */
+    grid-template-rows: repeat(3, auto); 
+    grid-auto-flow: column;
+    grid-auto-columns: max-content;
+    gap: 5px;
+    
+    /* Limitamos el alto máximo para que no crezca infinito */
+    /* 3 filas de ~60px + gaps + paddings */
+    max-height: 220px; 
+    
+    overflow-x: auto;
+    overflow-y: hidden;
+    /* padding: 10px 5px; */
+    
+    /* Mantenemos el cursor de agarre */
+    cursor: grab;
+    scrollbar-width: none;
+}
+
+        /* Fuerza el scroll horizontal en las secciones de materias */
+        /* .subject-grid { */
+            /* display: flex; */
+            /* flex-direction: column; */
+            /* flex-wrap: wrap; */
+            /* height: 400px; Ajusta según tu diseño */
+            /* overflow-x: auto; */
+            /* cursor: grab; */
+            /* scrollbar-width: none; */
+        /* } */
+
+        .category-bar::-webkit-scrollbar {
+            display: none;
+            /* Chrome/Safari */
+        }
+
+        .category-bar:active,
+        .subject-grid:active {
+            cursor: grabbing;
         }
 
         .subject-grid::-webkit-scrollbar {
             display: none;
         }
 
+       /* .subject-card-btn {
+           display: inline-flex;
+  width: auto;     
+  align-items: center;
+  gap: 10px;
+   padding: 0.8rem 1.2rem;
+  border-radius: 50px; 
+  background: #ffffff;
+  border: 1px solid #f1f5f9;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+        } */
+
         .subject-card-btn {
-            display: flex;
-            align-items: center;
-            gap: .5rem;
-            background: var(--white);
-            padding: 1rem;
-            border-radius: 1.4rem;
-            border: 1px solid #f1f5f9;
-            box-shadow: 0 10px 22px rgba(2, 48, 71, .06);
-            cursor: pointer;
-            text-align: left;
-            transition: var(--transition);
-        }
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    /* padding: 0.8rem 1.2rem; Usamos padding en lugar de height: 100% */
+    /* min-height: 55px;      Alto mínimo para que se vean bien */
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 50px;
+    white-space: nowrap;
+}
 
         .subject-card-btn:hover {
-            border-color: rgba(33, 158, 188, .55);
+            border-color: #00B4D8;
+            background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%);
+    box-shadow: 0 10px 20px rgba(72, 202, 228, 0.2);
             box-shadow: 0 16px 34px rgba(33, 158, 188, .10);
         }
 
         .subject-initial {
             width: 44px;
             height: 44px;
-            border-radius: 14px;
-            background: #f8fafc;
+            border-radius: 50%;
+            background: var(--primary-color);;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 1000;
-            color: var(--primary-color);
+            color: #f8fafc;
             transition: var(--transition);
             flex-shrink: 0;
         }
 
         .subject-card-btn:hover .subject-initial {
-            background: rgba(33, 158, 188, .98);
+            background:#48CAE4;
             color: #fff;
         }
 
@@ -248,17 +339,34 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            padding: 0 .5rem;
         }
 
         .subject-card-btn.is-selected {
-            border-color: var(--terciary-color2);
+            /* border-color: #FF8C00; */
             box-shadow: 0 18px 38px rgba(251, 133, 0, .25);
+            border-color: #FF8C00;
+    background: linear-gradient(135deg, #FFF9F2 0%, #FFF3E0 100%);
+    box-shadow: 0 8px 25px rgba(255, 140, 0, 0.15);
         }
 
-        .subject-card-btn.is-selected .subject-initial {
+        /* .subject-card-btn.is-selected .subject-initial {
             background: var(--terciary-color2);
             color: #fff;
-        }
+        } */
+
+
+        .subject-card-btn.is-selected .subject-initial {
+    background: linear-gradient(135deg, #FF8C00 0%, #FFA500 100%);
+    color: white;
+    box-shadow: 0 4px 12px rgba(255, 140, 0, 0.3);
+}
+
+.section-header h3 {
+    color: #1D3557;
+    border-left: 4px solid #48CAE4;
+    padding-left: 10px;
+}
 
         /* ================= RADAR ================= */
         #view-browse {
@@ -932,6 +1040,14 @@
                 align-items: center;
                 justify-content: space-between;
             }
+
+        }
+
+        @media(max-width:768px) {
+
+            .search-wrapper {
+                max-width: 100%;
+            }
         }
 
         @media(max-width:600px) {
@@ -1004,22 +1120,27 @@
         <div id="app">
             <!-- VISTA 1: SELECCIÓN -->
             <div id="view-selection" class="container">
-                <header>
-                    <div class="header-info">
-                        <h1>¿Qué necesitas aprender hoy?</h1>
-                        <p>Más de 600 materias con la que un tutor puede ayudarte ahora</p>
-                    </div>
-                    <div class="search-wrapper">
-                        <svg class="search-icon" width="20" height="20" fill="none" stroke="currentColor"
-                            stroke-width="2.5" viewBox="0 0 24 24">
-                            <circle cx="11" cy="11" r="8" />
-                            <path d="M21 21l-4.35-4.35" />
-                        </svg>
-                        <input type="text" id="search-input" class="search-input" placeholder="BUSCAR MATERIA...">
-                    </div>
-                </header>
+                <div class="head">
+                    <header>
 
-                <div class="category-bar" id="category-bar"></div>
+                        <div class="header-info">
+                            <h1>¿Qué necesitas aprender hoy?</h1>
+                            <p>Más de 600 materias con la que un tutor puede ayudarte ahora</p>
+                        </div>
+                        <div class="search-wrapper">
+                            <svg class="search-icon" width="20" height="20" fill="none" stroke="currentColor"
+                                stroke-width="2.5" viewBox="0 0 24 24">
+                                <circle cx="11" cy="11" r="8" />
+                                <path d="M21 21l-4.35-4.35" />
+                            </svg>
+                            <input type="text" id="search-input" class="search-input" placeholder="BUSCAR MATERIA...">
+                        </div>
+                    </header>
+                    <div class="category-bar" id="category-bar"></div>
+                </div>
+                <div class="cat-bar">
+
+                </div>
                 <div class="subject-sections" id="subject-sections"></div>
 
                 <div class="empty-state hidden" id="empty-state"
@@ -1138,34 +1259,34 @@
 
     <script>
         /* ========================================================================
-                                      CLASSGO | Student - Instant Tutors Script
-                                      ------------------------------------------------------------------------
-                                      FLUJO:
-                                      1) Cargar Categorías/Materias
-                                      2) Seleccionar Materia (solo una) + mostrar FAB
-                                      3) Crear Batch + mostrar Radar + polling:
-                                          - status (cada 60s)
-                                          - tutores aceptados (cada 5s)
-                                          - countdown expiración (cada 1s)
-                                      4) Mostrar cards de tutores + reservar + abrir checkout (flip)
-                                      5) Subir comprobante + pagar + polling booking (cada 2.5s)
-                                      6) Nueva solicitud / reset
+                                                      CLASSGO | Student - Instant Tutors Script
+                                                      ------------------------------------------------------------------------
+                                                      FLUJO:
+                                                      1) Cargar Categorías/Materias
+                                                      2) Seleccionar Materia (solo una) + mostrar FAB
+                                                      3) Crear Batch + mostrar Radar + polling:
+                                                          - status (cada 60s)
+                                                          - tutores aceptados (cada 5s)
+                                                          - countdown expiración (cada 1s)
+                                                      4) Mostrar cards de tutores + reservar + abrir checkout (flip)
+                                                      5) Subir comprobante + pagar + polling booking (cada 2.5s)
+                                                      6) Nueva solicitud / reset
 
-                                      ENDPOINTS:
-                                      - GET  /student/subject-groups/categorias-materias
-                                      - POST /student/batches/start
-                                      - GET  /student/batches/active
-                                      - GET  /student/batches/{batchId}/status
-                                      - GET  /student/batches/{batchId}/accepted-tutors?limit=50
-                                      - POST /student/batches/{batchId}/reserve
-                                      - POST /student/bookings/{bookingId}/receipt
-                                      - GET  /student/bookings/{bookingId}/status
-                                      - GET  /student/bookings/{bookingId}/meet
+                                                      ENDPOINTS:
+                                                      - GET  /student/subject-groups/categorias-materias
+                                                      - POST /student/batches/start
+                                                      - GET  /student/batches/active
+                                                      - GET  /student/batches/{batchId}/status
+                                                      - GET  /student/batches/{batchId}/accepted-tutors?limit=50
+                                                      - POST /student/batches/{batchId}/reserve
+                                                      - POST /student/bookings/{bookingId}/receipt
+                                                      - GET  /student/bookings/{bookingId}/status
+                                                      - GET  /student/bookings/{bookingId}/meet
 
-                                      NOTAS:
-                                      - fetchAcceptedTutors() se pausa si state.activeHeroId existe (checkout abierto)
-                                      - closeHero(true) debe existir en otro lado o aquí (si no, revienta)
-                                    ======================================================================== */
+                                                      NOTAS:
+                                                      - fetchAcceptedTutors() se pausa si state.activeHeroId existe (checkout abierto)
+                                                      - closeHero(true) debe existir en otro lado o aquí (si no, revienta)
+                                                    ======================================================================== */
 
 
         /* ========================================================================
@@ -1283,6 +1404,52 @@
             return groups;
         }
 
+        function setupHorizontalDraggableScroll(selector) {
+            const containers = document.querySelectorAll(selector);
+
+            containers.forEach(slider => {
+                let isDown = false;
+                let startX;
+                let scrollLeft;
+
+                // --- MOVIMIENTO CON RUEDA DEL MOUSE ---
+                slider.addEventListener('wheel', (e) => {
+                    if (e.deltaY !== 0) {
+                        e.preventDefault();
+                        // Multiplicamos deltaY para que el scroll sea fluido
+                        slider.scrollLeft += e.deltaY * 2;
+                    }
+                });
+
+                // --- MOVIMIENTO CON CLIC SOSTENIDO (DRAG) ---
+                slider.addEventListener('mousedown', (e) => {
+                    isDown = true;
+                    slider.classList.add('active');
+                    startX = e.pageX - slider.offsetLeft;
+                    scrollLeft = slider.scrollLeft;
+                });
+
+                slider.addEventListener('mouseleave', () => {
+                    isDown = false;
+                    slider.classList.remove('active');
+                });
+
+                slider.addEventListener('mouseup', () => {
+                    isDown = false;
+                    slider.classList.remove('active');
+                });
+
+                slider.addEventListener('mousemove', (e) => {
+                    if (!isDown) return;
+                    e.preventDefault();
+                    const x = e.pageX - slider.offsetLeft;
+                    const walk = (x - startX) * 2; // Velocidad de arrastre
+                    slider.scrollLeft = scrollLeft - walk;
+                });
+            });
+        }
+
+
         function renderSubjectSections() {
             const sections = document.getElementById('subject-sections');
             const empty = document.getElementById('empty-state');
@@ -1318,18 +1485,20 @@
 
         <div class="subject-grid">
           ${items.map(sub => `
-                                                <button class="subject-card-btn"
-                                                  onclick="seleccionarMateria(this, ${sub.id}, '${sub.name.replaceAll("'", "\\'")}')">
-                                                  <div class="subject-initial">${sub.name.charAt(0)}</div>
-                                                  <div class="subject-meta">
-                                                    <div class="subject-title">${sub.name}</div>
-                                                  </div>
-                                                </button>
-                                              `).join('')}
+                                                                <button class="subject-card-btn"
+                                                                  onclick="seleccionarMateria(this, ${sub.id}, '${sub.name.replaceAll("'", "\\'")}')">
+                                                                  <div class="subject-initial">${sub.name.charAt(0)}</div>
+                                                                  <div class="subject-meta">
+                                                                    <div class="subject-title">${sub.name}</div>
+                                                                  </div>
+                                                                </button>
+                                                              `).join('')}
         </div>
       </section>
     `;
             }).join('');
+            setupHorizontalDraggableScroll('.category-bar');
+            setupHorizontalDraggableScroll('.subject-grid');
         }
 
 
@@ -1633,94 +1802,142 @@
         /* ========================================================================
           5) selectSubject: crea batch + startPolling
         ======================================================================== */
+        // async function selectSubject(subjectName, subjectId) {
+        //     if (currentBatchId) {
+        //         alert('Ya hay una búsqueda activa. Continúa la espera.');
+        //         return;
+        //     }
+        //     if (!subjectId) {
+        //         alert('Selecciona una materia primero.');
+        //         return;
+        //     }
+
+        //     ocultarFabTutoria();
+        //     fab.disabled = true;
+        //     fab.style.opacity = '0.6';
+
+        //     document.getElementById('selected-subject-name').innerText = subjectName;
+
+        //     showRadar();
+        //     if (statusMsg) statusMsg.innerText = 'Creando batch...';
+
+        //     try {
+        //         const csrf = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+        //         const res = await fetch('/student/batches/start', {
+        //             method: 'POST',
+        //             headers: {
+        //                 'Content-Type': 'application/json',
+        //                 'Accept': 'application/json',
+        //                 ...(csrf ? {
+        //                     'X-CSRF-TOKEN': csrf
+        //                 } : {}),
+        //             },
+        //             credentials: 'same-origin',
+        //             body: JSON.stringify({
+        //                 subject_id: subjectId
+        //             }),
+        //         });
+
+        //         const json = await res.json().catch(() => ({}));
+
+        //         if (!res.ok) {
+        //             if (statusMsg) statusMsg.innerText = 'No se pudo iniciar la solicitud.';
+        //             alert('Error al iniciar batch: ' + (json.message ?? `HTTP ${res.status}`));
+        //             showSelection();
+        //             return;
+        //         }
+
+        //         const batchId = json.batch_id ?? json?.data?.batch_id ?? null;
+
+        //         if (!batchId) {
+        //             if (statusMsg) statusMsg.innerText = 'Batch creado, pero no llegó batch_id.';
+        //             alert('Batch creado pero no llegó batch_id en respuesta.');
+        //             showSelection();
+        //             return;
+        //         }
+
+        //         if (statusMsg) statusMsg.innerText = `Solicitud enviada. Notificando tutores (Batch #${batchId})...`;
+        //         startPolling(batchId);
+        //         fetch('/student/batches/send-emails', {
+        //                 method: 'POST',
+        //                 headers: {
+        //                     'Content-Type': 'application/json',
+        //                     'Accept': 'application/json',
+        //                     ...(csrf ? {
+        //                         'X-CSRF-TOKEN': csrf
+        //                     } : {}),
+        //                 },
+        //                 credentials: 'same-origin',
+        //                 body: JSON.stringify({
+        //                     batch_id: batchId,
+        //                     limit: 10
+        //                 }),
+        //             })
+        //             .then(async r => {
+        //                 const t = await r.text();
+        //                 console.log('send-emails:', r.status, t);
+        //             })
+        //             .catch(err => console.error('send-emails network error:', err));
+        //     } catch (e) {
+        //         console.error(e);
+        //         if (statusMsg) statusMsg.innerText = 'Error JS al iniciar la solicitud.';
+        //         alert('Error JS: ' + e.message);
+        //         showSelection();
+        //     } finally {
+        //         fab.disabled = false;
+        //         fab.style.opacity = '';
+        //         document.body.classList.remove('lock-scroll');
+        //     }
+        // }
+
         async function selectSubject(subjectName, subjectId) {
-            if (currentBatchId) {
-                alert('Ya hay una búsqueda activa. Continúa la espera.');
-                return;
-            }
-            if (!subjectId) {
-                alert('Selecciona una materia primero.');
-                return;
-            }
+    if (currentBatchId) return;
 
-            ocultarFabTutoria();
-            fab.disabled = true;
-            fab.style.opacity = '0.6';
+    // 1. UI Feedback inmediato
+    ocultarFabTutoria();
+    document.getElementById('selected-subject-name').innerText = subjectName;
+    showRadar(); 
+    if (statusMsg) statusMsg.innerText = 'Iniciando búsqueda de expertos...';
 
-            document.getElementById('selected-subject-name').innerText = subjectName;
+    try {
+        const csrf = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
 
-            showRadar();
-            if (statusMsg) statusMsg.innerText = 'Creando batch...';
+        // 2. Crear el Batch
+        const res = await fetch('/student/batches/start', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': csrf
+            },
+            body: JSON.stringify({ subject_id: subjectId }),
+        });
 
-            try {
-                const csrf = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+        const json = await res.json();
+        const batchId = json.batch_id ?? json?.data?.batch_id;
 
-                const res = await fetch('/student/batches/start', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        ...(csrf ? {
-                            'X-CSRF-TOKEN': csrf
-                        } : {}),
-                    },
-                    credentials: 'same-origin',
-                    body: JSON.stringify({
-                        subject_id: subjectId
-                    }),
-                });
-
-                const json = await res.json().catch(() => ({}));
-
-                if (!res.ok) {
-                    if (statusMsg) statusMsg.innerText = 'No se pudo iniciar la solicitud.';
-                    alert('Error al iniciar batch: ' + (json.message ?? `HTTP ${res.status}`));
-                    showSelection();
-                    return;
-                }
-
-                const batchId = json.batch_id ?? json?.data?.batch_id ?? null;
-
-                if (!batchId) {
-                    if (statusMsg) statusMsg.innerText = 'Batch creado, pero no llegó batch_id.';
-                    alert('Batch creado pero no llegó batch_id en respuesta.');
-                    showSelection();
-                    return;
-                }
-
-                if (statusMsg) statusMsg.innerText = `Solicitud enviada. Notificando tutores (Batch #${batchId})...`;
-                startPolling(batchId);
-                fetch('/student/batches/send-emails', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json',
-                            ...(csrf ? {
-                                'X-CSRF-TOKEN': csrf
-                            } : {}),
-                        },
-                        credentials: 'same-origin',
-                        body: JSON.stringify({
-                            batch_id: batchId,
-                            limit: 10
-                        }),
-                    })
-                    .then(async r => {
-                        const t = await r.text();
-                        console.log('send-emails:', r.status, t);
-                    })
-                    .catch(err => console.error('send-emails network error:', err));
-            } catch (e) {
-                console.error(e);
-                if (statusMsg) statusMsg.innerText = 'Error JS al iniciar la solicitud.';
-                alert('Error JS: ' + e.message);
-                showSelection();
-            } finally {
-                fab.disabled = false;
-                fab.style.opacity = '';
-                document.body.classList.remove('lock-scroll');
-            }
+        if (batchId) {
+            // 3. Arrancar el radar y el polling ANTES de enviar los emails
+            startPolling(batchId);
+            
+            // 4. Disparar el envío de emails sin bloquear el flujo
+            fetch('/student/batches/send-emails', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': csrf
+                },
+                body: JSON.stringify({ batch_id: batchId, limit: 10 })
+            }); // Sin await para que no bloquee
         }
+
+    } catch (e) {
+        console.error(e);
+        statusMsg.innerText = 'Error al conectar.';
+    }
+}
 
 
         /* ========================================================================
@@ -1853,13 +2070,13 @@
               ${img ? `<img class="avatar" src="${escapeHtml(img)}" alt="${name}">` : ``}
 
               ${verified ? `
-                                                    <span class="verified">
-                                                      <svg viewBox="0 0 24 24" class="verified-icon">
-                                                        <path d="M12 2l4 2 4 .6 1.4 4L22 12l-1.6 3.4L20 19l-4 .6-4 2-4-2-4-.6L3.6 15.4 2 12l1.4-3.4L4 4.6l4-.6 4-2z"/>
-                                                        <path d="M9.5 12.5l1.7 1.7 3.8-3.8"/>
-                                                      </svg>
-                                                    </span>
-                                                  ` : ``}
+                                                                    <span class="verified">
+                                                                      <svg viewBox="0 0 24 24" class="verified-icon">
+                                                                        <path d="M12 2l4 2 4 .6 1.4 4L22 12l-1.6 3.4L20 19l-4 .6-4 2-4-2-4-.6L3.6 15.4 2 12l1.4-3.4L4 4.6l4-.6 4-2z"/>
+                                                                        <path d="M9.5 12.5l1.7 1.7 3.8-3.8"/>
+                                                                      </svg>
+                                                                    </span>
+                                                                  ` : ``}
             </div>
           </div>
 
