@@ -1736,7 +1736,7 @@
                 if (p.qr_url) {
                     cardQR.style.display = 'block';
 
-                    const qrSrc = `/storage/${p.qr_url}`; 
+                    const qrSrc = `/storage/qr/Qr-pagos.png`; 
 
                     qrImg.src = qrSrc;
                     qrImg.style.display = 'block';
