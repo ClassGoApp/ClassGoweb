@@ -264,7 +264,7 @@
                                             style="display:none; gap:16px; grid-template-columns:1fr 1fr; margin-bottom:14px; align-items:stretch;">
 
                                            
-                                            <div id="js-card-bank"
+                                            {{-- <div id="js-card-bank"
                                                 style="background:#fff; border:1px solid #e5e7eb; border-radius:12px; padding:14px;
                       flex-direction:column;justify-content:space-between; min-height:320px;">
 
@@ -293,7 +293,7 @@
                         Copiar datos
                     </button>
                 </div>
-            </div>
+            </div> --}}
 
            
             <div id="js-card-qr"
@@ -1661,9 +1661,9 @@
         const payGrid = document.getElementById('js-pay-grid');
         const payHint = document.getElementById('js-pay-hint');
 
-        const cardBank = document.getElementById('js-card-bank');
-        const bankInfo = document.getElementById('js-bank-info');
-        const copyBank = document.getElementById('js-copy-bank');
+        // const cardBank = document.getElementById('js-card-bank');
+        // const bankInfo = document.getElementById('js-bank-info');
+        // const copyBank = document.getElementById('js-copy-bank');
 
         const cardQR = document.getElementById('js-card-qr');
         const qrImg = document.getElementById('js-qr-img');
@@ -1685,9 +1685,9 @@
             payHint.textContent = 'Cargando métodos de pago del tutor...';
 
             
-            cardBank.style.display = 'none';
+            // cardBank.style.display = 'none';
             cardQR.style.display = 'none';
-            bankInfo.innerHTML = '';
+            // bankInfo.innerHTML = '';
             qrImg.style.display = 'none';
             qrEmpty.style.display = 'block';
             openQR.href = '#';
@@ -1707,29 +1707,29 @@
 
                 
                 if (bank) {
-                    cardBank.style.display = 'flex';
+                    // cardBank.style.display = 'flex';
 
-                    const rows = [
-                        ['Título', bank.title],
-                        ['Banco', bank.bankName],
-                        ['Nro cuenta', bank.accountNumber],
-                        ['Ruta', bank.bankRoutingNumber],
-                    ].filter(([, v]) => v);
+                    // const rows = [
+                    //     ['Título', bank.title],
+                    //     ['Banco', bank.bankName],
+                    //     ['Nro cuenta', bank.accountNumber],
+                    //     ['Ruta', bank.bankRoutingNumber],
+                    // ].filter(([, v]) => v);
 
-                    bankInfo.innerHTML = rows.length ?
-                        rows.map(([k, v]) => `<div><b>${k}:</b> ${v}</div>`).join('') :
-                        `<div style="color:#6b7280;">El tutor no completó datos bancarios.</div>`;
+                    // bankInfo.innerHTML = rows.length ?
+                    //     rows.map(([k, v]) => `<div><b>${k}:</b> ${v}</div>`).join('') :
+                    //     `<div style="color:#6b7280;">El tutor no completó datos bancarios.</div>`;
 
-                    copyBank.onclick = async () => {
-                        const text = rows.map(([k, v]) => `${k}: ${v}`).join('\n');
-                        try {
-                            await navigator.clipboard.writeText(text);
-                            copyBank.textContent = '✅ Copiado';
-                            setTimeout(() => copyBank.textContent = 'Copiar datos', 1200);
-                        } catch {
-                            alert('No se pudo copiar. Copia manualmente.');
-                        }
-                    };
+                    // copyBank.onclick = async () => {
+                    //     const text = rows.map(([k, v]) => `${k}: ${v}`).join('\n');
+                    //     try {
+                    //         await navigator.clipboard.writeText(text);
+                    //         copyBank.textContent = '✅ Copiado';
+                    //         setTimeout(() => copyBank.textContent = 'Copiar datos', 1200);
+                    //     } catch {
+                    //         alert('No se pudo copiar. Copia manualmente.');
+                    //     }
+                    // };
                 }
 
 
@@ -2321,7 +2321,7 @@
            
             if (payGrid) payGrid.style.display = 'none';
             if (payHint) payHint.style.display = 'none';
-            if (cardBank) cardBank.style.display = 'none';
+            // if (cardBank) cardBank.style.display = 'none';
             if (cardQR) cardQR.style.display = 'none';
 
             
