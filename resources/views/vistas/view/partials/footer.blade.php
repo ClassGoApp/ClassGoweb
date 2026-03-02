@@ -17,7 +17,7 @@
                 <a href=" {{ route('buscar')}}"><button class="btn-registrate"><span data-translate="buscar_tutor"></span></button></a>
                 @endauth
                 @guest
-                <a href=" {{ route('register')}}"><button class="btn-registrate"><span data-translate="registrate_gratis"></span></button></a>
+                <a href=" {{ route('login', ['mode' => 'register'])}}"><button class="btn-registrate"><span data-translate="registrate_gratis"></span></button></a>
                 @endguest
 
             </div>
@@ -32,7 +32,7 @@
                 <div class="box">
                     <h1 data-translate="inicia_hoy"></h1>
 
-                    <a href=" {{ route('register')}}">
+                    <a href=" {{ route('login', ['mode' => 'register'])}}">
                         <p data-translate="registrate"></p>
                     </a>
                     <a href="{{ route('buscar')}}">
@@ -75,7 +75,7 @@
 
         </div>
         <div class="container-redes">
-            <a href="https://www.facebook.com/profile.php?id=61578383078347" target="_blank">
+            <a href="https://www.facebook.com/profile.php?id=61586980560794&mibextid=wwXIfr&rdid=OkA2uwwur1Hu9lOu&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F12MTC15CJAi%2F%3Fmibextid%3DwwXIfr#" target="_blank">
                 <div class="circle-icon-f">
                     <img src="{{ asset('images/facebook.png')}}" alt="Facebook Link" class="icon-img">
                 </div>

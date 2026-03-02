@@ -53,6 +53,7 @@
                                     </th>
                                     <th style="width: 100px;">{{ __('alianza.image') }}</th>
                                     <th style="width: 220px;">{{ __('general.title') }}</th>
+                                    <th style="width: 140px;">{{ __('alianza.categoria') }}</th>
                                     <th style="width: 240px;">{{ __('general.description') }}</th>
                                     <th style="width: 180px;">{{ __('alianza.link') }}</th>
                                     <th style="width: 90px;">{{ __('general.status') }}</th>
@@ -106,6 +107,9 @@
                                                 <h6 class="tb-title">{{ $single->titulo }}</h6>
                                             </div>
                                         </td>
+                                        <td data-label="{{ __('alianza.categoria') }}">
+                                            <span>{{ $single->categoria ?? '—' }}</span>
+                                        </td>
                                         <td data-label="{{ __('general.description') }}">
                                             <span class="fw-form-description">
                                                 {{ \Illuminate\Support\Str::limit(strip_tags($single->descripcion), 100) }}
@@ -156,12 +160,12 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        {{ $alianzas->links('pagination.custom') }}
                     @else
                         <x-no-record :image="asset('images/empty.png')" :title="__('general.no_record_title')"/>
                     @endif
                 </div>
             </div>
+            {{ $alianzas->links('pagination.custom') }}
         </div>
     </div>
 </main>

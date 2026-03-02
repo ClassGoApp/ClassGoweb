@@ -14,6 +14,7 @@ return [
     'active' => 'Activo',
     'inactive' => 'Inactivo',
     'order' => 'Orden',
+    'categoria' => 'Categoría',
 
     // Placeholders / ayudas
     'title_placeholder' => 'Nombre de la alianza',

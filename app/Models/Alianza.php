@@ -11,6 +11,7 @@ class Alianza extends Model
         'imagen',
         'enlace',
         'descripcion',
+        'categoria',
         'activo',
         'orden'
     ];

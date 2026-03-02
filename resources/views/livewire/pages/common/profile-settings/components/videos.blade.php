@@ -1,11 +1,17 @@
 <div style="width: 100%; height: 100%;">
+    <h1 style="font-size: 14px; font-weight: 600; color: #848382; text-align: left; margin-bottom: 8px;">
+        No es Obligatorio subir un video. pero es muy recomendable para que los estudiantes te conozcan mejor.
+    </h1>
     <div class="profile-video-card d-flex flex-column align-items-center justify-content-center" style="max-width: 800px; margin: 0 auto;">
         <h5 class="form-label mb-4 fw-semibold fs-4 text-black text-center w-100">
             {{ __('profile.intro_video') }}
+            
         </h5>
         <div class="w-100 d-flex flex-column align-items-center">
             <!-- Preview del video ampliado -->
+            
             <div class="profile-video-preview mb-4">
+                
                 @if($intro_video instanceof \Livewire\Features\SupportFileUploads\TemporaryUploadedFile)
                     <video controls style="width: 500px; height: 300px; border-radius: 14px; object-fit: cover; background: #00384d;">
                         <source src="{{ $intro_video->temporaryUrl() }}" type="video/mp4">
@@ -13,6 +19,7 @@
                 @elseif($intro_video)
                     <video controls style="width: 400px; height: 300px; border-radius: 14px; object-fit: cover; background: #00384d;">
                         <source src="{{ asset('storage/' . $intro_video) }}" type="video/mp4">
+                            
                     </video>
                 @else
                     <div class="w-full aspect-video bg-gray-900 rounded-lg mb-4 flex items-center justify-center"><video controls="" class="w-full h-full rounded-lg" poster="https://placehold.co/400x225/023047/ffffff?text=Video"></video></div>

@@ -7,119 +7,116 @@
                         <h4>{{ __('general.survey_statistics') }}</h4>
                         <p>{{ __('general.surveys_overview_description') }}</p>
                     </div>
+                </div>
                     
-                    {{-- Tarjetas de Estadísticas --}}
-                    <div class="row">
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="stats-card stats-card-success">
-                                <div class="stats-card-body-full">
-                                    <div class="stats-header">
-                                        <span class="stats-title">ÉXITO EN BÚSQUEDA</span>
-                                    </div>
-                                    <h2 class="stats-number">{{ $metricas['exito_busqueda'] }}%</h2>
-                                    <p class="stats-description">Usuarios que encontraron la materia fácilmente.</p>
+                {{-- Tarjetas de Estadísticas --}}
+                <div class="row">
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="stats-card stats-card-success">
+                            <div class="stats-card-body-full">
+                                <div class="stats-header">
+                                    <span class="stats-title">ÉXITO EN BÚSQUEDA</span>
                                 </div>
+                                <h2 class="stats-number">{{ $metricas['exito_busqueda'] }}%</h2>
+                                <p class="stats-description">Usuarios que encontraron la materia fácilmente.</p>
                             </div>
                         </div>
+                    </div>
                         
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="stats-card stats-card-primary">
-                                <div class="stats-card-body-full">
-                                    <div class="stats-header">
-                                        <span class="stats-title">PROMEDIO DE RECOMENDACIÓN</span>
-                                    </div>
-                                    <h2 class="stats-number">{{ $metricas['promedio_recomendacion'] }} / 5</h2>
-                                    <p class="stats-description">Calificación promedio de los usuarios (1-5).</p>
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="stats-card stats-card-primary">
+                            <div class="stats-card-body-full">
+                                <div class="stats-header">
+                                    <span class="stats-title">PROMEDIO DE RECOMENDACIÓN</span>
                                 </div>
+                                <h2 class="stats-number">{{ $metricas['promedio_recomendacion'] }} / 5</h2>
+                                <p class="stats-description">Calificación promedio de los usuarios (1-5).</p>
                             </div>
                         </div>
+                    </div>
                         
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="stats-card stats-card-danger">
-                                <div class="stats-card-body-full">
-                                    <div class="stats-header">
-                                        <span class="stats-title">USUARIOS DETRACTORES (1-2)</span>
-                                    </div>
-                                    <h2 class="stats-number">{{ $metricas['usuarios_detractores'] }}%</h2>
-                                    <p class="stats-description">Alerta de usuarios con insatisfacción grave.</p>
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="stats-card stats-card-danger">
+                            <div class="stats-card-body-full">
+                                <div class="stats-header">
+                                    <span class="stats-title">USUARIOS DETRACTORES (1-2)</span>
                                 </div>
-                            </div>
-                        </div>
-
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="stats-card stats-card-warning">
-                                <div class="stats-card-body-full">
-                                    <div class="stats-header">
-                                        <span class="stats-title">FOCO DE MEJORA</span>
-                                    </div>
-                                    <h2 class="stats-number" style="font-size: {{ strlen($metricas['foco_mejora']) > 20 ? '24px' : '42px' }}">
-                                        {{ $metricas['foco_mejora'] }}
-                                    </h2>
-                                    <p class="stats-description">Comentario negativo más frecuente.</p>
-                                </div>
+                                <h2 class="stats-number">{{ $metricas['usuarios_detractores'] }}%</h2>
+                                <p class="stats-description">Alerta de usuarios con insatisfacción grave.</p>
                             </div>
                         </div>
                     </div>
 
-                    {{-- Gráfico de Barras - Últimos 7 días --}}
-                    <div class="row mb-4">
-                        <div class="col-lg-8 mb-4">
-                            <div class="chart-container">
-                                <div class="chart-header">
-                                    <h5>{{ __('general.surveys_last_7_days') }}</h5>
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="stats-card stats-card-warning">
+                            <div class="stats-card-body-full">
+                                <div class="stats-header">
+                                    <span class="stats-title">FOCO DE MEJORA</span>
                                 </div>
-                                <div class="chart-body">
-                                    <canvas id="barChart"></canvas>
-                                </div>
+                                <h2 class="stats-number" style="font-size: {{ strlen($metricas['foco_mejora']) > 20 ? '24px' : '42px' }}">
+                                    {{ $metricas['foco_mejora'] }}
+                                </h2>
+                                <p class="stats-description">Comentario negativo más frecuente.</p>
                             </div>
                         </div>
-
-                        {{-- Gráfico de Torta - Distribución por periodo --}}
-                        <div class="col-lg-4 mb-4">
-                            <div class="chart-container">
-                                <div class="chart-header">
-                                    <h5>{{ __('general.distribution_by_period') }}</h5>
-                                </div>
-                                <div class="chart-body">
-                                    <canvas id="pieChart"></canvas>
-                                </div>
-                            </div>
-                        </div>
-
                     </div>
+                </div>
 
-                    {{-- Gráficos inferiores: Líneas y Torta --}}
-                    <div class="row mb-4" style="display: flex; justify-content: space-between;">
-                        {{-- Gráfico de Líneas - Últimos 6 meses --}}
-                        <div class="col-lg-4 mb-4">
-                            <div class="chart-container">
-                                <div class="chart-header">
-                                    <h5>{{ __('general.surveys_last_6_months') }}</h5>
-                                </div>
-                                <div class="chart-body" style="height: 300px;">
-                                    <canvas id="lineChart"></canvas>
-                                </div>
+            {{-- Gráfico de Barras - Últimos 7 días --}}
+                <div class="row mb-4">
+                    <div class="col-lg-8 mb-4">
+                        <div class="chart-container">
+                            <div class="chart-header">
+                                <h5>{{ __('general.surveys_last_7_days') }}</h5>
                             </div>
-                        </div>
-
-                        {{-- Gráfico de Torta - Usuarios Autenticados vs No Autenticados --}}
-                        <div class="col-lg-8 mb-4">
-                            <div class="chart-container">
-                                <div class="chart-header">
-                                    <h5>{{ __('general.user_authentication_distribution') }}</h5>
-                                    <p style="color: #6c757d; font-size: 13px; margin-top: 5px;">
-                                        Total: {{ $distribucionUsuarios['total'] }} encuestas
-                                    </p>
-                                </div>
-                                <div class="chart-body" style="height: 300px;">
-                                    <canvas id="userTypeChart"></canvas>
-                                </div>
+                            <div class="chart-body">
+                                <canvas id="barChart"></canvas>
                             </div>
                         </div>
                     </div>
 
-                    
+                    {{-- Gráfico de Torta - Distribución por periodo --}}
+                    <div class="col-lg-4 mb-4">
+                        <div class="chart-container">
+                            <div class="chart-header">
+                                <h5>{{ __('general.distribution_by_period') }}</h5>
+                            </div>
+                            <div class="chart-body">
+                                <canvas id="pieChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
 
+                </div>
+
+                {{-- Gráficos inferiores: Líneas y Torta --}}
+                <div class="row mb-4" style="display: flex; justify-content: space-between;">
+                    {{-- Gráfico de Líneas - Últimos 6 meses --}}
+                    <div class="col-lg-4 mb-4">
+                        <div class="chart-container">
+                            <div class="chart-header">
+                                <h5>{{ __('general.surveys_last_6_months') }}</h5>
+                            </div>
+                            <div class="chart-body" style="height: 300px;">
+                                <canvas id="lineChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Gráfico de Torta - Usuarios Autenticados vs No Autenticados --}}
+                    <div class="col-lg-8 mb-4">
+                        <div class="chart-container">
+                            <div class="chart-header">
+                                <h5>{{ __('general.user_authentication_distribution') }}</h5>
+                                <p style="color: #6c757d; font-size: 13px; margin-top: 5px;">
+                                    Total: {{ $distribucionUsuarios['total'] }} encuestas
+                                </p>
+                            </div>
+                            <div class="chart-body" style="height: 300px;">
+                                <canvas id="userTypeChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
