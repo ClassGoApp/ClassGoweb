@@ -158,14 +158,20 @@ class GoogleMeetService
         $tokenSetting = AccountSetting::where('user_id', $user->id)
             ->where('meta_key', 'google_access_token')
             ->first();
-        Log::info('Token de Meet:', ['datos' => $tokenSetting]);
-        // Validar que el registro y el refresh_token existan.
-        if (!$tokenSetting || empty($tokenSetting->meta_value['refresh_token'])) {
-            throw new Exception('El usuario no tiene los tokens de Google necesarios o falta el refresh token.');
+        
+        // Validar que el registro exista.
+        if (!$tokenSetting) {
+            throw new Exception('El usuario no tiene los tokens de Google necesarios.');
         }
 
         // El modelo ya convierte meta_value en un array.
-        $tokenData = $tokenSetting->meta_value;
+        // Los tokens están anidados en meta_value['data']
+        $metaValue = $tokenSetting->meta_value;
+        $tokenData = isset($metaValue['data']) ? $metaValue['data'] : $metaValue;
+
+        if (empty($tokenData['refresh_token'])) {
+            throw new Exception('El usuario no tiene los tokens de Google necesarios o falta el refresh token.');
+        }
 
         // --- PASO 2: Configurar el cliente de Google con las credenciales de la app ---
         $client = new Google_Client();
