@@ -169,9 +169,15 @@ class GoogleMeetService
         // El modelo ya convierte meta_value en un array.
         // Los tokens están anidados en meta_value['data']
         $metaValue = $tokenSetting->meta_value;
+        // log raw metaValue para inspección
+        Log::info('Meta value raw:', ['meta' => $metaValue]);
+
         $tokenData = isset($metaValue['data']) ? $metaValue['data'] : $metaValue;
+        // log tokenData after extraction
+        Log::info('Token data extracted:', ['tokens' => $tokenData]);
 
         if (empty($tokenData['refresh_token'])) {
+            Log::error('Refresh token missing after extraction', ['tokenData' => $tokenData]);
             throw new Exception('El usuario no tiene los tokens de Google necesarios o falta el refresh token.');
         }
 
