@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Log;
 
 use Illuminate\Support\Str;
 
-use App\mail\TutoriaInstanteAceptada;
+use App\Mail\TutoriaInstanteAceptada;
 
 use App\Models\SlotBooking;
 use App\Services\SlotBookingService;
