@@ -46,7 +46,7 @@ return [
     'description' => 'A brief introduction',
     'description_placeholder' => 'Add your introduction',
     'char_left' => 'Characters Left',
-    'intro_video' => 'Introduction video',
+    'intro_video' => 'Introduction video (Optional)',
     'cover_photo' => 'Cover Photo',
     'video_note' => 'Your file size does not exceed :size. Allowed extensions (:extensions)',
     'profile_greeting_tutor' => 'Hello! You can have my teaching services direct at',

@@ -21,10 +21,18 @@
             x-data="{
                 form: @entangle('form'),
                 charLeft: 500,
-                init() {
-                    this.updateCharLeft();
-                },
+                showModal: false,
+                selectedTutoria: {},
                 tutorInfo: {},
+                init() {
+                    this.showModal = false;
+                    this.selectedTutoria = {};
+                    this.updateCharLeft();
+                    // Escuchar cambios de Livewire para resetear el modal
+                    Livewire.hook('effect', () => {
+                        this.showModal = false;
+                    });
+                },
                 updateCharLeft() {
                     let maxLength = 500;
                     if (this.form.comment.length > maxLength) {
@@ -32,14 +40,13 @@
                     }
                     this.charLeft = maxLength - this.form.comment.length;
                 },
-                showModal: false,
-                selectedTutoria: {},
                 openModal(tutoria) {
                     this.selectedTutoria = tutoria;
                     this.showModal = true;
                 },
                 closeModal() {
                     this.showModal = false;
+                    this.selectedTutoria = {};
                 }
             }">
             <!--Upcomming Bookings-->
@@ -71,10 +78,6 @@
                             </a>
                         </div>
                         <div class="am-booking-filter-wrapper">
-                            <a class="am-booking-filter" href="#" data-bs-toggle="dropdown" aria-haspopup="true"
-                                aria-expanded="false" data-bs-auto-close="outside">
-                                <i class="am-icon-sliders-horiz-01"></i>
-                            </a>
                             <form class="am-itemdropdown_list am-filter-list dropdown-menu"
                                 aria-labelledby="dropdownMenuLink" x-on:submit.prevent x-data="{
                                     selectedValues: [],
@@ -233,8 +236,15 @@
                                     </thead>
                                     <tbody>
                                         @php
-                                            $startTime = \Carbon\Carbon::parse($selectedDay)->setTime(0, 0, 0);
-                                            $endTime = \Carbon\Carbon::parse($selectedDay)->setTime(23, 59, 0);
+                                            $startOfDay = \Carbon\Carbon::parse($selectedDay);
+                                            if (!empty($visibleStartTime)) {
+                                                [$vh, $vm] = explode(':', $visibleStartTime);
+                                                $vm = (int)$vm >= 30 ? 30 : 0; // redondear a la franja de 30 minutos
+                                                $startTime = $startOfDay->copy()->setTime((int)$vh, $vm, 0);
+                                            } else {
+                                                $startTime = $startOfDay->copy()->setTime(0, 0, 0);
+                                            }
+                                            $endTime = $startOfDay->copy()->setTime(23, 59, 0);
                                         @endphp
                                         @while ($startTime <= $endTime)
                                             @php
@@ -282,24 +292,31 @@
                                     <table class="am-booking-weekly-clander" style="min-width:900px; width:100%;">
                                         <thead>
                                             <tr>
-                                                @for ($date = $currentDate->copy()->startOfWeek($startOfWeek); $date->lte($currentDate->copy()->endOfWeek(getEndOfWeek($startOfWeek))); $date->addDay())
+                                                @php
+                                                    $weekStart = $currentDate->copy()->startOfWeek($startOfWeek);
+                                                    $weekEnd = $currentDate->copy()->endOfWeek(getEndOfWeek($startOfWeek));
+                                                    $d = $weekStart->copy();
+                                                @endphp
+                                                @while($d->lte($weekEnd))
                                                     <th style="min-width:120px;">
-                                                        <div class="am-booking-calander-title">
-                                                            <strong>{{ $date->format('j F') }}</strong>
-                                                            <span>{{ $date->format('D') }}</span>
+                                                        <div class="    -title">
+                                                            <strong>{{ $d->format('j F') }}</strong>
+                                                            <span>{{ $d->format('D') }}</span>
                                                         </div>
                                                     </th>
-                                                @endfor
+                                                    @php $d->addDay(); @endphp
+                                                @endwhile
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                @for ($date = $currentDate->copy()->startOfWeek($startOfWeek); $date->lte($currentDate->copy()->endOfWeek(getEndOfWeek($startOfWeek))); $date->addDay())
+                                                @php $d = $weekStart->copy(); @endphp
+                                                @while($d->lte($weekEnd))
                                                     <td style="min-width:120px; vertical-align:top;">
                                                         <div class="am-weekly-slots_wrap">
                                                             <div class="am-weekly-slots">
-                                                                @if (isset($upcomingBookings[$date->toDateString()]))
-                                                                    @foreach ($upcomingBookings[$date->toDateString()] as $booking)
+                                                                @if (isset($upcomingBookings[$d->toDateString()]))
+                                                                    @foreach ($upcomingBookings[$d->toDateString()] as $booking)
                                                                         <div style="background:{{ $statusColors[strtolower(trim($booking['status']))] ?? '#FACC15' }} !important;color:black;padding:5px 8px;border-radius:5px;margin-bottom:5px; font-size:14px; cursor:pointer;"
                                                                             @click="openModal({
                                                                     estado: '{{ $statusMap[$booking['status_num']] ?? $booking['status_num'] }}',
@@ -323,7 +340,8 @@
                                                             </div>
                                                         </div>
                                                     </td>
-                                                @endfor
+                                                    @php $d->addDay(); @endphp
+                                                @endwhile
                                             </tr>
                                         </tbody>
                                     </table>
@@ -341,14 +359,14 @@
                                     </thead>
                                     <tbody>
                                         @php
-                                            $startOfCalendar = $currentDate
-                                                ->copy()
-                                                ->firstOfMonth()
-                                                ->startOfWeek($startOfWeek);
-                                            $endOfCalendar = $currentDate
-                                                ->copy()
-                                                ->lastOfMonth()
-                                                ->endOfWeek(getEndOfWeek($startOfWeek));
+                                            $origStart = $currentDate->copy()->firstOfMonth()->startOfWeek($startOfWeek);
+                                            $endOfCalendar = $currentDate->copy()->lastOfMonth()->endOfWeek(getEndOfWeek($startOfWeek));
+                                            if (!empty($earliestDate)) {
+                                                $earliest = \Carbon\Carbon::parse($earliestDate)->startOfWeek($startOfWeek);
+                                                $startOfCalendar = $earliest->gt($origStart) ? $earliest->copy() : $origStart->copy();
+                                            } else {
+                                                $startOfCalendar = $origStart->copy();
+                                            }
                                         @endphp
                                         @while ($startOfCalendar <= $endOfCalendar)
                                             <tr>
@@ -422,22 +440,22 @@
             </div>
 
             <!-- Modal de detalles de tutoría -->
-            <div x-show="showModal" class="am-modal-overlay" x-transition>
+            <div x-show="showModal && selectedTutoria && Object.keys(selectedTutoria).length > 0" class="am-modal-overlay" x-transition x-cloak>
                 <div
                     style="
-      background: #fff; 
-      border-radius: 12px; 
-      padding: 24px 30px; 
-      max-width: 400px; 
-      width: 100%; 
-      box-shadow: 0 10px 25px rgba(0,0,0,0.15); 
-      display: flex; 
-      flex-direction: column; 
-      align-items: stretch;
-      position: relative;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      color: #333;
-    ">
+                    background: #fff; 
+                    border-radius: 12px; 
+                    padding: 24px 30px; 
+                    max-width: 400px; 
+                    width: 100%; 
+                    box-shadow: 0 10px 25px rgba(0,0,0,0.15); 
+                    display: flex; 
+                    flex-direction: column; 
+                    align-items: stretch;
+                    position: relative;
+                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                    color: #333;
+                    ">
                     <h3
                         style="font-size: 1.4rem; font-weight: 600; margin-bottom: 20px; text-align: center; color: #222;">
                         Detalles de la tutoría
@@ -474,16 +492,16 @@
 
                     <button @click="closeModal"
                         style="
-        margin-top: 24px; 
-        padding: 10px 20px; 
-        background-color: #007BFF; 
-        color: white; 
-        border: none; 
-        border-radius: 6px; 
-        cursor: pointer; 
-        font-weight: 600;
-        transition: background-color 0.3s ease;
-      "
+                        margin-top: 24px; 
+                        padding: 10px 20px; 
+                        background-color: #007BFF; 
+                        color: white; 
+                        border: none; 
+                        border-radius: 6px; 
+                        cursor: pointer; 
+                        font-weight: 600;
+                        transition: background-color 0.3s ease;
+                    "
                         onmouseover="this.style.backgroundColor='#0056b3'"
                         onmouseout="this.style.backgroundColor='#007BFF'">
                         Cerrar
@@ -504,6 +522,10 @@
 @push('styles')
     @vite(['public/css/flatpicker.css', 'public/css/flatpicker-month-year-plugin.css'])
     <style>
+        [x-cloak] {
+            display: none !important;
+        }
+
         .am-modal-overlay {
             background: rgba(0, 0, 0, 0.5);
             position: fixed;

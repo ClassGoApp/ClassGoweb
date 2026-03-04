@@ -12,6 +12,8 @@ use App\Models\AccountSetting;
 use Carbon\Carbon;
 use Exception; 
 
+use Illuminate\Support\Facades\Log;
+
 
 class GoogleMeetService
 {
@@ -82,65 +84,65 @@ class GoogleMeetService
      * @param \App\Models\User $user El usuario (tutor) para quien se crea la reunión.
      * @return string|null El enlace a la reunión de Google Meet, o null si falla.
      */
-    public function createMeetingPorTutor(array $meetingData, User $user): ?string
-    {
-        // --- PASO 1: Validar que el usuario tenga tokens ---
-        if (empty($user->google_token) || empty($user->google_refresh_token)) {
-            // Lanza una excepción o maneja el error como prefieras.
-            // El usuario no ha conectado su cuenta de Google o no tiene refresh token.
-            throw new Exception('El usuario no tiene los tokens de Google necesarios.');
-        }
+    // public function createMeetingPorTutor(array $meetingData, User $user): ?string
+    // {
+    //     // --- PASO 1: Validar que el usuario tenga tokens ---
+    //     if (empty($user->google_token) || empty($user->google_refresh_token)) {
+    //         // Lanza una excepción o maneja el error como prefieras.
+    //         // El usuario no ha conectado su cuenta de Google o no tiene refresh token.
+    //         throw new Exception('El usuario no tiene los tokens de Google necesarios.');
+    //     }
 
-        // --- PASO 2: Configurar el cliente de Google con las credenciales de la app ---
-        $client = new Google_Client();
-        // Usamos las credenciales de la app (client_id, client_secret) que están en config/services.php
-        $client->setClientId(config('services.google.client_id'));
-        $client->setClientSecret(config('services.google.client_secret'));
-        $client->setRedirectUri(config('services.google.redirect'));
+    //     // --- PASO 2: Configurar el cliente de Google con las credenciales de la app ---
+    //     $client = new Google_Client();
+    //     // Usamos las credenciales de la app (client_id, client_secret) que están en config/services.php
+    //     $client->setClientId(config('services.google.client_id'));
+    //     $client->setClientSecret(config('services.google.client_secret'));
+    //     $client->setRedirectUri(config('services.google.redirect'));
 
-        // --- PASO 3: Establecer los tokens específicos del usuario ---
-        $client->setAccessToken($user->google_token);
+    //     // --- PASO 3: Establecer los tokens específicos del usuario ---
+    //     $client->setAccessToken($user->google_token);
 
-        // --- PASO 4: Refrescar el token si ha expirado Y GUARDAR EL NUEVO ---
-        if ($client->isAccessTokenExpired()) {
-            $newAccessToken = $client->fetchAccessTokenWithRefreshToken($user->google_refresh_token);
+    //     // --- PASO 4: Refrescar el token si ha expirado Y GUARDAR EL NUEVO ---
+    //     if ($client->isAccessTokenExpired()) {
+    //         $newAccessToken = $client->fetchAccessTokenWithRefreshToken($user->google_refresh_token);
 
-            // ¡CRUCIAL! Actualiza el usuario en la base de datos con el nuevo token.
-            $user->update([
-                'google_token' => $newAccessToken['access_token'],
-                'google_token_expires_at' => now()->addSeconds($newAccessToken['expires_in']),
-                // El refresh token a veces cambia, es bueno re-guardarlo si viene en la respuesta.
-                'google_refresh_token' => $newAccessToken['refresh_token'] ?? $user->google_refresh_token,
-            ]);
-        }
+    //         // ¡CRUCIAL! Actualiza el usuario en la base de datos con el nuevo token.
+    //         $user->update([
+    //             'google_token' => $newAccessToken['access_token'],
+    //             'google_token_expires_at' => now()->addSeconds($newAccessToken['expires_in']),
+    //             // El refresh token a veces cambia, es bueno re-guardarlo si viene en la respuesta.
+    //             'google_refresh_token' => $newAccessToken['refresh_token'] ?? $user->google_refresh_token,
+    //         ]);
+    //     }
 
-        // --- PASO 5: Crear el evento (tu lógica original) ---
-        $service = new Google_Service_Calendar($client);
+    //     // --- PASO 5: Crear el evento (tu lógica original) ---
+    //     $service = new Google_Service_Calendar($client);
 
-        $event = new Google_Service_Calendar_Event([
-            'summary' => $meetingData['title'] ?? 'Tutoría ClassGo',
-            'description' => $meetingData['description'] ?? 'Sesión de tutoría programada a través de ClassGo.',
-            'start' => [
-                'dateTime' => Carbon::parse($meetingData['start_time'])->toRfc3339String(),
-                'timeZone' => $meetingData['timezone'] ?? 'UTC',
-            ],
-            'end' => [
-                'dateTime' => Carbon::parse($meetingData['end_time'])->toRfc3339String(),
-                'timeZone' => $meetingData['timezone'] ?? 'UTC',
-            ],
-            'conferenceData' => [
-                'createRequest' => [
-                    'conferenceSolutionKey' => ['type' => 'hangoutsMeet'],
-                    'requestId' => 'classgo-' . uniqid(), // Un ID único para la solicitud
-                ],
-            ],
-        ]);
+    //     $event = new Google_Service_Calendar_Event([
+    //         'summary' => $meetingData['title'] ?? 'Tutoría ClassGo',
+    //         'description' => $meetingData['description'] ?? 'Sesión de tutoría programada a través de ClassGo.',
+    //         'start' => [
+    //             'dateTime' => Carbon::parse($meetingData['start_time'])->toRfc3339String(),
+    //             'timeZone' => $meetingData['timezone'] ?? 'UTC',
+    //         ],
+    //         'end' => [
+    //             'dateTime' => Carbon::parse($meetingData['end_time'])->toRfc3339String(),
+    //             'timeZone' => $meetingData['timezone'] ?? 'UTC',
+    //         ],
+    //         'conferenceData' => [
+    //             'createRequest' => [
+    //                 'conferenceSolutionKey' => ['type' => 'hangoutsMeet'],
+    //                 'requestId' => 'classgo-' . uniqid(), // Un ID único para la solicitud
+    //             ],
+    //         ],
+    //     ]);
 
-        $calendarId = 'primary';
-        $createdEvent = $service->events->insert($calendarId, $event, ['conferenceDataVersion' => 1]);
+    //     $calendarId = 'primary';
+    //     $createdEvent = $service->events->insert($calendarId, $event, ['conferenceDataVersion' => 1]);
 
-        return $createdEvent->getHangoutLink();
-    }
+    //     return $createdEvent->getHangoutLink();
+    // }
 
 
 
@@ -158,14 +160,26 @@ class GoogleMeetService
         $tokenSetting = AccountSetting::where('user_id', $user->id)
             ->where('meta_key', 'google_access_token')
             ->first();
-
-        // Validar que el registro y el refresh_token existan.
-        if (!$tokenSetting || empty($tokenSetting->meta_value['refresh_token'])) {
-            throw new Exception('El usuario no tiene los tokens de Google necesarios o falta el refresh token.');
+        
+        // Validar que el registro exista.
+        if (!$tokenSetting) {
+            throw new Exception('El usuario no tiene los tokens de Google necesarios.');
         }
 
         // El modelo ya convierte meta_value en un array.
-        $tokenData = $tokenSetting->meta_value;
+        // Los tokens están anidados en meta_value['data']
+        $metaValue = $tokenSetting->meta_value;
+        // log raw metaValue para inspección
+        Log::info('Meta value raw:', ['meta' => $metaValue]);
+
+        $tokenData = isset($metaValue['data']) ? $metaValue['data'] : $metaValue;
+        // log tokenData after extraction
+        Log::info('Token data extracted:', ['tokens' => $tokenData]);
+
+        if (empty($tokenData['refresh_token'])) {
+            Log::error('Refresh token missing after extraction', ['tokenData' => $tokenData]);
+            throw new Exception('El usuario no tiene los tokens de Google necesarios o falta el refresh token.');
+        }
 
         // --- PASO 2: Configurar el cliente de Google con las credenciales de la app ---
         $client = new Google_Client();

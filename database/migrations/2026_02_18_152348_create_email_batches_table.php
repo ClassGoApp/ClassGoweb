@@ -30,6 +30,10 @@ return new class extends Migration
             $table->unsignedBigInteger('accepted_item_id')->nullable();
             $table->timestamp('accepted_at')->nullable();
 
+            // ✅ booking_id (esto venía en otra migration, lo fusionamos acá)
+            $table->unsignedBigInteger('booking_id')->nullable();
+            $table->index('booking_id');
+
             $table->timestamps();
 
             // performance
@@ -41,11 +45,10 @@ return new class extends Migration
             $table->foreign('subject_id')->references('id')->on('subjects')->cascadeOnDelete();
             $table->foreign('created_by')->references('id')->on('users')->cascadeOnDelete();
         });
-}
+    }
 
     public function down(): void
     {
-        
         Schema::dropIfExists('email_batches');
     }
 };

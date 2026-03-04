@@ -28,6 +28,8 @@ class UserBooking extends Component
     public $dateRange = [];
     public $subjectGroups, $upcomingBookings, $currentBooking;
     public $filter = [];
+    public $visibleStartTime = null;
+    public $earliestDate = null;
     public RatingForm $form;
     public $activeRoute;
     public $disputeReason = '';
@@ -73,33 +75,106 @@ class UserBooking extends Component
     #[Layout('layouts.app')]
    public function render()
 {
-    // Obtener reservas donde el tutor es el usuario actual
+    // Cargar reservas desde la BD en memoria (mismas relaciones que se usan en la vista)
+    $query = SlotBooking::with(['subject', 'tutor', 'booker'])->orderBy('start_time');
+
     if (Auth::user()->role == 'tutor') {
-        $bookings = SlotBooking::where('tutor_id', Auth::id())
-            ->with(['subject']) // ✅ CARGAR LA RELACIÓN
-            ->orderBy('start_time')
-            ->get();
-    } else if (Auth::user()->role == 'student') {
-        $bookings = SlotBooking::where('student_id', Auth::id())
-            ->with(['subject']) // ✅ CARGAR LA RELACIÓN
-            ->orderBy('start_time')
-            ->get();
+        $query->where('tutor_id', Auth::id());
+        // Nota: BookingService aplica más restricciones por estado para tutor; aquí dejamos la carga completa y
+        // aplicamos los filtros en memoria a continuación.
+    } elseif (Auth::user()->role == 'student') {
+        $query->where('student_id', Auth::id());
     } else {
-        $bookings = collect();
+        $this->upcomingBookings = [];
+        return view('livewire.pages.common.bookings.user-booking', [
+            'bookings' => $this->bookings,
+            'upcomingBookings' => $this->upcomingBookings,
+            'currentDate' => $this->currentDate,
+        ]);
+    }
+
+    // Aplicar siempre el rango de fechas calculado (daily/weekly/monthly) para limitar los resultados visibles
+    if (!empty($this->dateRange['start_date']) && !empty($this->dateRange['end_date'])) {
+        $query->where('start_time', '>=', $this->dateRange['start_date']);
+        $query->where('end_time', '<=', $this->dateRange['end_date']);
+    }
+
+    $bookings = $query->get();
+
+    // Aplicar filtros en memoria según la propiedad $this->filter enviada desde la vista
+    $filters = is_array($this->filter) ? $this->filter : [];
+
+    $filtered = $bookings->filter(function ($booking) use ($filters) {
+        // Filtrado por palabra clave (busca en materia y nombres de tutor/estudiante y estado)
+        if (!empty($filters['keyword'])) {
+            $kw = mb_strtolower(trim($filters['keyword']));
+            $subject = mb_strtolower($booking->subject->name ?? '');
+            $tutorName = mb_strtolower(trim((($booking->tutor->first_name ?? '') . ' ' . ($booking->tutor->last_name ?? ''))));
+            $studentName = mb_strtolower(trim((($booking->booker->first_name ?? '') . ' ' . ($booking->booker->last_name ?? ''))));
+            $status = mb_strtolower((string)($booking->status ?? ''));
+
+            if (str_contains($subject, $kw) === false && str_contains($tutorName, $kw) === false && str_contains($studentName, $kw) === false && str_contains($status, $kw) === false) {
+                return false;
+            }
+        }
+
+        // Filtrado por materia (array de ids)
+        if (!empty($filters['subject_group_ids']) && is_array($filters['subject_group_ids'])) {
+            // Los valores vienen como strings desde select2; convertir a enteros para comparar con subject_id
+            $ids = array_map('intval', $filters['subject_group_ids']);
+            if (empty($booking->subject_id) || !in_array((int)$booking->subject_id, $ids, true)) {
+                return false;
+            }
+        }
+
+        // Filtrado por tipo de sesión (si está disponible en meta_data)
+        if (!empty($filters['type']) && $filters['type'] !== '*') {
+            $type = $filters['type'];
+            $metaType = $booking->meta_data['session_type'] ?? $booking->meta_data['type'] ?? null;
+            if ($metaType !== null && (string)$metaType !== (string)$type) {
+                return false;
+            }
+        }
+
+        return true;
+    })->values();
+
+    // Determinar el primer elemento filtrado para centrar/recortar la vista
+    if ($filtered->isNotEmpty()) {
+        $first = $filtered->sortBy(function ($b) {
+            return $b->start_time;
+        })->first();
+        $firstTz = parseToUserTz($first->start_time);
+        $firstDate = $firstTz->toDateString();
+        $this->earliestDate = $firstDate;
+
+        if ($this->showBy == 'daily') {
+            // Centrar el día y mostrar a partir de la franja de la primera reserva
+            $this->currentDate = $firstTz;
+            $this->visibleStartTime = $firstTz->format('H:i');
+        } else {
+            // Para weekly/monthly centraremos el calendario en la fecha del primer elemento
+            $this->currentDate = Carbon::createFromFormat('Y-m-d', $firstDate, getUserTimezone());
+            $this->visibleStartTime = null;
+        }
+    } else {
+        $this->visibleStartTime = null;
+        $this->earliestDate = null;
     }
 
     // Agrupar y transformar a array plano por fecha
     $grouped = [];
-    foreach ($bookings as $booking) {
+    foreach ($filtered as $booking) {
         $date = parseToUserTz($booking->start_time)->toDateString();
         if (!isset($grouped[$date])) {
             $grouped[$date] = [];
         }
         $array = $booking->toArray();
-        $array['subject_name'] = $booking->subject->name ?? ''; // ✅ Ahora funcionará
+        $array['subject_name'] = $booking->subject->name ?? '';
         $array['status_num'] = $booking->getRawOriginal('status');
         $grouped[$date][] = $array;
     }
+
     $this->upcomingBookings = $grouped;
 
     return view('livewire.pages.common.bookings.user-booking', [

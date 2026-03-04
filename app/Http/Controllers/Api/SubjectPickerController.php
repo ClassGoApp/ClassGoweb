@@ -13,14 +13,96 @@ use App\Models\EmailBatchItem;
 
 use Illuminate\Support\Facades\Auth;
 
-
+use App\Mail\TutorTutoriaNotificationMail;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 
+use Illuminate\Support\Str;
+
+use App\Mail\TutoriaInstanteAceptada;
+
+use App\Models\SlotBooking;
 use App\Services\SlotBookingService;
+
+        
 
 class SubjectPickerController extends Controller
 {
+
+    //////////////////////////metoo de prueba para enviar mails desde el endpoint (sin pasar por batch)///////////////////////////////////////
+
+
+    public function sendLastFive()
+    {
+        // Últimos 5 usuarios con email
+        $users = DB::table('users')
+            ->whereNotNull('email')
+            ->orderByDesc('id')
+            ->limit(5)
+            ->get(['id', 'email']);
+        // dd(
+        //     DB::table('users')->whereNotNull('email')->orderByDesc('id')->limit(5)->toSql()
+        // );
+
+        // dd($users);
+        if ($users->isEmpty()) {
+            return response()->json([
+                'ok' => false,
+                'message' => 'No hay usuarios con email.'
+            ], 404);
+        }
+
+        // Datos de prueba
+        $sessionDate  = now()->format('d/m/Y');
+        $sessionTime  = now()->addMinutes(10)->format('H:i');
+        $meetingLink  = 'https://meet.google.com/xxx-yyyy-zzz';
+        $oppositeName = 'Estudiante de prueba';
+
+        $sent = [];
+        $failed = [];
+
+        foreach ($users as $u) {
+            try {
+                $userName = 'Tutor #' . $u->id;
+
+                Mail::to($u->email)->send(
+                    new TutorTutoriaNotificationMail(
+                        $userName,
+                        $sessionDate,
+                        $sessionTime,
+                        $meetingLink,
+                        $oppositeName
+                    )
+                );
+
+                $sent[] = $u->email;
+
+                // opcional: pausa chica para no saturar el SMTP
+                usleep(150000); // 0.15s
+            } catch (\Throwable $e) {
+                Log::error("sendLastFive mail fail {$u->email}: " . $e->getMessage());
+
+                $failed[] = [
+                    'email' => $u->email,
+                    'error' => $e->getMessage(),
+                ];
+            }
+        }
+
+        return response()->json([
+            'ok' => true,
+            'target' => $users->count(),
+            'sent_count' => count($sent),
+            'failed_count' => count($failed),
+            'sent' => $sent,
+            'failed' => $failed,
+        ]);
+    }
+
+
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public function index()
     {
         $subjects = Cache::remember('subjects.all', 3600, function () {
@@ -129,133 +211,283 @@ class SubjectPickerController extends Controller
             'data' => $tutors,
         ]);
     }
-    // public function start(Request $request)
-    // {
-    //     $data = $request->validate([
-    //         'subject_id' => ['required', 'integer', 'min:1'],
-    //     ]);
-
-    //     $subjectId = (int) $data['subject_id'];
 
 
-    //     $studentId = (int) Auth::id();
-    //     // ✅ Si ya tiene tutoría activa o pendiente, NO iniciar batch (evita emails en vano)
-    //     $hasActiveBooking = DB::table('slot_bookings')
-    //         ->where('student_id', $studentId)
-    //         ->whereIn('status', [1, 4, 2]) // 1 Active, 4 Reserved, 2 Rescheduled (ajusta según tus estados reales)
-    //         ->where('end_time', '>', now()) // todavía no terminó
-    //         ->exists();
+    //     public function sendBatchEmails(Request $request)
+    //     {
+    //         $batchId = (int) $request->input('batch_id');
+    //         $limit   = (int) ($request->input('limit', 10)); // cuántos mandar por llamada
+    // // dd( $batchId, $limit);
+    //         if ($batchId <= 0) {
+    //             return response()->json(['ok' => false, 'message' => 'batch_id requerido'], 422);
+    //         }
 
-    //     if ($hasActiveBooking) {
+    //         $limit = max(1, min($limit, 50)); // hard limit para no matar el request
+
+    //         $now = now();
+
+    //         // 1) Tomar N items "pending" del batch y marcarlos como "sending" (con lock)
+    //         $items = DB::transaction(function () use ($batchId, $limit, $now) {
+    //             $rows = EmailBatchItem::where('batch_id', $batchId)
+    //                 ->where('status', 'pending')
+    //                 ->orderBy('position')
+    //                 ->lockForUpdate()
+    //                 ->limit($limit)
+    //                 ->get(['id', 'user_id', 'accept_token', 'position']);
+
+    //             if ($rows->isNotEmpty()) {
+    //                 EmailBatchItem::whereIn('id', $rows->pluck('id'))
+    //                     ->update([
+    //                         'status' => 'sending',
+    //                         'updated_at' => $now,
+    //                     ]);
+    //             }
+
+    //             return $rows;
+    //         });
+
+    //         if ($items->isEmpty()) {
+    //             // si ya no hay pendientes, marca batch done (opcional)
+    //             EmailBatch::where('id', $batchId)->update([
+    //                 'status' => 'done',
+    //                 'updated_at' => $now,
+    //             ]);
+
+    //             return response()->json([
+    //                 'ok' => true,
+    //                 'message' => 'no_pending',
+    //                 'sent_count' => 0,
+    //                 'failed_count' => 0,
+    //             ]);
+    //         }
+
+    //         $sent = [];
+    //         $failed = [];
+
+    //         // 2) Enviar 1 por 1
+    //         foreach ($items as $it) {
+    //             try {
+    //                 $user = DB::table('users')->where('id', $it->user_id)->first(['id', 'email']);
+
+    //                 if (!$user || !$user->email) {
+    //                     throw new \Exception('user_email_missing');
+    //                 }
+
+    //                 // Datos base (ajústalos a tu lógica real)
+    //                 $userName = 'Tutor #' . $it->user_id;
+    //                 $sessionDate = $now->format('d/m/Y');
+    //                 $sessionTime = $now->addMinutes(10)->format('H:i');
+
+    //                 // Link del email con accept_token (tu tabla lo tiene)
+    //                 $meetingLink = url("/tutor/wait?t=" . $it->accept_token);
+
+    //                 // Nombre “opuesto” (si no tienes estudiante aún, puede ser texto)
+    //                 $oppositeName = 'Estudiante';
+
+    //                 Mail::to($user->email)->send(
+    //                     new TutorTutoriaNotificationMail(
+    //                         $userName,
+    //                         $sessionDate,
+    //                         $sessionTime,
+    //                         $meetingLink,
+    //                         $oppositeName
+    //                     )
+    //                 );
+
+    //                 EmailBatchItem::where('id', $it->id)->update([
+    //                     'status' => 'sent',
+    //                     'sent_at' => $now,
+    //                     'last_error' => null,
+    //                     'updated_at' => $now,
+    //                 ]);
+
+    //                 $sent[] = $user->email;
+
+    //                 // pausa pequeña opcional
+    //                 usleep(150000);
+    //             } catch (\Throwable $e) {
+    //                 Log::error("Batch {$batchId} mail fail item {$it->id}: " . $e->getMessage());
+
+    //                 EmailBatchItem::where('id', $it->id)->update([
+    //                     'status' => 'failed',
+    //                     'last_error' => substr($e->getMessage(), 0, 900),
+    //                     'updated_at' => $now,
+    //                 ]);
+
+    //                 $failed[] = [
+    //                     'item_id' => $it->id,
+    //                     'user_id' => $it->user_id,
+    //                     'error' => $e->getMessage(),
+    //                 ];
+    //             }
+    //         }
+
+    //         // 3) Si ya no quedan pendientes, marca batch done (opcional)
+    //         // $pendingLeft = EmailBatchItem::where('batch_id', $batchId)
+    //         //     ->where('status', 'pending')
+    //         //     ->count();
+
+    //         // if ($pendingLeft === 0) {
+    //         //     EmailBatch::where('id', $batchId)->update([
+    //         //         'status' => 'done',
+    //         //         'updated_at' => $now,
+    //         //     ]);
+    //         // }
+
     //         return response()->json([
-    //             'success' => false,
-    //             'code' => 'has_active_booking',
-    //             'message' => 'Ya tienes una tutoría activa o pendiente. Finaliza o cancela antes de iniciar otra.',
-    //         ], 409);
+    //             'ok' => true,
+    //             'batch_id' => $batchId,
+    //             'processed' => $items->count(),
+    //             'sent_count' => count($sent),
+    //             'failed_count' => count($failed),
+    //             // 'pending_left' => $pendingLeft,
+    //             'sent' => $sent,
+    //             'failed' => $failed,
+    //         ]);
     //     }
 
 
-    //     // ⬅️ define tu tiempo de espera real
-    //     $timeoutMinutes = 5;
 
-    //     return DB::transaction(function () use ($subjectId, $studentId, $timeoutMinutes) {
+    public function sendBatchEmails(Request $request)
+    {
+        $batchId = (int) $request->input('batch_id');
+        $limit   = (int) $request->input('limit', 10);
 
-    //         // (Opcional pero recomendado) si el estudiante inicia otro batch,
-    //         // marcamos el anterior como done/expired para que no siga enviando.
-    //         EmailBatch::query()
-    //             ->where('created_by', $studentId)
-    //             ->whereIn('status', ['pending', 'running'])
-    //             ->update([
-    //                 'status' => 'done',
-    //                 'last_error' => 'restarted',
-    //                 'updated_at' => now(),
-    //             ]);
+        if ($batchId <= 0) {
+            return response()->json(['ok' => false, 'message' => 'batch_id requerido'], 422);
+        }
 
-    //         // 1) Crear batch
-    //         $batch = EmailBatch::create([
-    //             'subject_id' => $subjectId,
-    //             'created_by' => $studentId,
-    //             // 'status' => 'pending',
-    //             'status' => 'running',
-    //             'last_tutor_id' => 0,
-    //             'sent_count' => 0,
-    //             'batch_size' => 2, // 2 email por minuto
-    //             'last_error' => null,
-    //             'expires_at' => now()->addMinutes($timeoutMinutes),
-    //         ]);
+        $limit = max(1, min($limit, 50));
+        $now = now();
 
-    //         session([
-    //             'active_batch_id' => $batch->id,
-    //             'active_subject_id' => $subjectId,
-    //         ]);
+        // 0) Traer subject_id del batch (1 sola vez)
+        $batch = DB::table('email_batches')->where('id', $batchId)->first(['id', 'subject_id']);
+        if (!$batch) {
+            return response()->json(['ok' => false, 'message' => 'Batch no existe'], 404);
+        }
+
+        $subjectId   = (int) $batch->subject_id;
+        $subjectName = DB::table('subjects')->where('id', $subjectId)->value('name') ?? 'Materia';
+
+        // Datos comunes del email (1 sola vez)
+        $gifUrl      = asset('images/tutoria-instant.gif'); // ajusta si tu gif está en otro lugar
+        $description = "Tienes una solicitud de tutoría instantánea para {$subjectName}. Entra y espera a ser elegido.";
+        $buttonText  = "Entrar a sala de espera";
+
+        // 1) Tomar N items pending y marcarlos sending (lock)
+        $items = DB::transaction(function () use ($batchId, $limit, $now) {
+            $rows = EmailBatchItem::where('batch_id', $batchId)
+                ->where('status', 'pending')
+                ->orderBy('position')
+                ->lockForUpdate()
+                ->limit($limit)
+                ->get(['id', 'user_id', 'accept_token', 'position']);
+
+            if ($rows->isNotEmpty()) {
+                EmailBatchItem::whereIn('id', $rows->pluck('id'))
+                    ->update([
+                        'status' => 'sending',
+                        'updated_at' => $now,
+                    ]);
+            }
+
+            return $rows;
+        });
+
+        if ($items->isEmpty()) {
+            EmailBatch::where('id', $batchId)->update([
+                'status' => 'done',
+                'updated_at' => $now,
+            ]);
+
+            return response()->json([
+                'ok' => true,
+                'message' => 'no_pending',
+                'sent_count' => 0,
+                'failed_count' => 0,
+            ]);
+        }
+
+        $sent = [];
+        $failed = [];
+
+        // 2) Enviar 1 por 1
+        foreach ($items as $it) {
+            try {
+                // Traer email + nombre del perfil en 1 query
+                $user = DB::table('users as u')
+                    ->leftJoin('profiles as p', 'p.user_id', '=', 'u.id')
+                    ->where('u.id', $it->user_id)
+                    ->first([
+                        'u.id',
+                        'u.email',
+                        'p.first_name',
+                        'p.last_name',
+                    ]);
+
+                if (!$user || !$user->email) {
+                    throw new \Exception('user_email_missing');
+                }
+
+                $tutorName = trim(($user->first_name ?? '') . ' ' . ($user->last_name ?? ''));
+                if ($tutorName === '') {
+                    $tutorName = 'Tutor #' . $it->user_id;
+                }
+
+                // Link del email con accept_token
+                $buttonUrl = route('waitlist.accept', ['t' => $it->accept_token]);
 
 
-    //         // 2) Cola congelada: primero disponibles, luego no disponibles
-    //         $availableNow = $this->getTutorsAvailableNow($subjectId);     // Collection { user_id }
-    //         $notAvailable = $this->getTutorsNotAvailableNow($subjectId);  // Collection { user_id }
+                Mail::to($user->email)->send(
+                    new \App\Mail\TutoriaInstanteNotificacionMail(
+                        tutorName: $tutorName,
+                        subjectName: $subjectName,
+                        subjectId: $subjectId,
+                        gifUrl: $gifUrl,
+                        description: $description,
+                        buttonUrl: $buttonUrl,
+                        buttonText: $buttonText
+                    )
+                );
 
-    //         // 3) Unificar sin duplicados
-    //         $seen = [];
-    //         $queue = [];
+                EmailBatchItem::where('id', $it->id)->update([
+                    'status' => 'sent',
+                    'sent_at' => $now,
+                    'last_error' => null,
+                    'updated_at' => $now,
+                ]);
 
-    //         foreach ($availableNow as $t) {
-    //             $uid = (int) $t->user_id;
-    //             if ($uid > 0 && !isset($seen[$uid])) {
-    //                 $seen[$uid] = true;
-    //                 $queue[] = $uid;
-    //             }
-    //         }
+                $sent[] = $user->email;
 
-    //         foreach ($notAvailable as $t) {
-    //             $uid = (int) $t->user_id;
-    //             if ($uid > 0 && !isset($seen[$uid])) {
-    //                 $seen[$uid] = true;
-    //                 $queue[] = $uid;
-    //             }
-    //         }
+                usleep(150000);
+            } catch (\Throwable $e) {
+                Log::error("Batch {$batchId} mail fail item {$it->id}: " . $e->getMessage());
 
-    //         // 4) Insert masivo items
-    //         $items = [];
-    //         $pos = 1;
-    //         $now = now();
+                EmailBatchItem::where('id', $it->id)->update([
+                    'status' => 'failed',
+                    'last_error' => substr($e->getMessage(), 0, 900),
+                    'updated_at' => $now,
+                ]);
 
-    //         foreach ($queue as $uid) {
-    //             $items[] = [
-    //                 'batch_id' => $batch->id,
-    //                 'user_id' => $uid,
-    //                 'position' => $pos++,
-    //                 'status' => 'pending',
-    //                 'sent_at' => null,
-    //                 'last_error' => null,
-    //                 'created_at' => $now,
-    //                 'updated_at' => $now,
-    //             ];
-    //         }
+                $failed[] = [
+                    'item_id' => $it->id,
+                    'user_id' => $it->user_id,
+                    'error' => $e->getMessage(),
+                ];
+            }
+        }
 
-    //         if ($items) {
-    //             EmailBatchItem::insert($items);
-    //         } else {
-    //             $batch->update([
-    //                 'status' => 'done',
-    //                 'last_error' => 'no_candidates',
-    //             ]);
-    //         }
-    //         // ✅ Primer lote INSTANTÁNEO (solo si hubo candidatos)
-    //         if ($items) {
-    //             DB::afterCommit(function () use ($batch) {
-    //                 Artisan::call('batches:tick', ['--batch_id' => $batch->id]);
-    //             });
-    //         }
+        return response()->json([
+            'ok' => true,
+            'batch_id' => $batchId,
+            'processed' => $items->count(),
+            'sent_count' => count($sent),
+            'failed_count' => count($failed),
+            'sent' => $sent,
+            'failed' => $failed,
+        ]);
+    }
 
-    //         return response()->json([
-    //             'success' => true,
-    //             'batch_id' => $batch->id,
-    //             'subject_id' => $subjectId,
-    //             'queued' => count($items),
-    //             'expires_at' => optional($batch->expires_at)->toDateTimeString(),
-    //         ]);
-    //     });
-    // }
 
     public function start(Request $request)
     {
@@ -266,7 +498,7 @@ class SubjectPickerController extends Controller
         $subjectId = (int) $data['subject_id'];
         $studentId = (int) Auth::id();
 
-        $timeoutMinutes = 5;
+        $timeoutMinutes = 2; // define tu tiempo de espera real
 
         return DB::transaction(function () use ($subjectId, $studentId, $timeoutMinutes) {
 
@@ -306,7 +538,7 @@ class SubjectPickerController extends Controller
                 'status' => 'running',
                 'last_tutor_id' => 0,
                 'sent_count' => 0,
-                'batch_size' => 2,
+                'batch_size' => 30,
                 'last_error' => null,
                 'expires_at' => now()->addMinutes($timeoutMinutes),
             ]);
@@ -316,9 +548,8 @@ class SubjectPickerController extends Controller
                 'active_subject_id' => $subjectId,
             ]);
 
-            // ✅ 2) Cola congelada
+
             $availableNow = $this->getTutorsAvailableNow($subjectId);
-            $notAvailable = $this->getTutorsNotAvailableNow($subjectId);
 
             $seen = [];
             $queue = [];
@@ -330,46 +561,37 @@ class SubjectPickerController extends Controller
                     $queue[] = $uid;
                 }
             }
-            foreach ($notAvailable as $t) {
-                $uid = (int) $t->user_id;
-                if ($uid > 0 && !isset($seen[$uid])) {
-                    $seen[$uid] = true;
-                    $queue[] = $uid;
-                }
-            }
 
-            // ✅ 3) Insert masivo items
             $items = [];
             $pos = 1;
             $now = now();
 
             foreach ($queue as $uid) {
                 $items[] = [
-                    'batch_id' => $batch->id,
-                    'user_id' => $uid,
-                    'position' => $pos++,
-                    'status' => 'pending',
-                    'sent_at' => null,
-                    'last_error' => null,
-                    'created_at' => $now,
-                    'updated_at' => $now,
+                    'batch_id'      => $batch->id,
+                    'user_id'       => $uid,
+                    'position'      => $pos++,
+                    'status'        => 'pending',
+                    'sent_at'       => null,
+                    'last_error'    => null,
+
+                    // ✅ tu columna real
+                    'accept_token'  => Str::random(64), // 64 cabe perfecto en varchar(80)
+                    'accepted_at'   => null,
+                    'chosen_at'     => null,
+
+                    'created_at'    => $now,
+                    'updated_at'    => $now,
                 ];
             }
 
-            if ($items) {
+            if (!empty($items)) {
                 EmailBatchItem::insert($items);
             } else {
                 $batch->update([
                     'status' => 'done',
-                    'last_error' => 'no_candidates',
+                    'last_error' => 'no_available_candidates',
                 ]);
-            }
-
-            // ✅ 4) Primer tick inmediato (solo si hay candidatos)
-            if ($items) {
-                DB::afterCommit(function () use ($batch) {
-                    Artisan::call('batches:tick', ['--batch_id' => $batch->id]);
-                });
             }
 
             return response()->json([
@@ -377,11 +599,68 @@ class SubjectPickerController extends Controller
                 'already_active' => false,
                 'batch_id' => $batch->id,
                 'subject_id' => $subjectId,
-                'queued' => count($items),
+                // 'queued' => count($items),
+                // 'queued' => 0, // por ahora no pre-cargamos la cola (optimización futura)
                 'expires_at' => optional($batch->expires_at)->toDateTimeString(),
             ]);
         });
     }
+
+    // public function emailBatchItem(request $request)
+    // {
+
+    //         $batchId = (int) $request->input('batch_id');
+    //         $batch = EmailBatch::query()->find($batchId);
+    //         if (!$batch) {
+    //             return response()->json(['ok' => false, 'message' => 'Batch no existe'], 404);
+    //         }
+
+    //         $subjectId = (int) $batch->subject_id;
+    //     $availableNow = $this->getTutorsAvailableNow($subjectId);
+
+    //         $seen = [];
+    //         $queue = [];
+
+    //         foreach ($availableNow as $t) {
+    //             $uid = (int) $t->user_id;
+    //             if ($uid > 0 && !isset($seen[$uid])) {
+    //                 $seen[$uid] = true;
+    //                 $queue[] = $uid;
+    //             }
+    //         }
+
+    //         $items = [];
+    //         $pos = 1;
+    //         $now = now();
+
+    //         foreach ($queue as $uid) {
+    //             $items[] = [
+    //                 'batch_id'      => $batch->id,
+    //                 'user_id'       => $uid,
+    //                 'position'      => $pos++,
+    //                 'status'        => 'pending',
+    //                 'sent_at'       => null,
+    //                 'last_error'    => null,
+
+    //                 // ✅ tu columna real
+    //                 'accept_token'  => Str::random(64), // 64 cabe perfecto en varchar(80)
+    //                 'accepted_at'   => null,
+    //                 'chosen_at'     => null,
+
+    //                 'created_at'    => $now,
+    //                 'updated_at'    => $now,
+    //             ];
+    //         }
+
+    //         if (!empty($items)) {
+    //             EmailBatchItem::insert($items);
+    //         } else {
+    //             $batch->update([
+    //                 'status' => 'done',
+    //                 'last_error' => 'no_available_candidates',
+    //             ]);
+    //         }
+    // }
 
 
 
@@ -442,64 +721,6 @@ class SubjectPickerController extends Controller
 
 
 
-    // public function active()
-    // {
-    //     $studentId = (int) Auth::id();
-    //     $batchId = session('active_batch_id');
-
-    //     // 1) Intentar por sesión
-    //     if ($batchId) {
-    //         $batch = EmailBatch::query()->find($batchId);
-
-    //         if ($batch && !in_array($batch->status, ['done', 'failed'], true)) {
-    //             if (!$batch->expires_at || now()->lt($batch->expires_at)) {
-    //                 return response()->json([
-    //                     'active' => true,
-    //                     'batch_id' => $batch->id,
-    //                     'subject_id' => $batch->subject_id,
-    //                     'status' => $batch->status,
-    //                     'sent_count' => $batch->sent_count,
-    //                     'batch_size' => $batch->batch_size,
-    //                     'expires_at' => optional($batch->expires_at)->toDateTimeString(),
-    //                 ]);
-    //             }
-    //         }
-
-    //         // sesión apunta a algo inválido
-    //         session()->forget(['active_batch_id', 'active_subject_id']);
-    //     }
-
-    //     // 2) Fallback por BD (más robusto)
-    //     $batch = EmailBatch::query()
-    //         ->where('created_by', '=', $studentId)
-    //         ->whereIn('status', ['pending', 'running'])
-    //         ->where(function ($q) {
-    //             $q->whereNull('expires_at')
-    //                 ->orWhere('expires_at', '>', now());
-    //         })
-    //         ->orderByDesc('id')
-    //         ->first();
-
-    //     if (!$batch) {
-    //         return response()->json(['active' => false]);
-    //     }
-
-    //     // rehidratar sesión
-    //     session([
-    //         'active_batch_id' => $batch->id,
-    //         'active_subject_id' => $batch->subject_id,
-    //     ]);
-
-    //     return response()->json([
-    //         'active' => true,
-    //         'batch_id' => $batch->id,
-    //         'subject_id' => $batch->subject_id,
-    //         'status' => $batch->status,
-    //         'sent_count' => $batch->sent_count,
-    //         'batch_size' => $batch->batch_size,
-    //         'expires_at' => optional($batch->expires_at)->toDateTimeString(),
-    //     ]);
-    // }
 
 
     public function active()
@@ -590,7 +811,7 @@ class SubjectPickerController extends Controller
         if (!$batch) abort(404);
 
         if ($batch->expires_at && now()->greaterThanOrEqualTo($batch->expires_at)) {
-            return view('vistas.view.pages.waitlistTutor', [
+            return view('vistas.view.pages.tutorStateLink', [
                 'status' => 'expired',
             ]);
         }
@@ -611,7 +832,7 @@ class SubjectPickerController extends Controller
         // ✅ timestamp absoluto (servidor) en milisegundos
         $expiresAtMs = $expiresAt ? ($expiresAt->getTimestamp() * 1000) : null;
 
-        return view('vistas.view.pages.waitlistTutor', [
+        return view('vistas.view.pages.tutorStateLink', [
             'status' => ($secondsLeft !== null && $secondsLeft <= 0) ? 'expired' : 'ok',
             'batch_id' => $batch->id,
             'subject_id' => $batch->subject_id,
@@ -999,34 +1220,6 @@ class SubjectPickerController extends Controller
     }
 
 
-    // private function baseTutorsBySubjectQuery(int $subjectId, bool $mustBeAvailableNow)
-    // {
-    //     $q = DB::table('user_subject as us')
-    //         ->join('users as u', 'u.id', '=', 'us.user_id')
-    //         ->leftJoin('user_reviews as ur', 'ur.user_id', '=', 'us.user_id')
-    //         ->leftJoin('reviews as r', function ($join) {
-    //             $join->on('r.id', '=', 'ur.review_id');
-    //             // si quieres activar solo reviews activas aquí, habilita:
-    //             // $join->where('r.status', '=', 'active');
-    //         })
-    //         ->where('us.subject_id', $subjectId)
-    //         ->whereNotNull('u.email');
-
-    //     $slotSub = DB::table('user_subject_slots as s')
-    //         ->select(DB::raw(1))
-    //         ->whereColumn('s.user_id', 'us.user_id')
-    //         ->whereRaw('s.date = CURDATE()')
-    //         ->whereRaw('s.start_time <= CURTIME()')
-    //         ->whereRaw('s.end_time > CURTIME()');
-
-    //     if ($mustBeAvailableNow) {
-    //         $q->whereExists($slotSub);
-    //     } else {
-    //         $q->whereNotExists($slotSub);
-    //     }
-
-    //     return $q;
-    // }
 
 
 
@@ -1130,8 +1323,8 @@ class SubjectPickerController extends Controller
                     'batch_id' => (int)$batchRow->id,
                     'item_id'  => (int)$item->id,
                 ]),
-                // 'created_at' => now(),
-                // 'updated_at' => now(),
+                //'created_at' => now(),
+                //'updated_at' => now(),
             ]);
 
 
@@ -1268,7 +1461,7 @@ class SubjectPickerController extends Controller
                     'payment_date'   => now()->toDateString(),
                     'payment_method' => 'transfer',
                     'amount'         => (float) ($booking->session_fee ?? 0),
-                    'status'         => 1, // Pendiente
+                    'status'         => 2, // Pendiente
                     'message'        => 'Pago pendiente de verificación',
                     'receipt_pdf'    => $imageUrl,
                     'created_at'     => now(),
@@ -2045,6 +2238,13 @@ class SubjectPickerController extends Controller
                 'meeting_link' => $meetingLink,
                 // 'updated_at' => now(),
             ]);
+            DB::table('slot_payments')
+                ->where('slot_booking_id', $bookingId)
+                ->update([
+                    'status' => 2, // Pagado
+                    'message' => 'Pago verificado por el tutor',
+                    //'updated_at' => now(),
+                ]);
 
             // pagos
             DB::table('slot_payments')->where('slot_booking_id', $bookingId)->update([
@@ -2053,13 +2253,45 @@ class SubjectPickerController extends Controller
                 'updated_at' => now(),
             ]);
 
-            // cerrar batch
-            DB::table('email_batches')->where('id', (int)$batch->id)->update([
-                'status' => 'done',
-                'updated_at' => now(),
-            ]);
+            // 3) cerrar batch (importante para que siguientes batchs funcionen)
+            DB::table('email_batches')
+                ->where('id', (int)$batch->id)
+                ->update([
+                    'status' => 'done',
+                    // 'last_error' => null,
+                    //'updated_at' => now(),
+                ]);
 
-            // expirar otros items
+
+
+
+            //////////////// despues reemplazar por link real de vista/email ////////////////
+            // Datos estudiante
+            $info = $this->bookingEmailData($bookingId);
+
+            if ($info) {
+                $b = $info['booking'];
+                $emails = [$info['student_email'], $info['tutor_email']];
+                // Formatear las horas ANTES de pasarlas al Mailable
+                $startTimeFormatted = \Carbon\Carbon::parse($b->start_time)->format('H:i');
+                $endTimeFormatted   = \Carbon\Carbon::parse($b->end_time)->format('H:i');
+
+                foreach ($emails as $email) {
+                    Mail::to($email)->queue(new TutoriaInstanteAceptada(
+                        bookingId: $bookingId,
+                        subjectName: $info['subject_name'],
+                        tutorName: $info['tutor_name'] ?? '-',
+                        studentName: $info['student_name'] ?? '-',
+                        startTime: $startTimeFormatted,
+                        endTime: $endTimeFormatted,
+                        meetingLink: $b->meeting_link ?: env('MEET_GENERIC_LINK', 'https://meet.google.com/upy-mxim-nrm')
+                    ));
+                }
+            }
+
+            ////////////////////////////////////////////////////////////////////////////////
+
+            // Marcar a todos los demás como no elegidos (para que su UI deje de esperar)
             DB::table('email_batch_items')
                 ->where('batch_id', (int)$batch->id)
                 ->where('id', '!=', (int)$item->id)
@@ -2402,17 +2634,40 @@ class SubjectPickerController extends Controller
                 ]
             );
 
-            // ✅ Mantener meet genérico
-            $genericMeet = 'https://meet.google.com/upy-mxim-nrm';
-            if (empty($b->meeting_link)) {
-                DB::table('slot_bookings')
-                    ->where('id', $bookingId)
-                    ->update([
-                        'meeting_link' => $genericMeet,
-                        // 'updated_at' => now(),
-                    ]);
-            } else {
-                $genericMeet = (string)$b->meeting_link;
+            // meet link genérico (opcional)
+            // $genericMeet = ;
+            // if (empty($b->meeting_link)) {
+            //     DB::table('slot_bookings')
+            //         ->where('id', $bookingId)
+            //         ->update([
+            //             'meeting_link' => $genericMeet,
+            //             //'updated_at' => now(),
+            //         ]);
+            // } else {
+            //     $genericMeet = $b->meeting_link;
+            // }
+            $meetingLink = $b->meeting_link; // $b viene de DB::table, puede ser null
+
+            if (empty($meetingLink)) {
+
+                // Cargar booking como Eloquent (para usar tu service tal cual lo tienes)
+                $bookingModel = SlotBooking::where('id', $bookingId)
+                    ->lockForUpdate()
+                    ->first();
+
+                // Llamar al servicio (DI rápido con app())
+                $slotBookingService = app(SlotBookingService::class);
+
+                $meetingLink = $slotBookingService->generarlink($bookingModel) ?: 'https://meet.google.com/upy-mxim-nrm';
+
+                if (!empty($meetingLink)) {
+                    DB::table('slot_bookings')
+                        ->where('id', $bookingId)
+                        ->update([
+                            'meeting_link' => $meetingLink,
+                            // 'updated_at' => now(),
+                        ]);
+                }
             }
 
             return response()->json([
@@ -2420,7 +2675,7 @@ class SubjectPickerController extends Controller
                 'booking_id' => $bookingId,
                 'message' => 'Comprobante subido. Esperando aprobación del tutor.',
                 'receipt_url' => '/storage/' . ltrim($imageUrl, '/'),
-                'meeting_link' => $genericMeet,
+                'meeting_link' => $meetingLink,
             ]);
         });
     }

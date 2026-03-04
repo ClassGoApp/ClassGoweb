@@ -151,9 +151,7 @@
                                 </tbody>
                             </table>
 
-                            <div class="tb-pagination mt-3">
-                                {{ $encuestas->links('pagination.custom') }}
-                            </div>
+                            
                         @else
                             <div class="empty-state">
                                 <i class="icon-clipboard"></i>
@@ -161,6 +159,9 @@
                             </div>
                         @endif
                     </div>
+                </div>
+                <div class="tb-pagination mt-3">
+                                {{ $encuestas->links('pagination.custom') }}
                 </div>
             </div>
         </div>

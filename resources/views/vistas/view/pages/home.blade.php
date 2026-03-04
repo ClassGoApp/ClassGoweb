@@ -39,6 +39,9 @@
         @include('vistas.view.pages.components.home.card-tutor-destacado')
 
     </section>
+    <section class="instant-info">
+    @include('vistas.view.pages.components.home.tutorias-al-instante')
+    </section>
 
     <!--FILTRO DE MATERIAS-->
     <section class="filtro_materias fade-up">

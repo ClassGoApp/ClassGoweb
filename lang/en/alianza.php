@@ -14,6 +14,7 @@ return [
     'active' => 'Active',
     'inactive' => 'Inactive',
     'order' => 'Order',
+    'categoria' => 'Category',
 
     // Placeholders / help
     'title_placeholder' => 'Alliance name',

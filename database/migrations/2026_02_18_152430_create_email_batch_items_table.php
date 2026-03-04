@@ -8,8 +8,6 @@ return new class extends Migration
 {
     public function up(): void
     {
-
-
         Schema::create('email_batch_items', function (Blueprint $table) {
             $table->bigIncrements('id');
 
@@ -18,7 +16,6 @@ return new class extends Migration
 
             $table->unsignedInteger('position');
 
-            // ENUM ampliado (sin ALTER, tabla nueva)
             $table->enum('status', [
                 'pending',
                 'sending',
@@ -38,25 +35,20 @@ return new class extends Migration
 
             $table->timestamps();
 
-            // Índices que ya tenías
+            // índices
             $table->unique(['batch_id', 'user_id'], 'uniq_batch_user');
             $table->unique('accept_token', 'uniq_accept_token');
             $table->index(['batch_id', 'status', 'position'], 'idx_batch_next');
             $table->index(['batch_id', 'accepted_at'], 'idx_batch_accepted');
 
-            // (Opcional pero recomendado) FKs
-            // Si no quieres FKs por shared hosting o por drops frecuentes, comenta estas 2 líneas.
+            // FK
             $table->foreign('batch_id')->references('id')->on('email_batches')->cascadeOnDelete();
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
         });
-
-        Schema::enableForeignKeyConstraints();
     }
 
     public function down(): void
     {
-        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('email_batch_items');
-        Schema::enableForeignKeyConstraints();
     }
 };

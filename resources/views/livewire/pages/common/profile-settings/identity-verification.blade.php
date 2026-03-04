@@ -27,7 +27,7 @@
                         <p style="color: black">{{ __('profile.identity_detail_desc') }}</p> {{-- Descripción --}}
                     </div>
                 </div>
-                <form wire:submit="updateInfo" class="am-themeform am-themeform_personalinfo">
+                <form wire:submit.prevent="updateInfo" class="am-themeform am-themeform_personalinfo">
                     @if ($isLoading)
                         {{-- Skeleton de carga mientras se obtienen los datos --}}
                         @include('skeletons.identity-verification')
@@ -297,12 +297,33 @@
                                     @endif
                                 </div>
                             </div>
+                            
+
+                            {{-- Si el usuario no ha agregado materias, muestra mensaje y botón para agregar --}}
+                            @if($userSubjectsCount == 0)
+                            <div class="form-group am-addressform">
+                                <x-input-label style="color: black" for="Subjects" class="am-important"
+                                    :value="__('Subjects')" />
+                                <span style="color: black"> Debes agregar materias antes de continuar.</span>
+                                <div style="margin-top: 1rem;">
+                                    <a href="{{ url('/tutor/bookings/manage-subjects') }}" style="text-decoration: none;">
+                                        <x-primary-button type="button">
+                                            Agregar Materias
+                                        </x-primary-button>
+                                    </a>
+                                </div>
+                            </div>
+                            @endif
 
                             {{-- Botón para guardar cambios --}}
                             <div class="form-group am-form-btns">
                                 <span style="color: black">{{ __('profile.latest_changes_the_live') }}</span>
-                                <x-primary-button wire:target="updateInfo"
-                                    wire:loading.class="am-btn_disable">{{ __('profile.save_update') }}</x-primary-button>
+                                <x-primary-button
+                                    type="submit"
+                                    wire:target="updateInfo"
+                                    wire:loading.class="am-btn_disable">
+                                    {{ __('profile.save_update') }}
+                                </x-primary-button>
                             </div>
                         </fieldset>
                     @endif

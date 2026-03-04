@@ -550,7 +550,7 @@ class BookingController extends Controller
             $isFreeComputed = $precioFinal <= 0.0001;
 
             
-            $bookingStatus  =  2;
+            $bookingStatus  =  1;
             $paymentStatus  = $isFreeComputed ? 2 : 1; 
             $paymentMethod  = $isFreeComputed ? 'free' : 'transfer';
             $paymentMessage = $isFreeComputed

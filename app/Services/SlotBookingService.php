@@ -9,6 +9,7 @@ use App\Models\SlotBooking;
 use App\Models\UserSubjectSlot;
 use Illuminate\Support\Facades\Auth;
 use App\Services\GoogleMeetService;
+use App\Services\BookingNotificationService;
 
 class SlotBookingService implements interfaces\ISlotBookingService
 {
@@ -56,6 +57,10 @@ class SlotBookingService implements interfaces\ISlotBookingService
         $link = $this->generarlink($booking);
         $booking->meeting_link = $link;
         $booking->save();
+
+        // --- ENVIAR NOTIFICACIÓN ---
+        $notificationService = app(BookingNotificationService::class);
+        $notificationService->handleStatusChangeNotification($booking, '', $booking->status);
 
 
         // if ($session_fee == 0) {

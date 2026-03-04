@@ -50,18 +50,32 @@ use App\Http\Controllers\BookingController;
 
 use App\Http\Controllers\Api\SubjectPickerController;
 
+use App\Mail\TutoriaInstanteNotificacionMail;
+
+use Illuminate\Support\Facades\Mail;
+
+Route::get('/probar-correo', function () {
+
+    Mail::send('emails.confirmationTutorInstant', [], function ($message) {
+        $message->to('ronaldflores200403@gmail.com')
+            ->subject('Prueba de diseño');
+    });
+
+    return 'Correo enviado';
+});
 
 
 
 
 
-
-//////////////// OSCAR ///////////////////////
 
 // Route::get('/waitlist/accept', [SubjectPickerController::class, 'acceptWaitlist'])
 //     ->name('waitlist.accept');
 
-    // ==================== TUTOR (NO middleware, token) ====================
+// Route::post('/send-last-5', [SubjectPickerController::class, 'sendLastFive']);
+// Route::get('/send-last-5', [SubjectPickerController::class, 'sendLastFive']);
+
+// ==================== TUTOR (NO middleware, token) ====================
 Route::get('/tutor/waitlist/accept', [SubjectPickerController::class, 'acceptWaitlist'])->name('waitlist.accept');
 
 Route::get('/tutor/waitlist/status', [SubjectPickerController::class, 'tutorWaitlistStatus']);
@@ -71,11 +85,9 @@ Route::post('/tutor/waitlist/accept', [SubjectPickerController::class, 'tutorAcc
 Route::post('/tutor/waitlist/reject', [SubjectPickerController::class, 'tutorRejectBooking']);
 
 
-//////////////// OSCAR ///////////////////////
 
 Route::view('/reserva', 'vistas.view.pages.e')->name('e');
 Route::view('/traduccion', 'vistas.view.pages.traduccion')->name('traduccion');
-
 
 
 
@@ -255,48 +267,82 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
 
         Route::middleware('student')->prefix('student')->name('student.')->group(function () {
 
+            //ruta final tutors instant
+
+            Route::get('/gg', function () {
+                return view('vistas.view.pages.tutors-instant-cards');
+            })
+                ->name('tutors.instant');
+            //ruta final tutors instant
+
             /////////////////////////////////////oscar tutor-instant//////////////////////////////////////////////
-            Route::get('/subject-groups/categorias-materias', [SubjectPickerController::class, 'categoriasMaterias']);
 
 
-            ROUTE::get('/materias/elegir', function () {
-                return view('vistas.view.pages.subjectPicker');
+
+            Route::get('/materias/elegir', function () {
+                return view('vistas.view.pages.pruebaInst');
             })
                 ->name('subjects.pick');
 
 
 
-            Route::get('/subjects/{subject_id}/tutors/available-now', [SubjectPickerController::class, 'tutorsAvailableNow']);
-            Route::get('/subjects/{subject_id}/tutors/not-available-now', [SubjectPickerController::class, 'tutorsNotAvailableNow']);
+            Route::get('/subjects/{subject_id}/tutors/available-now', [SubjectPickerController::class, 'tutorsAvailableNow']); //tutores disponibles ahora
+            Route::get('/subjects/{subject_id}/tutors/not-available-now', [SubjectPickerController::class, 'tutorsNotAvailableNow']); //tutores no disponibles ahora
 
-            Route::get('/batches/{batch}/status', [SubjectPickerController::class, 'status']);
-            Route::get('/batches/active', [SubjectPickerController::class, 'active']);
-            Route::get('/subjects/{subject_id}/tutors', [SubjectPickerController::class, 'tutorsBySubject']);
+            Route::post('/batches/start', [SubjectPickerController::class, 'start']); // este envia los emails para el boton go inicializa todo
+            Route::get('/batches/{batch}/status', [SubjectPickerController::class, 'status']); //estado de la batch
+            Route::get('/batches/active', [SubjectPickerController::class, 'active']); //batch activa si hay
+            Route::get('/subjects/{subject_id}/tutors', [SubjectPickerController::class, 'tutorsBySubject']); //tutores por materia
             /////////// oscar api/endpoint ///////////////////////////////////////
 
+            //             Route::get('/test-mail', function () {
+            //     $to = 'oscarcrodri3@gmail.com';
 
-            Route::get('/subject', [SubjectPickerController::class, 'index']);
+            //     Mail::to($to)->send(new TutoriaInstanteNotificacionMail(
+            //         tutorName: 'Tutor Prueba',
+            //         subjectName: 'Matemática',
+            //         subjectId: 12,
+            //         gifUrl: 'https://media.giphy.com/media/3o7aD2saalBwwftBIY/giphy.gif',
+            //         description: 'Correo de prueba desde ClassGo.',
+            //         buttonUrl: 'https://classgo.test',
+            //         buttonText: 'Abrir ClassGo',
+            //     ));
 
-            Route::post('/batches/start', [SubjectPickerController::class, 'start']);
-            
+            //     return '✅ Email de prueba enviado a ' . $to;
+            // });
+
+            Route::get('/subject-groups/categorias-materias', [SubjectPickerController::class, 'categoriasMaterias']); //categorias y materias finales (en uso)
+
+
+            Route::get('/subject', [SubjectPickerController::class, 'index']); //lista de materias
+
+
+            Route::post('/batches/start', [SubjectPickerController::class, 'start']); //iniciar batch (este es para mi btn go)
+
+            Route::post('/batches/send-emails', [SubjectPickerController::class, 'sendBatchEmails']); //enviar emails (este es para enviar los emails, se puede optimizar para que se ejecute automáticamente al iniciar la batch)
+
+            Route::post('/batches/{batch}/dispatch', [SubjectPickerController::class, 'dispatchEmails'])
+                ->name('batches.dispatch');
+            Route::get('/batches/{batch}/dispatch', [SubjectPickerController::class, 'dispatchEmails'])
+                ->name('batches.dispatch');
             Route::post('/batches/{batch}/choose', [SubjectPickerController::class, 'chooseTutor'])
                 ->name('batches.choose');
 
             Route::get('/batches/{batch}/accepted-tutors', [SubjectPickerController::class, 'acceptedTutors']);
 
-            //   Route::post('/batches/{batch}/reserve', [SubjectPickerController::class, 'reserveTutor']);
+            Route::post('/batches/{batch}/reserve', [SubjectPickerController::class, 'reserveTutor']);
 
-    // Route::post('/bookings/{booking}/receipt', [SubjectPickerController::class, 'uploadReceipt']);
+            // Route::post('/bookings/{booking}/receipt', [SubjectPickerController::class, 'uploadReceipt']);
 
-    // Route::get('/bookings/{booking}/status', [SubjectPickerController::class, 'studentBookingStatus']);
+            // Route::get('/bookings/{booking}/status', [SubjectPickerController::class, 'studentBookingStatus']);
 
-    Route::post('/bookings/{booking}/receipt', [SubjectPickerController::class, 'studentUploadReceipt']);
-    Route::get('/bookings/{booking}/status', [SubjectPickerController::class, 'studentBookingStatus']);
+            Route::post('/bookings/{booking}/receipt', [SubjectPickerController::class, 'studentUploadReceipt']);
+            Route::get('/bookings/{booking}/status', [SubjectPickerController::class, 'studentBookingStatus']);
 
-     Route::post('/batches/{batch}/request-booking', [SubjectPickerController::class, 'requestBooking']);
+            Route::post('/batches/{batch}/request-booking', [SubjectPickerController::class, 'requestBooking']);
 
 
-    Route::get('/bookings/{booking}/meet', [SubjectPickerController::class, 'studentMeet']);
+            Route::get('/bookings/{booking}/meet', [SubjectPickerController::class, 'studentMeet']);
 
             /////////////////////////////////////////////////////////////////////////////////////////////////////////
             Route::get('profile', fn() => redirect('tutor.profile.personal-details'))->name('profile');
@@ -317,15 +363,15 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
 
             // Rutas para el wizard de reservas (requiere autenticación de estudiante)
             Route::prefix('booking')->name('booking.')->group(function () {
-                // Route::get('/niveles', [BookingController::class, 'getLevels'])->name('niveles');
-                // Route::get('/categorias', [BookingController::class, 'getCategories'])->name('categorias');
+                Route::get('/niveles', [BookingController::class, 'getLevels'])->name('niveles');
+                Route::get('/categorias', [BookingController::class, 'getCategories'])->name('categorias');
                 Route::get('/materias', [BookingController::class, 'getSubjects'])->name('materias');
-
+                // Route::get('/tutores/{subject_id}', [BookingController::class, 'getTutors'])->name('tutores');
                 Route::get('/tutores', [BookingController::class, 'getTutors'])->name('tutores');
                 Route::get('/horarios/{tutor_id}', [BookingController::class, 'getSlots'])->name('horarios');
                 Route::get('/tutor-payment/{tutor_id}', [BookingController::class, 'getTutorPayment'])->name('tutor-payment');
 
-                Route::post('/validar-cupon', [BookingController::class, 'validarCupon'])->name('validar-cupon');
+                Route::post('/validar-cupon', [BookingController::class, 'validateCoupon'])->name('validar-cupon');
                 Route::post('/reservar', [BookingController::class, 'storeBooking'])->name('reservar');
             });
         });
@@ -356,4 +402,4 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
 
 });
 
-Route::get('/tutor/{id}', [TutorPerfilController::class, 'show'])->name('tutor.perfil');
+ Route::get('/tutor/{id}', [TutorPerfilController::class, 'show'])->name('tutor.perfil');

@@ -1,0 +1,55 @@
+INSTRUCCIONES PARA IA — SISTEMA GLOBAL DE RESERVA (WIZARD 3 PASOS)
+
+OBJETIVO GENERAL:
+Construir un wizard de reserva de 3 pasos como modal overlay global, reutilizable desde cualquier página, sin recargar la página durante el proceso. Pasos:
+1. Selección de materia y tutor.
+2. Selección de horario y cupón.
+3. Pago, QR y comprobante. Finalizar reserva y redirigir a /mis-reservas.
+
+FUNCIONAMIENTO DEL WIZARD:
+- Modal overlay global disponible en todas las vistas.
+- Botones con clase js-open-booking deben abrir el wizard.
+- No debe recargar la página en pasos 1, 2 ni 3.
+- Toda comunicación con backend se hace con Fetch API.
+
+VARIABLES GLOBALES:
+selectedSubject   = ID de materia
+selectedTutor     = ID de tutor
+selectedSlot      = ID de horario
+selectedCoupon    = ID de cupón
+comprobanteFile   = archivo del comprobante
+
+RUTAS FETCH REQUERIDAS:
+GET  /booking/materias
+GET  /booking/tutores/{subject_id}
+GET  /booking/horarios/{tutor_id}
+POST /booking/validar-cupon
+POST /booking/reservar
+
+BACKEND LARAVEL:
+Controlador BookingController con métodos:
+- getSubjects()
+- getTutors(subjectId)
+- getSlots(tutorId)
+- validateCoupon()
+- storeBooking() ← guarda reserva real en BD
+
+ENVÍO DE RESERVA (FormData):
+formData.append('subject_id', selectedSubject)
+formData.append('tutor_id', selectedTutor)
+formData.append('slot_id', selectedSlot)
+formData.append('coupon_id', selectedCoupon)
+formData.append('comprobante', comprobanteFile)
+
+FINALIZACIÓN:
+1. Mostrar pantalla de éxito.
+2. Esperar 2–3 segundos.
+3. Redirigir a /mis-reservas.
+
+REUTILIZACIÓN:
+- El wizard debe estar incluido en el layout principal:
+  @include('student.bookings._booking-wizard')
+- No deben existir recargas de página.
+- Botones deben enviar datos opcionales vía data-tutor-id y data-subject-id.
+
+DOCUMENTO LISTO PARA IA.

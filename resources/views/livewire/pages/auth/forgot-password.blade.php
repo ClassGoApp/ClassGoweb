@@ -47,6 +47,7 @@ new #[Layout('layouts.guest')] class extends Component
             <strong class="am-mobile-logo">
                 <x-application-logo />
             </strong>
+            <!--tupapa-->
             <div class="am-login-right_title">
                 <h2>{{ __('auth.forget_right_h2') }}</h2>
                 <h3>{{ __('auth.forget_right_h3') }}</h3>
@@ -55,6 +56,7 @@ new #[Layout('layouts.guest')] class extends Component
         <form class="am-themeform am-login-form" wire:submit="sendPasswordResetLink">
             <fieldset>
                 <div class="am-themeform__wrap">
+                <!--tupapa-->
                     <div class="form-group-wrap">
                         <div class="form-group {{ $errors->get('email') ? 'am-invalid' : '' }}">
                             <x-input-label for="email" :value="__('general.email')" />
