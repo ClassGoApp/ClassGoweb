@@ -32,8 +32,8 @@ class BookingController extends Controller
                 ], 400);
             }
 
-            
-            
+
+
             $map = [
                 'colegio'     => 1000,
                 'universidad' => 3000,
@@ -49,8 +49,8 @@ class BookingController extends Controller
 
             $rootId = $map[$institution];
 
-            
-            
+
+
             $subjectsQuery = DB::table('subjects')
                 ->select('id', 'name')
                 ->whereNull('deleted_at')
@@ -67,7 +67,7 @@ class BookingController extends Controller
                 $subjectsQuery->whereIn('subject_group_id', $groupIds);
             } else {
                 // UNIVERSIDAD / INSTITUTO: 2 niveles (nietos)
-               
+
                 $childIds = DB::table('subject_groups')
                     ->whereNull('deleted_at')
                     ->where('status', 'active')
@@ -129,7 +129,7 @@ class BookingController extends Controller
                 ->where('us.subject_id', $subjectId)
                 ->where('us.status', 'active')
 
-              
+
                 ->where('u.status', 1)
                 ->whereNotNull('u.email_verified_at')
                 ->where('u.available_for_tutoring', 1)
@@ -138,7 +138,7 @@ class BookingController extends Controller
                 ->whereNotNull('p.price')
                 ->where('p.price', '>', 0)
 
-                
+
                 ->whereExists(function ($q) use ($today, $timeNow) {
                     $q->select(DB::raw(1))
                         ->from('user_subject_slots as s')
@@ -199,7 +199,7 @@ class BookingController extends Controller
         try {
             $today = now()->startOfDay();
 
-           
+
             $baseSlots = DB::table('user_subject_slots')
                 ->where('user_id', (int)$tutorId)
                 ->where('date', '>=', $today)
@@ -214,14 +214,14 @@ class BookingController extends Controller
                 ]);
             }
 
-            
+
             $busyBookings = DB::table('slot_bookings')
                 ->where('tutor_id', (int)$tutorId)
                 ->whereIn('status', [0, 1])
-                ->where('start_time', '>=', $today) 
+                ->where('start_time', '>=', $today)
                 ->get(['user_subject_slot_id', 'start_time', 'end_time']);
 
-            
+
             $busySet = [];
             foreach ($busyBookings as $b) {
                 $st = Carbon::parse($b->start_time);
@@ -248,19 +248,19 @@ class BookingController extends Controller
                     $segStart = $cursor->copy();
                     $segEnd   = $cursor->copy()->addMinutes($stepMinutes);
 
-                   
+
                     if ($segEnd->lte($now)) {
                         $cursor->addMinutes($stepMinutes);
                         continue;
                     }
 
-                 
+
                     if ($segStart->lte($now) && $segEnd->gt($now)) {
                         $cursor->addMinutes($stepMinutes);
                         continue;
                     }
 
-                  
+
                     $busyKey = $slot->id . '|' . $segStart->format('H:i') . '|' . $segEnd->format('H:i') . '|' . $dateStr;
                     if (isset($busySet[$busyKey])) {
                         $cursor->addMinutes($stepMinutes);
@@ -269,7 +269,7 @@ class BookingController extends Controller
 
                     $id = $slot->id . '|' . $segStart->format('H:i') . '|' . $segEnd->format('H:i');
 
-                    
+
                     $out[] = [
                         'id' => $id,
                         'date' => $dateStr,
@@ -315,7 +315,7 @@ class BookingController extends Controller
                 ], 401);
             }
 
-            
+
             $cupon = Coupon::where('codigo', $codigo)->first();
             if (!$cupon) {
                 return response()->json([
@@ -324,7 +324,7 @@ class BookingController extends Controller
                 ], 404);
             }
 
-            
+
             if (($cupon->estado ?? null) !== 'activo') {
                 return response()->json([
                     'success' => false,
@@ -332,7 +332,7 @@ class BookingController extends Controller
                 ], 422);
             }
 
-            
+
             if (!empty($cupon->fecha_caducidad) && $cupon->fecha_caducidad < now()->toDateString()) {
                 return response()->json([
                     'success' => false,
@@ -340,7 +340,7 @@ class BookingController extends Controller
                 ], 422);
             }
 
-            
+
             if ($cuponesService->verificaUsoCupon($codigo, $user)) {
                 return response()->json([
                     'success' => false,
@@ -348,7 +348,7 @@ class BookingController extends Controller
                 ], 422);
             }
 
-            
+
             $descuentoPct = (float) ($cupon->descuento ?? 0);
             $descuentoDecimal = max(0, min(1, $descuentoPct / 100));
 
@@ -416,7 +416,7 @@ class BookingController extends Controller
             'tutor_id'    => 'required|exists:users,id',
             'slot_id'     => 'required|string', // "15|12:00|12:20"
             'coupon_id'   => 'nullable|exists:coupons,id',
-            'is_free'     => 'nullable|in:0,1',  
+            'is_free'     => 'nullable|in:0,1',
             'comprobante' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
         ]);
 
@@ -533,7 +533,7 @@ class BookingController extends Controller
 
                 $couponCodigo = (string) $cupon->codigo;
 
-               
+
                 if ($cuponesService->verificaUsoCupon($couponCodigo, $user)) {
                     DB::rollBack();
                     return response()->json(['success' => false, 'message' => 'No puedes usar este cupón'], 422);
@@ -543,21 +543,21 @@ class BookingController extends Controller
                 $descuentoPct = max(0, min(100, $descuentoPct));
             }
 
-           
+
             $precioFinal = $precioBase * (1 - ($descuentoPct / 100));
             if ($precioFinal < 0) $precioFinal = 0;
 
             $isFreeComputed = $precioFinal <= 0.0001;
 
-            
+
             $bookingStatus  =  1;
-            $paymentStatus  = $isFreeComputed ? 2 : 1; 
+            $paymentStatus  = $isFreeComputed ? 2 : 1;
             $paymentMethod  = $isFreeComputed ? 'free' : 'transfer';
             $paymentMessage = $isFreeComputed
                 ? 'Clase gratuita (cupón 100%) - confirmada automáticamente'
                 : 'Pago pendiente de verificación';
 
-            
+
             $image_url = null;
 
             if ($isFreeComputed) {
@@ -578,14 +578,14 @@ class BookingController extends Controller
                     mkdir($dest, 0775, true);
                 }
 
-                
+
                 $file->move($dest, $filename);
 
-                
+
                 $image_url = 'qr/' . $filename;
             }
 
-           
+
             $bookingId = DB::table('slot_bookings')->insertGetId([
                 'student_id'          => $studentId,
                 'tutor_id'            => (int) $request->tutor_id,
@@ -611,7 +611,30 @@ class BookingController extends Controller
                 ]),
             ]);
 
-            
+            // Construye un objeto tipo "tutoria" con los campos que tu generarlink usa
+            $tutoria = (object)[
+                'id' => $bookingId,
+                'tutor_id' => (int) $request->tutor_id,
+                'start_time' => $startAt->toDateTimeString(),
+            ];
+
+            // Llamar al servicio
+            try {
+                $slotBookingService = app(SlotBookingService::class); // o new SlotBookingService
+                $meetLink = $slotBookingService->generarlink($tutoria);
+
+                if ($meetLink) {
+                    DB::table('slot_bookings')->where('id', $bookingId)->update([
+                        'meeting_link' => $meetLink,
+                        'updated_at' => now(),
+                    ]);
+                }
+            } catch (\Throwable $e) {
+                Log::error('Meet link error: ' . $e->getMessage());
+                // Decide: si Meet es obligatorio, aquí haces throw $e;
+            }
+
+
 
 
             DB::table('slot_payments')->insert([
@@ -621,12 +644,12 @@ class BookingController extends Controller
                 'amount'          => $precioFinal,
                 'status'          => $paymentStatus,
                 'message'         => $paymentMessage,
-                'receipt_pdf'     => $image_url, 
+                'receipt_pdf'     => $image_url,
                 'created_at'      => now(),
                 'updated_at'      => now(),
             ]);
 
-            
+
             DB::table('payment_slot_bookings')->insert([
                 'slot_booking_id' => $bookingId,
                 'image_url'       => $image_url,   // <-- AQUÍ se guarda "qr/xxx.png" o "qr/tutoria_gratis.png"
@@ -634,9 +657,9 @@ class BookingController extends Controller
                 'updated_at'      => now(),
             ]);
 
-           
+
             if ($couponId && $couponCodigo) {
-                
+
                 $pivot = UserCoupon::where('coupon_id', (int) $couponId)
                     ->where('user_id', (int) $user->id)
                     ->first();
