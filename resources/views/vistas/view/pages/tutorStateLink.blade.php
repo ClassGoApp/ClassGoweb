@@ -495,14 +495,6 @@
         </div>
     </div>
 
-    <!-- 🔧 Mock (solo para pruebas; puedes borrar en producción) -->
-    <div class="mock-container">
-        <button onclick="setState('choosing')" class="btn-mock">Esperando</button>
-        <button onclick="setState('paying')" class="btn-mock">Elegido (Esperando pago)</button>
-        <button onclick="setState('payment_phase')" class="btn-mock">Listo (Ir a clase)</button>
-        <button onclick="setState('rejected')" class="btn-mock">Elegido Otro</button>
-        <button onclick="setState('expired')" class="btn-mock">Solicitud Expirada</button>
-    </div>
 
     <script>
         // ================== VARIABLES DESDE BACKEND (Blade) ==================
