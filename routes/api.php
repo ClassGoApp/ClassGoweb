@@ -158,6 +158,7 @@ Route::get('subjects',                                         [BookingControlle
 Route::get('settings',                                         [OptionBuilderController::class, 'getOpSettings']);
 Route::get('alianzas',                                          [AlianzaController::class, 'index']);
 Route::get('all-subjects', [SubjectController::class, 'index']);
+Route::get('subjects-institution',                              [SubjectController::class, 'getSubjectsInstitution']);
 
 // Rutas para métodos de pago QR (sin autenticación)
 Route::get('qr-payout-methods/{user_id}',                      [QrPayoutController::class,'getQrPayoutMethods']);
