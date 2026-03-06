@@ -618,21 +618,7 @@ class BookingController extends Controller
                 'start_time' => $startAt->toDateTimeString(),
             ];
 
-            // Llamar al servicio
-            try {
-                $slotBookingService = app(SlotBookingService::class); // o new SlotBookingService
-                $meetLink = $slotBookingService->generarlink($tutoria);
-
-                if ($meetLink) {
-                    DB::table('slot_bookings')->where('id', $bookingId)->update([
-                        'meeting_link' => $meetLink,
-                        'updated_at' => now(),
-                    ]);
-                }
-            } catch (\Throwable $e) {
-                Log::error('Meet link error: ' . $e->getMessage());
-                // Decide: si Meet es obligatorio, aquí haces throw $e;
-            }
+            
 
 
 
@@ -684,7 +670,21 @@ class BookingController extends Controller
             }
 
             DB::commit();
+            // Llamar al servicio
+            try {
+                $slotBookingService = app(SlotBookingService::class); // o new SlotBookingService
+                $meetLink = $slotBookingService->generarlink($tutoria);
 
+                if ($meetLink) {
+                    DB::table('slot_bookings')->where('id', $bookingId)->update([
+                        'meeting_link' => $meetLink,
+                        'updated_at' => now(),
+                    ]);
+                }
+            } catch (\Throwable $e) {
+                Log::error('Meet link error: ' . $e->getMessage());
+                // Decide: si Meet es obligatorio, aquí haces throw $e;
+            }
             return response()->json([
                 'success'    => true,
                 'message'    => 'Reserva creada exitosamente',
