@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Subject;
+use App\Models\SubjectGroup;
 use App\Traits\ApiResponser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -81,5 +82,80 @@ class SubjectController extends Controller
             'id' => $subject->id,
             'name' => $subject->name
         ]);
+    }
+
+    public function getSubjectsInstitution(Request $request)
+    {
+        try {
+            $institution = strtolower(trim((string) $request->query('institution','')));
+
+            if (empty($institution)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Se requiere institution'
+                ], 400);
+            }
+
+            
+            $map = [
+                'colegio'     => 1000,
+                'universidad' => 3000,
+                'instituto'   => 2000,
+            ];
+
+            if (!isset($map[$institution])) {
+                return response()->json([
+                    'success' => true,
+                    'subjects' => []
+                ]);
+            }
+
+            $rootId = $map[$institution];
+
+
+            $subjectsQuery = Subject::select('id', 'name')
+                ->whereNull('deleted_at')
+                ->where('status', 'active');
+
+            if ($rootId === 1000) {
+                // COLEGIO: 1 nivel (hijos directos)
+                $groupIds = SubjectGroup::whereNull('deleted_at')
+                    ->where('status', 'active')
+                    ->where('id_padre', $rootId)
+                    ->pluck('id');
+
+                $subjectsQuery->whereIn('subject_group_id', $groupIds);
+            } else {
+                // UNIVERSIDAD / INSTITUTO: 2 niveles (nietos)
+               
+                $childIds = SubjectGroup::whereNull('deleted_at')
+                    ->where('status', 'active')
+                    ->where('id_padre', $rootId)
+                    ->pluck('id');
+
+                // nietos (hijos de los hijos)
+                $grandChildIds = SubjectGroup::whereNull('deleted_at')
+                    ->where('status', 'active')
+                    ->whereIn('id_padre', $childIds)
+                    ->pluck('id');
+
+                $subjectsQuery->whereIn('subject_group_id', $grandChildIds);
+            }
+
+            $subjects = $subjectsQuery
+                ->orderBy('name')
+                ->get();
+
+            return response()->json([
+                'success' => true,
+                'subjects' => $subjects
+            ]);
+        } catch (\Exception $e) {
+            //Log::error('getSubjects error: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al cargar materias'
+            ], 500);
+        }
     }
 }
