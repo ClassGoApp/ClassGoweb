@@ -17,6 +17,12 @@ use App\Services\SlotBookingService;
 
 class BookingController extends Controller
 {
+    protected $slotBookingService;
+
+    public function __construct(SlotBookingService $slotBookingService)
+    {
+        $this->slotBookingService = $slotBookingService;
+    }
     /**
      * GET /student/booking/materias?institution=colegio|universidad|instituto
      */
@@ -618,7 +624,7 @@ class BookingController extends Controller
                 'start_time' => $startAt->toDateTimeString(),
             ];
 
-            
+
 
 
 
@@ -669,27 +675,18 @@ class BookingController extends Controller
                 $cuponesService->cuponCanjeado($couponCodigo, $user);
             }
 
-            DB::commit();
-            // Llamar al servicio
-            try {
-                $slotBookingService = app(SlotBookingService::class); // o new SlotBookingService
-                $meetLink = $slotBookingService->generarlink($tutoria);
+            $meetLink = $this->slotBookingService->generarlink($tutoria);
 
-                if ($meetLink) {
-                    DB::table('slot_bookings')->where('id', $bookingId)->update([
-                        'meeting_link' => $meetLink,
-                        'updated_at' => now(),
-                    ]);
-                }
-            } catch (\Throwable $e) {
-                Log::error('Meet link error: ' . $e->getMessage());
-                // Decide: si Meet es obligatorio, aquí haces throw $e;
+            if (!$meetLink) {
+                throw new \Exception('No se pudo generar el enlace de Google Meet');
             }
-            return response()->json([
-                'success'    => true,
-                'message'    => 'Reserva creada exitosamente',
-                'booking_id' => $bookingId
+
+            DB::table('slot_bookings')->where('id', $bookingId)->update([
+                'meeting_link' => $meetLink,
+                'updated_at'   => now(),
             ]);
+
+            DB::commit();
         } catch (\Illuminate\Validation\ValidationException $e) {
             DB::rollBack();
             return response()->json([
