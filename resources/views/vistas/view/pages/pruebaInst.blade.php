@@ -196,10 +196,26 @@
         header {
             display: flex;
             flex-direction: column;
-            gap: 1.5rem;
             margin-bottom: 1rem;
             transition: var(--transition);
         }
+        .header-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-bottom {
+            display: flex;
+             flex-direction: row;
+             align-items: center;
+             justify-content: space-between;
+         }
+         .header-info {
+             display: flex;
+             flex-direction: column;
+             gap: 5px;
+         }
 
 
 
@@ -236,6 +252,17 @@
             transition: var(--transition);
             box-shadow: 0 8px 20px rgba(2, 48, 71, .06);
         }
+        .home-btn {
+            width: 42px;
+            height: 42px;
+            background: #f1f5f9;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #e2e8f0;
+            color: var(--text-muted);
+        }
 
         .search-input:focus {
             border-color: rgba(33, 158, 188, .7);
@@ -262,14 +289,14 @@
         }
 
         /* .category-bar {
-                        display: flex;
-                        align-items: center;
-                        gap: .6rem;
-                        overflow-x: auto;
-                        padding: 1rem 0 1rem;
-                        margin-bottom: 1rem;
-                        scrollbar-width: none;
-                    } */
+                                    display: flex;
+                                    align-items: center;
+                                    gap: .6rem;
+                                    overflow-x: auto;
+                                    padding: 1rem 0 1rem;
+                                    margin-bottom: 1rem;
+                                    scrollbar-width: none;
+                                } */
 
         .category-bar {
             display: flex;
@@ -351,16 +378,16 @@
 
         /* ================= SUBJECT GRID ================= */
         /* .subject-grid {
-                    display: flex;
-                    flex-direction: column;
-                    flex-wrap: wrap;
-                    height: calc(5 * 78px);
-                    gap: .7rem;
-                    overflow-x: auto;
-                    overflow-y: hidden;
-                    align-content: flex-start;
-                    scrollbar-width: none;
-                } */
+                                display: flex;
+                                flex-direction: column;
+                                flex-wrap: wrap;
+                                height: calc(5 * 78px);
+                                gap: .7rem;
+                                overflow-x: auto;
+                                overflow-y: hidden;
+                                align-content: flex-start;
+                                scrollbar-width: none;
+                            } */
 
         .subject-grid {
             display: grid;
@@ -409,18 +436,18 @@
         }
 
         /* .subject-card-btn {
-                   display: inline-flex;
-          width: auto;
-          align-items: center;
-          gap: 10px;
-           padding: 0.8rem 1.2rem;
-          border-radius: 50px;
-          background: #ffffff;
-          border: 1px solid #f1f5f9;
-          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-          transition: all 0.2s ease;
-          white-space: nowrap;
-                } */
+                               display: inline-flex;
+                      width: auto;
+                      align-items: center;
+                      gap: 10px;
+                       padding: 0.8rem 1.2rem;
+                      border-radius: 50px;
+                      background: #ffffff;
+                      border: 1px solid #f1f5f9;
+                      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+                      transition: all 0.2s ease;
+                      white-space: nowrap;
+                            } */
 
         .subject-card-btn {
             display: flex;
@@ -485,9 +512,9 @@
         }
 
         /* .subject-card-btn.is-selected .subject-initial {
-                    background: var(--terciary-color2);
-                    color: #fff;
-                } */
+                                background: var(--terciary-color2);
+                                color: #fff;
+                            } */
 
 
         .subject-card-btn.is-selected .subject-initial {
@@ -1168,21 +1195,30 @@
             width: 20%;
         }
 
-        @media(min-width:768px) {
+        @media(max-width:768px) {
             header {
-                flex-direction: row;
+                flex-direction: column;
                 align-items: center;
                 justify-content: space-between;
             }
-
-        }
-
-        @media(max-width:768px) {
-
+            .header-top {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                width: 100%;
+            }
+            .header-bottom {
+                margin-top: 1rem;
+                width: 100%;
+                justify-content: center;
+                flex-direction: column
+            }
             .search-wrapper {
                 max-width: 100%;
             }
+
         }
+
 
         @media(max-width:600px) {
 
@@ -1257,125 +1293,55 @@
                 <div class="head">
                     <header>
 
-                        <div class="header-info">
-                            <h1>¿Qué necesitas aprender hoy?</h1>
-                            <p>Más de 600 materias con la que un tutor puede ayudarte ahora</p>
-                        </div>
-                        <div class="search-wrapper">
-                            <svg class="search-icon" width="20" height="20" fill="none" stroke="currentColor"
-                                stroke-width="2.5" viewBox="0 0 24 24">
-                                <circle cx="11" cy="11" r="8" />
-                                <path d="M21 21l-4.35-4.35" />
-                            </svg>
-                            <input type="text" id="search-input" class="search-input" placeholder="BUSCAR MATERIA...">
-                        </div>
+                        <div class="header-top">
+                            <button class="home-btn" title="Inicio"  onclick="window.location.href='{{ route('home') }}'">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                                </svg>
+                            </button>
 
-                        @auth
 
-                            <div class="user-menu">
-                                <button type="button" class="user-menu__trigger">
-                                    @role('tutor')
-                                        <img class="user-menu__avatar"
-                                            src="{{ Auth::user()->profile->image ? asset('storage/' . Auth::user()->profile->image) : asset('images/default.png') }}"
-                                            style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; cursor: pointer;">
-                                        @elserole('student')
-                                        <img class="user-menu__avatar"
-                                            src="{{ Auth::user()->profile->image ? asset('storage/' . Auth::user()->profile->image) : asset('images/tutors/default_estudiante.png') }}"
-                                            style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; cursor: pointer;">
-                                        @elserole('admin')
-                                        <img class="user-menu__avatar"
-                                            src="{{ Auth::user()->profile->image ? asset('storage/' . Auth::user()->profile->image) : asset('images/default.png') }}"
-                                            style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; cursor: pointer;">
-                                    @endrole
-                                </button>
 
-                                <div class="user-menu__dropdown">
-                                    <!-- Según rol-->
-                                    <a
-                                        href=" {{ auth()->user()->hasRole('tutor') ? route('tutor.dashboard') : route('student.bookings') }}">
+                            @auth
 
-                                        <div class="user-menu__header">
-                                            {{-- <img class="user-menu__avatar" src="{{ asset('storage/'.Auth::user()->profile->image) ?? asset('images/default.png') }}" > --}}
-                                            <div class="user-menu__details">
-                                                <span class="user-menu__name">Hola
-                                                    {{ Auth::user()->profile->first_name }}!</span>
-                                                <span class="user-menu__email">{{ Auth::user()->email }}</span>
+                                <div class="user-menu">
+                                    <button type="button" class="user-menu__trigger">
+                                        @role('tutor')
+                                            <img class="user-menu__avatar"
+                                                src="{{ Auth::user()->profile->image ? asset('storage/' . Auth::user()->profile->image) : asset('images/default.png') }}"
+                                                style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; cursor: pointer;">
+                                            @elserole('student')
+                                            <img class="user-menu__avatar"
+                                                src="{{ Auth::user()->profile->image ? asset('storage/' . Auth::user()->profile->image) : asset('images/tutors/default_estudiante.png') }}"
+                                                style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; cursor: pointer;">
+                                            @elserole('admin')
+                                            <img class="user-menu__avatar"
+                                                src="{{ Auth::user()->profile->image ? asset('storage/' . Auth::user()->profile->image) : asset('images/default.png') }}"
+                                                style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; cursor: pointer;">
+                                        @endrole
+                                    </button>
+
+                                    <div class="user-menu__dropdown">
+                                        <!-- Según rol-->
+                                        <a
+                                            href=" {{ auth()->user()->hasRole('tutor') ? route('tutor.dashboard') : route('student.bookings') }}">
+
+                                            <div class="user-menu__header">
+                                                {{-- <img class="user-menu__avatar" src="{{ asset('storage/'.Auth::user()->profile->image) ?? asset('images/default.png') }}" > --}}
+                                                <div class="user-menu__details">
+                                                    <span class="user-menu__name">Hola
+                                                        {{ Auth::user()->profile->first_name }}!</span>
+                                                    <span class="user-menu__email">{{ Auth::user()->email }}</span>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </a>
-                                    @role('tutor')
-                                        <!-- ======== ROL TUTOR ===========-->
-                                        <ul class="user-menu__nav">
-                                            <li>
-                                                <a href="{{ route('tutor.dashboard') }}" class="user-menu__link">
-                                                    <i class="user-menu__icon"><svg xmlns="http://www.w3.org/2000/svg"
-                                                            width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                                            stroke-linejoin="round">
-                                                            <path d="M12 2L2 7l10 5 10-5-10-5z" />
-                                                            <path d="M2 17l10 5 10-5" />
-                                                            <path d="M2 12l10 5 10-5" />
-                                                        </svg></i>
-                                                    Panel
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="{{ route('tutor.profile.personal-details') }}" class="user-menu__link">
-                                                    <i class="user-menu__icon"><svg xmlns="http://www.w3.org/2000/svg"
-                                                            width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                                            stroke-linejoin="round">
-                                                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                                                            <circle cx="12" cy="7" r="4" />
-                                                        </svg></i>
-                                                    Configuración de perfil
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="{{ route('tutor.bookings.subjects') }}" class="user-menu__link">
-                                                    <i class="user-menu__icon"><svg xmlns="http://www.w3.org/2000/svg"
-                                                            width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                                            stroke-linejoin="round">
-                                                            <rect x="3" y="4" width="18" height="18" rx="2"
-                                                                ry="2" />
-                                                            <line x1="16" y1="2" x2="16" y2="6" />
-                                                            <line x1="8" y1="2" x2="8" y2="6" />
-                                                            <line x1="3" y1="10" x2="21" y2="10" />
-                                                        </svg></i>
-                                                    Reservas
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="{{ route('tutor.invoices') }}" class="user-menu__link">
-                                                    <i class="user-menu__icon"><svg xmlns="http://www.w3.org/2000/svg"
-                                                            width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                                            stroke-linejoin="round">
-                                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                                                            <polyline points="14 2 14 8 20 8" />
-                                                            <line x1="12" y1="18" x2="12" y2="12" />
-                                                            <path
-                                                                d="M14.5 15.5h-5c-.83 0-1.5-.67-1.5-1.5v0c0-.83.67-1.5 1.5-1.5h5" />
-                                                        </svg></i>
-                                                    Historial de Tutorías
-                                                </a>
-                                            </li>
-                                            {{-- <li>
-								<a href="#" class="user-menu__link">
-									<i class="user-menu__icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-										<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-										<line x1="9" y1="10" x2="15" y2="10"/>
-										<line x1="9" y1="14" x2="13" y2="14"/>
-									</svg></i> 
-									Bandeja de entrada
-								</a>
-							</li> --}}
-                                            @elserole('student') <!-- ======== ROL ESTUDIANTE ==========-->
+                                        </a>
+                                        @role('tutor')
+                                            <!-- ======== ROL TUTOR ===========-->
                                             <ul class="user-menu__nav">
                                                 <li>
-                                                    <a href="{{ route('student.profile.personal-details') }}"
-                                                        class="user-menu__link">
+                                                    <a href="{{ route('tutor.dashboard') }}" class="user-menu__link">
                                                         <i class="user-menu__icon"><svg xmlns="http://www.w3.org/2000/svg"
                                                                 width="24" height="24" viewBox="0 0 24 24" fill="none"
                                                                 stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -1384,29 +1350,38 @@
                                                                 <path d="M2 17l10 5 10-5" />
                                                                 <path d="M2 12l10 5 10-5" />
                                                             </svg></i>
+                                                        Panel
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="{{ route('tutor.profile.personal-details') }}" class="user-menu__link">
+                                                        <i class="user-menu__icon"><svg xmlns="http://www.w3.org/2000/svg"
+                                                                width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                                stroke-linejoin="round">
+                                                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                                                                <circle cx="12" cy="7" r="4" />
+                                                            </svg></i>
                                                         Configuración de perfil
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a href="{{ route('student.bookings') }}" class="user-menu__link">
+                                                    <a href="{{ route('tutor.bookings.subjects') }}" class="user-menu__link">
                                                         <i class="user-menu__icon"><svg xmlns="http://www.w3.org/2000/svg"
                                                                 width="24" height="24" viewBox="0 0 24 24" fill="none"
                                                                 stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                                                 stroke-linejoin="round">
                                                                 <rect x="3" y="4" width="18" height="18" rx="2"
                                                                     ry="2" />
-                                                                <line x1="16" y1="2" x2="16"
-                                                                    y2="6" />
-                                                                <line x1="8" y1="2" x2="8"
-                                                                    y2="6" />
-                                                                <line x1="3" y1="10" x2="21"
-                                                                    y2="10" />
+                                                                <line x1="16" y1="2" x2="16" y2="6" />
+                                                                <line x1="8" y1="2" x2="8" y2="6" />
+                                                                <line x1="3" y1="10" x2="21" y2="10" />
                                                             </svg></i>
-                                                        Mis Reservas
+                                                        Reservas
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a href="{{ route('student.invoices') }}" class="user-menu__link">
+                                                    <a href="{{ route('tutor.invoices') }}" class="user-menu__link">
                                                         <i class="user-menu__icon"><svg xmlns="http://www.w3.org/2000/svg"
                                                                 width="24" height="24" viewBox="0 0 24 24" fill="none"
                                                                 stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -1419,80 +1394,161 @@
                                                                 <path
                                                                     d="M14.5 15.5h-5c-.83 0-1.5-.67-1.5-1.5v0c0-.83.67-1.5 1.5-1.5h5" />
                                                             </svg></i>
-                                                        Historial de tutorias
+                                                        Historial de Tutorías
                                                     </a>
                                                 </li>
-                                                <li>
-                                                    <a href="{{ route('student.favourites') }}" class="user-menu__link">
-                                                        <i class="user-menu__icon">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                                <path
-                                                                    d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
-                                                                </path>
-                                                            </svg>
-                                                        </i>
-                                                        Favoritos
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="{{ route('buscar') }}" class="user-menu__link">
-                                                        <i class="user-menu__icon"><svg xmlns="http://www.w3.org/2000/svg"
-                                                                width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                                                stroke-linejoin="round">
-                                                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                                                                <circle cx="9" cy="7" r="4"></circle>
-                                                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                                                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                                                            </svg></i>
-                                                        Buscar Tutores
-                                                    </a>
-                                                </li>
-
-                                                @elserole('admin')
+                                                {{-- <li>
+								<a href="#" class="user-menu__link">
+									<i class="user-menu__icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+										<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+										<line x1="9" y1="10" x2="15" y2="10"/>
+										<line x1="9" y1="14" x2="13" y2="14"/>
+									</svg></i> 
+									Bandeja de entrada
+								</a>
+							</li> --}}
+                                                @elserole('student') <!-- ======== ROL ESTUDIANTE ==========-->
                                                 <ul class="user-menu__nav">
+                                                    <li>
+                                                        <a href="{{ route('student.profile.personal-details') }}"
+                                                            class="user-menu__link">
+                                                            <i class="user-menu__icon"><svg xmlns="http://www.w3.org/2000/svg"
+                                                                    width="24" height="24" viewBox="0 0 24 24"
+                                                                    fill="none" stroke="currentColor" stroke-width="2"
+                                                                    stroke-linecap="round" stroke-linejoin="round">
+                                                                    <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                                                                    <path d="M2 17l10 5 10-5" />
+                                                                    <path d="M2 12l10 5 10-5" />
+                                                                </svg></i>
+                                                            Configuración de perfil
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="{{ route('student.bookings') }}" class="user-menu__link">
+                                                            <i class="user-menu__icon"><svg xmlns="http://www.w3.org/2000/svg"
+                                                                    width="24" height="24" viewBox="0 0 24 24"
+                                                                    fill="none" stroke="currentColor" stroke-width="2"
+                                                                    stroke-linecap="round" stroke-linejoin="round">
+                                                                    <rect x="3" y="4" width="18" height="18"
+                                                                        rx="2" ry="2" />
+                                                                    <line x1="16" y1="2" x2="16"
+                                                                        y2="6" />
+                                                                    <line x1="8" y1="2" x2="8"
+                                                                        y2="6" />
+                                                                    <line x1="3" y1="10" x2="21"
+                                                                        y2="10" />
+                                                                </svg></i>
+                                                            Mis Reservas
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="{{ route('student.invoices') }}" class="user-menu__link">
+                                                            <i class="user-menu__icon"><svg xmlns="http://www.w3.org/2000/svg"
+                                                                    width="24" height="24" viewBox="0 0 24 24"
+                                                                    fill="none" stroke="currentColor" stroke-width="2"
+                                                                    stroke-linecap="round" stroke-linejoin="round">
+                                                                    <path
+                                                                        d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                                                    <polyline points="14 2 14 8 20 8" />
+                                                                    <line x1="12" y1="18" x2="12"
+                                                                        y2="12" />
+                                                                    <path
+                                                                        d="M14.5 15.5h-5c-.83 0-1.5-.67-1.5-1.5v0c0-.83.67-1.5 1.5-1.5h5" />
+                                                                </svg></i>
+                                                            Historial de tutorias
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="{{ route('student.favourites') }}" class="user-menu__link">
+                                                            <i class="user-menu__icon">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                    height="24" viewBox="0 0 24 24" fill="none"
+                                                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                                    stroke-linejoin="round">
+                                                                    <path
+                                                                        d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+                                                                    </path>
+                                                                </svg>
+                                                            </i>
+                                                            Favoritos
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="{{ route('buscar') }}" class="user-menu__link">
+                                                            <i class="user-menu__icon"><svg xmlns="http://www.w3.org/2000/svg"
+                                                                    width="24" height="24" viewBox="0 0 24 24"
+                                                                    fill="none" stroke="currentColor" stroke-width="2"
+                                                                    stroke-linecap="round" stroke-linejoin="round">
+                                                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                                                    <circle cx="9" cy="7" r="4"></circle>
+                                                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                                                </svg></i>
+                                                            Buscar Tutores
+                                                        </a>
+                                                    </li>
 
-                                                    <a href=" {{ auth()->user()->hasRole('tutor') ? route('tutor.dashboard') : route('student.bookings') }}"
-                                                        class="user-menu__link">
-                                                        <i class="user-menu__icon"><svg xmlns="http://www.w3.org/2000/svg"
-                                                                width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                                                stroke-linejoin="round">
-                                                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                                                                <circle cx="9" cy="7" r="4"></circle>
-                                                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                                                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                                                            </svg></i>
-                                                        Mi panel
-                                                    </a>
-                                                @endrole
-                                                <li class="user-menu__item--logout">
-                                                    <a href="{{ route('logout') }}" class="user-menu__link">
-                                                        <i class="user-menu__icon"><svg xmlns="http://www.w3.org/2000/svg"
-                                                                width="24" height="24" viewBox="0 0 24 24"
-                                                                fill="none" stroke="currentColor" stroke-width="2"
-                                                                stroke-linecap="round" stroke-linejoin="round">
-                                                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-                                                                <polyline points="16 17 21 12 16 7" />
-                                                                <line x1="21" y1="12" x2="9"
-                                                                    y2="12" />
-                                                            </svg></i>
-                                                        Desconectar
-                                                    </a>
-                                                </li>
-                                            </ul>
+                                                    @elserole('admin')
+                                                    <ul class="user-menu__nav">
+
+                                                        <a href=" {{ auth()->user()->hasRole('tutor') ? route('tutor.dashboard') : route('student.bookings') }}"
+                                                            class="user-menu__link">
+                                                            <i class="user-menu__icon"><svg xmlns="http://www.w3.org/2000/svg"
+                                                                    width="24" height="24" viewBox="0 0 24 24"
+                                                                    fill="none" stroke="currentColor" stroke-width="2"
+                                                                    stroke-linecap="round" stroke-linejoin="round">
+                                                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                                                    <circle cx="9" cy="7" r="4"></circle>
+                                                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                                                </svg></i>
+                                                            Mi panel
+                                                        </a>
+                                                    @endrole
+                                                    <li class="user-menu__item--logout">
+                                                        <a href="{{ route('logout') }}" class="user-menu__link">
+                                                            <i class="user-menu__icon"><svg xmlns="http://www.w3.org/2000/svg"
+                                                                    width="24" height="24" viewBox="0 0 24 24"
+                                                                    fill="none" stroke="currentColor" stroke-width="2"
+                                                                    stroke-linecap="round" stroke-linejoin="round">
+                                                                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                                                                    <polyline points="16 17 21 12 16 7" />
+                                                                    <line x1="21" y1="12" x2="9"
+                                                                        y2="12" />
+                                                                </svg></i>
+                                                            Desconectar
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                    </div>
                                 </div>
+                            @else
+                                <a href=" {{ route('login') }} "><button class="btn-outline"><span
+                                            data-translate="ingre"></span></button></a>
+                                <div class="navbar-icon">
+                                    <a href=" {{ route('login', ['mode' => 'register']) }}"><i
+                                            class="fa-solid fa-user-plus icon-white"></i></a>
+                                </div>
+                            @endauth
+
+                        </div>
+
+                        <div class="header-bottom">
+                            <div class="header-info">
+                                <h1>¿Qué necesitas aprender hoy?</h1>
+                                <p>Más de 600 materias con la que un tutor puede ayudarte ahora</p>
                             </div>
-                        @else
-                            <a href=" {{ route('login') }} "><button class="btn-outline"><span
-                                        data-translate="ingre"></span></button></a>
-                            <div class="navbar-icon">
-                                <a href=" {{ route('login', ['mode' => 'register']) }}"><i
-                                        class="fa-solid fa-user-plus icon-white"></i></a>
+                            <div class="search-wrapper">
+                                <svg class="search-icon" width="20" height="20" fill="none"
+                                    stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                    <circle cx="11" cy="11" r="8" />
+                                    <path d="M21 21l-4.35-4.35" />
+                                </svg>
+                                <input type="text" id="search-input" class="search-input"
+                                    placeholder="BUSCAR MATERIA...">
                             </div>
-                        @endauth
+                        </div>
+
 
                     </header>
                     <div class="category-bar" id="category-bar"></div>
@@ -1612,34 +1668,34 @@
 
     <script>
         /* ========================================================================
-                                                              CLASSGO | Student - Instant Tutors Script
-                                                              ------------------------------------------------------------------------
-                                                              FLUJO:
-                                                              1) Cargar Categorías/Materias
-                                                              2) Seleccionar Materia (solo una) + mostrar FAB
-                                                              3) Crear Batch + mostrar Radar + polling:
-                                                                  - status (cada 60s)
-                                                                  - tutores aceptados (cada 5s)
-                                                                  - countdown expiración (cada 1s)
-                                                              4) Mostrar cards de tutores + reservar + abrir checkout (flip)
-                                                              5) Subir comprobante + pagar + polling booking (cada 2.5s)
-                                                              6) Nueva solicitud / reset
+                                                                          CLASSGO | Student - Instant Tutors Script
+                                                                          ------------------------------------------------------------------------
+                                                                          FLUJO:
+                                                                          1) Cargar Categorías/Materias
+                                                                          2) Seleccionar Materia (solo una) + mostrar FAB
+                                                                          3) Crear Batch + mostrar Radar + polling:
+                                                                              - status (cada 60s)
+                                                                              - tutores aceptados (cada 5s)
+                                                                              - countdown expiración (cada 1s)
+                                                                          4) Mostrar cards de tutores + reservar + abrir checkout (flip)
+                                                                          5) Subir comprobante + pagar + polling booking (cada 2.5s)
+                                                                          6) Nueva solicitud / reset
 
-                                                              ENDPOINTS:
-                                                              - GET  /student/subject-groups/categorias-materias
-                                                              - POST /student/batches/start
-                                                              - GET  /student/batches/active
-                                                              - GET  /student/batches/{batchId}/status
-                                                              - GET  /student/batches/{batchId}/accepted-tutors?limit=50
-                                                              - POST /student/batches/{batchId}/reserve
-                                                              - POST /student/bookings/{bookingId}/receipt
-                                                              - GET  /student/bookings/{bookingId}/status
-                                                              - GET  /student/bookings/{bookingId}/meet
+                                                                          ENDPOINTS:
+                                                                          - GET  /student/subject-groups/categorias-materias
+                                                                          - POST /student/batches/start
+                                                                          - GET  /student/batches/active
+                                                                          - GET  /student/batches/{batchId}/status
+                                                                          - GET  /student/batches/{batchId}/accepted-tutors?limit=50
+                                                                          - POST /student/batches/{batchId}/reserve
+                                                                          - POST /student/bookings/{bookingId}/receipt
+                                                                          - GET  /student/bookings/{bookingId}/status
+                                                                          - GET  /student/bookings/{bookingId}/meet
 
-                                                              NOTAS:
-                                                              - fetchAcceptedTutors() se pausa si state.activeHeroId existe (checkout abierto)
-                                                              - closeHero(true) debe existir en otro lado o aquí (si no, revienta)
-                                                            ======================================================================== */
+                                                                          NOTAS:
+                                                                          - fetchAcceptedTutors() se pausa si state.activeHeroId existe (checkout abierto)
+                                                                          - closeHero(true) debe existir en otro lado o aquí (si no, revienta)
+                                                                        ======================================================================== */
 
 
         /* ========================================================================
@@ -1838,14 +1894,14 @@
 
         <div class="subject-grid">
           ${items.map(sub => `
-                                                                        <button class="subject-card-btn"
-                                                                          onclick="seleccionarMateria(this, ${sub.id}, '${sub.name.replaceAll("'", "\\'")}')">
-                                                                          <div class="subject-initial">${sub.name.charAt(0)}</div>
-                                                                          <div class="subject-meta">
-                                                                            <div class="subject-title">${sub.name}</div>
-                                                                          </div>
-                                                                        </button>
-                                                                      `).join('')}
+                                                                                    <button class="subject-card-btn"
+                                                                                      onclick="seleccionarMateria(this, ${sub.id}, '${sub.name.replaceAll("'", "\\'")}')">
+                                                                                      <div class="subject-initial">${sub.name.charAt(0)}</div>
+                                                                                      <div class="subject-meta">
+                                                                                        <div class="subject-title">${sub.name}</div>
+                                                                                      </div>
+                                                                                    </button>
+                                                                                  `).join('')}
         </div>
       </section>
     `;
@@ -2428,13 +2484,13 @@
               ${img ? `<img class="avatar" src="${escapeHtml(img)}" alt="${name}">` : ``}
 
               ${verified ? `
-                                                                            <span class="verified">
-                                                                              <svg viewBox="0 0 24 24" class="verified-icon">
-                                                                                <path d="M12 2l4 2 4 .6 1.4 4L22 12l-1.6 3.4L20 19l-4 .6-4 2-4-2-4-.6L3.6 15.4 2 12l1.4-3.4L4 4.6l4-.6 4-2z"/>
-                                                                                <path d="M9.5 12.5l1.7 1.7 3.8-3.8"/>
-                                                                              </svg>
-                                                                            </span>
-                                                                          ` : ``}
+                                                                                        <span class="verified">
+                                                                                          <svg viewBox="0 0 24 24" class="verified-icon">
+                                                                                            <path d="M12 2l4 2 4 .6 1.4 4L22 12l-1.6 3.4L20 19l-4 .6-4 2-4-2-4-.6L3.6 15.4 2 12l1.4-3.4L4 4.6l4-.6 4-2z"/>
+                                                                                            <path d="M9.5 12.5l1.7 1.7 3.8-3.8"/>
+                                                                                          </svg>
+                                                                                        </span>
+                                                                                      ` : ``}
             </div>
           </div>
 
