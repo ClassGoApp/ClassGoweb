@@ -2531,7 +2531,7 @@
             </div>
 
             <div class="qr-wrapper">
-              <img src="public/images/Qr-pagos.png" alt="QR de pago" class="qr-image">
+              <img src="{{ asset('images/Qr-pagos.png') }}" alt="QR de pago" class="">
             </div>
 
             <div class="upload-field">
