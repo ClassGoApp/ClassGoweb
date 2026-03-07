@@ -2531,7 +2531,7 @@
             </div>
 
             <div class="qr-wrapper">
-              <img src="https://api.qrserver.com/v1/create-qr-code/?size=110x110&data=Pay-${id}">
+              <img src="public/images/Qr-pagos.png" alt="QR de pago" class="qr-image">
             </div>
 
             <div class="upload-field">
