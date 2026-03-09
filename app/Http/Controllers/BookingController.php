@@ -13,6 +13,9 @@ use Illuminate\Database\QueryException;
 use App\Models\UserCoupon;
 use Illuminate\Support\Facades\Storage;
 use App\Services\SlotBookingService;
+use App\Services\interfaces;
+use App\Models\SlotBooking;
+use App\Services\BookingNotificationService;
 
 
 class BookingController extends Controller
@@ -409,6 +412,44 @@ class BookingController extends Controller
         }
     }
 
+    /**
+     * Método privado para crear la reserva, adaptado de crearReserva.
+     * Usa el modelo SlotBooking (Eloquent) para consistencia.
+     */
+    private function createBooking($studentId, $tutorId, $subjectId, $baseSlotId, $startAt, $endAt, $sessionFee, $metaData = [], $couponId = null, $couponCode = null, $discountPct = 0, $basePrice = 0, $finalPrice = 0, $isFree = false)
+    {
+        // Crear la reserva usando el modelo (inspirado en crearReserva)
+        $booking = new SlotBooking();
+        $booking->student_id = $studentId;
+        $booking->tutor_id = $tutorId;
+        $booking->subject_id = $subjectId;
+        $booking->user_subject_slot_id = $baseSlotId;  // Usar el slot base calculado
+        $booking->session_fee = $sessionFee;
+        $booking->start_time = $startAt->toDateTimeString();  // Usar startAt calculado
+        $booking->end_time = $endAt->toDateTimeString();      // Usar endAt calculado
+        $booking->booked_at = now();
+        $booking->status = 1;  // Estado inicial
+        $booking->meta_data = json_encode($metaData);  // Incluir meta_data de storeBooking
+
+        // Generar link de reunión (usando SlotBookingService, como en storeBooking)
+        $slotBookingService = app(SlotBookingService::class);
+        $meetLink = $slotBookingService->generarlink($booking);
+        $booking->meeting_link = $meetLink;
+
+        $booking->save();  // Guardar con Eloquent
+
+        // Enviar notificación (inspirado en crearReserva)
+        try {
+            $notificationService = app(BookingNotificationService::class);
+            $notificationService->handleStatusChangeNotification($booking, '', $booking->status);
+        } catch (\Throwable $e) {
+            Log::error('Notification error: ' . $e->getMessage());
+            // No fallar la reserva por error en notificación
+        }
+
+        return $booking;
+    }
+
     public function storeBooking(Request $request, CuponesService $cuponesService)
     {
         $request->validate([
@@ -586,37 +627,37 @@ class BookingController extends Controller
             }
 
 
-            $bookingId = DB::table('slot_bookings')->insertGetId([
-                'student_id'          => $studentId,
-                'tutor_id'            => (int) $request->tutor_id,
-                'subject_id'          => (int) $request->subject_id,
-                'user_subject_slot_id' => $baseSlotId,
-                'start_time'          => $startAt->toDateTimeString(),
-                'end_time'            => $endAt->toDateTimeString(),
-                'session_fee'         => $precioFinal,
-                'booked_at'           => now()->toDateTimeString(),
-                'calendar_event_id'   => null,
-                'meeting_link'        => null,
-                'status'              => $bookingStatus,
-                'meta_data'           => json_encode([
-                    'date'        => $dateStr,
-                    'start'       => $reqStart,
-                    'end'         => $reqEnd,
-                    'coupon_id'   => $couponId,
-                    'coupon_code' => $couponCodigo,
-                    'discount_pct' => $descuentoPct,
-                    'base_price'  => $precioBase,
-                    'final_price' => $precioFinal,
-                    'is_free'     => $isFreeComputed ? 1 : 0,
-                ]),
-            ]);
-
-            // Construye un objeto tipo "tutoria" con los campos que tu generarlink usa
-            $tutoria = (object)[
-                'id' => $bookingId,
-                'tutor_id' => (int) $request->tutor_id,
-                'start_time' => $startAt->toDateTimeString(),
+            $metaData = [
+                'date'        => $dateStr,
+                'start'       => $reqStart,
+                'end'         => $reqEnd,
+                'coupon_id'   => $couponId,
+                'coupon_code' => $couponCodigo,
+                'discount_pct' => $descuentoPct,
+                'base_price'  => $precioBase,
+                'final_price' => $precioFinal,
+                'is_free'     => $isFreeComputed ? 1 : 0,
             ];
+
+            // Crear la reserva usando el método adaptado (en lugar de DB::table)
+            $booking = $this->createBooking(
+                $studentId,
+                (int) $request->tutor_id,
+                (int) $request->subject_id,
+                $baseSlotId,
+                $startAt,
+                $endAt,
+                $precioFinal,
+                $metaData,
+                $couponId,
+                $couponCodigo,
+                $descuentoPct,
+                $precioBase,
+                $precioFinal,
+                $isFreeComputed
+            );
+
+            $bookingId = $booking->id;  // Obtener ID del modelo
 
             
 
@@ -670,21 +711,6 @@ class BookingController extends Controller
             }
 
             DB::commit();
-            // Llamar al servicio
-            try {
-                $slotBookingService = app(SlotBookingService::class); // o new SlotBookingService
-                $meetLink = $slotBookingService->generarlink($tutoria);
-
-                if ($meetLink) {
-                    DB::table('slot_bookings')->where('id', $bookingId)->update([
-                        'meeting_link' => $meetLink,
-                        'updated_at' => now(),
-                    ]);
-                }
-            } catch (\Throwable $e) {
-                Log::error('Meet link error: ' . $e->getMessage());
-                // Decide: si Meet es obligatorio, aquí haces throw $e;
-            }
             return response()->json([
                 'success'    => true,
                 'message'    => 'Reserva creada exitosamente',
