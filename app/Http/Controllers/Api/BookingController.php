@@ -15,6 +15,8 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
+use App\Services\BookingNotificationService;
+use Illuminate\Support\Facades\Log;
 
 class BookingController extends Controller
 {
@@ -155,6 +157,15 @@ class BookingController extends Controller
                 $slotBooking->meeting_link = $link;
                 $slotBooking->save();
             }
+        }
+
+        // Enviar notificación (inspirado en crearReserva)
+        try {
+            $notificationService = app(BookingNotificationService::class);
+            $notificationService->handleStatusChangeNotification($slotBooking, '', $slotBooking->status);
+        } catch (\Throwable $e) {
+            Log::error('Notification error: ' . $e->getMessage());
+            // No fallar la reserva por error en notificación
         }
 
         return response()->json($slotBooking, 201);
