@@ -1079,12 +1079,12 @@
         .summary-box {
             background: #f8fafc;
             border-radius: 1rem;
-            padding: 1rem;
+            padding: 0.5rem;
             display: flex;
             align-items: center;
             gap: 0.8rem;
             text-align: left;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.2rem;
         }
 
         .summary-box img {
@@ -1095,9 +1095,9 @@
         }
 
         .qr-wrapper img {
-            width: 110px;
-            height: 110px;
-            margin: 0.8rem 0;
+            width: 150px;
+            height: 150px;
+            margin: 0.2rem 0;
         }
 
         .upload-field {
