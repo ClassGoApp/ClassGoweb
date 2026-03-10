@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\SlotBookingResource;
 use App\Models\User;
 use App\Services\BookingService;
+use App\Services\SlotBookingService;
 use App\Http\Resources\SubjectGroupResource;
 use App\Services\SubjectService;
 use App\Http\Resources\SubjectResource;
@@ -141,6 +142,21 @@ class BookingController extends Controller
         ]);
 
         $slotBooking = \App\Models\SlotBooking::create($validated);
+
+        // Si no se proporcionó meeting_link en la request, generarlo usando SlotBookingService
+        if (empty($validated['meeting_link'])) {
+            $slotService = new SlotBookingService();
+            // generarlink espera un objeto con al menos start_time y tutor_id
+            $meetingSource = new \stdClass();
+            $meetingSource->start_time = $slotBooking->start_time;
+            $meetingSource->tutor_id = $slotBooking->tutor_id;
+            $link = $slotService->generarlink($meetingSource);
+            if ($link) {
+                $slotBooking->meeting_link = $link;
+                $slotBooking->save();
+            }
+        }
+
         return response()->json($slotBooking, 201);
     }
 
