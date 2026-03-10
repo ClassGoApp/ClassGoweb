@@ -28,7 +28,7 @@ new #[Layout('layouts.guest')] class extends Component
         Session::regenerate();
         $this->dispatch('showAlertMessage', type: 'success', title: __('general.success_title'), message: __('general.login_success'));
         usleep(500);
-        $this->redirect(auth()->user()->redirect_after_login);
+        $this->redirect(session()->pull('url.intended', auth()->user()->redirect_after_login));
     }
 
     // --- 2. LÓGICA REGISTRO ---

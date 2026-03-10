@@ -2,6 +2,8 @@
 @section('content')
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+
+
     <style>
         /* ================= VARIABLES (limpias, sin duplicados) ================= */
         :root {
@@ -36,6 +38,137 @@
             scroll-behavior: smooth;
         }
 
+
+        /* =================== 10 - Navbar Menu Usuario =================== */
+        .user-menu {
+            position: relative;
+            display: inline-block;
+        }
+
+        /* El botón que contiene la foto de perfil */
+        .user-menu__trigger {
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+
+        /* El avatar (foto de perfil) */
+        .user-menu__avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            /* Evita que la imagen se deforme */
+            display: block;
+            /* Elimina espacios extra */
+            border: 2px solid transparent;
+            transition: border-color 0.2s;
+        }
+
+        .user-menu__trigger:hover .user-menu__avatar {
+            border-color: #ddd;
+        }
+
+        /* El menú desplegable */
+        .user-menu__dropdown {
+            display: none;
+            /* Oculto por defecto */
+            position: absolute;
+            top: calc(100% + 10px);
+            /* 100% del alto del botón + 10px de espacio */
+            right: 0;
+            width: 260px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+            border: 1px solid #f0f0f0;
+            padding: 8px 0;
+            z-index: 1000;
+            overflow: hidden;
+            /* Para que los bordes redondeados se apliquen a los hijos */
+        }
+
+        /* Clase que se añade con JS para mostrar el menú */
+        .user-menu.is-open .user-menu__dropdown {
+            display: block;
+        }
+
+        /* Cabecera del menú (con la foto, nombre y email) */
+        .user-menu__header {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            border-bottom: 1px solid #f0f0f0;
+            margin-bottom: 8px;
+        }
+
+        .user-menu__header .user-menu__avatar {
+            width: 48px;
+            height: 48px;
+        }
+
+        .user-menu__details {
+            margin-left: 12px;
+            line-height: 1.4;
+        }
+
+        .user-menu__name {
+            font-weight: 600;
+            color: #1a1a1a;
+            display: block;
+        }
+
+        .user-menu__email {
+            font-size: 0.80rem;
+            color: #666;
+            display: block;
+            word-break: break-word
+        }
+
+        /* Lista de navegación y sus elementos */
+        .user-menu__nav {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .user-menu__link {
+            display: flex;
+            align-items: center;
+            padding: 0.6rem 1rem;
+            text-decoration: none;
+            font-size: 0.85rem;
+            /* ~15px */
+            color: #333;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        .user-menu__link:hover {
+            background-color: #f7f7f7;
+        }
+
+        .user-menu__icon {
+            margin-right: 12px;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #555;
+        }
+
+        .user-menu__item--logout .user-menu__link,
+        .user-menu__item--logout .user-menu__icon {
+            color: #d9534f;
+            font-weight: 500;
+        }
+
+        .user-menu__item--logout .user-menu__link:hover {
+            background-color: #fdeeee;
+        }
+
         .container {
             /* max-width: 1200px; */
             margin: 0;
@@ -63,10 +196,26 @@
         header {
             display: flex;
             flex-direction: column;
-            gap: 1.5rem;
             margin-bottom: 1rem;
             transition: var(--transition);
         }
+        .header-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-bottom {
+            display: flex;
+             flex-direction: row;
+             align-items: center;
+             justify-content: space-between;
+         }
+         .header-info {
+             display: flex;
+             flex-direction: column;
+             gap: 5px;
+         }
 
 
 
@@ -103,6 +252,17 @@
             transition: var(--transition);
             box-shadow: 0 8px 20px rgba(2, 48, 71, .06);
         }
+        .home-btn {
+            width: 42px;
+            height: 42px;
+            background: #f1f5f9;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #e2e8f0;
+            color: var(--text-muted);
+        }
 
         .search-input:focus {
             border-color: rgba(33, 158, 188, .7);
@@ -129,14 +289,14 @@
         }
 
         /* .category-bar {
-                display: flex;
-                align-items: center;
-                gap: .6rem;
-                overflow-x: auto;
-                padding: 1rem 0 1rem;
-                margin-bottom: 1rem;
-                scrollbar-width: none;
-            } */
+                                    display: flex;
+                                    align-items: center;
+                                    gap: .6rem;
+                                    overflow-x: auto;
+                                    padding: 1rem 0 1rem;
+                                    margin-bottom: 1rem;
+                                    scrollbar-width: none;
+                                } */
 
         .category-bar {
             display: flex;
@@ -191,7 +351,7 @@
         /* ================= GROUP HEADERS ================= */
         .subject-sections {
             /* padding-bottom: 2rem; */
-              padding: .3rem clamp(1rem, 3vw, 3rem);
+            padding: .3rem clamp(1rem, 3vw, 3rem);
         }
 
         .section-header {
@@ -218,47 +378,47 @@
 
         /* ================= SUBJECT GRID ================= */
         /* .subject-grid {
-            display: flex;
-            flex-direction: column;
-            flex-wrap: wrap;
-            height: calc(5 * 78px);
-            gap: .7rem;
-            overflow-x: auto;
-            overflow-y: hidden;
-            align-content: flex-start;
-            scrollbar-width: none;
-        } */
+                                display: flex;
+                                flex-direction: column;
+                                flex-wrap: wrap;
+                                height: calc(5 * 78px);
+                                gap: .7rem;
+                                overflow-x: auto;
+                                overflow-y: hidden;
+                                align-content: flex-start;
+                                scrollbar-width: none;
+                            } */
 
         .subject-grid {
-    display: grid;
-    /* CAMBIO CLAVE: auto para que no reserve espacio vacío */
-    grid-template-rows: repeat(3, auto); 
-    grid-auto-flow: column;
-    grid-auto-columns: max-content;
-    gap: 5px;
-    
-    /* Limitamos el alto máximo para que no crezca infinito */
-    /* 3 filas de ~60px + gaps + paddings */
-    max-height: 220px; 
-    
-    overflow-x: auto;
-    overflow-y: hidden;
-    /* padding: 10px 5px; */
-    
-    /* Mantenemos el cursor de agarre */
-    cursor: grab;
-    scrollbar-width: none;
-}
+            display: grid;
+            /* CAMBIO CLAVE: auto para que no reserve espacio vacío */
+            grid-template-rows: repeat(3, auto);
+            grid-auto-flow: column;
+            grid-auto-columns: max-content;
+            gap: 5px;
+
+            /* Limitamos el alto máximo para que no crezca infinito */
+            /* 3 filas de ~60px + gaps + paddings */
+            max-height: 220px;
+
+            overflow-x: auto;
+            overflow-y: hidden;
+            /* padding: 10px 5px; */
+
+            /* Mantenemos el cursor de agarre */
+            cursor: grab;
+            scrollbar-width: none;
+        }
 
         /* Fuerza el scroll horizontal en las secciones de materias */
         /* .subject-grid { */
-            /* display: flex; */
-            /* flex-direction: column; */
-            /* flex-wrap: wrap; */
-            /* height: 400px; Ajusta según tu diseño */
-            /* overflow-x: auto; */
-            /* cursor: grab; */
-            /* scrollbar-width: none; */
+        /* display: flex; */
+        /* flex-direction: column; */
+        /* flex-wrap: wrap; */
+        /* height: 400px; Ajusta según tu diseño */
+        /* overflow-x: auto; */
+        /* cursor: grab; */
+        /* scrollbar-width: none; */
         /* } */
 
         .category-bar::-webkit-scrollbar {
@@ -275,36 +435,36 @@
             display: none;
         }
 
-       /* .subject-card-btn {
-           display: inline-flex;
-  width: auto;     
-  align-items: center;
-  gap: 10px;
-   padding: 0.8rem 1.2rem;
-  border-radius: 50px; 
-  background: #ffffff;
-  border: 1px solid #f1f5f9;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-  transition: all 0.2s ease;
-  white-space: nowrap;
-        } */
+        /* .subject-card-btn {
+                               display: inline-flex;
+                      width: auto;
+                      align-items: center;
+                      gap: 10px;
+                       padding: 0.8rem 1.2rem;
+                      border-radius: 50px;
+                      background: #ffffff;
+                      border: 1px solid #f1f5f9;
+                      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+                      transition: all 0.2s ease;
+                      white-space: nowrap;
+                            } */
 
         .subject-card-btn {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    /* padding: 0.8rem 1.2rem; Usamos padding en lugar de height: 100% */
-    /* min-height: 55px;      Alto mínimo para que se vean bien */
-    background: #fff;
-    border: 1px solid #e2e8f0;
-    border-radius: 50px;
-    white-space: nowrap;
-}
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            /* padding: 0.8rem 1.2rem; Usamos padding en lugar de height: 100% */
+            /* min-height: 55px;      Alto mínimo para que se vean bien */
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 50px;
+            white-space: nowrap;
+        }
 
         .subject-card-btn:hover {
             border-color: #00B4D8;
             background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%);
-    box-shadow: 0 10px 20px rgba(72, 202, 228, 0.2);
+            box-shadow: 0 10px 20px rgba(72, 202, 228, 0.2);
             box-shadow: 0 16px 34px rgba(33, 158, 188, .10);
         }
 
@@ -312,7 +472,8 @@
             width: 44px;
             height: 44px;
             border-radius: 50%;
-            background: var(--primary-color);;
+            background: var(--primary-color);
+            ;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -323,7 +484,7 @@
         }
 
         .subject-card-btn:hover .subject-initial {
-            background:#48CAE4;
+            background: #48CAE4;
             color: #fff;
         }
 
@@ -346,27 +507,27 @@
             /* border-color: #FF8C00; */
             box-shadow: 0 18px 38px rgba(251, 133, 0, .25);
             border-color: #FF8C00;
-    background: linear-gradient(135deg, #FFF9F2 0%, #FFF3E0 100%);
-    box-shadow: 0 8px 25px rgba(255, 140, 0, 0.15);
+            background: linear-gradient(135deg, #FFF9F2 0%, #FFF3E0 100%);
+            box-shadow: 0 8px 25px rgba(255, 140, 0, 0.15);
         }
 
         /* .subject-card-btn.is-selected .subject-initial {
-            background: var(--terciary-color2);
-            color: #fff;
-        } */
+                                background: var(--terciary-color2);
+                                color: #fff;
+                            } */
 
 
         .subject-card-btn.is-selected .subject-initial {
-    background: linear-gradient(135deg, #FF8C00 0%, #FFA500 100%);
-    color: white;
-    box-shadow: 0 4px 12px rgba(255, 140, 0, 0.3);
-}
+            background: linear-gradient(135deg, #FF8C00 0%, #FFA500 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(255, 140, 0, 0.3);
+        }
 
-.section-header h3 {
-    color: #1D3557;
-    border-left: 4px solid #48CAE4;
-    padding-left: 10px;
-}
+        .section-header h3 {
+            color: #1D3557;
+            border-left: 4px solid #48CAE4;
+            padding-left: 10px;
+        }
 
         /* ================= RADAR ================= */
         #view-browse {
@@ -597,7 +758,7 @@
             border-radius: 999px;
             padding: .35rem .8rem;
             background: #fff;
-            font-size: .7rem;
+            font-size: 1rem;
             font-weight: 900;
             color: #64748b;
             margin-top: .8rem;
@@ -1034,21 +1195,30 @@
             width: 20%;
         }
 
-        @media(min-width:768px) {
+        @media(max-width:768px) {
             header {
-                flex-direction: row;
+                flex-direction: column;
                 align-items: center;
                 justify-content: space-between;
             }
-
-        }
-
-        @media(max-width:768px) {
-
+            .header-top {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                width: 100%;
+            }
+            .header-bottom {
+                margin-top: 1rem;
+                width: 100%;
+                justify-content: center;
+                flex-direction: column
+            }
             .search-wrapper {
                 max-width: 100%;
             }
+
         }
+
 
         @media(max-width:600px) {
 
@@ -1123,18 +1293,263 @@
                 <div class="head">
                     <header>
 
-                        <div class="header-info">
-                            <h1>¿Qué necesitas aprender hoy?</h1>
-                            <p>Más de 600 materias con la que un tutor puede ayudarte ahora</p>
+                        <div class="header-top">
+                            <button class="home-btn" title="Inicio"  onclick="window.location.href='{{ route('home') }}'">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                                </svg>
+                            </button>
+
+
+
+                            @auth
+
+                                <div class="user-menu">
+                                    <button type="button" class="user-menu__trigger">
+                                        @role('tutor')
+                                            <img class="user-menu__avatar"
+                                                src="{{ Auth::user()->profile->image ? asset('storage/' . Auth::user()->profile->image) : asset('images/default.png') }}"
+                                                style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; cursor: pointer;">
+                                            @elserole('student')
+                                            <img class="user-menu__avatar"
+                                                src="{{ Auth::user()->profile->image ? asset('storage/' . Auth::user()->profile->image) : asset('images/tutors/default_estudiante.png') }}"
+                                                style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; cursor: pointer;">
+                                            @elserole('admin')
+                                            <img class="user-menu__avatar"
+                                                src="{{ Auth::user()->profile->image ? asset('storage/' . Auth::user()->profile->image) : asset('images/default.png') }}"
+                                                style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; cursor: pointer;">
+                                        @endrole
+                                    </button>
+
+                                    <div class="user-menu__dropdown">
+                                        <!-- Según rol-->
+                                        <a
+                                            href=" {{ auth()->user()->hasRole('tutor') ? route('tutor.dashboard') : route('student.bookings') }}">
+
+                                            <div class="user-menu__header">
+                                                {{-- <img class="user-menu__avatar" src="{{ asset('storage/'.Auth::user()->profile->image) ?? asset('images/default.png') }}" > --}}
+                                                <div class="user-menu__details">
+                                                    <span class="user-menu__name">Hola
+                                                        {{ Auth::user()->profile->first_name }}!</span>
+                                                    <span class="user-menu__email">{{ Auth::user()->email }}</span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        @role('tutor')
+                                            <!-- ======== ROL TUTOR ===========-->
+                                            <ul class="user-menu__nav">
+                                                <li>
+                                                    <a href="{{ route('tutor.dashboard') }}" class="user-menu__link">
+                                                        <i class="user-menu__icon"><svg xmlns="http://www.w3.org/2000/svg"
+                                                                width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                                stroke-linejoin="round">
+                                                                <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                                                                <path d="M2 17l10 5 10-5" />
+                                                                <path d="M2 12l10 5 10-5" />
+                                                            </svg></i>
+                                                        Panel
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="{{ route('tutor.profile.personal-details') }}" class="user-menu__link">
+                                                        <i class="user-menu__icon"><svg xmlns="http://www.w3.org/2000/svg"
+                                                                width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                                stroke-linejoin="round">
+                                                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                                                                <circle cx="12" cy="7" r="4" />
+                                                            </svg></i>
+                                                        Configuración de perfil
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="{{ route('tutor.bookings.subjects') }}" class="user-menu__link">
+                                                        <i class="user-menu__icon"><svg xmlns="http://www.w3.org/2000/svg"
+                                                                width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                                stroke-linejoin="round">
+                                                                <rect x="3" y="4" width="18" height="18" rx="2"
+                                                                    ry="2" />
+                                                                <line x1="16" y1="2" x2="16" y2="6" />
+                                                                <line x1="8" y1="2" x2="8" y2="6" />
+                                                                <line x1="3" y1="10" x2="21" y2="10" />
+                                                            </svg></i>
+                                                        Reservas
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="{{ route('tutor.invoices') }}" class="user-menu__link">
+                                                        <i class="user-menu__icon"><svg xmlns="http://www.w3.org/2000/svg"
+                                                                width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                                stroke-linejoin="round">
+                                                                <path
+                                                                    d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                                                <polyline points="14 2 14 8 20 8" />
+                                                                <line x1="12" y1="18" x2="12"
+                                                                    y2="12" />
+                                                                <path
+                                                                    d="M14.5 15.5h-5c-.83 0-1.5-.67-1.5-1.5v0c0-.83.67-1.5 1.5-1.5h5" />
+                                                            </svg></i>
+                                                        Historial de Tutorías
+                                                    </a>
+                                                </li>
+                                                {{-- <li>
+								<a href="#" class="user-menu__link">
+									<i class="user-menu__icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+										<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+										<line x1="9" y1="10" x2="15" y2="10"/>
+										<line x1="9" y1="14" x2="13" y2="14"/>
+									</svg></i> 
+									Bandeja de entrada
+								</a>
+							</li> --}}
+                                                @elserole('student') <!-- ======== ROL ESTUDIANTE ==========-->
+                                                <ul class="user-menu__nav">
+                                                    <li>
+                                                        <a href="{{ route('student.profile.personal-details') }}"
+                                                            class="user-menu__link">
+                                                            <i class="user-menu__icon"><svg xmlns="http://www.w3.org/2000/svg"
+                                                                    width="24" height="24" viewBox="0 0 24 24"
+                                                                    fill="none" stroke="currentColor" stroke-width="2"
+                                                                    stroke-linecap="round" stroke-linejoin="round">
+                                                                    <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                                                                    <path d="M2 17l10 5 10-5" />
+                                                                    <path d="M2 12l10 5 10-5" />
+                                                                </svg></i>
+                                                            Configuración de perfil
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="{{ route('student.bookings') }}" class="user-menu__link">
+                                                            <i class="user-menu__icon"><svg xmlns="http://www.w3.org/2000/svg"
+                                                                    width="24" height="24" viewBox="0 0 24 24"
+                                                                    fill="none" stroke="currentColor" stroke-width="2"
+                                                                    stroke-linecap="round" stroke-linejoin="round">
+                                                                    <rect x="3" y="4" width="18" height="18"
+                                                                        rx="2" ry="2" />
+                                                                    <line x1="16" y1="2" x2="16"
+                                                                        y2="6" />
+                                                                    <line x1="8" y1="2" x2="8"
+                                                                        y2="6" />
+                                                                    <line x1="3" y1="10" x2="21"
+                                                                        y2="10" />
+                                                                </svg></i>
+                                                            Mis Reservas
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="{{ route('student.invoices') }}" class="user-menu__link">
+                                                            <i class="user-menu__icon"><svg xmlns="http://www.w3.org/2000/svg"
+                                                                    width="24" height="24" viewBox="0 0 24 24"
+                                                                    fill="none" stroke="currentColor" stroke-width="2"
+                                                                    stroke-linecap="round" stroke-linejoin="round">
+                                                                    <path
+                                                                        d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                                                    <polyline points="14 2 14 8 20 8" />
+                                                                    <line x1="12" y1="18" x2="12"
+                                                                        y2="12" />
+                                                                    <path
+                                                                        d="M14.5 15.5h-5c-.83 0-1.5-.67-1.5-1.5v0c0-.83.67-1.5 1.5-1.5h5" />
+                                                                </svg></i>
+                                                            Historial de tutorias
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="{{ route('student.favourites') }}" class="user-menu__link">
+                                                            <i class="user-menu__icon">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                    height="24" viewBox="0 0 24 24" fill="none"
+                                                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                                    stroke-linejoin="round">
+                                                                    <path
+                                                                        d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+                                                                    </path>
+                                                                </svg>
+                                                            </i>
+                                                            Favoritos
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="{{ route('buscar') }}" class="user-menu__link">
+                                                            <i class="user-menu__icon"><svg xmlns="http://www.w3.org/2000/svg"
+                                                                    width="24" height="24" viewBox="0 0 24 24"
+                                                                    fill="none" stroke="currentColor" stroke-width="2"
+                                                                    stroke-linecap="round" stroke-linejoin="round">
+                                                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                                                    <circle cx="9" cy="7" r="4"></circle>
+                                                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                                                </svg></i>
+                                                            Buscar Tutores
+                                                        </a>
+                                                    </li>
+
+                                                    @elserole('admin')
+                                                    <ul class="user-menu__nav">
+
+                                                        <a href=" {{ auth()->user()->hasRole('tutor') ? route('tutor.dashboard') : route('student.bookings') }}"
+                                                            class="user-menu__link">
+                                                            <i class="user-menu__icon"><svg xmlns="http://www.w3.org/2000/svg"
+                                                                    width="24" height="24" viewBox="0 0 24 24"
+                                                                    fill="none" stroke="currentColor" stroke-width="2"
+                                                                    stroke-linecap="round" stroke-linejoin="round">
+                                                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                                                    <circle cx="9" cy="7" r="4"></circle>
+                                                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                                                </svg></i>
+                                                            Mi panel
+                                                        </a>
+                                                    @endrole
+                                                    <li class="user-menu__item--logout">
+                                                        <a href="{{ route('logout') }}" class="user-menu__link">
+                                                            <i class="user-menu__icon"><svg xmlns="http://www.w3.org/2000/svg"
+                                                                    width="24" height="24" viewBox="0 0 24 24"
+                                                                    fill="none" stroke="currentColor" stroke-width="2"
+                                                                    stroke-linecap="round" stroke-linejoin="round">
+                                                                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                                                                    <polyline points="16 17 21 12 16 7" />
+                                                                    <line x1="21" y1="12" x2="9"
+                                                                        y2="12" />
+                                                                </svg></i>
+                                                            Desconectar
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                    </div>
+                                </div>
+                            @else
+                                <a href=" {{ route('login') }} "><button class="btn-outline"><span
+                                            data-translate="ingre"></span></button></a>
+                                <div class="navbar-icon">
+                                    <a href=" {{ route('login', ['mode' => 'register']) }}"><i
+                                            class="fa-solid fa-user-plus icon-white"></i></a>
+                                </div>
+                            @endauth
+
                         </div>
-                        <div class="search-wrapper">
-                            <svg class="search-icon" width="20" height="20" fill="none" stroke="currentColor"
-                                stroke-width="2.5" viewBox="0 0 24 24">
-                                <circle cx="11" cy="11" r="8" />
-                                <path d="M21 21l-4.35-4.35" />
-                            </svg>
-                            <input type="text" id="search-input" class="search-input" placeholder="BUSCAR MATERIA...">
+
+                        <div class="header-bottom">
+                            <div class="header-info">
+                                <h1>¿Qué necesitas aprender hoy?</h1>
+                                <p>Más de 600 materias con la que un tutor puede ayudarte ahora</p>
+                            </div>
+                            <div class="search-wrapper">
+                                <svg class="search-icon" width="20" height="20" fill="none"
+                                    stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                    <circle cx="11" cy="11" r="8" />
+                                    <path d="M21 21l-4.35-4.35" />
+                                </svg>
+                                <input type="text" id="search-input" class="search-input"
+                                    placeholder="BUSCAR MATERIA...">
+                            </div>
                         </div>
+
+
                     </header>
                     <div class="category-bar" id="category-bar"></div>
                 </div>
@@ -1170,12 +1585,6 @@
                         </div>
 
                         <div class="small-pill">
-                            Batch: <b id="wBatchId">-</b> · Estado: <b id="wStatus">-</b> · Expira: <b
-                                id="wExpires">-</b>
-                        </div>
-
-                        <div class="small-pill">
-                            Emails/min: <b id="ratePerMinLabel">-</b> · Enviados este minuto: <b id="sentThisMinLabel">0</b>
                             · Expira en: <b id="batchExpireCountdown" class="expire-normal">--:--</b>
                         </div>
 
@@ -1259,34 +1668,34 @@
 
     <script>
         /* ========================================================================
-                                                      CLASSGO | Student - Instant Tutors Script
-                                                      ------------------------------------------------------------------------
-                                                      FLUJO:
-                                                      1) Cargar Categorías/Materias
-                                                      2) Seleccionar Materia (solo una) + mostrar FAB
-                                                      3) Crear Batch + mostrar Radar + polling:
-                                                          - status (cada 60s)
-                                                          - tutores aceptados (cada 5s)
-                                                          - countdown expiración (cada 1s)
-                                                      4) Mostrar cards de tutores + reservar + abrir checkout (flip)
-                                                      5) Subir comprobante + pagar + polling booking (cada 2.5s)
-                                                      6) Nueva solicitud / reset
+                                                                          CLASSGO | Student - Instant Tutors Script
+                                                                          ------------------------------------------------------------------------
+                                                                          FLUJO:
+                                                                          1) Cargar Categorías/Materias
+                                                                          2) Seleccionar Materia (solo una) + mostrar FAB
+                                                                          3) Crear Batch + mostrar Radar + polling:
+                                                                              - status (cada 60s)
+                                                                              - tutores aceptados (cada 5s)
+                                                                              - countdown expiración (cada 1s)
+                                                                          4) Mostrar cards de tutores + reservar + abrir checkout (flip)
+                                                                          5) Subir comprobante + pagar + polling booking (cada 2.5s)
+                                                                          6) Nueva solicitud / reset
 
-                                                      ENDPOINTS:
-                                                      - GET  /student/subject-groups/categorias-materias
-                                                      - POST /student/batches/start
-                                                      - GET  /student/batches/active
-                                                      - GET  /student/batches/{batchId}/status
-                                                      - GET  /student/batches/{batchId}/accepted-tutors?limit=50
-                                                      - POST /student/batches/{batchId}/reserve
-                                                      - POST /student/bookings/{bookingId}/receipt
-                                                      - GET  /student/bookings/{bookingId}/status
-                                                      - GET  /student/bookings/{bookingId}/meet
+                                                                          ENDPOINTS:
+                                                                          - GET  /student/subject-groups/categorias-materias
+                                                                          - POST /student/batches/start
+                                                                          - GET  /student/batches/active
+                                                                          - GET  /student/batches/{batchId}/status
+                                                                          - GET  /student/batches/{batchId}/accepted-tutors?limit=50
+                                                                          - POST /student/batches/{batchId}/reserve
+                                                                          - POST /student/bookings/{bookingId}/receipt
+                                                                          - GET  /student/bookings/{bookingId}/status
+                                                                          - GET  /student/bookings/{bookingId}/meet
 
-                                                      NOTAS:
-                                                      - fetchAcceptedTutors() se pausa si state.activeHeroId existe (checkout abierto)
-                                                      - closeHero(true) debe existir en otro lado o aquí (si no, revienta)
-                                                    ======================================================================== */
+                                                                          NOTAS:
+                                                                          - fetchAcceptedTutors() se pausa si state.activeHeroId existe (checkout abierto)
+                                                                          - closeHero(true) debe existir en otro lado o aquí (si no, revienta)
+                                                                        ======================================================================== */
 
 
         /* ========================================================================
@@ -1485,14 +1894,14 @@
 
         <div class="subject-grid">
           ${items.map(sub => `
-                                                                <button class="subject-card-btn"
-                                                                  onclick="seleccionarMateria(this, ${sub.id}, '${sub.name.replaceAll("'", "\\'")}')">
-                                                                  <div class="subject-initial">${sub.name.charAt(0)}</div>
-                                                                  <div class="subject-meta">
-                                                                    <div class="subject-title">${sub.name}</div>
-                                                                  </div>
-                                                                </button>
-                                                              `).join('')}
+                                                                                    <button class="subject-card-btn"
+                                                                                      onclick="seleccionarMateria(this, ${sub.id}, '${sub.name.replaceAll("'", "\\'")}')">
+                                                                                      <div class="subject-initial">${sub.name.charAt(0)}</div>
+                                                                                      <div class="subject-meta">
+                                                                                        <div class="subject-title">${sub.name}</div>
+                                                                                      </div>
+                                                                                    </button>
+                                                                                  `).join('')}
         </div>
       </section>
     `;
@@ -1892,52 +2301,57 @@
         // }
 
         async function selectSubject(subjectName, subjectId) {
-    if (currentBatchId) return;
+            if (currentBatchId) return;
 
-    // 1. UI Feedback inmediato
-    ocultarFabTutoria();
-    document.getElementById('selected-subject-name').innerText = subjectName;
-    showRadar(); 
-    if (statusMsg) statusMsg.innerText = 'Iniciando búsqueda de expertos...';
+            // 1. UI Feedback inmediato
+            ocultarFabTutoria();
+            document.getElementById('selected-subject-name').innerText = subjectName;
+            showRadar();
+            if (statusMsg) statusMsg.innerText = 'Iniciando búsqueda de expertos...';
 
-    try {
-        const csrf = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+            try {
+                const csrf = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
 
-        // 2. Crear el Batch
-        const res = await fetch('/student/batches/start', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'X-CSRF-TOKEN': csrf
-            },
-            body: JSON.stringify({ subject_id: subjectId }),
-        });
+                // 2. Crear el Batch
+                const res = await fetch('/student/batches/start', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': csrf
+                    },
+                    body: JSON.stringify({
+                        subject_id: subjectId
+                    }),
+                });
 
-        const json = await res.json();
-        const batchId = json.batch_id ?? json?.data?.batch_id;
+                const json = await res.json();
+                const batchId = json.batch_id ?? json?.data?.batch_id;
 
-        if (batchId) {
-            // 3. Arrancar el radar y el polling ANTES de enviar los emails
-            startPolling(batchId);
-            
-            // 4. Disparar el envío de emails sin bloquear el flujo
-            fetch('/student/batches/send-emails', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'X-CSRF-TOKEN': csrf
-                },
-                body: JSON.stringify({ batch_id: batchId, limit: 10 })
-            }); // Sin await para que no bloquee
+                if (batchId) {
+                    // 3. Arrancar el radar y el polling ANTES de enviar los emails
+                    startPolling(batchId);
+
+                    // 4. Disparar el envío de emails sin bloquear el flujo
+                    fetch('/student/batches/send-emails', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                            'X-CSRF-TOKEN': csrf
+                        },
+                        body: JSON.stringify({
+                            batch_id: batchId,
+                            limit: 10
+                        })
+                    }); // Sin await para que no bloquee
+                }
+
+            } catch (e) {
+                console.error(e);
+                statusMsg.innerText = 'Error al conectar.';
+            }
         }
-
-    } catch (e) {
-        console.error(e);
-        statusMsg.innerText = 'Error al conectar.';
-    }
-}
 
 
         /* ========================================================================
@@ -2070,13 +2484,13 @@
               ${img ? `<img class="avatar" src="${escapeHtml(img)}" alt="${name}">` : ``}
 
               ${verified ? `
-                                                                    <span class="verified">
-                                                                      <svg viewBox="0 0 24 24" class="verified-icon">
-                                                                        <path d="M12 2l4 2 4 .6 1.4 4L22 12l-1.6 3.4L20 19l-4 .6-4 2-4-2-4-.6L3.6 15.4 2 12l1.4-3.4L4 4.6l4-.6 4-2z"/>
-                                                                        <path d="M9.5 12.5l1.7 1.7 3.8-3.8"/>
-                                                                      </svg>
-                                                                    </span>
-                                                                  ` : ``}
+                                                                                        <span class="verified">
+                                                                                          <svg viewBox="0 0 24 24" class="verified-icon">
+                                                                                            <path d="M12 2l4 2 4 .6 1.4 4L22 12l-1.6 3.4L20 19l-4 .6-4 2-4-2-4-.6L3.6 15.4 2 12l1.4-3.4L4 4.6l4-.6 4-2z"/>
+                                                                                            <path d="M9.5 12.5l1.7 1.7 3.8-3.8"/>
+                                                                                          </svg>
+                                                                                        </span>
+                                                                                      ` : ``}
             </div>
           </div>
 
@@ -2117,7 +2531,7 @@
             </div>
 
             <div class="qr-wrapper">
-              <img src="https://api.qrserver.com/v1/create-qr-code/?size=110x110&data=Pay-${id}">
+              <img src="{{ asset('images/Qr-pagos.png') }}" alt="QR de pago" class="">
             </div>
 
             <div class="upload-field">
@@ -2489,6 +2903,25 @@
                 renderSubjectSections();
             }
         }
+        // Menú usuario
+        document.addEventListener('DOMContentLoaded', function() {
+            const userMenu = document.querySelector('.user-menu');
+
+            if (!userMenu) return;
+
+            const trigger = userMenu.querySelector('.user-menu__trigger');
+
+            trigger.addEventListener('click', function(event) {
+                event.stopPropagation();
+                userMenu.classList.toggle('is-open');
+            });
+
+            document.addEventListener('click', function(event) {
+                if (userMenu.classList.contains('is-open') && !userMenu.contains(event.target)) {
+                    userMenu.classList.remove('is-open');
+                }
+            });
+        });
 
         init();
     </script>

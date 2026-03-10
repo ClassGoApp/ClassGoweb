@@ -12,11 +12,20 @@ use App\Services\CuponesService;
 use Illuminate\Database\QueryException;
 use App\Models\UserCoupon;
 use Illuminate\Support\Facades\Storage;
-
+use App\Services\SlotBookingService;
+use App\Services\interfaces;
+use App\Models\SlotBooking;
+use App\Services\BookingNotificationService;
 
 
 class BookingController extends Controller
 {
+    protected $slotBookingService;
+
+    public function __construct(SlotBookingService $slotBookingService)
+    {
+        $this->slotBookingService = $slotBookingService;
+    }
     /**
      * GET /student/booking/materias?institution=colegio|universidad|instituto
      */
@@ -32,8 +41,8 @@ class BookingController extends Controller
                 ], 400);
             }
 
-            
-            
+
+
             $map = [
                 'colegio'     => 1000,
                 'universidad' => 3000,
@@ -49,8 +58,8 @@ class BookingController extends Controller
 
             $rootId = $map[$institution];
 
-            
-            
+
+
             $subjectsQuery = DB::table('subjects')
                 ->select('id', 'name')
                 ->whereNull('deleted_at')
@@ -67,7 +76,7 @@ class BookingController extends Controller
                 $subjectsQuery->whereIn('subject_group_id', $groupIds);
             } else {
                 // UNIVERSIDAD / INSTITUTO: 2 niveles (nietos)
-               
+
                 $childIds = DB::table('subject_groups')
                     ->whereNull('deleted_at')
                     ->where('status', 'active')
@@ -129,7 +138,7 @@ class BookingController extends Controller
                 ->where('us.subject_id', $subjectId)
                 ->where('us.status', 'active')
 
-              
+
                 ->where('u.status', 1)
                 ->whereNotNull('u.email_verified_at')
                 ->where('u.available_for_tutoring', 1)
@@ -138,7 +147,7 @@ class BookingController extends Controller
                 ->whereNotNull('p.price')
                 ->where('p.price', '>', 0)
 
-                
+
                 ->whereExists(function ($q) use ($today, $timeNow) {
                     $q->select(DB::raw(1))
                         ->from('user_subject_slots as s')
@@ -199,7 +208,7 @@ class BookingController extends Controller
         try {
             $today = now()->startOfDay();
 
-           
+
             $baseSlots = DB::table('user_subject_slots')
                 ->where('user_id', (int)$tutorId)
                 ->where('date', '>=', $today)
@@ -214,14 +223,14 @@ class BookingController extends Controller
                 ]);
             }
 
-            
+
             $busyBookings = DB::table('slot_bookings')
                 ->where('tutor_id', (int)$tutorId)
                 ->whereIn('status', [0, 1])
-                ->where('start_time', '>=', $today) 
+                ->where('start_time', '>=', $today)
                 ->get(['user_subject_slot_id', 'start_time', 'end_time']);
 
-            
+
             $busySet = [];
             foreach ($busyBookings as $b) {
                 $st = Carbon::parse($b->start_time);
@@ -248,19 +257,19 @@ class BookingController extends Controller
                     $segStart = $cursor->copy();
                     $segEnd   = $cursor->copy()->addMinutes($stepMinutes);
 
-                   
+
                     if ($segEnd->lte($now)) {
                         $cursor->addMinutes($stepMinutes);
                         continue;
                     }
 
-                 
+
                     if ($segStart->lte($now) && $segEnd->gt($now)) {
                         $cursor->addMinutes($stepMinutes);
                         continue;
                     }
 
-                  
+
                     $busyKey = $slot->id . '|' . $segStart->format('H:i') . '|' . $segEnd->format('H:i') . '|' . $dateStr;
                     if (isset($busySet[$busyKey])) {
                         $cursor->addMinutes($stepMinutes);
@@ -269,7 +278,7 @@ class BookingController extends Controller
 
                     $id = $slot->id . '|' . $segStart->format('H:i') . '|' . $segEnd->format('H:i');
 
-                    
+
                     $out[] = [
                         'id' => $id,
                         'date' => $dateStr,
@@ -315,7 +324,7 @@ class BookingController extends Controller
                 ], 401);
             }
 
-            
+
             $cupon = Coupon::where('codigo', $codigo)->first();
             if (!$cupon) {
                 return response()->json([
@@ -324,7 +333,7 @@ class BookingController extends Controller
                 ], 404);
             }
 
-            
+
             if (($cupon->estado ?? null) !== 'activo') {
                 return response()->json([
                     'success' => false,
@@ -332,7 +341,7 @@ class BookingController extends Controller
                 ], 422);
             }
 
-            
+
             if (!empty($cupon->fecha_caducidad) && $cupon->fecha_caducidad < now()->toDateString()) {
                 return response()->json([
                     'success' => false,
@@ -340,7 +349,7 @@ class BookingController extends Controller
                 ], 422);
             }
 
-            
+
             if ($cuponesService->verificaUsoCupon($codigo, $user)) {
                 return response()->json([
                     'success' => false,
@@ -348,7 +357,7 @@ class BookingController extends Controller
                 ], 422);
             }
 
-            
+
             $descuentoPct = (float) ($cupon->descuento ?? 0);
             $descuentoDecimal = max(0, min(1, $descuentoPct / 100));
 
@@ -409,6 +418,44 @@ class BookingController extends Controller
         }
     }
 
+    /**
+     * Método privado para crear la reserva, adaptado de crearReserva.
+     * Usa el modelo SlotBooking (Eloquent) para consistencia.
+     */
+    private function createBooking($studentId, $tutorId, $subjectId, $baseSlotId, $startAt, $endAt, $sessionFee, $metaData = [], $couponId = null, $couponCode = null, $discountPct = 0, $basePrice = 0, $finalPrice = 0, $isFree = false)
+    {
+        // Crear la reserva usando el modelo (inspirado en crearReserva)
+        $booking = new SlotBooking();
+        $booking->student_id = $studentId;
+        $booking->tutor_id = $tutorId;
+        $booking->subject_id = $subjectId;
+        $booking->user_subject_slot_id = $baseSlotId;  // Usar el slot base calculado
+        $booking->session_fee = $sessionFee;
+        $booking->start_time = $startAt->toDateTimeString();  // Usar startAt calculado
+        $booking->end_time = $endAt->toDateTimeString();      // Usar endAt calculado
+        $booking->booked_at = now();
+        $booking->status = 1;  // Estado inicial
+        $booking->meta_data = json_encode($metaData);  // Incluir meta_data de storeBooking
+
+        // Generar link de reunión (usando SlotBookingService, como en storeBooking)
+        $slotBookingService = app(SlotBookingService::class);
+        $meetLink = $slotBookingService->generarlink($booking);
+        $booking->meeting_link = $meetLink;
+
+        $booking->save();  // Guardar con Eloquent
+
+        // Enviar notificación (inspirado en crearReserva)
+        try {
+            $notificationService = app(BookingNotificationService::class);
+            $notificationService->handleStatusChangeNotification($booking, '', $booking->status);
+        } catch (\Throwable $e) {
+            Log::error('Notification error: ' . $e->getMessage());
+            // No fallar la reserva por error en notificación
+        }
+
+        return $booking;
+    }
+
     public function storeBooking(Request $request, CuponesService $cuponesService)
     {
         $request->validate([
@@ -416,7 +463,7 @@ class BookingController extends Controller
             'tutor_id'    => 'required|exists:users,id',
             'slot_id'     => 'required|string', // "15|12:00|12:20"
             'coupon_id'   => 'nullable|exists:coupons,id',
-            'is_free'     => 'nullable|in:0,1',  
+            'is_free'     => 'nullable|in:0,1',
             'comprobante' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
         ]);
 
@@ -533,7 +580,7 @@ class BookingController extends Controller
 
                 $couponCodigo = (string) $cupon->codigo;
 
-               
+
                 if ($cuponesService->verificaUsoCupon($couponCodigo, $user)) {
                     DB::rollBack();
                     return response()->json(['success' => false, 'message' => 'No puedes usar este cupón'], 422);
@@ -543,21 +590,21 @@ class BookingController extends Controller
                 $descuentoPct = max(0, min(100, $descuentoPct));
             }
 
-           
+
             $precioFinal = $precioBase * (1 - ($descuentoPct / 100));
             if ($precioFinal < 0) $precioFinal = 0;
 
             $isFreeComputed = $precioFinal <= 0.0001;
 
-            
+
             $bookingStatus  =  1;
-            $paymentStatus  = $isFreeComputed ? 2 : 1; 
+            $paymentStatus  = $isFreeComputed ? 2 : 1;
             $paymentMethod  = $isFreeComputed ? 'free' : 'transfer';
             $paymentMessage = $isFreeComputed
                 ? 'Clase gratuita (cupón 100%) - confirmada automáticamente'
                 : 'Pago pendiente de verificación';
 
-            
+
             $image_url = null;
 
             if ($isFreeComputed) {
@@ -578,40 +625,51 @@ class BookingController extends Controller
                     mkdir($dest, 0775, true);
                 }
 
-                
+
                 $file->move($dest, $filename);
 
-                
+
                 $image_url = 'qr/' . $filename;
             }
 
-           
-            $bookingId = DB::table('slot_bookings')->insertGetId([
-                'student_id'          => $studentId,
-                'tutor_id'            => (int) $request->tutor_id,
-                'subject_id'          => (int) $request->subject_id,
-                'user_subject_slot_id' => $baseSlotId,
-                'start_time'          => $startAt->toDateTimeString(),
-                'end_time'            => $endAt->toDateTimeString(),
-                'session_fee'         => $precioFinal,
-                'booked_at'           => now()->toDateTimeString(),
-                'calendar_event_id'   => null,
-                'meeting_link'        => null,
-                'status'              => $bookingStatus,
-                'meta_data'           => json_encode([
-                    'date'        => $dateStr,
-                    'start'       => $reqStart,
-                    'end'         => $reqEnd,
-                    'coupon_id'   => $couponId,
-                    'coupon_code' => $couponCodigo,
-                    'discount_pct' => $descuentoPct,
-                    'base_price'  => $precioBase,
-                    'final_price' => $precioFinal,
-                    'is_free'     => $isFreeComputed ? 1 : 0,
-                ]),
-            ]);
+
+            $metaData = [
+                'date'        => $dateStr,
+                'start'       => $reqStart,
+                'end'         => $reqEnd,
+                'coupon_id'   => $couponId,
+                'coupon_code' => $couponCodigo,
+                'discount_pct' => $descuentoPct,
+                'base_price'  => $precioBase,
+                'final_price' => $precioFinal,
+                'is_free'     => $isFreeComputed ? 1 : 0,
+            ];
+
+            // Crear la reserva usando el método adaptado (en lugar de DB::table)
+            $booking = $this->createBooking(
+                $studentId,
+                (int) $request->tutor_id,
+                (int) $request->subject_id,
+                $baseSlotId,
+                $startAt,
+                $endAt,
+                $precioFinal,
+                $metaData,
+                $couponId,
+                $couponCodigo,
+                $descuentoPct,
+                $precioBase,
+                $precioFinal,
+                $isFreeComputed
+            );
+
+            $bookingId = $booking->id;  // Obtener ID del modelo
 
             
+
+
+
+
             DB::table('slot_payments')->insert([
                 'slot_booking_id' => $bookingId,
                 'payment_date'    => now()->toDateString(),
@@ -619,12 +677,12 @@ class BookingController extends Controller
                 'amount'          => $precioFinal,
                 'status'          => $paymentStatus,
                 'message'         => $paymentMessage,
-                'receipt_pdf'     => $image_url, 
+                'receipt_pdf'     => $image_url,
                 'created_at'      => now(),
                 'updated_at'      => now(),
             ]);
 
-            
+
             DB::table('payment_slot_bookings')->insert([
                 'slot_booking_id' => $bookingId,
                 'image_url'       => $image_url,   // <-- AQUÍ se guarda "qr/xxx.png" o "qr/tutoria_gratis.png"
@@ -632,9 +690,9 @@ class BookingController extends Controller
                 'updated_at'      => now(),
             ]);
 
-           
+
             if ($couponId && $couponCodigo) {
-                
+
                 $pivot = UserCoupon::where('coupon_id', (int) $couponId)
                     ->where('user_id', (int) $user->id)
                     ->first();
@@ -659,12 +717,13 @@ class BookingController extends Controller
             }
 
             DB::commit();
-
             return response()->json([
                 'success'    => true,
                 'message'    => 'Reserva creada exitosamente',
                 'booking_id' => $bookingId
             ]);
+
+            DB::commit();
         } catch (\Illuminate\Validation\ValidationException $e) {
             DB::rollBack();
             return response()->json([
