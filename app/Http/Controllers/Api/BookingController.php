@@ -158,6 +158,7 @@ class BookingController extends Controller
         $pagostutorreserva = new PagosTutorReservaService();
         $sessionFee = $this->montoFinal;
         $service = $this->cuponservice ?? app(ICuponesService::class);
+        $this->currentDate = Carbon::now();
         $isAugustPromotion = $this->currentDate->month === 9;
 
         // Si no se proporcionó meeting_link en la request, generarlo usando SlotBookingService
