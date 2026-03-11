@@ -17,10 +17,21 @@ use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 use App\Services\BookingNotificationService;
 use Illuminate\Support\Facades\Log;
+use App\Services\PagosTutorReservaService;
+use App\Services\interfaces\ICuponesService;
+use App\Services\ImagenesService;
+use App\Models\PaymentSlotBooking;
 
 class BookingController extends Controller
 {
     use ApiResponser;
+    public float $porcentaje = 0.0;
+    public float $montoFinal = 0.0;
+    public float $descuento = 0.0;
+    public $cuponesUsuario = [];
+    public $cuponCode = '';
+    public Carbon $currentDate;
+    public $paymentReceipt;
 
     public function getUpComingBooking(Request $request)
     {
@@ -144,6 +155,10 @@ class BookingController extends Controller
         ]);
 
         $slotBooking = \App\Models\SlotBooking::create($validated);
+        $pagostutorreserva = new PagosTutorReservaService();
+        $sessionFee = $this->montoFinal;
+        $service = $this->cuponservice ?? app(ICuponesService::class);
+        $isAugustPromotion = $this->currentDate->month === 9;
 
         // Si no se proporcionó meeting_link en la request, generarlo usando SlotBookingService
         if (empty($validated['meeting_link'])) {
@@ -159,6 +174,24 @@ class BookingController extends Controller
             }
         }
 
+        if ($this->porcentaje != null || $this->porcentaje != 0) {
+                $sessionFee = $sessionFee - ($sessionFee * $this->porcentaje / 100);
+        }
+
+        if (!empty($this->cuponCode)) {
+                $service->cuponCanjeado($this->cuponCode, auth()->user());
+                $this->cuponesUsuario = $service->todosLosCupones(auth()->user());
+        }
+
+        if ($this->porcentaje == 100 || $isAugustPromotion) {
+            // Usar imagen por defecto para promoción
+            $path = 'qr/77b1a7da.jpg'; // Imagen por defecto
+        } else {
+            // Guardar imagen del usuario
+            $imageService = app(ImagenesService::class);
+            $path = $imageService->guardarqrEstudianteReserva($this->paymentReceipt);
+        }
+
         // Enviar notificación (inspirado en crearReserva)
         try {
             $notificationService = app(BookingNotificationService::class);
@@ -167,6 +200,21 @@ class BookingController extends Controller
             Log::error('Notification error: ' . $e->getMessage());
             // No fallar la reserva por error en notificación
         }
+
+        // 3. Crear registro de pago
+        PaymentSlotBooking::create([
+            'slot_booking_id' => $slotBooking->id,
+            'image_url' => $path,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        // 4. Crear registro de pago del tutor
+        $pagostutorreserva->create(
+            slot_booking_id: $slotBooking->id,
+            payment_date: now(),
+            amount: 10,
+            message: ''
+        );
 
         return response()->json($slotBooking, 201);
     }
