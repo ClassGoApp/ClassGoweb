@@ -220,14 +220,14 @@
 
 
         .header-info h1 {
-            font-size: 1.8rem;
+            font-size: clamp(1.6rem, 4vw, 4rem);
             font-weight: 900;
             letter-spacing: -.05em;
             text-transform: uppercase;
         }
 
         .header-info p {
-            font-size: .7rem;
+            font-size: clamp(0.75rem, 2vw, 1.5rem);
             font-weight: 800;
             color: var(--text-muted);
             text-transform: uppercase;
@@ -262,6 +262,7 @@
             justify-content: center;
             border: 1px solid #e2e8f0;
             color: var(--text-muted);
+            cursor: pointer;
         }
 
         .search-input:focus {
@@ -338,7 +339,7 @@
         }
 
         .pill:hover {
-            transform: translateY(-1px);
+            transform: translateY(-0.5px);
             border-color: rgba(33, 158, 188, .55);
         }
 
@@ -358,11 +359,11 @@
             display: flex;
             align-items: center;
             gap: 1rem;
-            margin: 1.8rem 0 1rem;
+            margin: 1.5rem 0 1rem;
         }
 
         .section-header h3 {
-            font-size: .62rem;
+            font-size: clamp(0.75rem, 2vw, 1.25rem);
             font-weight: 900;
             color: #94a3b8;
             text-transform: uppercase;
@@ -1078,12 +1079,12 @@
         .summary-box {
             background: #f8fafc;
             border-radius: 1rem;
-            padding: 1rem;
+            padding: 0.5rem;
             display: flex;
             align-items: center;
             gap: 0.8rem;
             text-align: left;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.2rem;
         }
 
         .summary-box img {
@@ -1094,9 +1095,9 @@
         }
 
         .qr-wrapper img {
-            width: 110px;
-            height: 110px;
-            margin: 0.8rem 0;
+            width: 150px;
+            height: 150px;
+            margin: 0.2rem 0;
         }
 
         .upload-field {
@@ -2548,7 +2549,7 @@
 
             <div style="display:flex; justify-content:space-between; margin-bottom:0.5rem;">
               <span style="font-size:0.65rem; font-weight:800; color:var(--text-muted);">TOTAL</span>
-              <div style="font-size:1.6rem; font-weight:900;">${price} Bs</div>
+              <div style="font-size:1.5rem; font-weight:900;">${price} Bs</div>
             </div>
 
             <button class="btn-pay" type="button" data-pay="${id}">PAGAR AHORA</button>

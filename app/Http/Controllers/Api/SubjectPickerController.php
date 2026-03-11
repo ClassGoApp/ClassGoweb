@@ -1318,7 +1318,7 @@ class SubjectPickerController extends Controller
                 'session_fee' => $fee,
                 'booked_at'  => now()->toDateTimeString(),
                 'meeting_link' => null,
-                'status'     => 4, // Reserved / Pendiente de pago
+                'status'     => 2, // Reserved / Pendiente de pago
                 'meta_data'  => json_encode([
                     'source' => 'email_batch',
                     'batch_id' => (int)$batchRow->id,
@@ -2230,13 +2230,13 @@ class SubjectPickerController extends Controller
             }
 
             // generar link
-            $tutorias = DB::table('slot_bookings')->where('id', (int)$bookingId)->first();
-            $meetingLink = app(SlotBookingService::class)->generarlink($tutorias);
+            // $tutorias = DB::table('slot_bookings')->where('id', (int)$bookingId)->first();
+            // $meetingLink = app(SlotBookingService::class)->generarlink($tutorias);
 
             // activar booking
             DB::table('slot_bookings')->where('id', (int)$bookingId)->update([
                 'status' => 1, // aceptado
-                'meeting_link' => $meetingLink,
+                // 'meeting_link' => $meetingLink,
                 // 'updated_at' => now(),
             ]);
             DB::table('slot_payments')
@@ -2310,7 +2310,7 @@ class SubjectPickerController extends Controller
                 'ui_state' => 'accepted',
                 'booking_id' => $bookingId,
                 'booking_status' => 1,
-                'meeting_link' => $meetingLink,
+                // 'meeting_link' => $meetingLink,
             ]);
         });
     }
