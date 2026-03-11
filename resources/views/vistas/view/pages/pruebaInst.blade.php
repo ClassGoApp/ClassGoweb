@@ -199,6 +199,7 @@
             margin-bottom: 1rem;
             transition: var(--transition);
         }
+
         .header-top {
             display: flex;
             align-items: center;
@@ -207,15 +208,16 @@
 
         .header-bottom {
             display: flex;
-             flex-direction: row;
-             align-items: center;
-             justify-content: space-between;
-         }
-         .header-info {
-             display: flex;
-             flex-direction: column;
-             gap: 5px;
-         }
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-info {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
 
 
 
@@ -252,6 +254,7 @@
             transition: var(--transition);
             box-shadow: 0 8px 20px rgba(2, 48, 71, .06);
         }
+
         .home-btn {
             width: 42px;
             height: 42px;
@@ -290,14 +293,14 @@
         }
 
         /* .category-bar {
-                                    display: flex;
-                                    align-items: center;
-                                    gap: .6rem;
-                                    overflow-x: auto;
-                                    padding: 1rem 0 1rem;
-                                    margin-bottom: 1rem;
-                                    scrollbar-width: none;
-                                } */
+                                            display: flex;
+                                            align-items: center;
+                                            gap: .6rem;
+                                            overflow-x: auto;
+                                            padding: 1rem 0 1rem;
+                                            margin-bottom: 1rem;
+                                            scrollbar-width: none;
+                                        } */
 
         .category-bar {
             display: flex;
@@ -379,16 +382,16 @@
 
         /* ================= SUBJECT GRID ================= */
         /* .subject-grid {
-                                display: flex;
-                                flex-direction: column;
-                                flex-wrap: wrap;
-                                height: calc(5 * 78px);
-                                gap: .7rem;
-                                overflow-x: auto;
-                                overflow-y: hidden;
-                                align-content: flex-start;
-                                scrollbar-width: none;
-                            } */
+                                        display: flex;
+                                        flex-direction: column;
+                                        flex-wrap: wrap;
+                                        height: calc(5 * 78px);
+                                        gap: .7rem;
+                                        overflow-x: auto;
+                                        overflow-y: hidden;
+                                        align-content: flex-start;
+                                        scrollbar-width: none;
+                                    } */
 
         .subject-grid {
             display: grid;
@@ -437,18 +440,18 @@
         }
 
         /* .subject-card-btn {
-                               display: inline-flex;
-                      width: auto;
-                      align-items: center;
-                      gap: 10px;
-                       padding: 0.8rem 1.2rem;
-                      border-radius: 50px;
-                      background: #ffffff;
-                      border: 1px solid #f1f5f9;
-                      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-                      transition: all 0.2s ease;
-                      white-space: nowrap;
-                            } */
+                                       display: inline-flex;
+                              width: auto;
+                              align-items: center;
+                              gap: 10px;
+                               padding: 0.8rem 1.2rem;
+                              border-radius: 50px;
+                              background: #ffffff;
+                              border: 1px solid #f1f5f9;
+                              box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+                              transition: all 0.2s ease;
+                              white-space: nowrap;
+                                    } */
 
         .subject-card-btn {
             display: flex;
@@ -513,9 +516,9 @@
         }
 
         /* .subject-card-btn.is-selected .subject-initial {
-                                background: var(--terciary-color2);
-                                color: #fff;
-                            } */
+                                        background: var(--terciary-color2);
+                                        color: #fff;
+                                    } */
 
 
         .subject-card-btn.is-selected .subject-initial {
@@ -1100,6 +1103,61 @@
             margin: 0.2rem 0;
         }
 
+        /* Estilo para el Modal */
+        .modal {
+            display: none;
+            /* Oculto por defecto */
+            position: fixed;
+            z-index: 1;
+            /* Asegura que el modal esté encima de todo */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            /* Fondo oscuro */
+            overflow: auto;
+            /* Si el contenido es más grande, muestra barras de desplazamiento */
+            padding-top: 60px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 10px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .qr-image {
+            cursor: pointer;
+            width: 150px;
+            /* Tamaño inicial del QR */
+            height: 150px;
+            /* Tamaño inicial del QR */
+            border-radius: 10px;
+            object-fit: cover;
+        }
+
         .upload-field {
             text-align: left;
             margin-bottom: 1.2rem;
@@ -1202,18 +1260,21 @@
                 align-items: center;
                 justify-content: space-between;
             }
+
             .header-top {
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
                 width: 100%;
             }
+
             .header-bottom {
                 margin-top: 1rem;
                 width: 100%;
                 justify-content: center;
                 flex-direction: column
             }
+
             .search-wrapper {
                 max-width: 100%;
             }
@@ -1295,7 +1356,7 @@
                     <header>
 
                         <div class="header-top">
-                            <button class="home-btn" title="Inicio"  onclick="window.location.href='{{ route('home') }}'">
+                            <button class="home-btn" title="Inicio" onclick="window.location.href='{{ route('home') }}'">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                     stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
@@ -1669,34 +1730,34 @@
 
     <script>
         /* ========================================================================
-                                                                          CLASSGO | Student - Instant Tutors Script
-                                                                          ------------------------------------------------------------------------
-                                                                          FLUJO:
-                                                                          1) Cargar Categorías/Materias
-                                                                          2) Seleccionar Materia (solo una) + mostrar FAB
-                                                                          3) Crear Batch + mostrar Radar + polling:
-                                                                              - status (cada 60s)
-                                                                              - tutores aceptados (cada 5s)
-                                                                              - countdown expiración (cada 1s)
-                                                                          4) Mostrar cards de tutores + reservar + abrir checkout (flip)
-                                                                          5) Subir comprobante + pagar + polling booking (cada 2.5s)
-                                                                          6) Nueva solicitud / reset
+                                                                                  CLASSGO | Student - Instant Tutors Script
+                                                                                  ------------------------------------------------------------------------
+                                                                                  FLUJO:
+                                                                                  1) Cargar Categorías/Materias
+                                                                                  2) Seleccionar Materia (solo una) + mostrar FAB
+                                                                                  3) Crear Batch + mostrar Radar + polling:
+                                                                                      - status (cada 60s)
+                                                                                      - tutores aceptados (cada 5s)
+                                                                                      - countdown expiración (cada 1s)
+                                                                                  4) Mostrar cards de tutores + reservar + abrir checkout (flip)
+                                                                                  5) Subir comprobante + pagar + polling booking (cada 2.5s)
+                                                                                  6) Nueva solicitud / reset
 
-                                                                          ENDPOINTS:
-                                                                          - GET  /student/subject-groups/categorias-materias
-                                                                          - POST /student/batches/start
-                                                                          - GET  /student/batches/active
-                                                                          - GET  /student/batches/{batchId}/status
-                                                                          - GET  /student/batches/{batchId}/accepted-tutors?limit=50
-                                                                          - POST /student/batches/{batchId}/reserve
-                                                                          - POST /student/bookings/{bookingId}/receipt
-                                                                          - GET  /student/bookings/{bookingId}/status
-                                                                          - GET  /student/bookings/{bookingId}/meet
+                                                                                  ENDPOINTS:
+                                                                                  - GET  /student/subject-groups/categorias-materias
+                                                                                  - POST /student/batches/start
+                                                                                  - GET  /student/batches/active
+                                                                                  - GET  /student/batches/{batchId}/status
+                                                                                  - GET  /student/batches/{batchId}/accepted-tutors?limit=50
+                                                                                  - POST /student/batches/{batchId}/reserve
+                                                                                  - POST /student/bookings/{bookingId}/receipt
+                                                                                  - GET  /student/bookings/{bookingId}/status
+                                                                                  - GET  /student/bookings/{bookingId}/meet
 
-                                                                          NOTAS:
-                                                                          - fetchAcceptedTutors() se pausa si state.activeHeroId existe (checkout abierto)
-                                                                          - closeHero(true) debe existir en otro lado o aquí (si no, revienta)
-                                                                        ======================================================================== */
+                                                                                  NOTAS:
+                                                                                  - fetchAcceptedTutors() se pausa si state.activeHeroId existe (checkout abierto)
+                                                                                  - closeHero(true) debe existir en otro lado o aquí (si no, revienta)
+                                                                                ======================================================================== */
 
 
         /* ========================================================================
@@ -1895,14 +1956,14 @@
 
         <div class="subject-grid">
           ${items.map(sub => `
-                                                                                    <button class="subject-card-btn"
-                                                                                      onclick="seleccionarMateria(this, ${sub.id}, '${sub.name.replaceAll("'", "\\'")}')">
-                                                                                      <div class="subject-initial">${sub.name.charAt(0)}</div>
-                                                                                      <div class="subject-meta">
-                                                                                        <div class="subject-title">${sub.name}</div>
-                                                                                      </div>
-                                                                                    </button>
-                                                                                  `).join('')}
+                                                                                            <button class="subject-card-btn"
+                                                                                              onclick="seleccionarMateria(this, ${sub.id}, '${sub.name.replaceAll("'", "\\'")}')">
+                                                                                              <div class="subject-initial">${sub.name.charAt(0)}</div>
+                                                                                              <div class="subject-meta">
+                                                                                                <div class="subject-title">${sub.name}</div>
+                                                                                              </div>
+                                                                                            </button>
+                                                                                          `).join('')}
         </div>
       </section>
     `;
@@ -2485,13 +2546,13 @@
               ${img ? `<img class="avatar" src="${escapeHtml(img)}" alt="${name}">` : ``}
 
               ${verified ? `
-                                                                                        <span class="verified">
-                                                                                          <svg viewBox="0 0 24 24" class="verified-icon">
-                                                                                            <path d="M12 2l4 2 4 .6 1.4 4L22 12l-1.6 3.4L20 19l-4 .6-4 2-4-2-4-.6L3.6 15.4 2 12l1.4-3.4L4 4.6l4-.6 4-2z"/>
-                                                                                            <path d="M9.5 12.5l1.7 1.7 3.8-3.8"/>
-                                                                                          </svg>
-                                                                                        </span>
-                                                                                      ` : ``}
+                                                                                                <span class="verified">
+                                                                                                  <svg viewBox="0 0 24 24" class="verified-icon">
+                                                                                                    <path d="M12 2l4 2 4 .6 1.4 4L22 12l-1.6 3.4L20 19l-4 .6-4 2-4-2-4-.6L3.6 15.4 2 12l1.4-3.4L4 4.6l4-.6 4-2z"/>
+                                                                                                    <path d="M9.5 12.5l1.7 1.7 3.8-3.8"/>
+                                                                                                  </svg>
+                                                                                                </span>
+                                                                                              ` : ``}
             </div>
           </div>
 
@@ -2529,6 +2590,14 @@
                   Conexión Segura
                 </span>
               </div>
+            </div>
+
+            <!-- Modal para mostrar el QR en grande -->
+            <div id="qrModal" class="modal hidden">
+                <div class="modal-content">
+                    <span class="close" onclick="closeModal()">&times;</span>
+                    <img id="modalQrImage" src="" alt="QR Grande" style="width: 100%; max-width: 500px;">
+                </div>
             </div>
 
             <div class="qr-wrapper">
@@ -2621,6 +2690,28 @@
                     card.classList.add('is-flipped');
                 }, 60);
             });
+        }
+
+        // Función para abrir el modal y mostrar el QR grande
+        function openModal(qrSrc) {
+            var modal = document.getElementById("qrModal");
+            var modalImg = document.getElementById("modalQrImage");
+            modal.style.display = "block";
+            modalImg.src = qrSrc; // Establece la imagen del QR en grande
+        }
+
+        // Función para cerrar el modal
+        function closeModal() {
+            var modal = document.getElementById("qrModal");
+            modal.style.display = "none";
+        }
+
+        // Cierra el modal si el usuario hace clic fuera del contenido del modal
+        window.onclick = function(event) {
+            var modal = document.getElementById("qrModal");
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
         }
 
         async function reserveTutorAndOpen(heroId) {
