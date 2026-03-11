@@ -822,7 +822,7 @@
                 return;
             }
 
-            window.location.href = link;
+            window.location.href = `/student/bookings/${bookingId}/meet`;
         }
 
         if (btnGoMeet) {
