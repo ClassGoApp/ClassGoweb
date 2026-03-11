@@ -1318,7 +1318,7 @@ class SubjectPickerController extends Controller
                 'session_fee' => $fee,
                 'booked_at'  => now()->toDateTimeString(),
                 'meeting_link' => null,
-                'status'     => 4, // Reserved / Pendiente de pago
+                'status'     => 2, // Reserved / Pendiente de pago
                 'meta_data'  => json_encode([
                     'source' => 'email_batch',
                     'batch_id' => (int)$batchRow->id,
@@ -2231,7 +2231,7 @@ class SubjectPickerController extends Controller
 
             // generar link
             $tutorias = DB::table('slot_bookings')->where('id', (int)$bookingId)->first();
-            $meetingLink = app(SlotBookingService::class)->generarlink($tutorias);
+            $meetingLink = $tutorias->meeting_link;
 
             // activar booking
             DB::table('slot_bookings')->where('id', (int)$bookingId)->update([
