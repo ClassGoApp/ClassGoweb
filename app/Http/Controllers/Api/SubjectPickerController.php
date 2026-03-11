@@ -2230,13 +2230,13 @@ class SubjectPickerController extends Controller
             }
 
             // generar link
-            // $tutorias = DB::table('slot_bookings')->where('id', (int)$bookingId)->first();
-            // $meetingLink = app(SlotBookingService::class)->generarlink($tutorias);
+            $tutorias = DB::table('slot_bookings')->where('id', (int)$bookingId)->first();
+            $meetingLink = $tutorias->meeting_link;
 
             // activar booking
             DB::table('slot_bookings')->where('id', (int)$bookingId)->update([
                 'status' => 1, // aceptado
-                // 'meeting_link' => $meetingLink,
+                'meeting_link' => $meetingLink,
                 // 'updated_at' => now(),
             ]);
             DB::table('slot_payments')
@@ -2310,7 +2310,7 @@ class SubjectPickerController extends Controller
                 'ui_state' => 'accepted',
                 'booking_id' => $bookingId,
                 'booking_status' => 1,
-                // 'meeting_link' => $meetingLink,
+                'meeting_link' => $meetingLink,
             ]);
         });
     }
