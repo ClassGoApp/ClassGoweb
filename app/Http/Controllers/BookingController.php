@@ -20,6 +20,12 @@ use App\Services\BookingNotificationService;
 
 class BookingController extends Controller
 {
+    protected $slotBookingService;
+
+    public function __construct(SlotBookingService $slotBookingService)
+    {
+        $this->slotBookingService = $slotBookingService;
+    }
     /**
      * GET /student/booking/materias?institution=colegio|universidad|instituto
      */
@@ -716,6 +722,8 @@ class BookingController extends Controller
                 'message'    => 'Reserva creada exitosamente',
                 'booking_id' => $bookingId
             ]);
+
+            DB::commit();
         } catch (\Illuminate\Validation\ValidationException $e) {
             DB::rollBack();
             return response()->json([

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\SlotBookingResource;
 use App\Models\User;
 use App\Services\BookingService;
+use App\Services\SlotBookingService;
 use App\Http\Resources\SubjectGroupResource;
 use App\Services\SubjectService;
 use App\Http\Resources\SubjectResource;
@@ -14,6 +15,8 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
+use App\Services\BookingNotificationService;
+use Illuminate\Support\Facades\Log;
 
 class BookingController extends Controller
 {
@@ -141,6 +144,30 @@ class BookingController extends Controller
         ]);
 
         $slotBooking = \App\Models\SlotBooking::create($validated);
+
+        // Si no se proporcionó meeting_link en la request, generarlo usando SlotBookingService
+        if (empty($validated['meeting_link'])) {
+            $slotService = new SlotBookingService();
+            // generarlink espera un objeto con al menos start_time y tutor_id
+            $meetingSource = new \stdClass();
+            $meetingSource->start_time = $slotBooking->start_time;
+            $meetingSource->tutor_id = $slotBooking->tutor_id;
+            $link = $slotService->generarlink($meetingSource);
+            if ($link) {
+                $slotBooking->meeting_link = $link;
+                $slotBooking->save();
+            }
+        }
+
+        // Enviar notificación (inspirado en crearReserva)
+        try {
+            $notificationService = app(BookingNotificationService::class);
+            $notificationService->handleStatusChangeNotification($slotBooking, '', $slotBooking->status);
+        } catch (\Throwable $e) {
+            Log::error('Notification error: ' . $e->getMessage());
+            // No fallar la reserva por error en notificación
+        }
+
         return response()->json($slotBooking, 201);
     }
 
