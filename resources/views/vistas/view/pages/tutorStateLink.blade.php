@@ -809,20 +809,25 @@
                 return;
             }
 
-            const link = json.meeting_link || json.booking?.meeting_link || meetLink || null;
+            // 1. Agregamos el / inicial
+            const response = await postJSON(`/bookings/${bookingId}/check-meet`, {});
 
-            if (!link) {
+            // 2. Validamos que la respuesta exista Y que tenga el link
+            // Usamos "response" como nombre de variable para que sea más claro que es el JSON completo
+            if (!response || !response.meeting_link) {
                 joining = false;
                 if (btnGoMeet) {
                     btnGoMeet.disabled = false;
                     btnGoMeet.style.opacity = '1';
                     btnGoMeet.style.cursor = 'pointer';
                 }
-                alert('Aún no hay link de Meet.');
+                // Si el servidor mandó un mensaje de error específico, lo usamos
+                alert(response?.message || 'Aún no hay link de Meet.');
                 return;
             }
 
-            window.location.href = `/student/bookings/${bookingId}/meet`;
+            // 3. Si todo está ok, redirigimos
+            window.location.href = response.meeting_link;
         }
 
         if (btnGoMeet) {

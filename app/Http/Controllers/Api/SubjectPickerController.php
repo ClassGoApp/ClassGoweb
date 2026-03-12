@@ -2236,7 +2236,7 @@ class SubjectPickerController extends Controller
             // activar booking
             DB::table('slot_bookings')->where('id', (int)$bookingId)->update([
                 'status' => 1, // aceptado
-                'meeting_link' => $meetingLink,
+                // 'meeting_link' => $meetingLink,
                 // 'updated_at' => now(),
             ]);
             DB::table('slot_payments')
@@ -2680,6 +2680,16 @@ class SubjectPickerController extends Controller
             ]);
         });
     }
+
+    public function checkMeet($id) {
+    $booking = DB::table('slot_bookings')->where('id', $id)->first();
+    
+    if ($booking && $booking->meeting_link) {
+        return response()->json(['ok' => true, 'meeting_link' => $booking->meeting_link]);
+    }
+    
+    return response()->json(['ok' => false, 'message' => 'No link yet'], 404);
+}
 
 
     // //     Método: studentBookingStatus(Request $request, $booking)
