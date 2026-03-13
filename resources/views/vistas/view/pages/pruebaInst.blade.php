@@ -293,14 +293,14 @@
         }
 
         /* .category-bar {
-                                                        display: flex;
-                                                        align-items: center;
-                                                        gap: .6rem;
-                                                        overflow-x: auto;
-                                                        padding: 1rem 0 1rem;
-                                                        margin-bottom: 1rem;
-                                                        scrollbar-width: none;
-                                                    } */
+                                                                display: flex;
+                                                                align-items: center;
+                                                                gap: .6rem;
+                                                                overflow-x: auto;
+                                                                padding: 1rem 0 1rem;
+                                                                margin-bottom: 1rem;
+                                                                scrollbar-width: none;
+                                                            } */
 
         .category-bar {
             display: flex;
@@ -382,16 +382,16 @@
 
         /* ================= SUBJECT GRID ================= */
         /* .subject-grid {
-                                                    display: flex;
-                                                    flex-direction: column;
-                                                    flex-wrap: wrap;
-                                                    height: calc(5 * 78px);
-                                                    gap: .7rem;
-                                                    overflow-x: auto;
-                                                    overflow-y: hidden;
-                                                    align-content: flex-start;
-                                                    scrollbar-width: none;
-                                                } */
+                                                            display: flex;
+                                                            flex-direction: column;
+                                                            flex-wrap: wrap;
+                                                            height: calc(5 * 78px);
+                                                            gap: .7rem;
+                                                            overflow-x: auto;
+                                                            overflow-y: hidden;
+                                                            align-content: flex-start;
+                                                            scrollbar-width: none;
+                                                        } */
 
         .subject-grid {
             display: grid;
@@ -440,18 +440,18 @@
         }
 
         /* .subject-card-btn {
-                                                   display: inline-flex;
-                                          width: auto;
-                                          align-items: center;
-                                          gap: 10px;
-                                           padding: 0.8rem 1.2rem;
-                                          border-radius: 50px;
-                                          background: #ffffff;
-                                          border: 1px solid #f1f5f9;
-                                          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-                                          transition: all 0.2s ease;
-                                          white-space: nowrap;
-                                                } */
+                                                           display: inline-flex;
+                                                  width: auto;
+                                                  align-items: center;
+                                                  gap: 10px;
+                                                   padding: 0.8rem 1.2rem;
+                                                  border-radius: 50px;
+                                                  background: #ffffff;
+                                                  border: 1px solid #f1f5f9;
+                                                  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+                                                  transition: all 0.2s ease;
+                                                  white-space: nowrap;
+                                                        } */
 
         .subject-card-btn {
             display: flex;
@@ -516,9 +516,9 @@
         }
 
         /* .subject-card-btn.is-selected .subject-initial {
-                                                    background: var(--terciary-color2);
-                                                    color: #fff;
-                                                } */
+                                                            background: var(--terciary-color2);
+                                                            color: #fff;
+                                                        } */
 
 
         .subject-card-btn.is-selected .subject-initial {
@@ -1198,8 +1198,46 @@
             display: block;
             font-size: 0.7rem;
             font-weight: 700;
-            color: var(--primary);
+            color: var(--primary-color);
             margin-bottom: 0.5rem;
+            transition: var(--transition);
+        }
+
+        .custom-file-input {
+            border: 1px solid #e2e8f0;
+            border-radius: 0.4rem;
+            padding: 0.75rem 0.9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            transition: var(--transition);
+            background: #fff;
+        }
+
+        .custom-file-input:hover {
+            border-color: var(--secundary-color);
+        }
+
+        .custom-file-input span {
+            font-size: 0.6rem;
+            color: var(--text-muted);
+            transition: var(--transition);
+        }
+
+        /* Estado de error */
+        .upload-field.has-error label {
+            color: #ef4444 !important;
+        }
+
+        .upload-field.has-error .custom-file-input {
+            border: 1px solid #ef4444 !important;
+            background: #fff1f2;
+        }
+
+        .upload-field.has-error .file-label {
+            color: #ef4444 !important;
+            font-weight: 800;
         }
 
         .custom-file-input {
@@ -1217,7 +1255,7 @@
         }
 
         .custom-file-input span {
-            font-size: 0.7rem;
+            font-size: 0.6rem;
             color: var(--text-muted);
         }
 
@@ -1776,34 +1814,34 @@
 
     <script>
         /* ========================================================================
-                                                                                                          CLASSGO | Student - Instant Tutors Script
-                                                                                                          ------------------------------------------------------------------------
-                                                                                                          FLUJO:
-                                                                                                          1) Cargar Categorías/Materias
-                                                                                                          2) Seleccionar Materia (solo una) + mostrar FAB
-                                                                                                          3) Crear Batch + mostrar Radar + polling:
-                                                                                                              - status (cada 60s)
-                                                                                                              - tutores aceptados (cada 5s)
-                                                                                                              - countdown expiración (cada 1s)
-                                                                                                          4) Mostrar cards de tutores + reservar + abrir checkout (flip)
-                                                                                                          5) Subir comprobante + pagar + polling booking (cada 2.5s)
-                                                                                                          6) Nueva solicitud / reset
+                                                                                                                  CLASSGO | Student - Instant Tutors Script
+                                                                                                                  ------------------------------------------------------------------------
+                                                                                                                  FLUJO:
+                                                                                                                  1) Cargar Categorías/Materias
+                                                                                                                  2) Seleccionar Materia (solo una) + mostrar FAB
+                                                                                                                  3) Crear Batch + mostrar Radar + polling:
+                                                                                                                      - status (cada 60s)
+                                                                                                                      - tutores aceptados (cada 5s)
+                                                                                                                      - countdown expiración (cada 1s)
+                                                                                                                  4) Mostrar cards de tutores + reservar + abrir checkout (flip)
+                                                                                                                  5) Subir comprobante + pagar + polling booking (cada 2.5s)
+                                                                                                                  6) Nueva solicitud / reset
 
-                                                                                                          ENDPOINTS:
-                                                                                                          - GET  /student/subject-groups/categorias-materias
-                                                                                                          - POST /student/batches/start
-                                                                                                          - GET  /student/batches/active
-                                                                                                          - GET  /student/batches/{batchId}/status
-                                                                                                          - GET  /student/batches/{batchId}/accepted-tutors?limit=50
-                                                                                                          - POST /student/batches/{batchId}/reserve
-                                                                                                          - POST /student/bookings/{bookingId}/receipt
-                                                                                                          - GET  /student/bookings/{bookingId}/status
-                                                                                                          - GET  /student/bookings/{bookingId}/meet
+                                                                                                                  ENDPOINTS:
+                                                                                                                  - GET  /student/subject-groups/categorias-materias
+                                                                                                                  - POST /student/batches/start
+                                                                                                                  - GET  /student/batches/active
+                                                                                                                  - GET  /student/batches/{batchId}/status
+                                                                                                                  - GET  /student/batches/{batchId}/accepted-tutors?limit=50
+                                                                                                                  - POST /student/batches/{batchId}/reserve
+                                                                                                                  - POST /student/bookings/{bookingId}/receipt
+                                                                                                                  - GET  /student/bookings/{bookingId}/status
+                                                                                                                  - GET  /student/bookings/{bookingId}/meet
 
-                                                                                                          NOTAS:
-                                                                                                          - fetchAcceptedTutors() se pausa si state.activeHeroId existe (checkout abierto)
-                                                                                                          - closeHero(true) debe existir en otro lado o aquí (si no, revienta)
-                                                                                                        ======================================================================== */
+                                                                                                                  NOTAS:
+                                                                                                                  - fetchAcceptedTutors() se pausa si state.activeHeroId existe (checkout abierto)
+                                                                                                                  - closeHero(true) debe existir en otro lado o aquí (si no, revienta)
+                                                                                                                ======================================================================== */
 
 
         /* ========================================================================
@@ -2002,14 +2040,14 @@
 
         <div class="subject-grid">
           ${items.map(sub => `
-                                                                                                                    <button class="subject-card-btn"
-                                                                                                                      onclick="seleccionarMateria(this, ${sub.id}, '${sub.name.replaceAll("'", "\\'")}')">
-                                                                                                                      <div class="subject-initial">${sub.name.charAt(0)}</div>
-                                                                                                                      <div class="subject-meta">
-                                                                                                                        <div class="subject-title">${sub.name}</div>
-                                                                                                                      </div>
-                                                                                                                    </button>
-                                                                                                                  `).join('')}
+                                                                                                                            <button class="subject-card-btn"
+                                                                                                                              onclick="seleccionarMateria(this, ${sub.id}, '${sub.name.replaceAll("'", "\\'")}')">
+                                                                                                                              <div class="subject-initial">${sub.name.charAt(0)}</div>
+                                                                                                                              <div class="subject-meta">
+                                                                                                                                <div class="subject-title">${sub.name}</div>
+                                                                                                                              </div>
+                                                                                                                            </button>
+                                                                                                                          `).join('')}
         </div>
       </section>
     `;
@@ -2494,32 +2532,21 @@
           7) UI + CARDS: Accepted Tutors + Hero Flip + Reservas
         ======================================================================== */
         function setReceiptError(heroId, on) {
+            const container = document.getElementById(`field-container-${heroId}`);
             const card = document.getElementById(`hero-${heroId}`);
-            if (!card) return;
+            if (!container || !card) return;
 
             const label = card.querySelector('.file-label');
-            const picker = card.querySelector('.custom-file-input');
 
             if (on) {
+                container.classList.add('has-error');
                 if (label) {
-                    label.style.color = '#ef4444';
-                    label.style.fontWeight = '900';
-                    label.textContent = '⚠️ Debes adjuntar el comprobante';
-                }
-                if (picker) {
-                    picker.style.border = '2px solid #ef4444';
+                    label.textContent = 'adjuntar el comprobante...';
                 }
             } else {
-                if (label) {
-                    label.style.color = '';
-                    label.style.fontWeight = '';
-                    if (!label.textContent || label.textContent.includes('⚠️')) {
-                        label.textContent = 'Adjuntar captura o PDF...';
-                    }
-                }
-                if (picker) {
-                    picker.style.border = '';
-                    picker.style.background = '';
+                container.classList.remove('has-error');
+                if (label && (!label.textContent || label.textContent.includes('Debes adjuntar'))) {
+                    label.textContent = 'Adjuntar captura o PDF...';
                 }
             }
         }
@@ -2592,13 +2619,13 @@
               ${img ? `<img class="avatar" src="${escapeHtml(img)}" alt="${name}">` : ``}
 
               ${verified ? `
-                                                                                                                        <span class="verified">
-                                                                                                                          <svg viewBox="0 0 24 24" class="verified-icon">
-                                                                                                                            <path d="M12 2l4 2 4 .6 1.4 4L22 12l-1.6 3.4L20 19l-4 .6-4 2-4-2-4-.6L3.6 15.4 2 12l1.4-3.4L4 4.6l4-.6 4-2z"/>
-                                                                                                                            <path d="M9.5 12.5l1.7 1.7 3.8-3.8"/>
-                                                                                                                          </svg>
-                                                                                                                        </span>
-                                                                                                                      ` : ``}
+                                                                                                                                <span class="verified">
+                                                                                                                                  <svg viewBox="0 0 24 24" class="verified-icon">
+                                                                                                                                    <path d="M12 2l4 2 4 .6 1.4 4L22 12l-1.6 3.4L20 19l-4 .6-4 2-4-2-4-.6L3.6 15.4 2 12l1.4-3.4L4 4.6l4-.6 4-2z"/>
+                                                                                                                                    <path d="M9.5 12.5l1.7 1.7 3.8-3.8"/>
+                                                                                                                                  </svg>
+                                                                                                                                </span>
+                                                                                                                              ` : ``}
             </div>
           </div>
 
@@ -2643,16 +2670,16 @@
                 <p>Clic para ampliar</p>
             </div>
 
-            <div class="upload-field">
-              <label>Comprobante de pago</label>
+            <div class="upload-field" id="field-container-${id}">
+                <label>Comprobante de pago</label>
 
-              <input type="file" class="real-file-input"
-                accept="image/*,application/pdf" hidden>
+                <input type="file" class="real-file-input"
+                    accept="image/*,application/pdf" hidden>
 
-              <div class="custom-file-input">
-                <div class="receipt-preview hidden"></div>
-                <span class="file-label">Adjuntar captura o PDF...</span>
-              </div>
+                <div class="custom-file-input">
+                    <div class="receipt-preview hidden"></div>
+                    <span class="file-label">Adjuntar captura o PDF...</span>
+                </div>
             </div>
 
             <div style="display:flex; justify-content:space-between; margin-bottom:0.5rem;">
