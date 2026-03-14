@@ -534,6 +534,8 @@
 
         const btnGoMeet = document.getElementById('btnGoMeet');
 
+        let currentBookingId = null;
+
         function goMeet(link) {
             if (link) window.location.href = link;
             else alert('Aún no hay link de Meet.');
@@ -631,6 +633,10 @@
 
             const json = await res.json().catch(() => ({}));
             if (!res.ok || !json.ok) return;
+
+            if (json.chosen?.booking_id) {
+                currentBookingId = Number(json.chosen.booking_id);
+            }
 
             const ui = String(json.ui_state || 'waiting');
             // ✅ Opción B: si ya mostraste EXPIRED, no permitas que el polling lo cambie a REJECTED
@@ -785,6 +791,12 @@
 
         async function acceptThenGoMeet() {
             if (!token || joining) return;
+
+            if (!currentBookingId) {
+                alert('Aún no se encontró la reserva de esta tutoría.');
+                return;
+            }
+
             joining = true;
 
             if (btnGoMeet) {
@@ -809,25 +821,33 @@
                 return;
             }
 
-            // 1. Agregamos el / inicial
-            const response = await postJSON(`/bookings/${bookingId}/check-meet`, {});
+            const directLink = json.meeting_link || json.booking?.meeting_link || null;
+            if (directLink) {
+                window.location.href = directLink;
+                return;
+            }
 
-            // 2. Validamos que la respuesta exista Y que tenga el link
-            // Usamos "response" como nombre de variable para que sea más claro que es el JSON completo
-            if (!response || !response.meeting_link) {
+            const meetRes = await fetch(`/bookings/${currentBookingId}/check-meet`, {
+                headers: {
+                    'Accept': 'application/json'
+                },
+                credentials: 'same-origin'
+            });
+
+            const meetJson = await meetRes.json().catch(() => ({}));
+
+            if (!meetRes.ok || !meetJson.ok || !meetJson.meeting_link) {
                 joining = false;
                 if (btnGoMeet) {
                     btnGoMeet.disabled = false;
                     btnGoMeet.style.opacity = '1';
                     btnGoMeet.style.cursor = 'pointer';
                 }
-                // Si el servidor mandó un mensaje de error específico, lo usamos
-                alert(response?.message || 'Aún no hay link de Meet.');
+                alert(meetJson.message || 'Aún no hay link de Meet.');
                 return;
             }
 
-            // 3. Si todo está ok, redirigimos
-            window.location.href = response.meeting_link;
+            window.location.href = meetJson.meeting_link;
         }
 
         if (btnGoMeet) {
