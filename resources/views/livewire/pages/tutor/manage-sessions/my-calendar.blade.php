@@ -136,13 +136,29 @@
                                         @endif
                                     </div>
 
-                                    
-
-                                   
-
-                                   
-
-                                   
+                                    <div class="col-md-12 mb-3 mt-3">
+                                        <label class="form-label fw-bold text-center w-100">Seleccione los días que esta disponible</label>
+                                        
+                                        <div class="d-flex justify-content-center gap-3 mt-2 custom-day-selector">
+                                            @php
+                                                $daysOfWeek = [
+                                                    0 => 'D', 1 => 'L', 2 => 'M', 3 => 'X', 
+                                                    4 => 'J', 5 => 'V', 6 => 'S'
+                                                ];
+                                            @endphp
+                                            
+                                            @foreach($daysOfWeek as $index => $day)
+                                                <div class="day-item">
+                                                    <input type="checkbox" id="day_{{ $index }}" value="{{ $index }}" wire:model="form.selected_days" class="d-none day-checkbox">
+                                                    <label for="day_{{ $index }}" class="day-circle">{{ $day }}</label>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                        
+                                        <div class="text-center mt-2">
+                                            <x-input-error field_name="form.selected_days" />
+                                        </div>
+                                    </div>
 
                                 </div>
 
@@ -158,7 +174,7 @@
                 </div>
             </div>
 
-            <!-- MODAL PARA DETALLE Y EDICIÓN DE SLOT -->
+                        <!-- MODAL PARA DETALLE Y EDICIÓN DE SLOT -->
             <div wire:ignore.self class="modal fade" id="edit-session" tabindex="-1" aria-labelledby="slotDetailModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
@@ -325,4 +341,30 @@
             });
         }
     </script>
+    <style>
+        .custom-day-selector .day-circle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background-color: #f0f4f8;
+            color: #5a6a85; 
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .custom-day-selector .day-circle:hover {
+            background-color: #e1e8f0;
+        }
+
+        .custom-day-selector .day-checkbox:checked + .day-circle {
+            background-color: #0d6efd;
+            color: #ffffff;
+            box-shadow: 0 4px 6px rgba(13, 110, 253, 0.2);
+        }
+    </style>
 @endpush
