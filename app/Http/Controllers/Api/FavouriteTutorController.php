@@ -30,7 +30,7 @@ class FavouriteTutorController extends Controller
             $query->withCount('slots as sessions');
             $query->with('subject:id,name')->take(1);
         }])
-        ->withMin('subjects as min_price', 'hour_rate')
+        ->withMin('userSubjects as min_price', 'price')
         ->withAvg('reviews', 'rating')
         ->withCount(['bookingSlots as active_students' => function($query){
             $query->whereStatus('active');
@@ -91,7 +91,7 @@ class FavouriteTutorController extends Controller
                 $query->withCount('slots as sessions');
                 $query->with('subject:id,name')->take(1);
             }])
-            ->withMin('subjects as min_price', 'hour_rate')
+            ->withMin('userSubjects as min_price', 'price')
             ->withAvg('reviews', 'rating')
             ->withCount(['bookingSlots as active_students' => function($query){
                 $query->whereStatus('active');
