@@ -27,8 +27,7 @@ class FavouriteTutorController extends Controller
         ->with(['profile:id,user_id,slug,first_name,last_name,image,native_language,verified_at',
                 'address:id,addressable_id,addressable_type,country_id','languages:id,name'])
         ->with(['subjects' => function ($query) {
-            $query->withCount('slots as sessions');
-            $query->with('subject:id,name')->take(1);
+            $query->withCount('slotBookings as sessions')->take(1);
         }])
         ->withMin('userSubjects as min_price', 'price')
         ->withAvg('reviews', 'rating')
@@ -85,17 +84,7 @@ class FavouriteTutorController extends Controller
         $userService  = new UserService($user);
 
         $favourites = $userService->getFavouriteUsers()
-            ->with(['profile:id,user_id,slug,first_name,last_name,image,native_language,verified_at',
-                    'address:id,addressable_id,addressable_type,country_id','languages:id,name'])
-            ->with(['subjects' => function ($query) {
-                $query->withCount('slots as sessions');
-                $query->with('subject:id,name')->take(1);
-            }])
-            ->withMin('userSubjects as min_price', 'price')
-            ->withAvg('reviews', 'rating')
-            ->withCount(['bookingSlots as active_students' => function($query){
-                $query->whereStatus('active');
-            }])
+            ->with(['profile:id,user_id,slug,first_name,last_name,image,native_language,verified_at'])
             ->get();
 
         return $this->success(data: UserResource::collection($favourites));
