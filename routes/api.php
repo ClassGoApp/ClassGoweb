@@ -30,7 +30,6 @@ use App\Http\Controllers\Api\BookingStatusController;
 use App\Http\Controllers\Api\GoogleAuthController;
 use App\Http\Controllers\Api\GoogleCalendarController;
 use App\Http\Controllers\Api\UserCouponController;
-use App\Livewire\Pages\Student\Favourite\Favourites;
 
 /*
 |--------------------------------------------------------------------------
@@ -218,7 +217,13 @@ Route::post('user/{id}/profile-price', [ProfileController::class, 'updateProfile
 Route::get('subject/{id}/name', [SubjectController::class, 'getSubjectName']);
 
 //Ruta para obtener los tutores favoritos del estudiante.
- Route::get('favourites', Favourites::class)->name('favourites');
+ Route::get('favourites/{userId}', [FavouriteTutorController::class, 'getFavouriteUsers']);
+
+//Ruta para añadir a un tutor a favoritos del estudiante.
+ Route::post('favourites/{studentId}/{tutorId}/add', [FavouriteTutorController::class, 'addToFavourite']);
+
+//Ruta para eliminar a un tutor de favoritos del estudiante.
+ Route::delete('favourites/{studentId}/{tutorId}/remove', [FavouriteTutorController::class, 'removeFromFavourite']);
 
 // ===== GOOGLE AUTHENTICATION ROUTES =====
 Route::prefix('auth/google')->group(function () {
