@@ -26,7 +26,7 @@
             <img src="images/home/models/img1.webp" alt="" />
         </div>
         <div class="box-3D">
-            <img src="images/home/models/img3.webp" alt="" />
+            <img src="images/home/models/imgCarrusel.jpg" alt="" />
         </div>
     </div>
 </div>

@@ -199,6 +199,7 @@
             margin-bottom: 1rem;
             transition: var(--transition);
         }
+
         .header-top {
             display: flex;
             align-items: center;
@@ -207,15 +208,16 @@
 
         .header-bottom {
             display: flex;
-             flex-direction: row;
-             align-items: center;
-             justify-content: space-between;
-         }
-         .header-info {
-             display: flex;
-             flex-direction: column;
-             gap: 5px;
-         }
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-info {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
 
 
 
@@ -252,6 +254,7 @@
             transition: var(--transition);
             box-shadow: 0 8px 20px rgba(2, 48, 71, .06);
         }
+
         .home-btn {
             width: 42px;
             height: 42px;
@@ -290,14 +293,14 @@
         }
 
         /* .category-bar {
-                                    display: flex;
-                                    align-items: center;
-                                    gap: .6rem;
-                                    overflow-x: auto;
-                                    padding: 1rem 0 1rem;
-                                    margin-bottom: 1rem;
-                                    scrollbar-width: none;
-                                } */
+                                                        display: flex;
+                                                        align-items: center;
+                                                        gap: .6rem;
+                                                        overflow-x: auto;
+                                                        padding: 1rem 0 1rem;
+                                                        margin-bottom: 1rem;
+                                                        scrollbar-width: none;
+                                                    } */
 
         .category-bar {
             display: flex;
@@ -379,16 +382,16 @@
 
         /* ================= SUBJECT GRID ================= */
         /* .subject-grid {
-                                display: flex;
-                                flex-direction: column;
-                                flex-wrap: wrap;
-                                height: calc(5 * 78px);
-                                gap: .7rem;
-                                overflow-x: auto;
-                                overflow-y: hidden;
-                                align-content: flex-start;
-                                scrollbar-width: none;
-                            } */
+                                                    display: flex;
+                                                    flex-direction: column;
+                                                    flex-wrap: wrap;
+                                                    height: calc(5 * 78px);
+                                                    gap: .7rem;
+                                                    overflow-x: auto;
+                                                    overflow-y: hidden;
+                                                    align-content: flex-start;
+                                                    scrollbar-width: none;
+                                                } */
 
         .subject-grid {
             display: grid;
@@ -437,18 +440,18 @@
         }
 
         /* .subject-card-btn {
-                               display: inline-flex;
-                      width: auto;
-                      align-items: center;
-                      gap: 10px;
-                       padding: 0.8rem 1.2rem;
-                      border-radius: 50px;
-                      background: #ffffff;
-                      border: 1px solid #f1f5f9;
-                      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-                      transition: all 0.2s ease;
-                      white-space: nowrap;
-                            } */
+                                                   display: inline-flex;
+                                          width: auto;
+                                          align-items: center;
+                                          gap: 10px;
+                                           padding: 0.8rem 1.2rem;
+                                          border-radius: 50px;
+                                          background: #ffffff;
+                                          border: 1px solid #f1f5f9;
+                                          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+                                          transition: all 0.2s ease;
+                                          white-space: nowrap;
+                                                } */
 
         .subject-card-btn {
             display: flex;
@@ -513,9 +516,9 @@
         }
 
         /* .subject-card-btn.is-selected .subject-initial {
-                                background: var(--terciary-color2);
-                                color: #fff;
-                            } */
+                                                    background: var(--terciary-color2);
+                                                    color: #fff;
+                                                } */
 
 
         .subject-card-btn.is-selected .subject-initial {
@@ -1094,6 +1097,92 @@
             object-fit: cover;
         }
 
+        /* ================= MODAL QR CON BLUR ================= */
+        .qr-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.7);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .qr-modal.is-open {
+            display: flex;
+            opacity: 1;
+        }
+
+        .qr-modal-content {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 2.5rem;
+            text-align: center;
+            position: relative;
+            max-width: 90vw;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+            transform: scale(0.85);
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .qr-modal.is-open .qr-modal-content {
+            transform: scale(1);
+        }
+
+        .qr-modal-img {
+            width: 320px;
+            height: 320px;
+            object-fit: contain;
+            border-radius: 1.5rem;
+            border: 1px solid #f1f5f9;
+            background: #fff;
+        }
+
+        .qr-modal-close {
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            background: var(--orange);
+            color: white;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(251, 133, 0, 0.3);
+            font-weight: bold;
+        }
+
+        .qr-clickable {
+            margin: 0.6rem 0 0.8rem;
+            cursor: zoom-in;
+            text-align: center;
+        }
+
+        .qr-clickable img {
+            width: 150px;
+            height: 150px;
+            border-radius: 12px;
+            border: 1px solid #eee;
+            object-fit: contain;
+            background: #fff;
+        }
+
+        .qr-clickable p {
+            font-size: 0.8rem;
+            color: var(--secundary-color);
+            font-weight: 800;
+            margin-top: 5px;
+        }
+
         .qr-wrapper img {
             width: 150px;
             height: 150px;
@@ -1202,18 +1291,21 @@
                 align-items: center;
                 justify-content: space-between;
             }
+
             .header-top {
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
                 width: 100%;
             }
+
             .header-bottom {
                 margin-top: 1rem;
                 width: 100%;
                 justify-content: center;
                 flex-direction: column
             }
+
             .search-wrapper {
                 max-width: 100%;
             }
@@ -1286,6 +1378,18 @@
     </style>
 
     <section>
+
+        <div id="qrModal" class="qr-modal" onclick="closeQRModal()">
+            <div class="qr-modal-content" onclick="event.stopPropagation()">
+                <button type="button" class="qr-modal-close" onclick="closeQRModal()">&times;</button>
+                <h3 style="margin-bottom: 1.2rem; color: var(--primary-color); font-weight: 900;">ESCANEAR PAGO</h3>
+                <img id="qrModalImg" src="" class="qr-modal-img" alt="QR Ampliado">
+                <p style="margin-top: 1rem; font-size: 0.8rem; color: var(--text-muted); font-weight: 700;">
+                    Haz clic fuera para cerrar
+                </p>
+            </div>
+        </div>
+
         <button class="tutoria-fab" id="tutoriaFab" onclick="confirmarMateria()">Go!</button>
 
         <div id="app">
@@ -1295,7 +1399,7 @@
                     <header>
 
                         <div class="header-top">
-                            <button class="home-btn" title="Inicio"  onclick="window.location.href='{{ route('home') }}'">
+                            <button class="home-btn" title="Inicio" onclick="window.location.href='{{ route('home') }}'">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                     stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
@@ -1374,9 +1478,12 @@
                                                                 stroke-linejoin="round">
                                                                 <rect x="3" y="4" width="18" height="18" rx="2"
                                                                     ry="2" />
-                                                                <line x1="16" y1="2" x2="16" y2="6" />
-                                                                <line x1="8" y1="2" x2="8" y2="6" />
-                                                                <line x1="3" y1="10" x2="21" y2="10" />
+                                                                <line x1="16" y1="2" x2="16"
+                                                                    y2="6" />
+                                                                <line x1="8" y1="2" x2="8"
+                                                                    y2="6" />
+                                                                <line x1="3" y1="10" x2="21"
+                                                                    y2="10" />
                                                             </svg></i>
                                                         Reservas
                                                     </a>
@@ -1669,34 +1776,34 @@
 
     <script>
         /* ========================================================================
-                                                                          CLASSGO | Student - Instant Tutors Script
-                                                                          ------------------------------------------------------------------------
-                                                                          FLUJO:
-                                                                          1) Cargar Categorías/Materias
-                                                                          2) Seleccionar Materia (solo una) + mostrar FAB
-                                                                          3) Crear Batch + mostrar Radar + polling:
-                                                                              - status (cada 60s)
-                                                                              - tutores aceptados (cada 5s)
-                                                                              - countdown expiración (cada 1s)
-                                                                          4) Mostrar cards de tutores + reservar + abrir checkout (flip)
-                                                                          5) Subir comprobante + pagar + polling booking (cada 2.5s)
-                                                                          6) Nueva solicitud / reset
+                                                                                                          CLASSGO | Student - Instant Tutors Script
+                                                                                                          ------------------------------------------------------------------------
+                                                                                                          FLUJO:
+                                                                                                          1) Cargar Categorías/Materias
+                                                                                                          2) Seleccionar Materia (solo una) + mostrar FAB
+                                                                                                          3) Crear Batch + mostrar Radar + polling:
+                                                                                                              - status (cada 60s)
+                                                                                                              - tutores aceptados (cada 5s)
+                                                                                                              - countdown expiración (cada 1s)
+                                                                                                          4) Mostrar cards de tutores + reservar + abrir checkout (flip)
+                                                                                                          5) Subir comprobante + pagar + polling booking (cada 2.5s)
+                                                                                                          6) Nueva solicitud / reset
 
-                                                                          ENDPOINTS:
-                                                                          - GET  /student/subject-groups/categorias-materias
-                                                                          - POST /student/batches/start
-                                                                          - GET  /student/batches/active
-                                                                          - GET  /student/batches/{batchId}/status
-                                                                          - GET  /student/batches/{batchId}/accepted-tutors?limit=50
-                                                                          - POST /student/batches/{batchId}/reserve
-                                                                          - POST /student/bookings/{bookingId}/receipt
-                                                                          - GET  /student/bookings/{bookingId}/status
-                                                                          - GET  /student/bookings/{bookingId}/meet
+                                                                                                          ENDPOINTS:
+                                                                                                          - GET  /student/subject-groups/categorias-materias
+                                                                                                          - POST /student/batches/start
+                                                                                                          - GET  /student/batches/active
+                                                                                                          - GET  /student/batches/{batchId}/status
+                                                                                                          - GET  /student/batches/{batchId}/accepted-tutors?limit=50
+                                                                                                          - POST /student/batches/{batchId}/reserve
+                                                                                                          - POST /student/bookings/{bookingId}/receipt
+                                                                                                          - GET  /student/bookings/{bookingId}/status
+                                                                                                          - GET  /student/bookings/{bookingId}/meet
 
-                                                                          NOTAS:
-                                                                          - fetchAcceptedTutors() se pausa si state.activeHeroId existe (checkout abierto)
-                                                                          - closeHero(true) debe existir en otro lado o aquí (si no, revienta)
-                                                                        ======================================================================== */
+                                                                                                          NOTAS:
+                                                                                                          - fetchAcceptedTutors() se pausa si state.activeHeroId existe (checkout abierto)
+                                                                                                          - closeHero(true) debe existir en otro lado o aquí (si no, revienta)
+                                                                                                        ======================================================================== */
 
 
         /* ========================================================================
@@ -1895,14 +2002,14 @@
 
         <div class="subject-grid">
           ${items.map(sub => `
-                                                                                    <button class="subject-card-btn"
-                                                                                      onclick="seleccionarMateria(this, ${sub.id}, '${sub.name.replaceAll("'", "\\'")}')">
-                                                                                      <div class="subject-initial">${sub.name.charAt(0)}</div>
-                                                                                      <div class="subject-meta">
-                                                                                        <div class="subject-title">${sub.name}</div>
-                                                                                      </div>
-                                                                                    </button>
-                                                                                  `).join('')}
+                                                                                                                    <button class="subject-card-btn"
+                                                                                                                      onclick="seleccionarMateria(this, ${sub.id}, '${sub.name.replaceAll("'", "\\'")}')">
+                                                                                                                      <div class="subject-initial">${sub.name.charAt(0)}</div>
+                                                                                                                      <div class="subject-meta">
+                                                                                                                        <div class="subject-title">${sub.name}</div>
+                                                                                                                      </div>
+                                                                                                                    </button>
+                                                                                                                  `).join('')}
         </div>
       </section>
     `;
@@ -2485,13 +2592,13 @@
               ${img ? `<img class="avatar" src="${escapeHtml(img)}" alt="${name}">` : ``}
 
               ${verified ? `
-                                                                                        <span class="verified">
-                                                                                          <svg viewBox="0 0 24 24" class="verified-icon">
-                                                                                            <path d="M12 2l4 2 4 .6 1.4 4L22 12l-1.6 3.4L20 19l-4 .6-4 2-4-2-4-.6L3.6 15.4 2 12l1.4-3.4L4 4.6l4-.6 4-2z"/>
-                                                                                            <path d="M9.5 12.5l1.7 1.7 3.8-3.8"/>
-                                                                                          </svg>
-                                                                                        </span>
-                                                                                      ` : ``}
+                                                                                                                        <span class="verified">
+                                                                                                                          <svg viewBox="0 0 24 24" class="verified-icon">
+                                                                                                                            <path d="M12 2l4 2 4 .6 1.4 4L22 12l-1.6 3.4L20 19l-4 .6-4 2-4-2-4-.6L3.6 15.4 2 12l1.4-3.4L4 4.6l4-.6 4-2z"/>
+                                                                                                                            <path d="M9.5 12.5l1.7 1.7 3.8-3.8"/>
+                                                                                                                          </svg>
+                                                                                                                        </span>
+                                                                                                                      ` : ``}
             </div>
           </div>
 
@@ -2531,8 +2638,9 @@
               </div>
             </div>
 
-            <div class="qr-wrapper">
-              <img src="{{ asset('images/Qr-pagos.png') }}" alt="QR de pago" class="">
+            <div class="qr-clickable" data-qr-src="{{ asset('images/Qr-pagos.png') }}">
+                <img src="{{ asset('images/Qr-pagos.png') }}" alt="QR de pago">
+                <p>Clic para ampliar</p>
             </div>
 
             <div class="upload-field">
@@ -2570,8 +2678,13 @@
                 const payBtn = wrapper.querySelector('[data-pay]');
                 const fileInput = wrapper.querySelector('.real-file-input');
                 const fakePicker = wrapper.querySelector('.custom-file-input');
+                const qrClickable = wrapper.querySelector('.qr-clickable');
 
                 openBtn?.addEventListener('click', () => reserveTutorAndOpen(id));
+                qrClickable?.addEventListener('click', () => {
+                    const qrSrc = qrClickable.dataset.qrSrc;
+                    openQRModal(qrSrc);
+                });
 
                 fakePicker?.addEventListener('click', () => {
                     setReceiptError(id, false);
@@ -2922,6 +3035,34 @@
                     userMenu.classList.remove('is-open');
                 }
             });
+        });
+
+        function openQRModal(imgSrc) {
+            const modal = document.getElementById('qrModal');
+            const modalImg = document.getElementById('qrModalImg');
+
+            if (!modal || !modalImg) return;
+
+            modalImg.src = imgSrc;
+            modal.style.display = 'flex';
+            void modal.offsetWidth;
+            modal.classList.add('is-open');
+        }
+
+        function closeQRModal() {
+            const modal = document.getElementById('qrModal');
+            if (!modal) return;
+
+            modal.classList.remove('is-open');
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 400);
+        }
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeQRModal();
+            }
         });
 
         init();

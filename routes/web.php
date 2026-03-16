@@ -83,6 +83,8 @@ Route::get('/tutor/waitlist/status', [SubjectPickerController::class, 'tutorWait
 Route::post('/tutor/waitlist/accept', [SubjectPickerController::class, 'tutorAcceptBooking']);
 
 Route::post('/tutor/waitlist/reject', [SubjectPickerController::class, 'tutorRejectBooking']);
+Route::post('/bookings/{id}/check-meet', [SubjectPickerController::class, 'checkMeetLink'])
+    ->name('bookings.checkMeet');
 
 
 
@@ -343,6 +345,7 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
 
 
             Route::get('/bookings/{booking}/meet', [SubjectPickerController::class, 'studentMeet']);
+            
 
             /////////////////////////////////////////////////////////////////////////////////////////////////////////
             Route::get('profile', fn() => redirect('tutor.profile.personal-details'))->name('profile');

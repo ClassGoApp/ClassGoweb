@@ -406,7 +406,7 @@ class BookingController extends Controller
                 'success' => true,
                 'payment' => [
                     'bank'   => $bank,
-                    'qr_url' => $qrRow ? ($qrRow->img_qr ?? null) : null,
+                    'qr_url' => `/storage/qr/Qr-pagos.png`, // Ruta genérica para el QR de pagos (debe existir en public/storage/qr/Qr-pagos.png)
                 ],
             ]);
         } catch (\Throwable $e) {
