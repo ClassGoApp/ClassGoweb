@@ -63,6 +63,7 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPasswordC
         return [
             'status' => UserStatusCast::class,
             'email_verified_at' => 'datetime',
+            'terms_accepted_at' => 'datetime',
             'password' => 'hashed',
             'available_for_tutoring' => 'boolean',
         ];
