@@ -2855,8 +2855,10 @@
                 return;
             }
 
+            const originalText = btn.textContent;
             btn.disabled = true;
             btn.classList.add('sp-disabled');
+            btn.textContent = 'PROCESANDO...';
 
             try {
                 const csrf = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
@@ -2926,6 +2928,7 @@
             } finally {
                 btn.disabled = false;
                 btn.classList.remove('sp-disabled');
+                btn.textContent = originalText;
             }
         }
 
