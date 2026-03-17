@@ -459,7 +459,7 @@
                         solicitudes!</p>
                 </div>
 
-                <button class="btn-action" onclick="location.reload()"
+                <button class="btn-action" onclick="window.location.href='{{ route('home') }}'"
                     style="background-color: var(--slate-100); color: var(--slate-900); width: 100%">
                     Volver al Inicio
                 </button>
@@ -484,7 +484,7 @@
                         invitación.</p>
                 </div>
 
-                <button class="btn-action" onclick="location.reload()"
+                <button class="btn-action" onclick="window.location.href='{{ route('home') }}'"
                     style="background-color: var(--slate-100); color: var(--slate-900); width: 100%">
                     Volver al Inicio
                 </button>
