@@ -5,7 +5,8 @@
 
         <div class="instant-badge">
             <span class="check-icon">✓</span>
-            9 tutores ya son parte de tutorías al instante
+            {{ $Tutores_instant_disponibles < 10 ? 10 : $Tutores_instant_disponibles }} tutores ya son parte de tutorías
+            al instante
         </div>
 
         <h2>
@@ -20,35 +21,96 @@
 
 
 
-
         @php
             $user = Auth::user();
             $isLogged = $user !== null;
             $isTutor = $user?->hasRole('tutor') ?? false;
         @endphp
 
-        <div id="cta-container">
-            @if (!$isLogged)
+        <div id="cta-container"
+            style="justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    display: flex;">
+
+            {{-- Login --}}
+            <div id="cta-login" style="display: {{ !$isLogged ? 'block' : 'none' }};">
                 <a class="instant-btn" style="cursor: pointer" href="{{ route('login') }}">
                     <svg width="18" height="18" viewBox="0 0 24 24">
                         <path d="M13 2L3 14H11L9 22L21 10H13Z" fill="currentColor" />
                     </svg>
                     Iniciar sesión
                 </a>
-            @elseif (!$isTutor)
-                <a class="instant-btn" style="cursor: pointer" href="{{ route('student.subjects.pick') }}">
-                    <svg width="18" height="18" viewBox="0 0 24 24">
-                        <path d="M13 2L3 14H11L9 22L21 10H13Z" fill="currentColor" />
-                    </svg>
-                    Pedir tutor ahora
-                </a>
-            @endif
+            </div>
+
+            {{-- Aceptar términos --}}
+            <div id="cta-terms" style="display: {{ $isLogged && !$accepted ? 'block' : 'none' }};">
+                <div class="terms-section"
+                    style="display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;">
+                    <label for="terms-checkbox"
+                        style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                        <input type="checkbox" id="terms-checkbox">
+                        Acepto los <a href="{{ url('terminos') }}#tutorias-instantaneas" target="_blank"
+                            style="color: #9be7ff; text-decoration: underline; display: block;">
+                            términos y condiciones
+                        </a>
+                    </label>
+
+
+
+                    {{-- <a id="accept-terms-btn" class="instant-btn" style="cursor: pointer" href="#"
+                        onclick="event.preventDefault(); acceptTerms('{{ $role }}')"> --}}
+
+                    <a id="accept-terms-btn" class="instant-btn" href="#"
+                        onclick="event.preventDefault(); acceptTerms('{{ $role }}')">
+                        <svg width="18" height="18" viewBox="0 0 24 24">
+                            <path d="M13 2L3 14H11L9 22L21 10H13Z" fill="currentColor" />
+                        </svg>
+                        Aceptar y continuar
+                    </a>
+                </div>
+            </div>
+
+            {{-- Después de aceptar --}}
+            <div id="cta-after" style="display: {{ $isLogged && $accepted ? 'block' : 'none' }};">
+                @if ($isTutor)
+                    <a class="instant-btn" style="cursor: pointer" href="{{ url('terminos') }}">
+                        <svg width="18" height="18" viewBox="0 0 24 24">
+                            <path d="M13 2L3 14H11L9 22L21 10H13Z" fill="currentColor" />
+                        </svg>
+                        Ver términos
+                    </a>
+                @else
+                    <label for="terms-checkbox"
+                        style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+
+                        Ver <a href="{{ url('terminos') }}#tutorias-instantaneas" target="_blank"
+                            style="color: #9be7ff; text-decoration: underline; display: block;">
+                            términos y condiciones
+                        </a>
+                    </label>
+                    <a class="instant-btn" style="cursor: pointer" href="{{ route('student.subjects.pick') }}">
+                        <svg width="18" height="18" viewBox="0 0 24 24">
+                            <path d="M13 2L3 14H11L9 22L21 10H13Z" fill="currentColor" />
+                        </svg>
+                        Pedir tutor ahora
+                    </a>
+                @endif
+            </div>
+            <div id="terms-alert">
+                Términos aceptados correctamente.
+            </div>
         </div>
 
         
 
     </div>
-
+    @if ($isLogged && !$isTutor)
+        <a onclick="redirigirSegunRol('{{ $role }}')">
+    @endif
     <div class="instant-info-visual">
 
         <!-- Estudiante -->
@@ -57,6 +119,8 @@
         </div>
 
         <!-- Órbita -->
+
+
         <div class="orbit">
             <svg class="connection-layer" width="100%" height="100%">
                 <line id="connectionLine" x1="0" y1="0" x2="0" y2="0" />
@@ -145,7 +209,11 @@
 
         </div>
 
+
     </div>
+    @if ($isLogged && !$isTutor)
+        </a>
+    @endif
 
 
 </div>
@@ -259,6 +327,45 @@
     .instant-btn:hover {
         transform: translateY(-2px) scale(1.05);
         box-shadow: 0 0 45px rgba(79, 209, 255, 0.9);
+    }
+
+    #terms-alert {
+        display: none;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        margin-top: 1rem;
+    }
+
+    .success-alert {
+
+        /* background: #d1fae5; */
+        color: #11ff00;
+        /* border: 1px solid #10b981; */
+    }
+
+    .error-alert {
+
+        /* background: #fee2e200; */
+        color: #ff0000;
+        /* border: 1px solid #ef4444; */
+        animation: pulse 1.2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        50% {
+            transform: scale(1.05);
+            opacity: 0.9;
+        }
+
+        100% {
+            transform: scale(1);
+            opacity: 1;
+        }
     }
 
     /* ---------- VISUAL ---------- */
@@ -586,6 +693,49 @@
         const ctaTerms = document.getElementById('cta-terms');
         const seccionTutorias = document.getElementById('tutorias-instantaneas-seccion');
 
+        if (!alertBox) return;
+
+        alertBox.textContent = message;
+        alertBox.style.display = 'block';
+        alertBox.style.opacity = '1';
+
+        alertBox.classList.remove('success-alert', 'error-alert');
+
+        if (type === 'success') {
+            alertBox.classList.add('success-alert');
+        } else {
+            alertBox.classList.add('error-alert');
+        }
+
+        clearTimeout(alertBox.hideTimeout);
+
+        alertBox.hideTimeout = setTimeout(() => {
+            alertBox.style.opacity = '0';
+
+            setTimeout(() => {
+                alertBox.style.display = 'none';
+                alertBox.classList.remove('success-alert', 'error-alert');
+            }, 300);
+        }, 3000);
+    }
+
+    function redirigirSegunRol(role) {
+        const ctaTerms = document.getElementById('cta-terms');
+
+        if (ctaTerms && window.getComputedStyle(ctaTerms).display !== 'none') {
+            showTermsAlert('Debes aceptar los términos y condiciones.', 'error');
+            return;
+        }
+
+        if (role !== 'tutor') {
+            window.location.href = "{{ route('student.subjects.pick') }}";
+        }
+    }
+
+    function irAlInstanteDesdeFlotante() {
+        const ctaTerms = document.getElementById('cta-terms');
+        const seccionTutorias = document.getElementById('tutorias-instantaneas-seccion');
+
         // Si no ha aceptado términos y estamos en home
         if (ctaTerms && window.getComputedStyle(ctaTerms).display !== 'none') {
             if (seccionTutorias) {
@@ -596,6 +746,19 @@
                     showTermsAlert('Debes aceptar los términos y condiciones.', 'error');
                 }, 300);
             }
+            return;
+        }
+
+        // Si ya aceptó términos, redirigir
+        window.location.href = "{{ route('student.subjects.pick') }}";
+    }
+
+    function acceptTerms(role) {
+        const checkbox = document.getElementById('terms-checkbox');
+        const btn = document.getElementById('accept-terms-btn');
+
+        if (!checkbox) {
+            showTermsAlert('No se encontró el checkbox de términos.', 'error');
             return;
         }
 
