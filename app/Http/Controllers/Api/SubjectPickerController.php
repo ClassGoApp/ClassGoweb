@@ -1308,6 +1308,8 @@ class SubjectPickerController extends Controller
             $fee = (float)DB::table('profiles')->where('user_id', $tutorId)->value('price');
             if ($fee < 0) $fee = 0;
 
+            $ttlMinutes = 5; // TTL en minutos para completar el pago
+
             $bookingId = DB::table('slot_bookings')->insertGetId([
                 'student_id' => $studentId,
                 'tutor_id'   => $tutorId,
@@ -1323,6 +1325,7 @@ class SubjectPickerController extends Controller
                     'source' => 'email_batch',
                     'batch_id' => (int)$batchRow->id,
                     'item_id'  => (int)$item->id,
+                    'ttlMinutes' => $ttlMinutes,
                 ]),
                 //'created_at' => now(),
                 //'updated_at' => now(),
@@ -1366,6 +1369,8 @@ class SubjectPickerController extends Controller
                 'start_time' => $start->toDateTimeString(),
                 'end_time' => $end->toDateTimeString(),
                 'session_fee' => $fee,
+                'ttlMinutes' => $ttlMinutes,
+                'expiresAt' => now()->addMinutes($ttlMinutes)->toDateTimeString(),
             ]);
         });
     }
@@ -1374,6 +1379,202 @@ class SubjectPickerController extends Controller
 
 
 
+
+    /**
+     * ✅ Endpoint para obtener el ttlMinutes de un booking
+     * GET /bookings/{bookingId}/ttl
+     * 
+     * Devuelve:
+     * - ttlMinutes: tiempo en minutos para completar el pago
+     * - createdAt: cuándo se creó el booking
+     * - expiresAt: cuándo expira el TTL para pago
+     * - secondsLeft: segundos restantes antes de expiración
+     * - metadata: toda la metadata del booking
+     */
+    public function getBookingTtl(Request $request, int $bookingId)
+    {
+        $studentId = (int) Auth::id();
+
+        // ✅ Buscar el booking y validar propiedad
+        $booking = DB::table('slot_bookings')
+            ->where('id', $bookingId)
+            ->where('student_id', $studentId)
+            ->first();
+
+        if (!$booking) {
+            return response()->json([
+                'ok' => false,
+                'message' => 'Booking no encontrado o no tienes acceso'
+            ], 404);
+        }
+
+        // ✅ Parsear metadata JSON
+        $metadata = [];
+        if (!empty($booking->meta_data)) {
+            try {
+                $metadata = json_decode($booking->meta_data, true) ?? [];
+            } catch (\Throwable $e) {
+                // Si no se puede parsear, devolver vacío
+                $metadata = [];
+            }
+        }
+
+        $ttlMinutes = $metadata['ttlMinutes'] ?? 5; // Default 5 minutos
+
+        // ✅ Calcular tiempos
+        $bookedAt = \Carbon\Carbon::parse($booking->booked_at);
+        $expiresAt = (clone $bookedAt)->addMinutes($ttlMinutes);
+        $secondsLeft = $expiresAt->diffInSeconds(now(), false);
+        $isExpired = $secondsLeft <= 0;
+
+        return response()->json([
+            'ok' => true,
+            'booking_id' => (int) $booking->id,
+            'ttl' => [
+                'ttlMinutes' => $ttlMinutes,
+                'secondsLeft' => max(0, $secondsLeft),
+                'isExpired' => $isExpired,
+            ],
+            'dates' => [
+                'createdAt' => $bookedAt->toDateTimeString(),
+                'expiresAt' => $expiresAt->toDateTimeString(),
+                'createdAtMs' => $bookedAt->getTimestamp() * 1000,
+                'expiresAtMs' => $expiresAt->getTimestamp() * 1000,
+                'nowMs' => now()->getTimestamp() * 1000,
+            ],
+            'booking' => [
+                'status' => (int) $booking->status,
+                'sessionFee' => (float) $booking->session_fee,
+                'startTime' => $booking->start_time,
+                'endTime' => $booking->end_time,
+            ],
+            'metadata' => $metadata,
+        ]);
+    }
+
+    /**
+     * ✅ Endpoint para expirar un booking por TTL
+     * POST /bookings/{bookingId}/expire
+     * 
+     * Cambia el estado del booking a 3 (expirado/no completado)
+     * Se usa cuando el contador de 5 minutos termina en el frontend
+     * o automáticamente si el backend detecta que pasó el TTL
+     */
+    public function expireBooking(Request $request, int $bookingId)
+    {
+        $studentId = (int) Auth::id();
+
+        // ✅ Buscar el booking y validar propiedad
+        $booking = DB::table('slot_bookings')
+            ->where('id', $bookingId)
+            ->where('student_id', $studentId)
+            ->lockForUpdate()
+            ->first();
+
+        if (!$booking) {
+            return response()->json([
+                'ok' => false,
+                'message' => 'Booking no encontrado o no tienes acceso'
+            ], 404);
+        }
+
+        // ✅ Solo se puede expirar si está en estado 2 (pendiente/reservado)
+        if ((int)$booking->status !== 2) {
+            return response()->json([
+                'ok' => false,
+                'message' => 'Este booking no puede ser expirado (estado inválido)',
+                'current_status' => (int)$booking->status,
+            ], 409);
+        }
+
+        // ✅ Parsear metadata
+        $metadata = [];
+        if (!empty($booking->meta_data)) {
+            try {
+                $metadata = json_decode($booking->meta_data, true) ?? [];
+            } catch (\Throwable $e) {
+                $metadata = [];
+            }
+        }
+
+        $ttlMinutes = $metadata['ttlMinutes'] ?? 5;
+        $bookedAt = \Carbon\Carbon::parse($booking->booked_at);
+        $expiresAt = (clone $bookedAt)->addMinutes($ttlMinutes);
+
+        // ✅ Verificar si realmente ya pasó el TTL
+        if (now()->isBefore($expiresAt)) {
+            return response()->json([
+                'ok' => false,
+                'message' => 'El TTL aún no ha expirado. Espera a que termine el contador.',
+                'secondsLeft' => $expiresAt->diffInSeconds(now(), false),
+            ], 409);
+        }
+
+        // ✅ Marcar como expirado (status = 3)
+        DB::table('slot_bookings')->where('id', $bookingId)->update([
+            'status' => 3, // Expirado / No completado
+            'meeting_link' => null, // Limpiar el link si existe
+            'updated_at' => now(),
+        ]);
+
+        return response()->json([
+            'ok' => true,
+            'message' => 'Booking expirado. El tiempo para subir el comprobante se acabó.',
+            'booking_id' => $bookingId,
+            'new_status' => 3,
+            'expired_at' => now()->toDateTimeString(),
+        ]);
+    }
+
+    /**
+     * ✅ Endpoint para forzar expiración sin validar TTL (admin/internal)
+     * POST /bookings/{bookingId}/force-expire
+     * 
+     * Este endpoint puede ser usado por el backend para expirar bookings
+     * SIN esperar a que el frontend lo haga. Útil para cron jobs o tareas automáticas.
+     */
+    public function forceExpireBooking(Request $request, int $bookingId)
+    {
+        $studentId = (int) Auth::id();
+
+        // ✅ Buscar el booking y validar propiedad
+        $booking = DB::table('slot_bookings')
+            ->where('id', $bookingId)
+            ->where('student_id', $studentId)
+            ->lockForUpdate()
+            ->first();
+
+        if (!$booking) {
+            return response()->json([
+                'ok' => false,
+                'message' => 'Booking no encontrado o no tienes acceso'
+            ], 404);
+        }
+
+        // ✅ Solo si aún está pendiente
+        if (!in_array((int)$booking->status, [2], true)) {
+            return response()->json([
+                'ok' => false,
+                'message' => 'Este booking no puede ser expirado (estado inválido)',
+                'current_status' => (int)$booking->status,
+            ], 409);
+        }
+
+        // ✅ Marcar como expirado (status = 3) SIN VALIDAR TTL
+        DB::table('slot_bookings')->where('id', $bookingId)->update([
+            'status' => 3, // Expirado / No completado
+            'meeting_link' => null,
+            'updated_at' => now(),
+        ]);
+
+        return response()->json([
+            'ok' => true,
+            'message' => 'Booking expirado forzadamente.',
+            'booking_id' => $bookingId,
+            'new_status' => 3,
+            'forced_expire_at' => now()->toDateTimeString(),
+        ]);
+    }
 
     // guarda el archivo en public/storage/qr/
 

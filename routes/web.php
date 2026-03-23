@@ -228,6 +228,7 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
 
     Route::middleware(['auth', 'verified', 'onlineUser'])->group(function () {
         Route::post('/openai/submit', [OpenAiController::class, 'submit'])->name('openai.submit');
+        Route::post('/accept-terms', [HomeController::class, 'acceptTerms'])->name('accept.terms');
         Route::post('favourite-tutor', [SearchController::class, 'favouriteTutor'])->name('favourite-tutor');
         Route::get('logout', [SiteController::class, 'logout'])->name('logout');
         Route::get('user/identity-confirmation/{id}', [PersonalDetails::class, 'confirmParentVerification'])->name('confirm-identity');
@@ -333,6 +334,10 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
             Route::get('/batches/{batch}/accepted-tutors', [SubjectPickerController::class, 'acceptedTutors']);
 
             Route::post('/batches/{batch}/reserve', [SubjectPickerController::class, 'reserveTutor']);
+
+            Route::get('/bookings/{bookingId}/ttl', [SubjectPickerController::class, 'getBookingTtl']); // Obtener TTL del booking
+            Route::post('/bookings/{bookingId}/expire', [SubjectPickerController::class, 'expireBooking']); // Expirar booking cuando pase el TTL
+            Route::post('/bookings/{bookingId}/force-expire', [SubjectPickerController::class, 'forceExpireBooking']); // Expirar forzadamente (admin)
 
             // Route::post('/bookings/{booking}/receipt', [SubjectPickerController::class, 'uploadReceipt']);
 
