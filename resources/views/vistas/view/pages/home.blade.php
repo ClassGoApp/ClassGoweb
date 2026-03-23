@@ -39,7 +39,7 @@
         @include('vistas.view.pages.components.home.card-tutor-destacado')
 
     </section>
-    <section class="instant-info">
+    <section class="instant-info" id="tutorias-instantaneas-seccion">
     @include('vistas.view.pages.components.home.tutorias-al-instante')
     </section>
 

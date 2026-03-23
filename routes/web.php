@@ -282,9 +282,7 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
 
 
 
-            Route::get('/materias/elegir', function () {
-                return view('vistas.view.pages.pruebaInst');
-            })
+            Route::get('/materias/elegir',[InstantTutoringController::class, 'index'])
                 ->name('subjects.pick');
 
 
