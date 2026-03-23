@@ -293,14 +293,14 @@
         }
 
         /* .category-bar {
-                                                                                                    display: flex;
-                                                                                                    align-items: center;
-                                                                                                    gap: .6rem;
-                                                                                                    overflow-x: auto;
-                                                                                                    padding: 1rem 0 1rem;
-                                                                                                    margin-bottom: 1rem;
-                                                                                                    scrollbar-width: none;
-                                                                                                } */
+                                                                            display: flex;
+                                                                            align-items: center;
+                                                                            gap: .6rem;
+                                                                            overflow-x: auto;
+                                                                            padding: 1rem 0 1rem;
+                                                                            margin-bottom: 1rem;
+                                                                            scrollbar-width: none;
+                                                                        } */
 
         .category-bar {
             display: flex;
@@ -363,7 +363,17 @@
             align-items: center;
             gap: 1rem;
             margin: 1.5rem 0 1rem;
+            cursor: pointer;
+            user-select: none;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: background-color 0.2s ease-in-out;
         }
+
+        .section-header:hover {
+            background-color: #f0f3f5;
+        }
+        
 
         .section-header h3 {
             font-size: clamp(0.75rem, 2vw, 1.25rem);
@@ -381,18 +391,16 @@
         }
 
         /* ================= SUBJECT GRID ================= */
-        /* .subject-grid {
-                                                                                                display: flex;
-                                                                                                flex-direction: column;
-                                                                                                flex-wrap: wrap;
-                                                                                                height: calc(5 * 78px);
-                                                                                                gap: .7rem;
-                                                                                                overflow-x: auto;
-                                                                                                overflow-y: hidden;
-                                                                                                align-content: flex-start;
-                                                                                                scrollbar-width: none;
-                                                                                            } */
+        .toggle-icon {
+            transition: transform 0.3s ease-in-out;
+            flex-shrink: 0;
+        }
 
+        .toggle-icon.rotated {
+            transform: rotate(-180deg);
+        }
+
+      
         .subject-grid {
             display: grid;
             /* CAMBIO CLAVE: auto para que no reserve espacio vacío */
@@ -400,6 +408,7 @@
             grid-auto-flow: column;
             grid-auto-columns: max-content;
             gap: 5px;
+            transition: max-height 0.4s ease-out, margin-top 0.4s ease-out, gap 0.4s ease-out;
 
             /* Limitamos el alto máximo para que no crezca infinito */
             /* 3 filas de ~60px + gaps + paddings */
@@ -414,16 +423,14 @@
             scrollbar-width: none;
         }
 
+        .subject-grid.collapsed {
+            max-height: 0 !important;
+            overflow: hidden;
+            margin-top: 0;
+            gap: 0;
+        }
+
         /* Fuerza el scroll horizontal en las secciones de materias */
-        /* .subject-grid { */
-        /* display: flex; */
-        /* flex-direction: column; */
-        /* flex-wrap: wrap; */
-        /* height: 400px; Ajusta según tu diseño */
-        /* overflow-x: auto; */
-        /* cursor: grab; */
-        /* scrollbar-width: none; */
-        /* } */
 
         .category-bar::-webkit-scrollbar {
             display: none;
@@ -439,19 +446,7 @@
             display: none;
         }
 
-        /* .subject-card-btn {
-                                                                                               display: inline-flex;
-                                                                                      width: auto;
-                                                                                      align-items: center;
-                                                                                      gap: 10px;
-                                                                                       padding: 0.8rem 1.2rem;
-                                                                                      border-radius: 50px;
-                                                                                      background: #ffffff;
-                                                                                      border: 1px solid #f1f5f9;
-                                                                                      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-                                                                                      transition: all 0.2s ease;
-                                                                                      white-space: nowrap;
-                                                                                            } */
+    
 
         .subject-card-btn {
             display: flex;
@@ -516,9 +511,9 @@
         }
 
         /* .subject-card-btn.is-selected .subject-initial {
-                                                                                                background: var(--terciary-color2);
-                                                                                                color: #fff;
-                                                                                            } */
+                                                                        background: var(--terciary-color2);
+                                                                        color: #fff;
+                                                                    } */
 
 
         .subject-card-btn.is-selected .subject-initial {
@@ -1773,34 +1768,34 @@
 
     <script>
         /* ========================================================================
-                                                                                                                                                      CLASSGO | Student - Instant Tutors Script
-                                                                                                                                                      ------------------------------------------------------------------------
-                                                                                                                                                      FLUJO:
-                                                                                                                                                      1) Cargar Categorías/Materias
-                                                                                                                                                      2) Seleccionar Materia (solo una) + mostrar FAB
-                                                                                                                                                      3) Crear Batch + mostrar Radar + polling:
-                                                                                                                                                          - status (cada 60s)
-                                                                                                                                                          - tutores aceptados (cada 5s)
-                                                                                                                                                          - countdown expiración (cada 1s)
-                                                                                                                                                      4) Mostrar cards de tutores + reservar + abrir checkout (flip)
-                                                                                                                                                      5) Subir comprobante + pagar + polling booking (cada 2.5s)
-                                                                                                                                                      6) Nueva solicitud / reset
+        CLASSGO | Student - Instant Tutors Script
+        ------------------------------------------------------------------------
+        FLUJO:
+        1) Cargar Categorías/Materias
+        2) Seleccionar Materia (solo una) + mostrar FAB
+        3) Crear Batch + mostrar Radar + polling:
+        - status (cada 60s)
+        - tutores aceptados (cada 5s)
+        - countdown expiración (cada 1s)
+        4) Mostrar cards de tutores + reservar + abrir checkout (flip)
+        5) Subir comprobante + pagar + polling booking (cada 2.5s)
+        6) Nueva solicitud / reset
+        
+        ENDPOINTS:
+        - GET  /student/subject-groups/categorias-materias
+        - POST /student/batches/start
+        - GET  /student/batches/active
+        - GET  /student/batches/{batchId}/status
+        - GET  /student/batches/{batchId}/accepted-tutors?limit=50
+        - POST /student/batches/{batchId}/reserve
+        - POST /student/bookings/{bookingId}/receipt
+        GET  /student/bookings/{bookingId}/status
+        - GET  /student/bookings/{bookingId}/meet
 
-                                                                                                                                                      ENDPOINTS:
-                                                                                                                                                      - GET  /student/subject-groups/categorias-materias
-                                                                                                                                                      - POST /student/batches/start
-                                                                                                                                                      - GET  /student/batches/active
-                                                                                                                                                      - GET  /student/batches/{batchId}/status
-                                                                                                                                                      - GET  /student/batches/{batchId}/accepted-tutors?limit=50
-                                                                                                                                                      - POST /student/batches/{batchId}/reserve
-                                                                                                                                                      - POST /student/bookings/{bookingId}/receipt
-                                                                                                                                                      - GET  /student/bookings/{bookingId}/status
-                                                                                                                                                      - GET  /student/bookings/{bookingId}/meet
-
-                                                                                                                                                      NOTAS:
-                                                                                                                                                      - fetchAcceptedTutors() se pausa si state.activeHeroId existe (checkout abierto)
-                                                                                                                                                      - closeHero(true) debe existir en otro lado o aquí (si no, revienta)
-                                                                                                                                                    ======================================================================== */
+        NOTAS:
+        - fetchAcceptedTutors() se pausa si state.activeHeroId existe (checkout abierto)
+        - closeHero(true) debe existir en otro lado o aquí (si no, revienta)
+                                                                                                                            ======================================================================== */
 
 
         /* ========================================================================
@@ -1975,6 +1970,15 @@
         }
 
 
+        function toggleSection(gridId) {
+            const grid = document.getElementById(gridId);
+            const icon = document.getElementById(`icon-${gridId}`);
+            if (grid && icon) {
+                grid.classList.toggle('collapsed');
+                icon.classList.toggle('rotated');
+            }
+        }
+
         function renderSubjectSections() {
             const sections = document.getElementById('subject-sections');
             const empty = document.getElementById('empty-state');
@@ -2001,25 +2005,30 @@
 
             sections.innerHTML = orderedCats.map(cat => {
                 const items = grouped[cat];
+                const gridId = `grid-${cat.replace(/[^a-zA-Z0-9]/g, '-')}`;
+                // Collapse all sections by default, except the first one
+                const isFirstSection = orderedCats.indexOf(cat) === 0;
+                const collapsedClass = isFirstSection ? '' : 'collapsed';
+                const rotatedClass = isFirstSection ? '' : 'rotated';
+
                 return `
-      <section>
-        <div class="section-header">
+    <section>
+        <div class="section-header" onclick="toggleSection('${gridId}')">
           <h3>${cat}</h3>
-          <div class="section-divider"></div>
+          <svg class="toggle-icon ${rotatedClass}" id="icon-${gridId}" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
         </div>
 
-        <div class="subject-grid">
+        <div class="subject-grid ${collapsedClass}" id="${gridId}">
           ${items.map(sub => `
-                                                                                                                                                                <button class="subject-card-btn"
-                                                                                                                                                                  onclick="seleccionarMateria(this, ${sub.id}, '${sub.name.replaceAll("'", "\\'")}')">
-                                                                                                                                                                  <div class="subject-initial">${sub.name.charAt(0)}</div>
-                                                                                                                                                                  <div class="subject-meta">
-                                                                                                                                                                    <div class="subject-title">${sub.name}</div>
-                                                                                                                                                                  </div>
-                                                                                                                                                                </button>
-                                                                                                                                                              `).join('')}
+            <button class="subject-card-btn" onclick="seleccionarMateria(this, ${sub.id}, '${sub.name.replaceAll("'", "\\'")}')">
+                <div class="subject-initial">${sub.name.charAt(0)}</div>
+                <div class="subject-meta">
+                    <div class="subject-title">${sub.name}</div>
+                </div>
+            </button>
+            `).join('')}
         </div>
-      </section>
+    </section>
     `;
             }).join('');
             setupHorizontalDraggableScroll('.category-bar');
@@ -2330,94 +2339,7 @@
         /* ========================================================================
           5) selectSubject: crea batch + startPolling
         ======================================================================== */
-        // async function selectSubject(subjectName, subjectId) {
-        //     if (currentBatchId) {
-        //         alert('Ya hay una búsqueda activa. Continúa la espera.');
-        //         return;
-        //     }
-        //     if (!subjectId) {
-        //         alert('Selecciona una materia primero.');
-        //         return;
-        //     }
 
-        //     ocultarFabTutoria();
-        //     fab.disabled = true;
-        //     fab.style.opacity = '0.6';
-
-        //     document.getElementById('selected-subject-name').innerText = subjectName;
-
-        //     showRadar();
-        //     if (statusMsg) statusMsg.innerText = 'Creando batch...';
-
-        //     try {
-        //         const csrf = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
-
-        //         const res = await fetch('/student/batches/start', {
-        //             method: 'POST',
-        //             headers: {
-        //                 'Content-Type': 'application/json',
-        //                 'Accept': 'application/json',
-        //                 ...(csrf ? {
-        //                     'X-CSRF-TOKEN': csrf
-        //                 } : {}),
-        //             },
-        //             credentials: 'same-origin',
-        //             body: JSON.stringify({
-        //                 subject_id: subjectId
-        //             }),
-        //         });
-
-        //         const json = await res.json().catch(() => ({}));
-
-        //         if (!res.ok) {
-        //             if (statusMsg) statusMsg.innerText = 'No se pudo iniciar la solicitud.';
-        //             alert('Error al iniciar batch: ' + (json.message ?? `HTTP ${res.status}`));
-        //             showSelection();
-        //             return;
-        //         }
-
-        //         const batchId = json.batch_id ?? json?.data?.batch_id ?? null;
-
-        //         if (!batchId) {
-        //             if (statusMsg) statusMsg.innerText = 'Batch creado, pero no llegó batch_id.';
-        //             alert('Batch creado pero no llegó batch_id en respuesta.');
-        //             showSelection();
-        //             return;
-        //         }
-
-        //         if (statusMsg) statusMsg.innerText = `Solicitud enviada. Notificando tutores (Batch #${batchId})...`;
-        //         startPolling(batchId);
-        //         fetch('/student/batches/send-emails', {
-        //                 method: 'POST',
-        //                 headers: {
-        //                     'Content-Type': 'application/json',
-        //                     'Accept': 'application/json',
-        //                     ...(csrf ? {
-        //                         'X-CSRF-TOKEN': csrf
-        //                     } : {}),
-        //                 },
-        //                 credentials: 'same-origin',
-        //                 body: JSON.stringify({
-        //                     batch_id: batchId,
-        //                     limit: 10
-        //                 }),
-        //             })
-        //             .then(async r => {
-        //                 const t = await r.text();
-        //                 console.log('send-emails:', r.status, t);
-        //             })
-        //             .catch(err => console.error('send-emails network error:', err));
-        //     } catch (e) {
-        //         console.error(e);
-        //         if (statusMsg) statusMsg.innerText = 'Error JS al iniciar la solicitud.';
-        //         alert('Error JS: ' + e.message);
-        //         showSelection();
-        //     } finally {
-        //         fab.disabled = false;
-        //         fab.style.opacity = '';
-        //         document.body.classList.remove('lock-scroll');
-        //     }
-        // }
 
         async function selectSubject(subjectName, subjectId) {
             if (currentBatchId) return;
@@ -2596,13 +2518,13 @@
               ${img ? `<img class="avatar" src="${escapeHtml(img)}" alt="${name}">` : ``}
 
               ${verified ? `
-                                                                                                                                                                    <span class="verified">
-                                                                                                                                                                      <svg viewBox="0 0 24 24" class="verified-icon">
-                                                                                                                                                                        <path d="M12 2l4 2 4 .6 1.4 4L22 12l-1.6 3.4L20 19l-4 .6-4 2-4-2-4-.6L3.6 15.4 2 12l1.4-3.4L4 4.6l4-.6 4-2z"/>
-                                                                                                                                                                        <path d="M9.5 12.5l1.7 1.7 3.8-3.8"/>
-                                                                                                                                                                      </svg>
-                                                                                                                                                                    </span>
-                                                                                                                                                                  ` : ``}
+                                                                                                                                            <span class="verified">
+                                                                                                                                              <svg viewBox="0 0 24 24" class="verified-icon">
+                                                                                                                                                <path d="M12 2l4 2 4 .6 1.4 4L22 12l-1.6 3.4L20 19l-4 .6-4 2-4-2-4-.6L3.6 15.4 2 12l1.4-3.4L4 4.6l4-.6 4-2z"/>
+                                                                                                                                                <path d="M9.5 12.5l1.7 1.7 3.8-3.8"/>
+                                                                                                                                              </svg>
+                                                                                                                                            </span>
+                                                                                                                                          ` : ``}
             </div>
           </div>
 
@@ -2895,22 +2817,7 @@
                     json = JSON.parse(raw);
                 } catch {}
 
-                // if (!res.ok || !json.ok) {
-                //     const err =
-                //         json?.errors?.comprobante?.[0] ||
-                //         json?.message ||
-                //         `No se pudo subir (HTTP ${res.status})`;
-                //     alert(err);
-                //     return;
-                // }
-
-                // const okBox = document.getElementById(`payment-success-${heroId}`);
-                // if (okBox) okBox.classList.remove('hidden');
-
-                // const card = document.getElementById(`hero-${heroId}`);
-                // card?.querySelector('.checkout-content')?.classList.add('hidden');
-
-                // startStudentBookingPolling(bookingId, heroId);
+             
                 if (!res.ok || !json.ok) {
                     const err =
                         json?.errors?.comprobante?.[0] ||
