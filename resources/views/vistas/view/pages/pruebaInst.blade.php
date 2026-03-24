@@ -1865,6 +1865,14 @@
         /* ========================================================================
           2) UI: BUSCADOR + PILLS + SECCIONES
         ======================================================================== */
+
+        function normalizeText(text) {
+            return text
+                .toLowerCase()
+                .normalize("NFD") // separa letras y tildes
+                .replace(/[\u0300-\u036f]/g, ""); // elimina tildes
+        }
+
         function wireSearch() {
             const input = document.getElementById('search-input');
             input.addEventListener('input', (e) => {
@@ -1897,8 +1905,11 @@
             }
 
             if (state.searchQuery !== '') {
-                const q = state.searchQuery.toLowerCase();
-                filtered = filtered.filter(s => s.name.toLowerCase().includes(q));
+                const q = normalizeText(state.searchQuery);
+
+                filtered = filtered.filter(s =>
+                    normalizeText(s.name).includes(q)
+                );
             }
 
             return filtered;
@@ -2231,6 +2242,9 @@
             const json = await res.json().catch(() => ({}));
             if (!res.ok) return;
 
+            // ✅ IMPORTANTE: si durante la espera ya se abrió una card, no repintar
+            if (state.activeHeroId) return;
+
             const data = Array.isArray(json.data) ? json.data : [];
 
             // ✅ REEMPLAZAR COMPLETO (no acumular)
@@ -2329,6 +2343,10 @@
 
         async function selectSubject(subjectName, subjectId) {
             if (currentBatchId) return;
+
+            state.activeHeroId = null;
+            acceptedMap.clear();
+            document.getElementById('tutor-results').innerHTML = '';
 
             // 1. UI Feedback inmediato
             ocultarFabTutoria();
@@ -2649,7 +2667,6 @@
         }
 
         async function reserveTutorAndOpen(heroId) {
-            state.activeHeroId = String(heroId);
 
             if (!currentBatchId) {
                 alert('No hay batch activo.');
@@ -2771,8 +2788,10 @@
                 return;
             }
 
+            const originalText = btn.textContent;
             btn.disabled = true;
             btn.classList.add('sp-disabled');
+            btn.textContent = 'PROCESANDO...';
 
             try {
                 const csrf = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
@@ -2827,6 +2846,7 @@
             } finally {
                 btn.disabled = false;
                 btn.classList.remove('sp-disabled');
+                btn.textContent = originalText;
             }
         }
 
@@ -2878,6 +2898,27 @@
             bookingPollTimers.set(key, t);
         }
 
+        function closeHero(instant = false) {
+            const id = state.activeHeroId;
+            if (!id) return;
+
+            const grid = document.getElementById('tutor-results');
+            const card = document.getElementById(`hero-${id}`);
+
+            if (card) {
+                card.classList.remove('is-flipped');
+                card.classList.remove('is-active');
+            }
+
+            if (grid) {
+                grid.classList.remove('hide-others');
+            }
+
+            document.body.classList.remove('lock-scroll');
+
+            state.activeHeroId = null;
+        }
+
 
         /* ========================================================================
           10) BOTÓN: Nueva solicitud (reset total)
@@ -2885,6 +2926,19 @@
         btnNewSearch?.addEventListener('click', async () => {
             currentBatchId = null;
             stopPollingAll();
+
+            state.activeHeroId = null; // ✅ importante
+            state.receipts = {}; // opcional, pero recomendable
+            bookingByHeroId.clear(); // opcional, recomendable
+
+            acceptedMap.clear(); //
+
+            const grid = document.getElementById('tutor-results');
+            if (grid) {
+                grid.classList.remove('hide-others'); // ✅ AGREGAR
+                grid.classList.remove('active'); // ✅ recomendable
+                grid.innerHTML = '';
+            }
 
             document.getElementById('radar-ui')?.classList.remove('results-found');
             document.getElementById('tutor-results').innerHTML = '';
@@ -2899,7 +2953,6 @@
             renderCategoryPills();
             renderSubjectSections();
         });
-
 
         /* ========================================================================
           11) INIT
