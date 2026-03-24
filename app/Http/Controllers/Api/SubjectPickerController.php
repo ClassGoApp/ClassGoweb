@@ -122,44 +122,120 @@ class SubjectPickerController extends Controller
 
     public function categoriasMaterias()
     {
-        $data = Cache::remember('subject_groups:lvl2_with_subjects', now()->addHours(12), function () {
-
+        $data = Cache::remember('subject_groups:lvl2_with_subjects', now()->addMinutes(5), function () {
             $rows = DB::select("
             SELECT
               lvl2.id          AS id_categoria,
               lvl2.name        AS categoria,
 
-              s.id             AS id_materia,
-              s.name           AS materia
-            FROM subject_groups AS lvl2
-            JOIN subject_groups AS lvl3
-              ON lvl3.id_padre = lvl2.id
-              AND lvl3.deleted_at IS NULL
+                lvl2.id   AS id_categoria,
+                lvl2.name AS categoria,
+
+                lvl3.id   AS id_subcategoria,
+                lvl3.name AS subcategoria,
+
+                s.id      AS id_materia,
+                s.name    AS materia
+            FROM subject_groups AS lvl1
+            INNER JOIN subject_groups AS lvl2
+                ON lvl2.id_padre = lvl1.id
+               AND lvl2.deleted_at IS NULL
+            LEFT JOIN subject_groups AS lvl3
+                ON lvl3.id_padre = lvl2.id
+               AND lvl3.deleted_at IS NULL
             LEFT JOIN subjects AS s
-              ON s.subject_group_id = lvl3.id
-              AND s.deleted_at IS NULL
-            WHERE lvl2.id_padre IN (1000, 2000, 3000)
-              AND lvl2.deleted_at IS NULL
-            ORDER BY lvl2.id, lvl3.id, s.id
+                ON s.subject_group_id = COALESCE(lvl3.id, lvl2.id)
+               AND s.deleted_at IS NULL
+               AND s.status = 'active'
+            WHERE lvl1.id IN (1000, 2000, 3000)
+              AND lvl1.deleted_at IS NULL
+            ORDER BY lvl1.id, lvl2.name, lvl3.name, s.name
         ");
 
             return collect($rows)
                 ->groupBy('id_categoria')
                 ->map(function ($items) {
-                    return [
-                        'id_categoria' => $items->first()->id_categoria,
-                        'categoria'    => $items->first()->categoria,
-                        'materias'     => $items->whereNotNull('id_materia')->map(fn($r) => [
-                            'id_materia' => $r->id_materia,
+                    $first = $items->first();
+
+                    $materias = $items
+                        ->filter(fn($r) => !is_null($r->id_materia))
+                        ->unique('id_materia')
+                        ->map(fn($r) => [
+                            'id_materia' => (int) $r->id_materia,
                             'materia'    => $r->materia,
-                        ])->values(),
+                        ])
+                        ->sortBy('materia')
+                        ->values();
+
+                    return [
+                        'id_categoria' => (int) $first->id_categoria,
+                        'categoria'    => $first->categoria,
+                        'materias'     => $materias,
                     ];
                 })
-                ->values();
+                ->filter(fn($cat) => $cat['materias']->isNotEmpty())
+                ->values()
+                ->toArray();
         });
 
-        return response()->json(['data' => $data]);
+        return response()->json([
+            'data' => $data
+        ]);
     }
+
+    // public function categoriasMaterias()
+    // {
+    //     $data = Cache::remember('subject_groups:lvl2_with_subjects', now()->addMinutes(5), function () {
+
+    //         $rows = DB::select("
+    //         SELECT
+    //             lvl1.id   AS id_nivel_1,
+    //             lvl1.name AS nivel_1,
+
+    //             lvl2.id   AS id_categoria,
+    //             lvl2.name AS categoria,
+
+    //             lvl3.id   AS id_subcategoria,
+    //             lvl3.name AS subcategoria,
+
+    //             s.id      AS id_materia,
+    //             s.name    AS materia
+    //         FROM subject_groups AS lvl1
+    //         JOIN subject_groups AS lvl2
+    //             ON lvl2.id_padre = lvl1.id
+    //             AND lvl2.deleted_at IS NULL
+    //         LEFT JOIN subject_groups AS lvl3
+    //             ON lvl3.id_padre = lvl2.id
+    //             AND lvl3.deleted_at IS NULL
+    //         LEFT JOIN subjects AS s
+    //             ON s.subject_group_id = COALESCE(lvl3.id, lvl2.id)
+    //             AND s.deleted_at IS NULL
+    //         WHERE lvl1.id IN (1000, 2000, 3000)
+    //           AND lvl1.deleted_at IS NULL
+    //         ORDER BY lvl1.id, lvl2.id, lvl3.id, s.id
+    //     ");
+
+    //         return collect($rows)
+    //             ->groupBy('id_categoria')
+    //             ->map(function ($items) {
+    //                 return [
+    //                     'id_categoria' => $items->first()->id_categoria,
+    //                     'categoria'    => $items->first()->categoria,
+    //                     'materias'     => $items
+    //                         ->whereNotNull('id_materia')
+    //                         ->unique('id_materia')
+    //                         ->map(fn($r) => [
+    //                             'id_materia' => $r->id_materia,
+    //                             'materia'    => $r->materia,
+    //                         ])
+    //                         ->values(),
+    //                 ];
+    //             })
+    //             ->values();
+    //     });
+
+    //     return response()->json(['data' => $data]);
+    // }
     private function getTutorsAvailableNow(int $subjectId): Collection
     {
         return $this->baseTutorsBySubjectQuery($subjectId, true)
