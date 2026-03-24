@@ -177,15 +177,7 @@ class SubjectPickerController extends Controller
     }
     private function getTutorsAvailableNow(int $subjectId): Collection
     {
-        // Solo tutores con rol "tutor" y que hayan aceptado términos (users.terms_accepted_at)
         return $this->baseTutorsBySubjectQuery($subjectId, true)
-            ->join('model_has_roles', function ($join) {
-                $join->on('u.id', '=', 'model_has_roles.model_id')
-                    ->where('model_has_roles.model_type', '=', User::class);
-            })
-            ->join('roles', 'roles.id', '=', 'model_has_roles.role_id')
-            ->where('roles.name', 'tutor')
-            ->whereNotNull('u.terms_accepted_at')
             ->groupBy('us.user_id', 'u.email')
             ->select([
                 'us.user_id',
