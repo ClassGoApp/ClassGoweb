@@ -121,7 +121,7 @@ class SubjectPickerController extends Controller
         ]);
     }
 
-   
+
     public function categoriasMaterias()
     {
         $data = Cache::remember('subject_groups:lvl2_with_subjects', now()->addMinutes(5), function () {
@@ -487,7 +487,7 @@ class SubjectPickerController extends Controller
         });
     }
 
-   
+
 
     public function status(EmailBatch $batch)
     {
@@ -625,7 +625,11 @@ class SubjectPickerController extends Controller
     {
         $token = (string) $request->query('t');
         if ($token === '') abort(404);
-
+        Log::info('acceptWaitlist hit', [
+            'token' => $token,
+            'ua' => $request->userAgent(),
+            'ip' => $request->ip(),
+        ]);
         // 1) Buscar item por token
         $item = EmailBatchItem::where('accept_token', $token)->first();
         if (!$item) abort(404);
@@ -641,12 +645,24 @@ class SubjectPickerController extends Controller
         }
 
         // 3) Marcar accepted (idempotente)
+        // if (!$item->accepted_at) {
+        //     $item->accepted_at = now();
+        //     $item->status = 'accepted';
+        //     $item->save();
+        // }
         if (!$item->accepted_at) {
             $item->accepted_at = now();
             $item->status = 'accepted';
             $item->save();
-        }
 
+            Log::info('acceptWaitlist saved', [
+                'item_id' => $item->id,
+                'batch_id' => $item->batch_id,
+                'user_id' => $item->user_id,
+                'status' => $item->status,
+                'accepted_at' => $item->accepted_at,
+            ]);
+        }
 
 
         $expiresAt = $batch->expires_at;
@@ -753,7 +769,17 @@ class SubjectPickerController extends Controller
             'data' => $rows,
             'next_after_accepted_at' => $last?->accepted_at,
             'next_after_id' => $last?->id ?? $afterId,
-        ]);
+        ])->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0, private')
+            ->header('Pragma', 'no-cache')
+            ->header('Expires', '0');
+
+        // return response()->json([
+        //     'batch_id' => $batch->id,
+        //     'count' => $rows->count(),
+        //     'data' => $rows,
+        //     'next_after_accepted_at' => $last?->accepted_at,
+        //     'next_after_id' => $last?->id ?? $afterId,
+        // ]);
     }
 
 
@@ -1975,7 +2001,7 @@ class SubjectPickerController extends Controller
     // Inserta/actualiza payment_slot_bookings con image_url
 
     // Crea link genérico si quieres cumplir tu regla “al pagar ya existe link” (para pruebas)
-   
+
 
     public function studentUploadReceipt(Request $request, $booking)
     {
@@ -2113,7 +2139,7 @@ class SubjectPickerController extends Controller
     }
 
 
-  
+
 
     /**
      * ✅ studentBookingStatus()
@@ -2219,7 +2245,7 @@ class SubjectPickerController extends Controller
     // // devuelve payload para tu JS (precio, horario, meet_link genérico)
 
 
-  
+
 
 
     /**
