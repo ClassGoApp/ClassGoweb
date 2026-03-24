@@ -607,7 +607,7 @@ class SubjectPickerController extends Controller
         });
     }
 
-   
+
 
     public function status(EmailBatch $batch)
     {
@@ -745,7 +745,11 @@ class SubjectPickerController extends Controller
     {
         $token = (string) $request->query('t');
         if ($token === '') abort(404);
-
+        Log::info('acceptWaitlist hit', [
+            'token' => $token,
+            'ua' => $request->userAgent(),
+            'ip' => $request->ip(),
+        ]);
         // 1) Buscar item por token
         $item = EmailBatchItem::where('accept_token', $token)->first();
         if (!$item) abort(404);
@@ -761,12 +765,24 @@ class SubjectPickerController extends Controller
         }
 
         // 3) Marcar accepted (idempotente)
+        // if (!$item->accepted_at) {
+        //     $item->accepted_at = now();
+        //     $item->status = 'accepted';
+        //     $item->save();
+        // }
         if (!$item->accepted_at) {
             $item->accepted_at = now();
             $item->status = 'accepted';
             $item->save();
-        }
 
+            Log::info('acceptWaitlist saved', [
+                'item_id' => $item->id,
+                'batch_id' => $item->batch_id,
+                'user_id' => $item->user_id,
+                'status' => $item->status,
+                'accepted_at' => $item->accepted_at,
+            ]);
+        }
 
 
         $expiresAt = $batch->expires_at;
@@ -873,7 +889,17 @@ class SubjectPickerController extends Controller
             'data' => $rows,
             'next_after_accepted_at' => $last?->accepted_at,
             'next_after_id' => $last?->id ?? $afterId,
-        ]);
+        ])->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0, private')
+            ->header('Pragma', 'no-cache')
+            ->header('Expires', '0');
+
+        // return response()->json([
+        //     'batch_id' => $batch->id,
+        //     'count' => $rows->count(),
+        //     'data' => $rows,
+        //     'next_after_accepted_at' => $last?->accepted_at,
+        //     'next_after_id' => $last?->id ?? $afterId,
+        // ]);
     }
 
 
@@ -2095,7 +2121,7 @@ class SubjectPickerController extends Controller
     // Inserta/actualiza payment_slot_bookings con image_url
 
     // Crea link genérico si quieres cumplir tu regla “al pagar ya existe link” (para pruebas)
-   
+
 
     public function studentUploadReceipt(Request $request, $booking)
     {
@@ -2232,62 +2258,6 @@ class SubjectPickerController extends Controller
 }
 
 
-    // //     Método: studentBookingStatus(Request $request, $booking)
-
-    // // Para que tu JS:
-
-    // // si status == 1 → habilite botón “Ir a Meet”
-
-    // // si status == 0 → muestre “Rechazado” y vuelva a seleccionar tutor
-
-    // // si status == 4 → muestre “En revisión”
-
-    // public function studentBookingStatus(Request $request, $booking)
-    // {
-    //     $studentId = (int) Auth::id();
-    //     $bookingId = (int) $booking;
-
-    //     $b = DB::table('slot_bookings')
-    //         ->where('id', $bookingId)
-    //         ->first();
-
-    //     if (!$b) {
-    //         return response()->json(['ok' => false, 'message' => 'Booking no encontrado'], 404);
-    //     }
-
-    //     if ((int)$b->student_id !== $studentId) {
-    //         return response()->json(['ok' => false, 'message' => 'Forbidden'], 403);
-    //     }
-
-    //     $receipt = DB::table('payment_slot_bookings')
-    //         ->where('slot_booking_id', $bookingId)
-    //         ->first();
-
-    //     $hasReceipt = (bool) $receipt;
-    //     $receiptUrl = $receipt?->image_url ? ('/storage/' . ltrim($receipt->image_url, '/')) : null;
-
-    //     // UI state para tu vista
-    //     $ui = 'payment_phase'; // reserved(4)
-    //     if ((int)$b->status === 1) $ui = 'accepted';
-    //     if ((int)$b->status === 0) $ui = 'rejected';
-
-    //     return response()->json([
-    //         'ok' => true,
-    //         'ui_state' => $ui,
-    //         'booking' => [
-    //             'id' => (int)$b->id,
-    //             'status' => (int)$b->status,
-    //             'start_time' => $b->start_time,
-    //             'end_time' => $b->end_time,
-    //             'session_fee' => $b->session_fee,
-    //             'meeting_link' => $b->meeting_link, // tu UI decide cuándo mostrarlo
-    //         ],
-    //         'payment' => [
-    //             'has_receipt' => $hasReceipt,
-    //             'receipt_url' => $receiptUrl,
-    //         ],
-    //     ]);
-    // }
 
     /**
      * ✅ studentBookingStatus()
@@ -2393,7 +2363,7 @@ class SubjectPickerController extends Controller
     // // devuelve payload para tu JS (precio, horario, meet_link genérico)
 
 
-  
+
 
 
     /**
