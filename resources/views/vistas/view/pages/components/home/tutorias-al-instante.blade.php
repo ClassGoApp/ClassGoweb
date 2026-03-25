@@ -582,7 +582,26 @@
 
     animate();
 
-    
+    function irAlInstanteDesdeFlotante() {
+        const ctaTerms = document.getElementById('cta-terms');
+        const seccionTutorias = document.getElementById('tutorias-instantaneas-seccion');
+
+        // Si no ha aceptado términos y estamos en home
+        if (ctaTerms && window.getComputedStyle(ctaTerms).display !== 'none') {
+            if (seccionTutorias) {
+                // Hacer scroll suave hacia la sección
+                seccionTutorias.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                // Mostrar alerta después del scroll
+                setTimeout(() => {
+                    showTermsAlert('Debes aceptar los términos y condiciones.', 'error');
+                }, 300);
+            }
+            return;
+        }
+
+        // Si ya aceptó términos, redirigir
+        window.location.href = "{{ route('student.subjects.pick') }}";
+    }
 
     
 
