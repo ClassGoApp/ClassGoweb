@@ -141,7 +141,7 @@ Route::post('booking/change-to-aceptado', [BookingStatusController::class, 'chan
 
 // Ruta para obtener el tiempo disponible del tutor (pública)
 Route::get('tutor/{id}/available-slots', [\App\Http\Controllers\Api\SubjectSlotController::class, 'getTutorAvailableSlots']);
-Route::get('tutor/{id}/slots-for-date', [\App\Http\Controllers\Api\SubjectSlotController::class, 'getStlotTutorForDate']);
+Route::post('tutor/{id}/slots-for-date', [\App\Http\Controllers\Api\SubjectSlotController::class, 'getStlotTutorForDate']);
 
 // Ruta para crear slots de disponibilidad (pública)
 Route::post('tutor/slots', [\App\Http\Controllers\Api\SubjectSlotController::class, 'createUserSubjectSlot']);
