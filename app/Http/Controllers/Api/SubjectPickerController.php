@@ -2202,7 +2202,6 @@ class SubjectPickerController extends Controller
 
 
 
-
     /**
      * ✅ studentBookingStatus()
      * - Si el booking está PENDIENTE(2) pero ya pasaron 7 min desde booked_at,
