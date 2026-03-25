@@ -10,6 +10,7 @@ use Illuminate\Support\Collection;
 
 use App\Models\EmailBatch;
 use App\Models\EmailBatchItem;
+use App\Models\User;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -25,7 +26,7 @@ use App\Mail\TutoriaInstanteAceptada;
 use App\Models\SlotBooking;
 use App\Services\SlotBookingService;
 
-        
+
 
 
 class SubjectPickerController extends Controller
@@ -125,8 +126,8 @@ class SubjectPickerController extends Controller
         $data = Cache::remember('subject_groups:lvl2_with_subjects', now()->addMinutes(5), function () {
             $rows = DB::select("
             SELECT
-              lvl2.id          AS id_categoria,
-              lvl2.name        AS categoria,
+                lvl1.id   AS id_nivel_1,
+                lvl1.name AS nivel_1,
 
                 lvl2.id   AS id_categoria,
                 lvl2.name AS categoria,
@@ -288,141 +289,6 @@ class SubjectPickerController extends Controller
             'data' => $tutors,
         ]);
     }
-
-
-    //     public function sendBatchEmails(Request $request)
-    //     {
-    //         $batchId = (int) $request->input('batch_id');
-    //         $limit   = (int) ($request->input('limit', 10)); // cuántos mandar por llamada
-    // // dd( $batchId, $limit);
-    //         if ($batchId <= 0) {
-    //             return response()->json(['ok' => false, 'message' => 'batch_id requerido'], 422);
-    //         }
-
-    //         $limit = max(1, min($limit, 50)); // hard limit para no matar el request
-
-    //         $now = now();
-
-    //         // 1) Tomar N items "pending" del batch y marcarlos como "sending" (con lock)
-    //         $items = DB::transaction(function () use ($batchId, $limit, $now) {
-    //             $rows = EmailBatchItem::where('batch_id', $batchId)
-    //                 ->where('status', 'pending')
-    //                 ->orderBy('position')
-    //                 ->lockForUpdate()
-    //                 ->limit($limit)
-    //                 ->get(['id', 'user_id', 'accept_token', 'position']);
-
-    //             if ($rows->isNotEmpty()) {
-    //                 EmailBatchItem::whereIn('id', $rows->pluck('id'))
-    //                     ->update([
-    //                         'status' => 'sending',
-    //                         'updated_at' => $now,
-    //                     ]);
-    //             }
-
-    //             return $rows;
-    //         });
-
-    //         if ($items->isEmpty()) {
-    //             // si ya no hay pendientes, marca batch done (opcional)
-    //             EmailBatch::where('id', $batchId)->update([
-    //                 'status' => 'done',
-    //                 'updated_at' => $now,
-    //             ]);
-
-    //             return response()->json([
-    //                 'ok' => true,
-    //                 'message' => 'no_pending',
-    //                 'sent_count' => 0,
-    //                 'failed_count' => 0,
-    //             ]);
-    //         }
-
-    //         $sent = [];
-    //         $failed = [];
-
-    //         // 2) Enviar 1 por 1
-    //         foreach ($items as $it) {
-    //             try {
-    //                 $user = DB::table('users')->where('id', $it->user_id)->first(['id', 'email']);
-
-    //                 if (!$user || !$user->email) {
-    //                     throw new \Exception('user_email_missing');
-    //                 }
-
-    //                 // Datos base (ajústalos a tu lógica real)
-    //                 $userName = 'Tutor #' . $it->user_id;
-    //                 $sessionDate = $now->format('d/m/Y');
-    //                 $sessionTime = $now->addMinutes(10)->format('H:i');
-
-    //                 // Link del email con accept_token (tu tabla lo tiene)
-    //                 $meetingLink = url("/tutor/wait?t=" . $it->accept_token);
-
-    //                 // Nombre “opuesto” (si no tienes estudiante aún, puede ser texto)
-    //                 $oppositeName = 'Estudiante';
-
-    //                 Mail::to($user->email)->send(
-    //                     new TutorTutoriaNotificationMail(
-    //                         $userName,
-    //                         $sessionDate,
-    //                         $sessionTime,
-    //                         $meetingLink,
-    //                         $oppositeName
-    //                     )
-    //                 );
-
-    //                 EmailBatchItem::where('id', $it->id)->update([
-    //                     'status' => 'sent',
-    //                     'sent_at' => $now,
-    //                     'last_error' => null,
-    //                     'updated_at' => $now,
-    //                 ]);
-
-    //                 $sent[] = $user->email;
-
-    //                 // pausa pequeña opcional
-    //                 usleep(150000);
-    //             } catch (\Throwable $e) {
-    //                 Log::error("Batch {$batchId} mail fail item {$it->id}: " . $e->getMessage());
-
-    //                 EmailBatchItem::where('id', $it->id)->update([
-    //                     'status' => 'failed',
-    //                     'last_error' => substr($e->getMessage(), 0, 900),
-    //                     'updated_at' => $now,
-    //                 ]);
-
-    //                 $failed[] = [
-    //                     'item_id' => $it->id,
-    //                     'user_id' => $it->user_id,
-    //                     'error' => $e->getMessage(),
-    //                 ];
-    //             }
-    //         }
-
-    //         // 3) Si ya no quedan pendientes, marca batch done (opcional)
-    //         // $pendingLeft = EmailBatchItem::where('batch_id', $batchId)
-    //         //     ->where('status', 'pending')
-    //         //     ->count();
-
-    //         // if ($pendingLeft === 0) {
-    //         //     EmailBatch::where('id', $batchId)->update([
-    //         //         'status' => 'done',
-    //         //         'updated_at' => $now,
-    //         //     ]);
-    //         // }
-
-    //         return response()->json([
-    //             'ok' => true,
-    //             'batch_id' => $batchId,
-    //             'processed' => $items->count(),
-    //             'sent_count' => count($sent),
-    //             'failed_count' => count($failed),
-    //             // 'pending_left' => $pendingLeft,
-    //             'sent' => $sent,
-    //             'failed' => $failed,
-    //         ]);
-    //     }
-
 
 
     public function sendBatchEmails(Request $request)
@@ -2323,15 +2189,16 @@ class SubjectPickerController extends Controller
         });
     }
 
-    public function checkMeet($id) {
-    $booking = DB::table('slot_bookings')->where('id', $id)->first();
-    
-    if ($booking && $booking->meeting_link) {
-        return response()->json(['ok' => true, 'meeting_link' => $booking->meeting_link]);
+    public function checkMeet($id)
+    {
+        $booking = DB::table('slot_bookings')->where('id', $id)->first();
+
+        if ($booking && $booking->meeting_link) {
+            return response()->json(['ok' => true, 'meeting_link' => $booking->meeting_link]);
+        }
+
+        return response()->json(['ok' => false, 'message' => 'No link yet'], 404);
     }
-    
-    return response()->json(['ok' => false, 'message' => 'No link yet'], 404);
-}
 
 
 
