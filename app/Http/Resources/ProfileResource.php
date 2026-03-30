@@ -41,6 +41,7 @@ class ProfileResource extends JsonResource
             'address'               => $this->whenLoaded('user', function () {
                 return new AddressResource($this->user->address);
             }),
+            'price'                 => $this->whenHas('price'),
         ];
     }
 }

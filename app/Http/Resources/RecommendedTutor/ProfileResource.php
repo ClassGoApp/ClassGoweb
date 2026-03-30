@@ -20,6 +20,7 @@ class ProfileResource extends JsonResource
             'full_name'             => $this?->full_name,
             'slug'                  => $this->whenHas('slug'),
             'image'                 => $this->profile_image,
+            'price'                 => $this->whenHas('price'),
         ];
     }
 }

@@ -124,33 +124,72 @@ class SubjectPickerController extends Controller
     public function categoriasMaterias()
     {
         $data = Cache::remember('subject_groups:lvl2_with_subjects', now()->addMinutes(5), function () {
+
             $rows = DB::select("
             SELECT
-                lvl1.id   AS id_nivel_1,
-                lvl1.name AS nivel_1,
+                base.id_nivel_1,
+                base.nivel_1,
+                base.id_categoria,
+                base.categoria,
+                base.id_subcategoria,
+                base.subcategoria,
+                base.id_materia,
+                base.materia
+            FROM (
+                -- CASO 1: materias directas en nivel 2 (ej. colegio)
+                SELECT
+                    lvl1.id   AS id_nivel_1,
+                    lvl1.name AS nivel_1,
 
-                lvl2.id   AS id_categoria,
-                lvl2.name AS categoria,
+                    lvl2.id   AS id_categoria,
+                    lvl2.name AS categoria,
 
-                lvl3.id   AS id_subcategoria,
-                lvl3.name AS subcategoria,
+                    NULL      AS id_subcategoria,
+                    NULL      AS subcategoria,
 
-                s.id      AS id_materia,
-                s.name    AS materia
-            FROM subject_groups AS lvl1
-            INNER JOIN subject_groups AS lvl2
-                ON lvl2.id_padre = lvl1.id
-               AND lvl2.deleted_at IS NULL
-            LEFT JOIN subject_groups AS lvl3
-                ON lvl3.id_padre = lvl2.id
-               AND lvl3.deleted_at IS NULL
-            LEFT JOIN subjects AS s
-                ON s.subject_group_id = COALESCE(lvl3.id, lvl2.id)
-               AND s.deleted_at IS NULL
-               AND s.status = 'active'
-            WHERE lvl1.id IN (1000, 2000, 3000)
-              AND lvl1.deleted_at IS NULL
-            ORDER BY lvl1.id, lvl2.name, lvl3.name, s.name
+                    s.id      AS id_materia,
+                    s.name    AS materia
+                FROM subject_groups AS lvl1
+                INNER JOIN subject_groups AS lvl2
+                    ON lvl2.id_padre = lvl1.id
+                   AND lvl2.deleted_at IS NULL
+                INNER JOIN subjects AS s
+                    ON s.subject_group_id = lvl2.id
+                   AND s.deleted_at IS NULL
+                   AND s.status = 'active'
+                WHERE lvl1.id IN (1000, 2000, 3000)
+                  AND lvl1.deleted_at IS NULL
+
+                UNION ALL
+
+                -- CASO 2: materias en nivel 3 (ej. universidad / instituto)
+                SELECT
+                    lvl1.id   AS id_nivel_1,
+                    lvl1.name AS nivel_1,
+
+                    lvl2.id   AS id_categoria,
+                    lvl2.name AS categoria,
+
+                    lvl3.id   AS id_subcategoria,
+                    lvl3.name AS subcategoria,
+
+                    s.id      AS id_materia,
+                    s.name    AS materia
+                FROM subject_groups AS lvl1
+                INNER JOIN subject_groups AS lvl2
+                    ON lvl2.id_padre = lvl1.id
+                   AND lvl2.deleted_at IS NULL
+                INNER JOIN subject_groups AS lvl3
+                    ON lvl3.id_padre = lvl2.id
+                   AND lvl3.deleted_at IS NULL
+                INNER JOIN subjects AS s
+                    ON s.subject_group_id = lvl3.id
+                   AND s.deleted_at IS NULL
+                   AND s.status = 'active'
+                WHERE lvl1.id IN (1000, 2000, 3000)
+                  AND lvl1.deleted_at IS NULL
+            ) AS base
+            ORDER BY base.id_nivel_1, base.id_categoria, base.id_subcategoria, base.id_materia
         ");
 
             return collect($rows)
@@ -158,20 +197,18 @@ class SubjectPickerController extends Controller
                 ->map(function ($items) {
                     $first = $items->first();
 
-                    $materias = $items
-                        ->filter(fn($r) => !is_null($r->id_materia))
-                        ->unique('id_materia')
-                        ->map(fn($r) => [
-                            'id_materia' => (int) $r->id_materia,
-                            'materia'    => $r->materia,
-                        ])
-                        ->sortBy('materia')
-                        ->values();
-
                     return [
                         'id_categoria' => (int) $first->id_categoria,
                         'categoria'    => $first->categoria,
-                        'materias'     => $materias,
+                        'materias'     => $items
+                            ->whereNotNull('id_materia')
+                            ->unique('id_materia')
+                            ->map(fn($r) => [
+                                'id_materia' => (int) $r->id_materia,
+                                'materia'    => $r->materia,
+                            ])
+                            ->sortBy('materia')
+                            ->values(),
                     ];
                 })
                 ->filter(fn($cat) => $cat['materias']->isNotEmpty())
@@ -183,60 +220,6 @@ class SubjectPickerController extends Controller
             'data' => $data
         ]);
     }
-
-    // public function categoriasMaterias()
-    // {
-    //     $data = Cache::remember('subject_groups:lvl2_with_subjects', now()->addMinutes(5), function () {
-
-    //         $rows = DB::select("
-    //         SELECT
-    //             lvl1.id   AS id_nivel_1,
-    //             lvl1.name AS nivel_1,
-
-    //             lvl2.id   AS id_categoria,
-    //             lvl2.name AS categoria,
-
-    //             lvl3.id   AS id_subcategoria,
-    //             lvl3.name AS subcategoria,
-
-    //             s.id      AS id_materia,
-    //             s.name    AS materia
-    //         FROM subject_groups AS lvl1
-    //         JOIN subject_groups AS lvl2
-    //             ON lvl2.id_padre = lvl1.id
-    //             AND lvl2.deleted_at IS NULL
-    //         LEFT JOIN subject_groups AS lvl3
-    //             ON lvl3.id_padre = lvl2.id
-    //             AND lvl3.deleted_at IS NULL
-    //         LEFT JOIN subjects AS s
-    //             ON s.subject_group_id = COALESCE(lvl3.id, lvl2.id)
-    //             AND s.deleted_at IS NULL
-    //         WHERE lvl1.id IN (1000, 2000, 3000)
-    //           AND lvl1.deleted_at IS NULL
-    //         ORDER BY lvl1.id, lvl2.id, lvl3.id, s.id
-    //     ");
-
-    //         return collect($rows)
-    //             ->groupBy('id_categoria')
-    //             ->map(function ($items) {
-    //                 return [
-    //                     'id_categoria' => $items->first()->id_categoria,
-    //                     'categoria'    => $items->first()->categoria,
-    //                     'materias'     => $items
-    //                         ->whereNotNull('id_materia')
-    //                         ->unique('id_materia')
-    //                         ->map(fn($r) => [
-    //                             'id_materia' => $r->id_materia,
-    //                             'materia'    => $r->materia,
-    //                         ])
-    //                         ->values(),
-    //                 ];
-    //             })
-    //             ->values();
-    //     });
-
-    //     return response()->json(['data' => $data]);
-    // }
     private function getTutorsAvailableNow(int $subjectId): Collection
     {
         return $this->baseTutorsBySubjectQuery($subjectId, true)
