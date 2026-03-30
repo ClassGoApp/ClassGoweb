@@ -30,7 +30,6 @@ class ProfileResource extends JsonResource
             'intro_video'           => !empty($this->intro_video) ? url(Storage::url($this->intro_video)) : null,
             'description'           => $this->whenHas('description'),
             'tagline'               => $this->whenHas('tagline'),
-            'price'                 => $this->whenHas('price'),
         ];
     }
 }

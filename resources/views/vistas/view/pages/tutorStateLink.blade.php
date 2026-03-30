@@ -311,23 +311,6 @@
         .btn-mock:hover {
             color: var(--primary-color);
         }
-
-        /* ESTILOS PARA BOTÓN EN ESTADO LOADING (ejemplo en "Entrar al Aula") */
-        .btn-action.is-loading {
-            opacity: .85;
-            cursor: wait;
-            pointer-events: none;
-        }
-
-        .btn-spinner {
-            width: 16px;
-            height: 16px;
-            border: 2px solid rgba(2, 48, 71, 0.2);
-            border-top: 2px solid var(--primary-color);
-            border-radius: 50%;
-            animation: spin .8s linear infinite;
-            display: inline-block;
-        }
     </style>
 
     <div class="dashboard-card">
@@ -805,7 +788,6 @@
             });
         }
         let joining = false;
-        let originalBtnContent = '';
 
         async function acceptThenGoMeet() {
             if (!token || joining) return;
@@ -818,13 +800,9 @@
             joining = true;
 
             if (btnGoMeet) {
-                originalBtnContent = btnGoMeet.innerHTML;
                 btnGoMeet.disabled = true;
-                btnGoMeet.classList.add('is-loading');
-                btnGoMeet.innerHTML = `
-            <span class="btn-spinner"></span>
-            <span>Cargando...</span>
-        `;
+                btnGoMeet.style.opacity = '.75';
+                btnGoMeet.style.cursor = 'not-allowed';
             }
 
             const {
@@ -836,8 +814,8 @@
                 joining = false;
                 if (btnGoMeet) {
                     btnGoMeet.disabled = false;
-                    btnGoMeet.classList.remove('is-loading');
-                    btnGoMeet.innerHTML = originalBtnContent;
+                    btnGoMeet.style.opacity = '1';
+                    btnGoMeet.style.cursor = 'pointer';
                 }
                 alert(json.message || `No se pudo aceptar (HTTP ${res.status})`);
                 return;
@@ -845,12 +823,6 @@
 
             const directLink = json.meeting_link || json.booking?.meeting_link || null;
             if (directLink) {
-                if (btnGoMeet) {
-                    btnGoMeet.innerHTML = `
-                <span class="btn-spinner"></span>
-                <span>Ingresando...</span>
-            `;
-                }
                 window.location.href = directLink;
                 return;
             }
@@ -868,18 +840,11 @@
                 joining = false;
                 if (btnGoMeet) {
                     btnGoMeet.disabled = false;
-                    btnGoMeet.classList.remove('is-loading');
-                    btnGoMeet.innerHTML = originalBtnContent;
+                    btnGoMeet.style.opacity = '1';
+                    btnGoMeet.style.cursor = 'pointer';
                 }
                 alert(meetJson.message || 'Aún no hay link de Meet.');
                 return;
-            }
-
-            if (btnGoMeet) {
-                btnGoMeet.innerHTML = `
-            <span class="btn-spinner"></span>
-            <span>Ingresando...</span>
-        `;
             }
 
             window.location.href = meetJson.meeting_link;

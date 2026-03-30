@@ -293,14 +293,14 @@
         }
 
         /* .category-bar {
-                                                                                display: flex;
-                                                                                align-items: center;
-                                                                                gap: .6rem;
-                                                                                overflow-x: auto;
-                                                                                padding: 1rem 0 1rem;
-                                                                                margin-bottom: 1rem;
-                                                                                scrollbar-width: none;
-                                                                            } */
+                                                                            display: flex;
+                                                                            align-items: center;
+                                                                            gap: .6rem;
+                                                                            overflow-x: auto;
+                                                                            padding: 1rem 0 1rem;
+                                                                            margin-bottom: 1rem;
+                                                                            scrollbar-width: none;
+                                                                        } */
 
         .category-bar {
             display: flex;
@@ -373,7 +373,7 @@
         .section-header:hover {
             background-color: #f0f3f5;
         }
-
+        
 
         .section-header h3 {
             font-size: clamp(0.75rem, 2vw, 1.25rem);
@@ -400,7 +400,7 @@
             transform: rotate(-180deg);
         }
 
-
+      
         .subject-grid {
             display: grid;
             /* CAMBIO CLAVE: auto para que no reserve espacio vacío */
@@ -446,7 +446,7 @@
             display: none;
         }
 
-
+    
 
         .subject-card-btn {
             display: flex;
@@ -511,9 +511,9 @@
         }
 
         /* .subject-card-btn.is-selected .subject-initial {
-                                                                            background: var(--terciary-color2);
-                                                                            color: #fff;
-                                                                        } */
+                                                                        background: var(--terciary-color2);
+                                                                        color: #fff;
+                                                                    } */
 
 
         .subject-card-btn.is-selected .subject-initial {
@@ -1768,34 +1768,34 @@
 
     <script>
         /* ========================================================================
-            CLASSGO | Student - Instant Tutors Script
-            ------------------------------------------------------------------------
-            FLUJO:
-            1) Cargar Categorías/Materias
-            2) Seleccionar Materia (solo una) + mostrar FAB
-            3) Crear Batch + mostrar Radar + polling:
-            - status (cada 60s)
-            - tutores aceptados (cada 5s)
-            - countdown expiración (cada 1s)
-            4) Mostrar cards de tutores + reservar + abrir checkout (flip)
-            5) Subir comprobante + pagar + polling booking (cada 2.5s)
-            6) Nueva solicitud / reset
-            
-            ENDPOINTS:
-            - GET  /student/subject-groups/categorias-materias
-            - POST /student/batches/start
-            - GET  /student/batches/active
-            - GET  /student/batches/{batchId}/status
-            - GET  /student/batches/{batchId}/accepted-tutors?limit=50
-            - POST /student/batches/{batchId}/reserve
-            - POST /student/bookings/{bookingId}/receipt
-            GET  /student/bookings/{bookingId}/status
-            - GET  /student/bookings/{bookingId}/meet
+        CLASSGO | Student - Instant Tutors Script
+        ------------------------------------------------------------------------
+        FLUJO:
+        1) Cargar Categorías/Materias
+        2) Seleccionar Materia (solo una) + mostrar FAB
+        3) Crear Batch + mostrar Radar + polling:
+        - status (cada 60s)
+        - tutores aceptados (cada 5s)
+        - countdown expiración (cada 1s)
+        4) Mostrar cards de tutores + reservar + abrir checkout (flip)
+        5) Subir comprobante + pagar + polling booking (cada 2.5s)
+        6) Nueva solicitud / reset
+        
+        ENDPOINTS:
+        - GET  /student/subject-groups/categorias-materias
+        - POST /student/batches/start
+        - GET  /student/batches/active
+        - GET  /student/batches/{batchId}/status
+        - GET  /student/batches/{batchId}/accepted-tutors?limit=50
+        - POST /student/batches/{batchId}/reserve
+        - POST /student/bookings/{bookingId}/receipt
+        GET  /student/bookings/{bookingId}/status
+        - GET  /student/bookings/{bookingId}/meet
 
-            NOTAS:
-            - fetchAcceptedTutors() se pausa si state.activeHeroId existe (checkout abierto)
-            - closeHero(true) debe existir en otro lado o aquí (si no, revienta)
-                                                                                                                                ======================================================================== */
+        NOTAS:
+        - fetchAcceptedTutors() se pausa si state.activeHeroId existe (checkout abierto)
+        - closeHero(true) debe existir en otro lado o aquí (si no, revienta)
+                                                                                                                            ======================================================================== */
 
 
         /* ========================================================================
@@ -1865,14 +1865,6 @@
         /* ========================================================================
           2) UI: BUSCADOR + PILLS + SECCIONES
         ======================================================================== */
-
-        function normalizeText(text) {
-            return text
-                .toLowerCase()
-                .normalize("NFD") // separa letras y tildes
-                .replace(/[\u0300-\u036f]/g, ""); // elimina tildes
-        }
-
         function wireSearch() {
             const input = document.getElementById('search-input');
             input.addEventListener('input', (e) => {
@@ -1905,11 +1897,8 @@
             }
 
             if (state.searchQuery !== '') {
-                const q = normalizeText(state.searchQuery);
-
-                filtered = filtered.filter(s =>
-                    normalizeText(s.name).includes(q)
-                );
+                const q = state.searchQuery.toLowerCase();
+                filtered = filtered.filter(s => s.name.toLowerCase().includes(q));
             }
 
             return filtered;
@@ -2020,13 +2009,13 @@
 
         <div class="subject-grid ${collapsedClass}" id="${gridId}">
           ${items.map(sub => `
-                <button class="subject-card-btn" onclick="seleccionarMateria(this, ${sub.id}, '${sub.name.replaceAll("'", "\\'")}')">
-                    <div class="subject-initial">${sub.name.charAt(0)}</div>
-                    <div class="subject-meta">
-                        <div class="subject-title">${sub.name}</div>
-                    </div>
-                </button>
-                `).join('')}
+            <button class="subject-card-btn" onclick="seleccionarMateria(this, ${sub.id}, '${sub.name.replaceAll("'", "\\'")}')">
+                <div class="subject-initial">${sub.name.charAt(0)}</div>
+                <div class="subject-meta">
+                    <div class="subject-title">${sub.name}</div>
+                </div>
+            </button>
+            `).join('')}
         </div>
     </section>
     `;
@@ -2230,38 +2219,23 @@
           4.5) Polling: Accepted Tutors (cada 5s)
         ======================================================================== */
         async function fetchAcceptedTutors(batchId) {
-            if (state.activeHeroId) return;
+            if (state.activeHeroId) return; // pausar si hay un hero activo (checkout abierto)
 
-            const url = `/student/batches/${batchId}/accepted-tutors?limit=50&_=${Date.now()}`;
-
-            const res = await fetch(url, {
-                method: 'GET',
-                credentials: 'same-origin',
-                cache: 'no-store',
+            const res = await fetch(`/student/batches/${batchId}/accepted-tutors?limit=50`, {
                 headers: {
-                    'Accept': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'Cache-Control': 'no-cache'
-                }
+                    'Accept': 'application/json'
+                },
+                credentials: 'same-origin'
             });
 
-            const raw = await res.text();
-            let json = {};
-            try {
-                json = JSON.parse(raw);
-            } catch {}
-
-            console.log('accepted-tutors =>', res.status, raw);
-
-            if (!res.ok) {
-                console.error('accepted-tutors fallo', res.status, raw);
-                return;
-            }
-
-            if (state.activeHeroId) return;
+            const json = await res.json().catch(() => ({}));
+            if (!res.ok) return;
 
             const data = Array.isArray(json.data) ? json.data : [];
+
+            // ✅ REEMPLAZAR COMPLETO (no acumular)
             acceptedMap = new Map(data.map(row => [row.id, row]));
+
             renderAcceptedCards();
         }
 
@@ -2355,10 +2329,6 @@
 
         async function selectSubject(subjectName, subjectId) {
             if (currentBatchId) return;
-
-            state.activeHeroId = null;
-            acceptedMap.clear();
-            document.getElementById('tutor-results').innerHTML = '';
 
             // 1. UI Feedback inmediato
             ocultarFabTutoria();
@@ -2530,13 +2500,13 @@
               ${img ? `<img class="avatar" src="${escapeHtml(img)}" alt="${name}">` : ``}
 
               ${verified ? `
-                                                                                                                                                <span class="verified">
-                                                                                                                                                  <svg viewBox="0 0 24 24" class="verified-icon">
-                                                                                                                                                    <path d="M12 2l4 2 4 .6 1.4 4L22 12l-1.6 3.4L20 19l-4 .6-4 2-4-2-4-.6L3.6 15.4 2 12l1.4-3.4L4 4.6l4-.6 4-2z"/>
-                                                                                                                                                    <path d="M9.5 12.5l1.7 1.7 3.8-3.8"/>
-                                                                                                                                                  </svg>
-                                                                                                                                                </span>
-                                                                                                                                              ` : ``}
+                                                                                                                                            <span class="verified">
+                                                                                                                                              <svg viewBox="0 0 24 24" class="verified-icon">
+                                                                                                                                                <path d="M12 2l4 2 4 .6 1.4 4L22 12l-1.6 3.4L20 19l-4 .6-4 2-4-2-4-.6L3.6 15.4 2 12l1.4-3.4L4 4.6l4-.6 4-2z"/>
+                                                                                                                                                <path d="M9.5 12.5l1.7 1.7 3.8-3.8"/>
+                                                                                                                                              </svg>
+                                                                                                                                            </span>
+                                                                                                                                          ` : ``}
             </div>
           </div>
 
@@ -2679,6 +2649,7 @@
         }
 
         async function reserveTutorAndOpen(heroId) {
+            state.activeHeroId = String(heroId);
 
             if (!currentBatchId) {
                 alert('No hay batch activo.');
@@ -2800,10 +2771,8 @@
                 return;
             }
 
-            const originalText = btn.textContent;
             btn.disabled = true;
             btn.classList.add('sp-disabled');
-            btn.textContent = 'PROCESANDO...';
 
             try {
                 const csrf = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
@@ -2829,7 +2798,7 @@
                     json = JSON.parse(raw);
                 } catch {}
 
-
+             
                 if (!res.ok || !json.ok) {
                     const err =
                         json?.errors?.comprobante?.[0] ||
@@ -2858,7 +2827,6 @@
             } finally {
                 btn.disabled = false;
                 btn.classList.remove('sp-disabled');
-                btn.textContent = originalText;
             }
         }
 
@@ -2910,27 +2878,6 @@
             bookingPollTimers.set(key, t);
         }
 
-        function closeHero(instant = false) {
-            const id = state.activeHeroId;
-            if (!id) return;
-
-            const grid = document.getElementById('tutor-results');
-            const card = document.getElementById(`hero-${id}`);
-
-            if (card) {
-                card.classList.remove('is-flipped');
-                card.classList.remove('is-active');
-            }
-
-            if (grid) {
-                grid.classList.remove('hide-others');
-            }
-
-            document.body.classList.remove('lock-scroll');
-
-            state.activeHeroId = null;
-        }
-
 
         /* ========================================================================
           10) BOTÓN: Nueva solicitud (reset total)
@@ -2938,19 +2885,6 @@
         btnNewSearch?.addEventListener('click', async () => {
             currentBatchId = null;
             stopPollingAll();
-
-            state.activeHeroId = null; // ✅ importante
-            state.receipts = {}; // opcional, pero recomendable
-            bookingByHeroId.clear(); // opcional, recomendable
-
-            acceptedMap.clear(); //
-
-            const grid = document.getElementById('tutor-results');
-            if (grid) {
-                grid.classList.remove('hide-others'); // ✅ AGREGAR
-                grid.classList.remove('active'); // ✅ recomendable
-                grid.innerHTML = '';
-            }
 
             document.getElementById('radar-ui')?.classList.remove('results-found');
             document.getElementById('tutor-results').innerHTML = '';
@@ -2965,6 +2899,7 @@
             renderCategoryPills();
             renderSubjectSections();
         });
+
 
         /* ========================================================================
           11) INIT

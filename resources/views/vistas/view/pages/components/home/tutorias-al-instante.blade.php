@@ -25,6 +25,12 @@
             $user = Auth::user();
             $isLogged = $user !== null;
             $isTutor = $user?->hasRole('tutor') ?? false;
+
+            // única variable de aceptación
+            $accepted = $user?->terms_accepted_at !== null;
+
+            // rol que se enviará al método
+            $role = $isTutor ? 'tutor' : 'student';
         @endphp
 
         <div id="cta-container"
@@ -105,7 +111,12 @@
             </div>
         </div>
 
-        
+        <div id="toast" class="toast"
+            style="opacity: 0; transition: opacity 0.3s ease;
+               position: fixed; bottom: 24px; right: 24px; padding: 12px 18px;
+               border-radius: 12px; font-weight: 700; z-index: 9999; pointer-events: none;
+               box-shadow: 0 14px 30px rgba(0,0,0,0.25);">
+        </div>
 
     </div>
     @if ($isLogged && !$isTutor)
@@ -570,9 +581,23 @@
     }
 
     /* toast */
-    
+    .toast {
+        opacity: 0;
+        transition: opacity 0.25s ease;
+        padding: 0.75rem 1.25rem;
+        border-radius: 0.75rem;
+        font-weight: 700;
+        color: white;
+        pointer-events: none;
+    }
 
-    
+    .toast-success {
+        background: #22c55e;
+    }
+
+    .toast-error {
+        background: #ef4444;
+    }
 
     /* ---------- RESPONSIVE ---------- */
 
@@ -689,6 +714,48 @@
 
     animate();
 
+    function showTermsAlert(message, type = 'success') {
+        const alertBox = document.getElementById('terms-alert');
+
+        if (!alertBox) return;
+
+        alertBox.textContent = message;
+        alertBox.style.display = 'block';
+        alertBox.style.opacity = '1';
+
+        alertBox.classList.remove('success-alert', 'error-alert');
+
+        if (type === 'success') {
+            alertBox.classList.add('success-alert');
+        } else {
+            alertBox.classList.add('error-alert');
+        }
+
+        clearTimeout(alertBox.hideTimeout);
+
+        alertBox.hideTimeout = setTimeout(() => {
+            alertBox.style.opacity = '0';
+
+            setTimeout(() => {
+                alertBox.style.display = 'none';
+                alertBox.classList.remove('success-alert', 'error-alert');
+            }, 300);
+        }, 3000);
+    }
+
+    function redirigirSegunRol(role) {
+        const ctaTerms = document.getElementById('cta-terms');
+
+        if (ctaTerms && window.getComputedStyle(ctaTerms).display !== 'none') {
+            showTermsAlert('Debes aceptar los términos y condiciones.', 'error');
+            return;
+        }
+
+        if (role !== 'tutor') {
+            window.location.href = "{{ route('student.subjects.pick') }}";
+        }
+    }
+
     function irAlInstanteDesdeFlotante() {
         const ctaTerms = document.getElementById('cta-terms');
         const seccionTutorias = document.getElementById('tutorias-instantaneas-seccion');
@@ -762,11 +829,69 @@
             return;
         }
 
-        // Si ya aceptó términos, redirigir
-        window.location.href = "{{ route('student.subjects.pick') }}";
+        if (!checkbox.checked) {
+            showTermsAlert('Debes aceptar los términos y condiciones.', 'error');
+            return;
+        }
+
+        if (btn) {
+            btn.style.pointerEvents = 'none';
+            btn.style.opacity = '0.7';
+        }
+
+        fetch("{{ route('accept.terms') }}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    role: role
+                })
+            })
+            .then(async response => {
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.message || 'Error al aceptar términos.');
+                }
+
+                return data;
+            })
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('cta-terms').style.display = 'none';
+                    document.getElementById('cta-after').style.display = 'block';
+
+                    showTermsAlert('Términos aceptados correctamente.', 'success');
+                } else {
+                    showTermsAlert(data.message || 'No se pudo aceptar los términos.', 'error');
+                }
+            })
+            .catch(error => {
+                showTermsAlert(error.message || 'Ocurrió un error inesperado.', 'error');
+            })
+            .finally(() => {
+                if (btn) {
+                    btn.style.pointerEvents = 'auto';
+                    btn.style.opacity = '1';
+                }
+            });
     }
 
-    
+    // 
+    function showToast(message, type) {
+        const toast = document.getElementById('toast');
+        if (!toast) return;
 
-   
+        toast.textContent = message;
+        toast.className = 'toast ' + (type === 'success' ? 'toast-success' : 'toast-error');
+        toast.style.opacity = '1';
+
+        clearTimeout(window.toastTimeout);
+        window.toastTimeout = setTimeout(() => {
+            toast.style.opacity = '0';
+        }, 3000);
+    }
 </script>

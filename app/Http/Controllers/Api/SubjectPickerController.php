@@ -121,108 +121,71 @@ class SubjectPickerController extends Controller
         ]);
     }
 
+   
     public function categoriasMaterias()
     {
         $data = Cache::remember('subject_groups:lvl2_with_subjects', now()->addMinutes(5), function () {
 
             $rows = DB::select("
             SELECT
-                base.id_nivel_1,
-                base.nivel_1,
-                base.id_categoria,
-                base.categoria,
-                base.id_subcategoria,
-                base.subcategoria,
-                base.id_materia,
-                base.materia
-            FROM (
-                -- CASO 1: materias directas en nivel 2 (ej. colegio)
-                SELECT
-                    lvl1.id   AS id_nivel_1,
-                    lvl1.name AS nivel_1,
+                lvl1.id   AS id_nivel_1,
+                lvl1.name AS nivel_1,
 
-                    lvl2.id   AS id_categoria,
-                    lvl2.name AS categoria,
+                lvl2.id   AS id_categoria,
+                lvl2.name AS categoria,
 
-                    NULL      AS id_subcategoria,
-                    NULL      AS subcategoria,
+                lvl3.id   AS id_subcategoria,
+                lvl3.name AS subcategoria,
 
-                    s.id      AS id_materia,
-                    s.name    AS materia
-                FROM subject_groups AS lvl1
-                INNER JOIN subject_groups AS lvl2
-                    ON lvl2.id_padre = lvl1.id
-                   AND lvl2.deleted_at IS NULL
-                INNER JOIN subjects AS s
-                    ON s.subject_group_id = lvl2.id
-                   AND s.deleted_at IS NULL
-                   AND s.status = 'active'
-                WHERE lvl1.id IN (1000, 2000, 3000)
-                  AND lvl1.deleted_at IS NULL
-
-                UNION ALL
-
-                -- CASO 2: materias en nivel 3 (ej. universidad / instituto)
-                SELECT
-                    lvl1.id   AS id_nivel_1,
-                    lvl1.name AS nivel_1,
-
-                    lvl2.id   AS id_categoria,
-                    lvl2.name AS categoria,
-
-                    lvl3.id   AS id_subcategoria,
-                    lvl3.name AS subcategoria,
-
-                    s.id      AS id_materia,
-                    s.name    AS materia
-                FROM subject_groups AS lvl1
-                INNER JOIN subject_groups AS lvl2
-                    ON lvl2.id_padre = lvl1.id
-                   AND lvl2.deleted_at IS NULL
-                INNER JOIN subject_groups AS lvl3
-                    ON lvl3.id_padre = lvl2.id
-                   AND lvl3.deleted_at IS NULL
-                INNER JOIN subjects AS s
-                    ON s.subject_group_id = lvl3.id
-                   AND s.deleted_at IS NULL
-                   AND s.status = 'active'
-                WHERE lvl1.id IN (1000, 2000, 3000)
-                  AND lvl1.deleted_at IS NULL
-            ) AS base
-            ORDER BY base.id_nivel_1, base.id_categoria, base.id_subcategoria, base.id_materia
+                s.id      AS id_materia,
+                s.name    AS materia
+            FROM subject_groups AS lvl1
+            JOIN subject_groups AS lvl2
+                ON lvl2.id_padre = lvl1.id
+                AND lvl2.deleted_at IS NULL
+            LEFT JOIN subject_groups AS lvl3
+                ON lvl3.id_padre = lvl2.id
+                AND lvl3.deleted_at IS NULL
+            LEFT JOIN subjects AS s
+                ON s.subject_group_id = COALESCE(lvl3.id, lvl2.id)
+                AND s.deleted_at IS NULL
+            WHERE lvl1.id IN (1000, 2000, 3000)
+              AND lvl1.deleted_at IS NULL
+            ORDER BY lvl1.id, lvl2.id, lvl3.id, s.id
         ");
 
             return collect($rows)
                 ->groupBy('id_categoria')
                 ->map(function ($items) {
-                    $first = $items->first();
-
                     return [
-                        'id_categoria' => (int) $first->id_categoria,
-                        'categoria'    => $first->categoria,
+                        'id_categoria' => $items->first()->id_categoria,
+                        'categoria'    => $items->first()->categoria,
                         'materias'     => $items
                             ->whereNotNull('id_materia')
                             ->unique('id_materia')
                             ->map(fn($r) => [
-                                'id_materia' => (int) $r->id_materia,
+                                'id_materia' => $r->id_materia,
                                 'materia'    => $r->materia,
                             ])
-                            ->sortBy('materia')
                             ->values(),
                     ];
                 })
-                ->filter(fn($cat) => $cat['materias']->isNotEmpty())
-                ->values()
-                ->toArray();
+                ->values();
         });
 
-        return response()->json([
-            'data' => $data
-        ]);
+        return response()->json(['data' => $data]);
     }
     private function getTutorsAvailableNow(int $subjectId): Collection
     {
+        // Solo tutores con rol "tutor" y que hayan aceptado términos (users.terms_accepted_at)
         return $this->baseTutorsBySubjectQuery($subjectId, true)
+            ->join('model_has_roles', function ($join) {
+                $join->on('u.id', '=', 'model_has_roles.model_id')
+                    ->where('model_has_roles.model_type', '=', User::class);
+            })
+            ->join('roles', 'roles.id', '=', 'model_has_roles.role_id')
+            ->where('roles.name', 'tutor')
+            ->whereNotNull('u.terms_accepted_at')
             ->groupBy('us.user_id', 'u.email')
             ->select([
                 'us.user_id',
@@ -424,7 +387,7 @@ class SubjectPickerController extends Controller
         $subjectId = (int) $data['subject_id'];
         $studentId = (int) Auth::id();
 
-        $timeoutMinutes = 5; // define tu tiempo de espera real
+        $timeoutMinutes = 2; // define tu tiempo de espera real
 
         return DB::transaction(function () use ($subjectId, $studentId, $timeoutMinutes) {
 
@@ -531,6 +494,63 @@ class SubjectPickerController extends Controller
             ]);
         });
     }
+
+    // public function emailBatchItem(request $request)
+    // {
+
+    //         $batchId = (int) $request->input('batch_id');
+    //         $batch = EmailBatch::query()->find($batchId);
+    //         if (!$batch) {
+    //             return response()->json(['ok' => false, 'message' => 'Batch no existe'], 404);
+    //         }
+
+    //         $subjectId = (int) $batch->subject_id;
+    //     $availableNow = $this->getTutorsAvailableNow($subjectId);
+
+    //         $seen = [];
+    //         $queue = [];
+
+    //         foreach ($availableNow as $t) {
+    //             $uid = (int) $t->user_id;
+    //             if ($uid > 0 && !isset($seen[$uid])) {
+    //                 $seen[$uid] = true;
+    //                 $queue[] = $uid;
+    //             }
+    //         }
+
+    //         $items = [];
+    //         $pos = 1;
+    //         $now = now();
+
+    //         foreach ($queue as $uid) {
+    //             $items[] = [
+    //                 'batch_id'      => $batch->id,
+    //                 'user_id'       => $uid,
+    //                 'position'      => $pos++,
+    //                 'status'        => 'pending',
+    //                 'sent_at'       => null,
+    //                 'last_error'    => null,
+
+    //                 // ✅ tu columna real
+    //                 'accept_token'  => Str::random(64), // 64 cabe perfecto en varchar(80)
+    //                 'accepted_at'   => null,
+    //                 'chosen_at'     => null,
+
+    //                 'created_at'    => $now,
+    //                 'updated_at'    => $now,
+    //             ];
+    //         }
+
+    //         if (!empty($items)) {
+    //             EmailBatchItem::insert($items);
+    //         } else {
+    //             $batch->update([
+    //                 'status' => 'done',
+    //                 'last_error' => 'no_available_candidates',
+    //             ]);
+    //         }
+    // }
+
 
 
 
@@ -670,11 +690,7 @@ class SubjectPickerController extends Controller
     {
         $token = (string) $request->query('t');
         if ($token === '') abort(404);
-        Log::info('acceptWaitlist hit', [
-            'token' => $token,
-            'ua' => $request->userAgent(),
-            'ip' => $request->ip(),
-        ]);
+
         // 1) Buscar item por token
         $item = EmailBatchItem::where('accept_token', $token)->first();
         if (!$item) abort(404);
@@ -690,24 +706,12 @@ class SubjectPickerController extends Controller
         }
 
         // 3) Marcar accepted (idempotente)
-        // if (!$item->accepted_at) {
-        //     $item->accepted_at = now();
-        //     $item->status = 'accepted';
-        //     $item->save();
-        // }
         if (!$item->accepted_at) {
             $item->accepted_at = now();
             $item->status = 'accepted';
             $item->save();
-
-            Log::info('acceptWaitlist saved', [
-                'item_id' => $item->id,
-                'batch_id' => $item->batch_id,
-                'user_id' => $item->user_id,
-                'status' => $item->status,
-                'accepted_at' => $item->accepted_at,
-            ]);
         }
+
 
 
         $expiresAt = $batch->expires_at;
@@ -728,6 +732,73 @@ class SubjectPickerController extends Controller
     }
 
 
+    // public function acceptedTutors(Request $request, EmailBatch $batch)
+    // {
+    //     $this->ensureBatchOwner($batch);
+
+    //     $afterAt = $request->query('after_accepted_at');
+    //     $afterId = (int) $request->query('after_id', 0);
+    //     $limit   = max(1, min((int)$request->query('limit', 20), 50));
+
+    //     $ratingsSub = $this->ratingsSubquery();
+
+    //     $q = DB::table('email_batch_items as ebi')
+    //         ->join('users as u', 'u.id', '=', 'ebi.user_id')
+    //         ->leftJoin('profiles as p', 'p.user_id', '=', 'ebi.user_id')
+    //         ->leftJoinSub($ratingsSub, 'rt', function ($join) {
+    //             $join->on('rt.user_id', '=', 'ebi.user_id');
+    //         })
+    //         ->where('ebi.batch_id', $batch->id)
+    //         ->whereNotNull('ebi.accepted_at')
+    //         // ✅ SOLO los que siguen "aceptados" (no expired/chosen)
+    //         ->where('ebi.status', 'accepted');
+
+    //     $this->applyAcceptedCursor($q, $afterAt, $afterId);
+
+    //     // 🔒 Rango “dinámico” (mismo criterio que requestBooking)
+    //     $waitMinutes    = 5;
+    //     $sessionMinutes = 20;
+
+    //     $startAt = now()->addMinutes($waitMinutes);
+    //     $endAt   = (clone $startAt)->addMinutes($sessionMinutes);
+
+    //     // ✅ excluir tutores ocupados con overlap (reserved/active/rescheduled)
+    //     $q->whereNotExists(function ($sub) use ($startAt, $endAt) {
+    //         $sub->select(DB::raw(1))
+    //             ->from('slot_bookings as sb')
+    //             ->whereColumn('sb.tutor_id', 'ebi.user_id')
+    //             ->whereIn('sb.status', [4, 1, 2]) // 4 reserved, 1 active, 2 rescheduled
+    //             ->where('sb.start_time', '<', $endAt->toDateTimeString())
+    //             ->where('sb.end_time',   '>', $startAt->toDateTimeString());
+    //     });
+
+    //     $rows = $q->orderBy('ebi.accepted_at')
+    //         ->orderBy('ebi.id')
+    //         ->limit($limit)
+    //         ->get([
+    //             'ebi.id',
+    //             'ebi.user_id',
+    //             'ebi.accepted_at',
+    //             'u.email',
+    //             'p.first_name',
+    //             'p.last_name',
+    //             'p.image',
+    //             'p.price',
+    //             'p.verified_at',
+    //             DB::raw("CASE WHEN p.verified_at IS NULL THEN 0 ELSE 1 END as is_verified"),
+    //             DB::raw('COALESCE(rt.rating, 0.0) as rating'),
+    //         ]);
+
+    //     $last = $rows->last();
+
+    //     return response()->json([
+    //         'batch_id' => $batch->id,
+    //         'count' => $rows->count(),
+    //         'data' => $rows,
+    //         'next_after_accepted_at' => $last?->accepted_at,
+    //         'next_after_id' => $last?->id ?? $afterId,
+    //     ]);
+    // }
 
     /**
      * ✅ acceptedTutors()
@@ -814,17 +885,7 @@ class SubjectPickerController extends Controller
             'data' => $rows,
             'next_after_accepted_at' => $last?->accepted_at,
             'next_after_id' => $last?->id ?? $afterId,
-        ])->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0, private')
-            ->header('Pragma', 'no-cache')
-            ->header('Expires', '0');
-
-        // return response()->json([
-        //     'batch_id' => $batch->id,
-        //     'count' => $rows->count(),
-        //     'data' => $rows,
-        //     'next_after_accepted_at' => $last?->accepted_at,
-        //     'next_after_id' => $last?->id ?? $afterId,
-        // ]);
+        ]);
     }
 
 
@@ -1554,6 +1615,462 @@ class SubjectPickerController extends Controller
 
 
 
+    // Si ui_state == "waiting" → “En espera”
+
+    // Si ui_state == "batch_expired_waiting" → “Batch expiró”
+
+    // Si ui_state == "payment_phase" → Mostrar comprobante si existe + botones Aceptar/Rechazar
+
+    // Si ui_state == "accepted" → mostrar botón Meet
+
+    // Si ui_state == "rejected" → mostrar “Rechazado” y desactivar todo
+
+    // Nota: aunque batch.expired == true, si ui_state es payment_phase/accepted, sigues normal.
+
+    // public function tutorWaitlistStatus(Request $request)
+    // {
+    //     $token = (string) $request->query('t');
+    //     if ($token === '') {
+    //         return response()->json(['ok' => false, 'message' => 'Missing token'], 400);
+    //     }
+
+    //     // 1) item por token (define qué tutor es)
+    //     $item = DB::table('email_batch_items')
+    //         ->where('accept_token', $token)
+    //         ->first();
+
+    //     if (!$item) {
+    //         return response()->json(['ok' => false, 'message' => 'Invalid token'], 404);
+    //     }
+
+    //     // 2) batch
+    //     $batch = DB::table('email_batches')
+    //         ->where('id', (int)$item->batch_id)
+    //         ->first();
+
+    //     if (!$batch) {
+    //         return response()->json(['ok' => false, 'message' => 'Batch not found'], 404);
+    //     }
+
+    //     $batchStatus  = (string) ($batch->status ?? '');
+    //     $batchExpired = !empty($batch->expires_at) && now()->greaterThanOrEqualTo($batch->expires_at);
+
+    //     // 3) ¿Este tutor fue elegido?
+    //     $isChosen = ($batchStatus === 'matched' && (int)$batch->accepted_item_id === (int)$item->id);
+
+    //     // 4) bookingId (si ya estamos en fase de pago/meet)
+    //     $bookingId = (int)($batch->booking_id ?? 0);
+
+    //     // ✅ NUEVO: Si el batch ya está matched y este tutor NO es el elegido => terminar YA su espera
+    //     // (evita que se queden en "waiting" hasta que expire el tiempo)
+    //     if (!$isChosen && $batchStatus === 'matched') {
+    //         return response()->json([
+    //             'ok' => true,
+    //             'ui_state' => 'batch_expired_waiting',
+    //             'batch' => [
+    //                 'id' => (int)$batch->id,
+    //                 'status' => $batchStatus,
+    //                 'expires_at' => $batch->expires_at,
+    //                 'expired' => true,
+    //             ],
+    //             'chosen' => [
+    //                 'is_chosen' => false,
+    //                 'booking_id' => null,
+    //             ],
+    //             'message' => 'El estudiante ya eligió a otro tutor. Gracias.',
+    //         ]);
+    //     }
+
+    //     // ✅ NUEVO: Si el batch ya terminó (done/failed) y este tutor NO fue elegido => terminar YA
+    //     if (!$isChosen && in_array($batchStatus, ['done', 'failed'], true)) {
+    //         return response()->json([
+    //             'ok' => true,
+    //             'ui_state' => 'batch_expired_waiting',
+    //             'batch' => [
+    //                 'id' => (int)$batch->id,
+    //                 'status' => $batchStatus,
+    //                 'expires_at' => $batch->expires_at,
+    //                 'expired' => true,
+    //             ],
+    //             'chosen' => [
+    //                 'is_chosen' => false,
+    //                 'booking_id' => null,
+    //             ],
+    //             'message' => 'Esta solicitud ya terminó.',
+    //         ]);
+    //     }
+
+    //     // Caso A: NO elegido y batch expiró = fin de espera
+    //     if (!$isChosen && $batchExpired) {
+    //         return response()->json([
+    //             'ok' => true,
+    //             'ui_state' => 'batch_expired_waiting',
+    //             'batch' => [
+    //                 'id' => (int)$batch->id,
+    //                 'status' => $batchStatus,
+    //                 'expires_at' => $batch->expires_at,
+    //                 'expired' => true,
+    //             ],
+    //             'chosen' => [
+    //                 'is_chosen' => false,
+    //                 'booking_id' => null,
+    //             ],
+    //             'message' => 'El batch expiró y no fuiste elegido.',
+    //         ]);
+    //     }
+
+    //     // Caso B: NO elegido (todavía) y NO expiró = waiting
+    //     if (!$isChosen) {
+    //         return response()->json([
+    //             'ok' => true,
+    //             'ui_state' => 'waiting',
+    //             'batch' => [
+    //                 'id' => (int)$batch->id,
+    //                 'status' => $batchStatus,
+    //                 'expires_at' => $batch->expires_at,
+    //                 'expired' => $batchExpired,
+    //             ],
+    //             'chosen' => [
+    //                 'is_chosen' => false,
+    //                 'booking_id' => null,
+    //             ],
+    //             'message' => 'Aún no fuiste elegido.',
+    //         ]);
+    //     }
+
+    //     // Desde aquí: ES el tutor elegido (isChosen = true)
+
+    //     // Caso C: Fue elegido pero aún NO hay booking_id
+    //     if ($bookingId <= 0) {
+    //         return response()->json([
+    //             'ok' => true,
+    //             'ui_state' => 'payment_phase',
+    //             'batch' => [
+    //                 'id' => (int)$batch->id,
+    //                 'status' => $batchStatus,
+    //                 'expires_at' => $batch->expires_at,
+    //                 'expired' => $batchExpired,
+    //             ],
+    //             'chosen' => [
+    //                 'is_chosen' => true,
+    //                 'booking_id' => null,
+    //             ],
+    //             'message' => 'Fuiste elegido. Esperando creación del booking...',
+    //         ]);
+    //     }
+
+    //     // 5) cargar booking
+    //     $booking = DB::table('slot_bookings')->where('id', $bookingId)->first();
+    //     if (!$booking) {
+    //         return response()->json(['ok' => false, 'message' => 'Booking not found'], 404);
+    //     }
+
+    //     // seguridad extra: booking debe pertenecer a este tutor
+    //     if ((int)$booking->tutor_id !== (int)$item->user_id) {
+    //         return response()->json(['ok' => false, 'message' => 'Token mismatch'], 403);
+    //     }
+
+    //     // 6) comprobante
+    //     $receipt = DB::table('payment_slot_bookings')
+    //         ->where('slot_booking_id', $bookingId)
+    //         ->first();
+
+    //     $hasReceipt = (bool)$receipt;
+    //     $receiptUrl = $receipt?->image_url ? ('/storage/' . ltrim($receipt->image_url, '/')) : null;
+
+    //     // 7) datos estudiante (para mostrar)
+    //     $student = DB::table('users as u')
+    //         ->leftJoin('profiles as p', 'p.user_id', '=', 'u.id')
+    //         ->where('u.id', (int)$booking->student_id)
+    //         ->first(['u.email', 'p.first_name', 'p.last_name', 'p.phone_number']);
+
+    //     $studentName = $student ? trim(($student->first_name ?? '') . ' ' . ($student->last_name ?? '')) : null;
+
+    //     // 8) estado booking
+    //     $status = (int)($booking->status ?? 0);
+
+    //     // UI State según booking
+    //     $uiState = 'payment_phase';   // pendiente(2)
+    //     if ($status === 1) $uiState = 'accepted';
+    //     if ($status === 3) $uiState = 'rejected'; // o "expired" si lo quieres distinguir
+
+
+    //     // Acciones
+    //     $canAccept  = ($status === 2) && $hasReceipt;
+    //     $canReject  = ($status === 2);
+
+    //     $canJoinMeet = ($status === 1) && !empty($booking->meeting_link);
+
+    //     return response()->json([
+    //         'ok' => true,
+    //         'ui_state' => $uiState,
+    //         'batch' => [
+    //             'id' => (int)$batch->id,
+    //             'status' => $batchStatus,
+    //             'expires_at' => $batch->expires_at,
+    //             'expired' => $batchExpired,
+    //         ],
+    //         'chosen' => [
+    //             'is_chosen' => true,
+    //             'booking_id' => $bookingId,
+    //         ],
+    //         'booking' => [
+    //             'id' => (int)$booking->id,
+    //             'status' => $status,
+    //             'start_time' => $booking->start_time,
+    //             'end_time' => $booking->end_time,
+    //             'session_fee' => $booking->session_fee,
+    //             'meeting_link' => $booking->meeting_link,
+    //         ],
+    //         'payment' => [
+    //             'has_receipt' => $hasReceipt,
+    //             'receipt_url' => $receiptUrl,
+    //         ],
+    //         'student' => [
+    //             'name' => $studentName,
+    //             'email' => $student->email ?? null,
+    //             'phone' => $student->phone_number ?? null,
+    //         ],
+    //         'actions' => [
+    //             'can_accept' => $canAccept,
+    //             'can_reject' => $canReject,
+    //             'can_join_meet' => $canJoinMeet,
+    //         ],
+    //     ]);
+    // }
+
+
+    // public function tutorWaitlistStatus(Request $request)
+    // {
+    //     $token = (string) $request->query('t');
+    //     if ($token === '') {
+    //         return response()->json(['ok' => false, 'message' => 'Missing token'], 400);
+    //     }
+
+    //     $ttlMinutes = 7;
+
+    //     // 1) item por token (define qué tutor es)
+    //     $item = DB::table('email_batch_items')
+    //         ->where('accept_token', $token)
+    //         ->first();
+
+    //     if (!$item) {
+    //         return response()->json(['ok' => false, 'message' => 'Invalid token'], 404);
+    //     }
+
+    //     // 2) batch
+    //     $batch = DB::table('email_batches')
+    //         ->where('id', (int)$item->batch_id)
+    //         ->first();
+
+    //     if (!$batch) {
+    //         return response()->json(['ok' => false, 'message' => 'Batch not found'], 404);
+    //     }
+
+    //     $batchStatus  = (string) ($batch->status ?? '');
+    //     $batchExpired = !empty($batch->expires_at) && now()->greaterThanOrEqualTo($batch->expires_at);
+
+    //     // 3) ¿Este tutor fue elegido?
+    //     $isChosen = ($batchStatus === 'matched' && (int)$batch->accepted_item_id === (int)$item->id);
+
+    //     // 4) bookingId (si ya estamos en fase de pago/meet)
+    //     $bookingId = (int)($batch->booking_id ?? 0);
+
+    //     // ✅ Si ya está matched y este tutor NO es el elegido => terminar YA
+    //     if (!$isChosen && $batchStatus === 'matched') {
+    //         return response()->json([
+    //             'ok' => true,
+    //             'ui_state' => 'batch_expired_waiting',
+    //             'batch' => [
+    //                 'id' => (int)$batch->id,
+    //                 'status' => $batchStatus,
+    //                 'expires_at' => $batch->expires_at,
+    //                 'expired' => true,
+    //             ],
+    //             'chosen' => [
+    //                 'is_chosen' => false,
+    //                 'booking_id' => null,
+    //             ],
+    //             'message' => 'El estudiante ya eligió a otro tutor. Gracias.',
+    //         ]);
+    //     }
+
+    //     // ✅ Si batch terminó (done/failed) y este tutor NO fue elegido => terminar YA
+    //     if (!$isChosen && in_array($batchStatus, ['done', 'failed'], true)) {
+    //         return response()->json([
+    //             'ok' => true,
+    //             'ui_state' => 'batch_expired_waiting',
+    //             'batch' => [
+    //                 'id' => (int)$batch->id,
+    //                 'status' => $batchStatus,
+    //                 'expires_at' => $batch->expires_at,
+    //                 'expired' => true,
+    //             ],
+    //             'chosen' => [
+    //                 'is_chosen' => false,
+    //                 'booking_id' => null,
+    //             ],
+    //             'message' => 'Esta solicitud ya terminó.',
+    //         ]);
+    //     }
+
+    //     // Caso A: NO elegido y batch expiró
+    //     if (!$isChosen && $batchExpired) {
+    //         return response()->json([
+    //             'ok' => true,
+    //             'ui_state' => 'batch_expired_waiting',
+    //             'batch' => [
+    //                 'id' => (int)$batch->id,
+    //                 'status' => $batchStatus,
+    //                 'expires_at' => $batch->expires_at,
+    //                 'expired' => true,
+    //             ],
+    //             'chosen' => [
+    //                 'is_chosen' => false,
+    //                 'booking_id' => null,
+    //             ],
+    //             'message' => 'El batch expiró y no fuiste elegido.',
+    //         ]);
+    //     }
+
+    //     // Caso B: NO elegido y NO expiró
+    //     if (!$isChosen) {
+    //         return response()->json([
+    //             'ok' => true,
+    //             'ui_state' => 'waiting',
+    //             'batch' => [
+    //                 'id' => (int)$batch->id,
+    //                 'status' => $batchStatus,
+    //                 'expires_at' => $batch->expires_at,
+    //                 'expired' => $batchExpired,
+    //             ],
+    //             'chosen' => [
+    //                 'is_chosen' => false,
+    //                 'booking_id' => null,
+    //             ],
+    //             'message' => 'Aún no fuiste elegido.',
+    //         ]);
+    //     }
+
+    //     // ----------------------------
+    //     // Desde aquí: ES el tutor elegido
+    //     // ----------------------------
+
+    //     // Caso C: elegido pero aún sin booking
+    //     if ($bookingId <= 0) {
+    //         return response()->json([
+    //             'ok' => true,
+    //             'ui_state' => 'payment_phase',
+    //             'batch' => [
+    //                 'id' => (int)$batch->id,
+    //                 'status' => $batchStatus,
+    //                 'expires_at' => $batch->expires_at,
+    //                 'expired' => $batchExpired,
+    //             ],
+    //             'chosen' => [
+    //                 'is_chosen' => true,
+    //                 'booking_id' => null,
+    //             ],
+    //             'message' => 'Fuiste elegido. Esperando creación del booking...',
+    //         ]);
+    //     }
+
+    //     // 5) cargar booking
+    //     // ✅ OJO: aquí conviene lockForUpdate porque vas a expirar status si tocó
+    //     $booking = DB::table('slot_bookings')
+    //         ->where('id', $bookingId)
+    //         ->lockForUpdate()
+    //         ->first();
+
+    //     if (!$booking) {
+    //         return response()->json(['ok' => false, 'message' => 'Booking not found'], 404);
+    //     }
+
+    //     // seguridad extra: booking debe pertenecer a este tutor
+    //     if ((int)$booking->tutor_id !== (int)$item->user_id) {
+    //         return response()->json(['ok' => false, 'message' => 'Token mismatch'], 403);
+    //     }
+
+    //     // 8) estado booking
+    //     $status = (int)($booking->status ?? 0);
+
+    //     // ✅ EXPIRACIÓN EN DEMANDA (sin tabla nueva / sin columna nueva)
+    //     // Si está pendiente(2) y booked_at pasó 7min => marcar no completado(3)
+    //     if ($status === 2 && !empty($booking->booked_at)) {
+    //         $bookedAt = \Carbon\Carbon::parse($booking->booked_at);
+    //         if ($bookedAt->lte(now()->subMinutes($ttlMinutes))) {
+    //             DB::table('slot_bookings')->where('id', $bookingId)->update([
+    //                 'status' => 3, // no completado / expirado
+    //                 'meeting_link' => null,
+    //                 'updated_at' => now(),
+    //             ]);
+    //             $status = 3; // refresca estado local
+    //         }
+    //     }
+
+    //     // 6) comprobante
+    //     $receipt = DB::table('payment_slot_bookings')
+    //         ->where('slot_booking_id', $bookingId)
+    //         ->first();
+
+    //     $hasReceipt = (bool)$receipt;
+    //     $receiptUrl = $receipt?->image_url ? ('/storage/' . ltrim($receipt->image_url, '/')) : null;
+
+    //     // 7) datos estudiante
+    //     $student = DB::table('users as u')
+    //         ->leftJoin('profiles as p', 'p.user_id', '=', 'u.id')
+    //         ->where('u.id', (int)$booking->student_id)
+    //         ->first(['u.email', 'p.first_name', 'p.last_name', 'p.phone_number']);
+
+    //     $studentName = $student ? trim(($student->first_name ?? '') . ' ' . ($student->last_name ?? '')) : null;
+
+    //     // UI state según booking
+    //     $uiState = 'payment_phase';     // pendiente(2)
+    //     if ($status === 1) $uiState = 'accepted';
+    //     if ($status === 3) $uiState = 'rejected'; // aquí representa expirado/no completado
+
+    //     // Acciones
+    //     $canAccept  = ($status === 2) && $hasReceipt;
+    //     $canReject  = ($status === 2);
+    //     $canJoinMeet = ($status === 1) && !empty($booking->meeting_link);
+
+    //     return response()->json([
+    //         'ok' => true,
+    //         'ui_state' => $uiState,
+    //         'batch' => [
+    //             'id' => (int)$batch->id,
+    //             'status' => $batchStatus,
+    //             'expires_at' => $batch->expires_at,
+    //             'expired' => $batchExpired,
+    //         ],
+    //         'chosen' => [
+    //             'is_chosen' => true,
+    //             'booking_id' => $bookingId,
+    //         ],
+    //         'booking' => [
+    //             'id' => (int)$booking->id,
+    //             'status' => $status,
+    //             'start_time' => $booking->start_time,
+    //             'end_time' => $booking->end_time,
+    //             'session_fee' => $booking->session_fee,
+    //             'meeting_link' => $booking->meeting_link,
+    //         ],
+    //         'payment' => [
+    //             'has_receipt' => $hasReceipt,
+    //             'receipt_url' => $receiptUrl,
+    //         ],
+    //         'student' => [
+    //             'name' => $studentName,
+    //             'email' => $student->email ?? null,
+    //             'phone' => $student->phone_number ?? null,
+    //         ],
+    //         'actions' => [
+    //             'can_accept' => $canAccept,
+    //             'can_reject' => $canReject,
+    //             'can_join_meet' => $canJoinMeet,
+    //         ],
+    //     ]);
+    // }
 
     public function tutorWaitlistStatus(Request $request)
     {
@@ -2046,7 +2563,88 @@ class SubjectPickerController extends Controller
     // Inserta/actualiza payment_slot_bookings con image_url
 
     // Crea link genérico si quieres cumplir tu regla “al pagar ya existe link” (para pruebas)
+    // public function studentUploadReceipt(Request $request, $booking)
+    // {
+    //     $request->validate([
+    //         // 'comprobante' => ['required', 'file', 'max:20480', 'mimes:image/jpeg,image/png,application/pdf'], 
+    //         'comprobante' => ['required', 'file', 'max:20480', 'mimes:jpg,jpeg,png,pdf'], // 20MB
+    //     ]);
 
+    //     $studentId = (int) Auth::id();
+    //     $bookingId = (int) $booking;
+
+    //     return DB::transaction(function () use ($request, $studentId, $bookingId) {
+
+    //         $b = DB::table('slot_bookings')
+    //             ->where('id', $bookingId)
+    //             ->lockForUpdate()
+    //             ->first();
+
+    //         if (!$b) {
+    //             return response()->json(['ok' => false, 'message' => 'Booking no encontrado'], 404);
+    //         }
+
+    //         if ((int)$b->student_id !== $studentId) {
+    //             return response()->json(['ok' => false, 'message' => 'Forbidden'], 403);
+    //         }
+
+    //         if ((int)$b->status !== 4) {
+    //             return response()->json([
+    //                 'ok' => false,
+    //                 'message' => 'Estado inválido para subir comprobante',
+    //                 'booking_status' => (int)$b->status,
+    //             ], 409);
+    //         }
+
+    //         // ✅ Guardar en storage/app/public/qr
+    //         // ✅ Guardar directo en public/storage/qr (SIN symlink)
+    //         $file = $request->file('comprobante');
+
+    //         $original = preg_replace('/\s+/', '_', $file->getClientOriginalName());
+    //         $safeOriginal = preg_replace('/[^A-Za-z0-9_\.\-]/', '', $original);
+    //         $filename = uniqid() . '_' . $safeOriginal;
+
+    //         $dest = public_path('storage/qr');
+    //         if (!is_dir($dest)) {
+    //             mkdir($dest, 0775, true);
+    //         }
+
+    //         $file->move($dest, $filename);
+
+    //         // En DB guarda relativo: "qr/xxx.ext"
+    //         $imageUrl = 'qr/' . $filename;
+
+    //         DB::table('payment_slot_bookings')->updateOrInsert(
+    //             ['slot_booking_id' => $bookingId],
+    //             [
+    //                 'image_url' => $imageUrl,
+    //                 'updated_at' => now(),
+    //                 'created_at' => now(),
+    //             ]
+    //         );
+
+    //         // meet link genérico (opcional)
+    //         $genericMeet = 'https://meet.google.com/upy-mxim-nrm';
+    //         if (empty($b->meeting_link)) {
+    //             DB::table('slot_bookings')
+    //                 ->where('id', $bookingId)
+    //                 ->update([
+    //                     'meeting_link' => $genericMeet,
+    //                     'updated_at' => now(),
+    //                 ]);
+    //         } else {
+    //             $genericMeet = $b->meeting_link;
+    //         }
+
+    //         return response()->json([
+    //             'ok' => true,
+    //             'booking_id' => $bookingId,
+    //             'message' => 'Comprobante subido. Esperando aprobación del tutor.',
+    //             'receipt_url' => '/storage/' . ltrim($imageUrl, '/'),
+    //             'meeting_link' => $genericMeet,
+    //         ]);
+    //     });
+    // }
 
     public function studentUploadReceipt(Request $request, $booking)
     {
@@ -2184,6 +2782,7 @@ class SubjectPickerController extends Controller
     }
 
 
+  
 
     /**
      * ✅ studentBookingStatus()
@@ -2289,7 +2888,179 @@ class SubjectPickerController extends Controller
     // // devuelve payload para tu JS (precio, horario, meet_link genérico)
 
 
+    // public function requestBooking(Request $request, EmailBatch $batch)
+    // {
+    //     // Solo dueño del batch
+    //     if ((int)$batch->created_by !== (int)Auth::id()) {
+    //         return response()->json(['ok' => false, 'message' => 'Forbidden'], 403);
+    //     }
 
+    //     $data = $request->validate([
+    //         'item_id' => ['required', 'integer', 'min:1'],
+    //     ]);
+
+    //     $itemId = (int)$data['item_id'];
+    //     $studentId = (int)Auth::id();
+
+    //     return DB::transaction(function () use ($batch, $itemId, $studentId) {
+
+    //         // 1) lock batch
+    //         $b = EmailBatch::query()
+    //             ->whereKey($batch->id)
+    //             ->lockForUpdate()
+    //             ->firstOrFail();
+
+    //         // Si ya existe booking para este batch, idempotente
+    //         if (!empty($b->booking_id)) {
+    //             $booking = DB::table('slot_bookings')->where('id', (int)$b->booking_id)->first();
+
+    //             return response()->json([
+    //                 'ok' => true,
+    //                 'message' => 'Booking ya creado para este batch.',
+    //                 'batch_id' => $b->id,
+    //                 'booking' => $booking ? [
+    //                     'id' => (int)$booking->id,
+    //                     'status' => (int)$booking->status,
+    //                     'start_time' => $booking->start_time,
+    //                     'end_time' => $booking->end_time,
+    //                     'session_fee' => $booking->session_fee,
+    //                     'meeting_link' => $booking->meeting_link,
+    //                 ] : null,
+    //             ]);
+    //         }
+
+    //         // 2) lock item
+    //         $item = EmailBatchItem::query()
+    //             ->where('batch_id', $b->id)
+    //             ->whereKey($itemId)
+    //             ->lockForUpdate()
+    //             ->first();
+
+    //         if (!$item) {
+    //             return response()->json(['ok' => false, 'message' => 'Item no pertenece al batch'], 404);
+    //         }
+
+    //         // Solo aceptados
+    //         if ($item->status !== 'accepted') {
+    //             return response()->json([
+    //                 'ok' => false,
+    //                 'message' => 'Solo puedes solicitar un tutor que haya aceptado',
+    //                 'current_status' => $item->status,
+    //             ], 409);
+    //         }
+
+    //         $tutorId = (int)$item->user_id;
+
+    //         // 3) horario automático
+    //         $waitMinutes = 5;
+    //         $sessionMinutes = 20;
+
+    //         $startAt = now()->addMinutes($waitMinutes);
+    //         $endAt   = (clone $startAt)->addMinutes($sessionMinutes);
+
+    //         // 4) precio
+    //         $precio = (float)DB::table('profiles')->where('user_id', $tutorId)->value('price');
+    //         if ($precio <= 0) {
+    //             return response()->json(['ok' => false, 'message' => 'Tutor sin precio configurado'], 422);
+    //         }
+
+    //         // 5) anti-solapamiento: si el tutor ya está reservado/activo en ese rango, no se puede
+    //         $overlapExists = DB::table('slot_bookings')
+    //             ->where('tutor_id', $tutorId)
+    //             ->whereIn('status', [4, 1]) // 4 reserved, 1 active
+    //             ->where(function ($q) use ($startAt, $endAt) {
+    //                 // overlap: existing.start < newEnd AND existing.end > newStart
+    //                 $q->where('start_time', '<', $endAt->toDateTimeString())
+    //                     ->where('end_time',   '>', $startAt->toDateTimeString());
+    //             })
+    //             ->lockForUpdate()
+    //             ->exists();
+
+    //         if ($overlapExists) {
+    //             return response()->json([
+    //                 'ok' => false,
+    //                 'message' => 'Ese tutor ya fue reservado por otro estudiante. Elige otro.',
+    //             ], 409);
+    //         }
+
+    //         // 6) meet link genérico (pruebas)
+    //         $meetLink = 'https://meet.google.com/upy-mxim-nrm'; // o "/meet/booking/{$bookingId}" luego
+
+    //         // 7) crear booking RESERVED(4)
+    //         $bookingId = DB::table('slot_bookings')->insertGetId([
+    //             'student_id' => $studentId,
+    //             'tutor_id' => $tutorId,
+    //             'subject_id' => (int)$b->subject_id,
+    //             'user_subject_slot_id' => null,          // aquí no usamos slots por ahora
+    //             'start_time' => $startAt->toDateTimeString(),
+    //             'end_time' => $endAt->toDateTimeString(),
+    //             'session_fee' => $precio,
+    //             'booked_at' => now()->toDateTimeString(),
+    //             'calendar_event_id' => null,
+    //             'meeting_link' => $meetLink,
+    //             'status' => 4, // ✅ reserved (esperando aprobación tutor)
+    //             'meta_data' => json_encode([
+    //                 'mode' => 'instant_auto',
+    //                 'wait_minutes' => $waitMinutes,
+    //                 'session_minutes' => $sessionMinutes,
+    //                 'batch_id' => (int)$b->id,
+    //                 'accepted_item_id' => (int)$item->id,
+    //             ]),
+    //         ]);
+
+
+
+    //         // 8) marcar item "chosen" y batch "matched" + booking_id
+    //         EmailBatchItem::query()
+    //             ->whereKey($item->id)
+    //             ->update([
+    //                 'status' => 'chosen',
+    //                 'chosen_at' => now(),
+    //                 'updated_at' => now(),
+    //             ]);
+
+    //         EmailBatch::query()
+    //             ->whereKey($b->id)
+    //             ->update([
+    //                 'status' => 'matched',
+    //                 'accepted_user_id' => $tutorId,
+    //                 'accepted_item_id' => (int)$item->id,
+    //                 'accepted_at' => now(),
+    //                 'booking_id' => $bookingId, // ✅ necesitas esta columna
+    //                 'updated_at' => now(),
+    //             ]);
+
+    //         // 9) expirar otros items del batch (limpieza)
+    //         EmailBatchItem::query()
+    //             ->where('batch_id', $b->id)
+    //             ->where('id', '!=', (int)$item->id)
+    //             ->whereIn('status', ['pending', 'sending', 'sent', 'accepted'])
+    //             ->update([
+    //                 'status' => 'expired',
+    //                 'last_error' => 'not_chosen',
+    //                 'updated_at' => now(),
+    //             ]);
+
+    //         // 10) respuesta para tu JS (voltear card → mostrar QR y botón subir)
+    //         return response()->json([
+    //             'ok' => true,
+    //             'message' => 'Booking creado. Sube comprobante para revisión del tutor.',
+    //             'batch_id' => (int)$b->id,
+    //             'item_id' => (int)$item->id,
+    //             'booking' => [
+    //                 'id' => (int)$bookingId,
+    //                 'status' => 4,
+    //                 'tutor_id' => $tutorId,
+    //                 'student_id' => $studentId,
+    //                 'subject_id' => (int)$b->subject_id,
+    //                 'start_time' => $startAt->toDateTimeString(),
+    //                 'end_time' => $endAt->toDateTimeString(),
+    //                 'session_fee' => (float)$precio,
+    //                 'meeting_link' => $meetLink,
+    //             ],
+    //         ]);
+    //     });
+    // }
 
 
     /**
