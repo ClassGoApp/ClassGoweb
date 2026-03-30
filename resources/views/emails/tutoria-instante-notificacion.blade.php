@@ -5,11 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tutoría ClassGo</title>
-    <!--[if mso]>
-    <style type="text/css">
-        body, table, td, a { font-family: Arial, sans-serif !important; }
-    </style>
-    <![endif]-->
+    
 </head>
 
 <body

@@ -6,7 +6,7 @@
             <div class="terminos-header-content">
                 <div class="terminos-header-text">
                     <h1 data-translate="terminos_y_condiciones">TÉRMINOS Y CONDICIONES DE USO DE CLASSGO</h1>
-                    <h2 class="terminos-subtitulos" data-translate="fecha_actualizacion">Fecha de última actualización: 02/07/2025</h2>
+                    <h2 class="terminos-subtitulos" data-translate="fecha_actualizacion">Fecha de última actualización: 20/03/2026</h2>
                 </div>
                 <div>
                     <img src="{{ asset('images/home/TuGoconMegafono.webp') }}"
@@ -541,6 +541,43 @@
                     </ul>
                 </div>
             </div>
+        </div>
+        <div class="terminos-generic" id="tutorias-instantaneas">
+            <h1 class="terminos-titulos" data-translate="tutorias_instantaneas">12. TUTORÍAS AL INSTANTE (MODALIDAD ON-DEMAND)</h1>
+            <p>Esta modalidad permite a los estudiantes solicitar asistencia pedagógica inmediata sin reserva previa, bajo un sistema de emparejamiento dinámico (matching).</p>
+            <div>
+                <h2 class="terminos-subtitulos" data-translate="procedimiento_estudiante">12.1 Procedimiento para el Estudiante</h2>
+                <ul class="terminos-ul">
+                    <li><strong>Solicitud:</strong> El estudiante seleccionará una materia y subcategoría específica. Al confirmar, entrará en una Sala de Espera Virtual.</li>
+                    <li><strong>Selección de Tutor:</strong> La plataforma mostrará en tiempo real (con actualización cada 5 segundos) a los tutores que acepten la solicitud. El estudiante es libre de elegir al tutor de su preferencia basándose en el perfil, precio o calificación.</li>
+                    <li><strong>Reserva y Pago:</strong> Una vez seleccionado el tutor, se generará una reserva temporal y se mostrará un Código QR de pago.</li>
+                    <li><strong>Acceso a la Sesión:</strong> Tras la confirmación del pago, el sistema redirigirá al estudiante a una sala de Google Meet generada automáticamente con las credenciales del tutor.</li>
+                </ul>
+            </div>
+            <div>
+                <h2 class="terminos-subtitulos" data-translate="procedimiento_tutor">12.2 Procedimiento para el Tutor</h2>
+                <ul class="terminos-ul">
+                    <li><strong>Notificación:</strong> Los tutores disponibles recibirán una alerta vía Gmail con la solicitud de tutoría.</li>
+                    <li><strong>Estados de la Solicitud:</strong> El tutor gestionará su participación a través de cuatro estados:
+                        <ol type="1">
+                            <li>Espera: Disponibilidad para recibir alertas.</li>
+                            <li>Solicitado: El tutor ha aceptado la alerta y espera la elección del estudiante.</li>
+                            <li>Expirado: La solicitud no fue completada en el tiempo límite.</li>
+                            <li>Elegido (Match): El estudiante ha seleccionado al tutor y se espera la confirmación del pago.</li>
+                        </ol>
+                    </li>
+                    <li><strong>Rol de Anfitrión:</strong> Una vez confirmado el pago, el tutor deberá presionar el botón de "Ir al Meet". El tutor actúa obligatoriamente como anfitrión de la sala, utilizando la integración de Google Calendar y Meet de la plataforma.</li>
+                </ul>
+            </div>
+        </div>
+        <div class="terminos-generic">
+            <h1 class="terminos-titulos" data-translate="condiciones_tutorias_instantaneas">13. CONDICIONES ESPECÍFICAS DE TUTORÍAS AL INSTANTE</h1>
+            <ul class="terminos-ul">
+                <li><strong>13.1 Tiempo de Conexión:</strong> Una vez efectuado el pago y generado el enlace de Google Meet, ambas partes tienen un máximo de 5 minutos para ingresar a la sala.</li>
+                <li><strong>13.2 Fallos en el Proceso de Match:</strong> Si el estudiante realiza el pago pero, por problemas técnicos de la plataforma, no se genera el link de Meet, se procederá al reembolso total conforme a la cláusula 4.2.</li>
+                <li><strong>13.3 Responsabilidad del Vínculo:</strong> ClassGo no se hace responsable si el tutor, tras ser elegido y pagado, no inicia la sesión. En este caso, se sancionará al tutor bajo la política de "No Show" (Falta Grave) y se reembolsará al estudiante.</li>
+                <li><strong>13.4 Estabilidad de Red:</strong> Dado que la vista de espera se actualiza cada 5 segundos, el usuario acepta que ligeros desfases de red pueden afectar la visualización de tutores disponibles.</li>
+            </ul>
         </div>
         <div class="terminos-generic">
             <div class="terminos-descarga">

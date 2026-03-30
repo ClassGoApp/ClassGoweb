@@ -51,14 +51,15 @@ class HomeController extends Controller
             ->orderBy('order', 'asc')
             ->get()
             ->groupBy('order');
-
+        $count_tutorinstant = $this->countTutorsWithAcceptedTerms();
         return view('vistas.view.pages.home', [
             'featuredTutors' => $featuredTutors,
             'alianzas' => $alianzas,
             'totalUsers' => $counts['totalUsers'],
             'totalEstudiantes' => $counts['studentCount'],
             'totalTutores' => $counts['tutorCount'],
-            'teamGroups' => $teamGroups
+            'teamGroups' => $teamGroups,
+            'Tutores_instant_disponibles' => $count_tutorinstant,
 
         ]);
     }
@@ -239,35 +240,7 @@ class HomeController extends Controller
         }
     }
 
-    // public function acceptTerms(Request $request)
-    // {
-    //     $user = Auth::user();
-    //     if (!$user) {
-    //         return response()->json(['success' => false], 403);
-    //     }
 
-    //     $role = $request->input('role');
-
-    //     if (!in_array($role, ['student', 'tutor'], true)) {
-    //         return response()->json(['success' => false, 'message' => 'Rol inválido'], 422);
-    //     }
-
-    //     $hasRole = $user->roles()->where('name', $role)->exists();
-    //     if (!$hasRole) {
-    //         return response()->json(['success' => false, 'message' => 'No autorizado para este rol'], 403);
-    //     }
-
-    //     $user->terms_accepted_at = now();
-    //     // if ($role === 'tutor') {
-    //     //     $user->terms_accepted_tutor_at = now();
-    //     // } else {
-    //     //     $user->terms_accepted_at = now();
-    //     // }
-
-    //     $user->save();
-
-    //     return response()->json(['success' => true]);
-    // }
 
     public function acceptTerms(Request $request)
     {
@@ -291,5 +264,18 @@ class HomeController extends Controller
         $user->save();
 
         return response()->json(['success' => true]);
+    }
+
+    public function countTutorsWithAcceptedTerms(): int
+    {
+        return DB::table('users')
+            ->join('model_has_roles', function ($join) {
+                $join->on('users.id', '=', 'model_has_roles.model_id')
+                    ->where('model_has_roles.model_type', '=', User::class);
+            })
+            ->join('roles', 'roles.id', '=', 'model_has_roles.role_id')
+            ->where('roles.name', 'tutor')
+            ->whereNotNull('users.terms_accepted_at')
+            ->count();
     }
 }

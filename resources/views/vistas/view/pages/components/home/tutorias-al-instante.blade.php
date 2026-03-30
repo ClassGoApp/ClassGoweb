@@ -18,158 +18,34 @@
             y resuelve tus preguntas sin esperas ni citas largas.
         </p>
 
-        {{-- @php
-    $user = Auth::user();
-    $isTutor = $user?->hasRole('tutor');
-    $acceptedAsStudent = $user?->terms_accepted_at !== null;
-    // $acceptedAsTutor = $user?->terms_accepted_tutor_at !== null;
-@endphp
 
-<div id="cta-container">
-    <div id="cta-login" style="display: {{ Auth::check() ? 'none' : 'block' }};">
-        <a class="instant-btn" style="cursor: pointer" href="{{ route('login') }}">
-            <svg width="18" height="18" viewBox="0 0 24 24">
-                <path d="M13 2L3 14H11L9 22L21 10H13Z" fill="currentColor" />
-            </svg>
-            Iniciar sesión
-        </a>
-    </div>
 
-    @php
-        $acceptRole = $isTutor ? 'tutor' : 'student';
-        $accepted = $isTutor ? $acceptedAsTutor : $acceptedAsStudent;
-    @endphp
-
-    <div id="cta-terms" style="display: {{ Auth::check() && !$accepted ? 'block' : 'none' }};">
-        <div class="terms-section">
-            <label for="terms-checkbox" style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
-                <input type="checkbox" id="terms-checkbox">
-                Acepto los términos y condiciones
-            </label>
-            <a href="{{ url('terms-condition') }}" target="_blank" style="color: #9be7ff; text-decoration: underline; margin-bottom: 10px; display: block;">Ver términos y condiciones</a>
-            <a id="accept-terms-btn" class="instant-btn" style="cursor: pointer" href="#" onclick="acceptTerms()">
-                <svg width="18" height="18" viewBox="0 0 24 24">
-                    <path d="M13 2L3 14H11L9 22L21 10H13Z" fill="currentColor" />
-                </svg>
-                Aceptar y continuar
-            </a>
-        </div>
-    </div>
-
-    <div id="cta-after" style="display: {{ Auth::check() && $accepted ? 'block' : 'none' }};">
-        @if ($isTutor)
-            <a class="instant-btn" style="cursor: pointer" href="{{ url('terms-condition') }}">
-                <svg width="18" height="18" viewBox="0 0 24 24">
-                    <path d="M13 2L3 14H11L9 22L21 10H13Z" fill="currentColor" />
-                </svg>
-                Ver términos
-            </a>
-        @else
-            <a class="instant-btn" style="cursor: pointer" href="{{ route('student.subjects.pick') }}">
-                <svg width="18" height="18" viewBox="0 0 24 24">
-                    <path d="M13 2L3 14H11L9 22L21 10H13Z" fill="currentColor" />
-                </svg>
-                Pedir tutor ahora
-            </a>
-        @endif
-    </div>
-</div> --}}
 
         @php
             $user = Auth::user();
             $isLogged = $user !== null;
             $isTutor = $user?->hasRole('tutor') ?? false;
-
-            // única variable de aceptación
-            $accepted = $user?->terms_accepted_at !== null;
-
-            // rol que se enviará al método
-            $role = $isTutor ? 'tutor' : 'student';
         @endphp
 
         <div id="cta-container">
-
-            {{-- Login --}}
-            <div id="cta-login" style="display: {{ !$isLogged ? 'block' : 'none' }};">
+            @if (!$isLogged)
                 <a class="instant-btn" style="cursor: pointer" href="{{ route('login') }}">
                     <svg width="18" height="18" viewBox="0 0 24 24">
                         <path d="M13 2L3 14H11L9 22L21 10H13Z" fill="currentColor" />
                     </svg>
                     Iniciar sesión
                 </a>
-            </div>
-
-            {{-- Aceptar términos --}}
-            <div id="cta-terms" style="display: {{ $isLogged && !$accepted ? 'block' : 'none' }};">
-                <div class="terms-section">
-                    <label for="terms-checkbox"
-                        style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
-                        <input type="checkbox" id="terms-checkbox">
-                        Acepto los <a href="{{ url('terms-condition') }}" target="_blank"
-                        style="color: #9be7ff; text-decoration: underline; display: block;">
-                        términos y condiciones
-                    </a>
-                    </label>
-
-                    
-
-                    {{-- <a id="accept-terms-btn" class="instant-btn" style="cursor: pointer" href="#"
-                        onclick="event.preventDefault(); acceptTerms('{{ $role }}')"> --}}
-
-                    <a id="accept-terms-btn" class="instant-btn" href="#"
-                        onclick="event.preventDefault(); acceptTerms('{{ $role }}')">
-                        <svg width="18" height="18" viewBox="0 0 24 24">
-                            <path d="M13 2L3 14H11L9 22L21 10H13Z" fill="currentColor" />
-                        </svg>
-                        Aceptar y continuar
-                    </a>
-                </div>
-            </div>
-
-            {{-- Después de aceptar --}}
-            <div id="cta-after" style="display: {{ $isLogged && $accepted ? 'block' : 'none' }};">
-                @if ($isTutor)
-                    <a class="instant-btn" style="cursor: pointer" href="{{ url('terms-condition') }}">
-                        <svg width="18" height="18" viewBox="0 0 24 24">
-                            <path d="M13 2L3 14H11L9 22L21 10H13Z" fill="currentColor" />
-                        </svg>
-                        Ver términos
-                    </a>
-                @else
-                    <a class="instant-btn" style="cursor: pointer" href="{{ route('student.subjects.pick') }}">
-                        <svg width="18" height="18" viewBox="0 0 24 24">
-                            <path d="M13 2L3 14H11L9 22L21 10H13Z" fill="currentColor" />
-                        </svg>
-                        Pedir tutor ahora
-                    </a>
-                @endif
-            </div>
-            <div id="terms-alert"
-                style="
-        width: fit-content;
-    display: none;
-    background: rgb(227 251 225);
-    color: rgb(6, 95, 70);
-    border: 1px solid rgb(16, 185, 129);
-    padding: 4px;
-    border-radius: 9px;
-    margin-top: 10px;
-    font-weight: 500;
-    box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
-    transition: opacity 0.3s;
-    opacity: 1;
-    /* max-width: 19rem;
-">
-                Términos aceptados correctamente.
-            </div>
+            @elseif (!$isTutor)
+                <a class="instant-btn" style="cursor: pointer" href="{{ route('student.subjects.pick') }}">
+                    <svg width="18" height="18" viewBox="0 0 24 24">
+                        <path d="M13 2L3 14H11L9 22L21 10H13Z" fill="currentColor" />
+                    </svg>
+                    Pedir tutor ahora
+                </a>
+            @endif
         </div>
 
-        <div id="toast" class="toast"
-            style="opacity: 0; transition: opacity 0.3s ease;
-               position: fixed; bottom: 24px; right: 24px; padding: 12px 18px;
-               border-radius: 12px; font-weight: 700; z-index: 9999; pointer-events: none;
-               box-shadow: 0 14px 30px rgba(0,0,0,0.25);">
-        </div>
+        
 
     </div>
 
@@ -587,23 +463,9 @@
     }
 
     /* toast */
-    .toast {
-        opacity: 0;
-        transition: opacity 0.25s ease;
-        padding: 0.75rem 1.25rem;
-        border-radius: 0.75rem;
-        font-weight: 700;
-        color: white;
-        pointer-events: none;
-    }
+    
 
-    .toast-success {
-        background: #22c55e;
-    }
-
-    .toast-error {
-        background: #ef4444;
-    }
+    
 
     /* ---------- RESPONSIVE ---------- */
 
@@ -720,108 +582,28 @@
 
     animate();
 
-    function showTermsAlert(message, type = 'success') {
-        const alertBox = document.getElementById('terms-alert');
+    function irAlInstanteDesdeFlotante() {
+        const ctaTerms = document.getElementById('cta-terms');
+        const seccionTutorias = document.getElementById('tutorias-instantaneas-seccion');
 
-        if (!alertBox) return;
-
-        alertBox.textContent = message;
-        alertBox.style.display = 'block';
-        alertBox.style.opacity = '1';
-
-        if (type === 'success') {
-            alertBox.style.background = '#d1fae5';
-            alertBox.style.color = '#065f46';
-            alertBox.style.border = '1px solid #10b981';
-        } else {
-            alertBox.style.background = '#fee2e2';
-            alertBox.style.color = '#991b1b';
-            alertBox.style.border = '1px solid #ef4444';
-        }
-
-        clearTimeout(alertBox.hideTimeout);
-
-        alertBox.hideTimeout = setTimeout(() => {
-            alertBox.style.opacity = '0';
-
-            setTimeout(() => {
-                alertBox.style.display = 'none';
-            }, 300);
-        }, 3000);
-    }
-
-    function acceptTerms(role) {
-        const checkbox = document.getElementById('terms-checkbox');
-        const btn = document.getElementById('accept-terms-btn');
-
-        if (!checkbox) {
-            showTermsAlert('No se encontró el checkbox de términos.', 'error');
+        // Si no ha aceptado términos y estamos en home
+        if (ctaTerms && window.getComputedStyle(ctaTerms).display !== 'none') {
+            if (seccionTutorias) {
+                // Hacer scroll suave hacia la sección
+                seccionTutorias.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                // Mostrar alerta después del scroll
+                setTimeout(() => {
+                    showTermsAlert('Debes aceptar los términos y condiciones.', 'error');
+                }, 300);
+            }
             return;
         }
 
-        if (!checkbox.checked) {
-            showTermsAlert('Debes aceptar los términos y condiciones.', 'error');
-            return;
-        }
-
-        if (btn) {
-            btn.style.pointerEvents = 'none';
-            btn.style.opacity = '0.7';
-        }
-
-        fetch("{{ route('accept.terms') }}", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify({
-                    role: role
-                })
-            })
-            .then(async response => {
-                const data = await response.json();
-
-                if (!response.ok) {
-                    throw new Error(data.message || 'Error al aceptar términos.');
-                }
-
-                return data;
-            })
-            .then(data => {
-                if (data.success) {
-                    document.getElementById('cta-terms').style.display = 'none';
-                    document.getElementById('cta-after').style.display = 'block';
-
-                    showTermsAlert('Términos aceptados correctamente.', 'success');
-                } else {
-                    showTermsAlert(data.message || 'No se pudo aceptar los términos.', 'error');
-                }
-            })
-            .catch(error => {
-                showTermsAlert(error.message || 'Ocurrió un error inesperado.', 'error');
-            })
-            .finally(() => {
-                if (btn) {
-                    btn.style.pointerEvents = 'auto';
-                    btn.style.opacity = '1';
-                }
-            });
+        // Si ya aceptó términos, redirigir
+        window.location.href = "{{ route('student.subjects.pick') }}";
     }
 
-    // 
-    function showToast(message, type) {
-        const toast = document.getElementById('toast');
-        if (!toast) return;
+    
 
-        toast.textContent = message;
-        toast.className = 'toast ' + (type === 'success' ? 'toast-success' : 'toast-error');
-        toast.style.opacity = '1';
-
-        clearTimeout(window.toastTimeout);
-        window.toastTimeout = setTimeout(() => {
-            toast.style.opacity = '0';
-        }, 3000);
-    }
+   
 </script>
