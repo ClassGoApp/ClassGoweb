@@ -25,6 +25,7 @@ class ProfileResource extends JsonResource
                                         : null,
             'description'           => $this->whenHas('description'),
             'tagline'               => $this->whenHas('tagline'),
+            'price'                 => $this->whenHas('price'),
         ];
     }
 }
