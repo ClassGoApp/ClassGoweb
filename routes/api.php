@@ -30,7 +30,8 @@ use App\Http\Controllers\Api\BookingStatusController;
 use App\Http\Controllers\Api\GoogleAuthController;
 use App\Http\Controllers\Api\GoogleCalendarController;
 use App\Http\Controllers\Api\UserCouponController;
-
+use App\Http\Controllers\Api\SubjectPickerController;
+use App\Http\Controllers\Api\NotificacionController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -141,6 +142,7 @@ Route::post('booking/change-to-aceptado', [BookingStatusController::class, 'chan
 
 // Ruta para obtener el tiempo disponible del tutor (pública)
 Route::get('tutor/{id}/available-slots', [\App\Http\Controllers\Api\SubjectSlotController::class, 'getTutorAvailableSlots']);
+Route::post('tutor/{id}/slots-for-date', [\App\Http\Controllers\Api\SubjectSlotController::class, 'getStlotTutorForDate']);
 
 // Ruta para crear slots de disponibilidad (pública)
 Route::post('tutor/slots', [\App\Http\Controllers\Api\SubjectSlotController::class, 'createUserSubjectSlot']);
@@ -182,6 +184,12 @@ Route::get('user/{id}/bookings', [\App\Http\Controllers\Api\BookingController::c
 
 // Ruta para registrar una nueva tutoría (slot_booking)
 Route::post('slot-bookings', [\App\Http\Controllers\Api\BookingController::class, 'storeSlotBooking']);
+
+// Ruta para mandar un email para tutoria al instante
+Route::post('/batches/start', [SubjectPickerController::class, 'start']);
+
+// Ruta para mandar notificaciones a tutores (mobile)
+Route::post('notify-tutors', [NotificacionController::class, 'enviarATutores']);
 
 // Ruta para registrar un nuevo payment_slot_booking (renombrada para prueba)
 Route::post('test-payment-upload', [\App\Http\Controllers\Api\BookingController::class, 'storePaymentSlotBooking']);

@@ -20,6 +20,8 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Coupon;
 use App\Services\CuponesService;
 use App\Models\UserCoupon;
+use App\Models\SlotBooking;
+use App\Services\BookingNotificationService;
 
 class BookingController extends Controller
 {
@@ -136,22 +138,43 @@ class BookingController extends Controller
         return response()->json($bookings);
     }
 
+    //Metodo auxiliar para crear la reserva
+    private function createBooking($studentId, $tutorId, $subjectId, $baseSlotId, $startAt, $endAt, $sessionFee, $metaData = [], $couponId = null, $couponCode = null, $discountPct = 0, $basePrice = 0, $finalPrice = 0, $isFree = false)
+    {
+        // Crear la reserva usando el modelo (inspirado en crearReserva)
+        $booking = new SlotBooking();
+        $booking->student_id = $studentId;
+        $booking->tutor_id = $tutorId;
+        $booking->subject_id = $subjectId;
+        $booking->user_subject_slot_id = $baseSlotId;  // Usar el slot base calculado
+        $booking->session_fee = $sessionFee;
+        $booking->start_time = $startAt->toDateTimeString();  // Usar startAt calculado
+        $booking->end_time = $endAt->toDateTimeString();      // Usar endAt calculado
+        $booking->booked_at = now();
+        $booking->status = 1;  // Estado inicial
+        $booking->meta_data = json_encode($metaData);  // Incluir meta_data de storeBooking
+
+        // Generar link de reunión (usando SlotBookingService, como en storeBooking)
+        $slotBookingService = app(SlotBookingService::class);
+        $meetLink = $slotBookingService->generarlink($booking);
+        $booking->meeting_link = $meetLink;
+
+        $booking->save();  // Guardar con Eloquent
+
+        // Enviar notificación (inspirado en crearReserva)
+        try {
+            $notificationService = app(BookingNotificationService::class);
+            $notificationService->handleStatusChangeNotification($booking, '', $booking->status);
+        } catch (\Throwable $e) {
+            Log::error('Notification error: ' . $e->getMessage());
+            // No fallar la reserva por error en notificación
+        }
+
+        return $booking;
+    }
+
     public function storeSlotBooking(Request $request, CuponesService $cuponesService)
     {
-        $validated = $request->validate([
-            'student_id' => 'required|exists:users,id',
-            'tutor_id' => 'required|exists:users,id',
-            'user_subject_slot_id' => 'nullable|exists:user_subject_slots,id',
-            'start_time' => 'required|date',
-            'end_time' => 'required|date|after:start_time',
-            'session_fee' => 'required|numeric',
-            'booked_at' => 'nullable|date',
-            'calendar_event_id' => 'nullable|string',
-            'meeting_link' => 'nullable|string',
-            'status' => 'nullable|integer',
-            'meta_data' => 'nullable|array',
-            'subject_id' => 'nullable|exists:subjects,id'
-        ]);
 
          $request->validate([
             'subject_id'  => 'required|exists:subjects,id',

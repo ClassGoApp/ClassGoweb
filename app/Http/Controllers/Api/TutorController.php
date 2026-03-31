@@ -457,7 +457,8 @@ class TutorController extends Controller
                     'last_name' => $tutor->profile ? $tutor->profile->last_name : null,
                     'profile_image' => $url,
                     'profile_image_db_path' => $rutaBD,
-                    'available_for_tutoring' => $tutor->available_for_tutoring
+                    'available_for_tutoring' => $tutor->available_for_tutoring,
+                    'price' => $tutor->profile ? (float) $tutor->profile->price : null,
                 ];
             });
 
@@ -501,6 +502,7 @@ class TutorController extends Controller
                     'id' => $tutor->id,
                     'name' => $tutor->profile ? $tutor->profile->full_name : 'N/A',
                     'image' => $tutor->profile ? url('public/storage/' . $tutor->profile->image) : null,
+                    'price' => $tutor->profile ? (float) $tutor->profile->price : null,
                 ],
                 'current_time' => $now->format('Y-m-d H:i:s'),
                 'available_slots' => $instantSlots->map(function($slot) {
@@ -860,7 +862,8 @@ class TutorController extends Controller
                          'last_name' => $tutor->profile ? $tutor->profile->last_name : null,
                          'full_name' => $tutor->profile ? $tutor->profile->first_name . ' ' . $tutor->profile->last_name : 'N/A',
                          'image' => $tutor->profile ? url('public/storage/' . $tutor->profile->image) : null,
-                         'available_for_tutoring' => $tutor->available_for_tutoring,
+                                'available_for_tutoring' => $tutor->available_for_tutoring,
+                                'price' => $tutor->profile ? (float) $tutor->profile->price : null,
                          'completed_courses_count' => $tutor->completed_courses_count,
                          'is_favorite' => $tutor->is_favorite ?? false
                      ],
