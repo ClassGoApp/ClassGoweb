@@ -36,11 +36,30 @@ class Cupones extends Component
         'nombre' => '',
         'fecha' => '',
     ];
+
+    public $sugerenciasNombres = [];
+
      /*** NUEVO: estado para acciones ***/
     public $selectedId = null;
     public $action = null;              // 'delete' | 'toggle'
     public $newFechaCaducidad = null;   // edita fecha
     public $filterUser = null;
+
+    public function updated($property, $value)
+    {
+        if ($property === 'search' || $property === 'exportFilters.nombre') {
+            if (strlen($value) >= 2) {
+                $this->sugerenciasNombres = Coupon::where('nombre', 'like', "%{$value}%")
+                    ->distinct()
+                    ->limit(10)
+                    ->pluck('nombre')
+                    ->toArray();
+            } else {
+                $this->sugerenciasNombres = [];
+            }
+        }
+    }
+
     protected function rules()
     {
         return [
@@ -174,11 +193,6 @@ class Cupones extends Component
 
     public function exportarWord()
     {
-        if (!class_exists('\PhpOffice\PhpWord\PhpWord')) {
-            $this->dispatch('toast', type:'error', message: 'Fijate que falte la librería PhpWord. Instálala con composer require phpoffice/phpword');
-            return;
-        }
-
         $query = Coupon::query();
 
         if (!empty($this->exportFilters['nombre'])) {
@@ -192,39 +206,24 @@ class Cupones extends Component
         $cupones = $query->latest('id')->get();
 
         if ($cupones->isEmpty()) {
-            $this->dispatch('toast', type:'error', message: 'No hay cupones para descargar con esos filtros.');
+            if (!empty($this->exportFilters['nombre'])) {
+                $this->dispatch('toast', type:'error', message: "No existen cupones con el nombre '{$this->exportFilters['nombre']}'.");
+            } else {
+                $this->dispatch('toast', type:'error', message: 'No hay cupones para descargar con esos filtros.');
+            }
             return;
         }
 
-        $phpWord = new \PhpOffice\PhpWord\PhpWord();
-        $section = $phpWord->addSection();
-
-        $section->addText('Codigos de Cupones Generados', ['name' => 'Arial', 'size' => 16, 'bold' => true]);
-        
-        if (!empty($this->exportFilters['nombre']) || !empty($this->exportFilters['fecha'])) {
-            $filtros = "Filtros aplicados: ";
-            if (!empty($this->exportFilters['nombre'])) $filtros .= "Nombre: ".$this->exportFilters['nombre']." | ";
-            if (!empty($this->exportFilters['fecha'])) $filtros .= "Fecha: ".$this->exportFilters['fecha'];
-            $section->addText($filtros, ['size' => 10, 'italic' => true]);
-        }
-        
-        $section->addTextBreak(1);
-
-        $contador = 1;
-        foreach ($cupones as $c) {
-            $section->addText($contador . " - " . $c->codigo, ['name' => 'Courier New', 'size' => 12]);
-            $contador++;
-        }
-
-        $fileName = 'cupones_'.date('Ymd_His').'.docx';
-        $tempPath = storage_path('app/public/' . $fileName);
-
-        $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
-        $objWriter->save($tempPath);
+        $filtros = $this->exportFilters;
+        $fileName = 'cupones_'.date('Ymd_His').'.doc';
 
         $this->dispatch('close-bs-modal', id: 'tb-export-word');
 
-        return response()->download($tempPath)->deleteFileAfterSend(true);
+        return response()->streamDownload(function () use ($cupones, $filtros) {
+            echo view('livewire.promociones.cupones-export', compact('cupones', 'filtros'))->render();
+        }, $fileName, [
+            'Content-Type' => 'application/msword'
+        ]);
     }
     public function performConfirmedAction()
     {

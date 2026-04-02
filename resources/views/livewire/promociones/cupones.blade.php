@@ -33,7 +33,7 @@
                                 </div>
                                 <div class="form-group tb-inputicon tb-inputheight">
                                     <i class="icon-search"></i>
-                                    <input type="text" class="form-control" wire:model.live.debounce.500ms="search"
+                                    <input type="text" class="form-control" wire:model.live.debounce.500ms="search" list="nombres_sugeridos"
                                         autocomplete="off" placeholder="{{ __('general.search_cupon') }}">
                                 </div>
                             </div>
@@ -114,7 +114,13 @@
 
                         
                     @else
-                        <x-no-record :image="asset('images/empty.png')" :title="__('general.no_record_title')" />
+                        @if (!empty($search))
+                            <div class="alert alert-warning text-center mt-4">
+                                No se encontraron cupones con el nombre "{{ $search }}".
+                            </div>
+                        @else
+                            <x-no-record :image="asset('images/empty.png')" :title="__('general.no_record_title')" />
+                        @endif
                     @endif
                 </div>
             </div>
@@ -363,7 +369,7 @@
                                     
                                     <div class="form-group w-100">
                                         <label class="tb-label">Por Nombre</label>
-                                        <input type="text" class="form-control" wire:model.defer="exportFilters.nombre" placeholder="Ej: BlackFriday">
+                                        <input type="text" class="form-control" wire:model.live.debounce.300ms="exportFilters.nombre" list="nombres_sugeridos" autocomplete="off" placeholder="Ej: BlackFriday">
                                     </div>
 
                                     <div class="form-group w-100">
@@ -372,14 +378,25 @@
                                     </div>
 
                                     <div class="form-group tb-formbtn d-flex gap-2 pt-3">
-                                        <button class="tb-btn w-100" type="submit" wire:target="exportarWord"
+                                        <button class="tb-btn w-100" type="submit" wire:target="exportarWord" wire:loading.attr="disabled"
                                             wire:loading.class="am-btn_disable">
-                                            Descargar Documento Word <i class="icon-download"></i>
+                                            <span wire:loading.remove wire:target="exportarWord">
+                                                Descargar Documento Word <i class="icon-download"></i>
+                                            </span>
+                                            <span wire:loading wire:target="exportarWord">
+                                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="margin-right: 5px;"></span>
+                                                Generando archivo...
+                                            </span>
                                         </button>
                                     </div>
                                 </div>
                             </fieldset>
                         </form>
+                        <datalist id="nombres_sugeridos">
+                            @foreach ($sugerenciasNombres as $sug)
+                                <option value="{{ $sug }}"></option>
+                            @endforeach
+                        </datalist>
                     </div>
                 </div>
             </div>
