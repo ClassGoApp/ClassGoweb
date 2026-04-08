@@ -26,7 +26,7 @@
             $isLogged = $user !== null;
             $isTutor = $user?->hasRole('tutor') ?? false;
 
-            // única variable de aceptación
+             // única variable de aceptación
             $accepted = $user?->terms_accepted_at !== null;
 
             // rol que se enviará al método
@@ -878,20 +878,11 @@
                     btn.style.opacity = '1';
                 }
             });
+        // Si ya aceptó términos, redirigir
+        window.location.href = "{{ route('student.subjects.pick') }}";
     }
 
-    // 
-    function showToast(message, type) {
-        const toast = document.getElementById('toast');
-        if (!toast) return;
+    
 
-        toast.textContent = message;
-        toast.className = 'toast ' + (type === 'success' ? 'toast-success' : 'toast-error');
-        toast.style.opacity = '1';
-
-        clearTimeout(window.toastTimeout);
-        window.toastTimeout = setTimeout(() => {
-            toast.style.opacity = '0';
-        }, 3000);
-    }
+   
 </script>

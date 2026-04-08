@@ -69,6 +69,42 @@ class SlotBookingService implements interfaces\ISlotBookingService
         return $booking;
     }
 
+    public function crearReservasMultiples($studentId, $tutorId, $subjectId, array $fechas, $session_fee)
+    {
+        $bookings = [];
+
+        foreach ($fechas as $fechaString) {
+            $startTime = \Carbon\Carbon::parse($fechaString);
+            $endTime = $startTime->copy()->addMinutes(20);
+
+            $booking = new SlotBooking();
+            $booking->student_id = $studentId;
+            $booking->tutor_id = $tutorId;
+            $booking->subject_id = $subjectId;
+
+            // El fee se lo pasamos tal cual (el total sumado que viene del controller)
+            // pero solo a la primera reserva para no duplicar ingresos en reportes, 
+            // o lo divides entre count($fechas). Aquí lo pondremos en la primera:
+            $booking->session_fee = (empty($bookings)) ? $session_fee : 0;
+
+            $booking->start_time = $fechaString;
+            $booking->end_time = $endTime->format('Y-m-d H:i:s');
+            $booking->booked_at = now();
+            $booking->status = 1;
+
+            $link = $this->generarlink($booking);
+            $booking->meeting_link = $link;
+            $booking->save();
+
+            // Notificación
+            $notificationService = app(BookingNotificationService::class);
+            $notificationService->handleStatusChangeNotification($booking, '', $booking->status);
+
+            $bookings[] = $booking;
+        }
+
+        return $bookings;
+    }
 
 
 
@@ -108,7 +144,6 @@ class SlotBookingService implements interfaces\ISlotBookingService
         try {
             // $link= $googlemeetservice->createMeetingConCredencialesApi($meetingData);
             $link = $googlemeetservice->createMeetingPorTutord($meetingData, $user);
-
         } catch (\Exception $e) {
             \Log::error('Error al crear la reunión de Google Meet: ' . $e->getMessage());
             $link = null; // O manejar el error según sea necesario
@@ -125,22 +160,22 @@ class SlotBookingService implements interfaces\ISlotBookingService
     public function getStudentUpcomingTutorias()
     {
         $user = Auth::user();
-        
+
         if (!$user || !$user->hasRole('student')) {
             return collect();
         }
-        
+
         return SlotBooking::where('student_id', $user->id)
             ->where('status', '!=', 3)
-            ->where(function($query) {
+            ->where(function ($query) {
                 $query->where('start_time', '>=', now())
-                    ->orWhere(function($q) {
+                    ->orWhere(function ($q) {
                         $q->where('start_time', '<=', now())
                             ->where('end_time', '>=', now());
                     });
             })
             ->orderBy('start_time', 'asc')
             ->limit(5)
-            ->get();    
+            ->get();
     }
 }

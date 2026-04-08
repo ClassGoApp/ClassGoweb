@@ -22,12 +22,12 @@
 
         <div class="tutor-availability-grid">
             {{-- CALENDARIO --}}
-            
-            <div> 
+
+            <div>
                 <h4 class="tutor-section-title">
                     <span class="tutor-tooltip-wrapper">
                         Mis días disponibles <span style="font-size: 0.8em; color: #fbbf24; cursor: help;">ⓘ</span>
-                        
+
                         <div class="tutor-tooltip-content tooltip-left-align">
                             <strong>Paso 1:</strong>
                             <p>Busca en el calendario los días marcados (círculos) y haz clic en el que prefieras.</p>
@@ -36,7 +36,7 @@
                     </span>
                 </h4>
                 <!--<h4 class="tutor-section-title">Mis días disponibles</h4>-->
-                
+
                 {{--  <div>
                     <p>ID del tutor: {{ $this->tutorId }}</p>
                 </div> --}}
@@ -92,11 +92,11 @@
 
             {{-- SELECTOR DE HORA --}}
             @if ($selectedDay)
-                <div class="tutor-time-selector-col"> 
+                <div class="tutor-time-selector-col">
                     <h4 class="tutor-section-title">
                         <span class="tutor-tooltip-wrapper">
                             Selecciona una hora <span style="font-size: 0.8em; color: #fbbf24; cursor: help;">ⓘ</span>
-                                
+
                             <div class="tutor-tooltip-content tooltip-left-align">
                                 <strong>Paso 2:</strong>
                                 <p>Elige un bloque de horario disponible para confirmar la tutoria.</p>
@@ -104,13 +104,13 @@
                             </div>
                         </span>
                     </h4>
-                                    <!--<div class="tutor-time-selector-col">
+                    <!--<div class="tutor-time-selector-col">
                     <h4 class="tutor-section-title">Selecciona una hora</h4>-->
                     <div class="tutor-time-selector-box">
                         @if (!empty($availableTimeSlots))
                             <div class="tutor-time-slots">
                                 @foreach ($availableTimeSlots as $slot)
-                                    @php
+                                    {{-- @php
                                         $isOccupied = $slot['status'] === 'occupied';
                                         $isTimeSelected = $selectedTime === $slot['time'];
                                         $slotClasses = 'tutor-time-slot-btn';
@@ -121,6 +121,22 @@
                                             $slotClasses .= ' selected';
                                         }
 
+                                    @endphp --}}
+
+                                    {{-- Busca este bloque dentro de tu foreach de horas --}}
+                                    @php
+                                        $isOccupied = $slot['status'] === 'occupied';
+
+                                        // CAMBIO: Ahora verificamos si la hora existe en el array selectedTimes
+                                        $isTimeSelected = in_array($slot['time'], $selectedTimes);
+
+                                        $slotClasses = 'tutor-time-slot-btn';
+                                        if ($isOccupied) {
+                                            $slotClasses .= ' occupied';
+                                        }
+                                        if ($isTimeSelected) {
+                                            $slotClasses .= ' selected';
+                                        }
                                     @endphp
                                     <button wire:click="selectTime('{{ $slot['time'] }}')" class="{{ $slotClasses }}"
                                         @if ($isOccupied) disabled @endif>
@@ -139,13 +155,13 @@
     @auth
         @role('student')
             <!-- Hover Boton Pagar y Reservar
+                                    <div class="tutor-pay-btn-box">
+                                        <button wire:click="openReservationModal" class="tutor-pay-btn">Pagar y reservar</button>
+                                    </div>-->
             <div class="tutor-pay-btn-box">
-                <button wire:click="openReservationModal" class="tutor-pay-btn">Pagar y reservar</button>
-            </div>-->
-            <div class="tutor-pay-btn-box">
-    
+
                 <span class="tutor-tooltip-wrapper">
-                    
+
                     <button wire:click="openReservationModal" class="tutor-pay-btn">Pagar y reservar</button>
 
                     <div class="tutor-tooltip-content">
@@ -153,7 +169,7 @@
                         <p>Haz clic aquí para confirmar tu reserva y realizar el pago.</p>
                         <div class="tutor-tooltip-arrow"></div>
                     </div>
-                    
+
                 </span>
 
             </div>
@@ -319,23 +335,59 @@
                         </div>
 
                         <!--Info Reservas-->
-                        @if ($selectedDay && $selectedTime)
+                        {{-- @if ($selectedDay && $selectedTime)
                             <div class="info-box">
                                 <p><strong>Fecha:</strong>
                                     <span>{{ $currentDate->copy()->setDay($selectedDay)->translatedFormat('j \de F \de Y') }}</span>
                                 </p>
                                 <p><strong>Hora:</strong>
-                                    <span>{{ \Carbon\Carbon::parse($selectedTime)->format('h:i a') }}</span></p>
-                                @if($descuento > 0)
-                                    <p><strong>Descuento ({{ $porcentaje }}%):</strong> -{{ number_format($descuento, 2) }} Bs.</p>
+                                    <span>{{ \Carbon\Carbon::parse($selectedTime)->format('h:i a') }}</span>
+                                </p>
+                                @if ($descuento > 0)
+                                    <p><strong>Descuento ({{ $porcentaje }}%):</strong>
+                                        -{{ number_format($descuento, 2) }} Bs.</p>
                                 @endif
-                                    
-                                <p><strong>Total a Pagar:</strong>
-                                    <span> {{ number_format($montoFinal, 2) }} Bs.</span></p>
 
-                                @if($montoFinal == 0)
-                                    <p style="color: green; text-align: center;">¡Felicidades! Tienes una tutoría gratis</p>
+                                <p><strong>Total a Pagar:</strong>
+                                    <span> {{ number_format($montoFinal, 2) }} Bs.</span>
+                                </p>
+
+                                @if ($montoFinal == 0)
+                                    <p style="color: green; text-align: center;">¡Felicidades! Tienes una tutoría
+                                        gratis</p>
                                 @endif
+                            </div>
+                        @endif --}}
+
+                        @if ($selectedDay && count($selectedTimes) > 0)
+                            <div class="info-box">
+                                <p><strong>Fecha:</strong>
+                                    <span>{{ $currentDate->copy()->setDay($selectedDay)->translatedFormat('j \de F \de Y') }}</span>
+                                </p>
+
+                                <p><strong>Horario:</strong>
+                                    @php
+                                        // Aseguramos el orden para mostrar el rango correcto
+                                        sort($selectedTimes);
+                                        $horaInicio = \Carbon\Carbon::parse(reset($selectedTimes))->format('h:i a');
+                                        $horaFin = \Carbon\Carbon::parse(end($selectedTimes))
+                                            ->addMinutes(20)
+                                            ->format('h:i a');
+                                    @endphp
+                                    <span>{{ $horaInicio }} - {{ $horaFin }}</span>
+                                    <br><small>({{ count($selectedTimes) }} sesiones de 20 min continuas)</small>
+                                </p>
+
+                                @if ($descuento > 0)
+                                    <p><strong>Descuento ({{ $porcentaje }}%):</strong>
+                                        -{{ number_format($descuento, 2) }} Bs.</p>
+                                @endif
+
+                                <p><strong>Total a Pagar:</strong>
+                                    <span style="font-size: 1.25rem; font-weight: bold; color: #1e40af;">
+                                        {{ number_format($montoFinal, 2) }} Bs.
+                                    </span>
+                                </p>
                             </div>
                         @endif
 

@@ -23,12 +23,44 @@ class Cupones extends Component
         'cantidad'        => null,
         'referencia'      => '',
     ];
+
+    public $formMultiple = [
+        'nombre'          => '',
+        'fecha_caducidad' => '',
+        'estado'          => '',
+        'descuento'       => null,
+        'cantidad_generar'=> null,
+    ];
+
+    public $exportFilters = [
+        'nombre' => '',
+        'fecha' => '',
+    ];
+
+    public $sugerenciasNombres = [];
+
      /*** NUEVO: estado para acciones ***/
     public $selectedId = null;
     public $action = null;              // 'delete' | 'toggle'
     public $newFechaCaducidad = null;   // edita fecha
     public $filterUser = null;
-     protected function rules()
+
+    public function updated($property, $value)
+    {
+        if ($property === 'search' || $property === 'exportFilters.nombre') {
+            if (strlen($value) >= 2) {
+                $this->sugerenciasNombres = Coupon::where('nombre', 'like', "%{$value}%")
+                    ->distinct()
+                    ->limit(10)
+                    ->pluck('nombre')
+                    ->toArray();
+            } else {
+                $this->sugerenciasNombres = [];
+            }
+        }
+    }
+
+    protected function rules()
     {
         return [
             'form.nombre'          => 'required|string|max:255',
@@ -74,6 +106,17 @@ class Cupones extends Component
         $this->action     = $action;
         $this->dispatch('open-bs-modal', id: 'confirmModal');  // JS mostrará el modal
     }
+    public function generarCodigoUnico()
+    {
+        do {
+            $letras = substr(str_shuffle("ABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 4);
+            $numeros = substr(str_shuffle("0123456789"), 0, 4);
+            $codigo = $letras . $numeros;
+        } while (Coupon::where('codigo', $codigo)->exists());
+
+        return $codigo;
+    }
+
     public function saveCoupon()
     {
         $this->validate();
@@ -91,6 +134,96 @@ class Cupones extends Component
         $this->dispatch('toast', type:'success', message: __('general.saved_ok'));
         $this->reset('form');
         $this->dispatch('close-bs-modal', id: 'tb-add-user');
+    }
+
+    public function saveMultipleCoupons()
+    {
+        $this->validate([
+            'formMultiple.nombre'          => 'required|string|max:255',
+            'formMultiple.fecha_caducidad' => 'nullable|date|after_or_equal:today',
+            'formMultiple.estado'          => ['required', Rule::in(['activo','inactivo'])],
+            'formMultiple.descuento'       => 'required|numeric|min:0|max:999999.99',
+            'formMultiple.cantidad_generar'=> 'required|integer|min:2|max:500',
+        ]);
+
+        $creados = 0;
+
+        for ($i = 0; $i < $this->formMultiple['cantidad_generar']; $i++) {
+            $exito = false;
+            $intentos = 0;
+            $maxIntentos = 3;
+
+            while (!$exito && $intentos < $maxIntentos) {
+                try {
+                    Coupon::create([
+                        'nombre'          => $this->formMultiple['nombre'],
+                        'codigo'          => $this->generarCodigoUnico(),
+                        'fecha_caducidad' => $this->formMultiple['fecha_caducidad'],
+                        'estado'          => $this->formMultiple['estado'],
+                        'descuento'       => $this->formMultiple['descuento'],
+                        'cantidad'        => 1,
+                        'referencia'      => 0,
+                    ]);
+                    // Si se crea sin arrojar excepción, marcamos éxito
+                    $exito = true;
+                    $creados++;
+                } catch (\Illuminate\Database\QueryException $e) {
+                    // Validamos si la excepción fue por restricción Unique de la BD: 
+                    // código SQLSTATE 23000 o código driver 1062/19 (MySQL/SQLite)
+                    if ($e->getCode() == '23000' || (isset($e->errorInfo[1]) && in_array($e->errorInfo[1], [1062, 19]))) {
+                        $intentos++;
+                        // El ciclo while volverá a iterar para intentar guardar un nuevo código para este mismo progreso en el for
+                    } else {
+                        // Si el error no es por código duplicado, la base de datos tiene otro problema grave.
+                        throw $e;
+                    }
+                }
+            }
+        }
+
+        if ($creados < $this->formMultiple['cantidad_generar']) {
+            $this->dispatch('toast', type:'warning', message: "Se han creado $creados de los {$this->formMultiple['cantidad_generar']} cupones. Hubo exceso de colisiones.");
+        } else {
+            $this->dispatch('toast', type:'success', message: __('general.saved_ok'));
+        }
+        
+        $this->reset('formMultiple');
+        $this->dispatch('close-bs-modal', id: 'tb-add-multiple');
+    }
+
+    public function exportarWord()
+    {
+        $query = Coupon::query();
+
+        if (!empty($this->exportFilters['nombre'])) {
+            $query->where('nombre', 'like', '%' . $this->exportFilters['nombre'] . '%');
+        }
+
+        if (!empty($this->exportFilters['fecha'])) {
+            $query->whereDate('fecha_caducidad', $this->exportFilters['fecha']);
+        }
+
+        $cupones = $query->latest('id')->get();
+
+        if ($cupones->isEmpty()) {
+            if (!empty($this->exportFilters['nombre'])) {
+                $this->dispatch('toast', type:'error', message: "No existen cupones con el nombre '{$this->exportFilters['nombre']}'.");
+            } else {
+                $this->dispatch('toast', type:'error', message: 'No hay cupones para descargar con esos filtros.');
+            }
+            return;
+        }
+
+        $filtros = $this->exportFilters;
+        $fileName = 'cupones_'.date('Ymd_His').'.doc';
+
+        $this->dispatch('close-bs-modal', id: 'tb-export-word');
+
+        return response()->streamDownload(function () use ($cupones, $filtros) {
+            echo view('livewire.promociones.cupones-export', compact('cupones', 'filtros'))->render();
+        }, $fileName, [
+            'Content-Type' => 'application/msword'
+        ]);
     }
     public function performConfirmedAction()
     {
