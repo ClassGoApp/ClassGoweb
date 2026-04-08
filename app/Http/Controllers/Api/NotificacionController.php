@@ -48,18 +48,26 @@ class NotificacionController extends Controller
         $request->validate([
             'title' => 'required|string',
             'body' => 'required|string',
+            'type' => 'required|string',
+            'screen' => 'required|string',
         ]);
 
         try {
             $messaging = app(Messaging::class);
+            $only = $request->only;
+            if($only){
+                $tokens = $request->tokens;
+                return $this->enviarNotificacionPrivada($tokens, $messaging, $request);
+            }
             $message = CloudMessage::withTarget('topic', 'tutor')
             ->withNotification(Notification::create(
                 $request->title,
                 $request->body
             ))
             ->withData([
-                'tipo' => 'solicitud_tutor',
-                'screen' => 'solicitud_tutor',
+                'type' => $request->type,
+                'screen' => $request->screen,
+                'data_tutor' => json_encode( $request->data_tutor ?? ''),
             ]);
 
             $result = $messaging->send($message);
@@ -80,6 +88,56 @@ class NotificacionController extends Controller
         //$messaging = app(Messaging::class);
 
     }
+
+    // Funcion Privada
+    private function enviarNotificacionPrivada($tokens,$messaging, $request){
+        try {
+            // Asegurarnos de que $tokens sea un array
+            if (is_string($tokens)) {
+                $decoded = json_decode($tokens, true);
+                $tokens = is_array($decoded) ? $decoded : [$tokens];
+            }
+
+            if(count($tokens) === 1){
+                $message = CloudMessage::withTarget('token', $tokens[0])
+                ->withNotification(Notification::create(
+                $request -> title,
+                $request -> body
+                ))
+                ->withData([
+                    'type' => $request->type,
+                    'screen' => $request->screen,
+                    'data_tutor' => json_encode( $request->data_tutor ?? ''),
+                ]);
+                $result = $messaging->send($message);
+            }else{
+                $message = CloudMessage::new()
+                ->withNotification(Notification::create(
+                    $request->title,
+                    $request->body
+                ))
+                ->withData([
+                    'type' => $request->type,
+                    'screen' => $request->screen,
+                    'data_tutor' => json_encode( $request->data_tutor ?? ''),
+                ]);
+
+                $result = $messaging->sendMulticast($message, $tokens);
+            }
+
+            return response()->json([
+                'ok' => true,
+                'message' => 'Notificación enviada a los tutores seleccionados',
+                'result' => $result
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'ok' => false,
+                'message' => 'Error al inicializar el servicio de mensajería',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
     public function enviarAEstudiantes(Request $request)
     {
         $request->validate([
@@ -95,7 +153,7 @@ class NotificacionController extends Controller
                 $request->body
             ))
             ->withData([
-                'tipo' => 'nueva_publicacion',
+                'type' => 'nueva_publicacion',
                 'screen' => 'feed',
             ]);
 
