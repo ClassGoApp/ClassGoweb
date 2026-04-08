@@ -188,6 +188,9 @@ Route::post('slot-bookings', [\App\Http\Controllers\Api\BookingController::class
 // Ruta para mandar un email para tutoria al instante
 Route::post('/batches/start', [SubjectPickerController::class, 'start']);
 
+// Ruta para aceptar la tutoría al instante (desde mobil)
+Route::post('/tutor/waitlist/accept', [SubjectPickerController::class, 'acceptWaitlist']);
+
 // Ruta para mandar notificaciones a tutores (mobile)
 Route::post('notify-tutors', [NotificacionController::class, 'enviarATutores']);
 
