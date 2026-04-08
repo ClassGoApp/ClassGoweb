@@ -310,12 +310,34 @@ class SubjectPickerController extends Controller
                     ->first([
                         'u.id',
                         'u.email',
+                        'u.fcm_token',
                         'p.first_name',
                         'p.last_name',
                     ]);
 
                 if (!$user || !$user->email) {
                     throw new \Exception('user_email_missing');
+                }
+                
+                if ($user->fcm_token) {
+                    $notificacionController = app(NotificacionController::class);
+                    $notificacionController->enviarATutores(
+                        request: new Request([
+                            'title' => 'Solicitud de tutoría instantánea',
+                            'body' => "Tienes una solicitud de tutoría instantánea para {$subjectName}. Entra y espera a ser elegido.",
+                            'type' => 'tutoria_instant',
+                            'only' => true,
+                            'tokens' => json_encode([$user->fcm_token]),
+                            'screen' => 'solicitud_tutor',
+                            'data_tutor' => json_encode([
+                                'id' => $user->id,
+                                'nombre' => trim(($user->first_name ?? '') . ' ' . ($user->last_name ?? '')),
+                                'materia' => $subjectName,
+                                'batch_id' => $batchId,
+                                'accept_token' => $it->accept_token,
+                            ]),
+                        ])
+                    );
                 }
 
                 $tutorName = trim(($user->first_name ?? '') . ' ' . ($user->last_name ?? ''));
@@ -689,7 +711,10 @@ class SubjectPickerController extends Controller
     public function acceptWaitlist(Request $request)
     {
         $token = (string) $request->query('t');
-        if ($token === '') abort(404);
+        if ($token === '') {
+            $token = (string) $request->t;
+        }else abort(404);
+        $mobil = $request->m;
 
         // 1) Buscar item por token
         $item = EmailBatchItem::where('accept_token', $token)->first();
@@ -700,9 +725,16 @@ class SubjectPickerController extends Controller
         if (!$batch) abort(404);
 
         if ($batch->expires_at && now()->greaterThanOrEqualTo($batch->expires_at)) {
-            return view('vistas.view.pages.tutorStateLink', [
-                'status' => 'expired',
-            ]);
+            if($mobil){
+                return response()->json([
+                    'ok' => false,
+                    'message' => 'La solicitud ha expirado',
+                ], 410);
+            }else{
+                return view('vistas.view.pages.tutorStateLink', [
+                    'status' => 'expired',
+                ]);
+            }
         }
 
         // 3) Marcar accepted (idempotente)
@@ -721,14 +753,28 @@ class SubjectPickerController extends Controller
         // ✅ timestamp absoluto (servidor) en milisegundos
         $expiresAtMs = $expiresAt ? ($expiresAt->getTimestamp() * 1000) : null;
 
-        return view('vistas.view.pages.tutorStateLink', [
-            'status' => ($secondsLeft !== null && $secondsLeft <= 0) ? 'expired' : 'ok',
-            'batch_id' => $batch->id,
-            'subject_id' => $batch->subject_id,
-            'expires_at' => optional($expiresAt)->toDateTimeString(),
-            'seconds_left' => $secondsLeft,
-            'expires_at_ms' => $expiresAtMs,   // ✅ NUEVO
-        ]);
+        if($mobil){
+            return response()->json([
+                'ok' => true,
+                'message' => '¡Has aceptado la solicitud de tutoría instantánea! Espera a ser elegido por el estudiante.',
+                'status' => ($secondsLeft !== null && $secondsLeft <= 0) ? 'expired' : 'ok',
+                'batch_id' => $batch->id,
+                'subject_id' => $batch->subject_id,
+                'expires_at' => optional($expiresAt)->toDateTimeString(),
+                'seconds_left' => $secondsLeft,
+                'expires_at_ms' => $expiresAtMs,
+            ]);
+
+        }else{
+            return view('vistas.view.pages.tutorStateLink', [
+                'status' => ($secondsLeft !== null && $secondsLeft <= 0) ? 'expired' : 'ok',
+                'batch_id' => $batch->id,
+                'subject_id' => $batch->subject_id,
+                'expires_at' => optional($expiresAt)->toDateTimeString(),
+                'seconds_left' => $secondsLeft,
+                'expires_at_ms' => $expiresAtMs,   // ✅ NUEVO
+            ]);
+        }
     }
 
 
@@ -1249,6 +1295,75 @@ class SubjectPickerController extends Controller
                 'booking_id' => $bookingId,
                 'updated_at' => now(),
             ]);
+
+            // ====================================================================
+            // 🔔 INICIO LÓGICA DE NOTIFICACIONES
+            // ====================================================================
+            
+            $notificacionController = app(NotificacionController::class);
+
+            // 1. Obtener nombre de la materia (asumiendo que tienes una tabla subjects)
+            $subjectName = DB::table('subjects')->where('id', $batchRow->subject_id)->value('name') ?? 'la materia solicitada';
+
+            // 2. Notificar al tutor ELEGIDO
+            $chosenTutorInfo = DB::table('users as u')
+                ->leftJoin('profiles as p', 'p.user_id', '=', 'u.id')
+                ->where('u.id', $tutorId)
+                ->first(['u.id', 'u.fcm_token', 'p.first_name', 'p.last_name']);
+
+            if ($chosenTutorInfo && $chosenTutorInfo->fcm_token) {
+                $nombreTutor = trim(($chosenTutorInfo->first_name ?? '') . ' ' . ($chosenTutorInfo->last_name ?? ''));
+                
+                $notificacionController->enviarATutores(
+                    request: new Request([
+                        'title' => '¡Felicidades, fuiste elegido!',
+                        'body' => "El estudiante te ha seleccionado para la tutoría de {$subjectName}. ¡Entra a la sala ahora!",
+                        'type' => 'tutoria_elegida',
+                        'only' => true,
+                        'tokens' => json_encode([$chosenTutorInfo->fcm_token]),
+                        'screen' => 'tutor_aceptado',
+                        'data_tutor' => json_encode([
+                            'id' => $chosenTutorInfo->id,
+                            'nombre' => $nombreTutor,
+                            'materia' => $subjectName,
+                            'batch_id' => $batchRow->id,
+                            'booking_id' => $bookingId,
+                        ]),
+                    ])
+                );
+            }
+
+            // 3. Notificar a los tutores RECHAZADOS / NO ELEGIDOS
+            // Obtenemos directamente los tokens de los items que acabamos de marcar como "expired"
+            $rejectedTokens = DB::table('email_batch_items as ebi')
+                ->join('users as u', 'u.id', '=', 'ebi.user_id')
+                ->where('ebi.batch_id', $batchRow->id)
+                ->where('ebi.id', '!=', $item->id)
+                ->where('ebi.status', 'expired')
+                ->whereNotNull('u.fcm_token') // Filtramos desde BD para mayor velocidad
+                ->pluck('u.fcm_token')
+                ->toArray();
+
+            // Si hay tokens rechazados, enviamos un solo Request masivo
+            if (!empty($rejectedTokens)) {
+                $notificacionController->enviarATutores(
+                    request: new Request([
+                        'title' => 'Tutoría asignada a otro tutor',
+                        'body' => "El estudiante ha elegido a otro tutor en esta ocasión. ¡Gracias por tu tiempo y sigue atento!",
+                        'type' => 'tutoria_no_elegida',
+                        'only' => true,
+                        'tokens' => json_encode($rejectedTokens), // Enviamos todo el array de tokens a Firebase
+                        'screen' => 'tutor_rechazado',
+                        'data_tutor' => json_encode([
+                            'batch_id' => $batchRow->id,
+                            'materia' => $subjectName,
+                        ]),
+                    ])
+                );
+            }
+            // ====================================================================
+            // 🔔 FIN LÓGICA DE NOTIFICACIONES
+            // ====================================================================
 
             return response()->json([
                 'success' => true,
@@ -2759,6 +2874,43 @@ class SubjectPickerController extends Controller
                         ]);
                 }
             }
+            
+            // ====================================================================
+            // 🔔 INICIO LÓGICA DE NOTIFICACIONES (Notificar al Tutor)
+            // ====================================================================
+            
+            // 1. Buscamos el token del tutor y el nombre del estudiante
+            // 1. Buscamos al tutor en perfiles y unimos con usuarios para obtener el token
+            $tutor = DB::table('users')->where('id', $b->tutor_id)->first(['id', 'fcm_token']);
+            $studentProfile = DB::table('profiles')->where('user_id', $studentId)->first(['first_name', 'last_name']);
+            
+            $studentName = trim(($studentProfile->first_name ?? 'El estudiante') . ' ' . ($studentProfile->last_name ?? ''));
+
+            // 2. Si el tutor existe y tiene un token configurado, enviamos la alerta
+            
+            if ($tutor && !empty($tutor->fcm_token)) {
+                $notificacionController = app(NotificacionController::class);
+                
+                $notificacionController->enviarATutores(
+                    request: new Request([
+                        'title' => '¡Tu estudiante te está esperando!',
+                        'body' => "{$studentName} acaba de entrar a la sala de Meet. ¡Únete a la clase ahora!",
+                        'type' => 'estudiante_unido_meet',
+                        'only' => true,
+                        'tokens' => json_encode([$tutor->fcm_token]),
+                        'screen' => 'tutoria_lista', 
+                        'data_tutor' => json_encode([
+                            'booking_id' => $b->id,
+                            'meeting_link' => $meetingLink, // ✅ Pasamos el link directo en la data
+                            'student_name' => $studentName,
+                        ]),
+                    ])
+                );
+            }
+            
+            // ====================================================================
+            // 🔔 FIN LÓGICA DE NOTIFICACIONES
+            // ====================================================================
 
             return response()->json([
                 'ok' => true,
