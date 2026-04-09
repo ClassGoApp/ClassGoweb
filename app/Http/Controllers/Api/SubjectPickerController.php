@@ -701,7 +701,10 @@ class SubjectPickerController extends Controller
         $token = (string) $request->query('t');
         if ($token === '') {
             $token = (string) $request->t;
-        }else abort(404);
+            if($token === '') {
+                abort(404);
+            }
+        }
         $mobil = $request->m;
 
         // 1) Buscar item por token
