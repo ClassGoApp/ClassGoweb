@@ -38,3 +38,6 @@ app/credentials/credential.json
 *.map
 /public/build/
 storage/app/purifier/
+
+*.png
+*.jpg
