@@ -10,6 +10,7 @@ use App\Models\UserSubjectSlot;
 use Illuminate\Support\Facades\Auth;
 use App\Services\GoogleMeetService;
 use App\Services\BookingNotificationService;
+use Illuminate\Support\Facades\Log;
 
 class SlotBookingService implements interfaces\ISlotBookingService
 {
@@ -66,6 +67,99 @@ class SlotBookingService implements interfaces\ISlotBookingService
         // if ($session_fee == 0) {
         //     $this->aceptartutoria($booking);
         // }
+        return $booking;
+    }
+
+    public function crearReservaContinua($studentId, $tutorId, $subjectId, array $fechas, $session_fee)
+    {
+        Log::info('DEBUG crearReservaContinua - entrada', [
+            'student_id' => $studentId,
+            'tutor_id' => $tutorId,
+            'subject_id' => $subjectId,
+            'session_fee' => $session_fee,
+            'fechas' => $fechas,
+            'count' => count($fechas),
+        ]);
+
+        if (empty($fechas)) {
+            throw new \Exception('No se recibieron fechas para crear la reserva.');
+        }
+
+        $fechas = array_values(array_unique($fechas));
+        sort($fechas);
+
+        Log::info('DEBUG crearReservaContinua - fechas ordenadas', [
+            'fechas_ordenadas' => $fechas,
+            'count' => count($fechas),
+        ]);
+
+        if (count($fechas) > 1) {
+            for ($i = 1; $i < count($fechas); $i++) {
+                $anterior = \Carbon\Carbon::parse($fechas[$i - 1]);
+                $actual = \Carbon\Carbon::parse($fechas[$i]);
+
+                $diff = (int) $anterior->diffInMinutes($actual);
+
+                Log::info('DEBUG crearReservaContinua - validando continuidad', [
+                    'anterior' => $anterior->format('Y-m-d H:i:s'),
+                    'actual' => $actual->format('Y-m-d H:i:s'),
+                    'diff' => $diff,
+                ]);
+
+                if ($diff !== 20) {
+                    throw new \Exception('Las fechas seleccionadas no forman un bloque continuo de 20 minutos.');
+                }
+            }
+        }
+
+        $startTime = \Carbon\Carbon::parse($fechas[0]);
+        $endTime = $startTime->copy()->addMinutes(count($fechas) * 20);
+
+        Log::info('DEBUG crearReservaContinua - rango final', [
+            'start_time' => $startTime->format('Y-m-d H:i:s'),
+            'end_time' => $endTime->format('Y-m-d H:i:s'),
+            'bloques' => count($fechas),
+        ]);
+
+        $booking = new SlotBooking();
+        $booking->student_id = $studentId;
+        $booking->tutor_id = $tutorId;
+        $booking->subject_id = $subjectId;
+        $booking->session_fee = $session_fee;
+        $booking->start_time = $startTime->format('Y-m-d H:i:s');
+        $booking->end_time = $endTime->format('Y-m-d H:i:s');
+        $booking->booked_at = now();
+        $booking->user_subject_slot_id = null;
+        $booking->status = 1;
+
+        Log::info('DEBUG crearReservaContinua - antes de generar link', [
+            'start_time' => $booking->start_time,
+            'end_time' => $booking->end_time,
+        ]);
+
+        $link = $this->generarlink($booking);
+        $booking->meeting_link = $link;
+
+        Log::info('DEBUG crearReservaContinua - link generado', [
+            'meeting_link' => $link,
+        ]);
+
+        $booking->save();
+
+        Log::info('DEBUG crearReservaContinua - booking guardado', [
+            'booking_id' => $booking->id,
+            'start_time' => $booking->start_time,
+            'end_time' => $booking->end_time,
+        ]);
+
+        $notificationService = app(BookingNotificationService::class);
+        $notificationService->handleStatusChangeNotification($booking, '', $booking->status);
+
+        Log::info('DEBUG crearReservaContinua - notificacion enviada', [
+            'booking_id' => $booking->id,
+            'status' => $booking->status,
+        ]);
+
         return $booking;
     }
 

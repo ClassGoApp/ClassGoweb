@@ -272,36 +272,7 @@ class Reserva extends Component
     /**
      * Se ejecuta cuando el usuario hace clic en una hora.
      */
-    // public function selectTime(string $time)
-    // {
-    //     // Busca el slot para asegurarse de que está libre
-    //     $slot = collect($this->availableTimeSlots)->firstWhere('time', $time);
-
-    //     if ($slot && $slot['status'] === 'free') {
-    //         $this->selectedTime = $time;
-    //     }
-    // }
-
-    // public function selectTime(string $time)
-    // {
-    //     // 1. Buscamos si el slot está libre en los datos cargados
-    //     $slot = collect($this->availableTimeSlots)->firstWhere('time', $time);
-
-    //     if ($slot && $slot['status'] === 'free') {
-    //         // 2. Si ya está seleccionado, lo quitamos (Toggle)
-    //         if (in_array($time, $this->selectedTimes)) {
-    //             $this->selectedTimes = array_diff($this->selectedTimes, [$time]);
-    //         } else {
-    //             // 3. Si no está, verificamos el límite de 6
-    //             if (count($this->selectedTimes) < 6) {
-    //                 $this->selectedTimes[] = $time;
-    //             } else {
-    //                 session()->flash('error', 'Solo puedes seleccionar un máximo de 6 horarios.');
-    //             }
-    //         }
-    //     }
-    // }
-
+    
     public function selectTime(string $time)
     {
         $slot = collect($this->availableTimeSlots)->firstWhere('time', $time);
@@ -383,34 +354,12 @@ class Reserva extends Component
         }
     }
 
-    // public function openReservationModal()
-    // {
-    //     // Opcional: Puedes añadir una validación aquí para asegurarte
-    //     // de que el usuario ya ha seleccionado un día y una hora.
-    //     if (!$this->selectedDay || empty($this->selectedTimes)) {
-    //         session()->flash('error', 'Por favor, selecciona un día y una hora antes de continuar.');
-    //         return;
-    //     }
-    //     $estudianteId = auth()->user()->id;
-    //     $fechaCompleta = $this->currentDate->copy()
-    //         ->setDay($this->selectedDay)
-    //         ->setTimeFromTimeString($this->selectedTime . ':00');
-    //     $tienereserva = SlotBooking::where('student_id', $estudianteId)->get();
 
-    //     for ($i = 0; $i < count($tienereserva); $i++) {
-    //         if ($tienereserva[$i]->start_time === $fechaCompleta->format('Y-m-d H:i:s')) {
-    //             session()->flash('error', 'Ya tienes una reserva activa en este horario. Por favor, completa  esa reserva antes de hacer una nueva.');
-    //             return;
-    //         }
-    //     }
-    //     $this->showModal = true;
-    //     // Emite un evento global que el JavaScript del frontend escuchará.
-    //     //$this->dispatch('open-modal');
-    // }
+
+    
 
     public function openReservationModal()
     {
-        // 1. Validar que haya selección
         if (!$this->selectedDay || empty($this->selectedTimes)) {
             session()->flash('error', 'Por favor, selecciona un día y al menos una hora.');
             return;
@@ -418,7 +367,6 @@ class Reserva extends Component
 
         $estudianteId = auth()->user()->id;
 
-        // 2. Verificar cada hora seleccionada contra la BD
         foreach ($this->selectedTimes as $hora) {
             $fechaVerificar = $this->currentDate->copy()
                 ->setDay($this->selectedDay)
@@ -426,7 +374,8 @@ class Reserva extends Component
                 ->format('Y-m-d H:i:s');
 
             $existe = SlotBooking::where('student_id', $estudianteId)
-                ->where('start_time', $fechaVerificar)
+                ->where('start_time', '<=', $fechaVerificar)
+                ->where('end_time', '>', $fechaVerificar)
                 ->exists();
 
             if ($existe) {
@@ -462,121 +411,35 @@ class Reserva extends Component
     /**
      * Finaliza la reserva. Se llama desde el formulario del modal.
      */
-    // public function makeReservation()
-    // {
-
-
-    //     $sessionFee = $this->montoFinal;
-    //     $service = $this->cuponservice ?? app(ICuponesService::class);
-    //     $isAugustPromotion = $this->currentDate->month === 9;
-
-    //     if ($isAugustPromotion || (!empty($this->cuponCode))) {
-    //         $sessionFee = 0;
-    //         $this->validate([
-    //             'selectedSubject' => 'required',
-    //         ]);
-    //     } else {
-    //         $this->validate([
-    //             'paymentReceipt' => 'required|image|max:5120',
-    //             'selectedSubject' => 'required',
-    //         ]);
-    //     }
-    //     try {
-    //         DB::beginTransaction();
-    //         $pagostutorreserva = new PagosTutorReservaService();
-
-    //         if ($this->porcentaje != null || $this->porcentaje != 0) {
-    //             $sessionFee = $sessionFee - ($sessionFee * $this->porcentaje / 100);
-    //         }
-    //         $estudianteId = auth()->user()->id;
-    //         // 2.1. registra que ya se uso el cupon en esta session
-    //         if (!empty($this->cuponCode)) {
-    //             $service->cuponCanjeado($this->cuponCode, auth()->user());
-    //             $this->cuponesUsuario = $service->todosLosCupones(auth()->user());
-    //         }
-
-    //         $fechaCompleta = $this->currentDate->copy()
-    //             ->setDay($this->selectedDay)
-    //             ->setTimeFromTimeString($this->selectedTime . ':00');
-    //         $fechaString = $fechaCompleta->format('Y-m-d H:i:s');
-
-    //         if ($this->porcentaje == 100 || $isAugustPromotion) {
-    //             // Usar imagen por defecto para promoción
-    //             $path = 'qr/77b1a7da.jpg'; // Imagen por defecto
-    //         } else {
-    //             // Guardar imagen del usuario
-    //             $imageService = app(ImagenesService::class);
-    //             $path = $imageService->guardarqrEstudianteReserva($this->paymentReceipt);
-    //         }
-    //         // 2. Crear reserva
-    //         $slotBookingService = app(SlotBookingService::class);
-    //         // $reserva = $slotBookingService->crearReserva(
-    //         //     $estudianteId,
-    //         //     $this->tutorId,
-    //         //     $this->selectedSubject,
-    //         //     $fechaString,
-    //         //     $sessionFee
-    //         // );
-
-
-    //         // 3. Crear registro de pago
-    //         PaymentSlotBooking::create([
-    //             'slot_booking_id' => $reserva->id,
-    //             'image_url' => $path,
-    //             'created_at' => now(),
-    //             'updated_at' => now()
-    //         ]);
-    //         // 4. Crear registro de pago del tutor
-    //         $pagostutorreserva->create(
-    //             slot_booking_id: $reserva->id,
-    //             payment_date: now(),
-    //             amount: 10,
-    //             message: ''
-    //         );
-
-    //         DB::commit();
-    //         $tutor = User::where('id', $this->tutorId)->first();
-    //         $emailService = app(MailService::class);
-    //         $emailService->sendAdminNuevaTutoria(
-    //             $tutor?->profile?->full_name,
-    //             $this->selectedSubject,
-    //             $fechaString
-    //         );
-
-    //         // Resetear estado y mostrar éxito
-    //         $this->quitarCupon();
-    //         $this->showModal = false;
-    //         $this->resetSelection();
-
-
-
-
-    //         $this->loadMonthData();
-    //         session()->flash('success_message', '¡Hora reservada correctamente!');
-    //         $this->dispatch('reload-page', section: 'reservas-tutor');
-    //     } catch (\Exception $e) {
-    //         DB::rollBack();
-    //         Log::error('Error creando reserva', [
-    //             'error' => $e->getMessage(),
-    //             'tutor_id' => $this->tutorId,
-    //             'student_id' => $estudianteId,
-    //             'fecha' => $fechaString ?? null
-    //         ]);
-    //         session()->flash('error', 'Hubo un error al procesar tu reserva. Por favor, inténtalo de nuevo.');
-    //     }
-    // }
-
+    
 
     public function makeReservation()
     {
         $sessionFee = $this->montoFinal;
         $service = $this->cuponservice ?? app(ICuponesService::class);
-        $isAugustPromotion = $this->currentDate->month === 9;
+        $isAugustPromotion = $this->currentDate->month === 8;
+        $fechasParaReservar = [];
+        $reserva = null;
+        $estudianteId = auth()->user()->id;
 
-        // 1. Validaciones
-        if ($isAugustPromotion || (!empty($this->cuponCode))) {
+        Log::info('DEBUG makeReservation - inicio', [
+            'student_id' => $estudianteId,
+            'tutor_id' => $this->tutorId,
+            'selectedSubject' => $this->selectedSubject,
+            'selectedDay' => $this->selectedDay,
+            'selectedTimes' => $this->selectedTimes,
+            'selectedTimes_count' => count($this->selectedTimes),
+            'montoFinal' => $this->montoFinal,
+            'porcentaje' => $this->porcentaje,
+            'cuponCode' => $this->cuponCode,
+            'isAugustPromotion' => $isAugustPromotion,
+        ]);
+
+        if ($isAugustPromotion || !empty($this->cuponCode)) {
             $sessionFee = 0;
-            $this->validate(['selectedSubject' => 'required']);
+            $this->validate([
+                'selectedSubject' => 'required',
+            ]);
         } else {
             $this->validate([
                 'paymentReceipt' => 'required|image|max:5120',
@@ -584,28 +447,39 @@ class Reserva extends Component
             ]);
         }
 
+        foreach ($this->selectedTimes as $hora) {
+            $fechasParaReservar[] = $this->currentDate->copy()
+                ->setDay($this->selectedDay)
+                ->setTimeFromTimeString($hora . ':00')
+                ->format('Y-m-d H:i:s');
+        }
+
+        Log::info('DEBUG makeReservation - fechasParaReservar', [
+            'fechas' => $fechasParaReservar,
+            'count' => count($fechasParaReservar),
+        ]);
+
         try {
             DB::beginTransaction();
+
             $pagostutorreserva = new PagosTutorReservaService();
 
             if ($this->porcentaje > 0) {
                 $sessionFee = $sessionFee - ($sessionFee * $this->porcentaje / 100);
             }
 
-            $estudianteId = auth()->user()->id;
+            Log::info('DEBUG makeReservation - sessionFee calculado', [
+                'sessionFee' => $sessionFee,
+            ]);
 
             if (!empty($this->cuponCode)) {
                 $service->cuponCanjeado($this->cuponCode, auth()->user());
                 $this->cuponesUsuario = $service->todosLosCupones(auth()->user());
-            }
 
-            // --- SOLUCIÓN AL ERROR: Crear la variable $fechasParaReservar ---
-            $fechasParaReservar = [];
-            foreach ($this->selectedTimes as $hora) {
-                $fechasParaReservar[] = $this->currentDate->copy()
-                    ->setDay($this->selectedDay)
-                    ->setTimeFromTimeString($hora . ':00')
-                    ->format('Y-m-d H:i:s');
+                Log::info('DEBUG makeReservation - cupon aplicado', [
+                    'cuponCode' => $this->cuponCode,
+                    'porcentaje' => $this->porcentaje,
+                ]);
             }
 
             if ($this->porcentaje == 100 || $isAugustPromotion) {
@@ -615,54 +489,111 @@ class Reserva extends Component
                 $path = $imageService->guardarqrEstudianteReserva($this->paymentReceipt);
             }
 
-            // 2. Llamar al nuevo método del servicio
+            Log::info('DEBUG makeReservation - path comprobante', [
+                'path' => $path,
+            ]);
+
             $slotBookingService = app(SlotBookingService::class);
-            $reservas = $slotBookingService->crearReservasMultiples(
+            $reserva = $slotBookingService->crearReservaContinua(
                 $estudianteId,
                 $this->tutorId,
                 $this->selectedSubject,
-                $fechasParaReservar, // <--- Ahora la variable sí existe
+                $fechasParaReservar,
                 $sessionFee
             );
 
-            // 3. Registro de pago (Usamos la primera reserva del grupo para el recibo)
-            PaymentSlotBooking::create([
-                'slot_booking_id' => $reservas[0]->id, // <--- Cambiado de $reserva a $reservas[0]
-                'image_url' => $path,
-                'created_at' => now(),
-                'updated_at' => now()
+            Log::info('DEBUG makeReservation - reserva creada', [
+                'booking_id' => $reserva->id,
+                'start_time' => $reserva->start_time,
+                'end_time' => $reserva->end_time,
+                'meeting_link' => $reserva->meeting_link,
             ]);
 
-            // 4. Pago al tutor (puedes ajustar el monto de 10 si es variable)
+            PaymentSlotBooking::create([
+                'slot_booking_id' => $reserva->id,
+                'image_url' => $path,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            Log::info('DEBUG makeReservation - payment_slot_booking creado', [
+                'slot_booking_id' => $reserva->id,
+            ]);
+
             $pagostutorreserva->create(
-                slot_booking_id: $reservas[0]->id,
+                slot_booking_id: $reserva->id,
                 payment_date: now(),
                 amount: 10,
-                message: 'Reserva múltiple'
+                message: 'Reserva continua'
             );
+
+            Log::info('DEBUG makeReservation - pago tutor creado', [
+                'slot_booking_id' => $reserva->id,
+                'amount' => 10,
+            ]);
 
             DB::commit();
 
-            // Enviar Email (Usamos la fecha de la primera clase para el correo)
+            Log::info('DEBUG makeReservation - commit OK', [
+                'booking_id' => $reserva->id,
+            ]);
+        } catch (\Throwable $e) {
+            if (DB::transactionLevel() > 0) {
+                DB::rollBack();
+            }
+
+            Log::error('ERROR makeReservation', [
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'student_id' => $estudianteId ?? null,
+                'tutor_id' => $this->tutorId ?? null,
+                'selectedSubject' => $this->selectedSubject ?? null,
+                'selectedDay' => $this->selectedDay ?? null,
+                'selectedTimes' => $this->selectedTimes ?? [],
+                'selectedTimes_count' => is_array($this->selectedTimes ?? null) ? count($this->selectedTimes) : 0,
+                'fechasParaReservar' => $fechasParaReservar ?? [],
+                'sessionFee' => $sessionFee ?? null,
+                'trace' => $e->getTraceAsString(),
+            ]);
+
+            session()->flash('error', 'Hubo un error al procesar tu reserva: ' . $e->getMessage());
+            return;
+        }
+
+        try {
             $tutor = User::find($this->tutorId);
+
             app(MailService::class)->sendAdminNuevaTutoria(
                 $tutor?->profile?->full_name,
                 $this->selectedSubject,
-                $fechasParaReservar[0]
+                $fechasParaReservar[0] ?? null
             );
 
-            $this->quitarCupon();
-            $this->showModal = false;
-            $this->resetSelection();
-            $this->loadMonthData();
-
-            session()->flash('success_message', '¡Reservas realizadas correctamente!');
-            $this->dispatch('reload-page', section: 'reservas-tutor');
-        } catch (\Exception $e) {
-            DB::rollBack();
-            Log::error('Error en reserva múltiple: ' . $e->getMessage());
-            session()->flash('error', 'Hubo un error al procesar tu reserva.');
+            Log::info('DEBUG makeReservation - correo enviado', [
+                'tutor_id' => $this->tutorId,
+                'booking_id' => $reserva->id,
+            ]);
+        } catch (\Throwable $e) {
+            Log::warning('WARNING makeReservation - la reserva se creó pero falló el correo', [
+                'booking_id' => $reserva?->id,
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+            ]);
         }
+
+        $this->quitarCupon();
+        $this->showModal = false;
+        $this->resetSelection();
+        $this->loadMonthData();
+
+        Log::info('DEBUG makeReservation - final OK', [
+            'booking_id' => $reserva->id,
+        ]);
+
+        session()->flash('success_message', '¡Reserva realizada correctamente!');
+        $this->dispatch('reload-page', section: 'reservas-tutor');
     }
 
 
@@ -684,99 +615,77 @@ class Reserva extends Component
      * Método auxiliar para procesar los datos reales de la BBDD
      * Genera slots de 20 minutos entre start_time y end_time para cada fecha
      */
+ 
+    private function slotFallsInBookedRange(Carbon $slotDateTime, $reservas)
+    {
+        foreach ($reservas as $reserva) {
+            $inicioReserva = Carbon::parse($reserva->start_time);
+            $finReserva = Carbon::parse($reserva->end_time);
+
+            if (
+                $slotDateTime->greaterThanOrEqualTo($inicioReserva) &&
+                $slotDateTime->lt($finReserva)
+            ) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     private function processRealSlotData($tiempolibre, $year, $month)
     {
-        $processedData = [];      // Array final que se retorna
-        $totalProcesados = 0;     // Contador para debug
+        $processedData = [];
 
-        // ===== PASO 1: OPTIMIZACIÓN DE CONSULTAS =====
-        // En lugar de consultar la BD por cada slot de 20 minutos,
-        // obtenemos TODAS las reservas del mes de una sola vez
+        $monthStart = Carbon::create($year, $month, 1)->startOfMonth();
+        $monthEnd = $monthStart->copy()->endOfMonth();
+
+        // Traer reservas que se crucen con el mes visible
         $reservasDelMes = SlotBooking::where('tutor_id', $this->tutorId)
-            ->whereYear('start_time', $year)    // Filtra por año
-            ->whereMonth('start_time', $month)  // Filtra por mes
-            ->get()
-            ->keyBy(function ($reserva) {
-                // Crea un índice usando la fecha/hora como clave
-                // Ejemplo: "2025-08-14 08:20:00" => objeto_reserva
-                return Carbon::parse($reserva->start_time)->format('Y-m-d H:i:s');
-            });
+            ->where(function ($query) use ($monthStart, $monthEnd) {
+                $query->whereBetween('start_time', [$monthStart, $monthEnd])
+                    ->orWhereBetween('end_time', [$monthStart, $monthEnd])
+                    ->orWhere(function ($q) use ($monthStart, $monthEnd) {
+                        $q->where('start_time', '<', $monthStart)
+                            ->where('end_time', '>', $monthEnd);
+                    });
+            })
+            ->get();
 
-        // ===== PASO 2: PROCESAR CADA HORARIO DISPONIBLE DEL TUTOR =====
         foreach ($tiempolibre as $slot) {
-
-            // --- 2.1: Extraer fecha del slot ---
-            // $slot->date contiene algo como "2025-08-14 00:00:00"
-            // startOfDay() asegura que sea medianoche: "2025-08-14 00:00:00"
             $slotDate = Carbon::parse($slot->date)->startOfDay();
 
-            // --- 2.2: Verificar si el slot pertenece al mes actual ---
-            // Solo procesa slots que coincidan con el año/mes del calendario
             if ($slotDate->year == $year && $slotDate->month == $month) {
+                $day = $slotDate->day;
 
-                // --- 2.3: Determinar el día del mes ---
-                $day = $slotDate->day; // Ej: 14 (para el 14 de agosto)
-
-                // --- 2.4: Inicializar array para este día si no existe ---
                 if (!isset($processedData[$day])) {
                     $processedData[$day] = [];
                 }
 
-                // --- 2.5: Construir horarios de inicio y fin ---
-                // $slot->start_time puede ser "06:00:00" o una fecha completa
-                // setTimeFromTimeString() toma solo la parte de hora
                 $horaInicio = Carbon::parse($slot->start_time)->format('H:i:s');
                 $horaFin = Carbon::parse($slot->end_time)->format('H:i:s');
 
                 $startTime = $slotDate->copy()->setTimeFromTimeString($horaInicio);
                 $endTime = $slotDate->copy()->setTimeFromTimeString($horaFin);
 
-                // Ejemplo:
-                // $startTime = "2025-08-14 06:00:00"
-                // $endTime   = "2025-08-14 13:00:00"
-
-                // --- 2.6: Inicializar tiempo actual para el bucle ---
                 $currentTime = $startTime->copy();
 
-                // ===== PASO 3: GENERAR SLOTS DE 20 MINUTOS =====
-                // Divide el horario disponible en slots de 20 minutos
                 while ($currentTime->lessThan($endTime)) {
+                    $timeString = $currentTime->format('H:i');
 
-                    // --- 3.1: Formatear hora para mostrar ---
-                    $timeString = $currentTime->format('H:i'); // Ej: "08:20"
+                    $isBooked = $this->slotFallsInBookedRange($currentTime, $reservasDelMes);
 
-                    // --- 3.2: Crear clave para buscar en reservas ---
-                    $datetimeKey = $currentTime->format('Y-m-d H:i:s');
-                    // Ej: "2025-08-14 08:20:00"
-
-                    // --- 3.3: VERIFICAR SI ESTÁ OCUPADO ---
-                    // Busca en el array de reservas si existe esta fecha/hora exacta
-                    // has() es mucho más rápido que consultar la BD cada vez
-                    $isBooked = $reservasDelMes->has($datetimeKey);
-
-                    $totalProcesados++; // Contador para debug
-
-                    // --- 3.4: AGREGAR SLOT AL RESULTADO ---
                     $processedData[$day][] = [
-                        'time' => $timeString,                           // "08:20"
-                        'status' => $isBooked ? 'occupied' : 'free',     // Estado del slot
-                        'slot_id' => $slot->id                           // ID del horario base
+                        'time' => $timeString,
+                        'status' => $isBooked ? 'occupied' : 'free',
+                        'slot_id' => $slot->id
                     ];
 
-                    // --- 3.5: AVANZAR 20 MINUTOS ---
-                    // Pasa al siguiente slot de tiempo
                     $currentTime->addMinutes(20);
-                    // Siguiente iteración: "08:40", luego "09:00", etc.
                 }
-
-                // Al terminar el while, este slot está completamente procesado
-                // Continúa con el siguiente slot del foreach
             }
-
-            // Si el slot no pertenece al mes actual, se omite completamente
         }
 
-        // ]
         return $processedData;
     }
 
@@ -789,17 +698,14 @@ class Reserva extends Component
      * Verifica si un slot específico está reservado
      * Aquí deberías consultar tu tabla de reservas/bookings
      */
+    
+
     private function isTimeSlotBooked($tutorId, $dateTime)
     {
-
-
-        $ocupados = SlotBooking::where('tutor_id', $tutorId)
-            //->where('date', $dateTime->format('Y-m-d'))
-            ->where('start_time', $dateTime->format('Y-m-d H:i:s'))
+        return SlotBooking::where('tutor_id', $tutorId)
+            ->where('start_time', '<=', $dateTime->format('Y-m-d H:i:s'))
+            ->where('end_time', '>', $dateTime->format('Y-m-d H:i:s'))
             ->exists();
-
-        //dd($ocupados);  
-        return $ocupados;
     }
 
     public function render()
