@@ -377,6 +377,12 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
                 Route::get('/horarios/{tutor_id}', [BookingController::class, 'getSlots'])->name('horarios');
                 Route::get('/tutor-payment/{tutor_id}', [BookingController::class, 'getTutorPayment'])->name('tutor-payment');
 
+                // RUTAS NUEVAS PARA MULTI-SLOT BOOKING
+                Route::get('/horarios-multi/{tutor_id}', [BookingController::class, 'getSlotsMulti'])->name('horarios-multi');
+                Route::post('/hold-slots', [BookingController::class, 'holdSlotsMulti'])->name('hold-slots');
+                Route::post('/release-slots', [BookingController::class, 'releaseSlotsMulti'])->name('release-slots');
+                Route::post('/reservar-multi', [BookingController::class, 'storeMultiBooking'])->name('reservar-multi');
+
                 Route::post('/validar-cupon', [BookingController::class, 'validateCoupon'])->name('validar-cupon');
                 Route::post('/reservar', [BookingController::class, 'storeBooking'])->name('reservar');
             });

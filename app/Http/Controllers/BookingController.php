@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
 use App\Models\Coupon;
 use App\Services\CuponesService;
 use Illuminate\Database\QueryException;
@@ -738,6 +739,449 @@ class BookingController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Error al procesar la reserva',
+                'debug'   => app()->environment('local') ? $e->getMessage() : null,
+            ], 500);
+        }
+    }
+
+    /**
+     * MULTI-SLOT: Obtener horarios pero verificando si están bloqueados en caché o en DB.
+     */
+    public function getSlotsMulti(Request $request, $tutorId)
+    {
+        try {
+            $today = now()->startOfDay();
+
+            $baseSlots = DB::table('user_subject_slots')
+                ->where('user_id', (int)$tutorId)
+                ->where('date', '>=', $today)
+                ->orderBy('date')
+                ->orderBy('start_time')
+                ->get(['id', 'date', 'start_time', 'end_time']);
+
+            if ($baseSlots->isEmpty()) {
+                return response()->json([
+                    'success' => true,
+                    'slots' => []
+                ]);
+            }
+
+            // Bookings ya realizados (status 0, 1)
+            $busyBookings = DB::table('slot_bookings')
+                ->where('tutor_id', (int)$tutorId)
+                ->whereIn('status', [0, 1])
+                ->where('start_time', '>=', $today)
+                ->get(['user_subject_slot_id', 'start_time', 'end_time']);
+
+            $now = now();
+            $stepMinutes = 20;
+
+            $out = [];
+            
+            // Evaluamos bloque a bloque
+            foreach ($baseSlots as $slot) {
+                $dateStr = Carbon::parse($slot->date)->format('Y-m-d');
+
+                $rangeStart = Carbon::parse($dateStr . ' ' . $slot->start_time);
+                $rangeEnd   = Carbon::parse($dateStr . ' ' . $slot->end_time);
+
+                $cursor = $rangeStart->copy();
+
+                while ($cursor->copy()->addMinutes($stepMinutes)->lte($rangeEnd)) {
+                    $segStart = $cursor->copy();
+                    $segEnd   = $cursor->copy()->addMinutes($stepMinutes);
+
+                    if ($segEnd->lte($now) || ($segStart->lte($now) && $segEnd->gt($now))) {
+                        $cursor->addMinutes($stepMinutes);
+                        continue; // Pasado
+                    }
+
+                    $startFormatted = $segStart->format('H:i');
+                    $endFormatted = $segEnd->format('H:i');
+                    $id = $slot->id . '|' . $startFormatted . '|' . $endFormatted;
+
+                    // 1. Verificamos DB (busy set puede ser más complejo, verificaremos superposición)
+                    $isBusy = false;
+                    foreach ($busyBookings as $b) {
+                        $bStart = Carbon::parse($b->start_time);
+                        $bEnd = Carbon::parse($b->end_time);
+                        if ($segStart->lt($bEnd) && $segEnd->gt($bStart)) {
+                            $isBusy = true;
+                            break;
+                        }
+                    }
+
+                    if ($isBusy) {
+                        $cursor->addMinutes($stepMinutes);
+                        continue;
+                    }
+
+                    // 2. Verificamos Caché (Hold status)
+                    $cacheKey = "booking_lock:{$tutorId}:{$dateStr}:{$startFormatted}:{$endFormatted}";
+                    $isLocked = Cache::has($cacheKey);
+
+                    // Sólo mandamos los que NO están ocupados (o los mandamos con un flag si quisiéramos)
+                    // Como el requerimiento dice: "La vista del paso 2 debe mostrar únicamente los bloques realmente disponibles"
+                    if (!$isLocked) {
+                        $out[] = [
+                            'id' => $id,
+                            'date' => $dateStr,
+                            'duracion' => $stepMinutes,
+                            'available' => true,
+                            'status' => 'disponible' // 'disponible'
+                        ];
+                    }
+
+                    $cursor->addMinutes($stepMinutes);
+                }
+            }
+
+            return response()->json([
+                'success' => true,
+                'slots' => $out
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('getSlotsMulti error: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al cargar los horarios'
+            ], 500);
+        }
+    }
+
+    /**
+     * MULTI-SLOT: Poner slots en "espera" temporal (15 min) en caché
+     */
+    public function holdSlotsMulti(Request $request)
+    {
+        $request->validate([
+            'tutor_id' => 'required',
+            'slots' => 'required|array',
+            'date' => 'required'
+        ]);
+
+        $studentId = Auth::id();
+        $tutorId = $request->tutor_id;
+        $dateStr = $request->date;
+        $slots = $request->slots; // arreglo de strings con formato "15|12:00|12:20"
+
+        $lockedKeys = [];
+
+        try {
+            foreach ($slots as $slotId) {
+                $parts = explode('|', $slotId);
+                if (count($parts) !== 3) continue;
+
+                $startFormatted = $parts[1];
+                $endFormatted = $parts[2];
+
+                $cacheKey = "booking_lock:{$tutorId}:{$dateStr}:{$startFormatted}:{$endFormatted}";
+
+                // Intentamos meter en caché por 15 mins sin sobreescribir si ya existe
+                $added = Cache::add($cacheKey, $studentId, now()->addMinutes(15));
+                
+                if (!$added) {
+                    // Si encontramos UNO que no pudimos bloquear, otro usuario lo tiene
+                    // Si el candado es NUESTRO, técnicamente pasaría (pero Cache::add devuelve false si existe)
+                    // Entonces evaluamos a quién le pertenece:
+                    if (Cache::get($cacheKey) == $studentId) {
+                        $lockedKeys[] = $cacheKey; // Ya lo teníamos bloqueado, continuamos
+                    } else {
+                        // Liberamos lo que llegamos a bloquear
+                        foreach ($lockedKeys as $k) {
+                            Cache::forget($k);
+                        }
+                        return response()->json([
+                            'success' => false,
+                            'message' => "El horario de {$startFormatted} a {$endFormatted} acaba de ser seleccionado por otro estudiante."
+                        ]);
+                    }
+                } else {
+                    $lockedKeys[] = $cacheKey;
+                }
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Horarios reservados temporalmente'
+            ]);
+
+        } catch (\Exception $e) {
+            foreach ($lockedKeys as $k) {
+                Cache::forget($k);
+            }
+            return response()->json([
+                'success' => false,
+                'message' => 'Error bloqueando el horario.'
+            ], 500);
+        }
+    }
+
+    /**
+     * MULTI-SLOT: Liberar slots en caché
+     */
+    public function releaseSlotsMulti(Request $request)
+    {
+        $request->validate([
+            'tutor_id' => 'required',
+            'slots' => 'required|array',
+            'date' => 'required'
+        ]);
+
+        $studentId = Auth::id();
+        $tutorId = $request->tutor_id;
+        $dateStr = $request->date;
+        $slots = $request->slots;
+
+        foreach ($slots as $slotId) {
+            $parts = explode('|', $slotId);
+            if (count($parts) !== 3) continue;
+
+            $startFormatted = $parts[1];
+            $endFormatted = $parts[2];
+
+            $cacheKey = "booking_lock:{$tutorId}:{$dateStr}:{$startFormatted}:{$endFormatted}";
+
+            if (Cache::get($cacheKey) == $studentId) {
+                Cache::forget($cacheKey);
+            }
+        }
+
+        return response()->json(['success' => true]);
+    }
+
+    /**
+     * MULTI-SLOT: Guardar la reserva finalmente
+     */
+    public function storeMultiBooking(Request $request, CuponesService $cuponesService)
+    {
+        $request->validate([
+            'subject_id'  => 'required|exists:subjects,id',
+            'tutor_id'    => 'required|exists:users,id',
+            'slots'       => 'required|array',
+            'slot_date'   => 'required',
+            'coupon_id'   => 'nullable|exists:coupons,id',
+            'is_free'     => 'nullable|in:0,1',
+            'comprobante' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
+        ]);
+
+        DB::beginTransaction();
+
+        try {
+            $studentId = Auth::id();
+            $user      = $request->user();
+            $tutorId   = (int) $request->tutor_id;
+            $dateStr   = $request->slot_date;
+            $slots     = $request->slots;
+
+            if (count($slots) === 0 || count($slots) > 6) {
+                DB::rollBack();
+                return response()->json(['success' => false, 'message' => 'Cantidad de bloques inválida.'], 400);
+            }
+
+            // Extraemos info de los slots
+            // Asumimos que los slots vienen ordenados cronológicamente
+            $firstSlot = explode('|', $slots[0]);
+            $lastSlot = explode('|', end($slots));
+            
+            $baseSlotId = (int) $firstSlot[0];
+            $reqStart = $firstSlot[1]; // e.g. 12:00
+            $reqEnd = $lastSlot[2];    // e.g. 13:00
+
+            $startAt = Carbon::parse($dateStr . ' ' . $reqStart . ':00');
+            $endAt   = Carbon::parse($dateStr . ' ' . $reqEnd . ':00');
+
+            if ($endAt->lte($startAt) || $endAt->lte(now())) {
+                DB::rollBack();
+                return response()->json(['success' => false, 'message' => 'Rango horario inválido o en el pasado'], 400);
+            }
+
+            // Evitar doble reserva (status 0/1) revisando intersecciones
+            $exists = DB::table('slot_bookings')
+                ->where('tutor_id', $tutorId)
+                ->whereIn('status', [0, 1])
+                ->where(function($query) use ($startAt, $endAt) {
+                    $query->where('start_time', '<', $endAt->toDateTimeString())
+                          ->where('end_time', '>', $startAt->toDateTimeString());
+                })->exists();
+
+            if ($exists) {
+                DB::rollBack();
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Parte de este horario ya ha sido reservado por otro estudiante o no está disponible.'
+                ], 400);
+            }
+
+            $userSubject = DB::table('user_subject')
+                ->where('user_id', $tutorId)
+                ->where('subject_id', (int) $request->subject_id)
+                ->where('status', 'active')
+                ->first();
+
+            if (!$userSubject) {
+                DB::rollBack();
+                return response()->json(['success' => false, 'message' => 'El tutor no tiene esta materia activa'], 422);
+            }
+
+            // Precio base (por hora = 3 bloques, o por fracción?).
+            // En storeBooking lo multiplicaba? No, en storeBooking era "El precio base...". Asumimos que el precio base es por los 20 min. O que el paso 3 mandó el calculation
+            // Mejor cálculo en server:
+            $precioBaseHr = (float) DB::table('profiles')
+                ->where('user_id', $tutorId)
+                ->value('price');
+
+            if ($precioBaseHr <= 0) {
+                DB::rollBack();
+                return response()->json(['success' => false, 'message' => 'El tutor no tiene precio configurado'], 422);
+            }
+
+            // Cálculo precioBase por totalBlocks: Asumiendo que 1 bloque = el precio devuelto por getTutors (que en _booking-wizard suma el basePrice * bloqueos? Wait, el frontend en el paso 3 recalcTotals solo multiplicaba appliedDiscountPct? 
+            // Ojo: En _booking-wizard original basaba todo en currentPrice = basePrice * descuento. 
+            // Esto implica que $precioBaseHr equivale a 1 bloque. 
+            // Multiplicamos por la cantidad de bloques
+            $precioBase = $precioBaseHr * count($slots);
+
+            // CUPÓN (validar)
+            $couponId     = $request->coupon_id;
+            $couponCodigo = null;
+            $descuentoPct = 0;
+
+            if ($couponId) {
+                $cupon = Coupon::find($couponId);
+
+                if (!$cupon || ($cupon->estado ?? null) !== 'activo' || (!empty($cupon->fecha_caducidad) && $cupon->fecha_caducidad < now()->toDateString())) {
+                    DB::rollBack();
+                    return response()->json(['success' => false, 'message' => 'Cupón inválido o vencido'], 422);
+                }
+                $couponCodigo = (string) $cupon->codigo;
+                if ($cuponesService->verificaUsoCupon($couponCodigo, $user)) {
+                    DB::rollBack();
+                    return response()->json(['success' => false, 'message' => 'No puedes usar este cupón'], 422);
+                }
+                $descuentoPct = max(0, min(100, (float) ($cupon->descuento ?? 0)));
+            }
+
+            $precioFinal = $precioBase * (1 - ($descuentoPct / 100));
+            if ($precioFinal < 0) $precioFinal = 0;
+
+            $isFreeComputed = $precioFinal <= 0.0001;
+
+            $paymentStatus  = $isFreeComputed ? 2 : 1;
+            $paymentMethod  = $isFreeComputed ? 'free' : 'transfer';
+            $paymentMessage = $isFreeComputed
+                ? 'Clase gratuita (cupón 100%) - confirmada automáticamente'
+                : 'Pago pendiente de verificación';
+
+            $image_url = null;
+            if ($isFreeComputed) {
+                $image_url = 'qr/tutoria_gratis.png';
+            } else {
+                $file = $request->file('comprobante');
+                if (!$file) {
+                    DB::rollBack();
+                    return response()->json(['success' => false, 'message' => 'Falta comprobante'], 422);
+                }
+                $filename = uniqid() . '_' . preg_replace('/\s+/', '_', $file->getClientOriginalName());
+                $dest = public_path('storage/qr');
+                if (!file_exists($dest)) mkdir($dest, 0775, true);
+                $file->move($dest, $filename);
+                $image_url = 'qr/' . $filename;
+            }
+
+            $metaData = [
+                'date'        => $dateStr,
+                'start'       => $reqStart,
+                'end'         => $reqEnd,
+                'slots'       => $slots,
+                'coupon_id'   => $couponId,
+                'coupon_code' => $couponCodigo,
+                'discount_pct' => $descuentoPct,
+                'base_price'  => $precioBase,
+                'final_price' => $precioFinal,
+                'is_free'     => $isFreeComputed ? 1 : 0,
+            ];
+
+            // Crear la reserva única usando el método privado
+            $booking = $this->createBooking(
+                $studentId,
+                $tutorId,
+                (int) $request->subject_id,
+                $baseSlotId,
+                $startAt,
+                $endAt,
+                $precioFinal,
+                $metaData,
+                $couponId,
+                $couponCodigo,
+                $descuentoPct,
+                $precioBase,
+                $precioFinal,
+                $isFreeComputed
+            );
+            $bookingId = $booking->id;
+
+            DB::table('slot_payments')->insert([
+                'slot_booking_id' => $bookingId,
+                'payment_date'    => now()->toDateString(),
+                'payment_method'  => $paymentMethod,
+                'amount'          => $precioFinal,
+                'status'          => $paymentStatus,
+                'message'         => $paymentMessage,
+                'receipt_pdf'     => $image_url,
+                'created_at'      => now(),
+                'updated_at'      => now(),
+            ]);
+
+            DB::table('payment_slot_bookings')->insert([
+                'slot_booking_id' => $bookingId,
+                'image_url'       => $image_url,
+                'created_at'      => now(),
+                'updated_at'      => now(),
+            ]);
+
+            if ($couponId && $couponCodigo) {
+                $pivot = UserCoupon::where('coupon_id', (int) $couponId)->where('user_id', (int) $user->id)->first();
+                if (!$pivot) {
+                    $cuponesService->canjeaCupon($couponCodigo, $user);
+                    $pivot = UserCoupon::where('coupon_id', (int) $couponId)->where('user_id', (int) $user->id)->first();
+                }
+                if (!$pivot || ($pivot->estado ?? null) !== 'activo' || (int) $pivot->cantidad <= 0) {
+                    DB::rollBack();
+                    return response()->json(['success' => false, 'message' => 'No puedes usar este cupón (ya fue usado).'], 422);
+                }
+                $cuponesService->cuponCanjeado($couponCodigo, $user);
+            }
+
+            // Liberar holds de caché ya que se convirtió en reserva real
+            foreach ($slots as $slotId) {
+                $parts = explode('|', $slotId);
+                if (count($parts) !== 3) continue;
+                Cache::forget("booking_lock:{$tutorId}:{$dateStr}:{$parts[1]}:{$parts[2]}");
+            }
+
+            DB::commit();
+            
+            return response()->json([
+                'success'    => true,
+                'message'    => 'Reserva múltiple creada exitosamente',
+                'booking_id' => $bookingId
+            ]);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => 'Validación fallida',
+                'errors'  => $e->errors()
+            ], 422);
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            Log::error('storeMultiBooking error: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al procesar la reserva múltiple',
                 'debug'   => app()->environment('local') ? $e->getMessage() : null,
             ], 500);
         }
