@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Services\MailService;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 
 class Reserva extends Component
@@ -366,29 +367,100 @@ class Reserva extends Component
         }
 
         $estudianteId = auth()->user()->id;
+        $fechaBase = $this->currentDate->copy()->setDay($this->selectedDay)->format('Y-m-d');
+        
+        $lockedKeys = []; // Para revertir si falla alguno
 
         foreach ($this->selectedTimes as $hora) {
             $fechaVerificar = $this->currentDate->copy()
                 ->setDay($this->selectedDay)
                 ->setTimeFromTimeString($hora . ':00')
                 ->format('Y-m-d H:i:s');
+                
+            $horaCarbon = Carbon::parse($hora);
+            $endFormatted = $horaCarbon->copy()->addMinutes(20)->format('H:i');
 
+            // 1. Verificación de reserva activa del mismo estudiante
             $existe = SlotBooking::where('student_id', $estudianteId)
                 ->where('start_time', '<=', $fechaVerificar)
                 ->where('end_time', '>', $fechaVerificar)
+                ->whereIn('status', [0, 1])
                 ->exists();
 
             if ($existe) {
+                $this->releaseLocks($lockedKeys);
                 session()->flash('error', "Ya tienes una reserva activa el día {$this->selectedDay} a las {$hora}.");
                 return;
+            }
+
+            // 2. Validar que el rango seleccionado siga libre en este preciso momento
+            $ocupado = SlotBooking::where('tutor_id', $this->tutorId)
+                ->where('start_time', '<=', $fechaVerificar)
+                ->where('end_time', '>', $fechaVerificar)
+                ->whereIn('status', [0, 1])
+                ->exists();
+
+            if ($ocupado) {
+                $this->releaseLocks($lockedKeys);
+                session()->flash('error', "El horario de las {$hora} ya no está disponible o fue tomado por otro estudiante en este momento. Por favor, selecciona otro.");
+                $this->loadMonthData(); // Actualiza disponibilidad tras el error, como solicitado
+                return;
+            }
+            
+            // 3. Validar caché / Bloqueos temporales
+            $cacheKey = "booking_lock:{$this->tutorId}:{$fechaBase}:{$hora}:{$endFormatted}";
+            
+            $added = Cache::add($cacheKey, $estudianteId, now()->addMinutes(15));
+            if (!$added) {
+                 if (Cache::get($cacheKey) == $estudianteId) {
+                      $lockedKeys[] = $cacheKey; // Ya lo teníamos bloqueado, seguimos
+                 } else {
+                      $this->releaseLocks($lockedKeys);
+                      session()->flash('error', "El horario de las {$hora} acaba de ser reservado temporalmente por otro estudiante. Por favor, selecciona otro.");
+                      $this->loadMonthData();
+                      return;
+                 }
+            } else {
+                 $lockedKeys[] = $cacheKey;
             }
         }
 
         $this->showModal = true;
     }
+    
+    private function releaseLocks($keys) {
+        $estudianteId = auth()->check() ? auth()->user()->id : null;
+        if(!$estudianteId) return;
+        foreach($keys as $key) {
+             if(Cache::get($key) == $estudianteId) {
+                  Cache::forget($key);
+             }
+        }
+    }
+    
+    private function releaseCurrentLocks()
+    {
+        if (auth()->check() && $this->selectedDay && !empty($this->selectedTimes)) {
+            $estudianteId = auth()->user()->id;
+            $fechaBase = $this->currentDate->copy()->setDay($this->selectedDay)->format('Y-m-d');
+            
+            foreach ($this->selectedTimes as $hora) {
+                $horaCarbon = Carbon::parse($hora);
+                $endFormatted = $horaCarbon->copy()->addMinutes(20)->format('H:i');
+                $cacheKey = "booking_lock:{$this->tutorId}:{$fechaBase}:{$hora}:{$endFormatted}";
+                
+                if (Cache::get($cacheKey) == $estudianteId) {
+                    Cache::forget($cacheKey);
+                }
+            }
+        }
+    }
 
     public function closeModal()
     {
+        // Liberar bloqueos de caché al cancelar
+        $this->releaseCurrentLocks();
+        
         $this->showModal = false;
 
         $this->cuponCode = '';
@@ -458,6 +530,24 @@ class Reserva extends Component
             'fechas' => $fechasParaReservar,
             'count' => count($fechasParaReservar),
         ]);
+
+        // Validación final de disponibilidad real del rango elegido
+        foreach ($fechasParaReservar as $fechaStr) {
+            $ocupado = SlotBooking::where('tutor_id', $this->tutorId)
+                ->where('start_time', '<=', $fechaStr)
+                ->where('end_time', '>', $fechaStr)
+                ->whereIn('status', [0, 1])
+                ->exists();
+
+            if ($ocupado) {
+                // Si alguien tomó el horario mientras estábamos en el modal
+                session()->flash('error', "El rango seleccionado ya no está disponible, fue tomado por otro estudiante. Por favor reserva otro horario.");
+                $this->releaseCurrentLocks();
+                $this->loadMonthData(); // Actualizar disponibilidad después del error
+                $this->showModal = false; // Cerramos el modal para que pueda seleccionar nuevamente
+                return;
+            }
+        }
 
         try {
             DB::beginTransaction();
@@ -585,6 +675,10 @@ class Reserva extends Component
 
         $this->quitarCupon();
         $this->showModal = false;
+        
+        // Liberar bloqueos de caché (ya se guardó en DB con estado válido)
+        $this->releaseCurrentLocks();
+        
         $this->resetSelection();
         $this->loadMonthData();
 
@@ -674,6 +768,22 @@ class Reserva extends Component
                     $timeString = $currentTime->format('H:i');
 
                     $isBooked = $this->slotFallsInBookedRange($currentTime, $reservasDelMes);
+                    
+                    if (!$isBooked) {
+                        $startFormatted = $timeString;
+                        $endFormatted = $currentTime->copy()->addMinutes(20)->format('H:i');
+                        $dateStr = $slotDate->format('Y-m-d');
+                        $cacheKey = "booking_lock:{$this->tutorId}:{$dateStr}:{$startFormatted}:{$endFormatted}";
+                        
+                        // Si está bloqueado temporalmente por otro estudiante
+                        if (Cache::has($cacheKey)) {
+                            if (auth()->check() && Cache::get($cacheKey) != auth()->user()->id) {
+                                $isBooked = true;
+                            } elseif (!auth()->check()) {
+                                $isBooked = true;
+                            }
+                        }
+                    }
 
                     $processedData[$day][] = [
                         'time' => $timeString,
