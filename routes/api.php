@@ -132,6 +132,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('reviews/{id}', [ReviewController::class, 'destroy']);
     Route::get('reviews/stats/{userId}', [ReviewController::class, 'getStats']);
     
+    Route::post('/start', [SubjectPickerController::class, 'start']);
+    Route::get('/active', [SubjectPickerController::class, 'active']);
+    Route::get('/acceptedTutors/{batch}', [SubjectPickerController::class, 'acceptedTutors']);
+    Route::post('/chooseTutor/{batch}', [SubjectPickerController::class, 'chooseTutor']);
+
+    Route::post('/batches/{batch}/request-booking', [SubjectPickerController::class, 'requestBooking']);
+    Route::post('/bookings/{booking}/upload-receipt', [SubjectPickerController::class, 'studentUploadReceipt']);
+    Route::get('/bookings/{booking}/status', [SubjectPickerController::class, 'studentBookingStatus']);
     
 });
 // Ruta para cambiar el estado de una tutoría a "Cursando"
@@ -187,6 +195,9 @@ Route::post('slot-bookings', [\App\Http\Controllers\Api\BookingController::class
 
 // Ruta para mandar un email para tutoria al instante
 Route::post('/batches/start', [SubjectPickerController::class, 'start']);
+
+// Ruta para aceptar la tutoría al instante (desde mobil)
+Route::post('/tutor/waitlist/accept', [SubjectPickerController::class, 'acceptWaitlist']);
 
 // Ruta para mandar notificaciones a tutores (mobile)
 Route::post('notify-tutors', [NotificacionController::class, 'enviarATutores']);
@@ -258,3 +269,6 @@ Route::fallback(function () {
         'message' => __('general.api_url_not_found'),
     ], Response::HTTP_NOT_FOUND);
 });
+
+Route::get('/categoriasMaterias', [SubjectPickerController::class, 'categoriasMaterias']);
+Route::get('/acceptWaitlist', [SubjectPickerController::class, 'acceptWaitlist'])->name('tutor.accept');
