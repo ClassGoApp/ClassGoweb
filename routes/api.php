@@ -131,16 +131,26 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('reviews/{id}', [ReviewController::class, 'update']);
     Route::delete('reviews/{id}', [ReviewController::class, 'destroy']);
     Route::get('reviews/stats/{userId}', [ReviewController::class, 'getStats']);
-    
-    Route::post('/start', [SubjectPickerController::class, 'start']);
-    Route::get('/active', [SubjectPickerController::class, 'active']);
-    Route::get('/acceptedTutors/{batch}', [SubjectPickerController::class, 'acceptedTutors']);
-    Route::post('/chooseTutor/{batch}', [SubjectPickerController::class, 'chooseTutor']);
 
-    Route::post('/batches/{batch}/request-booking', [SubjectPickerController::class, 'requestBooking']);
-    Route::post('/bookings/{booking}/upload-receipt', [SubjectPickerController::class, 'studentUploadReceipt']);
+    // FLUJO ESTUDIANTE: TUTORÍAS AL INSTANTE
+
+    // 1. Cargar datos iniciales
+    Route::get('/subject-groups/categorias-materias', [SubjectPickerController::class, 'categoriasMaterias']);
+
+    // 2. El Radar (Batches) - Creación, Estado y Correos
+    Route::post('/batches/start', [SubjectPickerController::class, 'start']);
+    Route::post('/batches/send-emails', [SubjectPickerController::class, 'sendBatchEmails']);
+    Route::get('/batches/active', [SubjectPickerController::class, 'active']);
+    Route::get('/batches/{batch}/status', [SubjectPickerController::class, 'status']);
+    Route::get('/batches/{batch}/accepted-tutors', [SubjectPickerController::class, 'acceptedTutors']);
+
+    // 3. Reserva (Elegir al tutor)
+    Route::post('/batches/{batch}/reserve', [SubjectPickerController::class, 'reserveTutor']);
+
+    // 4. Pago, Estado y Reunión (Bookings)
+    Route::post('/bookings/{booking}/receipt', [SubjectPickerController::class, 'studentUploadReceipt']);
     Route::get('/bookings/{booking}/status', [SubjectPickerController::class, 'studentBookingStatus']);
-    
+    Route::get('/bookings/{booking}/meet', [SubjectPickerController::class, 'studentMeet']);
 });
 // Ruta para cambiar el estado de una tutoría a "Cursando"
 Route::post('booking/change-to-cursando', [BookingStatusController::class, 'changeToCursando']);
@@ -194,7 +204,7 @@ Route::get('user/{id}/bookings', [\App\Http\Controllers\Api\BookingController::c
 Route::post('slot-bookings', [\App\Http\Controllers\Api\BookingController::class, 'storeSlotBooking']);
 
 // Ruta para mandar un email para tutoria al instante
-Route::post('/batches/start', [SubjectPickerController::class, 'start']);
+// Route::post('/batches/start', [SubjectPickerController::class, 'start']);
 
 // Ruta para aceptar la tutoría al instante (desde mobil)
 Route::post('/tutor/waitlist/accept', [SubjectPickerController::class, 'acceptWaitlist']);
@@ -272,3 +282,33 @@ Route::fallback(function () {
 
 Route::get('/categoriasMaterias', [SubjectPickerController::class, 'categoriasMaterias']);
 Route::get('/acceptWaitlist', [SubjectPickerController::class, 'acceptWaitlist'])->name('tutor.accept');
+
+Route::get('/force-fcm', function () {
+    // putenv('CURL_CA_BUNDLE=' . base_path('cacert.pem'));
+
+    $fcmToken = "d0wmP0_Mm6cDCcN5o0NL8d:APA91bEfDs0a9yvUdM5wNGcKGHXgeVaPQzf4cwYns4HubLjnOmJjtcx1JfzFgoPDK4fdSxXOpJOz7HjB2C7oG6ZjT7NCSWxLfq68If56wUg5rFWFehXwPXM";
+
+    $notificacionController = app(\App\Http\Controllers\Api\NotificacionController::class);
+
+    $fakeRequest = new \Illuminate\Http\Request([
+        'title' => '🔥 PRUEBA HARDCODEADA',
+        'body' => 'El código Ninja funcionó. El certificado está inyectado.',
+        'type' => 'tutoria_instant',
+        'only' => true,
+        'tokens' => json_encode([$fcmToken]),
+        'screen' => 'solicitud_tutor',
+        'data_tutor' => json_encode([
+            'id' => 999,
+            'nombre' => 'Tutor Bruto',
+            'materia' => 'Prueba',
+            'batch_id' => 777,
+            'accept_token' => 'token_magico_123',
+        ]),
+    ]);
+
+    try {
+        return $notificacionController->enviarATutores($fakeRequest);
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'Error crudo: ' . $e->getMessage()], 500);
+    }
+});

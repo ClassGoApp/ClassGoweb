@@ -865,6 +865,7 @@ class SubjectPickerController extends Controller
             'batch_id' => $batch->id,
             'count' => $rows->count(),
             'data' => $rows,
+            'status' => $batch->status,
             'next_after_accepted_at' => $last?->accepted_at,
             'next_after_id' => $last?->id ?? $afterId,
         ])->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0, private')
