@@ -132,14 +132,24 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('reviews/{id}', [ReviewController::class, 'destroy']);
     Route::get('reviews/stats/{userId}', [ReviewController::class, 'getStats']);
     
-    Route::post('/start', [SubjectPickerController::class, 'start']);
-    Route::get('/active', [SubjectPickerController::class, 'active']);
-    Route::get('/acceptedTutors/{batch}', [SubjectPickerController::class, 'acceptedTutors']);
-    Route::post('/chooseTutor/{batch}', [SubjectPickerController::class, 'chooseTutor']);
+    // TUTORIA INSTANTANEA
+    // 1. Cargar datos iniciales
+    Route::get('/subject-groups/categorias-materias', [SubjectPickerController::class, 'categoriasMaterias']);
+    
+    // 2. El Radar (Batches) - Creación, Estado y Correos
+    Route::post('/batches/start', [SubjectPickerController::class, 'start']);
+    Route::post('/batches/send-emails', [SubjectPickerController::class, 'sendBatchEmails']);
+    Route::get('/batches/active', [SubjectPickerController::class, 'active']);
+    Route::get('/batches/{batch}/status', [SubjectPickerController::class, 'status']);
+    Route::get('/batches/{batch}/accepted-tutors', [SubjectPickerController::class, 'acceptedTutors']);
 
-    Route::post('/batches/{batch}/request-booking', [SubjectPickerController::class, 'requestBooking']);
-    Route::post('/bookings/{booking}/upload-receipt', [SubjectPickerController::class, 'studentUploadReceipt']);
+    // 3. Reserva (Elegir al tutor)
+    Route::post('/batches/{batch}/reserve', [SubjectPickerController::class, 'reserveTutor']);
+
+    // 4. Pago, Estado y Reunión (Bookings)
+    Route::post('/bookings/{booking}/receipt', [SubjectPickerController::class, 'studentUploadReceipt']);
     Route::get('/bookings/{booking}/status', [SubjectPickerController::class, 'studentBookingStatus']);
+    Route::get('/bookings/{booking}/meet', [SubjectPickerController::class, 'studentMeet']);
     
 });
 // Ruta para cambiar el estado de una tutoría a "Cursando"
@@ -194,7 +204,7 @@ Route::get('user/{id}/bookings', [\App\Http\Controllers\Api\BookingController::c
 Route::post('slot-bookings', [\App\Http\Controllers\Api\BookingController::class, 'storeSlotBooking']);
 
 // Ruta para mandar un email para tutoria al instante
-Route::post('/batches/start', [SubjectPickerController::class, 'start']);
+// Route::post('/batches/start', [SubjectPickerController::class, 'start']);
 
 // Ruta para aceptar la tutoría al instante (desde mobil)
 Route::post('/tutor/waitlist/accept', [SubjectPickerController::class, 'acceptWaitlist']);
