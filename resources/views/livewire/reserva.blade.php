@@ -162,7 +162,7 @@
 
                 <span class="tutor-tooltip-wrapper">
 
-                    <button wire:click="openReservationModal" class="tutor-pay-btn">Pagar y reservar</button>
+                    <button wire:click="openReservationModal" wire:loading.attr="disabled" class="tutor-pay-btn">Pagar y reservar</button>
 
                     <div class="tutor-tooltip-content">
                         <strong>Paso 3:</strong>
@@ -395,9 +395,9 @@
 
                         <!--Botones de Acciones-->
                         <div class="action-buttons">
-                            <button type="button" wire:click="closeModal" class="btn btn-primary">Cancelar</button>
+                            <button type="button" wire:click="closeModal" wire:loading.attr="disabled" class="btn btn-primary">Cancelar</button>
 
-                            <button type="submit" class="btn btn-primary">Reservar</button>
+                            <button type="submit" wire:loading.attr="disabled" class="btn btn-primary">Reservar</button>
                         </div>
                     </div>
                 </form>
