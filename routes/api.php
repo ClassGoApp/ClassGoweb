@@ -280,5 +280,4 @@ Route::fallback(function () {
     ], Response::HTTP_NOT_FOUND);
 });
 
-Route::get('/categoriasMaterias', [SubjectPickerController::class, 'categoriasMaterias']);
 Route::get('/acceptWaitlist', [SubjectPickerController::class, 'acceptWaitlist'])->name('tutor.accept');
