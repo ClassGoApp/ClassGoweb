@@ -23,6 +23,7 @@ use App\Http\Controllers\Api\TutorController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\SubjectSlotController;
 use App\Http\Controllers\Api\AlianzaController;
+use App\Http\Controllers\Api\TeamController;
 use App\Http\Controllers\Api\SubjectController;
 use App\Http\Controllers\Api\UserSubjectController;
 use App\Http\Controllers\Api\ReviewController;
@@ -176,6 +177,7 @@ Route::get('subjects',                                         [BookingControlle
 
 Route::get('settings',                                         [OptionBuilderController::class, 'getOpSettings']);
 Route::get('alianzas',                                          [AlianzaController::class, 'index']);
+Route::get('team',                                              [TeamController::class, 'index']);
 Route::get('all-subjects', [SubjectController::class, 'index']);
 Route::get('subjects-institution',                              [SubjectController::class, 'getSubjectsInstitution']);
 
