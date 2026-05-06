@@ -213,6 +213,10 @@ Route::post('/tutor/waitlist/accept', [SubjectPickerController::class, 'acceptWa
 
 // Ruta para mandar notificaciones a tutores (mobile)
 Route::post('notify-tutors', [NotificacionController::class, 'enviarATutores']);
+// Ruta para mandar notidficaciones genericas (Mobile)
+Route::post('notify-all', [NotificacionController::class, 'enviarNotificacionGenerica']);
+// Ruta para mandar notificaciones masivas(Mobile)
+Route::post('notify-massive', [NotificacionController::class, 'enviarNotificacionMasiva']);
 
 // Ruta para registrar un nuevo payment_slot_booking (renombrada para prueba)
 Route::post('test-payment-upload', [\App\Http\Controllers\Api\BookingController::class, 'storePaymentSlotBooking']);

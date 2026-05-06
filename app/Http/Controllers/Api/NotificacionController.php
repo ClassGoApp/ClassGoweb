@@ -9,6 +9,7 @@ use Kreait\Firebase\Messaging\CloudMessage;
 use Kreait\Firebase\Messaging\Notification;
 use Kreait\Firebase\Factory;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 class NotificacionController extends Controller
 {
@@ -44,78 +45,24 @@ class NotificacionController extends Controller
         }
     }
     public function enviarATutores(Request $request)
-{
-    $request->validate([
-        'title' => 'required|string',
-        'body' => 'required|string',
-        'type' => 'required|string',
-        'screen' => 'required|string',
-    ]);
-
-    try {
-        $messaging = $this->messaging;
-
-        $only = $request->only;
-        if ($only) {
-            $tokens = $request->tokens;
-            return $this->enviarNotificacionPrivada($tokens, $messaging, $request);
-        }
-
-        $message = CloudMessage::withTarget('topic', 'tutor')
-            ->withNotification(Notification::create(
-                $request->title,
-                $request->body
-            ))
-            ->withData([
-                'type' => $request->type,
-                'screen' => $request->screen,
-                'data_tutor' => json_encode($request->data_tutor ?? ''),
-            ]);
-
-        $result = $messaging->send($message);
-
-        return response()->json([
-            'ok' => true,
-            'message' => 'Notificación enviada al topic tutores',
-            'result' => $result
-        ]);
-    } catch (\Exception $e) {
-        Log::error('Error enviando notificación a tutores', [
-            'error' => $e->getMessage(),
-            'trace' => $e->getTraceAsString(),
+    {
+        $request->validate([
+            'title' => 'required|string',
+            'body' => 'required|string',
+            'type' => 'required|string',
+            'screen' => 'required|string',
         ]);
 
-        return response()->json([
-            'ok' => false,
-            'message' => 'Error al enviar la notificación',
-            'error' => $e->getMessage()
-        ], 500);
-    }
-}
-
-    // Funcion Privada
-    private function enviarNotificacionPrivada($tokens,$messaging, $request){
         try {
-            // Asegurarnos de que $tokens sea un array
-            if (is_string($tokens)) {
-                $decoded = json_decode($tokens, true);
-                $tokens = is_array($decoded) ? $decoded : [$tokens];
+            $messaging = $this->messaging;
+
+            $only = $request->only;
+            if ($only) {
+                $tokens = $request->tokens;
+                return $this->enviarNotificacionPrivada($tokens, $messaging, $request);
             }
 
-            if(count($tokens) === 1){
-                $message = CloudMessage::withTarget('token', $tokens[0])
-                ->withNotification(Notification::create(
-                $request -> title,
-                $request -> body
-                ))
-                ->withData([
-                    'type' => $request->type,
-                    'screen' => $request->screen,
-                    'data_tutor' => json_encode( $request->data_tutor ?? ''),
-                ]);
-                $result = $messaging->send($message);
-            }else{
-                $message = CloudMessage::new()
+            $message = CloudMessage::withTarget('topic', 'tutor')
                 ->withNotification(Notification::create(
                     $request->title,
                     $request->body
@@ -123,8 +70,63 @@ class NotificacionController extends Controller
                 ->withData([
                     'type' => $request->type,
                     'screen' => $request->screen,
-                    'data_tutor' => json_encode( $request->data_tutor ?? ''),
+                    'data_tutor' => json_encode($request->data_tutor ?? ''),
                 ]);
+
+            $result = $messaging->send($message);
+
+            return response()->json([
+                'ok' => true,
+                'message' => 'Notificación enviada al topic tutores',
+                'result' => $result
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Error enviando notificación a tutores', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+
+            return response()->json([
+                'ok' => false,
+                'message' => 'Error al enviar la notificación',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    // Funcion Privada
+    private function enviarNotificacionPrivada($tokens, $messaging, $request)
+    {
+        try {
+            // Asegurarnos de que $tokens sea un array
+            if (is_string($tokens)) {
+                $decoded = json_decode($tokens, true);
+                $tokens = is_array($decoded) ? $decoded : [$tokens];
+            }
+
+            if (count($tokens) === 1) {
+                $message = CloudMessage::withTarget('token', $tokens[0])
+                    ->withNotification(Notification::create(
+                        $request->title,
+                        $request->body
+                    ))
+                    ->withData([
+                        'type' => $request->type,
+                        'screen' => $request->screen,
+                        'data_tutor' => json_encode($request->data_tutor ?? ''),
+                    ]);
+                $result = $messaging->send($message);
+            } else {
+                $message = CloudMessage::new()
+                    ->withNotification(Notification::create(
+                        $request->title,
+                        $request->body
+                    ))
+                    ->withData([
+                        'type' => $request->type,
+                        'screen' => $request->screen,
+                        'data_tutor' => json_encode($request->data_tutor ?? ''),
+                    ]);
 
                 $result = $messaging->sendMulticast($message, $tokens);
             }
@@ -142,39 +144,155 @@ class NotificacionController extends Controller
             ], 500);
         }
     }
-    public function enviarAEstudiantes(Request $request)
+    public function enviarNotificacionMasiva(Request $request)
     {
         $request->validate([
             'title' => 'required|string',
             'body' => 'required|string',
+            'type' => 'nullable|string',
+            'data' => 'nullable|array'
         ]);
 
         try {
+            if ($request->type == 'tutor') {
+                $tokens = DB::table('users')
+                    ->join('model_has_roles', 'model_has_roles.model_id', '=', 'users.id')
+                    ->where('model_has_roles.role_id', 2)
+                    ->whereNotNull('users.fcm_token')
+                    ->where('users.fcm_token', '!=', '')
+                    ->pluck('users.fcm_token')
+                    ->toArray();
+
+                if (empty($tokens)) {
+                    return response()->json([
+                        'ok' => false,
+                        'message' => 'No se encontraron tutores con tokens FCM válidos'
+                    ], 404);
+                }
+            } else if ($request->type == 'estudiante') {
+                $tokens = DB::table('users')
+                    ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
+                    ->where('model_has_roles.role_id', '=', '3')
+                    ->whereNotNull('users.fcm_token')
+                    ->where('users.fcm_token', '!=', '')
+                    ->pluck('users.fcm_token')
+                    ->toArray();
+
+                if (empty($tokens)) {
+                    return response()->json([
+                        'ok' => false,
+                        'message' => 'No se encontraron estudiantes con tokens FCM válidos'
+                    ], 404);
+                }
+            } else {
+                $tokens = DB::table('users')
+                    ->whereNotNull('users.fcm_token')
+                    ->where('users.fcm_token', '!=', '')
+                    ->pluck('users.fcm_token')
+                    ->toArray();
+
+                if (empty($tokens)) {
+                    return response()->json([
+                        'ok' => false,
+                        'message' => 'No se encontraron usuarios con tokens FCM válidos'
+                    ], 404);
+                }
+            }
+
+            // Preparar el request para enviarNotificacionGenerica
+            $request->merge([
+                'title' => $request->title,
+                'body' => $request->body,
+                'tokens' => $tokens,
+                'type' => $request->type ?? 'general',
+                'screen' => $request->screen ?? 'feed',
+                'data' => $request->data ?? []
+            ]);
+
+            return $this->enviarNotificacionGenerica($request);
+
+        } catch (\Exception $e) {
+            Log::error('Error en enviarAEstudiantes (masivo)', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            return response()->json([
+                'ok' => false,
+                'message' => 'Error al procesar el envío masivo a estudiantes',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+    public function enviarNotificacionGenerica(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|string',
+            'body' => 'required|string',
+            'type' => 'required|string',
+            'screen' => 'required|string',
+        ]);
+        if (empty($request->tokens)) {
+            return response()->json([
+                'ok' => false,
+                'message' => 'No hay tokens válidos para enviar'
+            ], 400);
+        }
+        try {
+
             $messaging = $this->messaging;
+            $tokens = $request->tokens;
+            // Asegurarnos de que $tokens sea un array
+            if (is_string($tokens)) {
+                $decoded = json_decode($tokens, true);
+                $tokens = is_array($decoded) ? $decoded : [$tokens];
+            }
 
-            $message = CloudMessage::withTarget('topic', 'student')
-                ->withNotification(Notification::create(
-                    $request->title,
-                    $request->body
-                ))
-                ->withData([
-                    'type' => 'nueva_publicacion',
-                    'screen' => 'feed',
-                ]);
+            if (count($tokens) === 1) {
+                $message = CloudMessage::withTarget('token', $tokens[0])
+                    ->withNotification(Notification::create(
+                        $request->title,
+                        $request->body
+                    ))
+                    ->withData([
+                        'type' => $request->type,
+                        'screen' => $request->screen,
+                        'data' => json_encode($request->data ?? ''),
+                    ]);
+                $result = $messaging->send($message);
+            } else {
+                $message = CloudMessage::new()
+                    ->withNotification(Notification::create(
+                        $request->title,
+                        $request->body
+                    ))
+                    ->withData([
+                        'type' => $request->type,
+                        'screen' => $request->screen,
+                        'data' => json_encode($request->data ?? ''),
+                    ]);
 
-            $result = $messaging->send($message);
+                $result = $messaging->sendMulticast($message, $tokens);
+            }
+
+            $failures = [];
+
+            foreach ($result->failures()->getItems() as $failure) {
+                $failures[] = [
+                    'token' => $failure->target()->value(),
+                    'error' => $failure->error()->getMessage(),
+                ];
+            }
 
             return response()->json([
                 'ok' => true,
-                'message' => 'Notificación enviada al topic estudiantes',
-                'result' => $result
+                'message' => 'Proceso de envío terminado',
+                'success_count' => $result->successes()->count(),
+                'failure_count' => $result->failures()->count(),
+                'valid_tokens' => count($tokens),
+                'failures' => $failures,
             ]);
         } catch (\Exception $e) {
-            Log::error('Error enviando notificación a estudiantes', [
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
-            ]);
-
             return response()->json([
                 'ok' => false,
                 'message' => 'Error al enviar la notificación',
