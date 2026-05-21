@@ -31,7 +31,7 @@ class InsightsService
      */
     private function getPlatformCommissionRate(): float
     {
-        $pct = (float) (setting('_lernen.commission') ?? 10);
+        $pct = (float) (setting('_lernen.commission') ?? 20);
         return max(0.0, min(100.0, $pct)) / 100;
     }
 
@@ -71,7 +71,7 @@ class InsightsService
 
         // Mapeo: qué status de slot_payments corresponde a cada tipo
         $statusMap = [
-            'add'               => 2,   // Pagado
+            'add' => 2,   // Pagado
             'pending_available' => 1,   // Pendiente de verificación
         ];
 
@@ -110,7 +110,7 @@ class InsightsService
     public function getPlatformCommission($revenueStartDate = null, $revenueEndDate = null): float
     {
         $commissionRate = $this->getPlatformCommissionRate();
-        $total          = $this->getPlatformEarnings($revenueStartDate, $revenueEndDate);
+        $total = $this->getPlatformEarnings($revenueStartDate, $revenueEndDate);
         return round($total * $commissionRate, 2);
     }
 
@@ -158,10 +158,10 @@ class InsightsService
 
         if ($dateRange === 'current_month') {
             $query->whereMonth('created_at', now()->month)
-                  ->whereYear('created_at', now()->year);
+                ->whereYear('created_at', now()->year);
         } elseif ($dateRange === 'last_month') {
             $query->whereMonth('created_at', now()->subMonth()->month)
-                  ->whereYear('created_at', now()->subMonth()->year);
+                ->whereYear('created_at', now()->subMonth()->year);
         }
 
         return $query->get();

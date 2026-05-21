@@ -23,6 +23,7 @@ use App\Http\Controllers\Api\TutorController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\SubjectSlotController;
 use App\Http\Controllers\Api\AlianzaController;
+use App\Http\Controllers\Api\TeamController;
 use App\Http\Controllers\Api\SubjectController;
 use App\Http\Controllers\Api\UserSubjectController;
 use App\Http\Controllers\Api\ReviewController;
@@ -176,6 +177,7 @@ Route::get('subjects',                                         [BookingControlle
 
 Route::get('settings',                                         [OptionBuilderController::class, 'getOpSettings']);
 Route::get('alianzas',                                          [AlianzaController::class, 'index']);
+Route::get('team',                                              [TeamController::class, 'index']);
 Route::get('all-subjects', [SubjectController::class, 'index']);
 Route::get('subjects-institution',                              [SubjectController::class, 'getSubjectsInstitution']);
 
@@ -211,6 +213,10 @@ Route::post('/tutor/waitlist/accept', [SubjectPickerController::class, 'acceptWa
 
 // Ruta para mandar notificaciones a tutores (mobile)
 Route::post('notify-tutors', [NotificacionController::class, 'enviarATutores']);
+// Ruta para mandar notidficaciones genericas (Mobile)
+Route::post('notify-all', [NotificacionController::class, 'enviarNotificacionGenerica']);
+// Ruta para mandar notificaciones masivas(Mobile)
+Route::post('notify-massive', [NotificacionController::class, 'enviarNotificacionMasiva']);
 
 // Ruta para registrar un nuevo payment_slot_booking (renombrada para prueba)
 Route::post('test-payment-upload', [\App\Http\Controllers\Api\BookingController::class, 'storePaymentSlotBooking']);

@@ -52,7 +52,7 @@ class AuthController extends Controller
             
             try {
                 $user->load([
-                    'profile:id,user_id,first_name,last_name,gender,recommend_tutor,intro_video,native_language,verified_at,slug,image,tagline,description,created_at,updated_at',
+                    'profile:id,user_id,first_name,last_name,gender,recommend_tutor,intro_video,native_language,verified_at,slug,image,tagline,description,phone_number,price,created_at,updated_at',
                     'address:country_id,state_id,city,address',
                     'roles',
                     'userWallet:id,user_id,amount'
@@ -105,7 +105,7 @@ class AuthController extends Controller
                 // Intentar cargar sin address si hay problema
                 try {
                     $user->load([
-                        'profile:id,user_id,first_name,last_name,gender,recommend_tutor,intro_video,native_language,verified_at,slug,image,tagline,description,created_at,updated_at',
+                        'profile:id,user_id,first_name,last_name,gender,recommend_tutor,intro_video,native_language,verified_at,slug,image,tagline,description,,phone_number,price,created_at,updated_at',
                         'roles',
                         'userWallet:id,user_id,amount'
                     ]);

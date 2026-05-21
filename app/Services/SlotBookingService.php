@@ -272,4 +272,14 @@ class SlotBookingService implements interfaces\ISlotBookingService
             ->limit(5)
             ->get();
     }
+
+    public function getTotalCommission()
+    {
+        $total = SlotBooking::where('status', '!=', 1)
+            ->where('status', '!=', 2)
+            ->where('status', '!=', 3)
+            ->sum('session_fee');
+
+        return $total * 0.20; //20% de comision
+    }
 }

@@ -328,7 +328,7 @@ class TutorController extends Controller
             // Consulta base - Solo tutores verificados con materias registradas
             $query = User::whereHas('roles', function($q) {
                 $q->where('name', 'tutor');
-            })->with(['profile', 'subjects'])
+            })->with(['profile', 'subjects.group.padre'])
               ->whereHas('profile', function($q) {
                   $q->whereNotNull('verified_at');
               })
@@ -410,6 +410,41 @@ class TutorController extends Controller
                 $tutor = $this->getFavouriateTutors($tutor);
                 // Agregar el conteo de cursos completados
                 $tutor->completed_courses_count = $tutor->getCompletedCoursesCount();
+                
+                // Ordenar materias por institución: Universidad > Instituto > Colegio
+                if ($tutor->subjects) {
+                    $tutor->setRelation('subjects', $tutor->subjects->sort(function($a, $b) {
+                        $order = [3000 => 1, 2000 => 2, 1000 => 3];
+                        
+                        // Determinar ID raíz para materia A
+                        $rootA = 0;
+                        if ($a->group) {
+                            if ($a->group->id_padre == 1000) {
+                                $rootA = 1000;
+                            } elseif ($a->group->padre && in_array($a->group->padre->id_padre, [2000, 3000])) {
+                                $rootA = $a->group->padre->id_padre;
+                            }
+                        }
+                        
+                        // Determinar ID raíz para materia B
+                        $rootB = 0;
+                        if ($b->group) {
+                            if ($b->group->id_padre == 1000) {
+                                $rootB = 1000;
+                            } elseif ($b->group->padre && in_array($b->group->padre->id_padre, [2000, 3000])) {
+                                $rootB = $b->group->padre->id_padre;
+                            }
+                        }
+                        
+                        $valA = $order[$rootA] ?? 99;
+                        $valB = $order[$rootB] ?? 99;
+                        
+                        if ($valA === $valB) {
+                            return strcmp($a->name, $b->name);
+                        }
+                        return $valA <=> $valB;
+                    })->values());
+                }
                 
                 return $tutor;
             });

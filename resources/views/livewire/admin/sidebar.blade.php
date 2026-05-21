@@ -3,7 +3,7 @@
 use App\Livewire\Actions\Logout;
 use Livewire\Volt\Component;
 use Illuminate\Support\Facades\Route;
-use App\Services\OrderService;
+use App\Services\SlotBookingService;
 new class extends Component {
     public $menuItems = [];
     public $activeRoute = [];
@@ -11,7 +11,7 @@ new class extends Component {
 
     public function mount()
     {
-        $this->totalCommission = (new OrderService())->getTotalCommission();
+        $this->totalCommission = (new SlotBookingService())->getTotalCommission();
         $this->activeRoute = Route::currentRouteName();
         $this->menuItems = [
             [
@@ -55,7 +55,7 @@ new class extends Component {
                     'admin.users-reports' => 'Reportes',
                 ],
             ],
-            
+
             [
                 'title' => __('admin/sidebar.invoices'),
                 'icon' => 'icon-dollar-sign',
@@ -159,8 +159,8 @@ new class extends Component {
                 'title' => 'Nuestro Equipo',
                 'icon' => 'icon-users',
                 'routes' => [
-                    'admin.team-listing' => 'Ver Lista', 
-                    'admin.create-team'  => 'Crear Nuevo',
+                    'admin.team-listing' => 'Ver Lista',
+                    'admin.create-team' => 'Crear Nuevo',
                 ]
             ],
             [
