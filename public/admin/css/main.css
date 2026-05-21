@@ -4804,8 +4804,8 @@ address {
 }
 
 .tb-menumanagement_wrap {
-  overflow: hidden;
-  padding: 20px;
+  overflow: auto;
+  /* padding: 20px; */
   border-radius: 20px;
   background-color: #fff;
   min-height: calc(100vh - 124px);
@@ -9248,7 +9248,8 @@ li.menu-has-children.tb-openmenu > a:after {
 }
 
 .btn-sm {
-  min-width: 44px;
+      width: 4.3rem;
+  /* min-width: 44px; */
   line-height: 44px;
   background: #00cc8d;
   color: #fff;

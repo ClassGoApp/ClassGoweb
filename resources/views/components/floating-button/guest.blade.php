@@ -15,6 +15,20 @@
         </span>
     </button>
 
+    {{-- Botón de Reclutamiento (Notificación) --}}
+    @php
+        $hasApplied = session()->has('has_applied_recruitment');
+        if (!$hasApplied && auth()->check()) {
+            $hasApplied = \App\Models\Recruitment::where('user_id', auth()->id())->exists();
+        }
+    @endphp
+    @if(!$hasApplied)
+        <button class="am-recruitment-fab" onclick="showRecruitmentModal()" title="¡Únete a nuestro equipo!">
+            <i class="fas fa-user-plus"></i>
+            <span class="am-recruitment-badge"></span>
+        </button>
+    @endif
+
     <button id="fab-main-button" class="fab-main">
         <i id="fab-main-icon" class="fas fa-question"></i>
         {{-- <img id="fab-main-icon" class="tutoria-disponible-boton" src="{{ asset('images/logoClassgo.png') }}" alt=""> --}}

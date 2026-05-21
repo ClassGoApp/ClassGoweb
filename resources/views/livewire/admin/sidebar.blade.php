@@ -162,6 +162,13 @@ new class extends Component {
                     'admin.team-listing' => 'Ver Lista', 
                     'admin.create-team'  => 'Crear Nuevo',
                 ]
+            ],
+            [
+                'title' => 'Reclutamiento',
+                'icon' => 'icon-briefcase',
+                'routes' => [
+                    'admin.recruitment-listing' => 'Ver Postulantes',
+                ]
             ]
 
 

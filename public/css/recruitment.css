@@ -1,0 +1,376 @@
+/* --- ANIMACIONES --- */
+@keyframes slideUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* --- CONTENEDOR MAESTRO --- */
+.am-recruitment-modal {
+  position: fixed;
+  bottom: 0px;
+  right: 0px;
+  height: auto;
+  width: 750px;
+  /* max-width: calc(100% - 40px); */
+  background: #ffffff;
+  border-radius: 24px;
+  box-shadow: 0 30px 100px rgba(2, 48, 71, 0.4);
+  z-index: 1000000;
+  display: none;
+  overflow: auto;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.am-recruitment-modal.show {
+  display: flex;
+}
+
+.am-recruitment-content {
+  display: flex;
+  width: 100%;
+  height: auto;
+  /* overflow-y: scroll;*/
+}
+
+/* --- LADO IZQUIERDO: IMPACTO Y CREDIBILIDAD --- */
+.am-side-info {
+  flex: 1.1;
+  background: var(--bg-gradient2);
+  padding: 45px;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+}
+
+/* Decoración de fondo */
+.am-side-info::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: url("https://www.transparenttextures.com/patterns/carbon-fibre.png");
+  opacity: 0.1;
+  pointer-events: none;
+}
+
+.am-side-info h2 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 25px;
+}
+
+.am-side-info h2 span {
+  color: var(--terciary-color2);
+}
+
+.am-phrase-list {
+  list-style: none;
+  padding: 0;
+}
+.am-phrase-list li {
+  margin-bottom: 18px;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.am-phrase-list li i {
+  color: var(--terciary-color2);
+  margin-top: 4px;
+}
+
+/* Badge de Áreas */
+.am-areas-badge {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 12px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  margin-top: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* --- LADO DERECHO: FORMULARIO COMPACTO --- */
+.row{
+  display:flex;
+  flex-direction: column;
+  /* width: 100%;   */
+}
+
+.input-form{
+ width: 100% !important;
+}
+
+.am-form-side {
+  flex: 0.9;
+  background: #FB8500;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+
+.am-recruitment-form .form-group {
+  margin-bottom: 12px;
+}
+.am-recruitment-form label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #023047;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.am-recruitment-form .form-control {
+  display: block !important;
+  width: 100% !important;
+  height: auto !important;
+  padding: 10px 14px !important;
+  font-size: 0.9rem !important;
+  font-weight: 400 !important;
+  line-height: 1.5 !important;
+  color: #212529 !important;
+  background-color: #ffffff !important;
+  border: 1px solid #ced4da !important;
+  border-radius: 8px !important;
+  box-sizing: border-box !important;
+  transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out !important;
+}
+
+.am-recruitment-form .form-control:hover {
+  border-color: #219EBC !important;
+  background-color: #ffffff !important;
+  box-shadow: 0px 1px 4px rgba(33, 158, 188, 0.15) !important;
+}
+
+.am-recruitment-form .form-control:focus {
+  color: #212529 !important;
+  background-color: #ffffff !important;
+  border-color: #219EBC !important;
+  outline: 0 !important;
+  box-shadow: 0 0 0 0.25rem rgba(33, 158, 188, 0.25) !important;
+}
+
+/* OCULTAR BOTÓN NATIVO DE ARCHIVO (LO QUE PEDISTE) */
+input[type="file"]#cv-upload {
+  display: none !important;
+}
+
+.am-upload-box {
+  border: 2px dashed #219EBC !important;
+  background: #f8f9fa !important;
+  padding: 15px;
+  border-radius: 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: block;
+}
+
+.am-upload-box:hover {
+  background: #e9ecef !important;
+  border-color: #023047 !important;
+}
+
+/* .am-form-btn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+} */
+
+.am-form-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 15px;
+}
+
+.am-btn {
+  background: linear-gradient(135deg, #023047 0%, #219EBC 100%) !important;
+  color: #ffffff !important;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  padding: 14px 30px;
+  font-size: 0.9rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  border-radius: 12px;
+  cursor: pointer;
+  width: 100%;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 10px 20px rgba(2, 48, 71, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+/* --- ANIMACIÓN 1: El Brillo (Glint) --- */
+.am-btn::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -60%;
+  width: 20%;
+  height: 200%;
+  background: rgba(255, 255, 255, 0.2);
+  transform: rotate(30deg);
+  transition: all 0.7s;
+}
+
+.am-btn:hover::after {
+  left: 120%;
+}
+
+/* --- ANIMACIÓN 2: Elevación y Color --- */
+.am-btn:hover {
+  background: #219EBC !important;
+  transform: translateY(-3px);
+  box-shadow: 0 15px 25px rgba(2, 48, 71, 0.4);
+  border-color: #ffffff;
+}
+
+/* --- ANIMACIÓN 3: Click (Presionado) --- */
+.am-btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 5px 10px rgba(2, 48, 71, 0.2);
+}
+
+/* --- ANIMACIÓN 4: Entrada sutil --- */
+@keyframes fadeInUpBtn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.am-form-btn {
+  animation: fadeInUpBtn 0.8s ease forwards;
+}
+
+/* Botón de cierre */
+.am-close-modal {
+     position: absolute;
+    /* top: 5px; */
+    margin: 10px;
+    right: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    color: white;
+    /* cursor: pointer; */
+    z-index: 10;
+}
+
+.am-close-modal:hover {
+  background-color: red;
+}
+
+@media (max-width: 650px) {
+  .am-recruitment-content {
+    flex-direction: column;
+  }
+  .am-recruitment-modal {
+    height: 90%;
+    max-width: calc(100% - 40px);
+  }
+  .am-side-info {
+    padding: 30px;
+  }
+  .am-form-side {
+    padding: 30px;
+  }
+  .am-close-modal{
+    position: fixed;   
+  }
+}
+
+/* ======================================================= */
+/* VI. BOTÓN DE RECLUTAMIENTO FLOTANTE */
+/* ======================================================= */
+
+.am-recruitment-fab {
+  position: fixed;
+  bottom: 25px;
+  right: 25px; /* Por defecto en la esquina inferior derecha */
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #023047 0%, #219EBC 100%);
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  z-index: 9999;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.am-recruitment-fab:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+}
+
+/* Cuando el botón de reclutamiento está dentro del fab-container, se comporta como un botón flotante apilado */
+.fab-container .am-recruitment-fab {
+  position: relative;
+  bottom: auto;
+  right: auto;
+  left: auto !important;
+  z-index: 5;
+}
+
+
+/* Variante de posición para la izquierda (evita colisiones con otros botones flotantes) */
+.am-recruitment-fab--left {
+  right: auto !important;
+  left: 25px !important;
+}
+
+.am-recruitment-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 14px;
+  height: 14px;
+  background-color: #ff4d4d;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  animation: am-pulse 2s infinite;
+}
+
+@keyframes am-pulse {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(255, 77, 77, 0.7);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 8px rgba(255, 77, 77, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(255, 77, 77, 0);
+  }
+}
+
