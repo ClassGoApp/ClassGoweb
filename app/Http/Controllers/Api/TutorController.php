@@ -390,11 +390,17 @@ class TutorController extends Controller
                 }
             }
 
-
-
             // Ordenar por el nombre del tutor (usando el perfil relacionado)
-            $query->join('profiles', 'users.id', '=', 'profiles.user_id')
-                  ->orderBy('profiles.first_name', 'asc')
+            $query->join('profiles', 'users.id', '=', 'profiles.user_id');
+
+            $isFiltered = $request->filled('tutor_name') ||
+                          $request->filled('subject_id') ;
+
+            if (!$isFiltered) {
+                $query->orderByRaw('CASE WHEN profiles.id = 21 THEN 0 ELSE 1 END');
+            }
+
+            $query->orderBy('profiles.first_name', 'asc')
                   ->select('users.*');
 
             // Log del conteo de resultados
@@ -495,6 +501,19 @@ class TutorController extends Controller
             if ($request->filled('tutor_id')) {
                 $query->where('id', $request->tutor_id);
             }
+            
+            // Ordenar por el nombre del tutor (usando el perfil relacionado)
+            $query->join('profiles', 'users.id', '=', 'profiles.user_id');
+
+            $isFiltered = $request->filled('tutor_name') ||
+                          $request->filled('subject_id') ;
+
+            if (!$isFiltered) {
+                $query->orderByRaw('CASE WHEN profiles.id = 21 THEN 0 ELSE 1 END');
+            }
+
+            $query->orderBy('profiles.first_name', 'asc')
+                  ->select('users.*');
 
             $tutors = $query->get();
 
@@ -788,8 +807,16 @@ class TutorController extends Controller
             }
 
             // Ordenar por el nombre del tutor (usando el perfil relacionado)
-            $query->join('profiles', 'users.id', '=', 'profiles.user_id')
-                  ->orderBy('profiles.first_name', 'asc')
+            $query->join('profiles', 'users.id', '=', 'profiles.user_id');
+
+            $isFiltered = $request->filled('tutor_name') ||
+                          $request->filled('subject_id') ;
+
+            if (!$isFiltered) {
+                $query->orderByRaw('CASE WHEN profiles.id = 21 THEN 0 ELSE 1 END');
+            }
+
+            $query->orderBy('profiles.first_name', 'asc')
                   ->select('users.*');
 
             // Log del conteo de resultados
