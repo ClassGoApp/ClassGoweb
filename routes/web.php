@@ -54,6 +54,8 @@ use App\Mail\TutoriaInstanteNotificacionMail;
 
 use Illuminate\Support\Facades\Mail;
 
+use Illuminate\Support\Facades\Http;
+
 Route::get('/probar-correo', function () {
 
     Mail::send('emails.confirmationTutorInstant', [], function ($message) {
@@ -66,6 +68,24 @@ Route::get('/probar-correo', function () {
 
 
 
+
+
+
+
+
+Route::get('/test-whatsapp', function () {
+    // REEMPLAZA AQUÍ: Pon tu número personal real para recibir la prueba
+    $numeroCelular = "59172623436"; 
+
+    $response = Http::withoutVerifying()->withHeaders([
+        'X-API-Key' => env('OPENWA_API_KEY'),
+    ])->post(env('OPENWA_API_URL') . '/sessions/' . env('OPENWA_SESSION_NAME') . '/messages/send-text', [
+        'chatId' => $numeroCelular . '@c.us', // El estándar de WhatsApp requiere el sufijo @c.us
+        'text'   => '¡Hola! Esta es la prueba definitiva desde Laravel Localhost 🚀'
+    ]);
+
+    return $response->json();
+});
 
 
 
