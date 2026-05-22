@@ -124,14 +124,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('booking-cart',                          CartController::class);
     Route::post('checkout',                                     [CheckoutController::class,'addCheckoutDetails']);
 
-    Route::get('reviews', [ReviewController::class, 'index']);
-    Route::get('reviews/received', [ReviewController::class, 'getReceivedReviews']);
-    Route::get('reviews/given', [ReviewController::class, 'getUserReviews']);
-    Route::post('reviews', [ReviewController::class, 'store']);
-    Route::get('reviews/{id}', [ReviewController::class, 'show']);
-    Route::put('reviews/{id}', [ReviewController::class, 'update']);
-    Route::delete('reviews/{id}', [ReviewController::class, 'destroy']);
-    Route::get('reviews/stats/{userId}', [ReviewController::class, 'getStats']);
+    // Route::get('reviews', [ReviewController::class, 'index']);
+    // Route::get('reviews/received', [ReviewController::class, 'getReceivedReviews']);
+    // Route::get('reviews/given', [ReviewController::class, 'getUserReviews']);
+    // Route::post('reviews', [ReviewController::class, 'store']);
+    // Route::get('reviews/{id}', [ReviewController::class, 'show']);
+    // Route::put('reviews/{id}', [ReviewController::class, 'update']);
+    // Route::delete('reviews/{id}', [ReviewController::class, 'destroy']);
+    // Route::get('reviews/stats/{userId}', [ReviewController::class, 'getStats']);
     
     // TUTORIA INSTANTANEA
     // 1. Cargar datos iniciales

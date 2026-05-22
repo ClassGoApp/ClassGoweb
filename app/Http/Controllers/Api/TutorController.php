@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
+use App\Http\Controllers\Api\ReviewController;
 
 class TutorController extends Controller
 {
@@ -449,6 +450,23 @@ class TutorController extends Controller
                 return $tutor;
             });
 
+            $reviewerController = new ReviewController();
+            
+            $tutors->getCollection()->transform(function ($tutor) use ($reviewerController, $request) {
+                // Clonamos el request para pasarle el ID de este tutor sin alterar el original
+                $tempRequest = clone $request;
+                $tempRequest->merge(['user_id' => $tutor->id]);
+                
+                // Ejecutamos el método index de ReviewController
+                $response = $reviewerController->index($tempRequest);
+                $responseData = $response->getData(true);
+                
+                // Asignamos las reseñas (que ya traen el Reviewer e información de profile)
+                $tutor->reviews = $responseData['data'] ?? [];
+                
+                return $tutor;
+            });
+
             return $this->success(data: new \App\Http\Resources\FindTutors\TutorCollection($tutors));
 
         } catch (\Exception $e) {
@@ -792,10 +810,27 @@ class TutorController extends Controller
                 return $tutor;
             });
 
-                         return $this->success(data: new \App\Http\Resources\FindTutors\TutorCollection($tutors));
- 
-         } catch (\Exception $e) {
-             Log::error('Error en getAvailableTutors: ' . $e->getMessage());
+            $reviewerController = new ReviewController();
+            
+            $tutors->getCollection()->transform(function ($tutor) use ($reviewerController, $request) {
+                // Clonamos el request para pasarle el ID de este tutor sin alterar el original
+                $tempRequest = clone $request;
+                $tempRequest->merge(['user_id' => $tutor->id]);
+                
+                // Ejecutamos el método index de ReviewController
+                $response = $reviewerController->index($tempRequest);
+                $responseData = $response->getData(true);
+                
+                // Asignamos las reseñas (que ya traen el Reviewer e información de profile)
+                $tutor->reviews = $responseData['data'] ?? [];
+                
+                return $tutor;
+            });
+
+            return $this->success(data: new \App\Http\Resources\FindTutors\TutorCollection($tutors));
+
+        } catch (\Exception $e) {
+            Log::error('Error en getAvailableTutors: ' . $e->getMessage());
              return $this->error(message: 'Error al obtener tutores disponibles: ' . $e->getMessage());
          }
      }
