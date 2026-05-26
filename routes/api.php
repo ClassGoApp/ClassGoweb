@@ -33,6 +33,8 @@ use App\Http\Controllers\Api\GoogleCalendarController;
 use App\Http\Controllers\Api\UserCouponController;
 use App\Http\Controllers\Api\SubjectPickerController;
 use App\Http\Controllers\Api\NotificacionController;
+use App\Http\Controllers\HomeController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -108,6 +110,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('favourite-tutors',                      FavouriteTutorController::class)->only('index', 'update');
     Route::post('profile-settings/{id}',                        [ProfileController::class,'updateProfile']);
     Route::get('profile-settings/{id}',                         [ProfileController::class,'getProfile']);
+    Route::post('/accept-terms',                                [HomeController::class, 'acceptTerms']);
 
     Route::apiResource('identity-verification',                 IdentityController::class)->only(['show','destroy','store']);
     Route::get('invoices',                                      [InvoiceController::class,'getInvoices']);
