@@ -1072,12 +1072,12 @@ class SubjectPickerController extends Controller
             ->whereNotNull('u.email');
 
         // ✅ Disponible según horario (user_subject_slots)
-        $slotSub = DB::table('user_subject_slots as s')
-            ->select(DB::raw(1))
-            ->whereColumn('s.user_id', 'us.user_id')
-            ->whereRaw('s.date = CURDATE()')
-            ->whereRaw('s.start_time <= CURTIME()')
-            ->whereRaw('s.end_time > CURTIME()');
+        // $slotSub = DB::table('user_subject_slots as s')
+        //     ->select(DB::raw(1))
+        //     ->whereColumn('s.user_id', 'us.user_id')
+        //     ->whereRaw('s.date = CURDATE()')
+        //     ->whereRaw('s.start_time <= CURTIME()')
+        //     ->whereRaw('s.end_time > CURTIME()');
 
         // ✅ Ocupado AHORA según bookings (slot_bookings)
         // (en curso o reservado/pending de pago)
@@ -1089,13 +1089,11 @@ class SubjectPickerController extends Controller
             ->where('sb.end_time', '>', now());
 
         if ($mustBeAvailableNow) {
-            // ✅ SOLO: con slot ahora y NO ocupado
-            $q->whereExists($slotSub)
-                ->whereNotExists($busyNowSub);
+            // ✅ SOLO: NO ocupado (ya no importa si tiene slot ahora)
+            $q->whereNotExists($busyNowSub);
         } else {
-            // ✅ NO disponible por slot (y además NO ocupado para no spamear)
-            $q->whereNotExists($slotSub)
-                ->whereNotExists($busyNowSub);
+            // ✅ Ocupado (ya que todos los no ocupados se consideran disponibles)
+            $q->whereExists($busyNowSub);
         }
 
         return $q;
