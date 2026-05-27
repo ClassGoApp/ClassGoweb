@@ -265,6 +265,7 @@ Route::prefix('auth/google')->group(function () {
     Route::get('url', [GoogleAuthController::class, 'getGoogleAuthUrl']);
     Route::post('callback', [GoogleAuthController::class, 'handleGoogleCallback']);
     Route::post('disconnect', [GoogleAuthController::class, 'disconnectGoogle'])->middleware('auth:sanctum');
+    Route::post('/', [GoogleAuthController::class, 'loginWithGoogleIdToken']);
 });
 
 // ===== GOOGLE CALENDAR ROUTES =====
