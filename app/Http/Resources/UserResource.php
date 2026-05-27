@@ -43,6 +43,8 @@ class UserResource extends JsonResource
             'identityVerification'           => new IdentityResource($this->whenLoaded('identityVerification')),
             'role' => ($this->roles instanceof \Illuminate\Database\Eloquent\Collection && $this->roles->count() > 0) ? $this->roles->first()->name : null,
             'available_for_tutoring'         => $this->whenHas('available_for_tutoring'),
+            'terms_accepted'                 => !is_null($this->terms_accepted_at),
+            'terms_accepted_at'              => $this->terms_accepted_at,
             'balance'                           => $this->whenLoaded('userWallet', function() {
                 return formatAmount($this->userWallet?->amount ?? 0);
             })
