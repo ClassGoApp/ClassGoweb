@@ -212,5 +212,127 @@ class GoogleAuthController extends Controller
             ], 500);
         }
     }
+
+    /**
+     * Iniciar sesión con Google usando ID Token desde móvil
+     * 
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function loginWithGoogleIdToken(Request $request): JsonResponse
+    {
+        try {
+            if (empty(setting('_api.enable_social_login'))) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'El login social no está habilitado'
+                ], 403);
+            }
+
+            $idToken = $request->input('id_token');
+            if (!$idToken) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'ID Token no proporcionado'
+                ], 400);
+            }
+
+            // Verificar el ID Token
+            $client = new \Google_Client();
+            $payload = $client->verifyIdToken($idToken);
+
+            if (!$payload) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'ID Token inválido o expirado'
+                ], 401);
+            }
+
+            $googleId = $payload['sub'];
+            $email = $payload['email'];
+            $name = $payload['name'] ?? '';
+
+            // Buscar o crear usuario
+            $user = User::where('provider_id', $googleId)
+                ->where('provider', 'google')
+                ->first();
+
+            if (!$user) {
+                $existingUser = User::where('email', $email)->first();
+
+                if ($existingUser) {
+                    $existingUser->update([
+                        'provider' => 'google',
+                        'provider_id' => $googleId,
+                    ]);
+                    $user = $existingUser;
+                } else {
+                    $user = User::create([
+                        'name' => $name,
+                        'email' => $email,
+                        'provider' => 'google',
+                        'provider_id' => $googleId,
+                        'password' => bcrypt(Str::random(20)),
+                        'email_verified_at' => now(),
+                        'status' => 0,
+                    ]);
+                    $user->assignRole('student');
+
+                    // Crear perfil básico con el nombre obtenido de Google
+                    $nameParts = explode(' ', $name, 2);
+                    $firstName = $nameParts[0] ?? $name;
+                    $lastName = $nameParts[1] ?? '';
+
+                    $user->profile()->create([
+                        'first_name' => $firstName,
+                        'last_name' => $lastName,
+                    ]);
+                }
+            }
+
+            // Cargar relaciones necesarias para que coincida con AuthController::login
+            $user->load([
+                'profile:id,user_id,first_name,last_name,gender,recommend_tutor,intro_video,native_language,verified_at,slug,image,tagline,description,phone_number,price,created_at,updated_at',
+                'address:country_id,state_id,city,address',
+                'roles',
+                'userWallet:id,user_id,amount'
+            ]);
+
+            // Asegurar que el campo available_for_tutoring esté disponible
+            $user->available_for_tutoring = $user->available_for_tutoring ?? true;
+
+            // Eliminar token anterior de la aplicación móvil si existe
+            $user->tokens()->where('name', 'lernen')->delete();
+
+            // Crear token de acceso para la API (con nombre lernen para coincidir con login normal)
+            $token = $user->createToken('lernen', ['*'], now()->addDays(7))->plainTextToken;
+
+            // Verificar si necesita completar perfil
+            $profile = (new ProfileService($user->id))->getUserProfile();
+            $needsProfileCompletion = empty($profile);
+
+            // Importante: Devolver los datos con el formato EXACTO del login normal
+            return response()->json([
+                'success' => true,
+                'message' => 'Inicio de sesión con Google exitoso',
+                'data' => [
+                    'token' => $token,
+                    'user' => new \App\Http\Resources\UserResource($user),
+                    'needs_profile_completion' => $needsProfileCompletion
+                ]
+            ]);
+
+        } catch (Exception $e) {
+            Log::error('Error en login con Google ID Token', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al iniciar sesión con Google: ' . $e->getMessage()
+            ], 500);
+        }
+    }
 }
 

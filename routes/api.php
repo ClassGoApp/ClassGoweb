@@ -33,6 +33,8 @@ use App\Http\Controllers\Api\GoogleCalendarController;
 use App\Http\Controllers\Api\UserCouponController;
 use App\Http\Controllers\Api\SubjectPickerController;
 use App\Http\Controllers\Api\NotificacionController;
+use App\Http\Controllers\HomeController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -108,6 +110,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('favourite-tutors',                      FavouriteTutorController::class)->only('index', 'update');
     Route::post('profile-settings/{id}',                        [ProfileController::class,'updateProfile']);
     Route::get('profile-settings/{id}',                         [ProfileController::class,'getProfile']);
+    Route::post('/accept-terms',                                [HomeController::class, 'acceptTerms']);
 
     Route::apiResource('identity-verification',                 IdentityController::class)->only(['show','destroy','store']);
     Route::get('invoices',                                      [InvoiceController::class,'getInvoices']);
@@ -124,14 +127,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('booking-cart',                          CartController::class);
     Route::post('checkout',                                     [CheckoutController::class,'addCheckoutDetails']);
 
-    Route::get('reviews', [ReviewController::class, 'index']);
-    Route::get('reviews/received', [ReviewController::class, 'getReceivedReviews']);
-    Route::get('reviews/given', [ReviewController::class, 'getUserReviews']);
-    Route::post('reviews', [ReviewController::class, 'store']);
-    Route::get('reviews/{id}', [ReviewController::class, 'show']);
-    Route::put('reviews/{id}', [ReviewController::class, 'update']);
-    Route::delete('reviews/{id}', [ReviewController::class, 'destroy']);
-    Route::get('reviews/stats/{userId}', [ReviewController::class, 'getStats']);
+    // Route::get('reviews', [ReviewController::class, 'index']);
+    // Route::get('reviews/received', [ReviewController::class, 'getReceivedReviews']);
+    // Route::get('reviews/given', [ReviewController::class, 'getUserReviews']);
+    // Route::post('reviews', [ReviewController::class, 'store']);
+    // Route::get('reviews/{id}', [ReviewController::class, 'show']);
+    // Route::put('reviews/{id}', [ReviewController::class, 'update']);
+    // Route::delete('reviews/{id}', [ReviewController::class, 'destroy']);
+    // Route::get('reviews/stats/{userId}', [ReviewController::class, 'getStats']);
     
     // TUTORIA INSTANTANEA
     // 1. Cargar datos iniciales
@@ -265,6 +268,7 @@ Route::prefix('auth/google')->group(function () {
     Route::get('url', [GoogleAuthController::class, 'getGoogleAuthUrl']);
     Route::post('callback', [GoogleAuthController::class, 'handleGoogleCallback']);
     Route::post('disconnect', [GoogleAuthController::class, 'disconnectGoogle'])->middleware('auth:sanctum');
+    Route::post('/', [GoogleAuthController::class, 'loginWithGoogleIdToken']);
 });
 
 // ===== GOOGLE CALENDAR ROUTES =====

@@ -47,6 +47,7 @@ class FindTutorResource extends JsonResource
                 }
                 return $subjectResources;
             }),
+            'reviews'                        => $this->when(isset($this->reviews), $this->reviews),
         ];
     }
 }
