@@ -61,7 +61,7 @@ class RecruitmentForm extends Component
         try {
             // El envío de correo está comentado para evitar el Error de Timeout de 30s.
             // Tu configuración SMTP de Gmail en .env está tardando en responder.
-            Mail::to('admin@classgo.com')->send(new RecruitmentNotification($recruitment));
+            Mail::to('admin@classgoapp.com')->send(new RecruitmentNotification($recruitment));
             \Log::info('Simulación: Correo de reclutamiento enviado para ' . $recruitment->email);
         } catch (\Exception $e) {
             \Log::error('Error enviando correo de reclutamiento: ' . $e->getMessage());
