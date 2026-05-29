@@ -1,10 +1,20 @@
-@php
-    $isLoggedIn = auth()->check();
-@endphp
-
 <link rel="stylesheet" href="{{ asset('css/recruitment.css') }}">
 <div id="recruitment-modal" class="am-recruitment-modal">
-    <button type="button" class="am-close-modal" onclick="closeRecruitmentModal()">✕</button>
+    <div class="am-modal-header-recruitment">
+        <button type="button" class="am-close-modal" onclick="closeRecruitmentModal()" title="Minimizar (puedes volver a abrirlo cuando quieras desde el botón flotante)">✕</button>
+    </div>
+
+    <!-- Custom confirmation overlay -->
+    <div id="recruitment-confirm-overlay" class="am-confirm-overlay">
+        <div class="am-confirm-card">
+            <h3>¿Estás seguro?</h3>
+            <p class="texto-advertencia">Si cierras desde aquí no podrás acceder al formulario después. Para minimizar y poder usar el botón flotante más tarde, presiona la <strong>✕</strong> de arriba.</p>
+            <div class="am-confirm-buttons">
+                <button type="button" class="am-confirm-btn am-confirm-btn-yes" onclick="confirmDismiss()">Sí, no volver a mostrar</button>
+                <button type="button" class="am-confirm-btn am-confirm-btn-no" onclick="cancelDismiss()">No, mantener activo</button>
+            </div>
+        </div>
+    </div>
 
     <div class="am-recruitment-content">
         <div class="am-side-info">
@@ -52,43 +62,187 @@
     </div>
 </div>
 <script>
-    function showRecruitmentModal() {
-        document.getElementById('recruitment-modal').classList.add('show');
+    let autoCloseTimeout = null;
+    let tooltipTimeout = null;
+    let isDismissAuth = false;
+
+    function triggerDismissConfirm(isAuth) {
+        isDismissAuth = isAuth;
+        const overlay = document.getElementById('recruitment-confirm-overlay');
+        const modal = document.getElementById('recruitment-modal');
+        if (overlay && modal) {
+            overlay.style.top = modal.scrollTop + 'px';
+            overlay.style.height = modal.clientHeight + 'px';
+            overlay.classList.add('active');
+            modal.classList.add('confirm-active');
+        }
+    }
+
+    function cancelDismiss() {
+        const overlay = document.getElementById('recruitment-confirm-overlay');
+        const modal = document.getElementById('recruitment-modal');
+        if (overlay) {
+            overlay.classList.remove('active');
+        }
+        if (modal) {
+            modal.classList.remove('confirm-active');
+        }
+    }
+
+    function confirmDismiss() {
+        const overlay = document.getElementById('recruitment-confirm-overlay');
+        const modal = document.getElementById('recruitment-modal');
+        if (overlay) {
+            overlay.classList.remove('active');
+        }
+        if (modal) {
+            modal.classList.remove('confirm-active');
+        }
+
+        if (isDismissAuth) {
+            const hiddenBtn = document.getElementById('hidden-dismiss-btn');
+            if (hiddenBtn) {
+                hiddenBtn.click();
+            }
+        } else {
+            localStorage.setItem('classgo_recruitment_auto_shown', 'true');
+            localStorage.setItem('classgo_recruitment_dismissed_permanently', 'true');
+            
+            document.querySelectorAll('.am-recruitment-fab').forEach(el => {
+                el.style.display = 'none';
+            });
+            
+            if (typeof closeRecruitmentModal === 'function') {
+                closeRecruitmentModal();
+            }
+            if (typeof hideRecruitmentTooltip === 'function') {
+                hideRecruitmentTooltip();
+            }
+        }
+    }
+
+    function showRecruitmentTooltip() {
+        // Cancel any existing tooltip timer
+        if (tooltipTimeout) {
+            clearTimeout(tooltipTimeout);
+        }
+
+        const tooltips = document.querySelectorAll('.am-recruitment-tooltip');
+        tooltips.forEach(tooltip => {
+            tooltip.classList.add('show');
+        });
+        console.log("Recruitment: Tooltip shown. Will hide in 3 seconds.");
+
+        // Automatically hide the tooltip after 3 seconds
+        tooltipTimeout = setTimeout(hideRecruitmentTooltip, 3000);
+    }
+
+    function hideRecruitmentTooltip() {
+        if (tooltipTimeout) {
+            clearTimeout(tooltipTimeout);
+            tooltipTimeout = null;
+        }
+        const tooltips = document.querySelectorAll('.am-recruitment-tooltip');
+        tooltips.forEach(tooltip => {
+            tooltip.classList.remove('show');
+        });
+        console.log("Recruitment: Tooltip hidden.");
+    }
+
+    function showRecruitmentModal(isAuto = false) {
+        const modal = document.getElementById('recruitment-modal');
+        if (!modal) return;
+
+        modal.classList.add('show');
+
+        // Hide the tooltip when modal is open
+        hideRecruitmentTooltip();
+
+        // Cancel any existing timer to prevent duplicates
+        if (autoCloseTimeout) {
+            clearTimeout(autoCloseTimeout);
+            autoCloseTimeout = null;
+        }
+
+        if (isAuto) {
+            console.log("Recruitment: Modal shown automatically. Starting 5-second auto-close timer.");
+
+            // Start 5 seconds countdown to close it
+            autoCloseTimeout = setTimeout(closeRecruitmentModal, 5000);
+
+            // Cancel countdown if there's any interaction inside the modal
+            const cancelAutoClose = function() {
+                if (autoCloseTimeout) {
+                    clearTimeout(autoCloseTimeout);
+                    autoCloseTimeout = null;
+                    console.log("Recruitment: Auto-close timer canceled due to user interaction.");
+                }
+            };
+
+            modal.addEventListener('click', cancelAutoClose, { once: true });
+            modal.addEventListener('input', cancelAutoClose, { once: true });
+            modal.addEventListener('focusin', cancelAutoClose, { once: true });
+        } else {
+            console.log("Recruitment: Modal shown manually via button. Auto-close timer disabled.");
+        }
     }
 
     function closeRecruitmentModal() {
-        document.getElementById('recruitment-modal').classList.remove('show');
+        const modal = document.getElementById('recruitment-modal');
+        if (modal) {
+            modal.classList.remove('show');
+            modal.classList.remove('confirm-active');
+        }
+        if (autoCloseTimeout) {
+            clearTimeout(autoCloseTimeout);
+            autoCloseTimeout = null;
+        }
+        // Show tooltip after the modal closes
+        showRecruitmentTooltip();
     }
 
     document.addEventListener('DOMContentLoaded', function() {
-        const isLoggedIn = @json($isLoggedIn);
-        const modalId = 'classgo_recruitment_shown';
-        const now = new Date().getTime();
-        const oneHour = 60 * 60 * 1000;
+        const modalId = 'classgo_recruitment_auto_shown';
+        
+        @auth
+            @if(!session()->has('classgo_recruitment_logged_shown'))
+                @php
+                    session(['classgo_recruitment_logged_shown' => true]);
+                @endphp
+                console.log("Recruitment: Authenticated user newly logged in. Showing modal automatically.");
+                setTimeout(() => showRecruitmentModal(true), 1000);
+                return;
+            @endif
+        @endauth
 
-        let shouldShow = false;
-
-        if (isLoggedIn) {
-            const lastShown = localStorage.getItem(modalId);
-            if (!lastShown || (now - lastShown) > oneHour) {
-                shouldShow = true;
-                localStorage.setItem(modalId, now);
-            }
-        } else {
-            // Para invitados, lo mostramos siempre (quitar sessionStorage para pruebas)
-            shouldShow = true;
-            console.log("Recruitment: Guest user detected, showing popup.");
+        // If they permanently dismissed it (as a guest), hide the buttons immediately
+        const permanentlyDismissed = localStorage.getItem('classgo_recruitment_dismissed_permanently');
+        if (permanentlyDismissed) {
+            document.querySelectorAll('.am-recruitment-fab').forEach(el => {
+                el.style.display = 'none';
+            });
+            console.log("Recruitment: FAB hidden because recruitment was permanently dismissed.");
+            return;
         }
 
-        if (shouldShow) {
-            console.log("Recruitment: Modal will show in 1 second.");
-            setTimeout(showRecruitmentModal, 1000);
+        const alreadyShown = localStorage.getItem(modalId);
+
+        if (!alreadyShown) {
+            console.log("Recruitment: Modal will show automatically in 1 second.");
+            localStorage.setItem(modalId, 'true');
+            setTimeout(() => showRecruitmentModal(true), 1000);
         } else {
-            console.log("Recruitment: Modal skipped due to cache.");
+            console.log("Recruitment: Modal skipped because it was already shown once automatically.");
         }
     });
 
     window.addEventListener('recruitment-sent', event => {
-        setTimeout(closeRecruitmentModal, 3000); // Cierra automáticamente tras éxito
+        setTimeout(() => {
+            closeRecruitmentModal();
+            hideRecruitmentTooltip();
+            // Hide the button entirely upon successful submission
+            const fabs = document.querySelectorAll('.am-recruitment-fab');
+            fabs.forEach(fab => fab.style.display = 'none');
+        }, 3000); // Cierra automáticamente tras éxito
     });
 </script>

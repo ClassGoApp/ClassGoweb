@@ -26,6 +26,7 @@
         <button class="am-recruitment-fab" onclick="showRecruitmentModal()" title="¡Únete a nuestro equipo!">
             <i class="fas fa-user-plus"></i>
             <span class="am-recruitment-badge"></span>
+            <span class="am-recruitment-tooltip">¡Postúlate aquí!</span>
         </button>
     @endif
 

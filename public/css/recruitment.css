@@ -22,14 +22,27 @@
   border-radius: 24px;
   box-shadow: 0 30px 100px rgba(2, 48, 71, 0.4);
   z-index: 1000000;
-  display: none;
-  overflow: auto;
+  overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.3);
-  animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+
+  /* Transición fluida de minimización hacia el botón flotante */
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.2) translate(300px, 300px);
+  transform-origin: bottom right;
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .am-recruitment-modal.show {
-  display: flex;
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1) translate(0, 0);
+}
+
+.am-recruitment-modal.confirm-active {
+  overflow: hidden !important;
 }
 
 .am-recruitment-content {
@@ -103,24 +116,23 @@
 }
 
 /* --- LADO DERECHO: FORMULARIO COMPACTO --- */
-.row{
-  display:flex;
+.row {
+  display: flex;
   flex-direction: column;
   /* width: 100%;   */
 }
 
-.input-form{
- width: 100% !important;
+.input-form {
+  width: 100% !important;
 }
 
 .am-form-side {
   flex: 0.9;
-  background: #FB8500;
+  background: #fb8500;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
-
 
 .am-recruitment-form .form-group {
   margin-bottom: 12px;
@@ -146,11 +158,11 @@
   border: 1px solid #ced4da !important;
   border-radius: 8px !important;
   box-sizing: border-box !important;
-  transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out !important;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out !important;
 }
 
 .am-recruitment-form .form-control:hover {
-  border-color: #219EBC !important;
+  border-color: #219ebc !important;
   background-color: #ffffff !important;
   box-shadow: 0px 1px 4px rgba(33, 158, 188, 0.15) !important;
 }
@@ -158,7 +170,7 @@
 .am-recruitment-form .form-control:focus {
   color: #212529 !important;
   background-color: #ffffff !important;
-  border-color: #219EBC !important;
+  border-color: #219ebc !important;
   outline: 0 !important;
   box-shadow: 0 0 0 0.25rem rgba(33, 158, 188, 0.25) !important;
 }
@@ -169,7 +181,7 @@ input[type="file"]#cv-upload {
 }
 
 .am-upload-box {
-  border: 2px dashed #219EBC !important;
+  border: 2px dashed #219ebc !important;
   background: #f8f9fa !important;
   padding: 15px;
   border-radius: 10px;
@@ -199,7 +211,7 @@ input[type="file"]#cv-upload {
 }
 
 .am-btn {
-  background: linear-gradient(135deg, #023047 0%, #219EBC 100%) !important;
+  background: linear-gradient(135deg, #023047 0%, #219ebc 100%) !important;
   color: #ffffff !important;
   border: 2px solid rgba(255, 255, 255, 0.2);
   padding: 14px 30px;
@@ -235,7 +247,7 @@ input[type="file"]#cv-upload {
 
 /* --- ANIMACIÓN 2: Elevación y Color --- */
 .am-btn:hover {
-  background: #219EBC !important;
+  background: #219ebc !important;
   transform: translateY(-3px);
   box-shadow: 0 15px 25px rgba(2, 48, 71, 0.4);
   border-color: #ffffff;
@@ -263,20 +275,35 @@ input[type="file"]#cv-upload {
   animation: fadeInUpBtn 0.8s ease forwards;
 }
 
+/* Contenedor del botón de cierre (invisible en desktop) */
+.am-modal-header-recruitment {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 60px;
+  height: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 101000;
+  pointer-events: none; /* Transparente a clicks salvo el botón hijo */
+}
+
+
 /* Botón de cierre */
 .am-close-modal {
-     position: absolute;
-    /* top: 5px; */
-    margin: 10px;
-    right: 0;
-    background: rgba(255, 255, 255, 0.2);
-    border: none;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    color: white;
-    /* cursor: pointer; */
-    z-index: 10;
+  position: relative; /* dentro del header absoluto */
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  width: 30px;
+  height: 30px;
+  top: 1.3rem;
+  border-radius: 50%;
+  color: white;
+  cursor: pointer;
+  z-index: 101000;
+  transition: background-color 0.2s ease;
+  pointer-events: auto;
 }
 
 .am-close-modal:hover {
@@ -290,6 +317,22 @@ input[type="file"]#cv-upload {
   .am-recruitment-modal {
     height: 90%;
     max-width: calc(100% - 40px);
+    flex-direction: column; /* Header encima del contenido */
+    overflow: auto;
+  }
+  /* En móvil el header se vuelve pegajoso: siempre visible aunque el usuario scrollee */
+  .am-modal-header-recruitment {
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 0px;
+    background: var(--bg-gradient2); /* mismo fondo del panel izquierdo */
+    flex-shrink: 0;
+    justify-content: flex-end;
+    padding-right: 12px;
+    z-index: 101000;
   }
   .am-side-info {
     padding: 30px;
@@ -297,9 +340,7 @@ input[type="file"]#cv-upload {
   .am-form-side {
     padding: 30px;
   }
-  .am-close-modal{
-    position: fixed;   
-  }
+  
 }
 
 /* ======================================================= */
@@ -313,7 +354,7 @@ input[type="file"]#cv-upload {
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #023047 0%, #219EBC 100%);
+  background: linear-gradient(135deg, #023047 0%, #219ebc 100%);
   color: #ffffff;
   border: none;
   cursor: pointer;
@@ -339,7 +380,6 @@ input[type="file"]#cv-upload {
   left: auto !important;
   z-index: 5;
 }
-
 
 /* Variante de posición para la izquierda (evita colisiones con otros botones flotantes) */
 .am-recruitment-fab--left {
@@ -374,3 +414,126 @@ input[type="file"]#cv-upload {
   }
 }
 
+/* --- TOOLTIP POSTULATE AQUÍ (UNIFICADO) --- */
+.am-recruitment-tooltip {
+  position: absolute;
+  right: 100%;
+  margin-right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 0.5rem 0.75rem;
+  background-color: #1f2937; /* var(--color-tooltip-bg) */
+  color: #ffffff !important;
+  font-size: 0.875rem;
+  border-radius: 0.375rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  z-index: 99999;
+}
+
+/* Mostrar tooltip al hacer hover en el botón flotante o mediante JS (.show) */
+.am-recruitment-fab:hover .am-recruitment-tooltip,
+.am-recruitment-tooltip.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* --- CUSTOM CONFIRMATION OVERLAY --- */
+.am-confirm-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(2, 48, 71, 0.85); /* Dark matching gradient base */
+  backdrop-filter: blur(8px); /* Premium blur effect */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  border-radius: 24px;
+}
+
+.am-confirm-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.am-confirm-card {
+  background: #ffffff;
+  padding: 1rem;
+  border-radius: 20px;
+  max-width: 400px;
+  width: calc(100% - 40px);
+  text-align: center;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+  transform: scale(0.85);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.texto-advertencia{
+    display:block !important ;
+  }
+
+.am-confirm-overlay.active .am-confirm-card {
+  transform: scale(1);
+}
+
+.am-confirm-card h3 {
+  color: #023047;
+  font-size: 1.4rem;
+  font-weight: 800;
+  margin-top: 0;
+  margin-bottom: 12px;
+}
+
+.am-confirm-card p {
+  color: #6c757d;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 25px;
+}
+
+.am-confirm-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.am-confirm-btn {
+  padding: 12px 24px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  border-radius: 10px;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+  flex: 1;
+}
+
+.am-confirm-btn-yes {
+  background: #ff4d4d;
+  color: #ffffff !important;
+}
+
+.am-confirm-btn-yes:hover {
+  background: #ff3333;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(255, 77, 77, 0.3);
+}
+
+.am-confirm-btn-no {
+  background: #f1f3f5;
+  color: #495057 !important;
+}
+
+.am-confirm-btn-no:hover {
+  background: #e9ecef;
+  transform: translateY(-2px);
+}

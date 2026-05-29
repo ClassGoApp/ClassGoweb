@@ -88,8 +88,11 @@
             </div>
 
             @auth
+            <button id="hidden-dismiss-btn" type="button" wire:click.prevent="dismiss" style="display: none;"></button>
             <div class="mt-3 text-center">
-                <a href="#" wire:click.prevent="dismiss" style="color: #6c757d; font-size: 0.85rem; text-decoration: underline; cursor: pointer;">
+                <a href="#" 
+                   onclick="triggerDismissConfirm(true); return false;"
+                   style="color: #6c757d; font-size: 0.85rem; text-decoration: underline; cursor: pointer;">
                     Cerrar y no volver a mostrar
                 </a>
             </div>
@@ -113,6 +116,7 @@
                 el.style.display = 'none';
             });
         });
+
     </script>
     <style>
         /* Estilo para bloquear y apagar el botón visualmente mientras procesa */
