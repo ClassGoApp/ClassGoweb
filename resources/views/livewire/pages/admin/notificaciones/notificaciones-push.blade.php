@@ -70,7 +70,7 @@
                     </div>
                 </div>
 
-                <div style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 25px; align-items: start;">
+                <div style="display: grid; gap: 25px; align-items: start;">
                     
                     <!-- Left Column: Notification Form -->
                     <div style="background: #ffffff; border-radius: 20px; border: 1px solid #eef2f5; padding: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.01);">
@@ -140,26 +140,21 @@
                             <i class="icon-terminal" style="color: #fb8500;"></i> Respuesta de Firebase / Logs
                         </h4>
 
-                        @if ($apiResponse)
+                        {{-- @if ($apiResponse) --}}
                             <div style="background: #e8f5e9; border-radius: 12px; padding: 15px; margin-bottom: 20px; border: 1px solid #c8e6c9;">
                                 <h5 style="margin: 0 0 5px 0; color: #2e7d32; font-weight: 700; font-size: 0.9rem;">Resultado del Proceso:</h5>
                                 <ul style="margin: 0; padding-left: 20px; color: #388e3c; font-size: 0.85rem; font-weight: 600;">
-                                    <li>Enviados con éxito: {{ $apiResponse['success_count'] ?? 1 }}</li>
-                                    <li>Errores: {{ $apiResponse['failure_count'] ?? 0 }}</li>
+                                    <li>Enviados con éxito: {{ $apiResponse['success_count'] ?? "--" }}</li>
+                                    <li>Errores: {{ $apiResponse['failure_count'] ?? "--" }}</li>
                                 </ul>
                             </div>
 
-                            <div style="flex-grow: 1;">
+                            {{-- <div style="flex-grow: 1;">
                                 <label style="font-weight: 700; color: #023047; font-size: 0.8rem; margin-bottom: 6px; display: block;">Respuesta Completa de Firebase:</label>
                                 <pre style="background: #2b2d42; color: #a5f3fc; border-radius: 12px; padding: 15px; font-size: 0.8rem; overflow-x: auto; max-height: 400px; font-family: monospace;">{{ json_encode($apiResponse, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) }}</pre>
-                            </div>
-                        @else
-                            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 50px 20px; text-align: center; background: #f8f9fa; border-radius: 16px; border: 1px dashed #ced4da; height: 350px;">
-                                <i class="icon-database" style="font-size: 3rem; color: #ced4da; margin-bottom: 15px;"></i>
-                                <h5 style="margin: 0; font-weight: 700; color: #6c757d; font-size: 0.95rem;">Esperando envíos...</h5>
-                                <p style="margin: 5px 0 0 0; color: #a8dadc; font-size: 0.8rem; max-width: 250px;">Completa el formulario de la izquierda y haz tu prueba de notificaciones móviles.</p>
-                            </div>
-                        @endif
+                            </div> --}}
+                        
+                        {{-- @endif --}}
                     </div>
                 </div>
             </div>
