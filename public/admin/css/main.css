@@ -3080,6 +3080,7 @@ address {
   box-shadow: none;
   border: 0;
   box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+  height: 0;
 }
 .tb-dbholder > .tb-dbbox {
   background-color: transparent;

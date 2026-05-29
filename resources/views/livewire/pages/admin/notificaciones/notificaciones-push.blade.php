@@ -1,5 +1,5 @@
 <div class="tb-db-dashboard_box_wrap">
-    <div class="tb-db-dashboard_box_wrap_inner" style="padding: 20px;">
+    <div class="tb-db-dashboard_box_wrap_inner" >
         <div class="tb-menumanagement_wrap">
             <div class="tb-dbholder">
                 <div class="tb-dbholder__title" style="margin-bottom: 25px; border-bottom: 1px solid #eef2f5; padding-bottom: 15px;">
