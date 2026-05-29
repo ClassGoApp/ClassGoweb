@@ -65,7 +65,6 @@ class SocialController extends Controller
             } else {
                 // Create a new user
                 $user = User::create([
-                    'name'         => $socialUser->getName(),
                     'email'        => $socialUser->getEmail(),
                     'provider'     => $provider,
                     'provider_id'  => $socialUser->getId(),
