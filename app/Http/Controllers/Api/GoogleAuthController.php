@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Str;
 
@@ -33,7 +34,7 @@ class GoogleAuthController extends Controller
             // Para móvil, necesitamos una URL personalizada
             // Usar URL específica que coincide con Google Cloud (con www)
             $redirectUri = 'https://www.classgoapp.com/api/auth/google/callback';
-            
+
             $authUrl = Socialite::driver('google')
                 ->redirectUrl($redirectUri)
                 ->stateless()
@@ -85,13 +86,13 @@ class GoogleAuthController extends Controller
             // Intercambiar código por token
             // Usar URL específica que coincide con Google Cloud (con www)
             $redirectUri = 'https://www.classgoapp.com/api/auth/google/callback';
-            
+
             // Log para debugging
             Log::info('Google Auth Callback - Redirect URI', [
                 'redirect_uri' => $redirectUri,
                 'code' => $code
             ]);
-            
+
             $socialUser = Socialite::driver('google')
                 ->redirectUrl($redirectUri)
                 ->stateless()
@@ -165,7 +166,6 @@ class GoogleAuthController extends Controller
             } else {
                 // Crear nuevo usuario
                 $user = User::create([
-                    'name' => $socialUser->getName(),
                     'email' => $socialUser->getEmail(),
                     'provider' => 'google',
                     'provider_id' => $socialUser->getId(),
@@ -189,7 +189,7 @@ class GoogleAuthController extends Controller
     {
         try {
             $user = $request->user();
-            
+
             $user->update([
                 'provider' => null,
                 'provider_id' => null,
@@ -230,6 +230,7 @@ class GoogleAuthController extends Controller
             }
 
             $idToken = $request->input('id_token');
+            $role = $request->input('role');
             if (!$idToken) {
                 return response()->json([
                     'success' => false,
@@ -252,6 +253,8 @@ class GoogleAuthController extends Controller
             $email = $payload['email'];
             $name = $payload['name'] ?? '';
 
+            DB::beginTransaction();
+
             // Buscar o crear usuario
             $user = User::where('provider_id', $googleId)
                 ->where('provider', 'google')
@@ -266,9 +269,8 @@ class GoogleAuthController extends Controller
                         'provider_id' => $googleId,
                     ]);
                     $user = $existingUser;
-                } else {
+                } else if (!empty($role) && $role != null) {
                     $user = User::create([
-                        'name' => $name,
                         'email' => $email,
                         'provider' => 'google',
                         'provider_id' => $googleId,
@@ -276,18 +278,42 @@ class GoogleAuthController extends Controller
                         'email_verified_at' => now(),
                         'status' => 0,
                     ]);
-                    $user->assignRole('student');
+                    if ($role == 'student')
+                        $user->assignRole('student');
+                    else if ($role == 'tutor')
+                        $user->assignRole('tutor');
+                    else
+                        $user->assignRole('student');
 
                     // Crear perfil básico con el nombre obtenido de Google
                     $nameParts = explode(' ', $name, 2);
                     $firstName = $nameParts[0] ?? $name;
                     $lastName = $nameParts[1] ?? '';
 
+                    $slug = Str::slug($firstName . ' ' . $lastName);
+                    if (empty($slug)) {
+                        $slug = Str::random(10);
+                    }
+                    $originalSlug = $slug;
+                    $counter = 1;
+                    while (\App\Models\Profile::where('slug', $slug)->exists()) {
+                        $slug = $originalSlug . '-' . $counter;
+                        $counter++;
+                    }
+
                     $user->profile()->create([
                         'first_name' => $firstName,
                         'last_name' => $lastName,
+                        'slug' => $slug,
                     ]);
+                } else {
+                    DB::rollBack();
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Usuario no encontrado en el sistema'
+                    ], 403);
                 }
+
             }
 
             // Cargar relaciones necesarias para que coincida con AuthController::login
@@ -311,6 +337,8 @@ class GoogleAuthController extends Controller
             $profile = (new ProfileService($user->id))->getUserProfile();
             $needsProfileCompletion = empty($profile);
 
+            DB::commit();
+
             // Importante: Devolver los datos con el formato EXACTO del login normal
             return response()->json([
                 'success' => true,
@@ -323,6 +351,9 @@ class GoogleAuthController extends Controller
             ]);
 
         } catch (Exception $e) {
+            if (DB::transactionLevel() > 0) {
+                DB::rollBack();
+            }
             Log::error('Error en login con Google ID Token', [
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
