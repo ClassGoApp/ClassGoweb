@@ -169,6 +169,13 @@ new class extends Component {
                 'routes' => [
                     'admin.recruitment-listing' => 'Ver Postulantes',
                 ]
+            ],
+            [
+                'title' => 'Notificaciones',
+                'icon' => 'icon-bell',
+                'routes' => [
+                    'admin.notificaciones-push' => 'Notificaciones Push',
+                ]
             ]
 
 
