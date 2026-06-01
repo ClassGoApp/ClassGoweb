@@ -19,23 +19,23 @@ class NotificacionController extends Controller
         try {
             $credentialsPath = env('FIREBASE_CREDENTIALS');
             $fullPath = base_path($credentialsPath);
-            
+
             Log::info('FcmService: Inicializando Firebase', [
                 'credentials_path' => $credentialsPath,
                 'full_path' => $fullPath,
                 'file_exists' => file_exists($fullPath),
                 'file_size' => file_exists($fullPath) ? filesize($fullPath) : 'N/A'
             ]);
-            
+
             if (!file_exists($fullPath)) {
                 throw new \Exception("Archivo de credenciales de Firebase no encontrado: {$fullPath}");
             }
-            
+
             $factory = (new Factory)->withServiceAccount($fullPath);
             $this->messaging = $factory->createMessaging();
-            
+
             Log::info('FcmService: Firebase inicializado correctamente');
-            
+
         } catch (\Exception $e) {
             Log::error('FcmService: Error al inicializar Firebase', [
                 'error' => $e->getMessage(),
@@ -154,6 +154,26 @@ class NotificacionController extends Controller
         ]);
 
         try {
+            $messaging = $this->messaging;
+
+            if ($request->type == 'only') {
+                // Obtener los tokens a partir de una lista de email de la base de datos
+                $emails = $request->emails;
+                if (empty($emails)) {
+                    return response()->json([
+                        'ok' => false,
+                        'message' => 'No se encontraron emails'
+                    ], 404);
+                }
+                $tokens = DB::table('users')
+                    ->whereIn('email', $emails)
+                    ->whereNotNull('fcm_token')
+                    ->where('fcm_token', '!=', '')
+                    ->pluck('fcm_token')
+                    ->toArray();
+                return $this->enviarNotificacionPrivada($tokens, $messaging, $request);
+            }
+
             if ($request->type == 'tutor') {
                 $tokens = DB::table('users')
                     ->join('model_has_roles', 'model_has_roles.model_id', '=', 'users.id')
