@@ -105,7 +105,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('timezone/{id}',                                [AccountSettingController::class,'updateTimezone']);
     Route::get('timezone/{id}',                                 [AccountSettingController::class,'getTimezone']);
     Route::post('send-message/{recipientId}',                   [StudentController::class,'sendMessage']);
-    Route::get('resend-email',                                  [AuthController::class,'resendEmail']);
+    Route::post('resend-email',                                  [AuthController::class,'resendEmail']);
     Route::post('logout',                                       [AuthController::class,'logout']);
     Route::apiResource('favourite-tutors',                      FavouriteTutorController::class)->only('index', 'update');
     Route::post('profile-settings/{id}',                        [ProfileController::class,'updateProfile']);
