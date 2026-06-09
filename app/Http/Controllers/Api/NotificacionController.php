@@ -205,18 +205,25 @@ class NotificacionController extends Controller
                     ], 404);
                 }
             } else {
-                $tokens = DB::table('users')
-                    ->whereNotNull('users.fcm_token')
-                    ->where('users.fcm_token', '!=', '')
-                    ->pluck('users.fcm_token')
-                    ->toArray();
+                // Enviar la notificación a través del topic mass_notification
+                $message = CloudMessage::withTarget('topic', 'mass_notification')
+                    ->withNotification(Notification::create(
+                        $request->title,
+                        $request->body
+                    ))
+                    ->withData([
+                        'type' => $request->type ?? 'general',
+                        'screen' => $request->screen ?? 'feed',
+                        'data' => json_encode($request->data ?? ''),
+                    ]);
 
-                if (empty($tokens)) {
-                    return response()->json([
-                        'ok' => false,
-                        'message' => 'No se encontraron usuarios con tokens FCM válidos'
-                    ], 404);
-                }
+                $result = $messaging->send($message);
+
+                return response()->json([
+                    'ok' => true,
+                    'message' => 'Notificación enviada al topic mass_notification',
+                    'result' => $result
+                ]);
             }
 
             // Preparar el request para enviarNotificacionGenerica
