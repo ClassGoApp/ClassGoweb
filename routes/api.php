@@ -226,6 +226,7 @@ Route::post('test-payment-upload', [\App\Http\Controllers\Api\BookingController:
 
 // Agregar la ruta fuera del grupo para que sea pública:
 Route::post('update-fcm-token', [AuthController::class, 'updateFcmToken']);
+Route::post('detach-fcm-token', [AuthController::class, 'detachFcmToken']);
 Route::get('verify-email', [AuthController::class, 'verifyEmail']);
 
 // Ruta para cambiar disponibilidad de tutoría (solo para tutores)
