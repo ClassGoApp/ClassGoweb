@@ -38,6 +38,17 @@ class RecruitmentListing extends Component
         session()->flash('success', 'Estado actualizado.');
     }
 
+    public function downloadCV($id)
+    {
+        $recruitment = Recruitment::findOrFail($id);
+        
+        if ($recruitment->cv_path && Storage::disk('public')->exists($recruitment->cv_path)) {
+            return Storage::disk('public')->download($recruitment->cv_path);
+        }
+
+        session()->flash('error', 'El archivo del curriculum no existe.');
+    }
+
     public function render()
     {
         $recruitments = Recruitment::query()

@@ -65,10 +65,10 @@
                                     </td>
                                     <td>
                                         <div class="tb-table-actions" style="display: flex; gap: 0.5rem;">
-                                            <a href="{{ Storage::url($item->cv_path) }}" target="_blank"
-                                                class="btn btn-sm btn-primary" title="Ver CV">
+                                            <button wire:click="downloadCV({{ $item->id }})"
+                                                class="btn btn-sm btn-primary" title="Descargar CV">
                                                 <i class="ti-download"></i>
-                                            </a>
+                                            </button>
                                             <button wire:click="delete({{ $item->id }})"
                                                 class="btn btn-sm btn-danger"
                                                 onclick="confirm('¿Estás seguro?') || event.stopImmediatePropagation()">
