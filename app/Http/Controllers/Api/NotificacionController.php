@@ -166,21 +166,22 @@ class NotificacionController extends Controller
                     ], 404);
                 }
                 $tokens = DB::table('users')
-                    ->whereIn('email', $emails)
-                    ->whereNotNull('fcm_token')
-                    ->where('fcm_token', '!=', '')
-                    ->pluck('fcm_token')
+                    ->join('fcm_tokens', 'users.id', '=', 'fcm_tokens.user_id')
+                    ->whereIn('users.email', $emails)
+                    ->whereNotNull('fcm_tokens.token')
+                    ->where('fcm_tokens.token', '!=', '')
+                    ->pluck('fcm_tokens.token')
                     ->toArray();
                 return $this->enviarNotificacionPrivada($tokens, $messaging, $request);
             }
 
             if ($request->type == 'tutor') {
-                $tokens = DB::table('users')
-                    ->join('model_has_roles', 'model_has_roles.model_id', '=', 'users.id')
+                $tokens = DB::table('fcm_tokens')
+                    ->join('model_has_roles', 'fcm_tokens.user_id', '=', 'model_has_roles.model_id')
                     ->where('model_has_roles.role_id', 2)
-                    ->whereNotNull('users.fcm_token')
-                    ->where('users.fcm_token', '!=', '')
-                    ->pluck('users.fcm_token')
+                    ->whereNotNull('fcm_tokens.token')
+                    ->where('fcm_tokens.token', '!=', '')
+                    ->pluck('fcm_tokens.token')
                     ->toArray();
 
                 if (empty($tokens)) {
@@ -190,12 +191,12 @@ class NotificacionController extends Controller
                     ], 404);
                 }
             } else if ($request->type == 'estudiante') {
-                $tokens = DB::table('users')
-                    ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
-                    ->where('model_has_roles.role_id', '=', '3')
-                    ->whereNotNull('users.fcm_token')
-                    ->where('users.fcm_token', '!=', '')
-                    ->pluck('users.fcm_token')
+                $tokens = DB::table('fcm_tokens')
+                    ->join('model_has_roles', 'fcm_tokens.user_id', '=', 'model_has_roles.model_id')
+                    ->where('model_has_roles.role_id', 3)
+                    ->whereNotNull('fcm_tokens.token')
+                    ->where('fcm_tokens.token', '!=', '')
+                    ->pluck('fcm_tokens.token')
                     ->toArray();
 
                 if (empty($tokens)) {
@@ -205,18 +206,25 @@ class NotificacionController extends Controller
                     ], 404);
                 }
             } else {
-                $tokens = DB::table('users')
-                    ->whereNotNull('users.fcm_token')
-                    ->where('users.fcm_token', '!=', '')
-                    ->pluck('users.fcm_token')
-                    ->toArray();
+                // Enviar la notificación a través del topic mass_notification
+                $message = CloudMessage::withTarget('topic', 'mass_notification')
+                    ->withNotification(Notification::create(
+                        $request->title,
+                        $request->body
+                    ))
+                    ->withData([
+                        'type' => $request->type ?? 'general',
+                        'screen' => $request->screen ?? 'feed',
+                        'data' => json_encode($request->data ?? ''),
+                    ]);
 
-                if (empty($tokens)) {
-                    return response()->json([
-                        'ok' => false,
-                        'message' => 'No se encontraron usuarios con tokens FCM válidos'
-                    ], 404);
-                }
+                $result = $messaging->send($message);
+
+                return response()->json([
+                    'ok' => true,
+                    'message' => 'Notificación enviada al topic mass_notification',
+                    'result' => $result
+                ]);
             }
 
             // Preparar el request para enviarNotificacionGenerica

@@ -58,8 +58,8 @@ use Illuminate\Support\Facades\Http;
 
 Route::get('/probar-correo', function () {
 
-    Mail::send('emails.recruitment-notification', [], function ($message) {
-        $message->to('oscarcrodri3@gmail.com')
+    Mail::send('emails.confirmationTutorInstant', [], function ($message) {
+        $message->to('@gmail.com')
             ->subject('Prueba de diseño');
     });
 
