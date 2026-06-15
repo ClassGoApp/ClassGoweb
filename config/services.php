@@ -46,5 +46,9 @@ return [
     
     'callback' =>[
         'url' => env('CALLBACK'),
+    ],
+
+    'firebase' => [
+        'credentials' => env('FIREBASE_CREDENTIALS'),
     ]
 ];
