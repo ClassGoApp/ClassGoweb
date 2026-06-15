@@ -1,5 +1,5 @@
 <?php
-
+namespace App\Livewire\interfaces\pages\Tutor;
 use Carbon\Carbon;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
