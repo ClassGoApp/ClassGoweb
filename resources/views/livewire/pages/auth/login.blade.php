@@ -71,6 +71,10 @@ new #[Layout('layouts.guest')] class extends Component
         $this->tutor_name = !empty(setting('_lernen.tutor_display_name')) ? setting('_lernen.tutor_display_name') : __('general.tutor');
         $this->student_name = !empty(setting('_lernen.student_display_name')) ? setting('_lernen.student_display_name') : __('general.student');
         $this->isProfilePhoneMendatory = setting('_lernen.phone_number_on_signup') === 'yes' ? true : false;
+        
+        if (request()->has('redirect')) {
+            Session::put('url.intended', request()->get('redirect'));
+        }
     }
 
     public function register(): void
@@ -103,7 +107,13 @@ new #[Layout('layouts.guest')] class extends Component
 
         $user = (new RegisterService)->registerUser($data);
         Auth::login($user);
-        $this->redirect(route('tutor.profile.personal-details', absolute: false), navigate: true);
+        
+        $intended = Session::pull('url.intended');
+        if ($intended) {
+            $this->redirect($intended);
+        } else {
+            $this->redirect(route('tutor.profile.personal-details', absolute: false), navigate: true);
+        }
     }
 
     public function redirectGoogle()

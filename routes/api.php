@@ -105,7 +105,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('timezone/{id}',                                [AccountSettingController::class,'updateTimezone']);
     Route::get('timezone/{id}',                                 [AccountSettingController::class,'getTimezone']);
     Route::post('send-message/{recipientId}',                   [StudentController::class,'sendMessage']);
-    Route::get('resend-email',                                  [AuthController::class,'resendEmail']);
+    Route::post('resend-email',                                  [AuthController::class,'resendEmail']);
     Route::post('logout',                                       [AuthController::class,'logout']);
     Route::apiResource('favourite-tutors',                      FavouriteTutorController::class)->only('index', 'update');
     Route::post('profile-settings/{id}',                        [ProfileController::class,'updateProfile']);
@@ -226,6 +226,7 @@ Route::post('test-payment-upload', [\App\Http\Controllers\Api\BookingController:
 
 // Agregar la ruta fuera del grupo para que sea pública:
 Route::post('update-fcm-token', [AuthController::class, 'updateFcmToken']);
+Route::post('detach-fcm-token', [AuthController::class, 'detachFcmToken']);
 Route::get('verify-email', [AuthController::class, 'verifyEmail']);
 
 // Ruta para cambiar disponibilidad de tutoría (solo para tutores)

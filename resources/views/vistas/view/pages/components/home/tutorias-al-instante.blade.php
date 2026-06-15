@@ -26,7 +26,7 @@
             $isLogged = $user !== null;
             $isTutor = $user?->hasRole('tutor') ?? false;
 
-             // única variable de aceptación
+            // única variable de aceptación
             $accepted = $user?->terms_accepted_at !== null;
 
             // rol que se enviará al método
@@ -119,10 +119,7 @@
         </div>
 
     </div>
-    @if ($isLogged && !$isTutor)
-        <a onclick="redirigirSegunRol('{{ $role }}')">
-    @endif
-    <div class="instant-info-visual">
+    <div class="instant-info-visual" onclick="handleVisualBlockClick()">
 
         <!-- Estudiante -->
         <div class="student-avatar">
@@ -222,9 +219,6 @@
 
 
     </div>
-    @if ($isLogged && !$isTutor)
-        </a>
-    @endif
 
 
 </div>
@@ -388,6 +382,7 @@
         margin: auto;
         background-color: color-mix(in srgb, var(--primary-color) 50%, transparent);
         border-radius: 8rem;
+        cursor: pointer;
     }
 
     /* Centro (estudiante) */
@@ -799,6 +794,17 @@
         }
     }
 
+    function handleVisualBlockClick() {
+        @if (!$isLogged)
+            const intendedUrl = window.location.origin + window.location.pathname + '#tutorias-instantaneas-seccion';
+            window.location.href = "{{ route('login') }}?redirect=" + encodeURIComponent(intendedUrl);
+        @elseif ($isTutor)
+            showTermsAlert('Las tutorías al instante solo están disponibles para estudiantes. Los tutores solo deben aceptar los términos y condiciones.', 'error');
+        @else
+            redirigirSegunRol('student');
+        @endif
+    }
+
     function irAlInstanteDesdeFlotante() {
         const ctaTerms = document.getElementById('cta-terms');
         const seccionTutorias = document.getElementById('tutorias-instantaneas-seccion');
@@ -807,7 +813,10 @@
         if (ctaTerms && window.getComputedStyle(ctaTerms).display !== 'none') {
             if (seccionTutorias) {
                 // Hacer scroll suave hacia la sección
-                seccionTutorias.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                seccionTutorias.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
                 // Mostrar alerta después del scroll
                 setTimeout(() => {
                     showTermsAlert('Debes aceptar los términos y condiciones.', 'error');
@@ -881,8 +890,4 @@
         // Si ya aceptó términos, redirigir
         window.location.href = "{{ route('student.subjects.pick') }}";
     }
-
-    
-
-   
 </script>

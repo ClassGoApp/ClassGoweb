@@ -151,26 +151,32 @@ class NotificacionesPush extends Component
     public function render()
     {
         // Get user counts with FCM tokens for reference
-        $totalUsersWithToken = DB::table('users')->whereNotNull('fcm_token')->where('fcm_token', '!=', '')->count();
-        
-        $tutorsWithToken = DB::table('users')
-            ->join('model_has_roles', 'model_has_roles.model_id', '=', 'users.id')
-            ->where('model_has_roles.role_id', 2)
-            ->whereNotNull('users.fcm_token')
-            ->where('users.fcm_token', '!=', '')
-            ->count();
+        $totalUsersWithToken = DB::table('fcm_tokens')
+            ->whereNotNull('user_id')
+            ->distinct('user_id')
+            ->count('user_id');
 
-        $studentsWithToken = DB::table('users')
-            ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
-            ->where('model_has_roles.role_id', '=', '3')
-            ->whereNotNull('users.fcm_token')
-            ->where('users.fcm_token', '!=', '')
-            ->count();
+        $tutorsWithToken = DB::table('fcm_tokens')
+            ->join('model_has_roles', 'model_has_roles.model_id', '=', 'fcm_tokens.user_id')
+            ->where('model_has_roles.role_id', 2)
+            ->distinct('fcm_tokens.user_id')
+            ->count('fcm_tokens.user_id');
+
+        $studentsWithToken = DB::table('fcm_tokens')
+            ->join('model_has_roles', 'fcm_tokens.user_id', '=', 'model_has_roles.model_id')
+            ->where('model_has_roles.role_id', 3)
+            ->distinct('fcm_tokens.user_id')
+            ->count('fcm_tokens.user_id');
+        
+        $guestsWithToken = DB::table('fcm_tokens')
+            ->whereNull('user_id')
+            ->count('id');
 
         return view('livewire.pages.admin.notificaciones.notificaciones-push', [
             'totalUsersWithToken' => $totalUsersWithToken,
             'tutorsWithToken' => $tutorsWithToken,
             'studentsWithToken' => $studentsWithToken,
+            'guestsWithToken' => $guestsWithToken,
         ])->layout('layouts.admin-app');
     }
 }

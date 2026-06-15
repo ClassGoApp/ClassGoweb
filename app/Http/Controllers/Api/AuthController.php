@@ -212,10 +212,23 @@ class AuthController extends Controller
             'user_id' => 'required|exists:users,id',
             'fcm_token' => 'required|string',
         ]);
-        $user = \App\Models\User::find($request->user_id);
-        $user->fcm_token = $request->fcm_token;
-        $user->save();
+        \App\Models\FcmToken::updateOrCreate(
+            ['token' => $request->fcm_token],
+            ['user_id' => $request->user_id]
+        );
         return response()->json(['message' => 'FCM token actualizado correctamente']);
+    }
+
+    public function detachFcmToken(Request $request)
+    {
+        $request->validate([
+            'fcm_token' => 'required|string',
+        ]);
+
+        \App\Models\FcmToken::where('token', $request->fcm_token)
+            ->update(['user_id' => null]);
+
+        return response()->json(['message' => 'FCM token eliminado correctamente']);
     }
 
     /**
