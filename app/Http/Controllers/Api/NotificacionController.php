@@ -17,18 +17,23 @@ class NotificacionController extends Controller
     public function __construct()
     {
         try {
-            $credentialsPath = env('FIREBASE_CREDENTIALS');
-            $fullPath = base_path($credentialsPath);
+            $credentialsPath = config('services.firebase.credentials') ?? env('FIREBASE_CREDENTIALS');
+            
+            if ($credentialsPath) {
+                $credentialsPath = ltrim($credentialsPath, './\\');
+            }
+
+            $fullPath = $credentialsPath ? base_path($credentialsPath) : null;
 
             Log::info('FcmService: Inicializando Firebase', [
                 'credentials_path' => $credentialsPath,
                 'full_path' => $fullPath,
-                'file_exists' => file_exists($fullPath),
-                'file_size' => file_exists($fullPath) ? filesize($fullPath) : 'N/A'
+                'is_file' => $fullPath ? is_file($fullPath) : false,
+                'file_size' => ($fullPath && is_file($fullPath)) ? filesize($fullPath) : 'N/A'
             ]);
 
-            if (!file_exists($fullPath)) {
-                throw new \Exception("Archivo de credenciales de Firebase no encontrado: {$fullPath}");
+            if (!$fullPath || !is_file($fullPath)) {
+                throw new \Exception("Archivo de credenciales de Firebase no encontrado o no es un archivo válido: {$fullPath}");
             }
 
             $factory = (new Factory)->withServiceAccount($fullPath);
