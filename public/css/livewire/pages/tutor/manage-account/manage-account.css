@@ -1,4 +1,4 @@
-   @import '../../../../estilos/variables.css';
+@import '../../../../estilos/variables.css';
 
    .dashboard-container {
        max-width: 100%;
@@ -71,8 +71,8 @@
   
 
    .payment-methods-grid {
-       display: grid;
-       grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+       display: flex;
+       /* grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); */
        gap: 20px;
        
    }
@@ -232,7 +232,7 @@
    }
 
    .btn-primary:hover {
-       background: #2563eb;
+       background:var(--primary-color);
    }
 
    .btn-secondary {
@@ -360,7 +360,8 @@
        }
 
        .payment-methods-grid {
-           grid-template-columns: 1fr;
+           /* grid-template-columns: 1fr; */
+           flex-direction: column;
        }
 
        .payment-method-card {
@@ -411,4 +412,30 @@
        font-size: 14px;
        color: #9ca3af;
        font-style: italic;
+   }
+
+   /* QR container hover effect */
+   .qr-container {
+       position: relative;
+       cursor: pointer;
+   }
+
+   .qr-container::after {
+       content: "Toca para ver";
+       position: absolute;
+       inset: 0;
+       display: flex;
+       align-items: center;
+       justify-content: center;
+       background: rgba(0,0,0,0.5);
+       color: #fff;
+       font-size: 1.2rem;
+       opacity: 0;
+       transition: opacity 0.3s ease;
+       border-radius: 6px;
+       pointer-events: none;
+   }
+
+   .qr-container:hover::after {
+       opacity: 1;
    }

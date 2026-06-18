@@ -79,9 +79,12 @@ class ManageAccount extends Component
     #[Layout('layouts.app')]
     public function render()
     {
-        $qr = UserPayoutMethod::withTrashed()
-            ->where('user_id', Auth::id())
+        $qr = UserPayoutMethod::where('user_id', Auth::id())
             ->where('payout_method', 'QR')
+            ->first();
+
+        $bank = UserPayoutMethod::where('user_id', Auth::id())
+            ->where('payout_method', 'bank')
             ->first();
 
         $pagos = SlotPayment::whereIn('slot_booking_id', function ($query) {
@@ -90,7 +93,7 @@ class ManageAccount extends Component
                 ->where('tutor_id', Auth::id());
         })
             ->orderBy('payment_date', 'desc')->paginate(4);
-        return view('livewire.pages.tutor.manage-account.manage-account', compact('qr', 'pagos'));
+        return view('livewire.pages.tutor.manage-account.manage-account', compact('qr', 'bank', 'pagos'));
     }
 
 
@@ -299,14 +302,18 @@ class ManageAccount extends Component
 
     public function removePayout()
     {
+        $method = $this->form->current_method;
+        if ($method === 'cuentabancaria') {
+            $method = 'bank';
+        }
         $payout = UserPayoutMethod::where('user_id', Auth::user()->id)
-            ->where('payout_method', $this->form->current_method)
+            ->where('payout_method', $method)
             ->first();
         if ($payout) {
             $payout->forceDelete();
 
             // Si era un QR, limpiar la imagen actual
-            if ($this->form->current_method === 'QR') {
+            if ($method === 'QR') {
                 $this->currentQRPath = null;
             }
 
