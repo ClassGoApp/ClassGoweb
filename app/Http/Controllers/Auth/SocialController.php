@@ -99,8 +99,15 @@ class SocialController extends Controller
 
                 session()->forget(['social_register_role', 'social_register_terms']);
             } else {
-                session(['name' => $socialUser->getName(), 'email' => $socialUser->getEmail()]);
-                return redirect()->route('social-profile');
+                session([
+                    'social_user_data' => [
+                        'id' => $socialUser->getId(),
+                        'email' => $socialUser->getEmail(),
+                        'name' => $socialUser->getName(),
+                        'provider' => $provider,
+                    ]
+                ]);
+                return redirect()->route('login', ['show_google_register' => 1]);
             }
         }
 
