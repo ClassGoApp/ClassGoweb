@@ -64,8 +64,13 @@
                         <div class="tutor-actions">
                             <button class="btn-perfil" onclick="window.location.href='{{ route('tutor', ['slug' => $tutor->profile['slug']]) }}'">
                                 Ver perfil
-                            </button> 
-                            <livewire:save-button :tutorId="$tutor->id" />
+                            </button>
+
+                            @auth
+                                @if(auth()->user()->hasRole('student'))
+                                    <livewire:save-button :tutorId="$tutor->id" />
+                                @endif
+                            @endauth
                         </div>
 
                     </div>
