@@ -58,17 +58,17 @@ class SocialController extends Controller
             if ($existingUser) {
                 // Update existing user with provider details
                 $existingUser->update([
-                    'provider'    => $provider,
+                    'provider' => $provider,
                     'provider_id' => $socialUser->getId(),
                 ]);
                 $user = $existingUser;
             } else {
                 // Create a new user
                 $user = User::create([
-                    'email'        => $socialUser->getEmail(),
-                    'provider'     => $provider,
-                    'provider_id'  => $socialUser->getId(),
-                    'password'     => bcrypt(Str::random(20)),
+                    'email' => $socialUser->getEmail(),
+                    'provider' => $provider,
+                    'provider_id' => $socialUser->getId(),
+                    'password' => bcrypt(Str::random(20)),
                 ]);
 
                 $user->email_verified_at = now();
@@ -79,8 +79,29 @@ class SocialController extends Controller
 
         $profile = (new ProfileService($user->id))->getUserProfile();
         if (empty($profile)) {
-            session(['name' => $socialUser->getName(), 'email' => $socialUser->getEmail()]);
-            return redirect()->route('social-profile');
+            $socialRegisterRole = session('social_register_role');
+            if ($socialRegisterRole) {
+                $nameParts = explode(' ', $socialUser->getName(), 2);
+                $firstName = $nameParts[0] ?? '';
+                $lastName = $nameParts[1] ?? '';
+
+                $data = [
+                    'first_name' => $firstName,
+                    'last_name' => $lastName,
+                    'phone_number' => '',
+                    'user_role' => $socialRegisterRole,
+                    'terms' => 'true',
+                ];
+
+                $user = (new \App\Services\RegisterService)->completeSocialProfile($user, $data);
+                $user->status = 'active';
+                $user->save();
+
+                session()->forget(['social_register_role', 'social_register_terms']);
+            } else {
+                session(['name' => $socialUser->getName(), 'email' => $socialUser->getEmail()]);
+                return redirect()->route('social-profile');
+            }
         }
 
         Auth::login($user, true);
