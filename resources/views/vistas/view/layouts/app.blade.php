@@ -73,7 +73,7 @@
         <x-recruitment-popup />
     @endif
 
-    <script src="{{ asset('js/translations.js') }}"></script>
+    <script src="{{ asset('js/translations.js') }}?v=1"></script>
 
 </body>
 
