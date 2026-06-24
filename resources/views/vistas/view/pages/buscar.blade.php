@@ -78,7 +78,7 @@
                                     </p>
                                 </div>
                                 
-                                <p class="card-tutor__description">{{ $tutor->profile->tagline ?? ' Tutor verificado y aprobado por Classgo! '}}</p>
+                                <p class="card-tutor__description">{{ $tutor->profile->tagline ?? ' Tutor verificado y aprobado por ClassGo! '}}</p>
                             </div>
                             
                             <div class="card-tutor__footer">
