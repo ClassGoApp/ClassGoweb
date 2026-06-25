@@ -60,7 +60,7 @@ class IdentityVerification extends Component
     private ?IdentityService $userIdentity = null;
     private ?ProfileService $profileService = null;
 
-    
+
 
 
     public function boot()
@@ -81,7 +81,6 @@ class IdentityVerification extends Component
         $this->activeRoute = Route::currentRouteName();
         $this->profile = $this->profileService->getUserProfile();
         $this->countries = Country::get(['id', 'name']) ?? [];
-        ;
         $this->emailTemplate = setting('_lernen.for_role') ?? (object) ['status' => 'both'];
         $image_file_ext = setting('_general.allowed_image_extensions') ?? 'jpg,png';
         $image_file_size = (int) (setting('_general.max_image_size') ?? '5');
@@ -112,7 +111,6 @@ class IdentityVerification extends Component
         if ($key == 'countryName') {
             $country = Country::where('short_code', $value)->select('id')->first();
             $this->form->country = $country?->id;
-
         } elseif (in_array($key, ['image', 'identificationCard', 'transcript'])) {
             $entro = 'asdhvasjdasdas';
             $mimeType = $value->getMimeType();
@@ -183,28 +181,28 @@ class IdentityVerification extends Component
      */
     public function updateInfo()
     {
-       
+
         $this->data = $this->form->updateInfo($this->hasStates);
 
 
-        $perfil= Auth::user()->profile;
+        $perfil = Auth::user()->profile;
         $googlecalendar = AccountSetting::where('user_id', Auth::user()->id)->first();
-        $cuentatutor=UserPayoutMethod::where('user_id', Auth::user()->id)->first();
-        $userSubjects = UserSubject::where('user_id', Auth::user()->id)->count();      
+        $cuentatutor = UserPayoutMethod::where('user_id', Auth::user()->id)->first();
+        $userSubjects = UserSubject::where('user_id', Auth::user()->id)->count();
         $celular = $perfil->phone_number ?? '';
 
- 
+
         // Validar requisitos de perfil y generar mensaje descriptivo
         $errores = [];
-        
+
         if ($perfil->image == null) {
             $errores[] = '• ' . __('profile.missing_profile_photo');
         }
-        
+
         /* if ($perfil->intro_video == null) {
             $errores[] = '• ' . __('profile.missing_intro_video');
         } */
-        
+
         $celular = trim((string) $celular); //borra espacios de los extremos
         if (!preg_match('/^[67]\d{7}$/', $celular)) { // Valida que el número tenga 8 dígitos y comience con 6 o 7
             $errores[] = '• El número de celular debe tener 8 dígitos y comenzar con 6 o 7';
@@ -212,19 +210,19 @@ class IdentityVerification extends Component
 
         if ($perfil->gender == null) {
             $errores[] = '• ' . __('profile.missing_gender');
-        } 
-        
-        //descomentar si se requiere calendario de google para la verificación de identidad
-         if ($googlecalendar == null) {
+        }
+
+
+        if (app()->environment('production') && $googlecalendar === null) {
             $errores[] = '• ' . __('profile.missing_google_calendar');
-        } 
-        
+        }
+
         /* if ($cuentatutor == null) {
             $errores[] = '• ' . __('profile.missing_payout_method');
         } */
-        
+
         if ($userSubjects == 0) {
-            $errores[] = '• Materias agregadas al perfil (Ve a Manage Booking > Selecciona tus materias)'; 
+            $errores[] = '• Materias agregadas al perfil (Ve a Manage Booking > Selecciona tus materias)';
         }
 
         if (!empty($errores)) {
@@ -254,8 +252,6 @@ class IdentityVerification extends Component
                 } catch (\Exception $e) {
                     \Log::error('Error al enviar correo de solicitud de verificación: ' . $e->getMessage());
                 }
-
-
             } catch (\Illuminate\Validation\ValidationException $e) {
 
                 //dd($e->errors());
