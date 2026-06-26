@@ -874,9 +874,7 @@
                     document.getElementById('cta-after').style.display = 'block';
 
                     showTermsAlert('Términos aceptados correctamente.', 'success');
-                    setTimeout(() => {
-                        window.location.href = "{{ route('student.subjects.pick') }}";
-                    }, 1500);
+                    
                 } else {
                     showTermsAlert(data.message || 'No se pudo aceptar los términos.', 'error');
                 }
