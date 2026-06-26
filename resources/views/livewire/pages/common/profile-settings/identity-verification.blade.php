@@ -322,7 +322,7 @@
                                     type="submit"
                                     wire:target="updateInfo"
                                     wire:loading.class="am-btn_disable">
-                                    {{ __('profile.save_update') }}
+                                    {{ __('profile.save_update--F2') }}
                                 </x-primary-button>
                             </div>
                         </fieldset>
@@ -355,7 +355,7 @@
                         </div>
                     </div>
                 </div>
-            @endif
+            @endif --}}
             @if (session()->has('message'))
                 <div class="alert alert-success"
                     style="background: #d1fae5; color: #065f46; padding: 12px; border-radius: 6px;margin-top:10px; margin-bottom: 20px;">

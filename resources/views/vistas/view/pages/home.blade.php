@@ -47,6 +47,7 @@
     <section class="filtro_materias fade-up">
         
         <h1 class="header-main__title "><span data-translate="filtro_materias_txt2"></span></h1>
+    
         <p class="header-main__subtitle" data-translate="filtro_materias_txt3"></p>
         @include('vistas.view.pages.components.home.filtro-materias')
     </section>

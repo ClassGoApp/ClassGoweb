@@ -3,16 +3,18 @@
     @include('components.floating-button.partials.ai-option')
     @include('components.floating-button.partials.support-option')
 
-    <button class="instant-btn-floating " onclick="irAlInstanteDesdeFlotante()">
-        <i>
-            <svg class="bolt" viewBox="0 0 24 24">
-                <path d="M13 2L3 14h7l-1 8 10-12h-7z" />
-            </svg>
-        </i>
+    <button class="instant-btn-floating " >
+        <a href="{{ route('home') }}#tutorias-instantaneas-seccion">
+            <i>
+                <svg class="bolt" viewBox="0 0 24 24">
+                    <path d="M13 2L3 14h7l-1 8 10-12h-7z" />
+                </svg>
+            </i>
 
-        <span class="instant-tooltip">
-            ¡Tutoría al Instante!
-        </span>
+            <span class="instant-tooltip" >
+                ¡Tutoría al Instante!
+            </span>
+        </a>
     </button>
 
     {{-- Botón de Reclutamiento (Notificación) --}}
