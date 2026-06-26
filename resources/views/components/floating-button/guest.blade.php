@@ -4,7 +4,7 @@
     @include('components.floating-button.partials.support-option')
 
     @php
-        $hasTerms = Auth::user()->terms_accepted_at;
+        $hasTerms = Auth::user()?->terms_accepted_at;
     @endphp
 
     <button class="instant-btn-floating " onclick="window.location.href='{{ $hasTerms ? url('tutorias-instantaneas') : route('home') . '#tutorias-instantaneas-seccion' }}'">
