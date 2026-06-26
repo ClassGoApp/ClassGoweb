@@ -254,7 +254,7 @@
                                         <input type="text" wire:model="cuponCode" wire:click="mostrarCupones"
                                             placeholder="Ej. classgo25" class="coupon-input">
                                         <button type="button" wire:click="aplicarCupon" id="btnAplicar"
-                                            class="btn btn-secondary">Aplicar</button>
+                                            class="btn btn-secondary">Aplicar-pr</button>
                                     </div>
                                 @endif
 
