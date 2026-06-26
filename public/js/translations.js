@@ -4,1394 +4,1933 @@
 //REGLAS DE USO DE LA TRADUCCION: hola me presento soy un pasante que a duras pena duerme para usar esto es tan simple como apretar ctrl + F buscar la linea de texto que buscas y cambiarla, recuerda que tambien tiene que cambiar su version en ingles y Portugues
 // Diccionario de traducciones
 const translations = {
-    es: {
-        // Navbar
-        tutors: "Tutores",
-        about: "Nosotros",
-        howWeWork: "Cómo trabajamos",
-        faq: "Preguntas",
-        ingre: "Ingresar",
-        // Footer
-        buscar_tutor: "Buscar tutor",
-        registrate_gratis: "Regístrate gratis",
-        tutores_en_linea: "Tutores en línea",
-        inicia_hoy: "Inicia hoy",
-        registrate: "Regístrate",
-        encontrar_tutor: "Encontrar tutor",
-        nosotros: "Nosotros",
-        mision: "Misión",
-        vision: "Visión",
-        logros_clave: "Logros clave",
-        preguntas: "Preguntas",
-        preguntas_frecuentes: "Preguntas frecuentes",
-        lee_ma: "Leer Más",
-        terminos: "Términos y Condiciones",
-        get_app: "Opten la App",
-        edu_world: "¡Lleva tu educación a todas partes!",
-        todos_derechos: "Todos los derechos reservados.",
-        desarrolladores: "Desarrolladores",
-        // Home
-        learn: "Aprende y Progresa con",
-        tutoring: "Tutorías en Línea",
-        reach_goals: "Alcanza tus metas con tutorías personalizadas de los mejores expertos.<br> Conéctate con tutores dedicados para asegurar tu éxito.",
-        reach_goals_short: "Alcanza tus metas con tutorías personalizadas de los mejores expertos.",
-        tutores: "Tutores",
-        registrate: "Regístrate",
-        ingresa: "Ingresa",
-        buscar_tutor: "Buscar Tutor",
-        nuestra_app: "Nuestra App",
-        us_check: "Usuarios registrados",
-        tutor_ok: "Tutores disponibles",
-        est_check: "Estudiantes registrados",
-        play_s: "En Play Store",
-        featured_tutors: "Tutores Destacados",
-        selected_tutors: "Encuentra tu Tutor Ideal",
-        academic_variety: "Explora diversas temáticas para potenciar tu aprendizaje.",
-        seeks: "Buscar más tutores",
-        finds: "Encuentra el tutor perfecto para tus necesidades y comienza a aprender hoy mismo.",
-        explore: "Explorar ahora",
-        guide: "Una guía paso a paso",
-        unlock_potential: "Desbloquea Tu Potencial Con Pasos Sencillos",
-        improve_skills: "Mejora tus habilidades con los mejores tutores, fácil y rápido.",
-        step_1: "Paso 1",
-        step_2: "Paso 2",
-        step_3: "Paso 3",
-        sign_up: "Regístrate",
-        create_account: "Crea tu cuenta rápidamente para comenzar a utilizar nuestra plataforma",
-        begin: "Comenzar",
-        find_tutor: "Encuentra un tutor",
-        tutores_calificados: "Busca y selecciona entre tutores calificados según tus necesidades.",
-        buscar_ahora: "Buscar Ahora",
-        reservar_ahora: "Reserva ahora",
-        encuentra_mejor: "Encuentra el mejor momento y agenda tu sesión fácilmente en nuestra plataforma.",
-        empecemos: "Empecemos",
-        comenzar_jornada: "Comienza tu jornada",
-        comenzar_viaje: "Comienza tu viaje educativo con nosotros. ¡Reserva tu primera sesión hoy mismo!",
-        empezar_ahora: "Empieza ahora",
-        facil_simple_rapido: "Fácil, simple y rápido",
-        instala_app: "Instala nuestra App",
-        comienza_viaje_educativo: "Comienza tu viaje educativo con nosotros. <br>¡Instálate hoy mismo nuestra app!",
-        acceso: "Acceso 24/7",
-        tutores_expertos: "Tutores Expertos",
-        tarifas_asequibles: "Tarifas Asequibles",
-        descargar_ahora: "Descargar Ahora",
-        buscas_tutorias: "¿Buscas tutorías personalizadas?",
-        conectamos_tutores: "En ClassGo, te conectamos con los mejores tutores",
-        sesiones_cortas: "Accede a sesiones cortas y prácticas, diseñadas por tutores expertos para ser pequeños salvavidas en el aprendizaje",
-        comienza_ahora: "Comienza Ahora",
-        visual_phone_txt1: "¿En qué materia necesitas apoyo?",
-        visual_phone_txt2: "Prepárate para ese exámen difícil",
-        visual_phone_txt3: "Domina esa asignatura",
-        visual_phone_txt4: "Refuerzo académico garantizado",
-        visual_phone_btn1: "Buscar Tutores",
-        buscar_tutor_txt1: "Descubre un Tutor en Línea para tus Estudios",
-        buscar_tutor_txt2: "Domina cualquier materia con la ayuda de nuestros tutores expertos y alcanza tus metas académicas.",
-        buscar_tutor_txt3: "¿Que deseas aprender?",
-        filtro_materias_txt1: "Materias que te pueden ayudar",
-        filtro_materias_txt2: "Explora Nuestras Materias",
-        filtro_materias_txt3: "Tutores listos en distintas áreas",
-        filtro_materias_txt4: "Contabilidad",
-        filtro_materias_txt5: "Contabilidad Intermedia, Gubernamental, Tributaria, de Costos.",
-        filtro_materias_txt6: "Ciencias Exactas",
-        filtro_materias_txt7: "Cálculo, Física, Mecánica Aplicada",
-        filtro_materias_txt8: "Química",
-        filtro_materias_txt9: "Química de Soluciones, Cromatografía, Química de Alimentos.",
-        filtro_materias_txt10: "Programación",
-        filtro_materias_txt11: "Teoría de la Computación, Python, Php, Java.",
-        filtro_materias_txt12: "Inglés",
-        filtro_materias_txt13: "Expresiones Idiomáticas, Pronunciación, Escritura.",
-        filtro_materias_txt14: "Música",
-        filtro_materias_txt15: "Composición, Lectura Musical, Acordes.",
-        encuesta_txt1: "AYÚDANOS A MEJORAR",
-        encuesta_txt2: "Tu opinión vale oro (y descuentos)",
-        encuesta_txt3: "Gana un cupón exclusivo al finalizar",
-        encuesta_btn1: "Realizar Encuesta",
-        encuesta_txt4: "¿Encontraste fácilmente la materia que buscabas?",
-        encuesta_op1: "Sí, fue fácil",
-        encuesta_op2: "Me costó",
-        encuesta_btn2: "Siguiente",
-        encuesta_txt5: "¿Qué tanto nos recomendarías?",
-        encuesta_txt6: "Selecciona las estrellas",
-        encuesta_txt7: "Queremos saber tu opinión: <br>cuéntanos tu experiencia o deja tu comentario.",
-        encuesta_op3: "Excelente servicio",
-        encuesta_op4: "Muy rápido",
-        encuesta_op5: "Precios justos",
-        encuesta_op6: "Falta variedad",
-        encuesta_op7: "Regular",
-        encuesta_txt8: "¡Casi listo!",
-        encuesta_txt9: "Tu opinión es muy valiosa para nosotros. Como agradecimiento, te regalaremos un cupón del 50% descuento.",
-        encuesta_txt10: "Ingresa tu número de teléfono para recibir el cupón:",
-        encuesta_btn3: "Enviar y Finalizar",
-        // Alianzas
-        alianzas: "Nuestras Alianzas",
-        alianzas_edu: "Alianzas que potencian la educación",
-        alianzas_Classgo: "En ClassGo creemos en el poder de la colaboración para transformar el aprendizaje. Por eso, trabajamos junto a instituciones educativas, clubes y organizaciones comprometidas con la formación académica y el desarrollo personal.",
-        alianzas_Classgo_1: "En ClassGo creemos en el poder de la colaboración para transformar el aprendizaje.",
-        // Buscar Tutor
-        /*no traduce pero si detesta al json*/
-        /*tutores_encontrar: "Tutores / Encontrar tutor",
+  es: {
+    // Navbar
+    tutors: "Tutores",
+    about: "Nosotros",
+    howWeWork: "Cómo trabajamos",
+    faq: "Preguntas",
+    ingre: "Ingresar",
+    // Footer
+    buscar_tutor: "Buscar tutor",
+    registrate_gratis: "Regístrate gratis",
+    tutores_en_linea: "Tutores en línea",
+    inicia_hoy: "Inicia hoy",
+    registrate: "Regístrate",
+    encontrar_tutor: "Encontrar tutor",
+    nosotros: "Nosotros",
+    mision: "Misión",
+    vision: "Visión",
+    logros_clave: "Logros clave",
+    preguntas: "Preguntas",
+    preguntas_frecuentes: "Preguntas frecuentes",
+    lee_ma: "Leer Más",
+    terminos: "Términos y Condiciones",
+    get_app: "Obtén la App",
+    edu_world: "¡Lleva tu educación a todas partes!",
+    todos_derechos: "Todos los derechos reservados.",
+    desarrolladores: "Desarrolladores",
+    // Home
+    learn: "Aprende y Progresa con",
+    tutoring: "Tutorías en Línea",
+    reach_goals:
+      "Alcanza tus metas con tutorías personalizadas de los mejores expertos.<br> Conéctate con tutores dedicados para asegurar tu éxito.",
+    reach_goals_short:
+      "Alcanza tus metas con tutorías personalizadas de los mejores expertos.",
+    tutores: "Tutores",
+    registrate: "Regístrate",
+    ingresa: "Ingresa",
+    buscar_tutor: "Buscar Tutor",
+    nuestra_app: "Nuestra App",
+    us_check: "Usuarios registrados",
+    tutor_ok: "Tutores disponibles",
+    est_check: "Estudiantes registrados",
+    play_s: "En Play Store",
+    featured_tutors: "Tutores Destacados",
+    selected_tutors: "Encuentra tu Tutor Ideal",
+    academic_variety:
+      "Explora diversas temáticas para potenciar tu aprendizaje.",
+    seeks: "Buscar más tutores",
+    finds:
+      "Encuentra el tutor perfecto para tus necesidades y comienza a aprender hoy mismo.",
+    explore: "Explorar ahora",
+    guide: "Una guía paso a paso",
+    unlock_potential: "Desbloquea Tu Potencial Con Pasos Sencillos",
+    improve_skills:
+      "Mejora tus habilidades con los mejores tutores, fácil y rápido.",
+    step_1: "Paso 1",
+    step_2: "Paso 2",
+    step_3: "Paso 3",
+    sign_up: "Regístrate",
+    create_account:
+      "Crea tu cuenta rápidamente para comenzar a utilizar nuestra plataforma",
+    begin: "Comenzar",
+    find_tutor: "Encuentra un tutor",
+    tutores_calificados:
+      "Busca y selecciona entre tutores calificados según tus necesidades.",
+    buscar_ahora: "Buscar Ahora",
+    reservar_ahora: "Reserva ahora",
+    encuentra_mejor:
+      "Encuentra el mejor momento y agenda tu sesión fácilmente en nuestra plataforma.",
+    empecemos: "Empecemos",
+    comenzar_jornada: "Comienza tu jornada",
+    comenzar_viaje:
+      "Comienza tu viaje educativo con nosotros. ¡Reserva tu primera sesión hoy mismo!",
+    empezar_ahora: "Empieza ahora",
+    facil_simple_rapido: "Fácil, simple y rápido",
+    instala_app: "Instala nuestra App",
+    comienza_viaje_educativo:
+      "Comienza tu viaje educativo con nosotros. <br>¡Instálate hoy mismo nuestra app!",
+    acceso: "Acceso 24/7",
+    tutores_expertos: "Tutores Expertos",
+    tarifas_asequibles: "Tarifas Asequibles",
+    descargar_ahora: "Descargar Ahora",
+    buscas_tutorias: "¿Buscas tutorías personalizadas?",
+    conectamos_tutores: "En ClassGo, te conectamos con los mejores tutores",
+    sesiones_cortas:
+      "Accede a sesiones cortas y prácticas, diseñadas por tutores expertos para ser pequeños salvavidas en el aprendizaje",
+    comienza_ahora: "Comienza Ahora",
+    visual_phone_txt1: "¿En qué materia necesitas apoyo?",
+    visual_phone_txt2: "Prepárate para ese exámen difícil",
+    visual_phone_txt3: "Domina esa asignatura",
+    visual_phone_txt4: "Refuerzo académico garantizado",
+    visual_phone_btn1: "Buscar Tutores",
+    buscar_tutor_txt1: "Descubre un Tutor en Línea para tus Estudios",
+    buscar_tutor_txt2:
+      "Domina cualquier materia con la ayuda de nuestros tutores expertos y alcanza tus metas académicas.",
+    buscar_tutor_txt3: "¿Que deseas aprender?",
+    filtro_materias_txt1: "Materias que te pueden ayudar",
+    filtro_materias_txt2: "Explora Nuestras Materias",
+    filtro_materias_txt3: "Tutores listos en distintas áreas",
+    filtro_materias_txt4: "Contabilidad",
+    filtro_materias_txt5:
+      "Contabilidad Intermedia, Gubernamental, Tributaria, de Costos.",
+    filtro_materias_txt6: "Ciencias Exactas",
+    filtro_materias_txt7: "Cálculo, Física, Mecánica Aplicada",
+    filtro_materias_txt8: "Química",
+    filtro_materias_txt9:
+      "Química de Soluciones, Cromatografía, Química de Alimentos.",
+    filtro_materias_txt10: "Programación",
+    filtro_materias_txt11: "Teoría de la Computación, Python, Php, Java.",
+    filtro_materias_txt12: "Inglés",
+    filtro_materias_txt13: "Expresiones Idiomáticas, Pronunciación, Escritura.",
+    filtro_materias_txt14: "Música",
+    filtro_materias_txt15: "Composición, Lectura Musical, Acordes.",
+    encuesta_txt1: "AYÚDANOS A MEJORAR",
+    encuesta_txt2: "Tu opinión vale oro (y descuentos)",
+    encuesta_txt3: "Gana un cupón exclusivo al finalizar",
+    encuesta_btn1: "Realizar Encuesta",
+    encuesta_txt4: "¿Encontraste fácilmente la materia que buscabas?",
+    encuesta_op1: "Sí, fue fácil",
+    encuesta_op2: "Me costó",
+    encuesta_btn2: "Siguiente",
+    encuesta_txt5: "¿Qué tanto nos recomendarías?",
+    encuesta_txt6: "Selecciona las estrellas",
+    encuesta_txt7:
+      "Queremos saber tu opinión: <br>cuéntanos tu experiencia o deja tu comentario.",
+    encuesta_op3: "Excelente servicio",
+    encuesta_op4: "Muy rápido",
+    encuesta_op5: "Precios justos",
+    encuesta_op6: "Falta variedad",
+    encuesta_op7: "Regular",
+    encuesta_txt8: "¡Casi listo!",
+    encuesta_txt9:
+      "Tu opinión es muy valiosa para nosotros. Como agradecimiento, te regalaremos un cupón del 50% descuento.",
+    encuesta_txt10: "Ingresa tu número de teléfono para recibir el cupón:",
+    encuesta_btn3: "Enviar y Finalizar",
+    // Alianzas
+    alianzas: "Nuestras Alianzas",
+    alianzas_edu: "Alianzas que potencian la educación",
+    alianzas_Classgo:
+      "En ClassGo creemos en el poder de la colaboración para transformar el aprendizaje. Por eso, trabajamos junto a instituciones educativas, clubes y organizaciones comprometidas con la formación académica y el desarrollo personal.",
+    alianzas_Classgo_1:
+      "En ClassGo creemos en el poder de la colaboración para transformar el aprendizaje.",
+    // Buscar Tutor
+    /*no traduce pero si detesta al json*/
+    /*tutores_encontrar: "Tutores / Encontrar tutor",
         descubra_tutor: "Descubra un tutor en línea capacitado para sus estudios",
         domina_tus_estudios: "Domina tus estudios con tutorías personalizadas en línea impartidas por educadores expertos.<br> Nuestros tutores capacitados están aquí para ayudarlo a construir bases sólidas y alcanzar sus objetivos académicos.",*/
-        // Nosotros
-        ini_n: "Inicio",
-        i_nos: "Nosotros",
-        who: "¿Quiénes Somos?",
-        plataforma_d_tutoria: "Somos una plataforma de tutorías en línea que conecta a estudiantes de todas las edades con tutores expertos. Ofrecemos una experiencia accesible y de calidad, independientemente de tu ubicación u horario.",
-        mision: "Misión",
-        plataforma_d_educacion: "Plataforma educativa de tutorías virtuales para compartir conocimientos.",
-        proporcionamos_educacion: "Proporcionamos una plataforma educativa de tutorías virtuales accesibles las 24 horas, dirigida a toda persona que quiera compartir su conocimiento, con contenidos que abarcan desde nivel universitario hasta habilidades técnicas.",
-        mas_docientos: "+200",
-        tutorias_disponibles: "Tutorías disponibles",
-        vision: "Visión",
-        ser_plataforma_lider: "Impulsar el crecimiento del aprendizaje.",
-        fomentar_aprendizaje: "Ser la plataforma líder en tutorías virtuales, fomentando el aprendizaje continuo y la accesibilidad educativa en todas las áreas del conocimiento.",
-        team: "Nuestro equipo",
-        creadores_classgo: "Los creadores de la página y app de ClassGo, dedicados a revolucionar la educación.",
-        lic_presentacion: "¡Hola! Soy Gabriel, apasionado por compartir conocimiento y ayudarte a alcanzar tus metas académicas. Con años de experiencia en docencia y finanzas, mi objetivo es guiar tu aprendizaje de manera clara y efectiva.",
-        jefi_rol: "General Coordinador",
-        jefi_presentacion: "Preparado para los desafíos del mundo empresarial digital, con mentalidad ágil y soluciones orientadas a resultados.",
-        opjefi_rol: "Gerente de operaciones",
-        opjefi_presentacion: "Apasionado por compartir conocimientos de manera clara y práctica. Mi objetivo es ayudarte a aprender de forma sencilla y efectiva.",
-        jefi_movil_rol: "Mobile Developer",
-        jefi_movil_presentacion: "Soy ingeniero en sistemas, desarrollador de páginas web y aplicaciones móviles.",
-        jefi_Bdeveloper_rol: "Backend Developer",
-        jefi_Bdeveloper_presentacion: "Construyendo sistemas robustos, escalables y eficientes que garantizan un rendimiento óptimo y una experiencia fluida para los usuarios, sin importar la complejidad del desafío.",
-        jefi_Fdeveloper_rol: "Frontend Developer",
-        jefi_Fdeveloper_presentacion: "Creando interfaces intuitivas y atractivas que hacen que el aprendizaje sea una experiencia agradable y accesible para todos.",
-        jefi_sofware_rol: "Arquitecto de software",
-        jefi_sofware_presentacion: "Diseñando soluciones tecnológicas sólidas y sostenibles, alineadas con los objetivos del negocio, para asegurar una arquitectura escalable, segura y preparada para el futuro.",
-        jefi_diseño_rol: "Diseñadora Gráfica",
-        //Trabajamos
-        inicio: "Inicio",
-        como_trabajamos: "Cómo trabajamos",
-        unete_comunidad: "Únete a nuestra comunidad hoy",
-        unete_comunidad_desc: "Únete a nuestra comunidad para compartir tu experiencia como tutor o mejorar tus habilidades como estudiante.<br>Conéctate, aprende y crece con nosotros hoy.",
-        para_estudiantes: "Para estudiantes",
-        para_tutores: "Para tutores",
-        completa_datos: "Completa tus datos y establece tus preferencias de aprendizaje",
-        completa_datos_desc: "Proporciona tus datos personales y establece tus preferencias de aprendizaje para crear un perfil adaptado a tus necesidades educativas.<br>Esto te ayudará a encontrar los tutores más adecuados y optimizar tu experiencia de aprendizaje.",
-        utiliza_filtros: "Utiliza el buscador para ver perfiles detallados de tutores",
-        utiliza_filtros_desc: "Use la barra de búsqueda para descubrir tutores según el nombre del tutor, la materia o el tema que te interesa.¡Empiece a escribir y vea cómo aparecen los perfiles que mejor se adaptan a sus necesidades de aprendizaje!",
-        elige_horario: "Elige un horario conveniente y reserva tu tutoría",
-        pasos_reservar: "Pasos para reservar una sesión de tutoría",
-        paso_select_time: "Selecciona un horario disponible y la hora que disponga el tutor",
-        paso_click_slot: "Haz clic en e botón de reservar",
-        paso_choose_type: "Elige la materia, y si tienes cupón lo puedes canjear",
-        paso_confirm_booking: "Confirma los detalles de la reserva como ser pago qr, sube tu comprobante",
-        paso_payment: "Procede al pago",
-        paso_receive_confirmation: "Recibe la confirmación por correo",
-        asiste_leccion_login: "Asiste a la tutoría",
-        asiste_login_desc: "Inicia tu tutoría a la hora programada y comienza a aprender",
-        asiste_presen: "Inicia tu tutoría a la hora programada y únete a la sesión para comenzar a aprender.<br>Conéctate con tu tutor a través de Meet para disfrutar de una tutoría interactiva y atractiva.",
-        completa_form: "Rellena un formulario de comentarios rápido después de tu tutoría",
-        feedback_desc: "Después de tu tutoría, completa un formulario rápido de feedback para compartir tus opiniones y calificar tu experiencia.<br>Tu feedback nos ayuda a mejorar y garantizar el mejor entorno de aprendizaje para todos.",
-        crea_perfil: "Crea tu perfil y enumera tus calificaciones",
-        crea_perfil_cont: "Crea tu perfil para mostrar tus calificaciones, habilidades y experiencia. Destaca tu formación, experiencia y las materias que enseñas para atraer estudiantes potenciales y generar credibilidad en la plataforma.",
-        gestiona_horario: "Gestiona tu horario para mostrar cuándo estás disponible para enseñar",
-        gestiona_horario_desc: "Administra fácilmente tu disponibilidad actualizando tu horario con los momentos en los que estás disponible para enseñar. Esto ayuda a los estudiantes a saber cuándo pueden reservar sesiones contigo y mantiene tu calendario organizado.",
-        revisar_solicitudes: "Revisa tus reservas .",
-        revisar_solicitudes_desc: "Revisa tus reservas de estudiantes que decidieron tener una tutoría contigo",
-        dirige_clase: "Desde cualquier lugar, en tus horarios libres",
-        dirige_clase2: "Dirige la tutoría con Google Meet",
-        dirige_clase_desc: "Conéctate a la hora programada y comienza a impartir tu sesión. Usa la herramienta de videoconferencia integrada en la plataforma para interactuar con tus alumnos y ofrecer una experiencia de aprendizaje atractiva.",
-        proceso_calidad: "Garantizamos un proceso de calidad",
-        unete_comunidad_repetido: "Únase a nuestra comunidad hoy",
-        unete_comunidad_repetido_desc: "Únase a nuestra comunidad para compartir su experiencia como tutor o mejorar sus habilidades como estudiante.<br>Conéctese, aprenda y crezca con nosotros hoy.",
-        // Preguntas
-        inicio: "Inicio",
-        preguntas: "Preguntas",
-        encuentra_respuesta: "Encuentra tu respuesta",
-        empoderando_estudiantes: "Empoderando a los estudiantes en todo el mundo",
-        para_estudiantes_faq: "Para estudiantes",
-        para_tutores_faq: "Para tutores",
-        faq_encontrar_tutor: "¿Cómo encontrar un tutor?",
-        faq_encontrar_tutor_desc: "Utilice la barra de búsqueda para encontrar tutores disponibles según la materia o tema que necesites",
-        faq_reservar_sesion: "¿Cómo reservo una sesión?",
-        faq_reservar_sesion_desc: 'Una vez que encuentres un tutor, consulta su perfil y selecciona un horario disponible que te convenga. Haz clic en "Reservar” y sigue las instrucciones para confirmar tu sesión.',
-        faq_cancelar_reprogramar: "¿Qué pasa si necesito cancelar o reprogramar una sesión?",
-        faq_cancelar_reprogramar_desc: "Las tutorías no pueden cancelarse una vez reservadas. Si ocurrió algún inconveniente, contactanos y con gusto te ayudaremos.",
-        faq_pagos: "¿Cómo pago las sesiones?",
-        faq_pagos_desc: "Los pagos se realizan a través del Qr proporcionado en tu reserva o también por transferencia bancaria con los datos que se muestran en pantalla.",
-        faq_tutor_no_presente: "¿Qué debo hacer si mi tutor no se presenta?",
-        faq_tutor_no_presente_desc: "Si tu tutor no se presenta a una sesión programada, comuníquese con nuestro equipo de soporte de inmediato para obtener ayuda y agender una reprogramación o agendar un reembolso.",
-        faq_comentarios_tutor: "¿Cómo puedo dejar comentarios para mi tutor?",
-        faq_comentarios_tutor_desc: "Entra al perfil del tutor, desliza hacia abajo y dirígete a la sección de reseñas, donde podrás ver las calificaciones y comentarios de los estudiantes.",
-        faq_ser_tutor: "¿Cómo puedo ser tutor?",
-        faq_ser_tutor_desc_txt1: "Si no te creaste aún cuenta ",
-        faq_ser_tutor_desc_link: "haz click aquí",
-        faq_ser_tutor_desc_txt2: ' y rellena el formulario y al final selecciona "Tutor". Cree su perfil y envie la documentación necesaria para su aprobación.',
-        faq_cualificaciones_tutor: "¿Qué cualificaciones necesito para ser tutor?",
-        faq_cualificaciones_tutor_desc: 'No es requisito tener titulación académica. Si quieres enseñar "algo" puedes hacerlo.',
-        faq_configurar_disponibilidad: "¿Cómo configuro mi disponibilidad?",
-        faq_configurar_disponibilidad_desc: 'Inicia sesión en tu cuenta, accede a la sección “Administrar tiempo disponible” y actualiza tu calendario con tus franjas horarias disponibles.',
-        faq_estudiante_cancela: "¿Qué debo hacer si un estudiante cancela una sesión?",
-        faq_estudiante_cancela_desc: "Los estudiantes no tienen la opción de cancelar una sesión después de reservarla. Si el alumno te informa de algún problema, recomiéndale escribir a nuestro contacto para recibir ayuda.",
-        /*Terminos*/
-        terminos_y_condiciones: "TÉRMINOS Y CONDICIONES DE USO DE CLASSGO",
-        fecha_actualizacion: "Fecha de última actualización: 02/07/2025",
-        introduccion: "1. Introducion",
-        bienvenida: 'Bienvenido a ClassGo "la Plataforma", un servicio administrado por ClassGO S.R.L. Al registrarte o utilizar nuestros servicios, aceptas cumplir legalmente con los presentes Términos y Condiciones "T & C". Si no estás de acuerdo, por favor abstente de utilizar la plataforma.',
-        cuentas_usuario: "2. CUENTAS DE USUARIO",
-        registro_verificacion: "2.1 Registro y Verificación",
-        info_personal: "Todos los usuarios que deseen acceder a los servicios de ClassGo deben completar el proceso de registro proporcionando información personal precisa y actualizada.",
-        subapartado_estudiantes: "Subapartado Estudiantes",
-        nombre_correo_fecha_pais: "Nombre completo, correo electrónico, fecha de nacimiento y país de residencia.",
-        aceptar_politica: "Se debe aceptar expresamente la Política de Privacidad y los presentes Términos.",
-        subapartado_tutores: "Subapartado Tutores",
-        doc_academica: "Además de los datos mencionados, deberán presentar documentación académica que acredite su idoneidad (título universitario, certificados, especializaciones, etc.).",
-        entrevistas_referencias: "ClassGo podrá solicitar entrevistas, validaciones adicionales o referencias para la verificación del perfil.",
-        veracidad_actualizacion: "2.2 Vereacidad y Actualizacion de Datos",
-        usuario_responsable_mantener: "El usuario es responsable de mantener sus datos personales y académicos actualizados en todo momento.",
-        classgo_derecho_suspender: "ClassGo se reserva el derecho de suspender cuentas con información incorrecta, desactualizada o fraudulenta.",
-        seguridad_responsabilidad_cuenta: "2.3 Seguridad y Responsabilidad de la Cuenta",
-        confidencialidad_credenciales: "Es responsabilidad del usuario mantener la confidencialidad de sus credenciales (correo y contraseña).",
-        no_compartir_cuentas: "No se permite compartir cuentas entre personas.",
-        notificar_actividades_sospechosas: "El usuario deberá notificar de inmediato cualquier actividad sospechosa o uso no autorizado al correo de soporte.",
-        classgo_no_responsable: "ClassGo no será responsable de accesos no autorizados causados por negligencia del usuario.",
-        edad_minima: "2.4 Edad Mínima",
-        usuarios_mayores_18: "Pueden registrarse usuarios mayores de 18 años.",
-        menores_con_autorizacion: "Menores de edad pueden hacerlo con consentimiento escrito de un padre o tutor, enviado al correo",
-        menores_con_autorizacion_2: "y con supervisión permanente del adulto responsable.",
-        suspensiones: "2.5 Suspensión y Terminación de Cuentas",
-        classgo_derecho_suspender_temporal: "ClassGo se reserva el derecho de suspender temporal o permanentemente una cuenta en caso de:",
-        incumplimiento_tyc: "Incumplimiento de los presentes Términos y Condiciones.",
-        actividades_sospechosas: "Actividades sospechosas, abusivas o ilegales.",
-        reportes_mala_conducta: "Reportes reiterados de mala conducta por parte de otros usuarios.",
-        decision_notificada_correo: "La decisión será notificada por correo electrónico y podrá incluir restricciones de acceso, eliminación de contenido o terminación definitiva del perfil.",
-        politicas_uso: "3. POLÍTICAS DE USO",
-        uso_aceptable: "3.1 Uso Aceptable de la Plataforma",
-        uso_clasgo_estricto: "El uso de ClassGo debe estar estrictamente orientado a fines educativos. Queda terminantemente prohibido:",
-        actividades_ilicitas: "Utilizar la plataforma para actividades ilícitas, engañosas o contrarias al orden público.",
-        spam_phishing: "Realizar spam, phishing, fraudes, envío masivo de mensajes o actividades similares.",
-        uso_cuenta_beneficios_economicos: "Usar la cuenta para obtener beneficios económicos externos a ClassGo sin autorización.",
-        manipular_sistema: "Manipular el sistema con software malicioso, bots, técnicas de scraping o ingeniería inversa.",
-        suplantar_identidad: "Suplantar identidades de personas o instituciones.",
-        classgo_reserva_derecho: "ClassGo se reserva el derecho de investigar, bloquear o eliminar cualquier cuenta que infrinja esta política.",
-        interaccion_usuarios: "3.2 Interacción entre Usuarios",
-        conducta_respetuosa: "Todos los usuarios deben mantener una conducta respetuosa, cordial y profesional. Se prohíbe:",
-        lenguaje_ofensivo: "El uso de lenguaje ofensivo, discriminatorio, difamatorio o violento.",
-        acoso_intimidacion: "El acoso, intimidación o manipulación psicológica hacia cualquier otro usuario.",
-        contacto_no_deseado: "El contacto no deseado fuera de la plataforma con fines personales o comerciales.",
-        reportes_de_comportamiento: "Los reportes de comportamiento inapropiado serán investigados y pueden derivar en sanciones, suspensión o eliminación de la cuenta",
-        uso_contenido_propiedad_intelectual: "3.3 Uso de Contenido y Propiedad Intelectual",
-        imagenes_perfil: "Imágenes de perfil:",
-        aceptar_jpg_png: "Solo se aceptan archivos JPG o PNG de máximo 5 MB.",
-        prohibido_armas_sexual: "Se prohíben imágenes con armas, contenido sexualizado o protegidas por derechos sin permiso.",
-        material_educativo_tutores: "Material educativo (de tutores):",
-        contenido_original: "Los tutores deben subir solo contenido original o bajo licencia de uso (por ejemplo, Creative Commons).",
-        citar_fuentes: "Si se utilizan recursos externos, deben citarse correctamente las fuentes.",
-        derechos_classgo: "Derechos de ClassGo:",
-        propiedad_exclusiva: "El diseño, marca, logotipos, software y estructura de la plataforma son propiedad exclusiva de ClassGo.",
-        licencia_uso_contenido: "3.4 Licencia de Uso del Contenido Subido por el Usuario",
-        licencia_explica: "Al subir contenido a la plataforma, el usuario (ya sea tutor o estudiante) conserva la titularidad y derechos de autor sobre dicho material, pero otorga a ClassGo una licencia no exclusiva, mundial, libre de regalías, transferible y sublicenciable para utilizar dicho contenido con los siguientes fines:",
-        almacenamiento_seguro: "Almacenamiento seguro en los servidores y bases de datos de ClassGo.",
-        visualizacion_reproduccion: "Visualización y reproducción del contenido dentro del entorno educativo digital de la plataforma (incluyendo aplicaciones móviles, sitio web, materiales promocionales internos y recursos para estudiantes).",
-        distribucion_limitada: "Distribución limitada del contenido a otros usuarios registrados (por ejemplo, estudiantes en una sesión, tutores asignados, etc.) en función del propósito educativo del servicio.",
-        adaptacion_tecnica: "Adaptación técnica del contenido, en caso de que sea necesario modificar el formato para asegurar su compatibilidad técnica con los sistemas de la plataforma (por ejemplo, convertir archivos a otros formatos, optimizar resolución, etc.).",
-        condiciones_revocacion: "Condiciones de revocación:",
-        revocar_contenido: "El usuario puede revocar esta licencia eliminando su contenido de la plataforma, excepto cuando:",
-        contenido_compartido: "Ya haya sido compartido con otros usuarios durante el uso legítimo del servicio.",
-        obligacion_legal: "Existe una obligación legal o administrativa que impida la eliminación inmediata del contenido (por ejemplo, en casos de auditoría o disputas).",
-        pagos_reembolsos_reprogramaciones: "4. PAGOS, REEMBOLSOS Y REPROGRAMACIONES",
-        metodos_pago: "4.1 Métodos de Pago",
-        aceptamos_metodos: "Aceptamos:",
-        tarjetas_debito_credito: "Tarjetas de débito/crédito (Visa, Mastercard)",
-        recibo_transaccion: "Cada transacción generará un recibo electrónico.",
-        politica_reembolsos: "4.2 Política de Reembolsos",
-        casos_reembolso: "Casos en los que aplica el reembolso:",
-        cancelacion_tutor: "Cancelación por parte del tutor",
-        fallos_tecnicos: "Fallos técnicos atribuibles a ClassGo (ejemplo: caída del sistema superior a 15 minutos)",
-        condiciones_solicitar_reembolso: "Condiciones para solicitar reembolso:",
-        solicitud_48h: "La solicitud debe realizarse dentro de las 48 horas naturales posteriores al incidente.",
-        procesamiento_48h: "El procesamiento del reembolso se realizará en un plazo de 48 horas hábiles.",
-        cancelaciones_reprogramaciones: "5. CANCELACIONES Y REPROGRAMACIONES",
-        politicas_cancelacion_reprogramacion: "ClassGo establece políticas claras de cancelación y reprogramación que aplican tanto para usuarios como para tutores, con el objetivo de garantizar el respeto por el tiempo de ambas partes, mantener la calidad del servicio y preservar la operatividad de la plataforma.",
-        cancelaciones_usuario: "5.1 Cancelaciones por parte del Usuario",
-        condiciones_cancelacion_usuario: "Condiciones",
-        usuario_24h_anticipacion: "Con más de 24 horas de anticipación: El usuario podrá cancelar o reprogramar sin penalización. Si corresponde, se podrá solicitar el reembolso total del valor de la sesión o reprogramar sin costo adicional.",
-        usuario_menos_24h: "Con menos de 24 horas de anticipación: La cancelación podrá estar sujeta a una penalización del 50% del valor de la sesión, la cual se aplicará como compensación al tutor por el tiempo reservado.",
-        usuario_no_show: "Ausencia injustificada del usuario (no show): Si el usuario no asiste a la sesión sin aviso previo, se considerará como sesión realizada y no se otorgará reembolso. El tutor recibirá el pago correspondiente.",
-        cancelaciones_tutor: "5.2 Cancelaciones por parte del Tutor",
-        condiciones_cancelacion_tutor: "Condiciones",
-        tutor_12h_aviso: "Cancelación con aviso previo (mínimo 12 horas): El tutor deberá ofrecer al usuario opciones para reprogramar. No se aplicarán sanciones si es un evento ocasional y debidamente justificado.",
-        tutor_frecuentes_injustificadas: "Cancelaciones frecuentes o injustificadas: Si un tutor realiza más de tres cancelaciones injustificadas en un mes, podrá recibir sanciones progresivas como advertencias, suspensión temporal o eliminación del perfil.",
-        tutor_no_show: "Ausencia del tutor sin aviso (no show): Se considerará una falta grave. El estudiante recibirá un reembolso total, y el tutor podrá ser sancionado con suspensión inmediata de la cuenta o expulsión de la plataforma.",
-        reprogramaciones: "5.3 Reprogramaciones",
-        condiciones_reprogramacion: "Tanto estudiantes como tutores pueden programar una sesión siempre que:",
-        reprogramacion_24h: "La solicitud se realice con al menos 24 horas de anticipación.",
-        acuerdo_nuevo_horario: "Ambas partes hayan llegado a un acuerdo sobre el nuevo horario.",
-        no_acuerdo_cancelacion: "En caso de no llegar a un acuerdo, la sesión podrá ser cancelada aplicando la política correspondiente.",
-        resolucion_disputas: "5.4 Resolución de Disputas",
-        desacuerdo_tutor_usuario: "En caso de desacuerdo entre un tutor y un usuario respecto a una cancelación o reprogramación:",
-        presentar_argumentos_soporte: "Las partes podrán presentar sus argumentos al equipo de soporte de ClassGo.",
-        classgo_mediador: "ClassGo actuará como mediador e implementará la solución más equitativa para ambas partes.",
-        decision_final: "La decisión tomada será final, salvo disposición legal en contrario.",
-        responsabilidades: "6. RESPONSABILIDADES",
-        uso_responsable_plataforma: "El uso adecuado de la plataforma ClassGo implica un compromiso por parte de todos los usuarios para actuar con responsabilidad, ética y profesionalismo. Las siguientes disposiciones detallan las obligaciones específicas de tutores y estudiantes.",
-        responsabilidades_tutor: "6.1 Responsabilidades del Tutor",
-        veracidad_perfil: "Veracidad del perfil profesional",
-        informacion_academica_actualizada: "Ingresar y mantener actualizada la información académica y profesional.",
-        documentacion_veridica: "Proveer documentación verídica que acredite su formación y experiencia.",
-        no_suplantar_identidad: "No suplantar identidades ni presentar credenciales falsificadas.",
-        calidad_servicio: "Calidad del servicio educativo",
-        preparar_brindar_tutorias: "Preparar y brindar tutorías con puntualidad, claridad y estructura.",
-        usar_recursos_adecuados: "Utilizar recursos pedagógicos adecuados y actualizados.",
-        evitar_contenido_erroneo: "Evitar contenido erróneo, obsoleto o no relevante para el aprendizaje del estudiante.",
-        etica_profesional_trato: "Ética profesional y trato respetuoso",
-        mantener_conducta_profesional: "Mantener una conducta profesional durante todas las interacciones.",
-        evitar_comentarios_ofensivos: "Evitar comentarios ofensivos, discriminatorios, sexistas, racistas o de índole personal.",
-        no_relaciones_inapropiadas: "No establecer relaciones personales inapropiadas con los estudiantes.",
-        uso_contenido: "Uso del contenido",
-        material_autoria_propia: "Garantizar que el material compartido es de autoría propia o cuenta con licencia de uso.",
-        no_usar_contenido_otro: "No utilizar recursos de otros tutores sin autorización explícita.",
-        autorizar_classgo: "Autorizar a ClassGo para mostrar y almacenar el contenido dentro del entorno educativo de la plataforma.",
-        confidencialidad: "Confidencialidad",
-        respetar_privacidad_estudiantes: "Respetar la privacidad y datos personales de los estudiantes.",
-        no_divulgar_informacion: "No divulgar conversaciones, grabaciones ni información obtenida durante las sesiones sin consentimiento.",
-        cumplimiento_legal: "Cumplimiento legal",
-        actividad_cumple_normativa: ">Asegurarse de que su actividad como tutor cumple con la normativa educativa y laboral vigente en su país de residencia.",
-        responsabilidad_ausencias: "Responsabilidad ante ausencias o cancelaciones",
-        notificar_cancelaciones: "Notificar cancelaciones con la mayor antelación posible.",
-        evitar_cancelaciones_reiteradas: "Evitar cancelaciones reiteradas o ausencias injustificadas, las cuales pueden derivar en sanciones por parte de la plataforma.",
-        responsabilidades_estudiante: "6.2 Responsabilidades del Estudiante",
-        estudiantes_compromiso: "Los estudiantes que utilizan ClassGo deben comprometerse a:",
-        participacion_puntualidad: "Participación activa y puntualidad",
-        asistir_sesiones: "Asistir a las sesiones en el horario acordado.",
-        actitud_participativa: "Mantener una actitud participativa, receptiva y orientada al aprendizaje.",
-        respeto_tutor_entorno: "Respeto hacia el tutor y el entorno virtual",
-        respetar_tutores: "Tratar con respeto a los tutores, evitando cualquier conducta abusiva, ofensiva o disruptiva.",
-        no_grabar_sin_autorizacion: "No grabar ni compartir sesiones sin autorización previa.",
-        uso_responsable_plataforma_estudiante: "Uso responsable de la plataforma",
-        no_fines_personales: "No utilizar ClassGo para fines distintos al aprendizaje (por ejemplo, fines comerciales o personales).",
-        no_compartir_terceros: "No compartir acceso con terceros ni hacer uso indebido de las funcionalidades del sistema.",
-        pago_sesiones: "Pago oportuno de las sesiones",
-        pago_autorizado_plazo: "Asegurarse de que los pagos se realicen a través de los métodos autorizados y en los plazos establecidos.",
-        no_reclamaciones_indebidas: "No realizar reclamaciones indebidas por sesiones recibidas correctamente.",
-        evaluacion_tutor: "Evaluación objetiva del tutor",
-        calificar_desempeno_72h: "Calificar de manera justa y constructiva el desempeño de los tutores al finalizar las sesiones, dentro del plazo de 72 horas.",
-        proteccion_datos_privacidad: "Protección de datos y privacidad",
-        no_divulgar_datos: "No divulgar datos personales de otros usuarios.",
-        cumplir_politicas_privacidad: "Cumplir con las políticas de privacidad establecidas por ClassGo.",
-        certificacion_tutores: "6.3 Certificación de Tutores ClassGo",
-        detalle_certificacion_tutores: "Para obtener la certificación oficial como Tutor ClassGo, los usuarios registrados como tutores deberán completar satisfactoriamente el Programa de Formación Pedagógica de ClassGo, que consta de 18 cursos pedagógicos disponibles en la plataforma. Esta certificación es un requisito indispensable para acceder a beneficios especiales, convenios con instituciones y participar en programas de tutoría promocionados por ClassGo.",
-        convenios_beneficios: "6.4 Convenios Académicos y Beneficios",
-        detalle_convenios_beneficios: "ClassGo mantiene convenios con unidades de posgrado y otras instituciones educativas, los cuales pueden otorgar descuentos, accesos preferenciales o beneficios especiales a usuarios que cumplan con los requisitos establecidos en cada acuerdo. El cumplimiento de estos beneficios está sujeto a la verificación de requisitos específicos, como el avance en el plan formativo de la plataforma o la validación de identidad.",
-        gestion_quejas_validacion: "6.5 Gestión de Quejas y Validación de Clases",
-        detalle_gestion_quejas: "En caso de que un usuario experimente inconveniente durante una tutoría (por ejemplo, ausencia del tutor, fallos graves en la clase o incumplimientos de calidad), podrá presentar una queja dentro de los primeros 2 a 3 minutos posteriores a la finalización de la sesión. Si no se registra ninguna queja durante este periodo, elsistema procesará automáticamente el pago correspondiente al tutor. Todas las quejas recibidas serán evaluadas por el equipo de soporte de ClassGo, quien actuará como mediador para resolver la situación de manera justa, pudiendo aplicar reembolsos, retenciones o sanciones según corresponda.",
-        limitacion_responsabilidad: "7. LIMITACIÓN DE RESPONSABILIDAD",
-        classgo_no_responsable_por: "ClassGo no será responsable por:",
-        danos_indirectos: "Daños indirectos, incluyendo pérdida de oportunidades laborales.",
-        conflictos_usuarios_tutores: "Conflictos entre usuarios y tutores.",
-        problemas_tecnicos_ajenos: "Problemas técnicos ajenos a la plataforma (por ejemplo, fallos del proveedor de internet del usuario).",
-        modificaciones_terminos: "8. MODIFICACIONES A LOS TÉRMINOS",
-        modificacion_avisada: "Cualquier modificación será comunicada con al menos 15 días de anticipación mediante correo electrónico.",
-        aceptacion_continuada: "El uso continuado de la plataforma implica la aceptación de los nuevos términos.",
-        contacto_soporte: "9. CONTACTO Y SOPORTE",
-        soporte_tecnico: "Soporte técnico:",
-        reclamos_formales: "Reclamos formales: enviar documentación física a:<br>CALLE ANGOSTURA, NRO: 314<br>BARRIO EL PARI, UV: 28 MZA 12<br>ENTRE LA CALLE EMILIO FINOT Y LA AVENIDA ESCUADRON VELASCO<br>",
-        contactanos_whatsapp: "Contáctanos al: ",
-        jurisdiccion_resolucion_conflictos: "10. JURISDICCIÓN Y RESOLUCIÓN DE CONFLICTOS",
-        acuerdo_legislacion_bolivia: "Este acuerdo se rige por la legislación vigente en el Estado Plurinacional de Bolivia, incluyendo las disposiciones aplicables del Código Civil, la Ley de Protección al Consumidor y demás normas relacionadas con servicios digitales y relaciones contractuales electrónicas.",
-        mecanismo_conciliacion_arbitraje: "10.1 Mecanismo preferente: conciliación o arbitraje",
-        resolucion_amistosa: "Se intentará resolver la controversia de forma amistosa mediante conciliación voluntaria o arbitraje institucional, de conformidad con lo establecido en la normativa boliviana y bajo los reglamentos del Centro de Conciliación y Arbitraje de la Cámara de Comercio y Servicios de Santa Cruz (CAINCO), u otra entidad reconocida acordada por ambas partes.",
-        procedimiento_confidencial: "El procedimiento será confidencial, rápido y con carácter vinculante.",
-        inicio_proceso_solicitud: "La parte interesada deberá iniciar el proceso enviando una solicitud formal al centro correspondiente.",
-        acatar_decision_tribunal: "Ambas partes se comprometen a acatar la decisión emitida por el tribunal arbitral o conciliador.",
-        instancia_judicial_subsidiaria: "10.2 Instancia judicial subsidiaria",
-        jurisdiccion_ordinaria: "Si no se logra acuerdo en conciliación o si el arbitraje no puede llevarse a cabo por causas atribuibles a una de las partes o por disposición legal, las partes se someten a la jurisdicción ordinaria de los tribunales competentes de la ciudad de Santa Cruz de la Sierra, renunciando expresamente a cualquier otro fuero o jurisdicción que pudiera corresponderles.",
-        renuncia_accion_colectiva: "10.3 Renuncia a acción colectiva",
-        accion_individual: "Los usuarios aceptan que cualquier acción legal deberá ser interpuesta de manera individual. No se permite la acumulación de demandas en calidad de acción colectiva o grupal contra ClassGo, salvo que lo exija expresamente una autoridad judicial competente.",
-        idioma_legislacion_aplicable: "10.4 Idioma y legislación aplicable",
-        procedimiento_idioma_espanol: "Todo procedimiento, ya sea conciliatorio, arbitral o judicial, se desarrollará en idioma español y conforme a las leyes sustantivas y procesales del Estado Plurinacional de Bolivia. Nota final de la cláusula:<br>En caso de no lograrse una solución mediante estos medios, las partes se someten a la jurisdicción de los tribunales competentes de la ciudad de Santa Cruz, Bolivia.",
-        uso_internacional: "11. USO INTERNACIONAL",
-        descripcion_uso_internacional: "ClassGo es una plataforma desarrollada y operada conforme a las leyes del Estado Plurinacional de Bolivia. No obstante, está disponible para usuarios en otros países, sujeto a las siguientes condiciones:",
-        responsabilidad_usuario_internacional: "11.1 Responsabilidad del usuario internacional",
-        usuario_responsable_exterior: "Si accedes o utilizas ClassGo desde fuera de Bolivia, lo haces bajo tu propia iniciativa y responsabilidad. Eres el único responsable de asegurar que el uso de los servicios, contenidos y funciones de la plataforma cumpla con las leyes, normativas y regulaciones locales del país desde el cual accedes. Esto incluye, pero no se limita a:",
-        normativas_educacion_linea: "Normativas sobre educación en línea",
-        proteccion_datos: "Protección de datos",
-        comercio_electronico: "Comercio electrónico",
-        propiedad_intelectual: "Propiedad intelectual",
-        tributacion_digital: "Tributación digital",
-        limitaciones_disponibilidad_servicios: "11.2 Limitaciones de disponibilidad de servicios",
-        restricciones_servicios: "Algunos servicios, características o métodos de pago pueden estar restringidos o no disponibles en ciertos territorios debido a:",
-        restricciones_legales_locales: "Restricciones legales locales",
-        normativas_exportacion: "Normativas de exportación o control de servicios tecnológicos",
-        incompatibilidad_tecnica: "Incompatibilidad técnica con sistemas de pago o redes educativas externas",
-        politicas_internas_classgo: "Políticas internas de ClassGo para evitar incumplimientos regulatorios",
-        en_tales_casos: "11.3 En tales casos",
-        responsabilidad_limitada: "ClassGo no será responsable por la imposibilidad de acceso total o parcial a determinadas funciones, siempre que estas restricciones estén justificadas por motivos legales o técnicos.",
-        idioma_soporte: "11.4 Idioma y soporte",
-        interfaz_documentacion_soporte: "Toda la interfaz, documentación legal, soporte técnico y comunicaciones oficiales se encuentran disponibles únicamente en idioma español. Los usuarios que accedan desde otros países aceptan utilizar la plataforma bajo esta modalidad lingüística.",
-        jurisdiccion_disputas_internacionales: "11.5 Jurisdicción y disputas internacionales",
-        disputas_internacionales: "A pesar del uso internacional, cualquier disputa relacionada con la plataforma se regirá por la legislación boliviana y se someterá a los mecanismos de resolución de conflictos establecidos en la cláusula 10 de estos Términos y Condiciones.",
-        cumplimiento_normativo_global: "11.6 Cumplimiento normativo global",
-        derecho_restricciones_cuentas: "ClassGo se reserva el derecho de restringir, suspender o cancelar cuentas de usuarios que, residiendo en el extranjero:",
-        infrinjan_leyes_locales: "nfrinjan leyes locales",
-        riesgo_cumplimiento_normativo: "Pongan en riesgo el cumplimiento normativo de la plataforma",
-        reservarse_derecho_no_operar: "Asimismo, nos reservamos el derecho de no operar en países con los que existan:",
-        barreras_regulatorias_insalvables: "Barreras regulatorias insalvables",
-        conflictos_legales_viabilidad: "Conflictos legales que afecten la viabilidad del servicio",
-        descarga_terminos_pdf: "Descarga términos y condiciones en PDF",
-        boton_descargar_pdf: "Descargar PDF",
-        //Blogs
-        ideas: "Ideas y consejos de expertos para estudiantes de por vida",
-        Acceda: "Acceda a información valiosa, consejos de expertos y sugerencias de nuestra activa comunidad de tutores.",
-        bus: "Buscar",
-        td_bl: "Todos los blogs",
-        sel: "Seleccionar categoría",
-        neg: "Negocios",
-        tec: "Tecnología",
-        edu: "Educación",
-        ord: "Ordenar por",
-        ma_rec: "Más recientes",
-        ma_pop: "Más populares",
-        ciberseguridad: "Ciberseguridad",
-        no_blog: "No hay blogs disponibles."
-    },
-    en: {
-        // Navbar
-        tutors: "Tutors",
-        about: "About Us",
-        howWeWork: "How We Work",
-        faq: "Questions",
-        ingre: "Log In",
-        // Footer
-        buscar_tutor: "Search Tutor",
-        registrate_gratis: "Sign Up for Free",
-        tutores_en_linea: "Online Tutors",
-        inicia_hoy: "Start Today",
-        registrate: "Sign Up",
-        encontrar_tutor: "Find a Tutor",
-        nosotros: "About Us",
-        mision: "Mission",
-        vision: "Vision",
-        logros_clave: "Key Achievements",
-        preguntas: "Questions",
-        preguntas_frecuentes: "Frequently Asked Questions",
-        lee_ma: "Read More",
-        terminos: "Terms and Conditions",
-        get_app: "Get the App",
-        edu_world: "Take your education everywhere!",
-        todos_derechos: "All rights reserved.",
-        desarrolladores: "Developers",
-        todos_derechos: "All rights reserved.",
-        // Home
-        learn: "Learn and Progress with",
-        tutoring: "Online Tutoring",
-        reach_goals: "Achieve your goals with personalized tutoring from top experts.<br> Connect with dedicated tutors to ensure your success.",
-        reach_goals_short: "Achieve your goals with personalized tutoring from top experts.",
-        tutores: "Tutors",
-        nuestra_app: "Our App",
-        registrate: "Sign Up",
-        ingresa: "Log In",
-        us_check: "Registered Users",
-        tutor_ok: "Available Tutors",
-        est_check: "Registered Students",
-        play_s: "On Play Store",
-        search_tutors: "Search Tutors",
-        featured_tutors: "Featured Tutors",
-        selected_tutors: "Find Your Ideal Tutor",
-        academic_variety: "Discover a variety of academic and practical subjects to enhance your learning experience",
-        seeks: "Find More Tutors",
-        finds: "Find the perfect tutor for your needs and start learning today.",
-        explore: "Explore Now",
-        guide: "A Step-by-Step Guide",
-        unlock_potential: "Unlock Your Potential with Simple Steps",
-        improve_skills: "Improve your skills with the best tutors, easily and quickly.",
-        step_1: "Step 1",
-        step_2: "Step 2",
-        step_3: "Step 3",
-        sign_up: "Sign Up",
-        create_account: "Quickly create your account to start using our platform",
-        begin: "Begin",
-        find_tutor: "Find a Tutor",
-        tutores_calificados: "Search and select from qualified tutors based on your needs.",
-        buscar_ahora: "Search Now",
-        reservar_ahora: "Book Now",
-        encuentra_mejor: "Find the best time and easily schedule your session on our platform.",
-        empecemos: "Let's Get Started",
-        comenzar_jornada: "Start Your Journey",
-        comenzar_viaje: "Start your educational journey with us. Book your first session today!",
-        empezar_ahora: "Start Now",
-        facil_simple_rapido: "Easy, Simple, and Fast",
-        instala_app: "Install Our App",
-        comienza_viaje_educativo: "Start your educational journey with us. Install our app today!",
-        acceso: "24/7 Access",
-        tutores_expertos: "Expert Tutors",
-        tarifas_asequibles: "Affordable Rates",
-        descargar_ahora: "Download Now",
-        buscas_tutorias: "Looking for personalized tutoring?",
-        conectamos_tutores: "At ClassGo, we connect you with the best tutors",
-        sesiones_cortas: "Access short, practical sessions designed by expert tutors to be learning lifesavers",
-        comienza_ahora: "Start Now",
-        visual_phone_txt1: "Which subject do you need help with?",
-        visual_phone_txt2: "Get ready for that tough exam",
-        visual_phone_txt3: "Master that subject",
-        visual_phone_txt4: "Guaranteed academic support",
-        visual_phone_btn1: "Find Tutors",
-        buscar_tutor_txt1: "Discover an Online Tutor for Your Studies",
-        buscar_tutor_txt2: "Master any subject with the help of our expert tutors and achieve your academic goals.",
-        buscar_tutor_txt3: "What do you want to learn?",
-        filtro_materias_txt1: "Subjects That Can Help You",
-        filtro_materias_txt2: "Explore Our Subjects",
-        filtro_materias_txt3: "Tutors ready in different areas to help you",
-        filtro_materias_txt4: "Accounting",
-        filtro_materias_txt5: "Intermediate, Governmental, Tax, Cost Accounting.",
-        filtro_materias_txt6: "Exact Sciences",
-        filtro_materias_txt7: "Calculus, Physics, Applied Mechanics",
-        filtro_materias_txt8: "Chemistry",
-        filtro_materias_txt9: "Solution Chemistry, Chromatography, Food Chemistry.",
-        filtro_materias_txt10: "Programming",
-        filtro_materias_txt11: "Theory of Computation, Python, PHP, Java.",
-        filtro_materias_txt12: "English",
-        filtro_materias_txt13: "Idiomatic Expressions, Pronunciation, Writing.",
-        filtro_materias_txt14: "Music",
-        filtro_materias_txt15: "Composition, Music Reading, Chords.",
-        encuesta_txt1: "HELP US IMPROVE",
-        encuesta_txt2: "Your opinion is worth gold (and discounts)",
-        encuesta_txt3: "Get an exclusive coupon when you finish",
-        encuesta_btn1: "Take the Survey",
-        encuesta_txt4: "Did you easily find the subject you were looking for?",
-        encuesta_op1: "Yes, it was easy",
-        encuesta_op2: "It was difficult",
-        encuesta_btn2: "Next",
-        encuesta_txt5: "How likely are you to recommend us?",
-        encuesta_txt6: "Select the stars",
-        encuesta_txt7: "We want to know your opinion: <br>tell us about your experience or leave a comment.",
-        encuesta_op3: "Excellent service",
-        encuesta_op4: "Very fast",
-        encuesta_op5: "Fair prices",
-        encuesta_op6: "Lack of variety",
-        encuesta_op7: "Average",
-        encuesta_txt8: "Almost ready!",
-        encuesta_txt9: "Your opinion is very valuable to us. As a thank you, we will give you a 50% discount coupon.",
-        encuesta_txt10: "Enter your phone number to receive the coupon:",
-        encuesta_btn3: "Send and Finish",
+    // Nosotros
+    ini_n: "Inicio",
+    i_nos: "Nosotros",
+    who: "¿Quiénes Somos?",
+    plataforma_d_tutoria:
+      "Somos una plataforma de tutorías en línea que conecta a estudiantes de todas las edades con tutores expertos. Ofrecemos una experiencia accesible y de calidad, independientemente de tu ubicación u horario.",
+    mision: "Misión",
+    plataforma_d_educacion:
+      "Plataforma educativa de tutorías virtuales para compartir conocimientos.",
+    proporcionamos_educacion:
+      "Proporcionamos una plataforma educativa de tutorías virtuales accesibles las 24 horas, dirigida a toda persona que quiera compartir su conocimiento, con contenidos que abarcan desde nivel universitario hasta habilidades técnicas.",
+    mas_docientos: "+200",
+    tutorias_disponibles: "Tutorías disponibles",
+    vision: "Visión",
+    ser_plataforma_lider: "Impulsar el crecimiento del aprendizaje.",
+    fomentar_aprendizaje:
+      "Ser la plataforma líder en tutorías virtuales, fomentando el aprendizaje continuo y la accesibilidad educativa en todas las áreas del conocimiento.",
+    team: "Nuestro equipo",
+    creadores_classgo:
+      "Los creadores de la página y app de ClassGo, dedicados a revolucionar la educación.",
+    lic_presentacion:
+      "¡Hola! Soy Gabriel, apasionado por compartir conocimiento y ayudarte a alcanzar tus metas académicas. Con años de experiencia en docencia y finanzas, mi objetivo es guiar tu aprendizaje de manera clara y efectiva.",
+    jefi_rol: "General Coordinador",
+    jefi_presentacion:
+      "Preparado para los desafíos del mundo empresarial digital, con mentalidad ágil y soluciones orientadas a resultados.",
+    opjefi_rol: "Gerente de operaciones",
+    opjefi_presentacion:
+      "Apasionado por compartir conocimientos de manera clara y práctica. Mi objetivo es ayudarte a aprender de forma sencilla y efectiva.",
+    jefi_movil_rol: "Mobile Developer",
+    jefi_movil_presentacion:
+      "Soy ingeniero en sistemas, desarrollador de páginas web y aplicaciones móviles.",
+    jefi_Bdeveloper_rol: "Backend Developer",
+    jefi_Bdeveloper_presentacion:
+      "Construyendo sistemas robustos, escalables y eficientes que garantizan un rendimiento óptimo y una experiencia fluida para los usuarios, sin importar la complejidad del desafío.",
+    jefi_Fdeveloper_rol: "Frontend Developer",
+    jefi_Fdeveloper_presentacion:
+      "Creando interfaces intuitivas y atractivas que hacen que el aprendizaje sea una experiencia agradable y accesible para todos.",
+    jefi_sofware_rol: "Arquitecto de software",
+    jefi_sofware_presentacion:
+      "Diseñando soluciones tecnológicas sólidas y sostenibles, alineadas con los objetivos del negocio, para asegurar una arquitectura escalable, segura y preparada para el futuro.",
+    jefi_diseño_rol: "Diseñadora Gráfica",
+    //Trabajamos
+    inicio: "Inicio",
+    como_trabajamos: "Cómo trabajamos",
+    unete_comunidad: "Únete a nuestra comunidad hoy",
+    unete_comunidad_desc:
+      "Únete a nuestra comunidad para compartir tu experiencia como tutor o mejorar tus habilidades como estudiante.<br>Conéctate, aprende y crece con nosotros hoy.",
+    para_estudiantes: "Para estudiantes",
+    para_tutores: "Para tutores",
+    completa_datos:
+      "Completa tus datos y establece tus preferencias de aprendizaje",
+    completa_datos_desc:
+      "Proporciona tus datos personales y establece tus preferencias de aprendizaje para crear un perfil adaptado a tus necesidades educativas.<br>Esto te ayudará a encontrar los tutores más adecuados y optimizar tu experiencia de aprendizaje.",
+    utiliza_filtros:
+      "Utiliza el buscador para ver perfiles detallados de tutores",
+    utiliza_filtros_desc:
+      "Use la barra de búsqueda para descubrir tutores según el nombre del tutor, la materia o el tema que te interesa.¡Empiece a escribir y vea cómo aparecen los perfiles que mejor se adaptan a sus necesidades de aprendizaje!",
+    elige_horario: "Elige un horario conveniente y reserva tu tutoría",
+    pasos_reservar: "Pasos para reservar una sesión de tutoría",
+    paso_select_time:
+      "Selecciona un horario disponible y la hora que disponga el tutor",
+    paso_click_slot: "Haz clic en e botón de reservar",
+    paso_choose_type: "Elige la materia, y si tienes cupón lo puedes canjear",
+    paso_confirm_booking:
+      "Confirma los detalles de la reserva como ser pago qr, sube tu comprobante",
+    paso_payment: "Procede al pago",
+    paso_receive_confirmation: "Recibe la confirmación por correo",
+    asiste_leccion_login: "Asiste a la tutoría",
+    asiste_login_desc:
+      "Inicia tu tutoría a la hora programada y comienza a aprender",
+    asiste_presen:
+      "Inicia tu tutoría a la hora programada y únete a la sesión para comenzar a aprender.<br>Conéctate con tu tutor a través de Meet para disfrutar de una tutoría interactiva y atractiva.",
+    completa_form:
+      "Rellena un formulario de comentarios rápido después de tu tutoría",
+    feedback_desc:
+      "Después de tu tutoría, completa un formulario rápido de feedback para compartir tus opiniones y calificar tu experiencia.<br>Tu feedback nos ayuda a mejorar y garantizar el mejor entorno de aprendizaje para todos.",
+    crea_perfil: "Crea tu perfil y enumera tus calificaciones",
+    crea_perfil_cont:
+      "Crea tu perfil para mostrar tus calificaciones, habilidades y experiencia. Destaca tu formación, experiencia y las materias que enseñas para atraer estudiantes potenciales y generar credibilidad en la plataforma.",
+    gestiona_horario:
+      "Gestiona tu horario para mostrar cuándo estás disponible para enseñar",
+    gestiona_horario_desc:
+      "Administra fácilmente tu disponibilidad actualizando tu horario con los momentos en los que estás disponible para enseñar. Esto ayuda a los estudiantes a saber cuándo pueden reservar sesiones contigo y mantiene tu calendario organizado.",
+    revisar_solicitudes: "Revisa tus reservas .",
+    revisar_solicitudes_desc:
+      "Revisa tus reservas de estudiantes que decidieron tener una tutoría contigo",
+    dirige_clase: "Desde cualquier lugar, en tus horarios libres",
+    dirige_clase2: "Dirige la tutoría con Google Meet",
+    dirige_clase_desc:
+      "Conéctate a la hora programada y comienza a impartir tu sesión. Usa la herramienta de videoconferencia integrada en la plataforma para interactuar con tus alumnos y ofrecer una experiencia de aprendizaje atractiva.",
+    proceso_calidad: "Garantizamos un proceso de calidad",
+    unete_comunidad_repetido: "Únase a nuestra comunidad hoy",
+    unete_comunidad_repetido_desc:
+      "Únase a nuestra comunidad para compartir su experiencia como tutor o mejorar sus habilidades como estudiante.<br>Conéctese, aprenda y crezca con nosotros hoy.",
+    // Preguntas
+    inicio: "Inicio",
+    preguntas: "Preguntas",
+    encuentra_respuesta: "Encuentra tu respuesta",
+    empoderando_estudiantes: "Empoderando a los estudiantes en todo el mundo",
+    para_estudiantes_faq: "Para estudiantes",
+    para_tutores_faq: "Para tutores",
+    faq_encontrar_tutor: "¿Cómo encontrar un tutor?",
+    faq_encontrar_tutor_desc:
+      "Utilice la barra de búsqueda para encontrar tutores disponibles según la materia o tema que necesites",
+    faq_reservar_sesion: "¿Cómo reservo una sesión?",
+    faq_reservar_sesion_desc:
+      'Una vez que encuentres un tutor, consulta su perfil y selecciona un horario disponible que te convenga. Haz clic en "Reservar” y sigue las instrucciones para confirmar tu sesión.',
+    faq_cancelar_reprogramar:
+      "¿Qué pasa si necesito cancelar o reprogramar una sesión?",
+    faq_cancelar_reprogramar_desc:
+      "Las tutorías no pueden cancelarse una vez reservadas. Si ocurrió algún inconveniente, contactanos y con gusto te ayudaremos.",
+    faq_pagos: "¿Cómo pago las sesiones?",
+    faq_pagos_desc:
+      "Los pagos se realizan a través del Qr proporcionado en tu reserva o también por transferencia bancaria con los datos que se muestran en pantalla.",
+    faq_tutor_no_presente: "¿Qué debo hacer si mi tutor no se presenta?",
+    faq_tutor_no_presente_desc:
+      "Si tu tutor no se presenta a una sesión programada, comuníquese con nuestro equipo de soporte de inmediato para obtener ayuda y agender una reprogramación o agendar un reembolso.",
+    faq_comentarios_tutor: "¿Cómo puedo dejar comentarios para mi tutor?",
+    faq_comentarios_tutor_desc:
+      "Entra al perfil del tutor, desliza hacia abajo y dirígete a la sección de reseñas, donde podrás ver las calificaciones y comentarios de los estudiantes.",
+    faq_ser_tutor: "¿Cómo puedo ser tutor?",
+    faq_ser_tutor_desc_txt1: "Si no te creaste aún cuenta ",
+    faq_ser_tutor_desc_link: "haz click aquí",
+    faq_ser_tutor_desc_txt2:
+      ' y rellena el formulario y al final selecciona "Tutor". Cree su perfil y envie la documentación necesaria para su aprobación.',
+    faq_cualificaciones_tutor: "¿Qué cualificaciones necesito para ser tutor?",
+    faq_cualificaciones_tutor_desc:
+      'No es requisito tener titulación académica. Si quieres enseñar "algo" puedes hacerlo.',
+    faq_configurar_disponibilidad: "¿Cómo configuro mi disponibilidad?",
+    faq_configurar_disponibilidad_desc:
+      "Inicia sesión en tu cuenta, accede a la sección “Administrar tiempo disponible” y actualiza tu calendario con tus franjas horarias disponibles.",
+    faq_estudiante_cancela:
+      "¿Qué debo hacer si un estudiante cancela una sesión?",
+    faq_estudiante_cancela_desc:
+      "Los estudiantes no tienen la opción de cancelar una sesión después de reservarla. Si el alumno te informa de algún problema, recomiéndale escribir a nuestro contacto para recibir ayuda.",
+    /*Terminos*/
+    terminos_y_condiciones: "TÉRMINOS Y CONDICIONES DE USO DE CLASSGO",
+    fecha_actualizacion: "Fecha de última actualización: 02/07/2025",
+    introduccion: "1. Introducion",
+    bienvenida:
+      'Bienvenido a ClassGo "la Plataforma", un servicio administrado por ClassGO S.R.L. Al registrarte o utilizar nuestros servicios, aceptas cumplir legalmente con los presentes Términos y Condiciones "T & C". Si no estás de acuerdo, por favor abstente de utilizar la plataforma.',
+    cuentas_usuario: "2. CUENTAS DE USUARIO",
+    registro_verificacion: "2.1 Registro y Verificación",
+    info_personal:
+      "Todos los usuarios que deseen acceder a los servicios de ClassGo deben completar el proceso de registro proporcionando información personal precisa y actualizada.",
+    subapartado_estudiantes: "Subapartado Estudiantes",
+    nombre_correo_fecha_pais:
+      "Nombre completo, correo electrónico, fecha de nacimiento y país de residencia.",
+    aceptar_politica:
+      "Se debe aceptar expresamente la Política de Privacidad y los presentes Términos.",
+    subapartado_tutores: "Subapartado Tutores",
+    doc_academica:
+      "Además de los datos mencionados, deberán presentar documentación académica que acredite su idoneidad (título universitario, certificados, especializaciones, etc.).",
+    entrevistas_referencias:
+      "ClassGo podrá solicitar entrevistas, validaciones adicionales o referencias para la verificación del perfil.",
+    veracidad_actualizacion: "2.2 Vereacidad y Actualizacion de Datos",
+    usuario_responsable_mantener:
+      "El usuario es responsable de mantener sus datos personales y académicos actualizados en todo momento.",
+    classgo_derecho_suspender:
+      "ClassGo se reserva el derecho de suspender cuentas con información incorrecta, desactualizada o fraudulenta.",
+    seguridad_responsabilidad_cuenta:
+      "2.3 Seguridad y Responsabilidad de la Cuenta",
+    confidencialidad_credenciales:
+      "Es responsabilidad del usuario mantener la confidencialidad de sus credenciales (correo y contraseña).",
+    no_compartir_cuentas: "No se permite compartir cuentas entre personas.",
+    notificar_actividades_sospechosas:
+      "El usuario deberá notificar de inmediato cualquier actividad sospechosa o uso no autorizado al correo de soporte.",
+    classgo_no_responsable:
+      "ClassGo no será responsable de accesos no autorizados causados por negligencia del usuario.",
+    edad_minima: "2.4 Edad Mínima",
+    usuarios_mayores_18: "Pueden registrarse usuarios mayores de 18 años.",
+    menores_con_autorizacion:
+      "Menores de edad pueden hacerlo con consentimiento escrito de un padre o tutor, enviado al correo",
+    menores_con_autorizacion_2:
+      "y con supervisión permanente del adulto responsable.",
+    suspensiones: "2.5 Suspensión y Terminación de Cuentas",
+    classgo_derecho_suspender_temporal:
+      "ClassGo se reserva el derecho de suspender temporal o permanentemente una cuenta en caso de:",
+    incumplimiento_tyc:
+      "Incumplimiento de los presentes Términos y Condiciones.",
+    actividades_sospechosas: "Actividades sospechosas, abusivas o ilegales.",
+    reportes_mala_conducta:
+      "Reportes reiterados de mala conducta por parte de otros usuarios.",
+    decision_notificada_correo:
+      "La decisión será notificada por correo electrónico y podrá incluir restricciones de acceso, eliminación de contenido o terminación definitiva del perfil.",
+    politicas_uso: "3. POLÍTICAS DE USO",
+    uso_aceptable: "3.1 Uso Aceptable de la Plataforma",
+    uso_clasgo_estricto:
+      "El uso de ClassGo debe estar estrictamente orientado a fines educativos. Queda terminantemente prohibido:",
+    actividades_ilicitas:
+      "Utilizar la plataforma para actividades ilícitas, engañosas o contrarias al orden público.",
+    spam_phishing:
+      "Realizar spam, phishing, fraudes, envío masivo de mensajes o actividades similares.",
+    uso_cuenta_beneficios_economicos:
+      "Usar la cuenta para obtener beneficios económicos externos a ClassGo sin autorización.",
+    manipular_sistema:
+      "Manipular el sistema con software malicioso, bots, técnicas de scraping o ingeniería inversa.",
+    suplantar_identidad: "Suplantar identidades de personas o instituciones.",
+    classgo_reserva_derecho:
+      "ClassGo se reserva el derecho de investigar, bloquear o eliminar cualquier cuenta que infrinja esta política.",
+    interaccion_usuarios: "3.2 Interacción entre Usuarios",
+    conducta_respetuosa:
+      "Todos los usuarios deben mantener una conducta respetuosa, cordial y profesional. Se prohíbe:",
+    lenguaje_ofensivo:
+      "El uso de lenguaje ofensivo, discriminatorio, difamatorio o violento.",
+    acoso_intimidacion:
+      "El acoso, intimidación o manipulación psicológica hacia cualquier otro usuario.",
+    contacto_no_deseado:
+      "El contacto no deseado fuera de la plataforma con fines personales o comerciales.",
+    reportes_de_comportamiento:
+      "Los reportes de comportamiento inapropiado serán investigados y pueden derivar en sanciones, suspensión o eliminación de la cuenta",
+    uso_contenido_propiedad_intelectual:
+      "3.3 Uso de Contenido y Propiedad Intelectual",
+    imagenes_perfil: "Imágenes de perfil:",
+    aceptar_jpg_png: "Solo se aceptan archivos JPG o PNG de máximo 5 MB.",
+    prohibido_armas_sexual:
+      "Se prohíben imágenes con armas, contenido sexualizado o protegidas por derechos sin permiso.",
+    material_educativo_tutores: "Material educativo (de tutores):",
+    contenido_original:
+      "Los tutores deben subir solo contenido original o bajo licencia de uso (por ejemplo, Creative Commons).",
+    citar_fuentes:
+      "Si se utilizan recursos externos, deben citarse correctamente las fuentes.",
+    derechos_classgo: "Derechos de ClassGo:",
+    propiedad_exclusiva:
+      "El diseño, marca, logotipos, software y estructura de la plataforma son propiedad exclusiva de ClassGo.",
+    licencia_uso_contenido:
+      "3.4 Licencia de Uso del Contenido Subido por el Usuario",
+    licencia_explica:
+      "Al subir contenido a la plataforma, el usuario (ya sea tutor o estudiante) conserva la titularidad y derechos de autor sobre dicho material, pero otorga a ClassGo una licencia no exclusiva, mundial, libre de regalías, transferible y sublicenciable para utilizar dicho contenido con los siguientes fines:",
+    almacenamiento_seguro:
+      "Almacenamiento seguro en los servidores y bases de datos de ClassGo.",
+    visualizacion_reproduccion:
+      "Visualización y reproducción del contenido dentro del entorno educativo digital de la plataforma (incluyendo aplicaciones móviles, sitio web, materiales promocionales internos y recursos para estudiantes).",
+    distribucion_limitada:
+      "Distribución limitada del contenido a otros usuarios registrados (por ejemplo, estudiantes en una sesión, tutores asignados, etc.) en función del propósito educativo del servicio.",
+    adaptacion_tecnica:
+      "Adaptación técnica del contenido, en caso de que sea necesario modificar el formato para asegurar su compatibilidad técnica con los sistemas de la plataforma (por ejemplo, convertir archivos a otros formatos, optimizar resolución, etc.).",
+    condiciones_revocacion: "Condiciones de revocación:",
+    revocar_contenido:
+      "El usuario puede revocar esta licencia eliminando su contenido de la plataforma, excepto cuando:",
+    contenido_compartido:
+      "Ya haya sido compartido con otros usuarios durante el uso legítimo del servicio.",
+    obligacion_legal:
+      "Existe una obligación legal o administrativa que impida la eliminación inmediata del contenido (por ejemplo, en casos de auditoría o disputas).",
+    pagos_reembolsos_reprogramaciones:
+      "4. PAGOS, REEMBOLSOS Y REPROGRAMACIONES",
+    metodos_pago: "4.1 Métodos de Pago",
+    aceptamos_metodos: "Aceptamos:",
+    tarjetas_debito_credito: "Tarjetas de débito/crédito (Visa, Mastercard)",
+    recibo_transaccion: "Cada transacción generará un recibo electrónico.",
+    politica_reembolsos: "4.2 Política de Reembolsos",
+    casos_reembolso: "Casos en los que aplica el reembolso:",
+    cancelacion_tutor: "Cancelación por parte del tutor",
+    fallos_tecnicos:
+      "Fallos técnicos atribuibles a ClassGo (ejemplo: caída del sistema superior a 15 minutos)",
+    condiciones_solicitar_reembolso: "Condiciones para solicitar reembolso:",
+    solicitud_48h:
+      "La solicitud debe realizarse dentro de las 48 horas naturales posteriores al incidente.",
+    procesamiento_48h:
+      "El procesamiento del reembolso se realizará en un plazo de 48 horas hábiles.",
+    cancelaciones_reprogramaciones: "5. CANCELACIONES Y REPROGRAMACIONES",
+    politicas_cancelacion_reprogramacion:
+      "ClassGo establece políticas claras de cancelación y reprogramación que aplican tanto para usuarios como para tutores, con el objetivo de garantizar el respeto por el tiempo de ambas partes, mantener la calidad del servicio y preservar la operatividad de la plataforma.",
+    cancelaciones_usuario: "5.1 Cancelaciones por parte del Usuario",
+    condiciones_cancelacion_usuario: "Condiciones",
+    usuario_24h_anticipacion:
+      "Con más de 24 horas de anticipación: El usuario podrá cancelar o reprogramar sin penalización. Si corresponde, se podrá solicitar el reembolso total del valor de la sesión o reprogramar sin costo adicional.",
+    usuario_menos_24h:
+      "Con menos de 24 horas de anticipación: La cancelación podrá estar sujeta a una penalización del 50% del valor de la sesión, la cual se aplicará como compensación al tutor por el tiempo reservado.",
+    usuario_no_show:
+      "Ausencia injustificada del usuario (no show): Si el usuario no asiste a la sesión sin aviso previo, se considerará como sesión realizada y no se otorgará reembolso. El tutor recibirá el pago correspondiente.",
+    cancelaciones_tutor: "5.2 Cancelaciones por parte del Tutor",
+    condiciones_cancelacion_tutor: "Condiciones",
+    tutor_12h_aviso:
+      "Cancelación con aviso previo (mínimo 12 horas): El tutor deberá ofrecer al usuario opciones para reprogramar. No se aplicarán sanciones si es un evento ocasional y debidamente justificado.",
+    tutor_frecuentes_injustificadas:
+      "Cancelaciones frecuentes o injustificadas: Si un tutor realiza más de tres cancelaciones injustificadas en un mes, podrá recibir sanciones progresivas como advertencias, suspensión temporal o eliminación del perfil.",
+    tutor_no_show:
+      "Ausencia del tutor sin aviso (no show): Se considerará una falta grave. El estudiante recibirá un reembolso total, y el tutor podrá ser sancionado con suspensión inmediata de la cuenta o expulsión de la plataforma.",
+    reprogramaciones: "5.3 Reprogramaciones",
+    condiciones_reprogramacion:
+      "Tanto estudiantes como tutores pueden programar una sesión siempre que:",
+    reprogramacion_24h:
+      "La solicitud se realice con al menos 24 horas de anticipación.",
+    acuerdo_nuevo_horario:
+      "Ambas partes hayan llegado a un acuerdo sobre el nuevo horario.",
+    no_acuerdo_cancelacion:
+      "En caso de no llegar a un acuerdo, la sesión podrá ser cancelada aplicando la política correspondiente.",
+    resolucion_disputas: "5.4 Resolución de Disputas",
+    desacuerdo_tutor_usuario:
+      "En caso de desacuerdo entre un tutor y un usuario respecto a una cancelación o reprogramación:",
+    presentar_argumentos_soporte:
+      "Las partes podrán presentar sus argumentos al equipo de soporte de ClassGo.",
+    classgo_mediador:
+      "ClassGo actuará como mediador e implementará la solución más equitativa para ambas partes.",
+    decision_final:
+      "La decisión tomada será final, salvo disposición legal en contrario.",
+    responsabilidades: "6. RESPONSABILIDADES",
+    uso_responsable_plataforma:
+      "El uso adecuado de la plataforma ClassGo implica un compromiso por parte de todos los usuarios para actuar con responsabilidad, ética y profesionalismo. Las siguientes disposiciones detallan las obligaciones específicas de tutores y estudiantes.",
+    responsabilidades_tutor: "6.1 Responsabilidades del Tutor",
+    veracidad_perfil: "Veracidad del perfil profesional",
+    informacion_academica_actualizada:
+      "Ingresar y mantener actualizada la información académica y profesional.",
+    documentacion_veridica:
+      "Proveer documentación verídica que acredite su formación y experiencia.",
+    no_suplantar_identidad:
+      "No suplantar identidades ni presentar credenciales falsificadas.",
+    calidad_servicio: "Calidad del servicio educativo",
+    preparar_brindar_tutorias:
+      "Preparar y brindar tutorías con puntualidad, claridad y estructura.",
+    usar_recursos_adecuados:
+      "Utilizar recursos pedagógicos adecuados y actualizados.",
+    evitar_contenido_erroneo:
+      "Evitar contenido erróneo, obsoleto o no relevante para el aprendizaje del estudiante.",
+    etica_profesional_trato: "Ética profesional y trato respetuoso",
+    mantener_conducta_profesional:
+      "Mantener una conducta profesional durante todas las interacciones.",
+    evitar_comentarios_ofensivos:
+      "Evitar comentarios ofensivos, discriminatorios, sexistas, racistas o de índole personal.",
+    no_relaciones_inapropiadas:
+      "No establecer relaciones personales inapropiadas con los estudiantes.",
+    uso_contenido: "Uso del contenido",
+    material_autoria_propia:
+      "Garantizar que el material compartido es de autoría propia o cuenta con licencia de uso.",
+    no_usar_contenido_otro:
+      "No utilizar recursos de otros tutores sin autorización explícita.",
+    autorizar_classgo:
+      "Autorizar a ClassGo para mostrar y almacenar el contenido dentro del entorno educativo de la plataforma.",
+    confidencialidad: "Confidencialidad",
+    respetar_privacidad_estudiantes:
+      "Respetar la privacidad y datos personales de los estudiantes.",
+    no_divulgar_informacion:
+      "No divulgar conversaciones, grabaciones ni información obtenida durante las sesiones sin consentimiento.",
+    cumplimiento_legal: "Cumplimiento legal",
+    actividad_cumple_normativa:
+      ">Asegurarse de que su actividad como tutor cumple con la normativa educativa y laboral vigente en su país de residencia.",
+    responsabilidad_ausencias: "Responsabilidad ante ausencias o cancelaciones",
+    notificar_cancelaciones:
+      "Notificar cancelaciones con la mayor antelación posible.",
+    evitar_cancelaciones_reiteradas:
+      "Evitar cancelaciones reiteradas o ausencias injustificadas, las cuales pueden derivar en sanciones por parte de la plataforma.",
+    responsabilidades_estudiante: "6.2 Responsabilidades del Estudiante",
+    estudiantes_compromiso:
+      "Los estudiantes que utilizan ClassGo deben comprometerse a:",
+    participacion_puntualidad: "Participación activa y puntualidad",
+    asistir_sesiones: "Asistir a las sesiones en el horario acordado.",
+    actitud_participativa:
+      "Mantener una actitud participativa, receptiva y orientada al aprendizaje.",
+    respeto_tutor_entorno: "Respeto hacia el tutor y el entorno virtual",
+    respetar_tutores:
+      "Tratar con respeto a los tutores, evitando cualquier conducta abusiva, ofensiva o disruptiva.",
+    no_grabar_sin_autorizacion:
+      "No grabar ni compartir sesiones sin autorización previa.",
+    uso_responsable_plataforma_estudiante: "Uso responsable de la plataforma",
+    no_fines_personales:
+      "No utilizar ClassGo para fines distintos al aprendizaje (por ejemplo, fines comerciales o personales).",
+    no_compartir_terceros:
+      "No compartir acceso con terceros ni hacer uso indebido de las funcionalidades del sistema.",
+    pago_sesiones: "Pago oportuno de las sesiones",
+    pago_autorizado_plazo:
+      "Asegurarse de que los pagos se realicen a través de los métodos autorizados y en los plazos establecidos.",
+    no_reclamaciones_indebidas:
+      "No realizar reclamaciones indebidas por sesiones recibidas correctamente.",
+    evaluacion_tutor: "Evaluación objetiva del tutor",
+    calificar_desempeno_72h:
+      "Calificar de manera justa y constructiva el desempeño de los tutores al finalizar las sesiones, dentro del plazo de 72 horas.",
+    proteccion_datos_privacidad: "Protección de datos y privacidad",
+    no_divulgar_datos: "No divulgar datos personales de otros usuarios.",
+    cumplir_politicas_privacidad:
+      "Cumplir con las políticas de privacidad establecidas por ClassGo.",
+    certificacion_tutores: "6.3 Certificación de Tutores ClassGo",
+    detalle_certificacion_tutores:
+      "Para obtener la certificación oficial como Tutor ClassGo, los usuarios registrados como tutores deberán completar satisfactoriamente el Programa de Formación Pedagógica de ClassGo, que consta de 18 cursos pedagógicos disponibles en la plataforma. Esta certificación es un requisito indispensable para acceder a beneficios especiales, convenios con instituciones y participar en programas de tutoría promocionados por ClassGo.",
+    convenios_beneficios: "6.4 Convenios Académicos y Beneficios",
+    detalle_convenios_beneficios:
+      "ClassGo mantiene convenios con unidades de posgrado y otras instituciones educativas, los cuales pueden otorgar descuentos, accesos preferenciales o beneficios especiales a usuarios que cumplan con los requisitos establecidos en cada acuerdo. El cumplimiento de estos beneficios está sujeto a la verificación de requisitos específicos, como el avance en el plan formativo de la plataforma o la validación de identidad.",
+    gestion_quejas_validacion: "6.5 Gestión de Quejas y Validación de Clases",
+    detalle_gestion_quejas:
+      "En caso de que un usuario experimente inconveniente durante una tutoría (por ejemplo, ausencia del tutor, fallos graves en la clase o incumplimientos de calidad), podrá presentar una queja dentro de los primeros 2 a 3 minutos posteriores a la finalización de la sesión. Si no se registra ninguna queja durante este periodo, elsistema procesará automáticamente el pago correspondiente al tutor. Todas las quejas recibidas serán evaluadas por el equipo de soporte de ClassGo, quien actuará como mediador para resolver la situación de manera justa, pudiendo aplicar reembolsos, retenciones o sanciones según corresponda.",
+    limitacion_responsabilidad: "7. LIMITACIÓN DE RESPONSABILIDAD",
+    classgo_no_responsable_por: "ClassGo no será responsable por:",
+    danos_indirectos:
+      "Daños indirectos, incluyendo pérdida de oportunidades laborales.",
+    conflictos_usuarios_tutores: "Conflictos entre usuarios y tutores.",
+    problemas_tecnicos_ajenos:
+      "Problemas técnicos ajenos a la plataforma (por ejemplo, fallos del proveedor de internet del usuario).",
+    modificaciones_terminos: "8. MODIFICACIONES A LOS TÉRMINOS",
+    modificacion_avisada:
+      "Cualquier modificación será comunicada con al menos 15 días de anticipación mediante correo electrónico.",
+    aceptacion_continuada:
+      "El uso continuado de la plataforma implica la aceptación de los nuevos términos.",
+    contacto_soporte: "9. CONTACTO Y SOPORTE",
+    soporte_tecnico: "Soporte técnico:",
+    reclamos_formales:
+      "Reclamos formales: enviar documentación física a:<br>CALLE ANGOSTURA, NRO: 314<br>BARRIO EL PARI, UV: 28 MZA 12<br>ENTRE LA CALLE EMILIO FINOT Y LA AVENIDA ESCUADRON VELASCO<br>",
+    contactanos_whatsapp: "Contáctanos al: ",
+    jurisdiccion_resolucion_conflictos:
+      "10. JURISDICCIÓN Y RESOLUCIÓN DE CONFLICTOS",
+    acuerdo_legislacion_bolivia:
+      "Este acuerdo se rige por la legislación vigente en el Estado Plurinacional de Bolivia, incluyendo las disposiciones aplicables del Código Civil, la Ley de Protección al Consumidor y demás normas relacionadas con servicios digitales y relaciones contractuales electrónicas.",
+    mecanismo_conciliacion_arbitraje:
+      "10.1 Mecanismo preferente: conciliación o arbitraje",
+    resolucion_amistosa:
+      "Se intentará resolver la controversia de forma amistosa mediante conciliación voluntaria o arbitraje institucional, de conformidad con lo establecido en la normativa boliviana y bajo los reglamentos del Centro de Conciliación y Arbitraje de la Cámara de Comercio y Servicios de Santa Cruz (CAINCO), u otra entidad reconocida acordada por ambas partes.",
+    procedimiento_confidencial:
+      "El procedimiento será confidencial, rápido y con carácter vinculante.",
+    inicio_proceso_solicitud:
+      "La parte interesada deberá iniciar el proceso enviando una solicitud formal al centro correspondiente.",
+    acatar_decision_tribunal:
+      "Ambas partes se comprometen a acatar la decisión emitida por el tribunal arbitral o conciliador.",
+    instancia_judicial_subsidiaria: "10.2 Instancia judicial subsidiaria",
+    jurisdiccion_ordinaria:
+      "Si no se logra acuerdo en conciliación o si el arbitraje no puede llevarse a cabo por causas atribuibles a una de las partes o por disposición legal, las partes se someten a la jurisdicción ordinaria de los tribunales competentes de la ciudad de Santa Cruz de la Sierra, renunciando expresamente a cualquier otro fuero o jurisdicción que pudiera corresponderles.",
+    renuncia_accion_colectiva: "10.3 Renuncia a acción colectiva",
+    accion_individual:
+      "Los usuarios aceptan que cualquier acción legal deberá ser interpuesta de manera individual. No se permite la acumulación de demandas en calidad de acción colectiva o grupal contra ClassGo, salvo que lo exija expresamente una autoridad judicial competente.",
+    idioma_legislacion_aplicable: "10.4 Idioma y legislación aplicable",
+    procedimiento_idioma_espanol:
+      "Todo procedimiento, ya sea conciliatorio, arbitral o judicial, se desarrollará en idioma español y conforme a las leyes sustantivas y procesales del Estado Plurinacional de Bolivia. Nota final de la cláusula:<br>En caso de no lograrse una solución mediante estos medios, las partes se someten a la jurisdicción de los tribunales competentes de la ciudad de Santa Cruz, Bolivia.",
+    uso_internacional: "11. USO INTERNACIONAL",
+    descripcion_uso_internacional:
+      "ClassGo es una plataforma desarrollada y operada conforme a las leyes del Estado Plurinacional de Bolivia. No obstante, está disponible para usuarios en otros países, sujeto a las siguientes condiciones:",
+    responsabilidad_usuario_internacional:
+      "11.1 Responsabilidad del usuario internacional",
+    usuario_responsable_exterior:
+      "Si accedes o utilizas ClassGo desde fuera de Bolivia, lo haces bajo tu propia iniciativa y responsabilidad. Eres el único responsable de asegurar que el uso de los servicios, contenidos y funciones de la plataforma cumpla con las leyes, normativas y regulaciones locales del país desde el cual accedes. Esto incluye, pero no se limita a:",
+    normativas_educacion_linea: "Normativas sobre educación en línea",
+    proteccion_datos: "Protección de datos",
+    comercio_electronico: "Comercio electrónico",
+    propiedad_intelectual: "Propiedad intelectual",
+    tributacion_digital: "Tributación digital",
+    limitaciones_disponibilidad_servicios:
+      "11.2 Limitaciones de disponibilidad de servicios",
+    restricciones_servicios:
+      "Algunos servicios, características o métodos de pago pueden estar restringidos o no disponibles en ciertos territorios debido a:",
+    restricciones_legales_locales: "Restricciones legales locales",
+    normativas_exportacion:
+      "Normativas de exportación o control de servicios tecnológicos",
+    incompatibilidad_tecnica:
+      "Incompatibilidad técnica con sistemas de pago o redes educativas externas",
+    politicas_internas_classgo:
+      "Políticas internas de ClassGo para evitar incumplimientos regulatorios",
+    en_tales_casos: "11.3 En tales casos",
+    responsabilidad_limitada:
+      "ClassGo no será responsable por la imposibilidad de acceso total o parcial a determinadas funciones, siempre que estas restricciones estén justificadas por motivos legales o técnicos.",
+    idioma_soporte: "11.4 Idioma y soporte",
+    interfaz_documentacion_soporte:
+      "Toda la interfaz, documentación legal, soporte técnico y comunicaciones oficiales se encuentran disponibles únicamente en idioma español. Los usuarios que accedan desde otros países aceptan utilizar la plataforma bajo esta modalidad lingüística.",
+    jurisdiccion_disputas_internacionales:
+      "11.5 Jurisdicción y disputas internacionales",
+    disputas_internacionales:
+      "A pesar del uso internacional, cualquier disputa relacionada con la plataforma se regirá por la legislación boliviana y se someterá a los mecanismos de resolución de conflictos establecidos en la cláusula 10 de estos Términos y Condiciones.",
+    cumplimiento_normativo_global: "11.6 Cumplimiento normativo global",
+    derecho_restricciones_cuentas:
+      "ClassGo se reserva el derecho de restringir, suspender o cancelar cuentas de usuarios que, residiendo en el extranjero:",
+    infrinjan_leyes_locales: "nfrinjan leyes locales",
+    riesgo_cumplimiento_normativo:
+      "Pongan en riesgo el cumplimiento normativo de la plataforma",
+    reservarse_derecho_no_operar:
+      "Asimismo, nos reservamos el derecho de no operar en países con los que existan:",
+    barreras_regulatorias_insalvables: "Barreras regulatorias insalvables",
+    conflictos_legales_viabilidad:
+      "Conflictos legales que afecten la viabilidad del servicio",
+    descarga_terminos_pdf: "Descarga términos y condiciones en PDF",
+    boton_descargar_pdf: "Descargar PDF",
+    //Blogs
+    ideas: "Ideas y consejos de expertos para estudiantes de por vida",
+    Acceda:
+      "Acceda a información valiosa, consejos de expertos y sugerencias de nuestra activa comunidad de tutores.",
+    bus: "Buscar",
+    td_bl: "Todos los blogs",
+    sel: "Seleccionar categoría",
+    neg: "Negocios",
+    tec: "Tecnología",
+    edu: "Educación",
+    ord: "Ordenar por",
+    ma_rec: "Más recientes",
+    ma_pop: "Más populares",
+    ciberseguridad: "Ciberseguridad",
+    no_blog: "No hay blogs disponibles.",
+  },
+  en: {
+    // Navbar
+    tutors: "Tutors",
+    about: "About Us",
+    howWeWork: "How We Work",
+    faq: "Questions",
+    ingre: "Log In",
+    // Footer
+    buscar_tutor: "Search Tutor",
+    registrate_gratis: "Sign Up for Free",
+    tutores_en_linea: "Online Tutors",
+    inicia_hoy: "Start Today",
+    registrate: "Sign Up",
+    encontrar_tutor: "Find a Tutor",
+    nosotros: "About Us",
+    mision: "Mission",
+    vision: "Vision",
+    logros_clave: "Key Achievements",
+    preguntas: "Questions",
+    preguntas_frecuentes: "Frequently Asked Questions",
+    lee_ma: "Read More",
+    terminos: "Terms and Conditions",
+    get_app: "Get the App",
+    edu_world: "Take your education everywhere!",
+    todos_derechos: "All rights reserved.",
+    desarrolladores: "Developers",
+    todos_derechos: "All rights reserved.",
+    // Home
+    learn: "Learn and Progress with",
+    tutoring: "Online Tutoring",
+    reach_goals:
+      "Achieve your goals with personalized tutoring from top experts.<br> Connect with dedicated tutors to ensure your success.",
+    reach_goals_short:
+      "Achieve your goals with personalized tutoring from top experts.",
+    tutores: "Tutors",
+    nuestra_app: "Our App",
+    registrate: "Sign Up",
+    ingresa: "Log In",
+    us_check: "Registered Users",
+    tutor_ok: "Available Tutors",
+    est_check: "Registered Students",
+    play_s: "On Play Store",
+    search_tutors: "Search Tutors",
+    featured_tutors: "Featured Tutors",
+    selected_tutors: "Find Your Ideal Tutor",
+    academic_variety:
+      "Discover a variety of academic and practical subjects to enhance your learning experience",
+    seeks: "Find More Tutors",
+    finds: "Find the perfect tutor for your needs and start learning today.",
+    explore: "Explore Now",
+    guide: "A Step-by-Step Guide",
+    unlock_potential: "Unlock Your Potential with Simple Steps",
+    improve_skills:
+      "Improve your skills with the best tutors, easily and quickly.",
+    step_1: "Step 1",
+    step_2: "Step 2",
+    step_3: "Step 3",
+    sign_up: "Sign Up",
+    create_account: "Quickly create your account to start using our platform",
+    begin: "Begin",
+    find_tutor: "Find a Tutor",
+    tutores_calificados:
+      "Search and select from qualified tutors based on your needs.",
+    buscar_ahora: "Search Now",
+    reservar_ahora: "Book Now",
+    encuentra_mejor:
+      "Find the best time and easily schedule your session on our platform.",
+    empecemos: "Let's Get Started",
+    comenzar_jornada: "Start Your Journey",
+    comenzar_viaje:
+      "Start your educational journey with us. Book your first session today!",
+    empezar_ahora: "Start Now",
+    facil_simple_rapido: "Easy, Simple, and Fast",
+    instala_app: "Install Our App",
+    comienza_viaje_educativo:
+      "Start your educational journey with us. Install our app today!",
+    acceso: "24/7 Access",
+    tutores_expertos: "Expert Tutors",
+    tarifas_asequibles: "Affordable Rates",
+    descargar_ahora: "Download Now",
+    buscas_tutorias: "Looking for personalized tutoring?",
+    conectamos_tutores: "At ClassGo, we connect you with the best tutors",
+    sesiones_cortas:
+      "Access short, practical sessions designed by expert tutors to be learning lifesavers",
+    comienza_ahora: "Start Now",
+    visual_phone_txt1: "Which subject do you need help with?",
+    visual_phone_txt2: "Get ready for that tough exam",
+    visual_phone_txt3: "Master that subject",
+    visual_phone_txt4: "Guaranteed academic support",
+    visual_phone_btn1: "Find Tutors",
+    buscar_tutor_txt1: "Discover an Online Tutor for Your Studies",
+    buscar_tutor_txt2:
+      "Master any subject with the help of our expert tutors and achieve your academic goals.",
+    buscar_tutor_txt3: "What do you want to learn?",
+    filtro_materias_txt1: "Subjects That Can Help You",
+    filtro_materias_txt2: "Explore Our Subjects",
+    filtro_materias_txt3: "Tutors ready in different areas to help you",
+    filtro_materias_txt4: "Accounting",
+    filtro_materias_txt5: "Intermediate, Governmental, Tax, Cost Accounting.",
+    filtro_materias_txt6: "Exact Sciences",
+    filtro_materias_txt7: "Calculus, Physics, Applied Mechanics",
+    filtro_materias_txt8: "Chemistry",
+    filtro_materias_txt9: "Solution Chemistry, Chromatography, Food Chemistry.",
+    filtro_materias_txt10: "Programming",
+    filtro_materias_txt11: "Theory of Computation, Python, PHP, Java.",
+    filtro_materias_txt12: "English",
+    filtro_materias_txt13: "Idiomatic Expressions, Pronunciation, Writing.",
+    filtro_materias_txt14: "Music",
+    filtro_materias_txt15: "Composition, Music Reading, Chords.",
+    encuesta_txt1: "HELP US IMPROVE",
+    encuesta_txt2: "Your opinion is worth gold (and discounts)",
+    encuesta_txt3: "Get an exclusive coupon when you finish",
+    encuesta_btn1: "Take the Survey",
+    encuesta_txt4: "Did you easily find the subject you were looking for?",
+    encuesta_op1: "Yes, it was easy",
+    encuesta_op2: "It was difficult",
+    encuesta_btn2: "Next",
+    encuesta_txt5: "How likely are you to recommend us?",
+    encuesta_txt6: "Select the stars",
+    encuesta_txt7:
+      "We want to know your opinion: <br>tell us about your experience or leave a comment.",
+    encuesta_op3: "Excellent service",
+    encuesta_op4: "Very fast",
+    encuesta_op5: "Fair prices",
+    encuesta_op6: "Lack of variety",
+    encuesta_op7: "Average",
+    encuesta_txt8: "Almost ready!",
+    encuesta_txt9:
+      "Your opinion is very valuable to us. As a thank you, we will give you a 50% discount coupon.",
+    encuesta_txt10: "Enter your phone number to receive the coupon:",
+    encuesta_btn3: "Send and Finish",
 
-        // Alianzas
-        alianzas: "Our Partnerships",
-        alianzas_edu: "Partnerships that Enhance Education",
-        alianzas_Classgo: "At ClassGo, we believe in the power of collaboration to transform learning. That’s why we work alongside educational institutions, clubs, and organizations committed to academic growth and personal development.",
-        alianzas_Classgo_1: "At ClassGo we believe in the power of collaboration to transform learning.",
-        // Buscar Tutor
-        /*no traduce pero si detesta al json*/
-        /*tutores_encontrar: "Tutors / Find a tutor",
+    // Alianzas
+    alianzas: "Our Partnerships",
+    alianzas_edu: "Partnerships that Enhance Education",
+    alianzas_Classgo:
+      "At ClassGo, we believe in the power of collaboration to transform learning. That’s why we work alongside educational institutions, clubs, and organizations committed to academic growth and personal development.",
+    alianzas_Classgo_1:
+      "At ClassGo we believe in the power of collaboration to transform learning.",
+    // Buscar Tutor
+    /*no traduce pero si detesta al json*/
+    /*tutores_encontrar: "Tutors / Find a tutor",
         descubra_tutor: "Discover a qualified online tutor for your studies",
         domina_tus_estudios: "Master your studies with personalized online tutoring from expert educators.<br> Our trained tutors are here to help you build solid foundations and achieve your academic goals.",*/
-        // Nosotros
-        ini_n: "Home",
-        i_nos: "About Us",
-        who: "Who are we?",
-        plataforma_d_tutoria: "We are an online tutoring platform that connects students of all ages with expert tutors. We provide an accessible and high-quality experience, regardless of your location or schedule.",
-        mision: "Mission",
-        plataforma_d_educacion: "Educational platform for virtual tutoring to share knowledge.",
-        proporcionamos_educacion: "We provide an educational platform for 24/7 virtual tutoring, aimed at anyone who wants to share their knowledge, with content ranging from university level to technical skills.",
-        mas_docientos: "+200",
-        tutorias_disponibles: "Available tutoring",
-        vision: "Vision",
-        ser_plataforma_lider: "Driving learning growth.",
-        fomentar_aprendizaje: "To be the leading platform in virtual tutoring, promoting continuous learning and educational accessibility in all areas of knowledge.",
-        team: "Our team",
-        creadores_classgo: "The creators of the ClassGo website and app, dedicated to revolutionizing education.",
-        lic_presentacion: "Hello! I am Gabriel, passionate about sharing knowledge and helping you achieve your academic goals. With years of experience in teaching and finance, my goal is to guide your learning in a clear and effective way.",
-        jefi_rol: "General Coordinator",
-        jefi_presentacion: "Ready for the challenges of the digital business world, with an agile mindset and results-oriented solutions.",
-        opjefi_rol: "Operations Manager",
-        opjefi_presentacion: "Passionate about sharing knowledge in a clear and practical way. My goal is to help you learn simply and effectively.",
-        jefi_movil_rol: "Mobile Developer",
-        jefi_movil_presentacion: "I am a systems engineer, web developer, and mobile app developer.",
-        jefi_Bdeveloper_rol: "Backend Developer",
-        jefi_Bdeveloper_presentacion: "Building robust, scalable, and efficient systems that ensure optimal performance and a smooth user experience, regardless of the complexity of the challenge.",
-        jefi_Fdeveloper_rol: "Frontend Developer",
-        jefi_Fdeveloper_presentacion: "Creating intuitive and attractive interfaces that make learning an enjoyable and accessible experience for everyone.",
-        jefi_sofware_rol: "Software Architect",
-        jefi_sofware_presentacion: "Designing solid and sustainable technological solutions, aligned with business objectives, to ensure a scalable, secure, and future-ready architecture.",
-        jefi_diseño_rol: "Graphic Designer",
-        // Trabajamos
-        inicio: "Home",
-        como_trabajamos: "How We Work",
-        unete_comunidad: "Join our community today",
-        unete_comunidad_desc: "Join our community to share your experience as a tutor or improve your skills as a student.<br>Connect, learn, and grow with us today.",
-        para_estudiantes: "For students",
-        para_tutores: "For tutors",
-        completa_datos: "Complete your details and set your learning preferences",
-        completa_datos_desc: "Provide your personal details and set your learning preferences to create a profile tailored to your educational needs.<br>This will help you find the most suitable tutors and optimize your learning experience.",
-        utiliza_filtros: "Use filters to refine your search and view detailed tutor profiles",
-        utiliza_filtros_desc: "Use filters to narrow your tutor search by subject, level, price, location, and availability.<br>This allows you to see detailed tutor profiles that best match your learning needs.",
-        elige_horario: "Choose a convenient time and book your lesson instantly",
-        pasos_reservar: "Steps to book a tutoring session",
-        paso_select_time: "Select an available time slot",
-        paso_click_slot: "Click on the desired slot",
-        paso_choose_type: "Choose session type",
-        paso_confirm_booking: "Confirm booking details",
-        paso_payment: "Proceed to payment",
-        paso_receive_confirmation: "Receive confirmation",
-        asiste_leccion_login: "Attend the lesson",
-        asiste_login_desc: "Log in at the scheduled time and start learning",
-        asiste_presen: "Log in at the scheduled time and join the session to start learning.<br>Connect with your tutor via Zoom to enjoy an engaging and interactive lesson.",
-        completa_form: "Fill out a quick feedback form after your lesson",
-        feedback_desc: "After your lesson, fill out a quick feedback form to share your thoughts and rate your experience.<br>Your feedback helps us improve and ensure the best learning environment for everyone.",
-        crea_perfil: "Create your profile and list your qualifications",
-        crea_perfil_cont: "Create your profile to showcase your qualifications, skills, and experience. Highlight your expertise, education, and the subjects you teach to attract potential students and build credibility on the platform.",
-        gestiona_horario: "Manage your schedule to show when you're available to teach",
-        gestiona_horario_desc: "Easily manage your availability by updating your schedule with the times you are open to teach. This helps students know when they can book sessions with you and keeps your teaching calendar organized.",
-        revisar_solicitudes: "Review student requests and accept bookings",
-        revisar_solicitudes_desc: "Review incoming student requests and manage your bookings by accepting lessons that fit your availability. Confirm bookings to connect with students and start teaching as scheduled.",
-        dirige_clase: "Lead your class with Meet",
-        dirige_clase_desc: "Connect at the scheduled time and start delivering your session. Use the platform's integrated video conferencing tool to engage with your students and provide an interactive learning experience.",
-        proceso_calidad: "We guarantee a quality process",
-        unete_comunidad_repetido: "Join our community today",
-        unete_comunidad_repetido_desc: "Join our community to share your experience as a tutor or improve your skills as a student.<br>Connect, learn, and grow with us today.",
-        // preguntas
-        inicio: "Home",
-        preguntas: "Questions",
-        encuentra_respuesta: "Find your answer",
-        empoderando_estudiantes: "Empowering students worldwide",
-        para_estudiantes_faq: "For students",
-        para_tutores_faq: "For tutors",
-        faq_encontrar_tutor: "How do I find a tutor?",
-        faq_encontrar_tutor_desc: "Use the search bar to find available tutors according to the subject or topic you need",
-        faq_reservar_sesion: "How do I book a session?",
-        faq_reservar_sesion_desc: "Once you find a tutor, check their profile and select an available time slot that works for you. Click 'Book' and follow the instructions to confirm your session.",
-        faq_cancelar_reprogramar: "What if I need to cancel or reschedule a session?",
-        faq_cancelar_reprogramar_desc: "Tutoring sessions cannot be canceled once booked. If any issue occurs, contact us and we will gladly assist you.",
-        faq_pagos: "How do I pay for sessions?",
-        faq_pagos_desc: "Payments are made through the QR code provided in your booking or via bank transfer using the details displayed on the screen.",
-        faq_tutor_no_presente: "What should I do if my tutor doesn't show up?",
-        faq_tutor_no_presente_desc: "If your tutor does not show up for a scheduled session, contact our support team immediately for assistance to reschedule or request a refund.",
-        faq_comentarios_tutor: "How can I leave feedback for my tutor?",
-        faq_comentarios_tutor_desc: "Go to the tutor's profile, scroll down, and head to the reviews section, where you can see ratings and comments from students.",
-        faq_ser_tutor: "How can I become a tutor?",
-        faq_ser_tutor_desc_txt1: "If you haven't created an account yet ",
-        faq_ser_tutor_desc_link: "click here",
-        faq_ser_tutor_desc_txt2: ' and fill out the form, then select "Tutor" at the end. Create your profile and submit the required documents for approval.',
-        faq_cualificaciones_tutor: "What qualifications do I need to be a tutor?",
-        faq_cualificaciones_tutor_desc: "Having an academic degree is not required. If you want to teach 'something', you can do it.",
-        faq_configurar_disponibilidad: "How do I set my availability?",
-        faq_configurar_disponibilidad_desc: "Log in to your account, go to the 'Manage Available Time' section, and update your calendar with your available time slots.",
-        faq_estudiante_cancela: "What if a student cancels a session?",
-        faq_estudiante_cancela_desc: "Students do not have the option to cancel a session after booking. If a student informs you of a problem, advise them to contact us for assistance.",
-        /*Terminos*/
-        terminos_y_condiciones: "TERMS AND CONDITIONS OF USE OF CLASSGO",
-        fecha_actualizacion: "Last updated: 07/02/2025",
-        introduccion: "1. Introduction",
-        bienvenida: 'Welcome to ClassGo "the Platform", a service managed by ClassGO S.R.L. By registering or using our services, you legally agree to comply with these Terms and Conditions "T & C". If you do not agree, please refrain from using the platform.',
-        cuentas_usuario: "2. USER ACCOUNTS",
-        registro_verificacion: "2.1 Registration and Verification",
-        info_personal: "All users who wish to access ClassGo’s services must complete the registration process by providing accurate and up-to-date personal information.",
-        subapartado_estudiantes: "Students Subsection",
-        nombre_correo_fecha_pais: "Full name, email address, date of birth, and country of residence.",
-        aceptar_politica: "The Privacy Policy and these Terms must be expressly accepted.",
-        subapartado_tutores: "Tutors Subsection",
-        doc_academica: "In addition to the mentioned data, they must submit academic documentation proving their suitability (university degree, certificates, specializations, etc.).",
-        entrevistas_referencias: "ClassGo may request interviews, additional validations, or references for profile verification.",
-        veracidad_actualizacion: "2.2 Accuracy and Updating of Data",
-        usuario_responsable_mantener: "The user is responsible for keeping their personal and academic data up to date at all times.",
-        classgo_derecho_suspender: "ClassGo reserves the right to suspend accounts with incorrect, outdated, or fraudulent information.",
-        seguridad_responsabilidad_cuenta: "2.3 Account Security and Responsibility",
-        confidencialidad_credenciales: "The user is responsible for maintaining the confidentiality of their credentials (email and password).",
-        no_compartir_cuentas: "Account sharing between individuals is not allowed.",
-        notificar_actividades_sospechosas: "The user must immediately notify any suspicious activity or unauthorized use to the support email.",
-        classgo_no_responsable: "ClassGo will not be responsible for unauthorized access caused by user negligence.",
-        edad_minima: "2.4 Minimum Age",
-        usuarios_mayores_18: "Users over 18 years old may register.",
-        menores_con_autorizacion: "Minors may register with written consent from a parent or guardian, sent to the email",
-        menores_con_autorizacion_2: "and with permanent supervision by the responsible adult.",
-        suspensiones: "2.5 Suspension and Termination of Accounts",
-        classgo_derecho_suspender_temporal: "ClassGo reserves the right to temporarily or permanently suspend an account in case of:",
-        incumplimiento_tyc: "Violation of these Terms and Conditions.",
-        actividades_sospechosas: "Suspicious, abusive, or illegal activities.",
-        reportes_mala_conducta: "Repeated reports of misconduct by other users.",
-        decision_notificada_correo: "The decision will be notified via email and may include access restrictions, content removal, or permanent termination of the profile.",
-        politicas_uso: "3. USAGE POLICIES",
-        uso_aceptable: "3.1 Acceptable Use of the Platform",
-        uso_clasgo_estricto: "The use of ClassGo must be strictly for educational purposes. The following are strictly prohibited:",
-        actividades_ilicitas: "Using the platform for illegal, deceptive, or public order-violating activities.",
-        spam_phishing: "Sending spam, phishing, fraud, mass messages, or similar activities.",
-        uso_cuenta_beneficios_economicos: "Using the account to obtain economic benefits outside ClassGo without authorization.",
-        manipular_sistema: "Manipulating the system with malicious software, bots, scraping techniques, or reverse engineering.",
-        suplantar_identidad: "Impersonating individuals or institutions.",
-        classgo_reserva_derecho: "ClassGo reserves the right to investigate, block, or delete any account that violates this policy.",
-        interaccion_usuarios: "3.2 Interaction Between Users",
-        conducta_respetuosa: "All users must maintain respectful, cordial, and professional conduct. The following are prohibited:",
-        lenguaje_ofensivo: "Using offensive, discriminatory, defamatory, or violent language.",
-        acoso_intimidacion: "Harassment, intimidation, or psychological manipulation of any other user.",
-        contacto_no_deseado: "Unwanted contact outside the platform for personal or commercial purposes.",
-        reportes_de_comportamiento: "Reports of inappropriate behavior will be investigated and may result in sanctions, suspension, or account deletion.",
-        uso_contenido_propiedad_intelectual: "3.3 Use of Content and Intellectual Property",
-        imagenes_perfil: "Profile images:",
-        aceptar_jpg_png: "Only JPG or PNG files up to 5 MB are allowed.",
-        prohibido_armas_sexual: "Images with weapons, sexualized content, or copyrighted materials without permission are prohibited.",
-        material_educativo_tutores: "Educational material (from tutors):",
-        contenido_original: "Tutors must upload only original content or content under a valid license (e.g., Creative Commons).",
-        citar_fuentes: "If external resources are used, sources must be properly cited.",
-        derechos_classgo: "ClassGo Rights:",
-        propiedad_exclusiva: "The platform's design, brand, logos, software, and structure are the exclusive property of ClassGo.",
-        licencia_uso_contenido: "3.4 License for Use of User-Uploaded Content",
-        licencia_explica: "By uploading content to the platform, the user (tutor or student) retains ownership and copyright over the material, but grants ClassGo a non-exclusive, worldwide, royalty-free, transferable, and sublicensable license to use the content for the following purposes:",
-        almacenamiento_seguro: "Secure storage on ClassGo’s servers and databases.",
-        visualizacion_reproduccion: "Viewing and reproducing the content within the platform’s digital educational environment (including mobile apps, website, internal promotional materials, and resources for students).",
-        distribucion_limitada: "Limited distribution of content to other registered users (e.g., students in a session, assigned tutors, etc.) for the educational purpose of the service.",
-        adaptacion_tecnica: "Technical adaptation of the content, if necessary, to ensure compatibility with platform systems (e.g., converting files to other formats, optimizing resolution, etc.).",
-        condiciones_revocacion: "Revocation Conditions:",
-        revocar_contenido: "The user may revoke this license by deleting their content from the platform, except when:",
-        contenido_compartido: "It has already been shared with other users during legitimate use of the service.",
-        obligacion_legal: "There is a legal or administrative obligation preventing immediate removal of the content (e.g., audits or disputes).",
-        pagos_reembolsos_reprogramaciones: "4. PAYMENTS, REFUNDS, AND RESCHEDULING",
-        metodos_pago: "4.1 Payment Methods",
-        aceptamos_metodos: "We accept:",
-        tarjetas_debito_credito: "Debit/Credit Cards (Visa, Mastercard)",
-        recibo_transaccion: "Each transaction will generate an electronic receipt.",
-        politica_reembolsos: "4.2 Refund Policy",
-        casos_reembolso: "Cases in which refunds apply:",
-        cancelacion_tutor: "Cancellation by the tutor",
-        fallos_tecnicos: "Technical failures attributable to ClassGo (e.g., system downtime longer than 15 minutes)",
-        condiciones_solicitar_reembolso: "Conditions for requesting a refund:",
-        solicitud_48h: "The request must be made within 48 calendar hours after the incident.",
-        procesamiento_48h: "Refund processing will be completed within 48 business hours.",
-        cancelaciones_reprogramaciones: "5. CANCELLATIONS AND RESCHEDULING",
-        politicas_cancelacion_reprogramacion: "ClassGo establishes clear cancellation and rescheduling policies applicable to both users and tutors to ensure respect for both parties’ time, maintain service quality, and preserve platform operability.",
-        cancelaciones_usuario: "5.1 Cancellations by the User",
-        condiciones_cancelacion_usuario: "Conditions",
-        usuario_24h_anticipacion: "With more than 24 hours' notice: The user may cancel or reschedule without penalty. If applicable, a full refund of the session fee may be requested, or rescheduling can be done at no additional cost.",
-        usuario_menos_24h: "With less than 24 hours' notice: Cancellation may be subject to a 50% session fee penalty, applied as compensation to the tutor for the reserved time.",
-        usuario_no_show: "Unjustified absence (no show): If the user does not attend the session without prior notice, it will be considered as completed, and no refund will be granted. The tutor will receive the corresponding payment.",
-        cancelaciones_tutor: "5.2 Cancellations by the Tutor",
-        condiciones_cancelacion_tutor: "Conditions",
-        tutor_12h_aviso: "Cancellation with prior notice (minimum 12 hours): The tutor must offer the user options to reschedule. No sanctions will apply if it is an occasional and properly justified event.",
-        tutor_frecuentes_injustificadas: "Frequent or unjustified cancellations: If a tutor makes more than three unjustified cancellations in a month, they may receive progressive sanctions such as warnings, temporary suspension, or profile removal.",
-        tutor_no_show: "Tutor absence without notice (no show): Considered a serious offense. The student will receive a full refund, and the tutor may be sanctioned with immediate account suspension or platform expulsion.",
-        reprogramaciones: "5.3 Rescheduling",
-        condiciones_reprogramacion: "Both students and tutors may schedule a session provided that:",
-        reprogramacion_24h: "The request is made at least 24 hours in advance.",
-        acuerdo_nuevo_horario: "Both parties have agreed on the new schedule.",
-        no_acuerdo_cancelacion: "If no agreement is reached, the session may be canceled according to the applicable policy.",
-        resolucion_disputas: "5.4 Dispute Resolution",
-        desacuerdo_tutor_usuario: "In case of disagreement between a tutor and a user regarding a cancellation or rescheduling:",
-        presentar_argumentos_soporte: "Both parties may present their arguments to the ClassGo support team.",
-        classgo_mediador: "ClassGo will act as mediator and implement the most equitable solution for both parties.",
-        decision_final: "The decision made will be final, unless otherwise required by law.",
-        responsabilidades: "6. RESPONSIBILITIES",
-        uso_responsable_plataforma: "Proper use of the ClassGo platform implies a commitment from all users to act responsibly, ethically, and professionally. The following provisions detail the specific obligations of tutors and students.",
-        responsabilidades_tutor: "6.1 Tutor Responsibilities",
-        veracidad_perfil: "Accuracy of Professional Profile",
-        informacion_academica_actualizada: "Enter and keep academic and professional information up to date.",
-        documentacion_veridica: "Provide truthful documentation verifying education and experience.",
-        no_suplantar_identidad: "Do not impersonate others or present falsified credentials.",
-        calidad_servicio: "Quality of Educational Service",
-        preparar_brindar_tutorias: "Prepare and deliver tutoring sessions punctually, clearly, and in a structured manner.",
-        usar_recursos_adecuados: "Use appropriate and updated pedagogical resources.",
-        evitar_contenido_erroneo: "Avoid erroneous, outdated, or irrelevant content for student learning.",
-        etica_profesional_trato: "Professional Ethics and Respectful Conduct",
-        mantener_conducta_profesional: "Maintain professional conduct during all interactions.",
-        evitar_comentarios_ofensivos: "Avoid offensive, discriminatory, sexist, racist, or personal comments.",
-        no_relaciones_inapropiadas: "Do not establish inappropriate personal relationships with students.",
-        uso_contenido: "Use of Content",
-        material_autoria_propia: "Ensure that shared material is original or has a valid license.",
-        no_usar_contenido_otro: "Do not use resources from other tutors without explicit authorization.",
-        autorizar_classgo: "Authorize ClassGo to display and store the content within the platform’s educational environment.",
-        confidencialidad: "Confidentiality",
-        respetar_privacidad_estudiantes: "Respect students’ privacy and personal data.",
-        no_divulgar_informacion: "Do not disclose conversations, recordings, or information obtained during sessions without consent.",
-        cumplimiento_legal: "Legal Compliance",
-        actividad_cumple_normativa: "Ensure that your activity as a tutor complies with the educational and labor regulations in your country of residence.",
-        responsabilidad_ausencias: "Responsibility Regarding Absences or Cancellations",
-        notificar_cancelaciones: "Notify cancellations as early as possible.",
-        evitar_cancelaciones_reiteradas: "Avoid repeated cancellations or unjustified absences, which may result in platform sanctions.",
-        responsabilidades_estudiante: "6.2 Student Responsibilities",
-        estudiantes_compromiso: "Students using ClassGo must commit to:",
-        participacion_puntualidad: "Active Participation and Punctuality",
-        asistir_sesiones: "Attend sessions at the agreed-upon time.",
-        actitud_participativa: "Maintain a participative, receptive, and learning-oriented attitude.",
-        respeto_tutor_entorno: "Respect for the Tutor and Virtual Environment",
-        respetar_tutores: "Treat tutors respectfully, avoiding abusive, offensive, or disruptive behavior.",
-        no_grabar_sin_autorizacion: "Do not record or share sessions without prior authorization.",
-        uso_responsable_plataforma_estudiante: "Responsible Use of the Platform",
-        no_fines_personales: "Do not use ClassGo for purposes other than learning (e.g., commercial or personal purposes).",
-        no_compartir_terceros: "Do not share access with third parties or misuse system functionalities.",
-        pago_sesiones: "Timely Payment for Sessions",
-        pago_autorizado_plazo: "Ensure payments are made through authorized methods and within the established deadlines.",
-        no_reclamaciones_indebidas: "Do not make undue claims for sessions properly received.",
-        evaluacion_tutor: "Objective Evaluation of the Tutor",
-        calificar_desempeno_72h: "Fairly and constructively evaluate tutors’ performance at the end of sessions within 72 hours.",
-        proteccion_datos_privacidad: "Data Protection and Privacy",
-        no_divulgar_datos: "Do not disclose personal data of other users.",
-        cumplir_politicas_privacidad: "Comply with the privacy policies established by ClassGo.",
-        certificacion_tutores: "6.3 ClassGo Tutor Certification",
-        detalle_certificacion_tutores: "To obtain official certification as a ClassGo Tutor, registered tutors must successfully complete the ClassGo Pedagogical Training Program, consisting of 18 pedagogical courses available on the platform. This certification is required to access special benefits, institutional agreements, and participate in ClassGo-promoted tutoring programs.",
-        convenios_beneficios: "6.4 Academic Agreements and Benefits",
-        detalle_convenios_beneficios: "ClassGo maintains agreements with postgraduate units and other educational institutions, which may grant discounts, preferential access, or special benefits to users who meet the requirements of each agreement. Eligibility is subject to verification of specific requirements, such as progress in the platform’s training plan or identity verification.",
-        gestion_quejas_validacion: "6.5 Complaint Management and Class Validation",
-        detalle_gestion_quejas: "If a user experiences issues during a tutoring session (e.g., tutor absence, serious class issues, or quality failures), they may file a complaint within the first 2–3 minutes after session completion. If no complaint is filed during this period, the system will automatically process the tutor’s payment. All complaints will be evaluated by ClassGo support, acting as mediator to resolve the situation fairly, which may include refunds, withholdings, or sanctions as appropriate.",
-        limitacion_responsabilidad: "7. LIMITATION OF LIABILITY",
-        classgo_no_responsable_por: "ClassGo will not be liable for:",
-        danos_indirectos: "Indirect damages, including loss of employment opportunities.",
-        conflictos_usuarios_tutores: "Conflicts between users and tutors.",
-        problemas_tecnicos_ajenos: "Technical problems beyond the platform's control (e.g., user’s internet provider failures).",
-        modificaciones_terminos: "8. CHANGES TO THE TERMS",
-        modificacion_avisada: "Any modification will be communicated at least 15 days in advance via email.",
-        aceptacion_continuada: "Continued use of the platform implies acceptance of the new terms.",
-        contacto_soporte: "9. CONTACT AND SUPPORT",
-        soporte_tecnico: "Technical support:",
-        reclamos_formales: "Formal complaints: send physical documentation to:<br>CALLE ANGOSTURA, NRO: 314<br>BARRIO EL PARI, UV: 28 MZA 12<br>BETWEEN EMILIO FINOT STREET AND ESCUADRON VELASCO AVENUE<br>",
-        contactanos_whatsapp: "Contact us at: ",
-        jurisdiccion_resolucion_conflictos: "10. JURISDICTION AND DISPUTE RESOLUTION",
-        acuerdo_legislacion_bolivia: "This agreement is governed by the current legislation of the Plurinational State of Bolivia, including applicable provisions of the Civil Code, Consumer Protection Law, and other rules related to digital services and electronic contractual relationships.",
-        mecanismo_conciliacion_arbitraje: "10.1 Preferred mechanism: conciliation or arbitration",
-        resolucion_amistosa: "The dispute will first attempt to be resolved amicably through voluntary conciliation or institutional arbitration, according to Bolivian regulations and the rules of the Conciliation and Arbitration Center of the Chamber of Commerce and Services of Santa Cruz (CAINCO), or another recognized entity agreed upon by both parties.",
-        procedimiento_confidencial: "The procedure will be confidential, quick, and binding.",
-        inicio_proceso_solicitud: "The interested party must initiate the process by sending a formal request to the corresponding center.",
-        acatar_decision_tribunal: "Both parties agree to abide by the decision issued by the arbitration tribunal or conciliator.",
-        instancia_judicial_subsidiaria: "10.2 Subsidiary judicial instance",
-        jurisdiccion_ordinaria: "If conciliation fails or arbitration cannot proceed due to reasons attributable to one party or by law, the parties submit to the ordinary jurisdiction of the competent courts in Santa Cruz de la Sierra, expressly waiving any other jurisdiction.",
-        renuncia_accion_colectiva: "10.3 Waiver of collective action",
-        accion_individual: "Users agree that any legal action must be filed individually. Collective or group claims against ClassGo are not allowed, unless expressly required by a competent judicial authority.",
-        idioma_legislacion_aplicable: "10.4 Language and applicable law",
-        procedimiento_idioma_espanol: "All procedures, whether conciliation, arbitration, or judicial, will be conducted in Spanish and in accordance with the substantive and procedural laws of the Plurinational State of Bolivia. Final clause note:<br>If no resolution is achieved through these means, the parties submit to the jurisdiction of competent courts in Santa Cruz, Bolivia.",
-        uso_internacional: "11. INTERNATIONAL USE",
-        descripcion_uso_internacional: "ClassGo is developed and operated under the laws of the Plurinational State of Bolivia. However, it is available to users in other countries, subject to the following conditions:",
-        responsabilidad_usuario_internacional: "11.1 Responsibility of international users",
-        usuario_responsable_exterior: "If you access or use ClassGo from outside Bolivia, you do so at your own initiative and responsibility. You are solely responsible for ensuring that the use of services, content, and platform features complies with local laws, regulations, and rules of the country from which you access. This includes, but is not limited to:",
-        normativas_educacion_linea: "Online education regulations",
-        proteccion_datos: "Data protection",
-        comercio_electronico: "E-commerce",
-        propiedad_intelectual: "Intellectual property",
-        tributacion_digital: "Digital taxation",
-        limitaciones_disponibilidad_servicios: "11.2 Limitations of service availability",
-        restricciones_servicios: "Some services, features, or payment methods may be restricted or unavailable in certain territories due to:",
-        restricciones_legales_locales: "Local legal restrictions",
-        normativas_exportacion: "Export or technology control regulations",
-        incompatibilidad_tecnica: "Technical incompatibility with payment systems or external educational networks",
-        politicas_internas_classgo: "ClassGo internal policies to prevent regulatory noncompliance",
-        en_tales_casos: "11.3 In such cases",
-        responsabilidad_limitada: "ClassGo will not be responsible for partial or total inaccessibility to certain features, provided these restrictions are justified by legal or technical reasons.",
-        idioma_soporte: "11.4 Language and support",
-        interfaz_documentacion_soporte: "All interface, legal documentation, technical support, and official communications are available only in Spanish. Users accessing from other countries accept to use the platform in this language.",
-        jurisdiccion_disputas_internacionales: "11.5 International jurisdiction and disputes",
-        disputas_internacionales: "Despite international use, any dispute related to the platform will be governed by Bolivian law and submitted to the dispute resolution mechanisms established in clause 10 of these Terms and Conditions.",
-        cumplimiento_normativo_global: "11.6 Global regulatory compliance",
-        derecho_restricciones_cuentas: "ClassGo reserves the right to restrict, suspend, or cancel accounts of users who, residing abroad:",
-        infrinjan_leyes_locales: "violate local laws",
-        riesgo_cumplimiento_normativo: "endanger the platform’s regulatory compliance",
-        reservarse_derecho_no_operar: "We also reserve the right not to operate in countries with:",
-        barreras_regulatorias_insalvables: "insurmountable regulatory barriers",
-        conflictos_legales_viabilidad: "legal conflicts affecting service viability",
-        descarga_terminos_pdf: "Download terms and conditions in PDF",
-        boton_descargar_pdf: "Download PDF",
-        //Blogs
-        ideas: "Expert Ideas and Tips for Lifelong Learners",
-        Acceda: "Access valuable information, expert advice, and suggestions from our active tutor community.",
-        bus: "Search",
-        td_bl: "All Blogs",
-        sel: "Select Category",
-        neg: "Business",
-        tec: "Technology",
-        edu: "Education",
-        ord: "Sort By",
-        ma_rec: "Most Recent",
-        ma_pop: "Most Popular",
-        ciberseguridad: "Cybersecurity",
-        no_blog: "No blogs available."
+    // Nosotros
+    ini_n: "Home",
+    i_nos: "About Us",
+    who: "Who are we?",
+    plataforma_d_tutoria:
+      "We are an online tutoring platform that connects students of all ages with expert tutors. We provide an accessible and high-quality experience, regardless of your location or schedule.",
+    mision: "Mission",
+    plataforma_d_educacion:
+      "Educational platform for virtual tutoring to share knowledge.",
+    proporcionamos_educacion:
+      "We provide an educational platform for 24/7 virtual tutoring, aimed at anyone who wants to share their knowledge, with content ranging from university level to technical skills.",
+    mas_docientos: "+200",
+    tutorias_disponibles: "Available tutoring",
+    vision: "Vision",
+    ser_plataforma_lider: "Driving learning growth.",
+    fomentar_aprendizaje:
+      "To be the leading platform in virtual tutoring, promoting continuous learning and educational accessibility in all areas of knowledge.",
+    team: "Our team",
+    creadores_classgo:
+      "The creators of the ClassGo website and app, dedicated to revolutionizing education.",
+    lic_presentacion:
+      "Hello! I am Gabriel, passionate about sharing knowledge and helping you achieve your academic goals. With years of experience in teaching and finance, my goal is to guide your learning in a clear and effective way.",
+    jefi_rol: "General Coordinator",
+    jefi_presentacion:
+      "Ready for the challenges of the digital business world, with an agile mindset and results-oriented solutions.",
+    opjefi_rol: "Operations Manager",
+    opjefi_presentacion:
+      "Passionate about sharing knowledge in a clear and practical way. My goal is to help you learn simply and effectively.",
+    jefi_movil_rol: "Mobile Developer",
+    jefi_movil_presentacion:
+      "I am a systems engineer, web developer, and mobile app developer.",
+    jefi_Bdeveloper_rol: "Backend Developer",
+    jefi_Bdeveloper_presentacion:
+      "Building robust, scalable, and efficient systems that ensure optimal performance and a smooth user experience, regardless of the complexity of the challenge.",
+    jefi_Fdeveloper_rol: "Frontend Developer",
+    jefi_Fdeveloper_presentacion:
+      "Creating intuitive and attractive interfaces that make learning an enjoyable and accessible experience for everyone.",
+    jefi_sofware_rol: "Software Architect",
+    jefi_sofware_presentacion:
+      "Designing solid and sustainable technological solutions, aligned with business objectives, to ensure a scalable, secure, and future-ready architecture.",
+    jefi_diseño_rol: "Graphic Designer",
+    // Trabajamos
+    inicio: "Home",
+    como_trabajamos: "How We Work",
+    unete_comunidad: "Join our community today",
+    unete_comunidad_desc:
+      "Join our community to share your experience as a tutor or improve your skills as a student.<br>Connect, learn, and grow with us today.",
+    para_estudiantes: "For students",
+    para_tutores: "For tutors",
+    completa_datos: "Complete your details and set your learning preferences",
+    completa_datos_desc:
+      "Provide your personal details and set your learning preferences to create a profile tailored to your educational needs.<br>This will help you find the most suitable tutors and optimize your learning experience.",
+    utiliza_filtros:
+      "Use filters to refine your search and view detailed tutor profiles",
+    utiliza_filtros_desc:
+      "Use filters to narrow your tutor search by subject, level, price, location, and availability.<br>This allows you to see detailed tutor profiles that best match your learning needs.",
+    elige_horario: "Choose a convenient time and book your lesson instantly",
+    pasos_reservar: "Steps to book a tutoring session",
+    paso_select_time: "Select an available time slot",
+    paso_click_slot: "Click on the desired slot",
+    paso_choose_type: "Choose session type",
+    paso_confirm_booking: "Confirm booking details",
+    paso_payment: "Proceed to payment",
+    paso_receive_confirmation: "Receive confirmation",
+    asiste_leccion_login: "Attend the lesson",
+    asiste_login_desc: "Log in at the scheduled time and start learning",
+    asiste_presen:
+      "Log in at the scheduled time and join the session to start learning.<br>Connect with your tutor via Zoom to enjoy an engaging and interactive lesson.",
+    completa_form: "Fill out a quick feedback form after your lesson",
+    feedback_desc:
+      "After your lesson, fill out a quick feedback form to share your thoughts and rate your experience.<br>Your feedback helps us improve and ensure the best learning environment for everyone.",
+    crea_perfil: "Create your profile and list your qualifications",
+    crea_perfil_cont:
+      "Create your profile to showcase your qualifications, skills, and experience. Highlight your expertise, education, and the subjects you teach to attract potential students and build credibility on the platform.",
+    gestiona_horario:
+      "Manage your schedule to show when you're available to teach",
+    gestiona_horario_desc:
+      "Easily manage your availability by updating your schedule with the times you are open to teach. This helps students know when they can book sessions with you and keeps your teaching calendar organized.",
+    revisar_solicitudes: "Review student requests and accept bookings",
+    revisar_solicitudes_desc:
+      "Review incoming student requests and manage your bookings by accepting lessons that fit your availability. Confirm bookings to connect with students and start teaching as scheduled.",
+    dirige_clase: "Lead your class with Meet",
+    dirige_clase_desc:
+      "Connect at the scheduled time and start delivering your session. Use the platform's integrated video conferencing tool to engage with your students and provide an interactive learning experience.",
+    proceso_calidad: "We guarantee a quality process",
+    unete_comunidad_repetido: "Join our community today",
+    unete_comunidad_repetido_desc:
+      "Join our community to share your experience as a tutor or improve your skills as a student.<br>Connect, learn, and grow with us today.",
+    // preguntas
+    inicio: "Home",
+    preguntas: "Questions",
+    encuentra_respuesta: "Find your answer",
+    empoderando_estudiantes: "Empowering students worldwide",
+    para_estudiantes_faq: "For students",
+    para_tutores_faq: "For tutors",
+    faq_encontrar_tutor: "How do I find a tutor?",
+    faq_encontrar_tutor_desc:
+      "Use the search bar to find available tutors according to the subject or topic you need",
+    faq_reservar_sesion: "How do I book a session?",
+    faq_reservar_sesion_desc:
+      "Once you find a tutor, check their profile and select an available time slot that works for you. Click 'Book' and follow the instructions to confirm your session.",
+    faq_cancelar_reprogramar:
+      "What if I need to cancel or reschedule a session?",
+    faq_cancelar_reprogramar_desc:
+      "Tutoring sessions cannot be canceled once booked. If any issue occurs, contact us and we will gladly assist you.",
+    faq_pagos: "How do I pay for sessions?",
+    faq_pagos_desc:
+      "Payments are made through the QR code provided in your booking or via bank transfer using the details displayed on the screen.",
+    faq_tutor_no_presente: "What should I do if my tutor doesn't show up?",
+    faq_tutor_no_presente_desc:
+      "If your tutor does not show up for a scheduled session, contact our support team immediately for assistance to reschedule or request a refund.",
+    faq_comentarios_tutor: "How can I leave feedback for my tutor?",
+    faq_comentarios_tutor_desc:
+      "Go to the tutor's profile, scroll down, and head to the reviews section, where you can see ratings and comments from students.",
+    faq_ser_tutor: "How can I become a tutor?",
+    faq_ser_tutor_desc_txt1: "If you haven't created an account yet ",
+    faq_ser_tutor_desc_link: "click here",
+    faq_ser_tutor_desc_txt2:
+      ' and fill out the form, then select "Tutor" at the end. Create your profile and submit the required documents for approval.',
+    faq_cualificaciones_tutor: "What qualifications do I need to be a tutor?",
+    faq_cualificaciones_tutor_desc:
+      "Having an academic degree is not required. If you want to teach 'something', you can do it.",
+    faq_configurar_disponibilidad: "How do I set my availability?",
+    faq_configurar_disponibilidad_desc:
+      "Log in to your account, go to the 'Manage Available Time' section, and update your calendar with your available time slots.",
+    faq_estudiante_cancela: "What if a student cancels a session?",
+    faq_estudiante_cancela_desc:
+      "Students do not have the option to cancel a session after booking. If a student informs you of a problem, advise them to contact us for assistance.",
+    /*Terminos*/
+    terminos_y_condiciones: "TERMS AND CONDITIONS OF USE OF CLASSGO",
+    fecha_actualizacion: "Last updated: 07/02/2025",
+    introduccion: "1. Introduction",
+    bienvenida:
+      'Welcome to ClassGo "the Platform", a service managed by ClassGO S.R.L. By registering or using our services, you legally agree to comply with these Terms and Conditions "T & C". If you do not agree, please refrain from using the platform.',
+    cuentas_usuario: "2. USER ACCOUNTS",
+    registro_verificacion: "2.1 Registration and Verification",
+    info_personal:
+      "All users who wish to access ClassGo’s services must complete the registration process by providing accurate and up-to-date personal information.",
+    subapartado_estudiantes: "Students Subsection",
+    nombre_correo_fecha_pais:
+      "Full name, email address, date of birth, and country of residence.",
+    aceptar_politica:
+      "The Privacy Policy and these Terms must be expressly accepted.",
+    subapartado_tutores: "Tutors Subsection",
+    doc_academica:
+      "In addition to the mentioned data, they must submit academic documentation proving their suitability (university degree, certificates, specializations, etc.).",
+    entrevistas_referencias:
+      "ClassGo may request interviews, additional validations, or references for profile verification.",
+    veracidad_actualizacion: "2.2 Accuracy and Updating of Data",
+    usuario_responsable_mantener:
+      "The user is responsible for keeping their personal and academic data up to date at all times.",
+    classgo_derecho_suspender:
+      "ClassGo reserves the right to suspend accounts with incorrect, outdated, or fraudulent information.",
+    seguridad_responsabilidad_cuenta: "2.3 Account Security and Responsibility",
+    confidencialidad_credenciales:
+      "The user is responsible for maintaining the confidentiality of their credentials (email and password).",
+    no_compartir_cuentas: "Account sharing between individuals is not allowed.",
+    notificar_actividades_sospechosas:
+      "The user must immediately notify any suspicious activity or unauthorized use to the support email.",
+    classgo_no_responsable:
+      "ClassGo will not be responsible for unauthorized access caused by user negligence.",
+    edad_minima: "2.4 Minimum Age",
+    usuarios_mayores_18: "Users over 18 years old may register.",
+    menores_con_autorizacion:
+      "Minors may register with written consent from a parent or guardian, sent to the email",
+    menores_con_autorizacion_2:
+      "and with permanent supervision by the responsible adult.",
+    suspensiones: "2.5 Suspension and Termination of Accounts",
+    classgo_derecho_suspender_temporal:
+      "ClassGo reserves the right to temporarily or permanently suspend an account in case of:",
+    incumplimiento_tyc: "Violation of these Terms and Conditions.",
+    actividades_sospechosas: "Suspicious, abusive, or illegal activities.",
+    reportes_mala_conducta: "Repeated reports of misconduct by other users.",
+    decision_notificada_correo:
+      "The decision will be notified via email and may include access restrictions, content removal, or permanent termination of the profile.",
+    politicas_uso: "3. USAGE POLICIES",
+    uso_aceptable: "3.1 Acceptable Use of the Platform",
+    uso_clasgo_estricto:
+      "The use of ClassGo must be strictly for educational purposes. The following are strictly prohibited:",
+    actividades_ilicitas:
+      "Using the platform for illegal, deceptive, or public order-violating activities.",
+    spam_phishing:
+      "Sending spam, phishing, fraud, mass messages, or similar activities.",
+    uso_cuenta_beneficios_economicos:
+      "Using the account to obtain economic benefits outside ClassGo without authorization.",
+    manipular_sistema:
+      "Manipulating the system with malicious software, bots, scraping techniques, or reverse engineering.",
+    suplantar_identidad: "Impersonating individuals or institutions.",
+    classgo_reserva_derecho:
+      "ClassGo reserves the right to investigate, block, or delete any account that violates this policy.",
+    interaccion_usuarios: "3.2 Interaction Between Users",
+    conducta_respetuosa:
+      "All users must maintain respectful, cordial, and professional conduct. The following are prohibited:",
+    lenguaje_ofensivo:
+      "Using offensive, discriminatory, defamatory, or violent language.",
+    acoso_intimidacion:
+      "Harassment, intimidation, or psychological manipulation of any other user.",
+    contacto_no_deseado:
+      "Unwanted contact outside the platform for personal or commercial purposes.",
+    reportes_de_comportamiento:
+      "Reports of inappropriate behavior will be investigated and may result in sanctions, suspension, or account deletion.",
+    uso_contenido_propiedad_intelectual:
+      "3.3 Use of Content and Intellectual Property",
+    imagenes_perfil: "Profile images:",
+    aceptar_jpg_png: "Only JPG or PNG files up to 5 MB are allowed.",
+    prohibido_armas_sexual:
+      "Images with weapons, sexualized content, or copyrighted materials without permission are prohibited.",
+    material_educativo_tutores: "Educational material (from tutors):",
+    contenido_original:
+      "Tutors must upload only original content or content under a valid license (e.g., Creative Commons).",
+    citar_fuentes:
+      "If external resources are used, sources must be properly cited.",
+    derechos_classgo: "ClassGo Rights:",
+    propiedad_exclusiva:
+      "The platform's design, brand, logos, software, and structure are the exclusive property of ClassGo.",
+    licencia_uso_contenido: "3.4 License for Use of User-Uploaded Content",
+    licencia_explica:
+      "By uploading content to the platform, the user (tutor or student) retains ownership and copyright over the material, but grants ClassGo a non-exclusive, worldwide, royalty-free, transferable, and sublicensable license to use the content for the following purposes:",
+    almacenamiento_seguro: "Secure storage on ClassGo’s servers and databases.",
+    visualizacion_reproduccion:
+      "Viewing and reproducing the content within the platform’s digital educational environment (including mobile apps, website, internal promotional materials, and resources for students).",
+    distribucion_limitada:
+      "Limited distribution of content to other registered users (e.g., students in a session, assigned tutors, etc.) for the educational purpose of the service.",
+    adaptacion_tecnica:
+      "Technical adaptation of the content, if necessary, to ensure compatibility with platform systems (e.g., converting files to other formats, optimizing resolution, etc.).",
+    condiciones_revocacion: "Revocation Conditions:",
+    revocar_contenido:
+      "The user may revoke this license by deleting their content from the platform, except when:",
+    contenido_compartido:
+      "It has already been shared with other users during legitimate use of the service.",
+    obligacion_legal:
+      "There is a legal or administrative obligation preventing immediate removal of the content (e.g., audits or disputes).",
+    pagos_reembolsos_reprogramaciones: "4. PAYMENTS, REFUNDS, AND RESCHEDULING",
+    metodos_pago: "4.1 Payment Methods",
+    aceptamos_metodos: "We accept:",
+    tarjetas_debito_credito: "Debit/Credit Cards (Visa, Mastercard)",
+    recibo_transaccion: "Each transaction will generate an electronic receipt.",
+    politica_reembolsos: "4.2 Refund Policy",
+    casos_reembolso: "Cases in which refunds apply:",
+    cancelacion_tutor: "Cancellation by the tutor",
+    fallos_tecnicos:
+      "Technical failures attributable to ClassGo (e.g., system downtime longer than 15 minutes)",
+    condiciones_solicitar_reembolso: "Conditions for requesting a refund:",
+    solicitud_48h:
+      "The request must be made within 48 calendar hours after the incident.",
+    procesamiento_48h:
+      "Refund processing will be completed within 48 business hours.",
+    cancelaciones_reprogramaciones: "5. CANCELLATIONS AND RESCHEDULING",
+    politicas_cancelacion_reprogramacion:
+      "ClassGo establishes clear cancellation and rescheduling policies applicable to both users and tutors to ensure respect for both parties’ time, maintain service quality, and preserve platform operability.",
+    cancelaciones_usuario: "5.1 Cancellations by the User",
+    condiciones_cancelacion_usuario: "Conditions",
+    usuario_24h_anticipacion:
+      "With more than 24 hours' notice: The user may cancel or reschedule without penalty. If applicable, a full refund of the session fee may be requested, or rescheduling can be done at no additional cost.",
+    usuario_menos_24h:
+      "With less than 24 hours' notice: Cancellation may be subject to a 50% session fee penalty, applied as compensation to the tutor for the reserved time.",
+    usuario_no_show:
+      "Unjustified absence (no show): If the user does not attend the session without prior notice, it will be considered as completed, and no refund will be granted. The tutor will receive the corresponding payment.",
+    cancelaciones_tutor: "5.2 Cancellations by the Tutor",
+    condiciones_cancelacion_tutor: "Conditions",
+    tutor_12h_aviso:
+      "Cancellation with prior notice (minimum 12 hours): The tutor must offer the user options to reschedule. No sanctions will apply if it is an occasional and properly justified event.",
+    tutor_frecuentes_injustificadas:
+      "Frequent or unjustified cancellations: If a tutor makes more than three unjustified cancellations in a month, they may receive progressive sanctions such as warnings, temporary suspension, or profile removal.",
+    tutor_no_show:
+      "Tutor absence without notice (no show): Considered a serious offense. The student will receive a full refund, and the tutor may be sanctioned with immediate account suspension or platform expulsion.",
+    reprogramaciones: "5.3 Rescheduling",
+    condiciones_reprogramacion:
+      "Both students and tutors may schedule a session provided that:",
+    reprogramacion_24h: "The request is made at least 24 hours in advance.",
+    acuerdo_nuevo_horario: "Both parties have agreed on the new schedule.",
+    no_acuerdo_cancelacion:
+      "If no agreement is reached, the session may be canceled according to the applicable policy.",
+    resolucion_disputas: "5.4 Dispute Resolution",
+    desacuerdo_tutor_usuario:
+      "In case of disagreement between a tutor and a user regarding a cancellation or rescheduling:",
+    presentar_argumentos_soporte:
+      "Both parties may present their arguments to the ClassGo support team.",
+    classgo_mediador:
+      "ClassGo will act as mediator and implement the most equitable solution for both parties.",
+    decision_final:
+      "The decision made will be final, unless otherwise required by law.",
+    responsabilidades: "6. RESPONSIBILITIES",
+    uso_responsable_plataforma:
+      "Proper use of the ClassGo platform implies a commitment from all users to act responsibly, ethically, and professionally. The following provisions detail the specific obligations of tutors and students.",
+    responsabilidades_tutor: "6.1 Tutor Responsibilities",
+    veracidad_perfil: "Accuracy of Professional Profile",
+    informacion_academica_actualizada:
+      "Enter and keep academic and professional information up to date.",
+    documentacion_veridica:
+      "Provide truthful documentation verifying education and experience.",
+    no_suplantar_identidad:
+      "Do not impersonate others or present falsified credentials.",
+    calidad_servicio: "Quality of Educational Service",
+    preparar_brindar_tutorias:
+      "Prepare and deliver tutoring sessions punctually, clearly, and in a structured manner.",
+    usar_recursos_adecuados:
+      "Use appropriate and updated pedagogical resources.",
+    evitar_contenido_erroneo:
+      "Avoid erroneous, outdated, or irrelevant content for student learning.",
+    etica_profesional_trato: "Professional Ethics and Respectful Conduct",
+    mantener_conducta_profesional:
+      "Maintain professional conduct during all interactions.",
+    evitar_comentarios_ofensivos:
+      "Avoid offensive, discriminatory, sexist, racist, or personal comments.",
+    no_relaciones_inapropiadas:
+      "Do not establish inappropriate personal relationships with students.",
+    uso_contenido: "Use of Content",
+    material_autoria_propia:
+      "Ensure that shared material is original or has a valid license.",
+    no_usar_contenido_otro:
+      "Do not use resources from other tutors without explicit authorization.",
+    autorizar_classgo:
+      "Authorize ClassGo to display and store the content within the platform’s educational environment.",
+    confidencialidad: "Confidentiality",
+    respetar_privacidad_estudiantes:
+      "Respect students’ privacy and personal data.",
+    no_divulgar_informacion:
+      "Do not disclose conversations, recordings, or information obtained during sessions without consent.",
+    cumplimiento_legal: "Legal Compliance",
+    actividad_cumple_normativa:
+      "Ensure that your activity as a tutor complies with the educational and labor regulations in your country of residence.",
+    responsabilidad_ausencias:
+      "Responsibility Regarding Absences or Cancellations",
+    notificar_cancelaciones: "Notify cancellations as early as possible.",
+    evitar_cancelaciones_reiteradas:
+      "Avoid repeated cancellations or unjustified absences, which may result in platform sanctions.",
+    responsabilidades_estudiante: "6.2 Student Responsibilities",
+    estudiantes_compromiso: "Students using ClassGo must commit to:",
+    participacion_puntualidad: "Active Participation and Punctuality",
+    asistir_sesiones: "Attend sessions at the agreed-upon time.",
+    actitud_participativa:
+      "Maintain a participative, receptive, and learning-oriented attitude.",
+    respeto_tutor_entorno: "Respect for the Tutor and Virtual Environment",
+    respetar_tutores:
+      "Treat tutors respectfully, avoiding abusive, offensive, or disruptive behavior.",
+    no_grabar_sin_autorizacion:
+      "Do not record or share sessions without prior authorization.",
+    uso_responsable_plataforma_estudiante: "Responsible Use of the Platform",
+    no_fines_personales:
+      "Do not use ClassGo for purposes other than learning (e.g., commercial or personal purposes).",
+    no_compartir_terceros:
+      "Do not share access with third parties or misuse system functionalities.",
+    pago_sesiones: "Timely Payment for Sessions",
+    pago_autorizado_plazo:
+      "Ensure payments are made through authorized methods and within the established deadlines.",
+    no_reclamaciones_indebidas:
+      "Do not make undue claims for sessions properly received.",
+    evaluacion_tutor: "Objective Evaluation of the Tutor",
+    calificar_desempeno_72h:
+      "Fairly and constructively evaluate tutors’ performance at the end of sessions within 72 hours.",
+    proteccion_datos_privacidad: "Data Protection and Privacy",
+    no_divulgar_datos: "Do not disclose personal data of other users.",
+    cumplir_politicas_privacidad:
+      "Comply with the privacy policies established by ClassGo.",
+    certificacion_tutores: "6.3 ClassGo Tutor Certification",
+    detalle_certificacion_tutores:
+      "To obtain official certification as a ClassGo Tutor, registered tutors must successfully complete the ClassGo Pedagogical Training Program, consisting of 18 pedagogical courses available on the platform. This certification is required to access special benefits, institutional agreements, and participate in ClassGo-promoted tutoring programs.",
+    convenios_beneficios: "6.4 Academic Agreements and Benefits",
+    detalle_convenios_beneficios:
+      "ClassGo maintains agreements with postgraduate units and other educational institutions, which may grant discounts, preferential access, or special benefits to users who meet the requirements of each agreement. Eligibility is subject to verification of specific requirements, such as progress in the platform’s training plan or identity verification.",
+    gestion_quejas_validacion: "6.5 Complaint Management and Class Validation",
+    detalle_gestion_quejas:
+      "If a user experiences issues during a tutoring session (e.g., tutor absence, serious class issues, or quality failures), they may file a complaint within the first 2–3 minutes after session completion. If no complaint is filed during this period, the system will automatically process the tutor’s payment. All complaints will be evaluated by ClassGo support, acting as mediator to resolve the situation fairly, which may include refunds, withholdings, or sanctions as appropriate.",
+    limitacion_responsabilidad: "7. LIMITATION OF LIABILITY",
+    classgo_no_responsable_por: "ClassGo will not be liable for:",
+    danos_indirectos:
+      "Indirect damages, including loss of employment opportunities.",
+    conflictos_usuarios_tutores: "Conflicts between users and tutors.",
+    problemas_tecnicos_ajenos:
+      "Technical problems beyond the platform's control (e.g., user’s internet provider failures).",
+    modificaciones_terminos: "8. CHANGES TO THE TERMS",
+    modificacion_avisada:
+      "Any modification will be communicated at least 15 days in advance via email.",
+    aceptacion_continuada:
+      "Continued use of the platform implies acceptance of the new terms.",
+    contacto_soporte: "9. CONTACT AND SUPPORT",
+    soporte_tecnico: "Technical support:",
+    reclamos_formales:
+      "Formal complaints: send physical documentation to:<br>CALLE ANGOSTURA, NRO: 314<br>BARRIO EL PARI, UV: 28 MZA 12<br>BETWEEN EMILIO FINOT STREET AND ESCUADRON VELASCO AVENUE<br>",
+    contactanos_whatsapp: "Contact us at: ",
+    jurisdiccion_resolucion_conflictos:
+      "10. JURISDICTION AND DISPUTE RESOLUTION",
+    acuerdo_legislacion_bolivia:
+      "This agreement is governed by the current legislation of the Plurinational State of Bolivia, including applicable provisions of the Civil Code, Consumer Protection Law, and other rules related to digital services and electronic contractual relationships.",
+    mecanismo_conciliacion_arbitraje:
+      "10.1 Preferred mechanism: conciliation or arbitration",
+    resolucion_amistosa:
+      "The dispute will first attempt to be resolved amicably through voluntary conciliation or institutional arbitration, according to Bolivian regulations and the rules of the Conciliation and Arbitration Center of the Chamber of Commerce and Services of Santa Cruz (CAINCO), or another recognized entity agreed upon by both parties.",
+    procedimiento_confidencial:
+      "The procedure will be confidential, quick, and binding.",
+    inicio_proceso_solicitud:
+      "The interested party must initiate the process by sending a formal request to the corresponding center.",
+    acatar_decision_tribunal:
+      "Both parties agree to abide by the decision issued by the arbitration tribunal or conciliator.",
+    instancia_judicial_subsidiaria: "10.2 Subsidiary judicial instance",
+    jurisdiccion_ordinaria:
+      "If conciliation fails or arbitration cannot proceed due to reasons attributable to one party or by law, the parties submit to the ordinary jurisdiction of the competent courts in Santa Cruz de la Sierra, expressly waiving any other jurisdiction.",
+    renuncia_accion_colectiva: "10.3 Waiver of collective action",
+    accion_individual:
+      "Users agree that any legal action must be filed individually. Collective or group claims against ClassGo are not allowed, unless expressly required by a competent judicial authority.",
+    idioma_legislacion_aplicable: "10.4 Language and applicable law",
+    procedimiento_idioma_espanol:
+      "All procedures, whether conciliation, arbitration, or judicial, will be conducted in Spanish and in accordance with the substantive and procedural laws of the Plurinational State of Bolivia. Final clause note:<br>If no resolution is achieved through these means, the parties submit to the jurisdiction of competent courts in Santa Cruz, Bolivia.",
+    uso_internacional: "11. INTERNATIONAL USE",
+    descripcion_uso_internacional:
+      "ClassGo is developed and operated under the laws of the Plurinational State of Bolivia. However, it is available to users in other countries, subject to the following conditions:",
+    responsabilidad_usuario_internacional:
+      "11.1 Responsibility of international users",
+    usuario_responsable_exterior:
+      "If you access or use ClassGo from outside Bolivia, you do so at your own initiative and responsibility. You are solely responsible for ensuring that the use of services, content, and platform features complies with local laws, regulations, and rules of the country from which you access. This includes, but is not limited to:",
+    normativas_educacion_linea: "Online education regulations",
+    proteccion_datos: "Data protection",
+    comercio_electronico: "E-commerce",
+    propiedad_intelectual: "Intellectual property",
+    tributacion_digital: "Digital taxation",
+    limitaciones_disponibilidad_servicios:
+      "11.2 Limitations of service availability",
+    restricciones_servicios:
+      "Some services, features, or payment methods may be restricted or unavailable in certain territories due to:",
+    restricciones_legales_locales: "Local legal restrictions",
+    normativas_exportacion: "Export or technology control regulations",
+    incompatibilidad_tecnica:
+      "Technical incompatibility with payment systems or external educational networks",
+    politicas_internas_classgo:
+      "ClassGo internal policies to prevent regulatory noncompliance",
+    en_tales_casos: "11.3 In such cases",
+    responsabilidad_limitada:
+      "ClassGo will not be responsible for partial or total inaccessibility to certain features, provided these restrictions are justified by legal or technical reasons.",
+    idioma_soporte: "11.4 Language and support",
+    interfaz_documentacion_soporte:
+      "All interface, legal documentation, technical support, and official communications are available only in Spanish. Users accessing from other countries accept to use the platform in this language.",
+    jurisdiccion_disputas_internacionales:
+      "11.5 International jurisdiction and disputes",
+    disputas_internacionales:
+      "Despite international use, any dispute related to the platform will be governed by Bolivian law and submitted to the dispute resolution mechanisms established in clause 10 of these Terms and Conditions.",
+    cumplimiento_normativo_global: "11.6 Global regulatory compliance",
+    derecho_restricciones_cuentas:
+      "ClassGo reserves the right to restrict, suspend, or cancel accounts of users who, residing abroad:",
+    infrinjan_leyes_locales: "violate local laws",
+    riesgo_cumplimiento_normativo:
+      "endanger the platform’s regulatory compliance",
+    reservarse_derecho_no_operar:
+      "We also reserve the right not to operate in countries with:",
+    barreras_regulatorias_insalvables: "insurmountable regulatory barriers",
+    conflictos_legales_viabilidad:
+      "legal conflicts affecting service viability",
+    descarga_terminos_pdf: "Download terms and conditions in PDF",
+    boton_descargar_pdf: "Download PDF",
+    //Blogs
+    ideas: "Expert Ideas and Tips for Lifelong Learners",
+    Acceda:
+      "Access valuable information, expert advice, and suggestions from our active tutor community.",
+    bus: "Search",
+    td_bl: "All Blogs",
+    sel: "Select Category",
+    neg: "Business",
+    tec: "Technology",
+    edu: "Education",
+    ord: "Sort By",
+    ma_rec: "Most Recent",
+    ma_pop: "Most Popular",
+    ciberseguridad: "Cybersecurity",
+    no_blog: "No blogs available.",
+  },
+  pt: {
+    // Navbar
+    tutors: "Tutores",
+    about: "Sobre Nós",
+    howWeWork: "Como Trabalhamos",
+    faq: "Perguntas",
+    ingre: "Entrar",
+    // Footer
+    buscar_tutor: "Buscar tutor",
+    registrate_gratis: "Registre-se gratuitamente",
+    tutores_en_linea: "Tutores online",
+    inicia_hoy: "Comece hoje",
+    registrate: "Registre-se",
+    encontrar_tutor: "Encontrar tutor",
+    nosotros: "Sobre Nós",
+    mision: "Missão",
+    vision: "Visão",
+    logros_clave: "Principais conquistas",
+    preguntas: "Perguntas",
+    preguntas_frecuentes: "Perguntas frequentes",
+    lee_ma: "Ler mais",
+    terminos: "Termos e Condições",
+    get_app: "Baixe o App",
+    edu_world: "Leve sua educação para todos os lugares!",
+    todos_derechos: "Todos os direitos reservados.",
+    desarrolladores: "Desenvolvedores",
+    todos_derechos: "Todos os direitos reservados.",
+    // Home
+    learn: "Aprenda e Progrida com",
+    tutoring: "Aulas Online",
+    reach_goals:
+      "Alcance seus objetivos com aulas personalizadas dos melhores especialistas.<br> Conecte-se com tutores dedicados para garantir seu sucesso.",
+    reach_goals_short:
+      "Alcance seus objetivos com aulas personalizadas dos melhores especialistas.",
+    tutores: "Tutores",
+    registrate: "Registre-se",
+    ingresa: "Entrar",
+    buscar_tutor: "Tutor de pesquisa",
+    nuestra_app: "Nosso aplicativo",
+    us_check: "Usuários registrados",
+    tutor_ok: "Tutores disponíveis",
+    est_check: "Estudantes registrados",
+    play_s: "Na Play Store",
+    search_tutors: "Procurar Tutores",
+    featured_tutors: "Tutores em Destaque",
+    selected_tutors: "Encontre Seu Tutor Ideal",
+    academic_variety:
+      "Descubra uma variedade de temas acadêmicos e práticos para aprimorar sua experiência de aprendizado",
+    seeks: "Buscar mais tutores",
+    finds:
+      "Encontre o tutor perfeito para suas necessidades e comece a aprender hoje mesmo.",
+    explore: "Explorar agora",
+    guide: "Um Guia Passo a Passo",
+    unlock_potential: "Desbloqueie Seu Potencial com Passos Simples",
+    improve_skills:
+      "Melhore suas habilidades com os melhores tutores, fácil e rápido.",
+    step_1: "Passo 1",
+    step_2: "Passo 2",
+    step_3: "Passo 3",
+    sign_up: "Registre-se",
+    create_account:
+      "Crie sua conta rapidamente para começar a usar nossa plataforma",
+    begin: "Começar",
+    find_tutor: "Encontre um Tutor",
+    tutores_calificados:
+      "Procure e selecione entre tutores qualificados com base em suas necessidades.",
+    buscar_ahora: "Procurar Agora",
+    reservar_ahora: "Reserve Agora",
+    encuentra_mejor:
+      "Encontre o melhor horário e agende sua sessão facilmente em nossa plataforma.",
+    empecemos: "Vamos Começar",
+    comenzar_jornada: "Comece Sua Jornada",
+    comenzar_viaje:
+      "Comece sua jornada educacional conosco. Agende sua primeira sessão hoje!",
+    empezar_ahora: "Comece Agora",
+    facil_simple_rapido: "Fácil, Simples e Rápido",
+    instala_app: "Instale Nosso App",
+    comienza_viaje_educativo:
+      "Comece sua jornada educacional conosco. Instale nosso app hoje!",
+    acceso: "Acesso 24/7",
+    tutores_expertos: "Tutores especialistas",
+    tarifas_asequibles: "Preços Acessíveis",
+    descargar_ahora: "Baixar Agora",
+    buscas_tutorias: "Procurando por aulas personalizadas?",
+    conectamos_tutores: "Na ClassGo, conectamos você com os melhores tutores",
+    sesiones_cortas:
+      "Acesse sessões curtas e práticas, desenvolvidas por tutores especialistas para serem verdadeiros salva-vidas no aprendizado",
+    comienza_ahora: "Comece Agora",
+    visual_phone_txt1: "Em qual matéria você precisa de ajuda?",
+    visual_phone_txt2: "Prepare-se para aquele exame difícil",
+    visual_phone_txt3: "Domine essa disciplina",
+    visual_phone_txt4: "Reforço acadêmico garantido",
+    visual_phone_btn1: "Procurar tutores",
+    buscar_tutor_txt1: "Descubra um Tutor Online para seus Estudos",
+    buscar_tutor_txt2:
+      "Domine qualquer matéria com a ajuda de nossos tutores especializados e alcance seus objetivos acadêmicos.",
+    buscar_tutor_txt3: "O que você deseja aprender?",
+    filtro_materias_txt1: "Disciplinas que podem te ajudar",
+    filtro_materias_txt2: "Explore Nossas Disciplinas",
+    filtro_materias_txt3: "Tutores prontos em diferentes áreas",
+    filtro_materias_txt4: "Contabilidade",
+    filtro_materias_txt5:
+      "Contabilidade Intermediária, Governamental, Tributária, de Custos.",
+    filtro_materias_txt6: "Ciências Exatas",
+    filtro_materias_txt7: "Cálculo, Física, Mecânica Aplicada",
+    filtro_materias_txt8: "Química",
+    filtro_materias_txt9:
+      "Química de Soluções, Cromatografia, Química de Alimentos.",
+    filtro_materias_txt10: "Programação",
+    filtro_materias_txt11: "Teoria da Computação, Python, PHP, Java.",
+    filtro_materias_txt12: "Inglês",
+    filtro_materias_txt13: "Expressões Idiomáticas, Pronúncia, Escrita.",
+    filtro_materias_txt14: "Música",
+    filtro_materias_txt15: "Composição, Leitura Musical, Acordes.",
+    encuesta_txt1: "AJUDE-NOS A MELHORAR",
+    encuesta_txt2: "Sua opinião vale ouro (e descontos)",
+    encuesta_txt3: "Ganhe um cupom exclusivo ao finalizar",
+    encuesta_btn1: "Realizar Pesquisa",
+    encuesta_txt4: "Você encontrou facilmente a matéria que procurava?",
+    encuesta_op1: "Sim, foi fácil",
+    encuesta_op2: "Foi difícil",
+    encuesta_btn2: "Próximo",
+    encuesta_txt5: "O quanto você nos recomendaria?",
+    encuesta_txt6: "Selecione as estrelas",
+    encuesta_txt7:
+      "Queremos saber sua opinião: <br>conte-nos sua experiência ou deixe seu comentário.",
+    encuesta_op3: "Excelente serviço",
+    encuesta_op4: "Muito rápido",
+    encuesta_op5: "Preços justos",
+    encuesta_op6: "Falta de variedade",
+    encuesta_op7: "Regular",
+    encuesta_txt8: "Quase pronto!",
+    encuesta_txt9:
+      "Sua opinião é muito valiosa para nós. Como agradecimento, vamos te dar um cupom de 50% de desconto.",
+    encuesta_txt10: "Digite seu número de telefone para receber o cupom:",
+    encuesta_btn3: "Enviar e Finalizar",
 
-    },
-    pt: {
-        // Navbar
-        tutors: "Tutores",
-        about: "Sobre Nós",
-        howWeWork: "Como Trabalhamos",
-        faq: "Perguntas",
-        ingre: "Entrar",
-        // Footer
-        buscar_tutor: "Buscar tutor",
-        registrate_gratis: "Registre-se gratuitamente",
-        tutores_en_linea: "Tutores online",
-        inicia_hoy: "Comece hoje",
-        registrate: "Registre-se",
-        encontrar_tutor: "Encontrar tutor",
-        nosotros: "Sobre Nós",
-        mision: "Missão",
-        vision: "Visão",
-        logros_clave: "Principais conquistas",
-        preguntas: "Perguntas",
-        preguntas_frecuentes: "Perguntas frequentes",
-        lee_ma: "Ler mais",
-        terminos: "Termos e Condições",
-        get_app: "Baixe o App",
-        edu_world: "Leve sua educação para todos os lugares!",
-        todos_derechos: "Todos os direitos reservados.",
-        desarrolladores: "Desenvolvedores",
-        todos_derechos: "Todos os direitos reservados.",
-        // Home
-        learn: "Aprenda e Progrida com",
-        tutoring: "Aulas Online",
-        reach_goals: "Alcance seus objetivos com aulas personalizadas dos melhores especialistas.<br> Conecte-se com tutores dedicados para garantir seu sucesso.",
-        reach_goals_short: "Alcance seus objetivos com aulas personalizadas dos melhores especialistas.",
-        tutores: "Tutores",
-        registrate: "Registre-se",
-        ingresa: "Entrar",
-        buscar_tutor: "Tutor de pesquisa",
-        nuestra_app: "Nosso aplicativo",
-        us_check: "Usuários registrados",
-        tutor_ok: "Tutores disponíveis",
-        est_check: "Estudantes registrados",
-        play_s: "Na Play Store",
-        search_tutors: "Procurar Tutores",
-        featured_tutors: "Tutores em Destaque",
-        selected_tutors: "Encontre Seu Tutor Ideal",
-        academic_variety: "Descubra uma variedade de temas acadêmicos e práticos para aprimorar sua experiência de aprendizado",
-        seeks: "Buscar mais tutores",
-        finds: "Encontre o tutor perfeito para suas necessidades e comece a aprender hoje mesmo.",
-        explore: "Explorar agora",
-        guide: "Um Guia Passo a Passo",
-        unlock_potential: "Desbloqueie Seu Potencial com Passos Simples",
-        improve_skills: "Melhore suas habilidades com os melhores tutores, fácil e rápido.",
-        step_1: "Passo 1",
-        step_2: "Passo 2",
-        step_3: "Passo 3",
-        sign_up: "Registre-se",
-        create_account: "Crie sua conta rapidamente para começar a usar nossa plataforma",
-        begin: "Começar",
-        find_tutor: "Encontre um Tutor",
-        tutores_calificados: "Procure e selecione entre tutores qualificados com base em suas necessidades.",
-        buscar_ahora: "Procurar Agora",
-        reservar_ahora: "Reserve Agora",
-        encuentra_mejor: "Encontre o melhor horário e agende sua sessão facilmente em nossa plataforma.",
-        empecemos: "Vamos Começar",
-        comenzar_jornada: "Comece Sua Jornada",
-        comenzar_viaje: "Comece sua jornada educacional conosco. Agende sua primeira sessão hoje!",
-        empezar_ahora: "Comece Agora",
-        facil_simple_rapido: "Fácil, Simples e Rápido",
-        instala_app: "Instale Nosso App",
-        comienza_viaje_educativo: "Comece sua jornada educacional conosco. Instale nosso app hoje!",
-        acceso: "Acesso 24/7",
-        tutores_expertos: "Tutores especialistas",
-        tarifas_asequibles: "Preços Acessíveis",
-        descargar_ahora: "Baixar Agora",
-        buscas_tutorias: "Procurando por aulas personalizadas?",
-        conectamos_tutores: "Na ClassGo, conectamos você com os melhores tutores",
-        sesiones_cortas: "Acesse sessões curtas e práticas, desenvolvidas por tutores especialistas para serem verdadeiros salva-vidas no aprendizado",
-        comienza_ahora: "Comece Agora",
-        visual_phone_txt1: "Em qual matéria você precisa de ajuda?",
-        visual_phone_txt2: "Prepare-se para aquele exame difícil",
-        visual_phone_txt3: "Domine essa disciplina",
-        visual_phone_txt4: "Reforço acadêmico garantido",
-        visual_phone_btn1: "Buscar Tutores",
-        buscar_tutor_txt1: "Descubra um Tutor Online para seus Estudos",
-        buscar_tutor_txt2: "Domine qualquer matéria com a ajuda de nossos tutores especializados e alcance seus objetivos acadêmicos.",
-        buscar_tutor_txt3: "O que você deseja aprender?",
-        filtro_materias_txt1: "Disciplinas que podem te ajudar",
-        filtro_materias_txt2: "Explore Nossas Disciplinas",
-        filtro_materias_txt3: "Tutores prontos em diferentes áreas",
-        filtro_materias_txt4: "Contabilidade",
-        filtro_materias_txt5: "Contabilidade Intermediária, Governamental, Tributária, de Custos.",
-        filtro_materias_txt6: "Ciências Exatas",
-        filtro_materias_txt7: "Cálculo, Física, Mecânica Aplicada",
-        filtro_materias_txt8: "Química",
-        filtro_materias_txt9: "Química de Soluções, Cromatografia, Química de Alimentos.",
-        filtro_materias_txt10: "Programação",
-        filtro_materias_txt11: "Teoria da Computação, Python, PHP, Java.",
-        filtro_materias_txt12: "Inglês",
-        filtro_materias_txt13: "Expressões Idiomáticas, Pronúncia, Escrita.",
-        filtro_materias_txt14: "Música",
-        filtro_materias_txt15: "Composição, Leitura Musical, Acordes.",
-        encuesta_txt1: "AJUDE-NOS A MELHORAR",
-        encuesta_txt2: "Sua opinião vale ouro (e descontos)",
-        encuesta_txt3: "Ganhe um cupom exclusivo ao finalizar",
-        encuesta_btn1: "Realizar Pesquisa",
-        encuesta_txt4: "Você encontrou facilmente a matéria que procurava?",
-        encuesta_op1: "Sim, foi fácil",
-        encuesta_op2: "Foi difícil",
-        encuesta_btn2: "Próximo",
-        encuesta_txt5: "O quanto você nos recomendaria?",
-        encuesta_txt6: "Selecione as estrelas",
-        encuesta_txt7: "Queremos saber sua opinião: <br>conte-nos sua experiência ou deixe seu comentário.",
-        encuesta_op3: "Excelente serviço",
-        encuesta_op4: "Muito rápido",
-        encuesta_op5: "Preços justos",
-        encuesta_op6: "Falta de variedade",
-        encuesta_op7: "Regular",
-        encuesta_txt8: "Quase pronto!",
-        encuesta_txt9: "Sua opinião é muito valiosa para nós. Como agradecimento, vamos te dar um cupom de 50% de desconto.",
-        encuesta_txt10: "Digite seu número de telefone para receber o cupom:",
-        encuesta_btn3: "Enviar e Finalizar",
-
-        // Alianzas
-        alianzas: "Nossas Parcerias",
-        alianzas_edu: "Parcerias que potencializam a educação",
-        alianzas_Classgo: "Na ClassGo, acreditamos no poder da colaboração para transformar o aprendizado. Por isso, trabalhamos junto a instituições de ensino, clubes e organizações comprometidas com o desenvolvimento acadêmico e pessoal.",
-        alianzas_Classgo_1: "Na ClassGo, acreditamos no poder da colaboração para transformar o aprendizado.",
-        // Buscar Tutor
-        /*no traduce pero si detesta al json*/
-        /*tutores_encontrar: "Tutores / Encontrar tutor",
+    // Alianzas
+    alianzas: "Nossas Parcerias",
+    alianzas_edu: "Parcerias que potencializam a educação",
+    alianzas_Classgo:
+      "Na ClassGo, acreditamos no poder da colaboração para transformar o aprendizado. Por isso, trabalhamos junto a instituições de ensino, clubes e organizações comprometidas com o desenvolvimento acadêmico e pessoal.",
+    alianzas_Classgo_1:
+      "Na ClassGo, acreditamos no poder da colaboração para transformar o aprendizado.",
+    // Buscar Tutor
+    /*no traduce pero si detesta al json*/
+    /*tutores_encontrar: "Tutores / Encontrar tutor",
         descubra_tutor: "Descubra um tutor online qualificado para seus estudos",
         domina_tus_estudios: "Domine seus estudos com aulas online personalizadas ministradas por educadores especializados.<br> Nossos tutores qualificados estão aqui para ajudá-lo a construir bases sólidas e alcançar seus objetivos acadêmicos.",*/
-        // Nosotros
-        ini_n: "Início",
-        i_nos: "Sobre nós",
-        who: "Quem somos?",
-        plataforma_d_tutoria: "Somos uma plataforma de aulas online que conecta estudantes de todas as idades a tutores especialistas. Oferecemos uma experiência acessível e de qualidade, independentemente da sua localização ou horário.",
-        mision: "Missão",
-        plataforma_d_educacion: "Plataforma educacional de aulas virtuais para compartilhar conhecimento.",
-        proporcionamos_educacion: "Disponibilizamos uma plataforma educacional de aulas virtuais acessíveis 24 horas por dia, voltada para qualquer pessoa que queira compartilhar seu conhecimento, com conteúdos que abrangem desde o nível universitário até habilidades técnicas.",
-        mas_docientos: "+200",
-        tutorias_disponibles: "Aulas disponíveis",
-        vision: "Visão",
-        ser_plataforma_lider: "Impulsionar o crescimento da aprendizagem.",
-        fomentar_aprendizaje: "Ser a plataforma líder em aulas virtuais, promovendo a aprendizagem contínua e a acessibilidade educacional em todas as áreas do conhecimento.",
-        team: "Nossa equipe",
-        creadores_classgo: "Os criadores do site e do app ClassGo, dedicados a revolucionar a educação.",
-        lic_presentacion: "Olá! Sou Gabriel, apaixonado por compartilhar conhecimento e ajudar você a alcançar seus objetivos acadêmicos. Com anos de experiência em ensino e finanças, meu objetivo é orientar seu aprendizado de maneira clara e eficaz.",
-        jefi_rol: "Coordenador Geral",
-        jefi_presentacion: "Preparado para os desafios do mundo empresarial digital, com uma mentalidade ágil e soluções orientadas para resultados.",
-        opjefi_rol: "Gerente de operações",
-        opjefi_presentacion: "Apaixonado por compartilhar conhecimento de maneira clara e prática. Meu objetivo é ajudar você a aprender de forma simples e eficaz.",
-        jefi_movil_rol: "Desenvolvedor mobile",
-        jefi_movil_presentacion: "Sou engenheiro de sistemas, desenvolvedor de sites e aplicativos móveis.",
-        jefi_Bdeveloper_rol: "Desenvolvedor backend",
-        jefi_Bdeveloper_presentacion: "Construindo sistemas robustos, escaláveis e eficientes que garantem desempenho ideal e uma experiência fluida para os usuários, independentemente da complexidade do desafio.",
-        jefi_Fdeveloper_rol: "Desenvolvedor frontend",
-        jefi_Fdeveloper_presentacion: "Criando interfaces intuitivas e atraentes que tornam o aprendizado uma experiência agradável e acessível para todos.",
-        jefi_sofware_rol: "Arquiteto de software",
-        jefi_sofware_presentacion: "Projetando soluções tecnológicas sólidas e sustentáveis, alinhadas com os objetivos de negócio, para garantir uma arquitetura escalável, segura e preparada para o futuro.",
-        jefi_diseño_rol: "Designer Gráfico",
-        // Trabajamos
-        inicio: "Início",
-        como_trabajamos: "Como Trabalhamos",
-        unete_comunidad: "Junte-se à nossa comunidade hoje",
-        unete_comunidad_desc: "Junte-se à nossa comunidade para compartilhar sua experiência como tutor ou melhorar suas habilidades como estudante.<br>Conecte-se, aprenda e cresça conosco hoje.",
-        para_estudiantes: "Para estudantes",
-        para_tutores: "Para tutores",
-        completa_datos: "Preencha seus dados e defina suas preferências de aprendizagem",
-        completa_datos_desc: "Forneça seus dados pessoais e defina suas preferências de aprendizagem para criar um perfil adaptado às suas necessidades educacionais.<br>Isso ajudará você a encontrar os tutores mais adequados e otimizar sua experiência de aprendizagem.",
-        utiliza_filtros: "Use filtros para refinar sua busca e ver perfis detalhados de tutores",
-        utiliza_filtros_desc: "Use filtros para limitar sua busca de tutores por matéria, nível, preço, localização e disponibilidade.<br>Isso permite ver perfis detalhados de tutores que melhor se adequam às suas necessidades de aprendizagem.",
-        elige_horario: "Escolha um horário conveniente e reserve sua aula instantaneamente",
-        pasos_reservar: "Passos para reservar uma sessão de tutoria",
-        paso_select_time: "Selecione um horário disponível",
-        paso_click_slot: "Clique no horário desejado",
-        paso_choose_type: "Escolha o tipo de sessão",
-        paso_confirm_booking: "Confirme os detalhes da reserva",
-        paso_payment: "Prossiga para o pagamento",
-        paso_receive_confirmation: "Receba a confirmação",
-        asiste_leccion_login: "Participe da aula",
-        asiste_login_desc: "Faça login no horário agendado e comece a aprender",
-        asiste_presen: "Faça login no horário agendado e entre na sessão para começar a aprender.<br>Conecte-se com seu tutor via Zoom para aproveitar uma aula interativa e envolvente.",
-        completa_form: "Preencha um formulário rápido de feedback após sua aula",
-        feedback_desc: "Após sua aula, preencha um formulário rápido de feedback para compartilhar suas opiniões e avaliar sua experiência.<br>Seu feedback nos ajuda a melhorar e garantir o melhor ambiente de aprendizagem para todos.",
-        crea_perfil: "Crie seu perfil e liste suas qualificações",
-        crea_perfil_cont: "Crie seu perfil para mostrar suas qualificações, habilidades e experiência. Destaque sua formação, experiência e as matérias que ensina para atrair estudantes em potencial e gerar credibilidade na plataforma.",
-        gestiona_horario: "Gerencie seu horário para mostrar quando está disponível para ensinar",
-        gestiona_horario_desc: "Gerencie facilmente sua disponibilidade atualizando seu cronograma com os horários em que está disponível para ensinar. Isso ajuda os alunos a saber quando podem reservar sessões com você e mantém seu calendário de ensino organizado.",
-        revisar_solicitudes: "Revise as solicitações dos alunos e aceite reservas",
-        revisar_solicitudes_desc: "Revise as solicitações recebidas dos alunos e gerencie suas reservas aceitando aulas que se ajustem à sua disponibilidade. Confirme as reservas para se conectar com os alunos e começar a ensinar conforme o programado.",
-        dirige_clase: "Conduza sua aula com o Meet",
-        dirige_clase_desc: "Conecte-se no horário agendado e comece a ministrar sua sessão. Use a ferramenta de videoconferência integrada da plataforma para interagir com seus alunos e oferecer uma experiência de aprendizagem envolvente.",
-        proceso_calidad: "Garantimos um processo de qualidade",
-        unete_comunidad_repetido: "Junte-se à nossa comunidade hoje",
-        unete_comunidad_repetido_desc: "Junte-se à nossa comunidade para compartilhar sua experiência como tutor ou melhorar suas habilidades como estudante.<br>Conecte-se, aprenda e cresça conosco hoje.",
-        // Preguntas
-        inicio: "Início",
-        preguntas: "Perguntas",
-        encuentra_respuesta: "Encontre sua resposta",
-        empoderando_estudiantes: "Empoderando estudantes em todo o mundo",
-        para_estudiantes_faq: "Para estudantes",
-        para_tutores_faq: "Para tutores",
-        faq_encontrar_tutor: "Como encontrar um tutor?",
-        faq_encontrar_tutor_desc: "Use a barra de pesquisa para encontrar tutores disponíveis de acordo com a matéria ou tema que você precisa",
-        faq_reservar_sesion: "Como faço para reservar uma sessão?",
-        faq_reservar_sesion_desc: "Depois de encontrar um tutor, consulte seu perfil e selecione um horário disponível que seja conveniente para você. Clique em 'Reservar' e siga as instruções para confirmar sua sessão.",
-        faq_cancelar_reprogramar: "E se eu precisar cancelar ou reagendar uma sessão?",
-        faq_cancelar_reprogramar_desc: "As sessões de tutoria não podem ser canceladas uma vez reservadas. Se ocorrer algum problema, entre em contato conosco e teremos prazer em ajudá-lo.",
-        faq_pagos: "Como pago as sessões?",
-        faq_pagos_desc: "Os pagamentos são realizados através do QR code fornecido na sua reserva ou também por transferência bancária com os dados exibidos na tela.",
-        faq_tutor_no_presente: "O que devo fazer se meu tutor não aparecer?",
-        faq_tutor_no_presente_desc: "Se o seu tutor não comparecer a uma sessão agendada, entre em contato com nossa equipe de suporte imediatamente para obter ajuda e reagendar ou solicitar um reembolso.",
-        faq_comentarios_tutor: "Como posso deixar comentários para meu tutor?",
-        faq_comentarios_tutor_desc: "Acesse o perfil do tutor, role para baixo e vá até a seção de avaliações, onde você poderá ver as classificações e comentários dos estudantes.",
-        faq_ser_tutor: "Como posso me tornar um tutor?",
-        faq_ser_tutor_desc_txt1: "Se você ainda não criou uma conta ",
-        faq_ser_tutor_desc_link: "clique aqui",
-        faq_ser_tutor_desc_txt2: ' e preencha o formulário, e no final selecione "Tutor". Crie seu perfil e envie a documentação necessária para aprovação.',
-        faq_cualificaciones_tutor: "Quais qualificações preciso para ser tutor?",
-        faq_cualificaciones_tutor_desc: "Não é obrigatório ter diploma acadêmico. Se você quer ensinar 'algo', você pode fazê-lo.",
-        faq_configurar_disponibilidad: "Como configuro minha disponibilidade?",
-        faq_configurar_disponibilidad_desc: "Faça login na sua conta, acesse a seção 'Gerenciar tempo disponível' e atualize seu calendário com os horários disponíveis.",
-        faq_estudiante_cancela: "O que acontece se um aluno cancelar uma sessão?",
-        faq_estudiante_cancela_desc: "Os estudantes não têm a opção de cancelar uma sessão após reservá-la. Se um estudante informar algum problema, recomende que entre em contato conosco para obter ajuda.",
-        /*Terminos*/
-        terminos_y_condiciones: "TERMOS E CONDIÇÕES DE USO DA CLASSGO",
-        fecha_actualizacion: "Última atualização: 02/07/2025",
-        introduccion: "1. Introdução",
-        bienvenida: 'Bem-vindo à ClassGo "a Plataforma", um serviço administrado pela ClassGO S.R.L. Ao se registrar ou utilizar nossos serviços, você concorda legalmente em cumprir estes Termos e Condições "T & C". Se não concordar, por favor, evite utilizar a plataforma.',
-        cuentas_usuario: "2. CONTAS DE USUÁRIO",
-        registro_verificacion: "2.1 Registro e Verificação",
-        info_personal: "Todos os usuários que desejam acessar os serviços da ClassGo devem concluir o processo de registro fornecendo informações pessoais precisas e atualizadas.",
-        subapartado_estudiantes: "Subseção Estudantes",
-        nombre_correo_fecha_pais: "Nome completo, e-mail, data de nascimento e país de residência.",
-        aceptar_politica: "A Política de Privacidade e estes Termos devem ser expressamente aceitos.",
-        subapartado_tutores: "Subseção Tutores",
-        doc_academica: "Além dos dados mencionados, devem apresentar documentação acadêmica que comprove sua idoneidade (diploma universitário, certificados, especializações, etc.).",
-        entrevistas_referencias: "A ClassGo poderá solicitar entrevistas, validações adicionais ou referências para a verificação do perfil.",
-        veracidad_actualizacion: "2.2 Veracidade e Atualização dos Dados",
-        usuario_responsable_mantener: "O usuário é responsável por manter seus dados pessoais e acadêmicos atualizados em todos os momentos.",
-        classgo_derecho_suspender: "A ClassGo reserva-se o direito de suspender contas com informações incorretas, desatualizadas ou fraudulentas.",
-        seguridad_responsabilidad_cuenta: "2.3 Segurança e Responsabilidade da Conta",
-        confidencialidad_credenciales: "É responsabilidade do usuário manter a confidencialidade de suas credenciais (e-mail e senha).",
-        no_compartir_cuentas: "Não é permitido compartilhar contas entre pessoas.",
-        notificar_actividades_sospechosas: "O usuário deve notificar imediatamente qualquer atividade suspeita ou uso não autorizado para o e-mail de suporte.",
-        classgo_no_responsable: "A ClassGo não será responsável por acessos não autorizados causados por negligência do usuário.",
-        edad_minima: "2.4 Idade Mínima",
-        usuarios_mayores_18: "Usuários maiores de 18 anos podem se registrar.",
-        menores_con_autorizacion: "Menores de idade podem se registrar com consentimento escrito de um pai ou responsável, enviado para o e-mail",
-        menores_con_autorizacion_2: "e com supervisão permanente do adulto responsável.",
-        suspensiones: "2.5 Suspensão e Encerramento de Contas",
-        classgo_derecho_suspender_temporal: "A ClassGo reserva-se o direito de suspender temporária ou permanentemente uma conta em caso de:",
-        incumplimiento_tyc: "Descumprimento destes Termos e Condições.",
-        actividades_sospechosas: "Atividades suspeitas, abusivas ou ilegais.",
-        reportes_mala_conducta: "Relatos recorrentes de má conduta por parte de outros usuários.",
-        decision_notificada_correo: "A decisão será notificada por e-mail e poderá incluir restrições de acesso, remoção de conteúdo ou encerramento definitivo do perfil.",
-        politicas_uso: "3. POLÍTICAS DE USO",
-        uso_aceptable: "3.1 Uso Aceitável da Plataforma",
-        uso_clasgo_estricto: "O uso do ClassGo deve ser estritamente para fins educacionais. Fica terminantemente proibido:",
-        actividades_ilicitas: "Usar a plataforma para atividades ilegais, enganosas ou contrárias à ordem pública.",
-        spam_phishing: "Enviar spam, phishing, fraudes, mensagens em massa ou atividades similares.",
-        uso_cuenta_beneficios_economicos: "Usar a conta para obter benefícios econômicos fora do ClassGo sem autorização.",
-        manipular_sistema: "Manipular o sistema com software malicioso, bots, técnicas de scraping ou engenharia reversa.",
-        suplantar_identidad: "Fingir ser outra pessoa ou instituição.",
-        classgo_reserva_derecho: "O ClassGo reserva-se o direito de investigar, bloquear ou excluir qualquer conta que viole esta política.",
-        interaccion_usuarios: "3.2 Interação entre Usuários",
-        conducta_respetuosa: "Todos os usuários devem manter conduta respeitosa, cordial e profissional. É proibido:",
-        lenguaje_ofensivo: "Usar linguagem ofensiva, discriminatória, difamatória ou violenta.",
-        acoso_intimidacion: "Assédio, intimidação ou manipulação psicológica de qualquer outro usuário.",
-        contacto_no_deseado: "Contato indesejado fora da plataforma para fins pessoais ou comerciais.",
-        reportes_de_comportamiento: "Relatórios de comportamento inadequado serão investigados e podem resultar em sanções, suspensão ou exclusão da conta.",
-        uso_contenido_propiedad_intelectual: "3.3 Uso de Conteúdo e Propriedade Intelectual",
-        imagenes_perfil: "Imagens de perfil:",
-        aceptar_jpg_png: "Apenas arquivos JPG ou PNG de até 5 MB são aceitos.",
-        prohibido_armas_sexual: "São proibidas imagens com armas, conteúdo sexualizado ou protegidas por direitos autorais sem permissão.",
-        material_educativo_tutores: "Material educacional (dos tutores):",
-        contenido_original: "Os tutores devem enviar apenas conteúdo original ou com licença de uso válida (ex.: Creative Commons).",
-        citar_fuentes: "Se forem utilizados recursos externos, as fontes devem ser corretamente citadas.",
-        derechos_classgo: "Direitos do ClassGo:",
-        propiedad_exclusiva: "O design, marca, logotipos, software e estrutura da plataforma são propriedade exclusiva do ClassGo.",
-        licencia_uso_contenido: "3.4 Licença de Uso do Conteúdo Enviado pelo Usuário",
-        licencia_explica: "Ao enviar conteúdo para a plataforma, o usuário (tutor ou estudante) mantém a titularidade e direitos autorais sobre o material, mas concede ao ClassGo uma licença não exclusiva, mundial, isenta de royalties, transferível e sublicenciável para utilizar o conteúdo para os seguintes fins:",
-        almacenamiento_seguro: "Armazenamento seguro nos servidores e bancos de dados do ClassGo.",
-        visualizacion_reproduccion: "Visualização e reprodução do conteúdo dentro do ambiente educacional digital da plataforma (incluindo apps móveis, site, materiais promocionais internos e recursos para estudantes).",
-        distribucion_limitada: "Distribuição limitada do conteúdo para outros usuários registrados (ex.: estudantes em uma sessão, tutores designados, etc.) para fins educativos do serviço.",
-        adaptacion_tecnica: "Adaptação técnica do conteúdo, caso seja necessário modificar o formato para garantir compatibilidade técnica com os sistemas da plataforma (ex.: converter arquivos para outros formatos, otimizar resolução, etc.).",
-        condiciones_revocacion: "Condições de Revogação:",
-        revocar_contenido: "O usuário pode revogar esta licença excluindo seu conteúdo da plataforma, exceto quando:",
-        contenido_compartido: "Ele já tenha sido compartilhado com outros usuários durante o uso legítimo do serviço.",
-        obligacion_legal: "Haja uma obrigação legal ou administrativa que impeça a remoção imediata do conteúdo (ex.: auditorias ou disputas).",
-        pagos_reembolsos_reprogramaciones: "4. PAGAMENTOS, REEMBOLSOS E REAGENDAMENTOS",
-        metodos_pago: "4.1 Métodos de Pagamento",
-        aceptamos_metodos: "Aceitamos:",
-        tarjetas_debito_credito: "Cartões de débito/crédito (Visa, Mastercard)",
-        recibo_transaccion: "Cada transação gerará um recibo eletrônico.",
-        politica_reembolsos: "4.2 Política de Reembolso",
-        casos_reembolso: "Casos em que o reembolso se aplica:",
-        cancelacion_tutor: "Cancelamento por parte do tutor",
-        fallos_tecnicos: "Falhas técnicas atribuíveis ao ClassGo (ex.: queda do sistema superior a 15 minutos)",
-        condiciones_solicitar_reembolso: "Condições para solicitar reembolso:",
-        solicitud_48h: "A solicitação deve ser feita dentro de 48 horas corridas após o incidente.",
-        procesamiento_48h: "O processamento do reembolso será realizado em até 48 horas úteis.",
-        cancelaciones_reprogramaciones: "5. CANCELAMENTOS E REAGENDAMENTOS",
-        politicas_cancelacion_reprogramacion: "O ClassGo estabelece políticas claras de cancelamento e reagendamento aplicáveis tanto a usuários quanto a tutores, com o objetivo de garantir respeito pelo tempo de ambas as partes, manter a qualidade do serviço e preservar a operabilidade da plataforma.",
-        cancelaciones_usuario: "5.1 Cancelamentos por parte do Usuário",
-        condiciones_cancelacion_usuario: "Condições",
-        usuario_24h_anticipacion: "Com mais de 24 horas de antecedência: O usuário poderá cancelar ou reagendar sem penalidade. Se aplicável, poderá solicitar reembolso total do valor da sessão ou reagendar sem custo adicional.",
-        usuario_menos_24h: "Com menos de 24 horas de antecedência: O cancelamento poderá estar sujeito a uma penalidade de 50% do valor da sessão, aplicada como compensação ao tutor pelo tempo reservado.",
-        usuario_no_show: "Ausência injustificada (no show): Se o usuário não comparecer à sessão sem aviso prévio, será considerada como sessão realizada e não haverá reembolso. O tutor receberá o pagamento correspondente.",
-        cancelaciones_tutor: "5.2 Cancelamentos por parte do Tutor",
-        condiciones_cancelacion_tutor: "Condições",
-        tutor_12h_aviso: "Cancelamento com aviso prévio (mínimo 12 horas): O tutor deverá oferecer ao usuário opções para reagendar. Nenhuma sanção será aplicada se for um evento ocasional e devidamente justificado.",
-        tutor_frecuentes_injustificadas: "Cancelamentos frequentes ou injustificados: Se um tutor fizer mais de três cancelamentos injustificados em um mês, poderá receber sanções progressivas, como advertências, suspensão temporária ou exclusão do perfil.",
-        tutor_no_show: "Ausência do tutor sem aviso (no show): Considerada falta grave. O estudante receberá reembolso total, e o tutor poderá ser sancionado com suspensão imediata da conta ou expulsão da plataforma.",
-        reprogramaciones: "5.3 Reagendamentos",
-        condiciones_reprogramacion: "Tanto estudantes quanto tutores podem agendar uma sessão desde que:",
-        reprogramacion_24h: "A solicitação seja feita com pelo menos 24 horas de antecedência.",
-        acuerdo_nuevo_horario: "Ambas as partes tenham chegado a um acordo sobre o novo horário.",
-        no_acuerdo_cancelacion: "Caso não haja acordo, a sessão poderá ser cancelada aplicando a política correspondente.",
-        resolucion_disputas: "5.4 Resolução de Disputas",
-        desacuerdo_tutor_usuario: "Em caso de desacordo entre um tutor e um usuário sobre um cancelamento ou reagendamento:",
-        presentar_argumentos_soporte: "As partes podem apresentar seus argumentos à equipe de suporte do ClassGo.",
-        classgo_mediador: "O ClassGo atuará como mediador e implementará a solução mais equitativa para ambas as partes.",
-        decision_final: "A decisão tomada será final, salvo disposição legal em contrário.",
-        responsabilidades: "6. RESPONSABILIDADES",
-        uso_responsable_plataforma: "O uso adequado da plataforma ClassGo implica um compromisso de todos os usuários em agir com responsabilidade, ética e profissionalismo. As disposições a seguir detalham as obrigações específicas de tutores e estudantes.",
-        responsabilidades_tutor: "6.1 Responsabilidades do Tutor",
-        veracidad_perfil: "Veracidade do Perfil Profissional",
-        informacion_academica_actualizada: "Inserir e manter atualizadas as informações acadêmicas e profissionais.",
-        documentacion_veridica: "Fornecer documentação verdadeira que comprove sua formação e experiência.",
-        no_suplantar_identidad: "Não se passar por outros nem apresentar credenciais falsificadas.",
-        calidad_servicio: "Qualidade do Serviço Educacional",
-        preparar_brindar_tutorias: "Preparar e ministrar tutoriais com pontualidade, clareza e estrutura.",
-        usar_recursos_adecuados: "Usar recursos pedagógicos adequados e atualizados.",
-        evitar_contenido_erroneo: "Evitar conteúdo errado, desatualizado ou irrelevante para a aprendizagem do estudante.",
-        etica_profesional_trato: "Ética Profissional e Conduta Respeitosa",
-        mantener_conducta_profesional: "Manter conduta profissional durante todas as interações.",
-        evitar_comentarios_ofensivos: "Evitar comentários ofensivos, discriminatórios, sexistas, racistas ou pessoais.",
-        no_relaciones_inapropiadas: "Não estabelecer relações pessoais inadequadas com os estudantes.",
-        uso_contenido: "Uso do Conteúdo",
-        material_autoria_propia: "Garantir que o material compartilhado seja de autoria própria ou possua licença de uso.",
-        no_usar_contenido_otro: "Não usar recursos de outros tutores sem autorização explícita.",
-        autorizar_classgo: "Autorizar o ClassGo a exibir e armazenar o conteúdo dentro do ambiente educacional da plataforma.",
-        confidencialidad: "Confidencialidade",
-        respetar_privacidad_estudiantes: "Respeitar a privacidade e os dados pessoais dos estudantes.",
-        no_divulgar_informacion: "Não divulgar conversas, gravações ou informações obtidas durante as sessões sem consentimento.",
-        cumplimiento_legal: "Cumprimento Legal",
-        actividad_cumple_normativa: "Assegurar que sua atividade como tutor cumpre a normativa educacional e trabalhista vigente em seu país de residência.",
-        responsabilidad_ausencias: "Responsabilidade em Relação a Ausências ou Cancelamentos",
-        notificar_cancelaciones: "Notificar cancelamentos com a maior antecedência possível.",
-        evitar_cancelaciones_reiteradas: "Evitar cancelamentos repetidos ou ausências injustificadas, que podem resultar em sanções da plataforma.",
-        responsabilidades_estudiante: "6.2 Responsabilidades do Estudante",
-        estudiantes_compromiso: "Estudantes que usam o ClassGo devem se comprometer a:",
-        participacion_puntualidad: "Participação Ativa e Pontualidade",
-        asistir_sesiones: "Comparecer às sessões no horário acordado.",
-        actitud_participativa: "Manter atitude participativa, receptiva e orientada à aprendizagem.",
-        respeto_tutor_entorno: "Respeito ao Tutor e ao Ambiente Virtual",
-        respetar_tutores: "Tratar os tutores com respeito, evitando conduta abusiva, ofensiva ou disruptiva.",
-        no_grabar_sin_autorizacion: "Não gravar nem compartilhar sessões sem autorização prévia.",
-        uso_responsable_plataforma_estudiante: "Uso Responsável da Plataforma",
-        no_fines_personales: "Não usar o ClassGo para fins diferentes do aprendizado (ex.: comerciais ou pessoais).",
-        no_compartir_terceros: "Não compartilhar acesso com terceiros nem fazer uso indevido das funcionalidades do sistema.",
-        pago_sesiones: "Pagamento Pontual das Sessões",
-        pago_autorizado_plazo: "Assegurar que os pagamentos sejam feitos pelos métodos autorizados e dentro dos prazos estabelecidos.",
-        no_reclamaciones_indebidas: "Não fazer reclamações indevidas por sessões recebidas corretamente.",
-        evaluacion_tutor: "Avaliação Objetiva do Tutor",
-        calificar_desempeno_72h: "Avaliar de forma justa e construtiva o desempenho dos tutores ao final das sessões, dentro do prazo de 72 horas.",
-        proteccion_datos_privacidad: "Proteção de Dados e Privacidade",
-        no_divulgar_datos: "Não divulgar dados pessoais de outros usuários.",
-        cumplir_politicas_privacidad: "Cumprir as políticas de privacidade estabelecidas pelo ClassGo.",
-        certificacion_tutores: "6.3 Certificação de Tutores ClassGo",
-        detalle_certificacion_tutores: "Para obter a certificação oficial como Tutor ClassGo, os usuários registrados como tutores devem completar com êxito o Programa de Formação Pedagógica da ClassGo, que consiste em 18 cursos pedagógicos disponíveis na plataforma. Esta certificação é requisito indispensável para acessar benefícios especiais, convênios institucionais e participar de programas de tutoria promovidos pelo ClassGo.",
-        convenios_beneficios: "6.4 Convênios Acadêmicos e Benefícios",
-        detalle_convenios_beneficios: "O ClassGo mantém convênios com unidades de pós-graduação e outras instituições educacionais, que podem conceder descontos, acessos preferenciais ou benefícios especiais a usuários que cumpram os requisitos de cada acordo. O cumprimento desses benefícios está sujeito à verificação de requisitos específicos, como progresso no plano formativo da plataforma ou validação de identidade.",
-        gestion_quejas_validacion: "6.5 Gestão de Reclamações e Validação de Aulas",
-        detalle_gestion_quejas: "Caso um usuário experimente problemas durante uma tutoria (ex.: ausência do tutor, falhas graves na aula ou descumprimento de qualidade), poderá apresentar uma reclamação nos primeiros 2 a 3 minutos após o término da sessão. Se nenhuma reclamação for registrada nesse período, o sistema processará automaticamente o pagamento do tutor. Todas as reclamações serão avaliadas pela equipe de suporte do ClassGo, que atuará como mediador para resolver a situação de forma justa, podendo aplicar reembolsos, retenções ou sanções conforme apropriado.",
-        limitacion_responsabilidad: "7. LIMITAÇÃO DE RESPONSABILIDADE",
-        classgo_no_responsable_por: "O ClassGo não será responsável por:",
-        danos_indirectos: "Danos indiretos, incluindo perda de oportunidades de trabalho.",
-        conflictos_usuarios_tutores: "Conflitos entre usuários e tutores.",
-        problemas_tecnicos_ajenos: "Problemas técnicos fora do controle da plataforma (ex.: falhas do provedor de internet do usuário).",
-        modificaciones_terminos: "8. MODIFICAÇÕES NOS TERMOS",
-        modificacion_avisada: "Qualquer modificação será comunicada com pelo menos 15 dias de antecedência por e-mail.",
-        aceptacion_continuada: "O uso contínuo da plataforma implica aceitação dos novos termos.",
-        contacto_soporte: "9. CONTATO E SUPORTE",
-        soporte_tecnico: "Suporte técnico:",
-        reclamos_formales: "Reclamações formais: enviar documentação física para:<br>CALLE ANGOSTURA, NRO: 314<br>BARRIO EL PARI, UV: 28 MZA 12<br>ENTRE A RUA EMILIO FINOT E A AVENIDA ESCUADRON VELASCO<br>",
-        contactanos_whatsapp: "Contate-nos pelo: ",
-        jurisdiccion_resolucion_conflictos: "10. JURISDIÇÃO E RESOLUÇÃO DE CONFLITOS",
-        acuerdo_legislacion_bolivia: "Este acordo é regido pela legislação vigente no Estado Plurinacional da Bolívia, incluindo disposições aplicáveis do Código Civil, Lei de Proteção ao Consumidor e demais normas relacionadas a serviços digitais e relações contratuais eletrônicas.",
-        mecanismo_conciliacion_arbitraje: "10.1 Mecanismo preferencial: conciliação ou arbitragem",
-        resolucion_amistosa: "Tentará resolver a controvérsia de forma amigável por meio de conciliação voluntária ou arbitragem institucional, conforme a legislação boliviana e regulamentos do Centro de Conciliação e Arbitragem da Câmara de Comércio e Serviços de Santa Cruz (CAINCO), ou outra entidade reconhecida acordada pelas partes.",
-        procedimiento_confidencial: "O procedimento será confidencial, rápido e vinculativo.",
-        inicio_proceso_solicitud: "A parte interessada deve iniciar o processo enviando uma solicitação formal ao centro correspondente.",
-        acatar_decision_tribunal: "Ambas as partes concordam em acatar a decisão emitida pelo tribunal arbitral ou conciliador.",
-        instancia_judicial_subsidiaria: "10.2 Instância judicial subsidiária",
-        jurisdiccion_ordinaria: "Se a conciliação falhar ou se a arbitragem não puder ser realizada por motivos atribuíveis a uma das partes ou por disposição legal, as partes se submetem à jurisdição ordinária dos tribunais competentes de Santa Cruz de la Sierra, renunciando expressamente a qualquer outra jurisdição.",
-        renuncia_accion_colectiva: "10.3 Renúncia à ação coletiva",
-        accion_individual: "Os usuários concordam que qualquer ação legal deve ser movida individualmente. Não são permitidas ações coletivas ou em grupo contra o ClassGo, salvo exigência expressa de uma autoridade judicial competente.",
-        idioma_legislacion_aplicable: "10.4 Idioma e legislação aplicável",
-        procedimiento_idioma_espanol: "Todos os procedimentos, sejam conciliatórios, arbitrais ou judiciais, serão conduzidos em espanhol e de acordo com as leis substantivas e processuais do Estado Plurinacional da Bolívia. Nota final da cláusula:<br>Se não houver solução por esses meios, as partes se submetem à jurisdição dos tribunais competentes de Santa Cruz, Bolívia.",
-        uso_internacional: "11. USO INTERNACIONAL",
-        descripcion_uso_internacional: "O ClassGo é uma plataforma desenvolvida e operada de acordo com as leis do Estado Plurinacional da Bolívia. No entanto, está disponível para usuários em outros países, sujeita às seguintes condições:",
-        responsabilidad_usuario_internacional: "11.1 Responsabilidade do usuário internacional",
-        usuario_responsable_exterior: "Se você acessar ou usar o ClassGo fora da Bolívia, o faz por sua própria iniciativa e responsabilidade. Você é o único responsável por assegurar que o uso dos serviços, conteúdos e funcionalidades da plataforma esteja em conformidade com as leis, normas e regulamentos locais do país a partir do qual acessa. Isso inclui, mas não se limita a:",
-        normativas_educacion_linea: "Regulamentações sobre educação online",
-        proteccion_datos: "Proteção de dados",
-        comercio_electronico: "Comércio eletrônico",
-        propiedad_intelectual: "Propriedade intelectual",
-        tributacion_digital: "Tributação digital",
-        limitaciones_disponibilidad_servicios: "11.2 Limitações de disponibilidade de serviços",
-        restricciones_servicios: "Alguns serviços, funcionalidades ou métodos de pagamento podem estar restritos ou indisponíveis em certos territórios devido a:",
-        restricciones_legales_locales: "Restrições legais locais",
-        normativas_exportacion: "Regulamentações de exportação ou controle de serviços tecnológicos",
-        incompatibilidad_tecnica: "Incompatibilidade técnica com sistemas de pagamento ou redes educacionais externas",
-        politicas_internas_classgo: "Políticas internas do ClassGo para evitar descumprimentos regulatórios",
-        en_tales_casos: "11.3 Nesses casos",
-        responsabilidad_limitada: "O ClassGo não será responsável pela impossibilidade de acesso total ou parcial a determinadas funcionalidades, desde que tais restrições sejam justificadas por motivos legais ou técnicos.",
-        idioma_soporte: "11.4 Idioma e suporte",
-        interfaz_documentacion_soporte: "Toda a interface, documentação legal, suporte técnico e comunicações oficiais estão disponíveis apenas em espanhol. Usuários que acessam de outros países aceitam utilizar a plataforma nesse idioma.",
-        jurisdiccion_disputas_internacionales: "11.5 Jurisdição e disputas internacionais",
-        disputas_internacionales: "Apesar do uso internacional, qualquer disputa relacionada à plataforma será regida pela legislação boliviana e submetida aos mecanismos de resolução de conflitos estabelecidos na cláusula 10 destes Termos e Condições.",
-        cumplimiento_normativo_global: "11.6 Conformidade regulatória global",
-        derecho_restricciones_cuentas: "O ClassGo reserva-se o direito de restringir, suspender ou cancelar contas de usuários que, residindo no exterior:",
-        infrinjan_leyes_locales: "violem leis locais",
-        riesgo_cumplimiento_normativo: "coloquem em risco a conformidade regulatória da plataforma",
-        reservarse_derecho_no_operar: "Além disso, reservamo-nos o direito de não operar em países onde existam:",
-        barreras_regulatorias_insalvables: "Barreiras regulatórias intransponíveis",
-        conflictos_legales_viabilidad: "Conflitos legais que afetem a viabilidade do serviço",
-        descarga_terminos_pdf: "Baixar termos e condições em PDF",
-        boton_descargar_pdf: "Baixar PDF",
-        //Blogs
-        ideas: "Ideias e dicas de especialistas para estudantes ao longo da vida",
-        Acceda: "Acesse informações valiosas, conselhos de especialistas e sugestões da nossa comunidade ativa de tutores.",
-        bus: "Buscar",
-        td_bl: "Todos os blogs",
-        sel: "Selecionar categoria",
-        neg: "Negócios",
-        tec: "Tecnologia",
-        edu: "Educação",
-        ord: "Ordenar por",
-        ma_rec: "Mais recentes",
-        ma_pop: "Mais populares",
-        ciberseguridad: "Cibersegurança",
-        no_blog: "Nenhum blog disponível."
-    }
+    // Nosotros
+    ini_n: "Início",
+    i_nos: "Sobre nós",
+    who: "Quem somos?",
+    plataforma_d_tutoria:
+      "Somos uma plataforma de aulas online que conecta estudantes de todas as idades a tutores especialistas. Oferecemos uma experiência acessível e de qualidade, independentemente da sua localização ou horário.",
+    mision: "Missão",
+    plataforma_d_educacion:
+      "Plataforma educacional de aulas virtuais para compartilhar conhecimento.",
+    proporcionamos_educacion:
+      "Disponibilizamos uma plataforma educacional de aulas virtuais acessíveis 24 horas por dia, voltada para qualquer pessoa que queira compartilhar seu conhecimento, com conteúdos que abrangem desde o nível universitário até habilidades técnicas.",
+    mas_docientos: "+200",
+    tutorias_disponibles: "Aulas disponíveis",
+    vision: "Visão",
+    ser_plataforma_lider: "Impulsionar o crescimento da aprendizagem.",
+    fomentar_aprendizaje:
+      "Ser a plataforma líder em aulas virtuais, promovendo a aprendizagem contínua e a acessibilidade educacional em todas as áreas do conhecimento.",
+    team: "Nossa equipe",
+    creadores_classgo:
+      "Os criadores do site e do app ClassGo, dedicados a revolucionar a educação.",
+    lic_presentacion:
+      "Olá! Sou Gabriel, apaixonado por compartilhar conhecimento e ajudar você a alcançar seus objetivos acadêmicos. Com anos de experiência em ensino e finanças, meu objetivo é orientar seu aprendizado de maneira clara e eficaz.",
+    jefi_rol: "Coordenador Geral",
+    jefi_presentacion:
+      "Preparado para os desafios do mundo empresarial digital, com uma mentalidade ágil e soluções orientadas para resultados.",
+    opjefi_rol: "Gerente de operações",
+    opjefi_presentacion:
+      "Apaixonado por compartilhar conhecimento de maneira clara e prática. Meu objetivo é ajudar você a aprender de forma simples e eficaz.",
+    jefi_movil_rol: "Desenvolvedor mobile",
+    jefi_movil_presentacion:
+      "Sou engenheiro de sistemas, desenvolvedor de sites e aplicativos móveis.",
+    jefi_Bdeveloper_rol: "Desenvolvedor backend",
+    jefi_Bdeveloper_presentacion:
+      "Construindo sistemas robustos, escaláveis e eficientes que garantem desempenho ideal e uma experiência fluida para os usuários, independentemente da complexidade do desafio.",
+    jefi_Fdeveloper_rol: "Desenvolvedor frontend",
+    jefi_Fdeveloper_presentacion:
+      "Criando interfaces intuitivas e atraentes que tornam o aprendizado uma experiência agradável e acessível para todos.",
+    jefi_sofware_rol: "Arquiteto de software",
+    jefi_sofware_presentacion:
+      "Projetando soluções tecnológicas sólidas e sustentáveis, alinhadas com os objetivos de negócio, para garantir uma arquitetura escalável, segura e preparada para o futuro.",
+    jefi_diseño_rol: "Designer Gráfico",
+    // Trabajamos
+    inicio: "Início",
+    como_trabajamos: "Como Trabalhamos",
+    unete_comunidad: "Junte-se à nossa comunidade hoje",
+    unete_comunidad_desc:
+      "Junte-se à nossa comunidade para compartilhar sua experiência como tutor ou melhorar suas habilidades como estudante.<br>Conecte-se, aprenda e cresça conosco hoje.",
+    para_estudiantes: "Para estudantes",
+    para_tutores: "Para tutores",
+    completa_datos:
+      "Preencha seus dados e defina suas preferências de aprendizagem",
+    completa_datos_desc:
+      "Forneça seus dados pessoais e defina suas preferências de aprendizagem para criar um perfil adaptado às suas necessidades educacionais.<br>Isso ajudará você a encontrar os tutores mais adequados e otimizar sua experiência de aprendizagem.",
+    utiliza_filtros:
+      "Use filtros para refinar sua busca e ver perfis detalhados de tutores",
+    utiliza_filtros_desc:
+      "Use filtros para limitar sua busca de tutores por matéria, nível, preço, localização e disponibilidade.<br>Isso permite ver perfis detalhados de tutores que melhor se adequam às suas necessidades de aprendizagem.",
+    elige_horario:
+      "Escolha um horário conveniente e reserve sua aula instantaneamente",
+    pasos_reservar: "Passos para reservar uma sessão de tutoria",
+    paso_select_time: "Selecione um horário disponível",
+    paso_click_slot: "Clique no horário desejado",
+    paso_choose_type: "Escolha o tipo de sessão",
+    paso_confirm_booking: "Confirme os detalhes da reserva",
+    paso_payment: "Prossiga para o pagamento",
+    paso_receive_confirmation: "Receba a confirmação",
+    asiste_leccion_login: "Participe da aula",
+    asiste_login_desc: "Faça login no horário agendado e comece a aprender",
+    asiste_presen:
+      "Faça login no horário agendado e entre na sessão para começar a aprender.<br>Conecte-se com seu tutor via Zoom para aproveitar uma aula interativa e envolvente.",
+    completa_form: "Preencha um formulário rápido de feedback após sua aula",
+    feedback_desc:
+      "Após sua aula, preencha um formulário rápido de feedback para compartilhar suas opiniões e avaliar sua experiência.<br>Seu feedback nos ajuda a melhorar e garantir o melhor ambiente de aprendizagem para todos.",
+    crea_perfil: "Crie seu perfil e liste suas qualificações",
+    crea_perfil_cont:
+      "Crie seu perfil para mostrar suas qualificações, habilidades e experiência. Destaque sua formação, experiência e as matérias que ensina para atrair estudantes em potencial e gerar credibilidade na plataforma.",
+    gestiona_horario:
+      "Gerencie seu horário para mostrar quando está disponível para ensinar",
+    gestiona_horario_desc:
+      "Gerencie facilmente sua disponibilidade atualizando seu cronograma com os horários em que está disponível para ensinar. Isso ajuda os alunos a saber quando podem reservar sessões com você e mantém seu calendário de ensino organizado.",
+    revisar_solicitudes: "Revise as solicitações dos alunos e aceite reservas",
+    revisar_solicitudes_desc:
+      "Revise as solicitações recebidas dos alunos e gerencie suas reservas aceitando aulas que se ajustem à sua disponibilidade. Confirme as reservas para se conectar com os alunos e começar a ensinar conforme o programado.",
+    dirige_clase: "Conduza sua aula com o Meet",
+    dirige_clase_desc:
+      "Conecte-se no horário agendado e comece a ministrar sua sessão. Use a ferramenta de videoconferência integrada da plataforma para interagir com seus alunos e oferecer uma experiência de aprendizagem envolvente.",
+    proceso_calidad: "Garantimos um processo de qualidade",
+    unete_comunidad_repetido: "Junte-se à nossa comunidade hoje",
+    unete_comunidad_repetido_desc:
+      "Junte-se à nossa comunidade para compartilhar sua experiência como tutor ou melhorar suas habilidades como estudante.<br>Conecte-se, aprenda e cresça conosco hoje.",
+    // Preguntas
+    inicio: "Início",
+    preguntas: "Perguntas",
+    encuentra_respuesta: "Encontre sua resposta",
+    empoderando_estudiantes: "Empoderando estudantes em todo o mundo",
+    para_estudiantes_faq: "Para estudantes",
+    para_tutores_faq: "Para tutores",
+    faq_encontrar_tutor: "Como encontrar um tutor?",
+    faq_encontrar_tutor_desc:
+      "Use a barra de pesquisa para encontrar tutores disponíveis de acordo com a matéria ou tema que você precisa",
+    faq_reservar_sesion: "Como faço para reservar uma sessão?",
+    faq_reservar_sesion_desc:
+      "Depois de encontrar um tutor, consulte seu perfil e selecione um horário disponível que seja conveniente para você. Clique em 'Reservar' e siga as instruções para confirmar sua sessão.",
+    faq_cancelar_reprogramar:
+      "E se eu precisar cancelar ou reagendar uma sessão?",
+    faq_cancelar_reprogramar_desc:
+      "As sessões de tutoria não podem ser canceladas uma vez reservadas. Se ocorrer algum problema, entre em contato conosco e teremos prazer em ajudá-lo.",
+    faq_pagos: "Como pago as sessões?",
+    faq_pagos_desc:
+      "Os pagamentos são realizados através do QR code fornecido na sua reserva ou também por transferência bancária com os dados exibidos na tela.",
+    faq_tutor_no_presente: "O que devo fazer se meu tutor não aparecer?",
+    faq_tutor_no_presente_desc:
+      "Se o seu tutor não comparecer a uma sessão agendada, entre em contato com nossa equipe de suporte imediatamente para obter ajuda e reagendar ou solicitar um reembolso.",
+    faq_comentarios_tutor: "Como posso deixar comentários para meu tutor?",
+    faq_comentarios_tutor_desc:
+      "Acesse o perfil do tutor, role para baixo e vá até a seção de avaliações, onde você poderá ver as classificações e comentários dos estudantes.",
+    faq_ser_tutor: "Como posso me tornar um tutor?",
+    faq_ser_tutor_desc_txt1: "Se você ainda não criou uma conta ",
+    faq_ser_tutor_desc_link: "clique aqui",
+    faq_ser_tutor_desc_txt2:
+      ' e preencha o formulário, e no final selecione "Tutor". Crie seu perfil e envie a documentação necessária para aprovação.',
+    faq_cualificaciones_tutor: "Quais qualificações preciso para ser tutor?",
+    faq_cualificaciones_tutor_desc:
+      "Não é obrigatório ter diploma acadêmico. Se você quer ensinar 'algo', você pode fazê-lo.",
+    faq_configurar_disponibilidad: "Como configuro minha disponibilidade?",
+    faq_configurar_disponibilidad_desc:
+      "Faça login na sua conta, acesse a seção 'Gerenciar tempo disponível' e atualize seu calendário com os horários disponíveis.",
+    faq_estudiante_cancela: "O que acontece se um aluno cancelar uma sessão?",
+    faq_estudiante_cancela_desc:
+      "Os estudantes não têm a opção de cancelar uma sessão após reservá-la. Se um estudante informar algum problema, recomende que entre em contato conosco para obter ajuda.",
+    /*Terminos*/
+    terminos_y_condiciones: "TERMOS E CONDIÇÕES DE USO DA CLASSGO",
+    fecha_actualizacion: "Última atualização: 02/07/2025",
+    introduccion: "1. Introdução",
+    bienvenida:
+      'Bem-vindo à ClassGo "a Plataforma", um serviço administrado pela ClassGO S.R.L. Ao se registrar ou utilizar nossos serviços, você concorda legalmente em cumprir estes Termos e Condições "T & C". Se não concordar, por favor, evite utilizar a plataforma.',
+    cuentas_usuario: "2. CONTAS DE USUÁRIO",
+    registro_verificacion: "2.1 Registro e Verificação",
+    info_personal:
+      "Todos os usuários que desejam acessar os serviços da ClassGo devem concluir o processo de registro fornecendo informações pessoais precisas e atualizadas.",
+    subapartado_estudiantes: "Subseção Estudantes",
+    nombre_correo_fecha_pais:
+      "Nome completo, e-mail, data de nascimento e país de residência.",
+    aceptar_politica:
+      "A Política de Privacidade e estes Termos devem ser expressamente aceitos.",
+    subapartado_tutores: "Subseção Tutores",
+    doc_academica:
+      "Além dos dados mencionados, devem apresentar documentação acadêmica que comprove sua idoneidade (diploma universitário, certificados, especializações, etc.).",
+    entrevistas_referencias:
+      "A ClassGo poderá solicitar entrevistas, validações adicionais ou referências para a verificação do perfil.",
+    veracidad_actualizacion: "2.2 Veracidade e Atualização dos Dados",
+    usuario_responsable_mantener:
+      "O usuário é responsável por manter seus dados pessoais e acadêmicos atualizados em todos os momentos.",
+    classgo_derecho_suspender:
+      "A ClassGo reserva-se o direito de suspender contas com informações incorretas, desatualizadas ou fraudulentas.",
+    seguridad_responsabilidad_cuenta:
+      "2.3 Segurança e Responsabilidade da Conta",
+    confidencialidad_credenciales:
+      "É responsabilidade do usuário manter a confidencialidade de suas credenciais (e-mail e senha).",
+    no_compartir_cuentas: "Não é permitido compartilhar contas entre pessoas.",
+    notificar_actividades_sospechosas:
+      "O usuário deve notificar imediatamente qualquer atividade suspeita ou uso não autorizado para o e-mail de suporte.",
+    classgo_no_responsable:
+      "A ClassGo não será responsável por acessos não autorizados causados por negligência do usuário.",
+    edad_minima: "2.4 Idade Mínima",
+    usuarios_mayores_18: "Usuários maiores de 18 anos podem se registrar.",
+    menores_con_autorizacion:
+      "Menores de idade podem se registrar com consentimento escrito de um pai ou responsável, enviado para o e-mail",
+    menores_con_autorizacion_2:
+      "e com supervisão permanente do adulto responsável.",
+    suspensiones: "2.5 Suspensão e Encerramento de Contas",
+    classgo_derecho_suspender_temporal:
+      "A ClassGo reserva-se o direito de suspender temporária ou permanentemente uma conta em caso de:",
+    incumplimiento_tyc: "Descumprimento destes Termos e Condições.",
+    actividades_sospechosas: "Atividades suspeitas, abusivas ou ilegais.",
+    reportes_mala_conducta:
+      "Relatos recorrentes de má conduta por parte de outros usuários.",
+    decision_notificada_correo:
+      "A decisão será notificada por e-mail e poderá incluir restrições de acesso, remoção de conteúdo ou encerramento definitivo do perfil.",
+    politicas_uso: "3. POLÍTICAS DE USO",
+    uso_aceptable: "3.1 Uso Aceitável da Plataforma",
+    uso_clasgo_estricto:
+      "O uso do ClassGo deve ser estritamente para fins educacionais. Fica terminantemente proibido:",
+    actividades_ilicitas:
+      "Usar a plataforma para atividades ilegais, enganosas ou contrárias à ordem pública.",
+    spam_phishing:
+      "Enviar spam, phishing, fraudes, mensagens em massa ou atividades similares.",
+    uso_cuenta_beneficios_economicos:
+      "Usar a conta para obter benefícios econômicos fora do ClassGo sem autorização.",
+    manipular_sistema:
+      "Manipular o sistema com software malicioso, bots, técnicas de scraping ou engenharia reversa.",
+    suplantar_identidad: "Fingir ser outra pessoa ou instituição.",
+    classgo_reserva_derecho:
+      "O ClassGo reserva-se o direito de investigar, bloquear ou excluir qualquer conta que viole esta política.",
+    interaccion_usuarios: "3.2 Interação entre Usuários",
+    conducta_respetuosa:
+      "Todos os usuários devem manter conduta respeitosa, cordial e profissional. É proibido:",
+    lenguaje_ofensivo:
+      "Usar linguagem ofensiva, discriminatória, difamatória ou violenta.",
+    acoso_intimidacion:
+      "Assédio, intimidação ou manipulação psicológica de qualquer outro usuário.",
+    contacto_no_deseado:
+      "Contato indesejado fora da plataforma para fins pessoais ou comerciais.",
+    reportes_de_comportamiento:
+      "Relatórios de comportamento inadequado serão investigados e podem resultar em sanções, suspensão ou exclusão da conta.",
+    uso_contenido_propiedad_intelectual:
+      "3.3 Uso de Conteúdo e Propriedade Intelectual",
+    imagenes_perfil: "Imagens de perfil:",
+    aceptar_jpg_png: "Apenas arquivos JPG ou PNG de até 5 MB são aceitos.",
+    prohibido_armas_sexual:
+      "São proibidas imagens com armas, conteúdo sexualizado ou protegidas por direitos autorais sem permissão.",
+    material_educativo_tutores: "Material educacional (dos tutores):",
+    contenido_original:
+      "Os tutores devem enviar apenas conteúdo original ou com licença de uso válida (ex.: Creative Commons).",
+    citar_fuentes:
+      "Se forem utilizados recursos externos, as fontes devem ser corretamente citadas.",
+    derechos_classgo: "Direitos do ClassGo:",
+    propiedad_exclusiva:
+      "O design, marca, logotipos, software e estrutura da plataforma são propriedade exclusiva do ClassGo.",
+    licencia_uso_contenido:
+      "3.4 Licença de Uso do Conteúdo Enviado pelo Usuário",
+    licencia_explica:
+      "Ao enviar conteúdo para a plataforma, o usuário (tutor ou estudante) mantém a titularidade e direitos autorais sobre o material, mas concede ao ClassGo uma licença não exclusiva, mundial, isenta de royalties, transferível e sublicenciável para utilizar o conteúdo para os seguintes fins:",
+    almacenamiento_seguro:
+      "Armazenamento seguro nos servidores e bancos de dados do ClassGo.",
+    visualizacion_reproduccion:
+      "Visualização e reprodução do conteúdo dentro do ambiente educacional digital da plataforma (incluindo apps móveis, site, materiais promocionais internos e recursos para estudantes).",
+    distribucion_limitada:
+      "Distribuição limitada do conteúdo para outros usuários registrados (ex.: estudantes em uma sessão, tutores designados, etc.) para fins educativos do serviço.",
+    adaptacion_tecnica:
+      "Adaptação técnica do conteúdo, caso seja necessário modificar o formato para garantir compatibilidade técnica com os sistemas da plataforma (ex.: converter arquivos para outros formatos, otimizar resolução, etc.).",
+    condiciones_revocacion: "Condições de Revogação:",
+    revocar_contenido:
+      "O usuário pode revogar esta licença excluindo seu conteúdo da plataforma, exceto quando:",
+    contenido_compartido:
+      "Ele já tenha sido compartilhado com outros usuários durante o uso legítimo do serviço.",
+    obligacion_legal:
+      "Haja uma obrigação legal ou administrativa que impeça a remoção imediata do conteúdo (ex.: auditorias ou disputas).",
+    pagos_reembolsos_reprogramaciones:
+      "4. PAGAMENTOS, REEMBOLSOS E REAGENDAMENTOS",
+    metodos_pago: "4.1 Métodos de Pagamento",
+    aceptamos_metodos: "Aceitamos:",
+    tarjetas_debito_credito: "Cartões de débito/crédito (Visa, Mastercard)",
+    recibo_transaccion: "Cada transação gerará um recibo eletrônico.",
+    politica_reembolsos: "4.2 Política de Reembolso",
+    casos_reembolso: "Casos em que o reembolso se aplica:",
+    cancelacion_tutor: "Cancelamento por parte do tutor",
+    fallos_tecnicos:
+      "Falhas técnicas atribuíveis ao ClassGo (ex.: queda do sistema superior a 15 minutos)",
+    condiciones_solicitar_reembolso: "Condições para solicitar reembolso:",
+    solicitud_48h:
+      "A solicitação deve ser feita dentro de 48 horas corridas após o incidente.",
+    procesamiento_48h:
+      "O processamento do reembolso será realizado em até 48 horas úteis.",
+    cancelaciones_reprogramaciones: "5. CANCELAMENTOS E REAGENDAMENTOS",
+    politicas_cancelacion_reprogramacion:
+      "O ClassGo estabelece políticas claras de cancelamento e reagendamento aplicáveis tanto a usuários quanto a tutores, com o objetivo de garantir respeito pelo tempo de ambas as partes, manter a qualidade do serviço e preservar a operabilidade da plataforma.",
+    cancelaciones_usuario: "5.1 Cancelamentos por parte do Usuário",
+    condiciones_cancelacion_usuario: "Condições",
+    usuario_24h_anticipacion:
+      "Com mais de 24 horas de antecedência: O usuário poderá cancelar ou reagendar sem penalidade. Se aplicável, poderá solicitar reembolso total do valor da sessão ou reagendar sem custo adicional.",
+    usuario_menos_24h:
+      "Com menos de 24 horas de antecedência: O cancelamento poderá estar sujeito a uma penalidade de 50% do valor da sessão, aplicada como compensação ao tutor pelo tempo reservado.",
+    usuario_no_show:
+      "Ausência injustificada (no show): Se o usuário não comparecer à sessão sem aviso prévio, será considerada como sessão realizada e não haverá reembolso. O tutor receberá o pagamento correspondente.",
+    cancelaciones_tutor: "5.2 Cancelamentos por parte do Tutor",
+    condiciones_cancelacion_tutor: "Condições",
+    tutor_12h_aviso:
+      "Cancelamento com aviso prévio (mínimo 12 horas): O tutor deverá oferecer ao usuário opções para reagendar. Nenhuma sanção será aplicada se for um evento ocasional e devidamente justificado.",
+    tutor_frecuentes_injustificadas:
+      "Cancelamentos frequentes ou injustificados: Se um tutor fizer mais de três cancelamentos injustificados em um mês, poderá receber sanções progressivas, como advertências, suspensão temporária ou exclusão do perfil.",
+    tutor_no_show:
+      "Ausência do tutor sem aviso (no show): Considerada falta grave. O estudante receberá reembolso total, e o tutor poderá ser sancionado com suspensão imediata da conta ou expulsão da plataforma.",
+    reprogramaciones: "5.3 Reagendamentos",
+    condiciones_reprogramacion:
+      "Tanto estudantes quanto tutores podem agendar uma sessão desde que:",
+    reprogramacion_24h:
+      "A solicitação seja feita com pelo menos 24 horas de antecedência.",
+    acuerdo_nuevo_horario:
+      "Ambas as partes tenham chegado a um acordo sobre o novo horário.",
+    no_acuerdo_cancelacion:
+      "Caso não haja acordo, a sessão poderá ser cancelada aplicando a política correspondente.",
+    resolucion_disputas: "5.4 Resolução de Disputas",
+    desacuerdo_tutor_usuario:
+      "Em caso de desacordo entre um tutor e um usuário sobre um cancelamento ou reagendamento:",
+    presentar_argumentos_soporte:
+      "As partes podem apresentar seus argumentos à equipe de suporte do ClassGo.",
+    classgo_mediador:
+      "O ClassGo atuará como mediador e implementará a solução mais equitativa para ambas as partes.",
+    decision_final:
+      "A decisão tomada será final, salvo disposição legal em contrário.",
+    responsabilidades: "6. RESPONSABILIDADES",
+    uso_responsable_plataforma:
+      "O uso adequado da plataforma ClassGo implica um compromisso de todos os usuários em agir com responsabilidade, ética e profissionalismo. As disposições a seguir detalham as obrigações específicas de tutores e estudantes.",
+    responsabilidades_tutor: "6.1 Responsabilidades do Tutor",
+    veracidad_perfil: "Veracidade do Perfil Profissional",
+    informacion_academica_actualizada:
+      "Inserir e manter atualizadas as informações acadêmicas e profissionais.",
+    documentacion_veridica:
+      "Fornecer documentação verdadeira que comprove sua formação e experiência.",
+    no_suplantar_identidad:
+      "Não se passar por outros nem apresentar credenciais falsificadas.",
+    calidad_servicio: "Qualidade do Serviço Educacional",
+    preparar_brindar_tutorias:
+      "Preparar e ministrar tutoriais com pontualidade, clareza e estrutura.",
+    usar_recursos_adecuados:
+      "Usar recursos pedagógicos adequados e atualizados.",
+    evitar_contenido_erroneo:
+      "Evitar conteúdo errado, desatualizado ou irrelevante para a aprendizagem do estudante.",
+    etica_profesional_trato: "Ética Profissional e Conduta Respeitosa",
+    mantener_conducta_profesional:
+      "Manter conduta profissional durante todas as interações.",
+    evitar_comentarios_ofensivos:
+      "Evitar comentários ofensivos, discriminatórios, sexistas, racistas ou pessoais.",
+    no_relaciones_inapropiadas:
+      "Não estabelecer relações pessoais inadequadas com os estudantes.",
+    uso_contenido: "Uso do Conteúdo",
+    material_autoria_propia:
+      "Garantir que o material compartilhado seja de autoria própria ou possua licença de uso.",
+    no_usar_contenido_otro:
+      "Não usar recursos de outros tutores sem autorização explícita.",
+    autorizar_classgo:
+      "Autorizar o ClassGo a exibir e armazenar o conteúdo dentro do ambiente educacional da plataforma.",
+    confidencialidad: "Confidencialidade",
+    respetar_privacidad_estudiantes:
+      "Respeitar a privacidade e os dados pessoais dos estudantes.",
+    no_divulgar_informacion:
+      "Não divulgar conversas, gravações ou informações obtidas durante as sessões sem consentimento.",
+    cumplimiento_legal: "Cumprimento Legal",
+    actividad_cumple_normativa:
+      "Assegurar que sua atividade como tutor cumpre a normativa educacional e trabalhista vigente em seu país de residência.",
+    responsabilidad_ausencias:
+      "Responsabilidade em Relação a Ausências ou Cancelamentos",
+    notificar_cancelaciones:
+      "Notificar cancelamentos com a maior antecedência possível.",
+    evitar_cancelaciones_reiteradas:
+      "Evitar cancelamentos repetidos ou ausências injustificadas, que podem resultar em sanções da plataforma.",
+    responsabilidades_estudiante: "6.2 Responsabilidades do Estudante",
+    estudiantes_compromiso:
+      "Estudantes que usam o ClassGo devem se comprometer a:",
+    participacion_puntualidad: "Participação Ativa e Pontualidade",
+    asistir_sesiones: "Comparecer às sessões no horário acordado.",
+    actitud_participativa:
+      "Manter atitude participativa, receptiva e orientada à aprendizagem.",
+    respeto_tutor_entorno: "Respeito ao Tutor e ao Ambiente Virtual",
+    respetar_tutores:
+      "Tratar os tutores com respeito, evitando conduta abusiva, ofensiva ou disruptiva.",
+    no_grabar_sin_autorizacion:
+      "Não gravar nem compartilhar sessões sem autorização prévia.",
+    uso_responsable_plataforma_estudiante: "Uso Responsável da Plataforma",
+    no_fines_personales:
+      "Não usar o ClassGo para fins diferentes do aprendizado (ex.: comerciais ou pessoais).",
+    no_compartir_terceros:
+      "Não compartilhar acesso com terceiros nem fazer uso indevido das funcionalidades do sistema.",
+    pago_sesiones: "Pagamento Pontual das Sessões",
+    pago_autorizado_plazo:
+      "Assegurar que os pagamentos sejam feitos pelos métodos autorizados e dentro dos prazos estabelecidos.",
+    no_reclamaciones_indebidas:
+      "Não fazer reclamações indevidas por sessões recebidas corretamente.",
+    evaluacion_tutor: "Avaliação Objetiva do Tutor",
+    calificar_desempeno_72h:
+      "Avaliar de forma justa e construtiva o desempenho dos tutores ao final das sessões, dentro do prazo de 72 horas.",
+    proteccion_datos_privacidad: "Proteção de Dados e Privacidade",
+    no_divulgar_datos: "Não divulgar dados pessoais de outros usuários.",
+    cumplir_politicas_privacidad:
+      "Cumprir as políticas de privacidade estabelecidas pelo ClassGo.",
+    certificacion_tutores: "6.3 Certificação de Tutores ClassGo",
+    detalle_certificacion_tutores:
+      "Para obter a certificação oficial como Tutor ClassGo, os usuários registrados como tutores devem completar com êxito o Programa de Formação Pedagógica da ClassGo, que consiste em 18 cursos pedagógicos disponíveis na plataforma. Esta certificação é requisito indispensável para acessar benefícios especiais, convênios institucionais e participar de programas de tutoria promovidos pelo ClassGo.",
+    convenios_beneficios: "6.4 Convênios Acadêmicos e Benefícios",
+    detalle_convenios_beneficios:
+      "O ClassGo mantém convênios com unidades de pós-graduação e outras instituições educacionais, que podem conceder descontos, acessos preferenciais ou benefícios especiais a usuários que cumpram os requisitos de cada acordo. O cumprimento desses benefícios está sujeito à verificação de requisitos específicos, como progresso no plano formativo da plataforma ou validação de identidade.",
+    gestion_quejas_validacion: "6.5 Gestão de Reclamações e Validação de Aulas",
+    detalle_gestion_quejas:
+      "Caso um usuário experimente problemas durante uma tutoria (ex.: ausência do tutor, falhas graves na aula ou descumprimento de qualidade), poderá apresentar uma reclamação nos primeiros 2 a 3 minutos após o término da sessão. Se nenhuma reclamação for registrada nesse período, o sistema processará automaticamente o pagamento do tutor. Todas as reclamações serão avaliadas pela equipe de suporte do ClassGo, que atuará como mediador para resolver a situação de forma justa, podendo aplicar reembolsos, retenções ou sanções conforme apropriado.",
+    limitacion_responsabilidad: "7. LIMITAÇÃO DE RESPONSABILIDADE",
+    classgo_no_responsable_por: "O ClassGo não será responsável por:",
+    danos_indirectos:
+      "Danos indiretos, incluindo perda de oportunidades de trabalho.",
+    conflictos_usuarios_tutores: "Conflitos entre usuários e tutores.",
+    problemas_tecnicos_ajenos:
+      "Problemas técnicos fora do controle da plataforma (ex.: falhas do provedor de internet do usuário).",
+    modificaciones_terminos: "8. MODIFICAÇÕES NOS TERMOS",
+    modificacion_avisada:
+      "Qualquer modificação será comunicada com pelo menos 15 dias de antecedência por e-mail.",
+    aceptacion_continuada:
+      "O uso contínuo da plataforma implica aceitação dos novos termos.",
+    contacto_soporte: "9. CONTATO E SUPORTE",
+    soporte_tecnico: "Suporte técnico:",
+    reclamos_formales:
+      "Reclamações formais: enviar documentação física para:<br>CALLE ANGOSTURA, NRO: 314<br>BARRIO EL PARI, UV: 28 MZA 12<br>ENTRE A RUA EMILIO FINOT E A AVENIDA ESCUADRON VELASCO<br>",
+    contactanos_whatsapp: "Contate-nos pelo: ",
+    jurisdiccion_resolucion_conflictos:
+      "10. JURISDIÇÃO E RESOLUÇÃO DE CONFLITOS",
+    acuerdo_legislacion_bolivia:
+      "Este acordo é regido pela legislação vigente no Estado Plurinacional da Bolívia, incluindo disposições aplicáveis do Código Civil, Lei de Proteção ao Consumidor e demais normas relacionadas a serviços digitais e relações contratuais eletrônicas.",
+    mecanismo_conciliacion_arbitraje:
+      "10.1 Mecanismo preferencial: conciliação ou arbitragem",
+    resolucion_amistosa:
+      "Tentará resolver a controvérsia de forma amigável por meio de conciliação voluntária ou arbitragem institucional, conforme a legislação boliviana e regulamentos do Centro de Conciliação e Arbitragem da Câmara de Comércio e Serviços de Santa Cruz (CAINCO), ou outra entidade reconhecida acordada pelas partes.",
+    procedimiento_confidencial:
+      "O procedimento será confidencial, rápido e vinculativo.",
+    inicio_proceso_solicitud:
+      "A parte interessada deve iniciar o processo enviando uma solicitação formal ao centro correspondente.",
+    acatar_decision_tribunal:
+      "Ambas as partes concordam em acatar a decisão emitida pelo tribunal arbitral ou conciliador.",
+    instancia_judicial_subsidiaria: "10.2 Instância judicial subsidiária",
+    jurisdiccion_ordinaria:
+      "Se a conciliação falhar ou se a arbitragem não puder ser realizada por motivos atribuíveis a uma das partes ou por disposição legal, as partes se submetem à jurisdição ordinária dos tribunais competentes de Santa Cruz de la Sierra, renunciando expressamente a qualquer outra jurisdição.",
+    renuncia_accion_colectiva: "10.3 Renúncia à ação coletiva",
+    accion_individual:
+      "Os usuários concordam que qualquer ação legal deve ser movida individualmente. Não são permitidas ações coletivas ou em grupo contra o ClassGo, salvo exigência expressa de uma autoridade judicial competente.",
+    idioma_legislacion_aplicable: "10.4 Idioma e legislação aplicável",
+    procedimiento_idioma_espanol:
+      "Todos os procedimentos, sejam conciliatórios, arbitrais ou judiciais, serão conduzidos em espanhol e de acordo com as leis substantivas e processuais do Estado Plurinacional da Bolívia. Nota final da cláusula:<br>Se não houver solução por esses meios, as partes se submetem à jurisdição dos tribunais competentes de Santa Cruz, Bolívia.",
+    uso_internacional: "11. USO INTERNACIONAL",
+    descripcion_uso_internacional:
+      "O ClassGo é uma plataforma desenvolvida e operada de acordo com as leis do Estado Plurinacional da Bolívia. No entanto, está disponível para usuários em outros países, sujeita às seguintes condições:",
+    responsabilidad_usuario_internacional:
+      "11.1 Responsabilidade do usuário internacional",
+    usuario_responsable_exterior:
+      "Se você acessar ou usar o ClassGo fora da Bolívia, o faz por sua própria iniciativa e responsabilidade. Você é o único responsável por assegurar que o uso dos serviços, conteúdos e funcionalidades da plataforma esteja em conformidade com as leis, normas e regulamentos locais do país a partir do qual acessa. Isso inclui, mas não se limita a:",
+    normativas_educacion_linea: "Regulamentações sobre educação online",
+    proteccion_datos: "Proteção de dados",
+    comercio_electronico: "Comércio eletrônico",
+    propiedad_intelectual: "Propriedade intelectual",
+    tributacion_digital: "Tributação digital",
+    limitaciones_disponibilidad_servicios:
+      "11.2 Limitações de disponibilidade de serviços",
+    restricciones_servicios:
+      "Alguns serviços, funcionalidades ou métodos de pagamento podem estar restritos ou indisponíveis em certos territórios devido a:",
+    restricciones_legales_locales: "Restrições legais locais",
+    normativas_exportacion:
+      "Regulamentações de exportação ou controle de serviços tecnológicos",
+    incompatibilidad_tecnica:
+      "Incompatibilidade técnica com sistemas de pagamento ou redes educacionais externas",
+    politicas_internas_classgo:
+      "Políticas internas do ClassGo para evitar descumprimentos regulatórios",
+    en_tales_casos: "11.3 Nesses casos",
+    responsabilidad_limitada:
+      "O ClassGo não será responsável pela impossibilidade de acesso total ou parcial a determinadas funcionalidades, desde que tais restrições sejam justificadas por motivos legais ou técnicos.",
+    idioma_soporte: "11.4 Idioma e suporte",
+    interfaz_documentacion_soporte:
+      "Toda a interface, documentação legal, suporte técnico e comunicações oficiais estão disponíveis apenas em espanhol. Usuários que acessam de outros países aceitam utilizar a plataforma nesse idioma.",
+    jurisdiccion_disputas_internacionales:
+      "11.5 Jurisdição e disputas internacionais",
+    disputas_internacionales:
+      "Apesar do uso internacional, qualquer disputa relacionada à plataforma será regida pela legislação boliviana e submetida aos mecanismos de resolução de conflitos estabelecidos na cláusula 10 destes Termos e Condições.",
+    cumplimiento_normativo_global: "11.6 Conformidade regulatória global",
+    derecho_restricciones_cuentas:
+      "O ClassGo reserva-se o direito de restringir, suspender ou cancelar contas de usuários que, residindo no exterior:",
+    infrinjan_leyes_locales: "violem leis locais",
+    riesgo_cumplimiento_normativo:
+      "coloquem em risco a conformidade regulatória da plataforma",
+    reservarse_derecho_no_operar:
+      "Além disso, reservamo-nos o direito de não operar em países onde existam:",
+    barreras_regulatorias_insalvables: "Barreiras regulatórias intransponíveis",
+    conflictos_legales_viabilidad:
+      "Conflitos legais que afetem a viabilidade do serviço",
+    descarga_terminos_pdf: "Baixar termos e condições em PDF",
+    boton_descargar_pdf: "Baixar PDF",
+    //Blogs
+    ideas: "Ideias e dicas de especialistas para estudantes ao longo da vida",
+    Acceda:
+      "Acesse informações valiosas, conselhos de especialistas e sugestões da nossa comunidade ativa de tutores.",
+    bus: "Buscar",
+    td_bl: "Todos os blogs",
+    sel: "Selecionar categoria",
+    neg: "Negócios",
+    tec: "Tecnologia",
+    edu: "Educação",
+    ord: "Ordenar por",
+    ma_rec: "Mais recentes",
+    ma_pop: "Mais populares",
+    ciberseguridad: "Cibersegurança",
+    no_blog: "Nenhum blog disponível.",
+  },
 };
-
 
 // ===========================
 // Funciones del selector
 // ===========================
 
 function toggleDropdown() {
-    const dropdown = document.getElementById("languageDropdown");
-    dropdown.style.display = dropdown.style.display === "flex" ? "none" : "flex";
+  const dropdown = document.getElementById("languageDropdown");
+  dropdown.style.display = dropdown.style.display === "flex" ? "none" : "flex";
 }
 
 function selectLanguage(lang, closeDropdown = true) {
-    localStorage.setItem("selectedLanguage", lang);
+  localStorage.setItem("selectedLanguage", lang);
 
-    const selectedOption = document.querySelector(".language-select .selected-option span");
-    const selectedImg = document.querySelector(".language-select .selected-option img");
+  const selectedOption = document.querySelector(
+    ".language-select .selected-option span",
+  );
+  const selectedImg = document.querySelector(
+    ".language-select .selected-option img",
+  );
 
-    const languages = {
-        es: { text: "Español", flag: "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f1ea-1f1f8.svg" },
-        en: { text: "English", flag: "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f1ec-1f1e7.svg" },
-        pt: { text: "Português", flag: "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f1f5-1f1f9.svg" }
-    };
+  const languages = {
+    es: {
+      text: "Español",
+      flag: "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f1ea-1f1f8.svg",
+    },
+    en: {
+      text: "English",
+      flag: "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f1ec-1f1e7.svg",
+    },
+    pt: {
+      text: "Português",
+      flag: "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f1f5-1f1f9.svg",
+    },
+  };
 
-    if (selectedOption) selectedOption.textContent = languages[lang].text;
-    if (selectedImg) selectedImg.src = languages[lang].flag;
+  if (selectedOption) selectedOption.textContent = languages[lang].text;
+  if (selectedImg) selectedImg.src = languages[lang].flag;
 
-    // Traducir todos los elementos con data-translate
-    document.querySelectorAll("[data-translate]").forEach(el => {
-        const key = el.getAttribute("data-translate");
-        if (translations[lang][key]) {
-            el.innerHTML = translations[lang][key]; // innerHTML respeta <br>
-        }
-    });
+  // Traducir todos los elementos con data-translate
+  document.querySelectorAll("[data-translate]").forEach((el) => {
+    const key = el.getAttribute("data-translate");
+    if (translations[lang][key]) {
+      el.innerHTML = translations[lang][key]; // innerHTML respeta <br>
+    }
+  });
 
-    if (closeDropdown) toggleDropdown();
+  if (closeDropdown) toggleDropdown();
 }
 
 // ===========================
 // Inicialización al cargar la página
 // ===========================
 document.addEventListener("DOMContentLoaded", function () {
-    const savedLang = localStorage.getItem("selectedLanguage") || "es";
-    selectLanguage(savedLang, false);
+  const savedLang = localStorage.getItem("selectedLanguage") || "es";
+  selectLanguage(savedLang, false);
 });
 
 document.addEventListener("livewire:load", function () {
-    const savedLang = localStorage.getItem("selectedLanguage") || "es";
-    selectLanguage(savedLang, false);
+  const savedLang = localStorage.getItem("selectedLanguage") || "es";
+  selectLanguage(savedLang, false);
 });
 
 document.addEventListener("livewire:update", function () {
-    const savedLang = localStorage.getItem("selectedLanguage") || "es";
-    selectLanguage(savedLang, false);
+  const savedLang = localStorage.getItem("selectedLanguage") || "es";
+  selectLanguage(savedLang, false);
 });
