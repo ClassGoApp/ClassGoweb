@@ -17,7 +17,7 @@
             </i>
 
             <span class="instant-tooltip" >
-                ¡Tutoría al Instante--abel!
+                ¡Tutoría al Instante
             </span>
     
     </button>
@@ -36,7 +36,7 @@
             <span class="am-recruitment-tooltip">¡Postúlate aquí!</span>
         </button>
     @endif
-        <p style="color: red">ñññ---{{ $hasApplied ? "PASA": "NO PASA" }}</p>
+        
     <button id="fab-main-button" class="fab-main">
         <i id="fab-main-icon" class="fas fa-question"></i>
         {{-- <img id="fab-main-icon" class="tutoria-disponible-boton" src="{{ asset('images/logoClassgo.png') }}" alt=""> --}}
