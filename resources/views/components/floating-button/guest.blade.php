@@ -8,7 +8,7 @@
     @endphp
 
     <button class="instant-btn-floating " onclick="window.location.href='{{ $hasTerms ? url('tutorias-instantaneas') : route('home') . '#tutorias-instantaneas-seccion' }}'">
-    {{-- "{{ route('home') }}#tutorias-instantaneas-seccion" --}}
+    
     
             <i>
                 <svg class="bolt" viewBox="0 0 24 24">
@@ -17,7 +17,7 @@
             </i>
 
             <span class="instant-tooltip" >
-                ¡Tutoría al Instante
+                ¡Tutoría al Instante!
             </span>
     
     </button>
@@ -36,7 +36,6 @@
             <span class="am-recruitment-tooltip">¡Postúlate aquí!</span>
         </button>
     @endif
-        
     <button id="fab-main-button" class="fab-main">
         <i id="fab-main-icon" class="fas fa-question"></i>
         {{-- <img id="fab-main-icon" class="tutoria-disponible-boton" src="{{ asset('images/logoClassgo.png') }}" alt=""> --}}
