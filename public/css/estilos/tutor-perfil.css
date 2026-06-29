@@ -1704,7 +1704,8 @@ body.modal-open {
     padding: 1.5rem;
     display: flex;
     align-items: center;
-    justify-content: center;
+    /* justify-content: center; */
+    flex-direction: column;
 }
 
 .qr-image {
@@ -1745,7 +1746,7 @@ body.modal-open {
     font-size: 0.875rem;
     font-weight: 500;
     color: #4b5563;
-    margin-bottom: 0.5rem;
+    /* margin-bottom: 0.5rem; */
 }
 
 
@@ -1837,34 +1838,17 @@ body.modal-open {
 }
 
 
-/* ==================== 12 - Turtor Select Personalisado ==================== */
-
-.select-input {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #d1d5db;
-    border-radius: 0.5rem;
-    transition: border-color 0.2s, box-shadow 0.2s;
-    background-color: #fff;
-    font-size: 1rem;
-}
-
-.select-input:focus {
-    outline: none;
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
-}
 
 
 /* ==================== 13 - Tutor Info Box Horario ==================== */
 
 .info-box {
     background-color: #f3f4f6;
-    padding: 1rem;
+    padding: 5px 14px;
     border-radius: 0.5rem;
     font-size: 0.875rem;
     color: #4b5563;
-    margin-top: 0.4rem;
+    /* margin-top: 0.4rem; */
     display: flex;
     flex-direction: column;
     align-items: start;
@@ -1883,6 +1867,7 @@ body.modal-open {
     flex-wrap: nowrap;
     gap: 1rem;
     padding-top: 0.5rem;
+    margin-top: auto;
 }
 
 
@@ -1951,6 +1936,7 @@ body.modal-open {
 .coupon-input-group {
     display: flex;
     gap: 0.5rem;
+    height: 2rem;
 }
 
 .coupon-input {
@@ -2124,7 +2110,89 @@ body.modal-open {
 }
 
 
+/* Contenedor del grupo del formulario (Opcional, para dar espacio) */
+/* .modal-form-column > div {
+    margin-bottom: 20px;
+} */
 
+/* Estilos de la Etiqueta (Label) */
+.input-label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #334155; /* Gris pizarra oscuro */
+    /* margin-bottom: 8px; */
+    text-transform: short; /* Opcional */
+}
+
+/* Estilos del Selector (Select) */
+.select-input {
+    width: 100%;
+    padding: 12px 40px 12px 16px; /* Más espacio a la derecha para la flecha */
+    font-size: 0.95rem;
+    color: #1e293b;
+    background-color: #ffffff;
+    border: 1px solid #cbd5e1; /* Gris suave */
+    border-radius: 10px; /* Bordes sutilmente redondeados */
+    outline: none;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+
+    /* Resetear la flecha nativa del navegador */
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    /* Inyectar flecha personalizada en SVG */
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    background-size: 16px;
+    
+    /* Sombra interna muy sutil */
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* Estado Focus (Cuando el usuario hace clic en el select) */
+.select-input:focus {
+    border-color: #3b82f6; /* Azul brillante que hace juego con el CTA */
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15); /* Efecto de brillo exterior suave */
+    background-color: #fafafa;
+}
+
+/* Estilos para las opciones de adentro (Menú desplegable) */
+.select-input option {
+    color: #1e293b;
+    padding: 12px;
+    background-color: #ffffff;
+}
+
+/* Opción por defecto deshabilitada o vacía */
+.select-input option[value=""] {
+    color: #94a3b8;
+}
+
+/* Mensaje de Error de Validación */
+.form-error {
+    display: block;
+    /* margin-top: 6px; */
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #ef4444; /* Rojo de alerta estándar */
+    animation: fadeInError 0.2s ease-in-out;
+}
+
+/* Animación sutil para que el error aparezca suavemente */
+@keyframes fadeInError {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
 
 .tutor-main-bg {

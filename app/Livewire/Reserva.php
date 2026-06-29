@@ -69,6 +69,9 @@ class Reserva extends Component
 
     public bool $isAugustPromotion = false;
 
+    // País detectado desde Cloudflare CF-IPCountry ('BO' = Bolivia, otro = internacional)
+    public string $paisDetectado = 'XX';
+
     // Propiedades para el tutor
     public $tutorId;
     public $materiasTutor;
@@ -79,6 +82,14 @@ class Reserva extends Component
         $this->currentDate = Carbon::now();
         $this->isAugustPromotion = $this->currentDate->month === 8; // ✅ Verificar si es agosto
         $this->cuponservice = $cuponservice;  // OK
+
+        // Detectar país del visitante via Cloudflare (funciona en producción con CF activo)
+        // En local: usar LOCAL_COUNTRY del .env para simular país (ej: LOCAL_COUNTRY=BO)
+        // Si no existe ninguno de los dos, usar 'XX' (mostrará Takenos por defecto)
+        $cfHeader = strtoupper(trim((string) request()->header('CF-IPCountry', '')));
+        $envPais  = strtoupper(trim((string) env('LOCAL_COUNTRY', '')));
+        $pais = $cfHeader !== '' ? $cfHeader : ($envPais !== '' ? $envPais : 'XX');
+        $this->paisDetectado = $pais;
 
         if (auth()->check()) {
             $this->cuponesUsuario = $this->cuponservice->todosLosCupones(auth()->user());
@@ -458,6 +469,24 @@ class Reserva extends Component
         }
     }
 
+    /**
+     * Se ejecuta automáticamente cuando cambia la materia seleccionada.
+     * Limpia el estado de error rojo al instante.
+     */
+    public function updatedSelectedSubject()
+    {
+        $this->resetValidation('selectedSubject');
+    }
+
+    /**
+     * Se ejecuta automáticamente cuando se empieza a subir el comprobante.
+     * Limpia el estado de error rojo al instante.
+     */
+    public function updatedPaymentReceipt()
+    {
+        $this->resetValidation('paymentReceipt');
+    }
+
     public function closeModal()
     {
         // Liberar bloqueos de caché al cancelar
@@ -827,9 +856,11 @@ class Reserva extends Component
         $daysInMonth = $this->currentDate->daysInMonth;
 
         return view('livewire.reserva', [
-            'startDay' => $startDay,
-            'daysInMonth' => $daysInMonth,
-            'materiasTutor' => $this->materiasTutor
+            'startDay'      => $startDay,
+            'daysInMonth'   => $daysInMonth,
+            'materiasTutor' => $this->materiasTutor,
+            // Pasar el país detectado para que Alpine.js elija la pestaña inicial
+            'paisDetectado' => $this->paisDetectado,
         ]);
     }
 }
