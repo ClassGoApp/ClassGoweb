@@ -298,7 +298,7 @@
                                         <button type="button" class="qr-method-tab"
                                             :class="{ 'qr-method-tab--active': metodo === 'takenos' }"
                                             @click="metodo = 'takenos'">
-                                            🌍 Takenos Internacional
+                                            Takenos Internacional
                                         </button>
                                     </div>
 
