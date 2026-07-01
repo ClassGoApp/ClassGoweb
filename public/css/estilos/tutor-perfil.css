@@ -1868,6 +1868,8 @@ body.modal-open {
     gap: 1rem;
     padding-top: 0.5rem;
     margin-top: auto;
+    justify-content: end;
+
 }
 
 

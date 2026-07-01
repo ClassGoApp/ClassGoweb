@@ -323,6 +323,8 @@
 
 /*---------------------------movil---------------------------*/
 /* Responsive Styles */
+
+
 @media (max-width: 768px) {
     .modal-container {
         flex-direction: column;
@@ -355,6 +357,7 @@
     /* Botones */
     .btn {
         padding: 12px;
+        width: 5rem;
     }
 }
 
@@ -522,12 +525,14 @@
 
 /* Tipografías internas del CTA */
 .cta-main-title {
+    display: block !important;
     font-size: 1rem;
     font-weight: 700;
     color: var(--primary-color);
     margin: 8px 0 4px 0;
 }
 .file-upload-subtext {
+    display: block !important;
     font-size: 0.85rem;
     color: #64748b;
     /* margin-bottom: 12px; */
@@ -545,12 +550,14 @@
 
 /* Estilos de éxito (Archivo cargado) */
 .cta-title-success {
+    display: block !important;
     font-size: 1rem;
     font-weight: 700;
     color: #065f46;
     margin-top: 6px;
 }
 .file-name-text {
+    display: block !important;
     font-size: 0.85rem;
     color: #047857;
     font-family: monospace;
@@ -619,4 +626,151 @@
 .file-input-hidden {
     display: none !important;
 }
+.reserva-success-message {
+    background: #d1fae5;
+    color: #065f46;
+    border: 1px solid #10b981;
+    padding: 14px 18px;
+    border-radius: 12px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-align: center;
+}
+.modal-full-loading-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 50;
+    background: rgba(255, 255, 255, 0.92);
+    display: flex ;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+    width: 100%;
+    height: 100%;
+}
 
+.loading-center-box {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    /* max-width: 360px; */
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+     /* width: 100%;*/
+    height: 100%; 
+}
+
+.main-loading-ring {
+    width: 64px;
+    height: 64px;
+    border: 6px solid #dbeafe;
+    border-top-color: #2563eb;
+    border-radius: 50%;
+    margin: 0 auto 18px;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.loading-view-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 8px;
+}
+
+.loading-view-desc {
+    display: block !important;
+    font-size: 0.95rem;
+    color: #64748b;
+    line-height: 1.5;
+}
+
+.modal-success-panel {
+    padding: 40px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    /* min-height: 350px; */
+}
+
+.success-icon {
+    width: 70px;
+    height: 70px;
+    background-color: #d1fae5;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #10b981;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.input-error-active {
+    border: 2px solid #ef4444 !important;
+    border-radius: 12px;
+}
+
+.file-upload-cta-box.input-error-active,
+.custom-select-trigger.input-error-active {
+    border: 2px solid #f21111 !important;
+    background-color: #ffe1e1;
+}
+
+.field-error-message {
+    margin: 6px 0 0;
+    color: #dc2626;
+    font-size: 0.82rem;
+    font-weight: 600;
+}
+
+/*  boton de descarga*/
+
+/* Botón pequeño para descargar el QR seleccionado */
+.modal-qr-column .qr-download-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: fit-content;
+    margin: 10px auto 0;
+    padding: 7px 12px;
+
+    border: 1px solid var(--secundary-color);
+    border-radius: 7px;
+    background: #ffffff;
+    color: var(--secundary-color);
+
+    font-size: 0.82rem;
+    font-weight: 600;
+    line-height: 1;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.modal-qr-column .qr-download-btn:hover {
+    background: var(--secundary-color);
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+
+.modal-qr-column .qr-download-btn:focus-visible {
+    outline: 2px solid var(--secundary-color);
+    outline-offset: 3px;
+}
+
+.modal-qr-column .qr-download-btn svg {
+    flex-shrink: 0;
+}
