@@ -2,6 +2,8 @@
 @section('content')
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+
+
     <style>
         /* ================= VARIABLES (limpias, sin duplicados) ================= */
         :root {
@@ -36,10 +38,141 @@
             scroll-behavior: smooth;
         }
 
+
+        /* =================== 10 - Navbar Menu Usuario =================== */
+        .user-menu {
+            position: relative;
+            display: inline-block;
+        }
+
+        /* El botón que contiene la foto de perfil */
+        .user-menu__trigger {
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+
+        /* El avatar (foto de perfil) */
+        .user-menu__avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            /* Evita que la imagen se deforme */
+            display: block;
+            /* Elimina espacios extra */
+            border: 2px solid transparent;
+            transition: border-color 0.2s;
+        }
+
+        .user-menu__trigger:hover .user-menu__avatar {
+            border-color: #ddd;
+        }
+
+        /* El menú desplegable */
+        .user-menu__dropdown {
+            display: none;
+            /* Oculto por defecto */
+            position: absolute;
+            top: calc(100% + 10px);
+            /* 100% del alto del botón + 10px de espacio */
+            right: 0;
+            width: 260px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+            border: 1px solid #f0f0f0;
+            padding: 8px 0;
+            z-index: 1000;
+            overflow: hidden;
+            /* Para que los bordes redondeados se apliquen a los hijos */
+        }
+
+        /* Clase que se añade con JS para mostrar el menú */
+        .user-menu.is-open .user-menu__dropdown {
+            display: block;
+        }
+
+        /* Cabecera del menú (con la foto, nombre y email) */
+        .user-menu__header {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            border-bottom: 1px solid #f0f0f0;
+            margin-bottom: 8px;
+        }
+
+        .user-menu__header .user-menu__avatar {
+            width: 48px;
+            height: 48px;
+        }
+
+        .user-menu__details {
+            margin-left: 12px;
+            line-height: 1.4;
+        }
+
+        .user-menu__name {
+            font-weight: 600;
+            color: #1a1a1a;
+            display: block;
+        }
+
+        .user-menu__email {
+            font-size: 0.80rem;
+            color: #666;
+            display: block;
+            word-break: break-word
+        }
+
+        /* Lista de navegación y sus elementos */
+        .user-menu__nav {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .user-menu__link {
+            display: flex;
+            align-items: center;
+            padding: 0.6rem 1rem;
+            text-decoration: none;
+            font-size: 0.85rem;
+            /* ~15px */
+            color: #333;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        .user-menu__link:hover {
+            background-color: #f7f7f7;
+        }
+
+        .user-menu__icon {
+            margin-right: 12px;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #555;
+        }
+
+        .user-menu__item--logout .user-menu__link,
+        .user-menu__item--logout .user-menu__icon {
+            color: #d9534f;
+            font-weight: 500;
+        }
+
+        .user-menu__item--logout .user-menu__link:hover {
+            background-color: #fdeeee;
+        }
+
         .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem 1rem;
+            /* max-width: 1200px; */
+            margin: 0;
+            padding: 0;
         }
 
         .lock-scroll {
@@ -52,25 +185,51 @@
         }
 
         /* ================= HEADER & SEARCH ================= */
+        .head {
+            padding: .3rem clamp(1rem, 3vw, 3rem);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: white;
+        }
+
         header {
             display: flex;
             flex-direction: column;
-            gap: 1.5rem;
             margin-bottom: 1rem;
             transition: var(--transition);
+        }
+
+        .header-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-bottom {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-info {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
         }
 
 
 
         .header-info h1 {
-            font-size: 1.8rem;
+            font-size: clamp(1.6rem, 4vw, 4rem);
             font-weight: 900;
             letter-spacing: -.05em;
             text-transform: uppercase;
         }
 
         .header-info p {
-            font-size: .7rem;
+            font-size: clamp(0.75rem, 2vw, 1.5rem);
             font-weight: 800;
             color: var(--text-muted);
             text-transform: uppercase;
@@ -96,6 +255,19 @@
             box-shadow: 0 8px 20px rgba(2, 48, 71, .06);
         }
 
+        .home-btn {
+            width: 42px;
+            height: 42px;
+            background: #f1f5f9;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #e2e8f0;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+
         .search-input:focus {
             border-color: rgba(33, 158, 188, .7);
             box-shadow: 0 12px 30px rgba(33, 158, 188, .12);
@@ -112,14 +284,40 @@
         }
 
         /* ================= CATEGORÍAS (PILLS) ================= */
+        .cat-bar {
+            /* padding: clamp(1rem, 3vw, 3rem); */
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: white;
+        }
+
+        /* .category-bar {
+                                                                                display: flex;
+                                                                                align-items: center;
+                                                                                gap: .6rem;
+                                                                                overflow-x: auto;
+                                                                                padding: 1rem 0 1rem;
+                                                                                margin-bottom: 1rem;
+                                                                                scrollbar-width: none;
+                                                                            } */
+
         .category-bar {
             display: flex;
             align-items: center;
             gap: .6rem;
             overflow-x: auto;
-            padding: 1rem 0 1rem;
-            margin-bottom: 1rem;
+            /* padding: 1rem 0 1rem; */
+            margin-top: .4rem;
             scrollbar-width: none;
+            /* padding: 0 clamp(.5rem, 1vw, 3rem); */
+        }
+
+        .category-bar {
+            display: flex;
+            overflow-x: auto;
+            white-space: nowrap;
+            cursor: grab;
         }
 
         .category-bar::-webkit-scrollbar {
@@ -128,10 +326,10 @@
 
         .pill {
             appearance: none;
-            border: 1px solid #e2e8f0;
+            /* border: 1px solid #e2e8f0; */
             background: var(--white);
             color: #64748b;
-            padding: .55rem 1rem;
+            padding: .5rem .3rem;
             border-radius: 999px;
             cursor: pointer;
             transition: var(--transition);
@@ -144,7 +342,7 @@
         }
 
         .pill:hover {
-            transform: translateY(-1px);
+            transform: translateY(-0.5px);
             border-color: rgba(33, 158, 188, .55);
         }
 
@@ -156,23 +354,34 @@
 
         /* ================= GROUP HEADERS ================= */
         .subject-sections {
-            padding-bottom: 2rem;
+            /* padding-bottom: 2rem; */
+            padding: .3rem clamp(1rem, 3vw, 3rem);
         }
 
         .section-header {
             display: flex;
             align-items: center;
             gap: 1rem;
-            margin: 1.8rem 0 1rem;
+            margin: 1.5rem 0 1rem;
+            cursor: pointer;
+            user-select: none;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: background-color 0.2s ease-in-out;
         }
 
+        .section-header:hover {
+            background-color: #f0f3f5;
+        }
+
+
         .section-header h3 {
-            font-size: .62rem;
+            font-size: clamp(0.75rem, 2vw, 1.25rem);
             font-weight: 900;
             color: #94a3b8;
             text-transform: uppercase;
             letter-spacing: .32em;
-            white-space: nowrap;
+            white-space: wrap;
         }
 
         .section-divider {
@@ -182,57 +391,99 @@
         }
 
         /* ================= SUBJECT GRID ================= */
+        .toggle-icon {
+            transition: transform 0.3s ease-in-out;
+            flex-shrink: 0;
+        }
+
+        .toggle-icon.rotated {
+            transform: rotate(-180deg);
+        }
+
+
         .subject-grid {
-            display: flex;
-            flex-direction: column;
-            flex-wrap: wrap;
-            height: calc(5 * 78px);
-            gap: .7rem;
+            display: grid;
+            /* CAMBIO CLAVE: auto para que no reserve espacio vacío */
+            grid-template-rows: repeat(3, auto);
+            grid-auto-flow: column;
+            grid-auto-columns: max-content;
+            gap: 5px;
+            transition: max-height 0.4s ease-out, margin-top 0.4s ease-out, gap 0.4s ease-out;
+
+            /* Limitamos el alto máximo para que no crezca infinito */
+            /* 3 filas de ~60px + gaps + paddings */
+            max-height: 220px;
+
             overflow-x: auto;
             overflow-y: hidden;
-            align-content: flex-start;
+            /* padding: 10px 5px; */
+
+            /* Mantenemos el cursor de agarre */
+            cursor: grab;
             scrollbar-width: none;
+        }
+
+        .subject-grid.collapsed {
+            max-height: 0 !important;
+            overflow: hidden;
+            margin-top: 0;
+            gap: 0;
+        }
+
+        /* Fuerza el scroll horizontal en las secciones de materias */
+
+        .category-bar::-webkit-scrollbar {
+            display: none;
+            /* Chrome/Safari */
+        }
+
+        .category-bar:active,
+        .subject-grid:active {
+            cursor: grabbing;
         }
 
         .subject-grid::-webkit-scrollbar {
             display: none;
         }
 
+
+
         .subject-card-btn {
             display: flex;
             align-items: center;
-            gap: .5rem;
-            background: var(--white);
-            padding: 1rem;
-            border-radius: 1.4rem;
-            border: 1px solid #f1f5f9;
-            box-shadow: 0 10px 22px rgba(2, 48, 71, .06);
-            cursor: pointer;
-            text-align: left;
-            transition: var(--transition);
+            gap: 10px;
+            /* padding: 0.8rem 1.2rem; Usamos padding en lugar de height: 100% */
+            /* min-height: 55px;      Alto mínimo para que se vean bien */
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 50px;
+            white-space: nowrap;
         }
 
         .subject-card-btn:hover {
-            border-color: rgba(33, 158, 188, .55);
+            border-color: #00B4D8;
+            background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%);
+            box-shadow: 0 10px 20px rgba(72, 202, 228, 0.2);
             box-shadow: 0 16px 34px rgba(33, 158, 188, .10);
         }
 
         .subject-initial {
             width: 44px;
             height: 44px;
-            border-radius: 14px;
-            background: #f8fafc;
+            border-radius: 50%;
+            background: var(--primary-color);
+            ;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 1000;
-            color: var(--primary-color);
+            color: #f8fafc;
             transition: var(--transition);
             flex-shrink: 0;
         }
 
         .subject-card-btn:hover .subject-initial {
-            background: rgba(33, 158, 188, .98);
+            background: #48CAE4;
             color: #fff;
         }
 
@@ -248,16 +499,33 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            padding: 0 .5rem;
         }
 
         .subject-card-btn.is-selected {
-            border-color: var(--terciary-color2);
+            /* border-color: #FF8C00; */
             box-shadow: 0 18px 38px rgba(251, 133, 0, .25);
+            border-color: #FF8C00;
+            background: linear-gradient(135deg, #FFF9F2 0%, #FFF3E0 100%);
+            box-shadow: 0 8px 25px rgba(255, 140, 0, 0.15);
         }
 
+        /* .subject-card-btn.is-selected .subject-initial {
+                                                                            background: var(--terciary-color2);
+                                                                            color: #fff;
+                                                                        } */
+
+
         .subject-card-btn.is-selected .subject-initial {
-            background: var(--terciary-color2);
-            color: #fff;
+            background: linear-gradient(135deg, #FF8C00 0%, #FFA500 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(255, 140, 0, 0.3);
+        }
+
+        .section-header h3 {
+            color: #1D3557;
+            border-left: 4px solid #48CAE4;
+            padding-left: 10px;
         }
 
         /* ================= RADAR ================= */
@@ -422,64 +690,7 @@
             padding: 2rem 0;
         }
 
-        .accept-card {
-            border: 1px solid #e5e7eb;
-            border-radius: 1.4rem;
-            background: #fff;
-            padding: 1rem;
-            box-shadow: 0 10px 22px rgba(2, 48, 71, .06);
-        }
 
-        .accept-row {
-            display: flex;
-            gap: .8rem;
-            align-items: center;
-        }
-
-        .accept-avatar {
-            width: 56px;
-            height: 56px;
-            border-radius: 999px;
-            overflow: hidden;
-            border: 1px solid #e5e7eb;
-            background: #f9fafb;
-            flex: 0 0 auto;
-        }
-
-        .accept-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .accept-name {
-            font-weight: 900;
-            color: var(--primary-color);
-        }
-
-        .accept-meta {
-            font-size: .8rem;
-            color: var(--text-muted);
-            margin-top: .2rem;
-            line-height: 1.3;
-        }
-
-        .accept-btn {
-            margin-top: .8rem;
-            width: 100%;
-            padding: .9rem 1rem;
-            border: none;
-            border-radius: 1rem;
-            background: var(--primary-color);
-            color: #fff;
-            font-weight: 900;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .accept-btn:hover {
-            background: var(--terciary-color2);
-        }
 
         .small-pill {
             display: inline-flex;
@@ -487,12 +698,12 @@
             align-items: center;
             border: 1px solid #e5e7eb;
             border-radius: 999px;
-            padding: .35rem .8rem;
+            padding: .1rem .1rem;
             background: #fff;
-            font-size: .7rem;
+            font-size: 1rem;
             font-weight: 900;
             color: #64748b;
-            margin-top: .8rem;
+            margin-top: .1rem;
         }
 
         .expire-normal {}
@@ -809,12 +1020,12 @@
         .summary-box {
             background: #f8fafc;
             border-radius: 1rem;
-            padding: 1rem;
+            padding: 0.5rem;
             display: flex;
             align-items: center;
             gap: 0.8rem;
             text-align: left;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.2rem;
         }
 
         .summary-box img {
@@ -824,10 +1035,96 @@
             object-fit: cover;
         }
 
+        /* ================= MODAL QR CON BLUR ================= */
+        .qr-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.7);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .qr-modal.is-open {
+            display: flex;
+            opacity: 1;
+        }
+
+        .qr-modal-content {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 2.5rem;
+            text-align: center;
+            position: relative;
+            max-width: 90vw;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+            transform: scale(0.85);
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .qr-modal.is-open .qr-modal-content {
+            transform: scale(1);
+        }
+
+        .qr-modal-img {
+            width: 320px;
+            height: 320px;
+            object-fit: contain;
+            border-radius: 1.5rem;
+            border: 1px solid #f1f5f9;
+            background: #fff;
+        }
+
+        .qr-modal-close {
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            background: var(--orange);
+            color: white;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(251, 133, 0, 0.3);
+            font-weight: bold;
+        }
+
+        .qr-clickable {
+            margin: 0.6rem 0 0.8rem;
+            cursor: zoom-in;
+            text-align: center;
+        }
+
+        .qr-clickable img {
+            width: 130px;
+            height: 130px;
+            border-radius: 12px;
+            border: 1px solid #eee;
+            object-fit: contain;
+            background: #fff;
+        }
+
+        .qr-clickable p {
+            font-size: 0.8rem;
+            color: var(--secundary-color);
+            font-weight: 800;
+            margin-top: 5px;
+        }
+
         .qr-wrapper img {
-            width: 110px;
-            height: 110px;
-            margin: 0.8rem 0;
+            width: 150px;
+            height: 150px;
+            margin: 0.2rem 0;
         }
 
         .upload-field {
@@ -839,8 +1136,46 @@
             display: block;
             font-size: 0.7rem;
             font-weight: 700;
-            color: var(--primary);
+            color: var(--primary-color);
             margin-bottom: 0.5rem;
+            transition: var(--transition);
+        }
+
+        .custom-file-input {
+            border: 1px solid #e2e8f0;
+            border-radius: 0.4rem;
+            padding: 0.75rem 0.9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            transition: var(--transition);
+            background: #fff;
+        }
+
+        .custom-file-input:hover {
+            border-color: var(--secundary-color);
+        }
+
+        .custom-file-input span {
+            font-size: 0.6rem;
+            color: var(--text-muted);
+            transition: var(--transition);
+        }
+
+        /* Estado de error */
+        .upload-field.has-error label {
+            color: #ef4444 !important;
+        }
+
+        .upload-field.has-error .custom-file-input {
+            border: 1px solid #ef4444 !important;
+            background: #fff1f2;
+        }
+
+        .upload-field.has-error .file-label {
+            color: #ef4444 !important;
+            font-weight: 800;
         }
 
         .custom-file-input {
@@ -858,7 +1193,7 @@
         }
 
         .custom-file-input span {
-            font-size: 0.7rem;
+            font-size: 0.6rem;
             color: var(--text-muted);
         }
 
@@ -926,13 +1261,33 @@
             width: 20%;
         }
 
-        @media(min-width:768px) {
+        @media(max-width:768px) {
             header {
-                flex-direction: row;
+                flex-direction: column;
                 align-items: center;
                 justify-content: space-between;
             }
+
+            .header-top {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                width: 100%;
+            }
+
+            .header-bottom {
+                margin-top: 1rem;
+                width: 100%;
+                justify-content: center;
+                flex-direction: column
+            }
+
+            .search-wrapper {
+                max-width: 100%;
+            }
+
         }
+
 
         @media(max-width:600px) {
 
@@ -966,6 +1321,22 @@
 
         /* el panel de textos del radar se oculta en modo backdrop */
         .radar-section.is-backdrop .status-header {
+            display: block;
+            position: fixed;
+            top: 15px;
+            left: auto;
+            transform: none;
+            z-index: 35;
+            margin-top: 0;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 0.3rem 0.3rem;
+            border-radius: 999px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .radar-section.is-backdrop .status-header h2,
+        .radar-section.is-backdrop .status-header .subject-badge,
+        .radar-section.is-backdrop .status-header #waitMsg {
             display: none;
         }
 
@@ -999,27 +1370,292 @@
     </style>
 
     <section>
+
+        <div id="qrModal" class="qr-modal" onclick="closeQRModal()">
+            <div class="qr-modal-content" onclick="event.stopPropagation()">
+                <button type="button" class="qr-modal-close" onclick="closeQRModal()">&times;</button>
+                <h3 style="margin-bottom: 1.2rem; color: var(--primary-color); font-weight: 900;">ESCANEAR PAGO</h3>
+                <img id="qrModalImg" src="" class="qr-modal-img" alt="QR Ampliado">
+                <p style="margin-top: 1rem; font-size: 0.8rem; color: var(--text-muted); font-weight: 700;">
+                    Haz clic fuera para cerrar
+                </p>
+            </div>
+        </div>
+
         <button class="tutoria-fab" id="tutoriaFab" onclick="confirmarMateria()">Go!</button>
 
         <div id="app">
             <!-- VISTA 1: SELECCIÓN -->
             <div id="view-selection" class="container">
-                <header>
-                    <div class="header-info">
-                        <h1>¿Qué necesitas aprender hoy?</h1>
-                        <p>Más de 600 materias con la que un tutor puede ayudarte ahora</p>
-                    </div>
-                    <div class="search-wrapper">
-                        <svg class="search-icon" width="20" height="20" fill="none" stroke="currentColor"
-                            stroke-width="2.5" viewBox="0 0 24 24">
-                            <circle cx="11" cy="11" r="8" />
-                            <path d="M21 21l-4.35-4.35" />
-                        </svg>
-                        <input type="text" id="search-input" class="search-input" placeholder="BUSCAR MATERIA...">
-                    </div>
-                </header>
+                <div class="head">
+                    <header>
 
-                <div class="category-bar" id="category-bar"></div>
+                        <div class="header-top">
+                            <button class="home-btn" title="Inicio" onclick="window.location.href='{{ route('home') }}'">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                                </svg>
+                            </button>
+
+
+
+                            @auth
+
+                                <div class="user-menu">
+                                    <button type="button" class="user-menu__trigger">
+                                        @role('tutor')
+                                            <img class="user-menu__avatar"
+                                                src="{{ Auth::user()->profile->image ? asset('storage/' . Auth::user()->profile->image) : asset('images/default.png') }}"
+                                                style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; cursor: pointer;">
+                                            @elserole('student')
+                                            <img class="user-menu__avatar"
+                                                src="{{ Auth::user()->profile->image ? asset('storage/' . Auth::user()->profile->image) : asset('images/tutors/default_estudiante.png') }}"
+                                                style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; cursor: pointer;">
+                                            @elserole('admin')
+                                            <img class="user-menu__avatar"
+                                                src="{{ Auth::user()->profile->image ? asset('storage/' . Auth::user()->profile->image) : asset('images/default.png') }}"
+                                                style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; cursor: pointer;">
+                                        @endrole
+                                    </button>
+
+                                    <div class="user-menu__dropdown">
+                                        <!-- Según rol-->
+                                        <a
+                                            href=" {{ auth()->user()->hasRole('tutor') ? route('tutor.dashboard') : route('student.bookings') }}">
+
+                                            <div class="user-menu__header">
+                                                {{-- <img class="user-menu__avatar" src="{{ asset('storage/'.Auth::user()->profile->image) ?? asset('images/default.png') }}" > --}}
+                                                <div class="user-menu__details">
+                                                    <span class="user-menu__name">Hola
+                                                        {{ Auth::user()->profile->first_name }}!</span>
+                                                    <span class="user-menu__email">{{ Auth::user()->email }}</span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        @role('tutor')
+                                            <!-- ======== ROL TUTOR ===========-->
+                                            <ul class="user-menu__nav">
+                                                <li>
+                                                    <a href="{{ route('tutor.dashboard') }}" class="user-menu__link">
+                                                        <i class="user-menu__icon"><svg xmlns="http://www.w3.org/2000/svg"
+                                                                width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                                stroke-linejoin="round">
+                                                                <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                                                                <path d="M2 17l10 5 10-5" />
+                                                                <path d="M2 12l10 5 10-5" />
+                                                            </svg></i>
+                                                        Panel
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="{{ route('tutor.profile.personal-details') }}" class="user-menu__link">
+                                                        <i class="user-menu__icon"><svg xmlns="http://www.w3.org/2000/svg"
+                                                                width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                                stroke-linejoin="round">
+                                                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                                                                <circle cx="12" cy="7" r="4" />
+                                                            </svg></i>
+                                                        Configuración de perfil
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="{{ route('tutor.bookings.subjects') }}" class="user-menu__link">
+                                                        <i class="user-menu__icon"><svg xmlns="http://www.w3.org/2000/svg"
+                                                                width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                                stroke-linejoin="round">
+                                                                <rect x="3" y="4" width="18" height="18" rx="2"
+                                                                    ry="2" />
+                                                                <line x1="16" y1="2" x2="16"
+                                                                    y2="6" />
+                                                                <line x1="8" y1="2" x2="8"
+                                                                    y2="6" />
+                                                                <line x1="3" y1="10" x2="21"
+                                                                    y2="10" />
+                                                            </svg></i>
+                                                        Reservas
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="{{ route('tutor.invoices') }}" class="user-menu__link">
+                                                        <i class="user-menu__icon"><svg xmlns="http://www.w3.org/2000/svg"
+                                                                width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                                stroke-linejoin="round">
+                                                                <path
+                                                                    d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                                                <polyline points="14 2 14 8 20 8" />
+                                                                <line x1="12" y1="18" x2="12"
+                                                                    y2="12" />
+                                                                <path
+                                                                    d="M14.5 15.5h-5c-.83 0-1.5-.67-1.5-1.5v0c0-.83.67-1.5 1.5-1.5h5" />
+                                                            </svg></i>
+                                                        Historial de Tutorías
+                                                    </a>
+                                                </li>
+                                                {{-- <li>
+								<a href="#" class="user-menu__link">
+									<i class="user-menu__icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+										<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+										<line x1="9" y1="10" x2="15" y2="10"/>
+										<line x1="9" y1="14" x2="13" y2="14"/>
+									</svg></i> 
+									Bandeja de entrada
+								</a>
+							</li> --}}
+                                                @elserole('student') <!-- ======== ROL ESTUDIANTE ==========-->
+                                                <ul class="user-menu__nav">
+                                                    <li>
+                                                        <a href="{{ route('student.profile.personal-details') }}"
+                                                            class="user-menu__link">
+                                                            <i class="user-menu__icon"><svg xmlns="http://www.w3.org/2000/svg"
+                                                                    width="24" height="24" viewBox="0 0 24 24"
+                                                                    fill="none" stroke="currentColor" stroke-width="2"
+                                                                    stroke-linecap="round" stroke-linejoin="round">
+                                                                    <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                                                                    <path d="M2 17l10 5 10-5" />
+                                                                    <path d="M2 12l10 5 10-5" />
+                                                                </svg></i>
+                                                            Configuración de perfil
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="{{ route('student.bookings') }}" class="user-menu__link">
+                                                            <i class="user-menu__icon"><svg xmlns="http://www.w3.org/2000/svg"
+                                                                    width="24" height="24" viewBox="0 0 24 24"
+                                                                    fill="none" stroke="currentColor" stroke-width="2"
+                                                                    stroke-linecap="round" stroke-linejoin="round">
+                                                                    <rect x="3" y="4" width="18" height="18"
+                                                                        rx="2" ry="2" />
+                                                                    <line x1="16" y1="2" x2="16"
+                                                                        y2="6" />
+                                                                    <line x1="8" y1="2" x2="8"
+                                                                        y2="6" />
+                                                                    <line x1="3" y1="10" x2="21"
+                                                                        y2="10" />
+                                                                </svg></i>
+                                                            Mis Reservas
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="{{ route('student.invoices') }}" class="user-menu__link">
+                                                            <i class="user-menu__icon"><svg xmlns="http://www.w3.org/2000/svg"
+                                                                    width="24" height="24" viewBox="0 0 24 24"
+                                                                    fill="none" stroke="currentColor" stroke-width="2"
+                                                                    stroke-linecap="round" stroke-linejoin="round">
+                                                                    <path
+                                                                        d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                                                    <polyline points="14 2 14 8 20 8" />
+                                                                    <line x1="12" y1="18" x2="12"
+                                                                        y2="12" />
+                                                                    <path
+                                                                        d="M14.5 15.5h-5c-.83 0-1.5-.67-1.5-1.5v0c0-.83.67-1.5 1.5-1.5h5" />
+                                                                </svg></i>
+                                                            Historial de tutorias
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="{{ route('student.favourites') }}" class="user-menu__link">
+                                                            <i class="user-menu__icon">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                    height="24" viewBox="0 0 24 24" fill="none"
+                                                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                                    stroke-linejoin="round">
+                                                                    <path
+                                                                        d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+                                                                    </path>
+                                                                </svg>
+                                                            </i>
+                                                            Favoritos
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="{{ route('buscar') }}" class="user-menu__link">
+                                                            <i class="user-menu__icon"><svg xmlns="http://www.w3.org/2000/svg"
+                                                                    width="24" height="24" viewBox="0 0 24 24"
+                                                                    fill="none" stroke="currentColor" stroke-width="2"
+                                                                    stroke-linecap="round" stroke-linejoin="round">
+                                                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                                                    <circle cx="9" cy="7" r="4"></circle>
+                                                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                                                </svg></i>
+                                                            Buscar Tutores
+                                                        </a>
+                                                    </li>
+
+                                                    @elserole('admin')
+                                                    <ul class="user-menu__nav">
+
+                                                        <a href=" {{ auth()->user()->hasRole('tutor') ? route('tutor.dashboard') : route('student.bookings') }}"
+                                                            class="user-menu__link">
+                                                            <i class="user-menu__icon"><svg xmlns="http://www.w3.org/2000/svg"
+                                                                    width="24" height="24" viewBox="0 0 24 24"
+                                                                    fill="none" stroke="currentColor" stroke-width="2"
+                                                                    stroke-linecap="round" stroke-linejoin="round">
+                                                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                                                    <circle cx="9" cy="7" r="4"></circle>
+                                                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                                                </svg></i>
+                                                            Mi panel
+                                                        </a>
+                                                    @endrole
+                                                    <li class="user-menu__item--logout">
+                                                        <a href="{{ route('logout') }}" class="user-menu__link">
+                                                            <i class="user-menu__icon"><svg xmlns="http://www.w3.org/2000/svg"
+                                                                    width="24" height="24" viewBox="0 0 24 24"
+                                                                    fill="none" stroke="currentColor" stroke-width="2"
+                                                                    stroke-linecap="round" stroke-linejoin="round">
+                                                                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                                                                    <polyline points="16 17 21 12 16 7" />
+                                                                    <line x1="21" y1="12" x2="9"
+                                                                        y2="12" />
+                                                                </svg></i>
+                                                            Desconectar
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                    </div>
+                                </div>
+                            @else
+                                <a href=" {{ route('login') }} "><button class="btn-outline"><span
+                                            data-translate="ingre"></span></button></a>
+                                <div class="navbar-icon">
+                                    <a href=" {{ route('login', ['mode' => 'register']) }}"><i
+                                            class="fa-solid fa-user-plus icon-white"></i></a>
+                                </div>
+                            @endauth
+
+                        </div>
+
+                        <div class="header-bottom">
+                            <div class="header-info">
+                                <h1>¿Qué necesitas aprender hoy?</h1>
+                                <p>Más de 600 materias con la que un tutor puede ayudarte ahora</p>
+                            </div>
+                            <div class="search-wrapper">
+                                <svg class="search-icon" width="20" height="20" fill="none"
+                                    stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                    <circle cx="11" cy="11" r="8" />
+                                    <path d="M21 21l-4.35-4.35" />
+                                </svg>
+                                <input type="text" id="search-input" class="search-input"
+                                    placeholder="BUSCAR MATERIA...">
+                            </div>
+                        </div>
+
+
+                    </header>
+                    <div class="category-bar" id="category-bar"></div>
+                </div>
+                <div class="cat-bar">
+
+                </div>
                 <div class="subject-sections" id="subject-sections"></div>
 
                 <div class="empty-state hidden" id="empty-state"
@@ -1049,13 +1685,7 @@
                         </div>
 
                         <div class="small-pill">
-                            Batch: <b id="wBatchId">-</b> · Estado: <b id="wStatus">-</b> · Expira: <b
-                                id="wExpires">-</b>
-                        </div>
-
-                        <div class="small-pill">
-                            Emails/min: <b id="ratePerMinLabel">-</b> · Enviados este minuto: <b id="sentThisMinLabel">0</b>
-                            · Expira en: <b id="batchExpireCountdown" class="expire-normal">--:--</b>
+                            Expira en: <b id="batchExpireCountdown" class="expire-normal">--:--</b>
                         </div>
 
                         <div id="waitMsg"
@@ -1064,7 +1694,7 @@
                 </div>
 
                 <div class="container">
-                    <div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;gap:3rem; margin-top:10px;">
                         <h3
                             style="font-size:.8rem;font-weight:1000;letter-spacing:.22em;color:#94a3b8;text-transform:uppercase;">
                             Tutores que aceptaron
@@ -1138,34 +1768,34 @@
 
     <script>
         /* ========================================================================
-                                      CLASSGO | Student - Instant Tutors Script
-                                      ------------------------------------------------------------------------
-                                      FLUJO:
-                                      1) Cargar Categorías/Materias
-                                      2) Seleccionar Materia (solo una) + mostrar FAB
-                                      3) Crear Batch + mostrar Radar + polling:
-                                          - status (cada 60s)
-                                          - tutores aceptados (cada 5s)
-                                          - countdown expiración (cada 1s)
-                                      4) Mostrar cards de tutores + reservar + abrir checkout (flip)
-                                      5) Subir comprobante + pagar + polling booking (cada 2.5s)
-                                      6) Nueva solicitud / reset
+            CLASSGO | Student - Instant Tutors Script
+            ------------------------------------------------------------------------
+            FLUJO:
+            1) Cargar Categorías/Materias
+            2) Seleccionar Materia (solo una) + mostrar FAB
+            3) Crear Batch + mostrar Radar + polling:
+            - status (cada 60s)
+            - tutores aceptados (cada 5s)
+            - countdown expiración (cada 1s)
+            4) Mostrar cards de tutores + reservar + abrir checkout (flip)
+            5) Subir comprobante + pagar + polling booking (cada 2.5s)
+            6) Nueva solicitud / reset
+            
+            ENDPOINTS:
+            - GET  /student/subject-groups/categorias-materias
+            - POST /student/batches/start
+            - GET  /student/batches/active
+            - GET  /student/batches/{batchId}/status
+            - GET  /student/batches/{batchId}/accepted-tutors?limit=50
+            - POST /student/batches/{batchId}/reserve
+            - POST /student/bookings/{bookingId}/receipt
+            GET  /student/bookings/{bookingId}/status
+            - GET  /student/bookings/{bookingId}/meet
 
-                                      ENDPOINTS:
-                                      - GET  /student/subject-groups/categorias-materias
-                                      - POST /student/batches/start
-                                      - GET  /student/batches/active
-                                      - GET  /student/batches/{batchId}/status
-                                      - GET  /student/batches/{batchId}/accepted-tutors?limit=50
-                                      - POST /student/batches/{batchId}/reserve
-                                      - POST /student/bookings/{bookingId}/receipt
-                                      - GET  /student/bookings/{bookingId}/status
-                                      - GET  /student/bookings/{bookingId}/meet
-
-                                      NOTAS:
-                                      - fetchAcceptedTutors() se pausa si state.activeHeroId existe (checkout abierto)
-                                      - closeHero(true) debe existir en otro lado o aquí (si no, revienta)
-                                    ======================================================================== */
+            NOTAS:
+            - fetchAcceptedTutors() se pausa si state.activeHeroId existe (checkout abierto)
+            - closeHero(true) debe existir en otro lado o aquí (si no, revienta)
+                                                                                                                                ======================================================================== */
 
 
         /* ========================================================================
@@ -1235,6 +1865,14 @@
         /* ========================================================================
           2) UI: BUSCADOR + PILLS + SECCIONES
         ======================================================================== */
+
+        function normalizeText(text) {
+            return text
+                .toLowerCase()
+                .normalize("NFD") // separa letras y tildes
+                .replace(/[\u0300-\u036f]/g, ""); // elimina tildes
+        }
+
         function wireSearch() {
             const input = document.getElementById('search-input');
             input.addEventListener('input', (e) => {
@@ -1267,8 +1905,11 @@
             }
 
             if (state.searchQuery !== '') {
-                const q = state.searchQuery.toLowerCase();
-                filtered = filtered.filter(s => s.name.toLowerCase().includes(q));
+                const q = normalizeText(state.searchQuery);
+
+                filtered = filtered.filter(s =>
+                    normalizeText(s.name).includes(q)
+                );
             }
 
             return filtered;
@@ -1281,6 +1922,61 @@
                 groups[s.category].push(s);
             });
             return groups;
+        }
+
+        function setupHorizontalDraggableScroll(selector) {
+            const containers = document.querySelectorAll(selector);
+
+            containers.forEach(slider => {
+                let isDown = false;
+                let startX;
+                let scrollLeft;
+
+                // --- MOVIMIENTO CON RUEDA DEL MOUSE ---
+                slider.addEventListener('wheel', (e) => {
+                    if (e.deltaY !== 0) {
+                        e.preventDefault();
+                        // Multiplicamos deltaY para que el scroll sea fluido
+                        slider.scrollLeft += e.deltaY * 2;
+                    }
+                });
+
+                // --- MOVIMIENTO CON CLIC SOSTENIDO (DRAG) ---
+                slider.addEventListener('mousedown', (e) => {
+                    isDown = true;
+                    slider.classList.add('active');
+                    startX = e.pageX - slider.offsetLeft;
+                    scrollLeft = slider.scrollLeft;
+                });
+
+                slider.addEventListener('mouseleave', () => {
+                    isDown = false;
+                    slider.classList.remove('active');
+                });
+
+                slider.addEventListener('mouseup', () => {
+                    isDown = false;
+                    slider.classList.remove('active');
+                });
+
+                slider.addEventListener('mousemove', (e) => {
+                    if (!isDown) return;
+                    e.preventDefault();
+                    const x = e.pageX - slider.offsetLeft;
+                    const walk = (x - startX) * 2; // Velocidad de arrastre
+                    slider.scrollLeft = scrollLeft - walk;
+                });
+            });
+        }
+
+
+        function toggleSection(gridId) {
+            const grid = document.getElementById(gridId);
+            const icon = document.getElementById(`icon-${gridId}`);
+            if (grid && icon) {
+                grid.classList.toggle('collapsed');
+                icon.classList.toggle('rotated');
+            }
         }
 
         function renderSubjectSections() {
@@ -1309,27 +2005,34 @@
 
             sections.innerHTML = orderedCats.map(cat => {
                 const items = grouped[cat];
+                const gridId = `grid-${cat.replace(/[^a-zA-Z0-9]/g, '-')}`;
+                // Collapse all sections by default, except the first one
+                const isFirstSection = orderedCats.indexOf(cat) === 0;
+                const collapsedClass = isFirstSection ? '' : 'collapsed';
+                const rotatedClass = isFirstSection ? '' : 'rotated';
+
                 return `
-      <section>
-        <div class="section-header">
+    <section>
+        <div class="section-header" onclick="toggleSection('${gridId}')">
           <h3>${cat}</h3>
-          <div class="section-divider"></div>
+          <svg class="toggle-icon ${rotatedClass}" id="icon-${gridId}" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
         </div>
 
-        <div class="subject-grid">
+        <div class="subject-grid ${collapsedClass}" id="${gridId}">
           ${items.map(sub => `
-                                                <button class="subject-card-btn"
-                                                  onclick="seleccionarMateria(this, ${sub.id}, '${sub.name.replaceAll("'", "\\'")}')">
-                                                  <div class="subject-initial">${sub.name.charAt(0)}</div>
-                                                  <div class="subject-meta">
-                                                    <div class="subject-title">${sub.name}</div>
-                                                  </div>
-                                                </button>
-                                              `).join('')}
+                <button class="subject-card-btn" onclick="seleccionarMateria(this, ${sub.id}, '${sub.name.replaceAll("'", "\\'")}')">
+                    <div class="subject-initial">${sub.name.charAt(0)}</div>
+                    <div class="subject-meta">
+                        <div class="subject-title">${sub.name}</div>
+                    </div>
+                </button>
+                `).join('')}
         </div>
-      </section>
+    </section>
     `;
             }).join('');
+            setupHorizontalDraggableScroll('.category-bar');
+            setupHorizontalDraggableScroll('.subject-grid');
         }
 
 
@@ -1527,23 +2230,38 @@
           4.5) Polling: Accepted Tutors (cada 5s)
         ======================================================================== */
         async function fetchAcceptedTutors(batchId) {
-            if (state.activeHeroId) return; // pausar si hay un hero activo (checkout abierto)
+            if (state.activeHeroId) return;
 
-            const res = await fetch(`/student/batches/${batchId}/accepted-tutors?limit=50`, {
+            const url = `/student/batches/${batchId}/accepted-tutors?limit=50&_=${Date.now()}`;
+
+            const res = await fetch(url, {
+                method: 'GET',
+                credentials: 'same-origin',
+                cache: 'no-store',
                 headers: {
-                    'Accept': 'application/json'
-                },
-                credentials: 'same-origin'
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Cache-Control': 'no-cache'
+                }
             });
 
-            const json = await res.json().catch(() => ({}));
-            if (!res.ok) return;
+            const raw = await res.text();
+            let json = {};
+            try {
+                json = JSON.parse(raw);
+            } catch {}
+
+            console.log('accepted-tutors =>', res.status, raw);
+
+            if (!res.ok) {
+                console.error('accepted-tutors fallo', res.status, raw);
+                return;
+            }
+
+            if (state.activeHeroId) return;
 
             const data = Array.isArray(json.data) ? json.data : [];
-
-            // ✅ REEMPLAZAR COMPLETO (no acumular)
             acceptedMap = new Map(data.map(row => [row.id, row]));
-
             renderAcceptedCards();
         }
 
@@ -1633,92 +2351,62 @@
         /* ========================================================================
           5) selectSubject: crea batch + startPolling
         ======================================================================== */
+
+
         async function selectSubject(subjectName, subjectId) {
-            if (currentBatchId) {
-                alert('Ya hay una búsqueda activa. Continúa la espera.');
-                return;
-            }
-            if (!subjectId) {
-                alert('Selecciona una materia primero.');
-                return;
-            }
+            if (currentBatchId) return;
 
+            state.activeHeroId = null;
+            acceptedMap.clear();
+            document.getElementById('tutor-results').innerHTML = '';
+
+            // 1. UI Feedback inmediato
             ocultarFabTutoria();
-            fab.disabled = true;
-            fab.style.opacity = '0.6';
-
             document.getElementById('selected-subject-name').innerText = subjectName;
-
             showRadar();
-            if (statusMsg) statusMsg.innerText = 'Creando batch...';
+            if (statusMsg) statusMsg.innerText = 'Iniciando búsqueda de expertos...';
 
             try {
                 const csrf = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
 
+                // 2. Crear el Batch
                 const res = await fetch('/student/batches/start', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
-                        ...(csrf ? {
-                            'X-CSRF-TOKEN': csrf
-                        } : {}),
+                        'X-CSRF-TOKEN': csrf
                     },
-                    credentials: 'same-origin',
                     body: JSON.stringify({
                         subject_id: subjectId
                     }),
                 });
 
-                const json = await res.json().catch(() => ({}));
+                const json = await res.json();
+                const batchId = json.batch_id ?? json?.data?.batch_id;
 
-                if (!res.ok) {
-                    if (statusMsg) statusMsg.innerText = 'No se pudo iniciar la solicitud.';
-                    alert('Error al iniciar batch: ' + (json.message ?? `HTTP ${res.status}`));
-                    showSelection();
-                    return;
-                }
+                if (batchId) {
+                    // 3. Arrancar el radar y el polling ANTES de enviar los emails
+                    startPolling(batchId);
 
-                const batchId = json.batch_id ?? json?.data?.batch_id ?? null;
-
-                if (!batchId) {
-                    if (statusMsg) statusMsg.innerText = 'Batch creado, pero no llegó batch_id.';
-                    alert('Batch creado pero no llegó batch_id en respuesta.');
-                    showSelection();
-                    return;
-                }
-
-                if (statusMsg) statusMsg.innerText = `Solicitud enviada. Notificando tutores (Batch #${batchId})...`;
-                startPolling(batchId);
-                fetch('/student/batches/send-emails', {
+                    // 4. Disparar el envío de emails sin bloquear el flujo
+                    fetch('/student/batches/send-emails', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                             'Accept': 'application/json',
-                            ...(csrf ? {
-                                'X-CSRF-TOKEN': csrf
-                            } : {}),
+                            'X-CSRF-TOKEN': csrf
                         },
-                        credentials: 'same-origin',
                         body: JSON.stringify({
                             batch_id: batchId,
                             limit: 10
-                        }),
-                    })
-                    .then(async r => {
-                        const t = await r.text();
-                        console.log('send-emails:', r.status, t);
-                    })
-                    .catch(err => console.error('send-emails network error:', err));
+                        })
+                    }); // Sin await para que no bloquee
+                }
+
             } catch (e) {
                 console.error(e);
-                if (statusMsg) statusMsg.innerText = 'Error JS al iniciar la solicitud.';
-                alert('Error JS: ' + e.message);
-                showSelection();
-            } finally {
-                fab.disabled = false;
-                fab.style.opacity = '';
-                document.body.classList.remove('lock-scroll');
+                statusMsg.innerText = 'Error al conectar.';
             }
         }
 
@@ -1755,32 +2443,21 @@
           7) UI + CARDS: Accepted Tutors + Hero Flip + Reservas
         ======================================================================== */
         function setReceiptError(heroId, on) {
+            const container = document.getElementById(`field-container-${heroId}`);
             const card = document.getElementById(`hero-${heroId}`);
-            if (!card) return;
+            if (!container || !card) return;
 
             const label = card.querySelector('.file-label');
-            const picker = card.querySelector('.custom-file-input');
 
             if (on) {
+                container.classList.add('has-error');
                 if (label) {
-                    label.style.color = '#ef4444';
-                    label.style.fontWeight = '900';
-                    label.textContent = '⚠️ Debes adjuntar el comprobante';
-                }
-                if (picker) {
-                    picker.style.border = '2px solid #ef4444';
+                    label.textContent = 'adjuntar el comprobante...';
                 }
             } else {
-                if (label) {
-                    label.style.color = '';
-                    label.style.fontWeight = '';
-                    if (!label.textContent || label.textContent.includes('⚠️')) {
-                        label.textContent = 'Adjuntar captura o PDF...';
-                    }
-                }
-                if (picker) {
-                    picker.style.border = '';
-                    picker.style.background = '';
+                container.classList.remove('has-error');
+                if (label && (!label.textContent || label.textContent.includes('Debes adjuntar'))) {
+                    label.textContent = 'Adjuntar captura o PDF...';
                 }
             }
         }
@@ -1853,13 +2530,13 @@
               ${img ? `<img class="avatar" src="${escapeHtml(img)}" alt="${name}">` : ``}
 
               ${verified ? `
-                                                    <span class="verified">
-                                                      <svg viewBox="0 0 24 24" class="verified-icon">
-                                                        <path d="M12 2l4 2 4 .6 1.4 4L22 12l-1.6 3.4L20 19l-4 .6-4 2-4-2-4-.6L3.6 15.4 2 12l1.4-3.4L4 4.6l4-.6 4-2z"/>
-                                                        <path d="M9.5 12.5l1.7 1.7 3.8-3.8"/>
-                                                      </svg>
-                                                    </span>
-                                                  ` : ``}
+                                                                                                                                                <span class="verified">
+                                                                                                                                                  <svg viewBox="0 0 24 24" class="verified-icon">
+                                                                                                                                                    <path d="M12 2l4 2 4 .6 1.4 4L22 12l-1.6 3.4L20 19l-4 .6-4 2-4-2-4-.6L3.6 15.4 2 12l1.4-3.4L4 4.6l4-.6 4-2z"/>
+                                                                                                                                                    <path d="M9.5 12.5l1.7 1.7 3.8-3.8"/>
+                                                                                                                                                  </svg>
+                                                                                                                                                </span>
+                                                                                                                                              ` : ``}
             </div>
           </div>
 
@@ -1899,25 +2576,26 @@
               </div>
             </div>
 
-            <div class="qr-wrapper">
-              <img src="https://api.qrserver.com/v1/create-qr-code/?size=110x110&data=Pay-${id}">
+            <div class="qr-clickable" data-qr-src="{{ asset('images/Qr-pagos.png') }}">
+                <img src="{{ asset('images/Qr-pagos.png') }}" alt="QR de pago">
+                <p>Clic para ampliar</p>
             </div>
 
-            <div class="upload-field">
-              <label>Comprobante de pago</label>
+            <div class="upload-field" id="field-container-${id}">
+                <label>Comprobante de pago</label>
 
-              <input type="file" class="real-file-input"
-                accept="image/*,application/pdf" hidden>
+                <input type="file" class="real-file-input"
+                    accept="image/*,application/pdf" hidden>
 
-              <div class="custom-file-input">
-                <div class="receipt-preview hidden"></div>
-                <span class="file-label">Adjuntar captura o PDF...</span>
-              </div>
+                <div class="custom-file-input">
+                    <div class="receipt-preview hidden"></div>
+                    <span class="file-label">Adjuntar captura o PDF...</span>
+                </div>
             </div>
 
             <div style="display:flex; justify-content:space-between; margin-bottom:0.5rem;">
               <span style="font-size:0.65rem; font-weight:800; color:var(--text-muted);">TOTAL</span>
-              <div style="font-size:1.6rem; font-weight:900;">${price} Bs</div>
+              <div style="font-size:1.5rem; font-weight:900;">${price} Bs</div>
             </div>
 
             <button class="btn-pay" type="button" data-pay="${id}">PAGAR AHORA</button>
@@ -1938,8 +2616,17 @@
                 const payBtn = wrapper.querySelector('[data-pay]');
                 const fileInput = wrapper.querySelector('.real-file-input');
                 const fakePicker = wrapper.querySelector('.custom-file-input');
+                const qrClickable = wrapper.querySelector('.qr-clickable');
 
-                openBtn?.addEventListener('click', () => reserveTutorAndOpen(id));
+                openBtn?.addEventListener('click', () => {
+                    openBtn.textContent = 'SOLICITANDO...';
+                    reserveTutorAndOpen(id);
+                });
+
+                qrClickable?.addEventListener('click', () => {
+                    const qrSrc = qrClickable.dataset.qrSrc;
+                    openQRModal(qrSrc);
+                });
 
                 fakePicker?.addEventListener('click', () => {
                     setReceiptError(id, false);
@@ -1992,7 +2679,6 @@
         }
 
         async function reserveTutorAndOpen(heroId) {
-            state.activeHeroId = String(heroId);
 
             if (!currentBatchId) {
                 alert('No hay batch activo.');
@@ -2114,8 +2800,10 @@
                 return;
             }
 
+            const originalText = btn.textContent;
             btn.disabled = true;
             btn.classList.add('sp-disabled');
+            btn.textContent = 'PROCESANDO...';
 
             try {
                 const csrf = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
@@ -2141,22 +2829,7 @@
                     json = JSON.parse(raw);
                 } catch {}
 
-                // if (!res.ok || !json.ok) {
-                //     const err =
-                //         json?.errors?.comprobante?.[0] ||
-                //         json?.message ||
-                //         `No se pudo subir (HTTP ${res.status})`;
-                //     alert(err);
-                //     return;
-                // }
 
-                // const okBox = document.getElementById(`payment-success-${heroId}`);
-                // if (okBox) okBox.classList.remove('hidden');
-
-                // const card = document.getElementById(`hero-${heroId}`);
-                // card?.querySelector('.checkout-content')?.classList.add('hidden');
-
-                // startStudentBookingPolling(bookingId, heroId);
                 if (!res.ok || !json.ok) {
                     const err =
                         json?.errors?.comprobante?.[0] ||
@@ -2185,6 +2858,7 @@
             } finally {
                 btn.disabled = false;
                 btn.classList.remove('sp-disabled');
+                btn.textContent = originalText;
             }
         }
 
@@ -2236,6 +2910,27 @@
             bookingPollTimers.set(key, t);
         }
 
+        function closeHero(instant = false) {
+            const id = state.activeHeroId;
+            if (!id) return;
+
+            const grid = document.getElementById('tutor-results');
+            const card = document.getElementById(`hero-${id}`);
+
+            if (card) {
+                card.classList.remove('is-flipped');
+                card.classList.remove('is-active');
+            }
+
+            if (grid) {
+                grid.classList.remove('hide-others');
+            }
+
+            document.body.classList.remove('lock-scroll');
+
+            state.activeHeroId = null;
+        }
+
 
         /* ========================================================================
           10) BOTÓN: Nueva solicitud (reset total)
@@ -2243,6 +2938,19 @@
         btnNewSearch?.addEventListener('click', async () => {
             currentBatchId = null;
             stopPollingAll();
+
+            state.activeHeroId = null; // ✅ importante
+            state.receipts = {}; // opcional, pero recomendable
+            bookingByHeroId.clear(); // opcional, recomendable
+
+            acceptedMap.clear(); //
+
+            const grid = document.getElementById('tutor-results');
+            if (grid) {
+                grid.classList.remove('hide-others'); // ✅ AGREGAR
+                grid.classList.remove('active'); // ✅ recomendable
+                grid.innerHTML = '';
+            }
 
             document.getElementById('radar-ui')?.classList.remove('results-found');
             document.getElementById('tutor-results').innerHTML = '';
@@ -2258,7 +2966,6 @@
             renderSubjectSections();
         });
 
-
         /* ========================================================================
           11) INIT
         ======================================================================== */
@@ -2272,6 +2979,53 @@
                 renderSubjectSections();
             }
         }
+        // Menú usuario
+        document.addEventListener('DOMContentLoaded', function() {
+            const userMenu = document.querySelector('.user-menu');
+
+            if (!userMenu) return;
+
+            const trigger = userMenu.querySelector('.user-menu__trigger');
+
+            trigger.addEventListener('click', function(event) {
+                event.stopPropagation();
+                userMenu.classList.toggle('is-open');
+            });
+
+            document.addEventListener('click', function(event) {
+                if (userMenu.classList.contains('is-open') && !userMenu.contains(event.target)) {
+                    userMenu.classList.remove('is-open');
+                }
+            });
+        });
+
+        function openQRModal(imgSrc) {
+            const modal = document.getElementById('qrModal');
+            const modalImg = document.getElementById('qrModalImg');
+
+            if (!modal || !modalImg) return;
+
+            modalImg.src = imgSrc;
+            modal.style.display = 'flex';
+            void modal.offsetWidth;
+            modal.classList.add('is-open');
+        }
+
+        function closeQRModal() {
+            const modal = document.getElementById('qrModal');
+            if (!modal) return;
+
+            modal.classList.remove('is-open');
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 400);
+        }
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeQRModal();
+            }
+        });
 
         init();
     </script>

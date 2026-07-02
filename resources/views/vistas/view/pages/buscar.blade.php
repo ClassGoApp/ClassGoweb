@@ -78,7 +78,7 @@
                                     </p>
                                 </div>
                                 
-                                <p class="card-tutor__description">{{ $tutor->profile->tagline ?? ' Tutor verificado y aprobado por Classgo! '}}</p>
+                                <p class="card-tutor__description">{{ $tutor->profile->tagline ?? ' Tutor verificado y aprobado por ClassGo! '}}</p>
                             </div>
                             
                             <div class="card-tutor__footer">
@@ -146,7 +146,7 @@
                         </p>
                         
                         <div class="cta-card__action">
-                            <a href="{{ route('register') }}" class="cta-card__button">
+                            <a href="{{ route('login', ['mode' => 'register'])}}" class="cta-card__button">
                                 ¿Deseas dar tutorías?
                             </a>
                         </div>

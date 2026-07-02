@@ -13,7 +13,7 @@ use App\Repositories\TutorRepository;
 use App\Services\SlotBookingService;
 use App\Models\TeamMember;
 
-use App\Models\Encuesta; 
+use App\Models\Encuesta;
 use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
@@ -48,17 +48,18 @@ class HomeController extends Controller
 
         // obtener team
         $teamGroups = TeamMember::where('status', true)
-                        ->orderBy('order', 'asc')
-                        ->get()
-                        ->groupBy('order');
-        
+            ->orderBy('order', 'asc')
+            ->get()
+            ->groupBy('order');
+        $count_tutorinstant = $this->countTutorsWithAcceptedTerms();
         return view('vistas.view.pages.home', [
             'featuredTutors' => $featuredTutors,
             'alianzas' => $alianzas,
             'totalUsers' => $counts['totalUsers'],
             'totalEstudiantes' => $counts['studentCount'],
             'totalTutores' => $counts['tutorCount'],
-            'teamGroups' => $teamGroups
+            'teamGroups' => $teamGroups,
+            'Tutores_instant_disponibles' => $count_tutorinstant,
 
         ]);
     }
@@ -67,12 +68,12 @@ class HomeController extends Controller
     {
         // Obtener alianzas
         $alianzas = $this->siteService->getAlliances();
-        
+
         // obtener team
         $teamGroups = TeamMember::where('status', true)
-                        ->orderBy('order', 'asc')
-                        ->get()
-                        ->groupBy('order');
+            ->orderBy('order', 'asc')
+            ->get()
+            ->groupBy('order');
 
         return view('vistas.view.pages.nosotros', [
             'alianzas' => $alianzas,
@@ -86,7 +87,7 @@ class HomeController extends Controller
     public function tutor($slug)
     {
         $tutorias = $this->slotBookingService->getStudentUpcomingTutorias();
-        
+
         $tutor = $this->siteService->getTutorDetail($slug);
         if (!$tutor) {
             abort(404, 'Tutor no encontrado');
@@ -110,14 +111,14 @@ class HomeController extends Controller
 
         //Obtener Reseñas
         $reviewData = $this->tutorRepository->getTutorReviewsWithStats($tutor->id);
-        
+
         // Verificar si el estudiante tiene una tutoría con este tutor
         $tienetutoriaConEsteTutor = $tutorias->where('tutor_id', $tutor->id)->isNotEmpty();
 
         // Verificación correcta
         if ($tienetutoriaConEsteTutor) {
             $reservas = $tutorias->where('tutor_id', $tutor->id);
-        } else {    
+        } else {
             $reservas = null;
         }
 
@@ -130,8 +131,8 @@ class HomeController extends Controller
             'avgRating' => $reviewData['stats']['avgRating'],
             'totalReviews' => $reviewData['stats']['totalReviews'],
             'ratingDistribution' => $reviewData['stats']['distribution'],
-            'canReview' => auth()->check() ? 
-                $this->tutorRepository->canUserReviewTutor(auth()->id(), $tutor->id) : 
+            'canReview' => auth()->check() ?
+                $this->tutorRepository->canUserReviewTutor(auth()->id(), $tutor->id) :
                 false
         ]);
     }
@@ -168,7 +169,8 @@ class HomeController extends Controller
         return view('vistas.view.pages.buscartutor');
     }
 
-    public function buscar(Request $request){
+    public function buscar(Request $request)
+    {
 
         //Obtener parámetros de la URL (incluído 'page' automáticamente por Laravel)
         // $search = $request->input('search');
@@ -189,7 +191,7 @@ class HomeController extends Controller
     {
         $user = Auth::user();
         $contactValue = $request->Contact;
-        
+
         // VERIFICACIÓN CORRECTA SEGÚN TU MODELO USER.PHP
         if ($user) {
             // Usamos la relación profile() definida en la línea 86 de User.php
@@ -198,7 +200,7 @@ class HomeController extends Controller
                 $contactValue = $user->profile->phone_number;
             }
         }
-        
+
         $rules = [
             'Question_1' => 'required|boolean',
             'Question_2' => 'required|integer',
@@ -212,7 +214,7 @@ class HomeController extends Controller
         } else {
             // Opcional: Verificar que el usuario no haya contestado ya (por ID)
             $yaContesto = \App\Models\Encuesta::where('IdUser', $user->id)->exists();
-            if($yaContesto) {
+            if ($yaContesto) {
                 return response()->json(['success' => false, 'message' => 'Ya has realizado esta encuesta anteriormente.'], 422);
             }
         }
@@ -233,9 +235,47 @@ class HomeController extends Controller
             ]);
 
             return response()->json(['success' => true, 'message' => '¡Encuesta guardada con éxito!'], 200);
-
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => 'Error: ' . $e->getMessage()], 500);
         }
+    }
+
+
+
+    public function acceptTerms(Request $request)
+    {
+        $user = Auth::user();
+        if (!$user) {
+            return response()->json(['success' => false], 403);
+        }
+
+        $role = $request->input('role');
+
+        if (!in_array($role, ['student', 'tutor'], true)) {
+            return response()->json(['success' => false, 'message' => 'Rol inválido'], 422);
+        }
+
+        $hasRole = $user->roles()->where('name', $role)->exists();
+        if (!$hasRole) {
+            return response()->json(['success' => false, 'message' => 'No autorizado para este rol'], 403);
+        }
+
+        $user->terms_accepted_at = now();
+        $user->save();
+
+        return response()->json(['success' => true]);
+    }
+
+    public function countTutorsWithAcceptedTerms(): int
+    {
+        return DB::table('users')
+            ->join('model_has_roles', function ($join) {
+                $join->on('users.id', '=', 'model_has_roles.model_id')
+                    ->where('model_has_roles.model_type', '=', User::class);
+            })
+            ->join('roles', 'roles.id', '=', 'model_has_roles.role_id')
+            ->where('roles.name', 'tutor')
+            ->whereNotNull('users.terms_accepted_at')
+            ->count();
     }
 }

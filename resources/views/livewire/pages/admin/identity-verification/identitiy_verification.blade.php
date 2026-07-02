@@ -62,7 +62,7 @@
                         </thead>
                         <tbody>
                             @foreach($users as $single)
-                            <tr>
+                            <tr wire:key="identity-{{ $single->id }}">
                                 <td data-label="{{ __('#' )}}"><span>{{ $single?->id }}</span></td>
                                 <td data-label="{{ __('Name' )}}">
                                     <div class="tb-varification_userinfo">
@@ -276,12 +276,12 @@
                             @endforeach
                         </tbody>
                     </table>
-                    {{ $users->links('pagination.custom') }}
                     @else
                     <x-no-record :image="asset('images/empty.png')" :title="__('general.no_record_title')" />
                     @endif
                 </div>
             </div>
+            {{ $users->links('pagination.custom') }}
         </div>
     </div>
 </main>

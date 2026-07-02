@@ -129,7 +129,7 @@
                                     </div>
                                 </div>
                                 <div class="faq-answer">
-                                    <p>Si no te creaste aún cuenta <a href="{{ route('register') }}"> <span>haz click aquí</span></a> y rellena el formulario y al final selecciona "Tutor". Cree su perfil y envie la documentación necesaria para su aprobación.</p>
+                                    <p>Si no te creaste aún cuenta <a href="{{ route('login') }}"> <span>haz click aquí</span></a> y rellena el formulario y al final selecciona "Tutor". Cree su perfil y envie la documentación necesaria para su aprobación.</p>
                                 </div>
                             </div>
 

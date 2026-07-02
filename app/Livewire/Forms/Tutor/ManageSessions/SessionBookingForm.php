@@ -22,6 +22,7 @@ class SessionBookingForm extends Form
     public $meeting_link = '';
     public $action = '';
     public $form_date = '';
+    public $selected_days = [];
 
     public function rules(){
         return [
@@ -32,6 +33,7 @@ class SessionBookingForm extends Form
             'session_fee' => 'nullable|numeric',
             'description' => 'nullable|string',
             'spaces' => 'nullable|integer|min:1',
+            'selected_days' => 'required|array|min:1',
         ];
     }
 

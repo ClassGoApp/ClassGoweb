@@ -3,18 +3,39 @@
     @include('components.floating-button.partials.ai-option')
     @include('components.floating-button.partials.support-option')
 
-    <button class="instant-btn-floating " onclick="window.location.href='{{ route('student.subjects.pick') }}'">
-        <i>
-            <svg class="bolt" viewBox="0 0 24 24">
-                <path d="M13 2L3 14h7l-1 8 10-12h-7z" />
-            </svg>
-        </i>
+    @php
+        $hasTerms = Auth::user()?->terms_accepted_at;
+    @endphp
 
-        <span class="instant-tooltip">
-            ¡Tutoría al Instante!
-        </span>
+    <button class="instant-btn-floating " onclick="window.location.href='{{ $hasTerms ? url('tutorias-instantaneas') : route('home') . '#tutorias-instantaneas-seccion' }}'">
+    
+    
+            <i>
+                <svg class="bolt" viewBox="0 0 24 24">
+                    <path d="M13 2L3 14h7l-1 8 10-12h-7z" />
+                </svg>
+            </i>
+
+            <span class="instant-tooltip" >
+                ¡Tutoría al Instante!
+            </span>
+    
     </button>
 
+    {{-- Botón de Reclutamiento (Notificación) --}}
+    @php
+        $hasApplied = session()->has('has_applied_recruitment');
+        if (!$hasApplied && auth()->check()) {
+            $hasApplied = \App\Models\Recruitment::where('user_id', auth()->id())->exists();
+        }
+    @endphp
+    @if(!$hasApplied)
+        <button class="am-recruitment-fab" onclick="showRecruitmentModal()" title="¡Únete a nuestro equipo!">
+            <i class="fas fa-user-plus"></i>
+            <span class="am-recruitment-badge"></span>
+            <span class="am-recruitment-tooltip">¡Postúlate aquí!</span>
+        </button>
+    @endif
     <button id="fab-main-button" class="fab-main">
         <i id="fab-main-icon" class="fas fa-question"></i>
         {{-- <img id="fab-main-icon" class="tutoria-disponible-boton" src="{{ asset('images/logoClassgo.png') }}" alt=""> --}}

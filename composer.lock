@@ -15130,8 +15130,11 @@
         "php": "^8.2"
     },
     "platform-dev": {},
+
     "platform-overrides": {
         "php": "8.2.12"
     },
+
     "plugin-api-version": "2.9.0"
+    
 }

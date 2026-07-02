@@ -57,4 +57,4 @@
         </div>
     </div>
 </footer>
-<script src="{{ asset('js/translations.js') }}"></script>
+<script src="{{ asset('js/translations.js') }}?v=1"></script>

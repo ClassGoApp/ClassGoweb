@@ -311,6 +311,23 @@
         .btn-mock:hover {
             color: var(--primary-color);
         }
+
+        /* ESTILOS PARA BOTÓN EN ESTADO LOADING (ejemplo en "Entrar al Aula") */
+        .btn-action.is-loading {
+            opacity: .85;
+            cursor: wait;
+            pointer-events: none;
+        }
+
+        .btn-spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(2, 48, 71, 0.2);
+            border-top: 2px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin .8s linear infinite;
+            display: inline-block;
+        }
     </style>
 
     <div class="dashboard-card">
@@ -459,7 +476,7 @@
                         solicitudes!</p>
                 </div>
 
-                <button class="btn-action" onclick="location.reload()"
+                <button class="btn-action" onclick="window.location.href='{{ route('home') }}'"
                     style="background-color: var(--slate-100); color: var(--slate-900); width: 100%">
                     Volver al Inicio
                 </button>
@@ -484,7 +501,7 @@
                         invitación.</p>
                 </div>
 
-                <button class="btn-action" onclick="location.reload()"
+                <button class="btn-action" onclick="window.location.href='{{ route('home') }}'"
                     style="background-color: var(--slate-100); color: var(--slate-900); width: 100%">
                     Volver al Inicio
                 </button>
@@ -495,14 +512,6 @@
         </div>
     </div>
 
-    <!-- 🔧 Mock (solo para pruebas; puedes borrar en producción) -->
-    <div class="mock-container">
-        <button onclick="setState('choosing')" class="btn-mock">Esperando</button>
-        <button onclick="setState('paying')" class="btn-mock">Elegido (Esperando pago)</button>
-        <button onclick="setState('payment_phase')" class="btn-mock">Listo (Ir a clase)</button>
-        <button onclick="setState('rejected')" class="btn-mock">Elegido Otro</button>
-        <button onclick="setState('expired')" class="btn-mock">Solicitud Expirada</button>
-    </div>
 
     <script>
         // ================== VARIABLES DESDE BACKEND (Blade) ==================
@@ -541,6 +550,8 @@
 
 
         const btnGoMeet = document.getElementById('btnGoMeet');
+
+        let currentBookingId = null;
 
         function goMeet(link) {
             if (link) window.location.href = link;
@@ -639,6 +650,10 @@
 
             const json = await res.json().catch(() => ({}));
             if (!res.ok || !json.ok) return;
+
+            if (json.chosen?.booking_id) {
+                currentBookingId = Number(json.chosen.booking_id);
+            }
 
             const ui = String(json.ui_state || 'waiting');
             // ✅ Opción B: si ya mostraste EXPIRED, no permitas que el polling lo cambie a REJECTED
@@ -790,15 +805,26 @@
             });
         }
         let joining = false;
+        let originalBtnContent = '';
 
         async function acceptThenGoMeet() {
             if (!token || joining) return;
+
+            if (!currentBookingId) {
+                alert('Aún no se encontró la reserva de esta tutoría.');
+                return;
+            }
+
             joining = true;
 
             if (btnGoMeet) {
+                originalBtnContent = btnGoMeet.innerHTML;
                 btnGoMeet.disabled = true;
-                btnGoMeet.style.opacity = '.75';
-                btnGoMeet.style.cursor = 'not-allowed';
+                btnGoMeet.classList.add('is-loading');
+                btnGoMeet.innerHTML = `
+            <span class="btn-spinner"></span>
+            <span>Cargando...</span>
+        `;
             }
 
             const {
@@ -810,27 +836,53 @@
                 joining = false;
                 if (btnGoMeet) {
                     btnGoMeet.disabled = false;
-                    btnGoMeet.style.opacity = '1';
-                    btnGoMeet.style.cursor = 'pointer';
+                    btnGoMeet.classList.remove('is-loading');
+                    btnGoMeet.innerHTML = originalBtnContent;
                 }
                 alert(json.message || `No se pudo aceptar (HTTP ${res.status})`);
                 return;
             }
 
-            const link = json.meeting_link || json.booking?.meeting_link || meetLink || null;
-
-            if (!link) {
-                joining = false;
+            const directLink = json.meeting_link || json.booking?.meeting_link || null;
+            if (directLink) {
                 if (btnGoMeet) {
-                    btnGoMeet.disabled = false;
-                    btnGoMeet.style.opacity = '1';
-                    btnGoMeet.style.cursor = 'pointer';
+                    btnGoMeet.innerHTML = `
+                <span class="btn-spinner"></span>
+                <span>Ingresando...</span>
+            `;
                 }
-                alert('Aún no hay link de Meet.');
+                window.location.href = directLink;
                 return;
             }
 
-            window.location.href = link;
+            const meetRes = await fetch(`/bookings/${currentBookingId}/check-meet`, {
+                headers: {
+                    'Accept': 'application/json'
+                },
+                credentials: 'same-origin'
+            });
+
+            const meetJson = await meetRes.json().catch(() => ({}));
+
+            if (!meetRes.ok || !meetJson.ok || !meetJson.meeting_link) {
+                joining = false;
+                if (btnGoMeet) {
+                    btnGoMeet.disabled = false;
+                    btnGoMeet.classList.remove('is-loading');
+                    btnGoMeet.innerHTML = originalBtnContent;
+                }
+                alert(meetJson.message || 'Aún no hay link de Meet.');
+                return;
+            }
+
+            if (btnGoMeet) {
+                btnGoMeet.innerHTML = `
+            <span class="btn-spinner"></span>
+            <span>Ingresando...</span>
+        `;
+            }
+
+            window.location.href = meetJson.meeting_link;
         }
 
         if (btnGoMeet) {

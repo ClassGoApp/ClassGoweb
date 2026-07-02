@@ -1,9 +1,11 @@
 <div> 
     <style>
         /* ========================================= */
-        /* CONFIGURACIÓN BASE Y LAYOUT               */
+        /* 1. BASE & LAYOUT                          */
         /* ========================================= */
-        .reports-container * { box-sizing: border-box; }
+        .reports-container * {
+            box-sizing: border-box;
+        }
 
         .reports-container {
             font-family: 'Inter', sans-serif;
@@ -13,19 +15,31 @@
             padding: 1.5rem;
         }
 
-        @media (min-width: 768px) {
-            .reports-container { padding: 2.5rem; }
-        }
-
         .reports-wrapper {
             max-width: 1280px;
             margin: 0 auto;
         }
 
-        .space-y-8 > * + * { margin-top: 2rem; }
+        /* Utilidad de espaciado vertical (tipo Tailwind) */
+        .space-y-8 > * + * {
+            margin-top: 2rem;
+        }
+
+        /* Utilidades generales */
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .rotate-180 { transform: rotate(180deg); }
+        .transition-transform { transition: transform 0.2s; }
+
+        @media (min-width: 768px) {
+            .reports-container { padding: 2.5rem; }
+        }
 
         /* ========================================= */
-        /* HEADER SECTION                            */
+        /* 2. HEADER & ACTIONS                       */
         /* ========================================= */
         .reports-header {
             display: flex;
@@ -33,14 +47,6 @@
             align-items: flex-start;
             gap: 1rem;
             flex-wrap: wrap;
-        }
-
-        @media (min-width: 768px) {
-            .reports-header { flex-direction: row; align-items: center; }
-        }
-
-        @media (max-width: 767px) {
-            .reports-header { flex-direction: column; }
         }
 
         .header-title h1 {
@@ -59,6 +65,13 @@
         .header-actions {
             display: flex;
             gap: 0.75rem;
+        }
+
+        @media (min-width: 768px) {
+            .reports-header { flex-direction: row; align-items: center; }
+        }
+        @media (max-width: 767px) {
+            .reports-header { flex-direction: column; }
         }
 
         /* Botones */
@@ -88,10 +101,11 @@
         }
 
         /* Dropdown */
-        .reports-dropdown { position: relative; }
+        .reports-dropdown {
+            position: relative;
+        }
 
         .dropdown-menu {
-            /* Estilos base, la visibilidad se controla inline/JS */
             position: absolute;
             right: 0;
             top: calc(100% + 0.5rem);
@@ -128,15 +142,11 @@
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
-            /* El color de fondo y texto vienen definidos inline en tu HTML o por SVG */
             background: #f9fafb; 
         }
 
-        .rotate-180 { transform: rotate(180deg); }
-        .transition-transform { transition: transform 0.2s; }
-
         /* ========================================= */
-        /* STATS GRID (TARJETAS)                     */
+        /* 3. STATS GRID (TARJETAS)                  */
         /* ========================================= */
         .stats-grid {
             display: grid;
@@ -168,23 +178,6 @@
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
 
-        /* Variaciones de colores de las tarjetas */
-        .stat-card.verified-card { border-color: transparent; }
-        .stat-card.verified-card:hover { border-color: #f3f4f6; }
-        .stat-card.verified-card.active-card { border-color: #10b981; background: rgba(236, 253, 245, 0.4); }
-
-        .stat-card.incomplete-card { border-color: transparent; }
-        .stat-card.incomplete-card:hover { border-color: #f3f4f6; }
-        .stat-card.incomplete-card.active-card { border-color: #f59e0b; background: rgba(255, 251, 235, 0.4); }
-
-        .stat-card.area-card { border-color: transparent; }
-        .stat-card.area-card:hover { border-color: #f3f4f6; }
-        .stat-card.area-card.active-card { border-color: #3b82f6; background: rgba(239, 246, 255, 0.4); }
-
-        .stat-card.empty-card { border-color: transparent; }
-        .stat-card.empty-card:hover { border-color: #f3f4f6; }
-        .stat-card.empty-card.active-card { border-color: #f43f5e; background: rgba(255, 241, 242, 0.4); }
-
         /* Línea inferior de la tarjeta activa */
         .stat-card::after {
             content: '';
@@ -194,12 +187,32 @@
             opacity: 0;
             transition: opacity 0.3s;
         }
-
-        .stat-card.verified-card::after { background: #10b981; }
-        .stat-card.incomplete-card::after { background: #f59e0b; }
-        .stat-card.area-card::after { background: #3b82f6; }
-        .stat-card.empty-card::after { background: #f43f5e; }
         .stat-card.active-card::after { opacity: 1; }
+
+        /* Colores Específicos de Tarjetas (Borde, Fondo activo, Línea) */
+        /* Verified */
+        .stat-card.verified-card { border-color: transparent; }
+        .stat-card.verified-card:hover { border-color: #f3f4f6; }
+        .stat-card.verified-card.active-card { border-color: #10b981; background: rgba(236, 253, 245, 0.4); }
+        .stat-card.verified-card::after { background: #10b981; }
+        
+        /* Incomplete */
+        .stat-card.incomplete-card { border-color: transparent; }
+        .stat-card.incomplete-card:hover { border-color: #f3f4f6; }
+        .stat-card.incomplete-card.active-card { border-color: #f59e0b; background: rgba(255, 251, 235, 0.4); }
+        .stat-card.incomplete-card::after { background: #f59e0b; }
+        
+        /* Area */
+        .stat-card.area-card { border-color: transparent; }
+        .stat-card.area-card:hover { border-color: #f3f4f6; }
+        .stat-card.area-card.active-card { border-color: #3b82f6; background: rgba(239, 246, 255, 0.4); }
+        .stat-card.area-card::after { background: #3b82f6; }
+        
+        /* Empty */
+        .stat-card.empty-card { border-color: transparent; }
+        .stat-card.empty-card:hover { border-color: #f3f4f6; }
+        .stat-card.empty-card.active-card { border-color: #f43f5e; background: rgba(255, 241, 242, 0.4); }
+        .stat-card.empty-card::after { background: #f43f5e; }
 
         /* Contenido de la tarjeta */
         .stat-header { display: flex; justify-content: space-between; align-items: flex-start; }
@@ -228,7 +241,7 @@
             color: #9ca3af;
         }
 
-        /* Colores del texto en tarjeta activa */
+        /* Colores de texto en activo */
         .stat-card.verified-card.active-card .stat-info p { color: #047857; }
         .stat-card.incomplete-card.active-card .stat-info p { color: #b45309; }
         .stat-card.area-card.active-card .stat-info p { color: #1d4ed8; }
@@ -241,20 +254,20 @@
             transition: all 0.2s;
         }
 
-        /* Iconos inactivos */
+        /* Estados Inactivos de Iconos */
         .stat-card:not(.active-card) .stat-icon.verified-icon { background: #d1fae5; color: #059669; }
         .stat-card:not(.active-card) .stat-icon.incomplete-icon { background: #fef3c7; color: #d97706; }
         .stat-card:not(.active-card) .stat-icon.area-icon { background: #dbeafe; color: #2563eb; }
         .stat-card:not(.active-card) .stat-icon.empty-icon { background: #ffe4e6; color: #e11d48; }
 
-        /* Iconos activos */
+        /* Estados Activos de Iconos */
         .stat-card.active-card .stat-icon.verified-icon { background: #10b981; color: white; box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.4); }
         .stat-card.active-card .stat-icon.incomplete-icon { background: #f59e0b; color: white; box-shadow: 0 4px 6px -1px rgba(245, 158, 11, 0.4); }
         .stat-card.active-card .stat-icon.area-icon { background: #3b82f6; color: white; box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.4); }
         .stat-card.active-card .stat-icon.empty-icon { background: #f43f5e; color: white; box-shadow: 0 4px 6px -1px rgba(244, 63, 94, 0.4); }
 
         /* ========================================= */
-        /* TABLE SECTION                             */
+        /* 4. TABLE CONTAINER & HEADER               */
         /* ========================================= */
         .table-container {
             background: white;
@@ -278,15 +291,7 @@
         @media (max-width: 640px) { .table-header { flex-direction: column; align-items: flex-start; } }
 
         .table-title-wrapper { display: flex; align-items: center; gap: 0.75rem; }
-
-        /* Iconos pequeños en el título de la tabla */
-        .table-icon { padding: 0.625rem; border-radius: 0.75rem; }
-        .table-icon.verified-icon { background: #d1fae5; color: #047857; }
-        .table-icon.incomplete-icon { background: #fef3c7; color: #b45309; }
-        .table-icon.area-icon { background: #dbeafe; color: #1d4ed8; }
-        .table-icon.empty-icon { background: #ffe4e6; color: #be123c; }
-        .table-icon.default-icon { background: #f3f4f6; color: #4b5563; }
-
+        
         .table-title-wrapper h2 {
             font-size: 1.125rem;
             font-weight: 700;
@@ -304,7 +309,83 @@
             color: #6b7280;
         }
 
-        /* Grid de la tabla */
+        /* Iconos pequeños título tabla */
+        .table-icon { padding: 0.625rem; border-radius: 0.75rem; }
+        .table-icon.verified-icon { background: #d1fae5; color: #047857; }
+        .table-icon.incomplete-icon { background: #fef3c7; color: #b45309; }
+        .table-icon.area-icon { background: #dbeafe; color: #1d4ed8; }
+        .table-icon.empty-icon { background: #ffe4e6; color: #be123c; }
+        .table-icon.default-icon { background: #f3f4f6; color: #4b5563; }
+
+        /* ========================================= */
+        /* 5. CUSTOM FILTERS                         */
+        /* ========================================= */
+        .custom-filters-row {
+            display: flex !important;
+            flex-direction: row !important;
+            align-items: flex-end !important;
+            gap: 15px !important;
+            width: 100% !important;
+        }
+
+        .c-filter-item {
+            flex: 1;
+            min-width: 140px;
+            margin-bottom: 0 !important;
+        }
+
+        .c-filter-item.search-item {
+            flex: 2;
+            min-width: 250px;
+        }
+
+        .c-label {
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            color: #6b7280;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+            line-height: 1;
+        }
+
+        .c-input {
+            display: block;
+            width: 100% !important;
+            height: 38px !important;
+            padding: 6px 12px;
+            font-size: 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            background-color: #fff;
+        }
+
+        .c-search-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .c-input.has-icon { padding-left: 35px !important; }
+
+        .c-search-icon {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 16px;
+            height: 16px;
+            color: #9ca3af;
+            pointer-events: none;
+        }
+
+        @media (max-width: 768px) {
+            .custom-filters-row { flex-wrap: wrap !important; }
+            .c-filter-item { min-width: 45% !important; }
+        }
+
+        /* ========================================= */
+        /* 6. TABLE GRID & CONTENT                   */
+        /* ========================================= */
         .table-overflow { width: 100%; overflow: hidden; }
 
         .table-grid-header, .table-row {
@@ -335,7 +416,7 @@
         }
         .table-row:hover { background: rgba(249, 250, 251, 0.8); }
 
-        /* Celdas de Usuario */
+        /* Celdas: Usuario */
         .user-cell { display: flex; align-items: center; gap: 0.75rem; min-width: 0; }
         
         .user-avatar {
@@ -346,6 +427,7 @@
             flex-shrink: 0;
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
         }
+        
         .user-avatar.verified-avatar { background: #d1fae5; color: #047857; }
         .user-avatar.incomplete-avatar { background: #fef3c7; color: #b45309; }
         .user-avatar.area-avatar { background: #dbeafe; color: #1d4ed8; }
@@ -361,7 +443,7 @@
             white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 0;
         }
 
-        /* Celdas de Detalle */
+        /* Celdas: Detalle */
         .detail-cell { min-width: 0; }
         .tags-wrapper { display: flex; flex-wrap: wrap; gap: 0.5rem; }
 
@@ -390,7 +472,7 @@
         .date-info-wrapper small { font-size: 0.625rem; color: #9ca3af; }
         .time-ago { color: #6b7280; font-weight: 500; font-size: 0.875rem; }
 
-        /* Badges de Estado */
+        /* Estado (Badges) */
         .status-badge {
             display: inline-flex; align-items: center; gap: 0.375rem;
             padding: 0.25rem 0.625rem;
@@ -404,18 +486,11 @@
 
         .status-dot { width: 0.375rem; height: 0.375rem; border-radius: 50%; background: currentColor; }
 
-        /* Acciones y Estados Vacíos */
-        .action-cell { display: flex; justify-content: center; }
-        .action-btn {
-            width: 2rem; height: 2rem;
-            display: inline-flex; align-items: center; justify-content: center;
-            border-radius: 50%; border: none; background: transparent;
-            color: #9ca3af; cursor: pointer; transition: all 0.15s;
-            text-decoration: none;
-        }
-        .action-btn:hover { color: #4f46e5; background: #eef2ff; }
-
+        /* ========================================= */
+        /* 7. EMPTY STATE & FOOTER                   */
+        /* ========================================= */
         .empty-state { padding: 3rem 1.5rem; text-align: center; }
+        
         .empty-icon-wrapper {
             width: 4rem; height: 4rem;
             background: #f9fafb; border-radius: 50%;
@@ -424,15 +499,15 @@
         }
         .empty-state p { color: #6b7280; font-weight: 500; margin: 0; }
 
-        /* Footer y Paginación */
         .table-footer {
             padding: 1rem 1.5rem;
             border-top: 1px solid #f3f4f6;
             background: rgba(249, 250, 251, 0.3);
         }
 
-        /* Estilos para el paginador de Laravel (custom) */
+        /* Ajustes Paginador Laravel */
         .table-footer nav { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+        .table-footer p { margin: 0; font-size: 0.875rem; color: #6b7280; }
         
         @media (min-width: 640px) {
             .table-footer nav > div:first-child { display: none !important; }
@@ -440,16 +515,9 @@
                 display: flex !important; justify-content: space-between; align-items: center; width: 100%;
             }
         }
-
-        .table-footer p { margin: 0; font-size: 0.875rem; color: #6b7280; }
         .table-footer nav > div:last-child > div:last-child {
             display: inline-flex; border-radius: 0.375rem; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
         }
-
-        /* General */
-        svg { width: 100%; height: 100%; }
-        
-
     </style>
 
     <div class="reports-container">
@@ -534,17 +602,18 @@
                     </div>
                 </div>
 
-                {{-- CARD 3: POR AREA --}}
-                <div wire:click="setReport('verified_by_area')" 
-                     class="stat-card area-card {{ $reportType === 'verified_by_area' ? 'active-card' : '' }}">
+                {{-- CARD 3: VERIFICADOS (GENERAL) --}}
+                <div wire:click="setReport('verified_general')" 
+                    class="stat-card area-card {{ $reportType === 'verified_general' ? 'active-card' : '' }}">
                     <div class="stat-header">
                         <div class="stat-info">
-                            <small>Por Área</small>
+                            <small>Verificados</small>
                             <h3>{{ $countVerifiedByArea }}</h3>
-                            <p>Tutores Activos</p>
+                            <p>Usuarios Activos</p>
                         </div>
                         <div class="stat-icon area-icon">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+                            {{-- Icono de Check doble o Usuario verificado --}}
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><polyline points="17 11 19 13 23 9"></polyline></svg>
                         </div>
                     </div>
                 </div>
@@ -576,7 +645,7 @@
                             $conf = match($reportType) {
                                 'verified_complete' => ['icon_class'=>'verified-icon','title'=>'Verificados Completos', 'icon'=>'<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>'],
                                 'incomplete'        => ['icon_class'=>'incomplete-icon','title'=>'Falta Información','icon'=>'<path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line>'],
-                                'verified_by_area'  => ['icon_class'=>'area-icon','title'=>'Verificados por Área','icon'=>'<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>'],
+                                'verified_general'  => ['icon_class'=>'area-icon','title'=>'Usuarios Verificados','icon'=>'<path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><polyline points="17 11 19 13 23 9"></polyline>'],
                                 'unverified_empty'  => ['icon_class'=>'empty-icon','title'=>'Sin Verificar (Vacíos)','icon'=>'<circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line>'],
                                 default             => ['icon_class'=>'default-icon','title'=>'Listado','icon'=>'<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>']
                             };
@@ -588,11 +657,52 @@
                         <span class="count-badge">{{ $users->total() }}</span>
                     </div>
 
-                    {{-- Buscador --}}
-                    <div class="form-group tb-inputicon tb-inputheight">
-                        <i class="icon-search"></i>
-                        <input type="text" class="form-control" wire:model.live.debounce.500ms="search"
-                            autocomplete="off" placeholder="{{ __('general.search') }}">
+                    <div class="custom-filters-row">                      
+                        {{-- 1. Buscador --}}
+                        <div class="c-filter-item search-item">
+                            <label class="c-label">Buscar</label>
+                            <div class="c-search-wrapper">
+                                <svg class="c-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                                
+                                {{-- Input con padding-left forzado --}}
+                                <input type="text" 
+                                    class="c-input has-icon" 
+                                    wire:model.live.debounce.500ms="search"
+                                    autocomplete="off" 
+                                    placeholder="Buscar...">
+                            </div>
+                        </div>
+
+                        {{-- 2. Filtro Estado --}}
+                        @if($reportType !== 'unverified_empty' && $reportType !== 'verified_general')
+                        <div class="c-filter-item">
+                                <label class="c-label">Estado</label>
+                                <select wire:model.live="verification" class="c-input">
+                                    <option value="">Todos</option>
+                                    <option value="verified">Verificado</option>
+                                    <option value="unverified">No Verificado</option>
+                                </select>
+                            </div>
+                        @endif
+
+                        {{-- 3. Filtro Rol --}}
+                        <div class="c-filter-item">
+                            <label class="c-label">Rol</label>
+                            <select wire:model.live="roles" class="c-input">
+                                <option value="">Todos</option>
+                                <option value="tutor">Tutor</option>
+                                <option value="student">Estudiante</option> 
+                            </select>
+                        </div>
+
+                        {{-- 4. Filtro Orden --}}
+                        <div class="c-filter-item">
+                            <label class="c-label">Orden</label>
+                            <select wire:model.live="sortby" class="c-input">
+                                <option value="newest">Más Recientes</option>
+                                <option value="oldest">Más Antiguos</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
 
@@ -603,10 +713,9 @@
                     <div class="table-grid-header">
                         <div>Tutor</div>
                         <div>
-                            @if($reportType === 'verified_by_area') Área / Materias
-                            @elseif($reportType === 'incomplete') Faltantes
+                            @if($reportType === 'incomplete') Faltantes
                             @elseif($reportType === 'unverified_empty') Registro
-                            @else Fecha Verificación
+                            @else Fecha Verificación {{-- Aplica para verified_complete y verified_general --}}
                             @endif
                         </div>
                         <div>Estado</div>
@@ -645,15 +754,15 @@
                                 </div>
                             @elseif($reportType === 'incomplete')
                                 <div class="tags-wrapper">
-                                    @if(!$user->profile)
-                                        <span class="missing-tag">Perfil No Creado</span>
+                                    @if(!$user->profile) <span class="missing-tag">Perfil No Creado</span>
                                     @else
                                         @if(!$user->profile?->phone_number) <span class="missing-tag">Teléfono</span> @endif
                                         @if(!$user->profile?->image) <span class="missing-tag">Foto</span> @endif
                                         @if(!$user->profile?->description) <span class="missing-tag">Bio</span> @endif
                                     @endif
-                                    
-                                    @if($user->userSubjects->count() == 0) <span class="missing-tag">Materias</span> @endif
+                                    @if($user->roles->contains('name', 'tutor') && $user->userSubjects->count() == 0) 
+                                        <span class="missing-tag">Materias</span> 
+                                    @endif
                                 </div>
                             @elseif($reportType === 'unverified_empty')
                                 <span class="time-ago">{{ $user->created_at->diffForHumans() }}</span>
@@ -667,31 +776,45 @@
 
                         {{-- 3. COLUMNA ESTADO --}}
                         <div>
-                            @if($reportType === 'incomplete' || $reportType === 'unverified_empty')
-                                <span class="status-badge incomplete-badge">
-                                    <div class="status-dot"></div>
-                                    Incompleto
-                                </span>
-                            @elseif($user->profile?->verified_at)
+                            @php
+                                // 1. Verificar Datos del Perfil (Común para todos)
+                                $hasProfileData = $user->profile && 
+                                                $user->profile->phone_number && 
+                                                $user->profile->image && 
+                                                $user->profile->description;
+
+                                // 2. Verificar Materias (Solo exigible a Tutores)
+                                $isTutor = $user->roles->contains('name', 'tutor');
+                                $hasSubjects = $user->userSubjects->count() > 0;
+                                
+                                // La condición de materias se cumple si:
+                                // A) NO es tutor (es estudiante) -> TRUE
+                                // B) ES tutor Y tiene materias -> TRUE
+                                $subjectsCheck = !$isTutor || $hasSubjects;
+
+                                // 3. Estado Final: Debe estar verificado Y tener perfil Y pasar chequeo de materias
+                                $isTrulyComplete = $user->profile?->verified_at && $hasProfileData && $subjectsCheck;
+                            @endphp
+
+                            @if($isTrulyComplete)
+                                {{-- Caso ideal: Tiene TODO --}}
                                 <span class="status-badge complete-badge">
                                     <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
                                     Completo
                                 </span>
+                            @elseif($user->profile?->verified_at)
+                                {{-- Caso intermedio: Está Verificado (Activo) pero le faltan datos o materias --}}
+                                <span class="status-badge incomplete-badge">
+                                    <div class="status-dot"></div>
+                                    Incompleto
+                                </span>
                             @else
+                                {{-- Caso base: No ha sido verificado --}}
                                 <span class="status-badge pending-badge">
                                     Pendiente
                                 </span>
                             @endif
                         </div>
-
-                        {{-- 4. COLUMNA ACCIÓN 
-                        <div class="action-cell">
-                            <a href="{{ route('users.show', $user->id) }}" class="action-btn" title="Ver perfil">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <polyline points="9 18 15 12 9 6"></polyline>
-                                </svg>
-                            </a>
-                        </div>--}}
                     </div>
                     @empty
                     <div class="empty-state">

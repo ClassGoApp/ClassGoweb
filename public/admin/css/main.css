@@ -3080,6 +3080,7 @@ address {
   box-shadow: none;
   border: 0;
   box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+  height: 0;
 }
 .tb-dbholder > .tb-dbbox {
   background-color: transparent;
@@ -4804,8 +4805,8 @@ address {
 }
 
 .tb-menumanagement_wrap {
-  overflow: hidden;
-  padding: 20px;
+  overflow: auto;
+  /* padding: 20px; */
   border-radius: 20px;
   background-color: #fff;
   min-height: calc(100vh - 124px);
@@ -9248,7 +9249,8 @@ li.menu-has-children.tb-openmenu > a:after {
 }
 
 .btn-sm {
-  min-width: 44px;
+      width: 4.3rem;
+  /* min-width: 44px; */
   line-height: 44px;
   background: #00cc8d;
   color: #fff;

@@ -42,26 +42,30 @@ class ReviewController extends Controller
             $page = $request->page ?? 1;
 
             $userReviews = UserReview::where('user_id', $userId)
-                ->whereHas('review', function($q) {
+                ->whereHas('review', function ($q) {
                     $q->where('status', 'active');
                 })
                 ->with([
-                    'reviewer:id,name,email,created_at',
-                    'reviewer.profile:id,user_id,first_name,last_name,avatar,phone,address,city,state,country,zip_code,bio',
-                    'review:id,rating,comment,status,created_at,updated_at'
+                    'reviewer:id,email',
+                    'reviewer.profile:id,user_id,first_name,last_name,image,phone_number,description',
+                    'review:id,rating,comment,status'
                 ])
                 ->orderBy('created_at', 'desc')
                 ->paginate($perPage, ['*'], 'page', $page);
 
-            return $this->success(
-                data: $userReviews,
-                message: 'Reseñas recibidas obtenidas exitosamente'
-            );
+            // return $this->success(
+            //     $userReviews['data']['data']
+            // );
+            return response()->json([
+                'success' => true,
+                'message' => 'Reseñas obtenidas exitosamente',
+                'data' => $userReviews->items()
+            ], 200);
 
         } catch (\Exception $e) {
             Log::error('Error al obtener reseñas recibidas: ' . $e->getMessage());
             return $this->error(
-                message: 'Error al obtener reseñas recibidas',
+                message: 'Error al obtener reseñas recibidas' . $e->getMessage(),
                 code: Response::HTTP_INTERNAL_SERVER_ERROR
             );
         }
@@ -91,13 +95,13 @@ class ReviewController extends Controller
             $perPage = $request->per_page ?? 10;
             $page = $request->page ?? 1;
 
-            $userReviews = UserReview::where('reviewer_id', $userId)
-                ->whereHas('review', function($q) {
+            $userReviews = UserReview::where('review_id', $userId)
+                ->whereHas('review', function ($q) {
                     $q->where('status', 'active');
                 })
                 ->with([
-                    'user:id,name,email,created_at',
-                    'user.profile:id,user_id,first_name,last_name,avatar,phone,address,city,state,country,zip_code,bio',
+                    'user:id,email,created_at',
+                    'user.profile:id,user_id,first_name,last_name,image,phone_number,description',
                     'review:id,rating,comment,status,created_at,updated_at'
                 ])
                 ->orderBy('created_at', 'desc')
@@ -146,6 +150,9 @@ class ReviewController extends Controller
             }
 
             $reviewerId = Auth::id();
+            if($reviewerId === null){
+                $reviewerId = $request->reviewer_id;
+            }
             $userId = $request->user_id;
 
             // Verificar que el usuario no se esté reseñando a sí mismo
@@ -179,10 +186,10 @@ class ReviewController extends Controller
             ]);
 
             $userReview->load([
-                'reviewer:id,name,email,created_at',
-                'reviewer.profile:id,user_id,first_name,last_name,avatar,phone,address,city,state,country,zip_code,bio',
-                'user:id,name,email,created_at',
-                'user.profile:id,user_id,first_name,last_name,avatar,phone,address,city,state,country,zip_code,bio',
+                'reviewer:id,email,created_at',
+                'reviewer.profile:id,user_id,first_name,last_name,image,phone_number,description',
+                'user:id,email,created_at',
+                'user.profile:id,user_id,first_name,last_name,image,phone_number,description',
                 'review:id,rating,comment,status,created_at,updated_at'
             ]);
 
@@ -216,13 +223,13 @@ class ReviewController extends Controller
     {
         try {
             $userReview = UserReview::with([
-                'reviewer:id,name,email,created_at',
-                'reviewer.profile:id,user_id,first_name,last_name,avatar,phone,address,city,state,country,zip_code,bio',
-                'user:id,name,email,created_at',
-                'user.profile:id,user_id,first_name,last_name,avatar,phone,address,city,state,country,zip_code,bio',
+                'reviewer:id,email,created_at',
+                'reviewer.profile:id,user_id,first_name,last_name,image,phone_number,description',
+                'user:id,email,created_at',
+                'user.profile:id,user_id,first_name,last_name,image,phone_number,description',
                 'review:id,rating,comment,status,created_at,updated_at'
             ])
-                ->whereHas('review', function($q) {
+                ->whereHas('review', function ($q) {
                     $q->where('status', 'active');
                 })
                 ->find($id);
@@ -291,10 +298,10 @@ class ReviewController extends Controller
             ]);
 
             $userReview->load([
-                'reviewer:id,name,email,created_at',
-                'reviewer.profile:id,user_id,first_name,last_name,avatar,phone,address,city,state,country,zip_code,bio',
-                'user:id,name,email,created_at',
-                'user.profile:id,user_id,first_name,last_name,avatar,phone,address,city,state,country,zip_code,bio',
+                'reviewer:id,email,created_at',
+                'reviewer.profile:id,user_id,first_name,last_name,image,phone_number,description',
+                'user:id,email,created_at',
+                'user.profile:id,user_id,first_name,last_name,image,phone_number,description',
                 'review:id,rating,comment,status,created_at,updated_at'
             ]);
 
@@ -379,18 +386,26 @@ class ReviewController extends Controller
 
             // Obtener reseñas recibidas
             $receivedReviews = UserReview::where('user_id', $userId)
-                ->whereHas('review', function($q) {
+                ->whereHas('review', function ($q) {
                     $q->where('status', 'active');
                 })
-                ->with('review')
+                ->with([
+                    'review',
+                    'reviewer:id,email,created_at',
+                    'reviewer.profile:id,user_id,first_name,last_name,image,phone_number,description'
+                ])
                 ->get();
 
             // Obtener reseñas realizadas
             $givenReviews = UserReview::where('reviewer_id', $userId)
-                ->whereHas('review', function($q) {
+                ->whereHas('review', function ($q) {
                     $q->where('status', 'active');
                 })
-                ->with('review')
+                ->with([
+                    'review',
+                    'user:id,email,created_at',
+                    'user.profile:id,user_id,first_name,last_name,image,phone_number,description'
+                ])
                 ->get();
 
             // Calcular estadísticas
@@ -399,14 +414,14 @@ class ReviewController extends Controller
                     'total' => $receivedReviews->count(),
                     'average_rating' => $receivedReviews->count() > 0 ? round($receivedReviews->avg('review.rating'), 1) : 0,
                     'rating_distribution' => $this->getRatingDistribution($receivedReviews),
-                    'recent_reviews' => $receivedReviews->take(5)->map(function($ur) {
+                    'recent_reviews' => $receivedReviews->take(5)->map(function ($ur) {
                         return [
                             'id' => $ur->id,
                             'rating' => $ur->review->rating,
                             'comment' => $ur->review->comment,
                             'reviewer' => [
                                 'id' => $ur->reviewer->id,
-                                'name' => $ur->reviewer->name,
+                                'name' => $ur->reviewer->profile ? $ur->reviewer->profile->first_name . ' ' . $ur->reviewer->profile->last_name : null,
                                 'profile' => $ur->reviewer->profile
                             ],
                             'created_at' => $ur->created_at
@@ -415,14 +430,14 @@ class ReviewController extends Controller
                 ],
                 'given' => [
                     'total' => $givenReviews->count(),
-                    'recent_reviews' => $givenReviews->take(5)->map(function($ur) {
+                    'recent_reviews' => $givenReviews->take(5)->map(function ($ur) {
                         return [
                             'id' => $ur->id,
                             'rating' => $ur->review->rating,
                             'comment' => $ur->review->comment,
                             'user' => [
                                 'id' => $ur->user->id,
-                                'name' => $ur->user->name,
+                                'name' => $ur->user->profile ? $ur->user->profile->first_name . ' ' . $ur->user->profile->last_name : null,
                                 'profile' => $ur->user->profile
                             ],
                             'created_at' => $ur->created_at
@@ -451,7 +466,12 @@ class ReviewController extends Controller
     private function getRatingDistribution($reviews)
     {
         $distribution = [
-            '5' => 0, '4' => 0, '3' => 0, '2' => 0, '1' => 0, '0' => 0
+            '5' => 0,
+            '4' => 0,
+            '3' => 0,
+            '2' => 0,
+            '1' => 0,
+            '0' => 0
         ];
 
         foreach ($reviews as $userReview) {
@@ -463,4 +483,4 @@ class ReviewController extends Controller
 
         return $distribution;
     }
-} 
+}

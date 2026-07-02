@@ -36,11 +36,16 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPasswordC
      * @var array<int, string>
      */
     protected $fillable = [
+        'name',
         'email',
         'password',
+        'status',
+        'provider',
+        'provider_id',
         'email_verified_at',
         'fcm_token',
         'available_for_tutoring',
+        'terms_accepted_at',
     ];
 
     /**
@@ -63,6 +68,7 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPasswordC
         return [
             'status' => UserStatusCast::class,
             'email_verified_at' => 'datetime',
+            'terms_accepted_at' => 'datetime',
             'password' => 'hashed',
             'available_for_tutoring' => 'boolean',
         ];

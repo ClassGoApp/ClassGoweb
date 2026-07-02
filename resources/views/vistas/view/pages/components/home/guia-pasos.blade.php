@@ -5,7 +5,7 @@
         <img src="{{ asset('images/home/models/img1.webp') }}" alt="Pasos">
         <h1 data-translate="sign_up"></h1>
         <p data-translate="create_account"></p>
-        <a href=" {{ route('login') }}"><button><span data-translate="begin"></span></button></a>
+        <a href=" {{ route('login', ['mode' => 'register'])}}"><button><span data-translate="begin"></span></button></a>
     </div> <!--FIN CARD-->
     <!--CARD-->
     <div class="steps-card">

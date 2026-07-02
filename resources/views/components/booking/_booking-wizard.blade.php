@@ -1,18 +1,18 @@
 <div>
-   
+
     <div id="js-booking-modal"
         style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;  z-index: 9999;">
         <div style="display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px;">
-           
+
             <div id="js-modal-box"
                 style="background:white; border-radius:16px; box-shadow:0 25px 50px -12px rgba(0,0,0,0.25); width:100%; max-width:1100px; position:relative;">
 
 
                 <div id="js-modal-body">
 
-                   
+
                     <div class="encabezado-modal">
-                       
+
                         <h2 style="text-align: center; font-size: 24px; font-weight: bold; color: #333;">
                             Reserva tu Clase
                         </h2>
@@ -25,12 +25,12 @@
                             </svg>
                         </button>
 
-                       
+
                         <div style="padding-top: 6px;">
                             <div id="stepper-track"
                                 style="display: flex; align-items: center; justify-content: center; max-width: 500px; margin: 0 auto; position: relative;">
 
-                                
+
                                 <div id="step-indicator"></div>
 
                                 <div style="display: flex; flex-direction: column; align-items: center;">
@@ -68,12 +68,12 @@
                     </div>
 
 
-                    
+
                     <div style="min-height: 450px; position: relative;margin:10px;">
-                      
+
                         <div id="content-step-1" class="step-panel is-active">
                             <div class="step1-grid" style="display: grid; grid-template-columns: 220px 1fr; gap: 16px;">
-                                
+
                                 <div>
                                     <label
                                         style="display: block; font-weight: 600; margin-bottom: 8px; font-size: 14px;">
@@ -86,7 +86,7 @@
                                         <option value="instituto">Instituto</option>
                                     </select>
 
-                                    
+
                                     <div class="dd" id="js-inst-dd">
                                         <button type="button" class="dd-btn" id="js-inst-btn" aria-expanded="false">
                                             <span class="dd-label" id="js-inst-label">Selecciona tipo de
@@ -104,7 +104,7 @@
                                     </div>
                                 </div>
 
-                               
+
                                 <div>
                                     <label
                                         style="display: block; font-weight: 600; margin-bottom: 8px; font-size: 14px;">
@@ -116,7 +116,7 @@
 
                                     <div id="js-subjects-list"
                                         style="max-height: 295px; overflow-y: auto; border: 1px solid #219EBC;
-                       border-radius: 4px; ">
+                             border-radius: 4px; ">
                                         <p
                                             style="padding: 16px; text-align: center; color: #666; margin: 0; font-size: 14px;">
                                             Selecciona un tipo de institución.
@@ -125,7 +125,7 @@
                                 </div>
                             </div>
 
-                           
+
                             <div id="js-tutor-container"
                                 style="display:block; margin-top:24px; max-width:900px; margin-left:auto; margin-right:auto;">
 
@@ -134,15 +134,15 @@
                                 </p>
 
                                 <div id="js-tutor-list" style="display:grid; gap:12px;">
-                                    
+
                                 </div>
                             </div>
 
 
                         </div>
 
-                       
-                        <div id="content-step-2" class="step-panel" ">
+
+                        <div id="content-step-2" class="step-panel" >
                             <div class="slots-layout">
                                 <div style="justify-items: center;">
                                     <div id="js-mini-calendar"></div>
@@ -160,8 +160,8 @@
 
                                     <div id="js-slots-container"></div>
                                     <button type="button" id="js-scroll-calendar" class="btn-scroll-calendar" aria-label="Subir al calendario">
-    <span class="chev-up" aria-hidden="true"></span>
-  </button>
+                                        <span class="chev-up" aria-hidden="true"></span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -264,37 +264,7 @@
                                             style="display:none; gap:16px; grid-template-columns:1fr 1fr; margin-bottom:14px; align-items:stretch;">
 
                                            
-                                            <div id="js-card-bank"
-                                                style="background:#fff; border:1px solid #e5e7eb; border-radius:12px; padding:14px;
-                      flex-direction:column;justify-content:space-between; min-height:320px;">
-
-                                                <div style="text-align:center;display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;">
-                                                    <div style="display:flex; justify-content:center;align-items:center;font-size:28px; margin-bottom:6px;width:58px; height:58px; border-radius:999px; background:#d1fae5;"><svg viewBox="0 0 24 24" width="32" height="32" aria-hidden="true">
-  <path d=" M4 9h16L12 4 4 9Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
-                        <path d="M6 10v8M10 10v8M14 10v8M18 10v8" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" />
-                        <path d="M5 19h14" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" />
-                        </svg>
-                    </div>
-                    <div style="color:#023047;font-weight:800;">Transferencia bancaria</div>
-                </div>
-
-                <div id="js-bank-info"
-                    style="margin-top:10px; font-size:13px; color:#023047; line-height:1.6; flex:1 1 auto; overflow:auto;">
-                </div>
-
-                <div style="display:flex; justify-content:center; margin-top:auto; padding-top:12px;">
-                    <button type="button" id="js-copy-bank"
-                        style="border:1px solid #e5e7eb; background:#219EBC; color:#fff; border-radius:10px; padding:10px 12px; cursor:pointer;">
-                        Copiar datos
-                    </button>
-                </div>
-            </div>
-
+                                          
            
             <div id="js-card-qr"
                 style="background:#fff; border:1px solid #e5e7eb; border-radius:12px; padding:14px;
@@ -306,22 +276,22 @@
                         <span style="font-size:24px;"><svg viewBox="0 0 24 24" width="32" height="32"
                                 aria-hidden="true">
                               
-                                <rect x="7" y="2.8" width="10" height="18.4" rx="2.2" fill="none"
-                                    stroke="currentColor" stroke-width="2" />
-                                <path d="M10 5.7h4" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" />
-                                <circle cx="12" cy="18.6" r="1" fill="currentColor" />
+                                <rect x=" 7" y="2.8" width="10" height="18.4" rx="2.2" fill="none"
+                            stroke="currentColor" stroke-width="2" />
+                        <path d="M10 5.7h4" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" />
+                        <circle cx="12" cy="18.6" r="1" fill="currentColor" />
 
-                              
-                                <rect x="2.8" y="7.2" width="3.2" height="3.2" fill="none"
-                                    stroke="currentColor" stroke-width="1.8" />
-                                <rect x="2.8" y="12.0" width="3.2" height="3.2" fill="none"
-                                    stroke="currentColor" stroke-width="1.8" />
-                                <rect x="18.0" y="7.2" width="3.2" height="3.2" fill="none"
-                                    stroke="currentColor" stroke-width="1.8" />
-                                <path d="M18.4 12.2h2.8M18.4 14.2h1.6M20.0 14.2v2.8" fill="none"
-                                    stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
-                            </svg>
+
+                        <rect x="2.8" y="7.2" width="3.2" height="3.2" fill="none" stroke="currentColor"
+                            stroke-width="1.8" />
+                        <rect x="2.8" y="12.0" width="3.2" height="3.2" fill="none" stroke="currentColor"
+                            stroke-width="1.8" />
+                        <rect x="18.0" y="7.2" width="3.2" height="3.2" fill="none" stroke="currentColor"
+                            stroke-width="1.8" />
+                        <path d="M18.4 12.2h2.8M18.4 14.2h1.6M20.0 14.2v2.8" fill="none" stroke="currentColor"
+                            stroke-width="1.8" stroke-linecap="round" />
+                        </svg>
                         </span>
                     </div>
                     <div style="color:#023047;margin-top:8px; font-weight:800;">Pago con QR</div>
@@ -352,7 +322,7 @@
             Realiza el pago con el método disponible y luego sube tu comprobante.
         </p>
 
-      
+
         <div id="js-receipt-block">
             <label for="js-file-upload"
                 style="cursor:pointer; display:block; text-align:center; padding:32px; border:2px dashed #ddd; border-radius:8px;">
@@ -362,48 +332,46 @@
 
             <input id="js-file-upload" type="file" accept="image/*,application/pdf" style="display:none;">
         </div>
+                                    </div>
+                                </div>
 
-    </div>
-</div>
+                            </div>
+                        </div>
 
-</div>
-</div>
-
-</div>
-
-
-
-<div id="js-loader"
-    style="display: none; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: white; align-items: center; justify-content: center; flex-direction: column;">
-    <div
-        style="width: 64px; height: 64px; border: 4px solid #219EBC; border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite;">
-    </div>
-    <p style="margin-top: 16px;">Procesando...</p>
-</div>
-
-
-<div id="js-confirmation"
-    style="display: none; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: white; align-items: center; justify-content: center; flex-direction: column; text-align: center;">
-    <div style="font-size: 64px; color: #28a745; margin-bottom: 16px;">✓</div>
-    <h3 style="color:black;font-size: 24px; font-weight: bold; margin-bottom: 8px;">¡Reserva exitosa!</h3>
-
-</div>
-</div>
+                    </div>
 
 
 
-<div id="js-navigation-buttons">
+                    <div id="js-loader"
+                        style="display: none; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: white; align-items: center; justify-content: center; flex-direction: column;">
+                        <div
+                            style="width: 64px; height: 64px; border: 4px solid #219EBC; border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite;">
+                        </div>
+                        <p style="margin-top: 16px;">Procesando...</p>
+                    </div>
 
 
-    <button id="js-back-btn" type="button" class="btn btn-secondary">Cancelar</button>
-    <button id="js-next-btn" type="button" class="btn btn-primary">Siguiente</button>
-</div>
+                    <div id="js-confirmation"
+                        style="display: none; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: white; align-items: center; justify-content: center; flex-direction: column; text-align: center;">
+                        <div style="font-size: 64px; color: #28a745; margin-bottom: 16px;">✓</div>
+                        <h3 style="color:black;font-size: 24px; font-weight: bold; margin-bottom: 8px;">¡Reserva exitosa!</h3>
+
+                    </div>
+                </div>
 
 
-</div>
-</div>
 
-</div>
+                <div id="js-navigation-buttons">
+
+
+                    <button id="js-back-btn" type="button" class="btn btn-secondary">Cancelar</button>
+                    <button id="js-next-btn" type="button" class="btn btn-primary">Siguiente</button>
+                </div>
+
+
+            </div>
+        </div>
+ 
 <link rel="stylesheet" href="/css/variables.css">
 
 <style>
@@ -516,7 +484,7 @@
         border: 0;
         background: #219ebc;
         padding: 12px 12px;
-        
+
         margin: 1px;
         cursor: pointer;
         font-size: 14px;
@@ -1357,14 +1325,14 @@
         border: 1px solid rgba(15, 23, 42, 0.1);
     }
 
-  
+
     #js-next-btn {
         background: #219ebc;
         color: #fff;
         box-shadow: 0 10px 22px rgba(33, 158, 188, 0.25);
     }
 
- 
+
     #js-navigation-buttons .btn:hover {
         filter: brightness(0.98);
         box-shadow: 0 12px 26px rgba(0, 0, 0, 0.1);
@@ -1533,43 +1501,43 @@
     document.addEventListener('DOMContentLoaded', function() {
         console.log('🚀 WIZARD CARGADO - 3 instituciones');
 
-        
+
 
         let currentStep = 1;
 
-       
+
         let selectedInstitution = null;
         let allSubjects = [];
         let selectedSubject = null;
         let selectedSubjectName = null;
 
-       
+
         let selectedTutor = null;
         let selectedTutorName = null;
         let selectedTutorPrice = 0;
 
-  
-        let selectedSlot = null;
+
+        let selectedSlots = [];
         let selectedCoupon = null;
         let comprobanteFile = null;
         let basePrice = 0;
         let currentPrice = 0;
 
-        let appliedDiscountDecimal = 0; 
-        let appliedDiscountPct = 0; 
+        let appliedDiscountDecimal = 0;
+        let appliedDiscountPct = 0;
         let isFreeBooking = false;
         let appliedCouponCode = null;
 
 
-        let slotsByDate = {}; 
+        let slotsByDate = {};
         let calendarYear = null;
-        let calendarMonth = null; 
-        let selectedDate = null; 
+        let calendarMonth = null;
+        let selectedDate = null;
 
 
 
 
-       
+
         const modal = document.getElementById('js-booking-modal');
         const closeBtn = document.getElementById('js-close-modal-btn');
         const backBtn = document.getElementById('js-back-btn');
@@ -1577,7 +1545,7 @@
         const loader = document.getElementById('js-loader');
         const confirmation = document.getElementById('js-confirmation');
         const navigationButtons = document.getElementById('js-navigation-buttons');
-        
+
         const modalBox = document.getElementById('js-modal-body');
 
         function scrollTopStep() {
@@ -1591,11 +1559,11 @@
         function scrollToTutors() {
             if (!tutorContainer || !modalBox) return;
 
-            
+
             tutorContainer.style.display = 'block';
 
-           
-            const top = tutorContainer.offsetTop - 12; 
+
+            const top = tutorContainer.offsetTop - 12;
             modalBox.scrollTo({
                 top,
                 behavior: 'smooth'
@@ -1607,37 +1575,37 @@
         }
 
 
-      
+
         document.addEventListener('keydown', (e) => {
             if (e.key !== 'Escape') return;
             if (!modal || modal.style.display !== 'block') return;
 
-   
+
             if (loader && loader.style.display === 'flex') return;
 
             closeModal();
         });
 
-       
+
         const institutionSelect = document.getElementById('js-institution-select');
         const subjectSearch = document.getElementById('js-subject-search');
         const subjectsList = document.getElementById('js-subjects-list');
 
-       
+
         const tutorContainer = document.getElementById('js-tutor-container');
         const tutorHelper = document.getElementById('js-tutor-helper');
         const tutorList = document.getElementById('js-tutor-list');
 
 
 
-        
+
         const slotsContainer = document.getElementById('js-slots-container');
 
-        
+
         const couponInput = document.getElementById('js-coupon-input');
         const applyCouponBtn = document.getElementById('js-apply-coupon-btn');
         const couponMessage = document.getElementById('js-coupon-message');
-       
+
         const fileUpload = document.getElementById('js-file-upload');
         const fileName = document.getElementById('js-file-name');
         const receiptBlock = document.getElementById('js-receipt-block');
@@ -1647,7 +1615,7 @@
         const removeCouponBtn = document.getElementById('js-remove-coupon');
         const freeMsg = document.getElementById('js-free-msg');
 
-        
+
         const summaryDiscountRow = document.getElementById('js-summary-discount-row');
         const summaryDiscountPct = document.getElementById('js-summary-discount-pct');
         const summaryDiscountAmount = document.getElementById('js-summary-discount-amount');
@@ -1655,120 +1623,51 @@
 
 
 
-        
+
         const formMsg = document.createElement('div');
 
         const payGrid = document.getElementById('js-pay-grid');
         const payHint = document.getElementById('js-pay-hint');
 
-        const cardBank = document.getElementById('js-card-bank');
-        const bankInfo = document.getElementById('js-bank-info');
-        const copyBank = document.getElementById('js-copy-bank');
+        // const cardBank = document.getElementById('js-card-bank');
+        // const bankInfo = document.getElementById('js-bank-info');
+        // const copyBank = document.getElementById('js-copy-bank');
 
         const cardQR = document.getElementById('js-card-qr');
         const qrImg = document.getElementById('js-qr-img');
         const qrEmpty = document.getElementById('js-qr-empty');
         const openQR = document.getElementById('js-open-qr');
-        
+
         const receiptLabel = document.querySelector('label[for="js-file-upload"]');
         const fileUploadInput = document.getElementById(
-            'js-file-upload'); 
+            'js-file-upload');
 
-       
+
 
 
         async function loadTutorPaymentInfo() {
-            if (!selectedTutor || !payGrid) return;
+            if (!payGrid) return;
 
             payGrid.style.display = 'grid';
             payHint.style.display = 'block';
-            payHint.textContent = 'Cargando métodos de pago del tutor...';
+            payHint.textContent =
+                'Realiza el pago escaneando el siguiente código QR y luego sube tu comprobante.';
 
-            
-            cardBank.style.display = 'none';
-            cardQR.style.display = 'none';
-            bankInfo.innerHTML = '';
-            qrImg.style.display = 'none';
-            qrEmpty.style.display = 'block';
-            openQR.href = '#';
+            cardQR.style.display = 'block';
+            const qrSrc = `/storage/qr/Qr-pagos.png`;
 
-            try {
-                const resp = await fetch(`/student/booking/tutor-payment/${selectedTutor}`);
-                const data = await resp.json();
-                console.log(data);
+            qrImg.src = qrSrc;
+            qrImg.style.display = 'block';
+            qrEmpty.style.display = 'none';
 
-                if (!data.success) {
-                    payHint.textContent = data.message || 'No se pudo cargar los métodos de pago.';
-                    return;
-                }
-
-                const p = data.payment || {};
-                const bank = p.bank || null;
-
-                
-                if (bank) {
-                    cardBank.style.display = 'flex';
-
-                    const rows = [
-                        ['Título', bank.title],
-                        ['Banco', bank.bankName],
-                        ['Nro cuenta', bank.accountNumber],
-                        ['Ruta', bank.bankRoutingNumber],
-                    ].filter(([, v]) => v);
-
-                    bankInfo.innerHTML = rows.length ?
-                        rows.map(([k, v]) => `<div><b>${k}:</b> ${v}</div>`).join('') :
-                        `<div style="color:#6b7280;">El tutor no completó datos bancarios.</div>`;
-
-                    copyBank.onclick = async () => {
-                        const text = rows.map(([k, v]) => `${k}: ${v}`).join('\n');
-                        try {
-                            await navigator.clipboard.writeText(text);
-                            copyBank.textContent = '✅ Copiado';
-                            setTimeout(() => copyBank.textContent = 'Copiar datos', 1200);
-                        } catch {
-                            alert('No se pudo copiar. Copia manualmente.');
-                        }
-                    };
-                }
-
-
-                if (p.qr_url) {
-                    cardQR.style.display = 'block';
-
-                    const qrSrc = `/storage/${p.qr_url}`; 
-
-                    qrImg.src = qrSrc;
-                    qrImg.style.display = 'block';
-                    qrEmpty.style.display = 'none';
-
-                    openQR.href = qrSrc;
-                    openQR.style.display = 'inline-block';
-                } else {
-                    qrImg.style.display = 'none';
-                    qrEmpty.style.display = 'block';
-                    openQR.href = '#';
-                    openQR.style.display = 'none';
-                }
-
-
-                if (!bank && !p.qr_url) {
-                    payHint.textContent = 'El tutor aún no configuró métodos de pago.';
-                } else {
-                    payHint.textContent =
-                        'Realiza el pago con el método disponible y luego sube tu comprobante.';
-                }
-
-            } catch (e) {
-                console.error(e);
-                payHint.textContent = 'Error al cargar los métodos de pago.';
-            }
+            openQR.href = qrSrc;
+            openQR.style.display = 'inline-block';
         }
 
         formMsg.className = 'form-msg';
         formMsg.style.display = 'none';
 
-        
+
         fileUpload.parentElement.appendChild(formMsg);
 
         function showFormMsg(text, type = 'error') {
@@ -1793,11 +1692,11 @@
             scrollTopStep();
         }
 
-       
+
         function closeModal() {
             if (modal.style.display !== 'block') return;
 
-            
+
             modal.classList.remove('is-open');
 
             const box = document.getElementById('js-modal-box');
@@ -1808,7 +1707,7 @@
                 resetModalState();
             };
 
-            
+
             const onEnd = (e) => {
                 if (e.target !== box) return;
                 if (e.propertyName !== 'transform') return;
@@ -1818,11 +1717,11 @@
 
             box.addEventListener('transitionend', onEnd);
 
-            
+
             setTimeout(done, 850);
         }
 
-        
+
         const dd = document.getElementById('js-inst-dd');
         const ddBtn = document.getElementById('js-inst-btn');
         const ddMenu = document.getElementById('js-inst-menu');
@@ -1843,7 +1742,7 @@
             dd.classList.contains('is-open') ? closeDD() : openDD();
         });
 
-        
+
         ddMenu?.addEventListener('click', (e) => {
             const item = e.target.closest('.dd-item');
             if (!item || !institutionSelect) return;
@@ -1851,15 +1750,15 @@
             const value = item.dataset.value || '';
             const text = item.textContent.trim();
 
-           
+
             ddMenu.querySelectorAll('.dd-item').forEach(x => x.classList.remove('is-selected'));
             item.classList.add('is-selected');
 
-           
+
             ddLabel.textContent = text;
             dd?.classList.add('has-value');
 
-            
+
             institutionSelect.value = value;
             institutionSelect.dispatchEvent(new Event('change', {
                 bubbles: true
@@ -1868,13 +1767,13 @@
             closeDD();
         });
 
-        
+
         document.addEventListener('click', (e) => {
             if (!dd) return;
             if (!dd.contains(e.target)) closeDD();
         });
 
-        
+
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') closeDD();
         });
@@ -1883,9 +1782,9 @@
         function resetModalState() {
             currentStep = 1;
 
-           
+
             selectedInstitution = null;
-           
+
             const instDD = document.getElementById('js-inst-dd');
             const instLabel = document.getElementById('js-inst-label');
             const instBtn = document.getElementById('js-inst-btn');
@@ -1893,33 +1792,32 @@
 
             if (institutionSelect) institutionSelect.value = ''; // select real (oculto)
 
-           
+
             if (instLabel) instLabel.textContent = 'Selecciona tipo de institución';
             if (instDD) {
                 instDD.classList.remove('has-value', 'is-open');
             }
             if (instBtn) instBtn.setAttribute('aria-expanded', 'false');
 
-            
+
             instMenu?.querySelectorAll('.dd-item').forEach(x => x.classList.remove('is-selected'));
 
             allSubjects = [];
             selectedSubject = null;
             selectedSubjectName = null;
 
-            
+
             selectedTutor = null;
             selectedTutorName = null;
             selectedTutorPrice = 0;
 
-           
-            selectedSlot = null;
+            selectedSlots = [];
             selectedCoupon = null;
             comprobanteFile = null;
             basePrice = 0;
             currentPrice = 0;
 
-            
+
             slotsByDate = {};
             calendarYear = null;
             calendarMonth = null;
@@ -1930,20 +1828,20 @@
             isFreeBooking = false;
             appliedCouponCode = null;
 
-          
+
             hideCouponBar();
             if (freeMsg) freeMsg.style.display = 'none';
             if (summaryFreeNote) summaryFreeNote.style.display = 'none';
             if (summaryDiscountRow) summaryDiscountRow.style.display = 'none';
 
-            
+
             if (receiptLabel) receiptLabel.style.display = 'block';
             comprobanteFile = null;
             fileUpload.value = '';
             fileName.textContent = '';
             hideFormMsg();
 
-           
+
             institutionSelect.value = '';
             subjectSearch.value = '';
             subjectSearch.disabled = true;
@@ -1953,17 +1851,17 @@
       Selecciona un tipo de institución.
     </p>`;
 
-           
+
             tutorContainer.style.display = 'none';
             tutorHelper.textContent = 'Elige una materia para ver los tutores disponibles.';
             tutorList.innerHTML = '';
 
-            
+
             slotsContainer.innerHTML = '';
             if (miniCalendarEl) miniCalendarEl.innerHTML = '';
             if (selectedDateLabel) selectedDateLabel.textContent = 'Hoy';
 
-           
+
             couponInput.value = '';
             couponMessage.textContent = '';
             fileName.textContent = '';
@@ -1971,7 +1869,7 @@
             updateStepUI();
             updateContent();
             updateNavButtons();
-            
+
             requestAnimationFrame(() => {
                 requestAnimationFrame(scrollTopStep);
             });
@@ -1991,7 +1889,7 @@
             if (!scrollCalBtn || !modalBody) return;
 
             const isMobile = window.matchMedia('(max-width: 900px)').matches;
-            const show = isMobile && modalBody.scrollTop > 220; 
+            const show = isMobile && modalBody.scrollTop > 220;
 
             scrollCalBtn.classList.toggle('is-visible', show);
         }
@@ -2003,7 +1901,7 @@
             const change = to - start;
             const startTime = performance.now();
 
-            
+
             const easeInOutCubic = (t) =>
                 t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 
@@ -2023,7 +1921,7 @@
 
             const target = miniCalendarEl.offsetTop - 10;
 
-            
+
             smoothScrollTo(modalBody, target, 800);
         });
 
@@ -2031,10 +1929,10 @@
             passive: true
         });
 
-        
+
         window.addEventListener('resize', toggleScrollCalendarBtn);
 
-        
+
         toggleScrollCalendarBtn();
         requestAnimationFrame(toggleScrollCalendarBtn);
 
@@ -2059,7 +1957,7 @@
             calendarMonth = m;
 
             const first = new Date(y, m, 1);
-            const startDay = first.getDay(); 
+            const startDay = first.getDay();
             const daysInMonth = new Date(y, m + 1, 0).getDate();
 
             const week = ['D', 'L', 'M', 'M', 'J', 'V', 'S'];
@@ -2084,7 +1982,7 @@
 
             const grid = miniCalendarEl.querySelector('#cal-grid');
 
-            
+
             const blanks = startDay;
             for (let i = 0; i < blanks; i++) {
                 const b = document.createElement('button');
@@ -2108,7 +2006,7 @@
                 btn.className = 'day-btn';
                 if (dateStr === today) btn.classList.add('today');
                 if (hasSlots) btn.classList.add('has-slots');
-                else btn.classList.add('no-slots'); 
+                else btn.classList.add('no-slots');
                 if (dateStr === selectedDate) btn.classList.add('selected');
 
                 btn.textContent = day;
@@ -2131,25 +2029,25 @@
         function selectDate(dateStr) {
             selectedDate = dateStr;
 
-            
+
             miniCalendarEl.querySelectorAll('.day-btn').forEach(b => b.classList.remove('selected'));
-            
+
             renderMiniCalendar(calendarYear, calendarMonth);
 
-            
+
             const isToday = dateStr === todayStr();
             selectedDateLabel.textContent = isToday ? 'Hoy' : dateStr;
 
-           
+
             renderSlotsForDate(dateStr);
         }
 
 
         function renderSlotsForDate(dateStr) {
             const slots = slotsByDate[dateStr] || [];
-            selectedSlot = null;
+            selectedSlots = [];
 
-           
+
             if (!slots.length) {
                 slotsContainer.innerHTML = `
       <p style="margin:0; padding:14px; color:#6b7280;">
@@ -2158,14 +2056,14 @@
                 return;
             }
 
-         
+
             slots.sort((a, b) => {
                 const as = String(a.id).split('|')[1] || '';
                 const bs = String(b.id).split('|')[1] || '';
                 return as.localeCompare(bs);
             });
 
-            
+
             let grid = slotsContainer.querySelector('.slots-grid');
             if (!grid) {
                 slotsContainer.innerHTML = '';
@@ -2174,7 +2072,7 @@
                 slotsContainer.appendChild(grid);
             }
 
-            
+
             const firstRects = new Map();
             const existing = new Map();
 
@@ -2183,10 +2081,10 @@
                 existing.set(el.dataset.slotId, el);
             });
 
-            
+
             const nextIds = new Set(slots.map(s => String(s.id)));
 
-           
+
             existing.forEach((el, id) => {
                 if (!nextIds.has(id)) {
                     el.animate(
@@ -2207,7 +2105,7 @@
                 }
             });
 
-            
+
             const frag = document.createDocumentFragment();
 
             slots.forEach((slot) => {
@@ -2219,18 +2117,18 @@
                 let chip = existing.get(id);
 
                 if (!chip) {
-                   
+
                     chip = document.createElement('button');
                     chip.type = 'button';
                     chip.className = 'slot-chip';
                     chip.dataset.slotId = id;
 
-                    
+
                     chip.style.opacity = '0';
                     chip.style.transform = 'translateY(10px) scale(.98)';
                 }
 
-                
+
                 chip.innerHTML = `
       <span class="chip-time">${start} - ${end}</span>
       <span class="chip-dot"></span>
@@ -2238,32 +2136,65 @@
 
                 chip.classList.toggle('disabled', !available);
 
-               
+
                 chip.onclick = () => {
                     if (!available) return;
 
-                    grid.querySelectorAll('.slot-chip').forEach(c => c.classList.remove('active'));
-                    chip.classList.add('active');
+                    const idStr = String(slot.id);
+                    const idx = selectedSlots.findIndex(s => s.id === idStr);
 
-                    selectedSlot = {
-                        id: slot.id,
-                        date: slot.date,
-                        time: `${start} - ${end}`,
-                        start,
-                        end,
-                    };
+                    if (idx !== -1) {
+                        // Deseleccionar y limpiar siguientes si existe (por simplicidad, vaciar selección y volver a empezar si se hace clic en uno ya seleccionado)
+                        selectedSlots = [];
+                        grid.querySelectorAll('.slot-chip').forEach(c => c.classList.remove(
+                            'active'));
+                    } else {
+                        // Intentar agregar
+                        const newSlot = {
+                            id: slot.id,
+                            date: slot.date,
+                            time: `${start} - ${end}`,
+                            start,
+                            end,
+                        };
 
-                    console.log('✅ Slot seleccionado:', selectedSlot);
+                        if (selectedSlots.length === 0) {
+                            selectedSlots.push(newSlot);
+                            chip.classList.add('active');
+                        } else if (selectedSlots.length < 6) {
+                            // Validar contigüidad
+                            // Aseguramos que estén ordenados
+                            selectedSlots.sort((a, b) => a.start.localeCompare(b.start));
+                            const first = selectedSlots[0];
+                            const last = selectedSlots[selectedSlots.length - 1];
+
+                            if (slot.date === first.date && (end === first.start || start === last
+                                    .end)) {
+                                selectedSlots.push(newSlot);
+                                chip.classList.add('active');
+                            } else {
+                                // Reiniciar selección si hacen clic en un slot no contiguo
+                                selectedSlots = [newSlot];
+                                grid.querySelectorAll('.slot-chip').forEach(c => c.classList.remove(
+                                    'active'));
+                                chip.classList.add('active');
+                            }
+                        } else {
+                            alert("Solo puedes seleccionar un máximo de 6 bloques (2 horas).");
+                        }
+                    }
+
+                    console.log('✅ Slots seleccionados:', selectedSlots);
                 };
 
                 frag.appendChild(chip);
             });
 
-           
+
             grid.innerHTML = '';
             grid.appendChild(frag);
 
-            
+
             const lastRects = new Map();
             grid.querySelectorAll('.slot-chip').forEach(el => {
                 lastRects.set(el.dataset.slotId, el.getBoundingClientRect());
@@ -2274,23 +2205,23 @@
                 const first = firstRects.get(id);
                 const last = lastRects.get(id);
 
-               
+
                 if (first && last) {
                     const dx = first.left - last.left;
                     const dy = first.top - last.top;
 
-                    
+
                     el.style.transition = 'transform 0s';
                     el.style.transform = `translate(${dx}px, ${dy}px)`;
 
-                    
+
                     requestAnimationFrame(() => {
                         el.style.transition = 'transform 520s cubic-bezier(.16, 1, .3, 1)';
                         el.style.transform = '';
                     });
                 } else {
-                    
-                    const delay = Math.min(idx * 85, 1100); 
+
+                    const delay = Math.min(idx * 85, 1100);
 
                     el.animate(
                         [{
@@ -2310,7 +2241,7 @@
                     );
 
 
-                 
+
                     el.style.opacity = '';
                     el.style.transform = '';
                 }
@@ -2318,25 +2249,25 @@
         }
 
         function hidePayUIOnSubmit() {
-           
+
             if (payGrid) payGrid.style.display = 'none';
             if (payHint) payHint.style.display = 'none';
-            if (cardBank) cardBank.style.display = 'none';
+            // if (cardBank) cardBank.style.display = 'none';
             if (cardQR) cardQR.style.display = 'none';
 
-            
+
             if (receiptLabel) receiptLabel.style.display = 'none';
             if (fileName) fileName.textContent = '';
 
-           
+
         }
 
         function showPayUIAfterError() {
-           
+
             if (payGrid) payGrid.style.display = 'grid';
             if (payHint) payHint.style.display = 'block';
 
-            
+
             if (receiptLabel) receiptLabel.style.display = isFreeBooking ? 'none' : 'block';
         }
 
@@ -2354,10 +2285,11 @@
         modal.addEventListener('click', (e) => {
             if (e.target !== modal) return;
 
-            const hasProgress = !!selectedTutor || !!selectedSlot || !!comprobanteFile || !!
+            const hasProgress = !!selectedTutor || selectedSlots.length > 0 || !!comprobanteFile || !!
                 appliedCouponCode;
 
             if (!hasProgress) {
+                if (selectedSlots.length > 0) releaseHolds();
                 closeModal();
                 return;
             }
@@ -2365,7 +2297,7 @@
             if (!antiCloseArmed) {
                 antiCloseArmed = true;
 
-               
+
                 if (typeof showFormMsg === 'function') {
                     showFormMsg('Toca afuera otra vez para cerrar (así no pierdes tu progreso).',
                         'error');
@@ -2375,6 +2307,9 @@
                 return;
             }
 
+            if (selectedSlots.length > 0 && currentStep > 2) {
+                releaseHolds();
+            }
             closeModal();
         });
 
@@ -2388,10 +2323,22 @@
                 }
                 await loadSlots();
             } else if (currentStep === 2) {
-                if (!selectedSlot) {
-                    alert('Por favor selecciona un horario');
+                if (selectedSlots.length === 0) {
+                    alert('Por favor selecciona al menos un horario continuo.');
                     return;
                 }
+
+                // Intento de hold
+                nextBtn.disabled = true;
+                const held = await holdSlots();
+                nextBtn.disabled = false;
+
+                if (!held) {
+                    await loadSlots();
+                    return; // nos quedamos en el paso 2
+                }
+
+                recalcTotals();
                 updateSummary();
                 await loadTutorPaymentInfo();
             } else if (currentStep === 3) {
@@ -2405,7 +2352,7 @@
                 updateContent();
                 updateNavButtons();
 
-              
+
                 requestAnimationFrame(() => requestAnimationFrame(scrollTopStep));
             }
         });
@@ -2414,14 +2361,17 @@
 
         backBtn.addEventListener('click', () => {
             if (currentStep === 1) {
-                closeModal(); 
+                closeModal();
                 return;
+            }
+            if (currentStep === 3) {
+                releaseHolds(); // Libera al retroceder
             }
             currentStep--;
             updateStepUI();
             updateContent();
             updateNavButtons();
-          
+
             requestAnimationFrame(() => {
                 requestAnimationFrame(scrollTopStep);
             });
@@ -2431,7 +2381,7 @@
 
         // ====== EVENTOS PASO 1 ======
 
-      
+
         institutionSelect.addEventListener('change', async (e) => {
             selectedInstitution = e.target.value;
 
@@ -2536,7 +2486,7 @@
             const IDLE_BG = '#ddd';
             const IDLE_TEXT = '#999';
 
-           
+
             for (let i = 1; i <= 3; i++) {
                 const icon = document.getElementById(`step-icon-${i}`);
                 if (!icon) continue;
@@ -2564,14 +2514,14 @@
                 }
             }
 
-         
+
             for (let i = 1; i <= 2; i++) {
                 const line = document.getElementById(`line-${i}`);
                 if (!line) continue;
                 line.style.backgroundColor = i < currentStep ? ACTIVE_BG : '#ddd';
             }
 
-            
+
             const track = document.getElementById('stepper-track');
             const indicator = document.getElementById('step-indicator');
             const targetIcon = document.getElementById(`step-icon-${currentStep}`);
@@ -2653,7 +2603,7 @@
             subjects.forEach(subject => {
                 const item = document.createElement('div');
 
-            
+
                 item.style.cssText =
                     'padding:12px; margin:1px; background:#219EBC;  cursor:pointer; border:2px solid transparent; transition:all .2s;';
 
@@ -2665,7 +2615,7 @@
                 item.dataset.subjectName = subject.name;
 
                 item.addEventListener('click', async () => {
-                
+
                     subjectsList.querySelectorAll('div').forEach(d => {
                         d.style.border = '2px solid transparent';
                         d.style.backgroundColor = '#219EBC';
@@ -2673,7 +2623,7 @@
                         if (strong) strong.style.color = '#fff';
                     });
 
-                  
+
                     item.style.border = '2px solid #023047';
                     item.style.backgroundColor = '#023047';
                     const myStrong = item.querySelector('strong');
@@ -2701,19 +2651,19 @@
 
         // ====== CARGA DE TUTORES ======
         async function loadTutors(subjectId) {
-         
+
             tutorContainer.style.display = 'block';
             tutorHelper.textContent = 'Cargando tutores...';
             tutorList.innerHTML = '';
 
-         
+
             selectedTutor = null;
             selectedTutorName = null;
             selectedTutorPrice = 0;
             basePrice = 0;
             currentPrice = 0;
 
-         
+
             scrollToTutors();
 
             try {
@@ -2777,7 +2727,7 @@
                         currentPrice = basePrice;
                     });
 
-                
+
                     card.style.opacity = '0';
                     card.style.transform = 'translateY(14px) scale(.98)';
 
@@ -2827,12 +2777,12 @@
             slotsContainer.innerHTML =
                 '<p style="text-align:center; padding: 24px;">Cargando horarios...</p>';
 
-            selectedSlot = null;
+            selectedSlots = [];
             slotsByDate = {};
             selectedDate = null;
 
             try {
-                const response = await fetch(`/student/booking/horarios/${selectedTutor}`);
+                const response = await fetch(`/student/booking/horarios-multi/${selectedTutor}`);
                 const data = await response.json();
                 console.log("HORARIOS RAW:", data);
                 console.log("SLOT EJEMPLO:", data?.slots?.[0]);
@@ -2883,10 +2833,21 @@
             const subjectName = selectedSubjectName || 'N/A';
             const tutorName = selectedTutorName || 'N/A';
 
+            selectedSlots.sort((a, b) => a.start.localeCompare(b.start));
+            const first = selectedSlots[0];
+            const last = selectedSlots[selectedSlots.length - 1];
+
+            const durationMins = selectedSlots.length * 20;
+            const durationTxt = durationMins >= 60 ?
+                (durationMins % 60 === 0 ? `${durationMins/60} hora(s)` :
+                    `${Math.floor(durationMins/60)} h ${durationMins%60} min`) :
+                `${durationMins} minutos`;
+
             document.getElementById('js-summary-subject').textContent = subjectName;
             document.getElementById('js-summary-tutor').textContent = tutorName;
-            document.getElementById('js-summary-date').textContent = selectedSlot.date;
-            document.getElementById('js-summary-time').textContent = selectedSlot.time;
+            document.getElementById('js-summary-date').textContent = first.date;
+            document.getElementById('js-summary-time').textContent =
+                `${first.start} - ${last.end} (${durationTxt})`;
             document.getElementById('js-summary-total').textContent = `Bs. ${currentPrice.toFixed(2)}`;
         }
 
@@ -2917,7 +2878,7 @@
 
         function recalcTotals() {
 
-            currentPrice = basePrice * (1 - appliedDiscountDecimal);
+            currentPrice = (basePrice * selectedSlots.length) * (1 - appliedDiscountDecimal);
 
 
             isFreeBooking = currentPrice <= 0.00001;
@@ -2927,7 +2888,7 @@
             if (totalEl) totalEl.textContent = `Bs. ${currentPrice.toFixed(2)}`;
 
 
-            const discountAmount = basePrice - currentPrice;
+            const discountAmount = (basePrice * selectedSlots.length) - currentPrice;
             if (summaryDiscountRow && appliedDiscountPct > 0) {
                 summaryDiscountRow.style.display = 'block';
                 summaryDiscountPct.textContent = String(appliedDiscountPct);
@@ -2961,11 +2922,16 @@
             loader.style.display = 'flex';
 
             try {
+                const slotsIds = selectedSlots.map(s => s.id);
+                const first = selectedSlots[0];
+
                 const formData = new FormData();
                 formData.append('subject_id', selectedSubject);
                 formData.append('tutor_id', selectedTutor);
-                formData.append('slot_id', selectedSlot.id);
-                formData.append('slot_date', selectedSlot.date);
+
+                slotsIds.forEach(id => formData.append('slots[]', id));
+
+                formData.append('slot_date', first.date);
 
                 if (selectedCoupon) formData.append('coupon_id', selectedCoupon);
                 formData.append('is_free', isFreeBooking ? '1' : '0');
@@ -2975,7 +2941,7 @@
                     formData.append('comprobante', comprobanteFile);
                 }
 
-                const response = await fetch('/student/booking/reservar', {
+                const response = await fetch('/student/booking/reservar-multi', {
                     method: 'POST',
                     headers: {
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
@@ -3013,6 +2979,69 @@
                 navigationButtons.style.display = 'flex';
                 showPayUIAfterError();
                 alert(error.message || 'Error al procesar la reserva');
+            }
+        }
+
+        async function releaseHolds() {
+            if (selectedSlots.length === 0) return;
+            const tutorId = selectedTutor;
+            const dateStr = selectedSlots[0].date;
+
+            try {
+                const slotsIds = selectedSlots.map(s => s.id);
+                const formData = new FormData();
+                formData.append('tutor_id', tutorId);
+                formData.append('date', dateStr);
+                slotsIds.forEach(id => formData.append('slots[]', id));
+
+                await fetch('/student/booking/release-slots', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: formData,
+                    keepalive: true
+                });
+            } catch (e) {
+                console.error("Error releasing holds", e);
+            }
+        }
+
+        async function holdSlots() {
+            if (selectedSlots.length === 0) return false;
+
+            loader.style.display = 'flex';
+            const tutorId = selectedTutor;
+            const dateStr = selectedSlots[0].date;
+            const slotsIds = selectedSlots.map(s => s.id);
+
+            const formData = new FormData();
+            formData.append('tutor_id', tutorId);
+            formData.append('date', dateStr);
+            slotsIds.forEach(id => formData.append('slots[]', id));
+
+            try {
+                const response = await fetch('/student/booking/hold-slots', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: formData
+                });
+                const data = await response.json();
+
+                loader.style.display = 'none';
+                if (!data.success) {
+                    alert(data.message || 'Alguno de los horarios seleccionados ya no está disponible.');
+                    selectedSlots = [];
+                    return false;
+                }
+                return true;
+            } catch (e) {
+                loader.style.display = 'none';
+                console.error("Error holding slots", e);
+                alert("Error de conexión al intentar bloquear los horarios.");
+                return false;
             }
         }
 

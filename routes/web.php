@@ -54,6 +54,7 @@ use App\Mail\TutoriaInstanteNotificacionMail;
 
 use Illuminate\Support\Facades\Mail;
 
+<<<<<<< HEAD
 
 use App\Http\Controllers\pruebaController;
 
@@ -84,15 +85,26 @@ Route::get('/probar-correo', function () {
     Mail::raw(implode("\n", $lines), function ($message) use ($to, $random) {
         $message->to($to)
             ->subject("Prueba random {$random}");
+=======
+use Illuminate\Support\Facades\Http;
+
+Route::get('/probar-correo', function () {
+
+    Mail::send('emails.confirmationTutorInstant', [], function ($message) {
+        $message->to('@gmail.com')
+            ->subject('Prueba de diseño');
+>>>>>>> main
     });
 
     return "Correo enviado a {$to} (código: {$random})";
 });
 
 
+Route::get('/control-horas', function () {
+    return view('vistas.view.pages.hora');
+});
 
 
-//////////////// OSCAR ///////////////////////
 
 // Route::get('/waitlist/accept', [SubjectPickerController::class, 'acceptWaitlist'])
 //     ->name('waitlist.accept');
@@ -108,9 +120,10 @@ Route::get('/tutor/waitlist/status', [SubjectPickerController::class, 'tutorWait
 Route::post('/tutor/waitlist/accept', [SubjectPickerController::class, 'tutorAcceptBooking']);
 
 Route::post('/tutor/waitlist/reject', [SubjectPickerController::class, 'tutorRejectBooking']);
+Route::post('/bookings/{id}/check-meet', [SubjectPickerController::class, 'checkMeetLink'])
+    ->name('bookings.checkMeet');
 
 
-//////////////// OSCAR ///////////////////////
 
 Route::view('/reserva', 'vistas.view.pages.e')->name('e');
 Route::view('/traduccion', 'vistas.view.pages.traduccion')->name('traduccion');
@@ -252,6 +265,7 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
 
     Route::middleware(['auth', 'verified', 'onlineUser'])->group(function () {
         Route::post('/openai/submit', [OpenAiController::class, 'submit'])->name('openai.submit');
+        Route::post('/accept-terms', [HomeController::class, 'acceptTerms'])->name('accept.terms');
         Route::post('favourite-tutor', [SearchController::class, 'favouriteTutor'])->name('favourite-tutor');
         Route::get('logout', [SiteController::class, 'logout'])->name('logout');
         Route::get('user/identity-confirmation/{id}', [PersonalDetails::class, 'confirmParentVerification'])->name('confirm-identity');
@@ -305,9 +319,7 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
 
 
 
-            Route::get('/materias/elegir', function () {
-                return view('vistas.view.pages.pruebaInst');
-            })
+            Route::get('/materias/elegir',[InstantTutoringController::class, 'index'])
                 ->name('subjects.pick');
 
 
@@ -358,6 +370,10 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
 
             Route::post('/batches/{batch}/reserve', [SubjectPickerController::class, 'reserveTutor']);
 
+            Route::get('/bookings/{bookingId}/ttl', [SubjectPickerController::class, 'getBookingTtl']); // Obtener TTL del booking
+            Route::post('/bookings/{bookingId}/expire', [SubjectPickerController::class, 'expireBooking']); // Expirar booking cuando pase el TTL
+            Route::post('/bookings/{bookingId}/force-expire', [SubjectPickerController::class, 'forceExpireBooking']); // Expirar forzadamente (admin)
+
             // Route::post('/bookings/{booking}/receipt', [SubjectPickerController::class, 'uploadReceipt']);
 
             // Route::get('/bookings/{booking}/status', [SubjectPickerController::class, 'studentBookingStatus']);
@@ -369,6 +385,7 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
 
 
             Route::get('/bookings/{booking}/meet', [SubjectPickerController::class, 'studentMeet']);
+            
 
             /////////////////////////////////////////////////////////////////////////////////////////////////////////
             Route::get('profile', fn() => redirect('tutor.profile.personal-details'))->name('profile');
@@ -389,15 +406,21 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
 
             // Rutas para el wizard de reservas (requiere autenticación de estudiante)
             Route::prefix('booking')->name('booking.')->group(function () {
-                // Route::get('/niveles', [BookingController::class, 'getLevels'])->name('niveles');
-                // Route::get('/categorias', [BookingController::class, 'getCategories'])->name('categorias');
+                Route::get('/niveles', [BookingController::class, 'getLevels'])->name('niveles');
+                Route::get('/categorias', [BookingController::class, 'getCategories'])->name('categorias');
                 Route::get('/materias', [BookingController::class, 'getSubjects'])->name('materias');
-
+                // Route::get('/tutores/{subject_id}', [BookingController::class, 'getTutors'])->name('tutores');
                 Route::get('/tutores', [BookingController::class, 'getTutors'])->name('tutores');
                 Route::get('/horarios/{tutor_id}', [BookingController::class, 'getSlots'])->name('horarios');
                 Route::get('/tutor-payment/{tutor_id}', [BookingController::class, 'getTutorPayment'])->name('tutor-payment');
 
-                Route::post('/validar-cupon', [BookingController::class, 'validarCupon'])->name('validar-cupon');
+                // RUTAS NUEVAS PARA MULTI-SLOT BOOKING
+                Route::get('/horarios-multi/{tutor_id}', [BookingController::class, 'getSlotsMulti'])->name('horarios-multi');
+                Route::post('/hold-slots', [BookingController::class, 'holdSlotsMulti'])->name('hold-slots');
+                Route::post('/release-slots', [BookingController::class, 'releaseSlotsMulti'])->name('release-slots');
+                Route::post('/reservar-multi', [BookingController::class, 'storeMultiBooking'])->name('reservar-multi');
+
+                Route::post('/validar-cupon', [BookingController::class, 'validateCoupon'])->name('validar-cupon');
                 Route::post('/reservar', [BookingController::class, 'storeBooking'])->name('reservar');
             });
         });
@@ -428,4 +451,4 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
 
 });
 
-Route::get('/tutor/{id}', [TutorPerfilController::class, 'show'])->name('tutor.perfil');
+ Route::get('/tutor/{id}', [TutorPerfilController::class, 'show'])->name('tutor.perfil');

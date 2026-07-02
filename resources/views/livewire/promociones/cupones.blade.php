@@ -6,7 +6,15 @@
                     <form class="tb-themeform tb-displistform">
                         <fieldset>
                             <div class="tb-themeform__wrap">
-                                <div class="tb-actionselect">
+                                <div class="tb-actionselect d-flex gap-2">
+                                    <a href="javascript:void(0)" class="tb-btn tb-btn-light"
+                                        data-bs-toggle="modal" data-bs-target="#tb-export-word">
+                                        Exportar Word <i class="icon-download"></i>
+                                    </a>
+                                    <a href="javascript:void(0)" class="tb-btn tb-btn-light"
+                                        data-bs-toggle="modal" data-bs-target="#tb-add-multiple">
+                                        Generación Masiva <i class="icon-layers"></i>
+                                    </a>
                                     <a href="javascript:void(0)" id="add_user_click" class="tb-btn add-new"
                                         data-bs-toggle="modal" data-bs-target="#tb-add-user">
                                         {{ __('general.add_new_cupon') }} <i class="icon-plus"></i>
@@ -25,7 +33,7 @@
                                 </div>
                                 <div class="form-group tb-inputicon tb-inputheight">
                                     <i class="icon-search"></i>
-                                    <input type="text" class="form-control" wire:model.live.debounce.500ms="search"
+                                    <input type="text" class="form-control" wire:model.live.debounce.500ms="search" list="nombres_sugeridos"
                                         autocomplete="off" placeholder="{{ __('general.search_cupon') }}">
                                 </div>
                             </div>
@@ -104,12 +112,19 @@
                             </tbody>
                         </table>
 
-                        {{ $cupones->links('pagination.custom') }}
+                        
                     @else
-                        <x-no-record :image="asset('images/empty.png')" :title="__('general.no_record_title')" />
+                        @if (!empty($search))
+                            <div class="alert alert-warning text-center mt-4">
+                                No se encontraron cupones con el nombre "{{ $search }}".
+                            </div>
+                        @else
+                            <x-no-record :image="asset('images/empty.png')" :title="__('general.no_record_title')" />
+                        @endif
                     @endif
                 </div>
             </div>
+            {{ $cupones->links('pagination.custom') }}
         </div>
         <div wire:ignore.self class="modal fade tb-addonpopup" id="tb-add-user" aria-labelledby="tb_coupon_label"
             role="dialog" aria-hidden="true">
@@ -228,6 +243,160 @@
                                 </div>
                             </fieldset>
                         </form>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <!-- MODAL MULTIPLE CUPONES -->
+        <div wire:ignore.self class="modal fade tb-addonpopup" id="tb-add-multiple" aria-labelledby="tb_multiple_label"
+            role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg tb-modaldialog" role="document">
+                <div class="modal-content">
+                    <div class="tb-popuptitle">
+                        <h5 id="tb_multiple_label">Generación Masiva de Cupones</h5>
+                        <a href="javascript:void(0);" class="close">
+                            <i class="icon-x" data-bs-dismiss="modal"></i>
+                        </a>
+                    </div>
+                    <div class="modal-body">
+                        <form class="tb-themeform" wire:submit.prevent="saveMultipleCoupons">
+                            <fieldset>
+                                <div class="form-group-wrap">
+                                    
+                                    <!-- cantidad_generar (reordenado al principio) -->
+                                    <div class="form-group w-100 mb-3 border-bottom pb-3">
+                                        <label class="tb-label">¿Cuántos cupones masivos generar?</label>
+                                        <input type="number" step="1" min="2"
+                                            class="form-control @error('formMultiple.cantidad_generar') tk-invalid @enderror"
+                                            wire:model.defer="formMultiple.cantidad_generar"
+                                            placeholder="Ejemplo: 10">
+                                        @error('formMultiple.cantidad_generar')
+                                            <div class="tk-errormsg"><span>{{ $message }}</span></div>
+                                        @enderror
+                                        <span class="text-muted d-block mt-1" style="font-size: 0.85rem">
+                                            Cada cupón creado tendrá cantidad=1 y referencia=0 para su propio ciclo de vida.
+                                        </span>
+                                    </div>
+
+                                    <!-- nombre -->
+                                    <div class="form-group mb-0">
+                                        <label class="tb-label">{{ __('general.name') }}</label>
+                                        <input type="text"
+                                            class="form-control @error('formMultiple.nombre') tk-invalid @enderror"
+                                            wire:model.defer="formMultiple.nombre"
+                                            placeholder="{{ __('general.nombre_placeholder') }}">
+                                        @error('formMultiple.nombre')
+                                            <div class="tk-errormsg"><span>{{ $message }}</span></div>
+                                        @enderror
+                                    </div>
+
+                                    <!-- fecha_caducidad -->
+                                    <div class="form-group mb-0">
+                                        <label class="tb-label">{{ __('general.fecha_caducidad') }}</label>
+                                        <input type="date"
+                                            class="form-control @error('formMultiple.fecha_caducidad') tk-invalid @enderror"
+                                            wire:model.defer="formMultiple.fecha_caducidad">
+                                        @error('formMultiple.fecha_caducidad')
+                                            <div class="tk-errormsg"><span>{{ $message }}</span></div>
+                                        @enderror
+                                    </div>
+
+                                    <!-- estado -->
+                                    <div class="form-group mb-0">
+                                        <label class="tb-label">{{ __('general.estado') }}</label>
+                                        <div class="@error('formMultiple.estado') tk-invalid @enderror">
+                                            <div class="tb-select">
+                                                <select class="form-control" wire:model.defer="formMultiple.estado">
+                                                    <option value="">{{ __('general.select_option') }}</option>
+                                                    <option value="activo">{{ __('general.activo') }}</option>
+                                                    <option value="inactivo">{{ __('general.inactivo') }}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        @error('formMultiple.estado')
+                                            <div class="tk-errormsg"><span>{{ $message }}</span></div>
+                                        @enderror
+                                    </div>
+
+                                    <!-- descuento -->
+                                    <div class="form-group mb-0">
+                                        <label class="tb-label">{{ __('general.descuento') }}</label>
+                                        <input type="number" step="0.01" min="0"
+                                            class="form-control @error('formMultiple.descuento') tk-invalid @enderror"
+                                            wire:model.defer="formMultiple.descuento"
+                                            placeholder="{{ __('general.descuento_placeholder') }}">
+                                        @error('formMultiple.descuento')
+                                            <div class="tk-errormsg"><span>{{ $message }}</span></div>
+                                        @enderror
+                                    </div>
+
+                                    <!-- Botones -->
+                                    <div class="form-group tb-formbtn d-flex gap-2 w-100 mt-2">
+                                        <button class="tb-btn" type="submit" wire:target="saveMultipleCoupons"
+                                            wire:loading.class="am-btn_disable">
+                                            Generar Cupones
+                                        </button>
+                                        <button type="button" class="tb-btn tb-btn-light" data-bs-dismiss="modal">
+                                            {{ __('general.cancel') }}
+                                        </button>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL DESCARGA WORD -->
+        <div wire:ignore.self class="modal fade tb-addonpopup" id="tb-export-word" aria-labelledby="tb_export_label"
+            role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-md tb-modaldialog" role="document">
+                <div class="modal-content">
+                    <div class="tb-popuptitle">
+                        <h5 id="tb_export_label">Exportar Códigos a Word</h5>
+                        <a href="javascript:void(0);" class="close">
+                            <i class="icon-x" data-bs-dismiss="modal"></i>
+                        </a>
+                    </div>
+                    <div class="modal-body">
+                        <form class="tb-themeform" wire:submit.prevent="exportarWord">
+                            <fieldset>
+                                <div class="form-group-wrap">
+                                    <span class="d-block w-100 mb-3 text-muted">Filtra los cupones que deseas descargar (puedes dejarlos en blanco para descargar todos).</span>
+                                    
+                                    <div class="form-group w-100">
+                                        <label class="tb-label">Por Nombre</label>
+                                        <input type="text" class="form-control" wire:model.live.debounce.300ms="exportFilters.nombre" list="nombres_sugeridos" autocomplete="off" placeholder="Ej: BlackFriday">
+                                    </div>
+
+                                    <div class="form-group w-100">
+                                        <label class="tb-label">Por Fecha de Caducidad</label>
+                                        <input type="date" class="form-control" wire:model.defer="exportFilters.fecha">
+                                    </div>
+
+                                    <div class="form-group tb-formbtn d-flex gap-2 pt-3">
+                                        <button class="tb-btn w-100" type="submit" wire:target="exportarWord" wire:loading.attr="disabled"
+                                            wire:loading.class="am-btn_disable">
+                                            <span wire:loading.remove wire:target="exportarWord">
+                                                Descargar Documento Word <i class="icon-download"></i>
+                                            </span>
+                                            <span wire:loading wire:target="exportarWord">
+                                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="margin-right: 5px;"></span>
+                                                Generando archivo...
+                                            </span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                        <datalist id="nombres_sugeridos">
+                            @foreach ($sugerenciasNombres as $sug)
+                                <option value="{{ $sug }}"></option>
+                            @endforeach
+                        </datalist>
                     </div>
                 </div>
             </div>

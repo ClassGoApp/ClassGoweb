@@ -52,7 +52,7 @@ class AuthController extends Controller
             
             try {
                 $user->load([
-                    'profile:id,user_id,first_name,last_name,gender,recommend_tutor,intro_video,native_language,verified_at,slug,image,tagline,description,created_at,updated_at',
+                    'profile:id,user_id,first_name,last_name,gender,recommend_tutor,intro_video,native_language,verified_at,slug,image,tagline,description,phone_number,price,created_at,updated_at',
                     'address:country_id,state_id,city,address',
                     'roles',
                     'userWallet:id,user_id,amount'
@@ -105,7 +105,7 @@ class AuthController extends Controller
                 // Intentar cargar sin address si hay problema
                 try {
                     $user->load([
-                        'profile:id,user_id,first_name,last_name,gender,recommend_tutor,intro_video,native_language,verified_at,slug,image,tagline,description,created_at,updated_at',
+                        'profile:id,user_id,first_name,last_name,gender,recommend_tutor,intro_video,native_language,verified_at,slug,image,tagline,description,,phone_number,price,created_at,updated_at',
                         'roles',
                         'userWallet:id,user_id,amount'
                     ]);
@@ -212,10 +212,23 @@ class AuthController extends Controller
             'user_id' => 'required|exists:users,id',
             'fcm_token' => 'required|string',
         ]);
-        $user = \App\Models\User::find($request->user_id);
-        $user->fcm_token = $request->fcm_token;
-        $user->save();
+        \App\Models\FcmToken::updateOrCreate(
+            ['token' => $request->fcm_token],
+            ['user_id' => $request->user_id]
+        );
         return response()->json(['message' => 'FCM token actualizado correctamente']);
+    }
+
+    public function detachFcmToken(Request $request)
+    {
+        $request->validate([
+            'fcm_token' => 'required|string',
+        ]);
+
+        \App\Models\FcmToken::where('token', $request->fcm_token)
+            ->update(['user_id' => null]);
+
+        return response()->json(['message' => 'FCM token eliminado correctamente']);
     }
 
     /**

@@ -129,7 +129,7 @@ class ProfileController extends Controller
         }
 
         $request->validate([
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:4096',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
         ]);
 
         // Guardar la imagen directamente en public/storage/profile_images
@@ -247,7 +247,7 @@ class ProfileController extends Controller
             if ($request->file('image')) {
                 try {
                     $request->validate([
-                        'image' => 'image|mimes:jpeg,png,jpg,gif,webp|max:4096'
+                        'image' => 'image|mimes:jpg,jpeg,png,gif,webp|max:5120'
                     ]);
 
                     // Generar nombre único para la imagen
@@ -274,7 +274,7 @@ class ProfileController extends Controller
             // Manejar el video de introducción si se envía
             if ($request->file('intro_video')) {
                 $request->validate([
-                    'intro_video' => 'mimes:mp4,avi,mov,wmv,flv|max:10240' // 10MB máximo
+                    'intro_video' => 'mimes:mp4,mov,avi,wmv,flv|max:51200'
                 ]);
 
                 // Generar nombre único para el video
@@ -497,7 +497,7 @@ class ProfileController extends Controller
                     ]);
                     
                     $request->validate([
-                        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:4096'
+                        'image' => 'nullable|image|mimes:jpg,jpeg,png|max:5120'
                     ]);
 
                     // Generar nombre único para la imagen
@@ -545,7 +545,7 @@ class ProfileController extends Controller
                     ]);
                     
                     $request->validate([
-                        'intro_video' => 'nullable|mimes:mp4,avi,mov,wmv,flv|max:10240'
+                        'intro_video' => 'nullable|mimes:mp4,mov,avi,wmv,flv|max:51200'
                     ]);
 
                     // Generar nombre único para el video

@@ -246,7 +246,9 @@
     margin-top: 4px;
     display: block;
 }
-
+.form-error{
+    color:red;
+}
 
 .am-alert {
     padding: 1.5rem 2rem;

@@ -16,8 +16,16 @@ class CreateAlianza extends Component
     public $imagen;
     public $enlace;
     public $descripcion;
+    public $categoria;
     public $activo = true;
     public $orden = 0;
+
+    // Opciones predefinidas para la categoría (clave => etiqueta)
+    public $categoriaOptions = [
+        'colegio de profesionales' => 'Colegio de Profesionales',
+        'universidad e instituto' => 'Universidad e Instituto',
+        'empresas' => 'Empresas',
+    ];
 
     public $imageFileExt;
     public $imageFileSize;
@@ -41,6 +49,7 @@ class CreateAlianza extends Component
             'imagen'        => 'required|mimes:' . $this->imageFileExt . '|max:' . $this->imageFileSize * 1024,
             'enlace'        => 'nullable|url|max:255',
             'descripcion'   => 'nullable|string|max:224',
+            'categoria'    => 'nullable|in:' . implode(',', array_keys($this->categoriaOptions)),
             'activo'        => 'boolean',
             'orden'         => 'nullable|integer|min:0',
         ];

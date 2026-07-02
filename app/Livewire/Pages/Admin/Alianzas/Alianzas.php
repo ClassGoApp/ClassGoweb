@@ -44,7 +44,8 @@ class Alianzas extends Component
             $query->where(function ($q) {
                 $q->where('titulo', 'LIKE', "%{$this->search}%")
                   ->orWhere('enlace', 'LIKE', "%{$this->search}%")
-                  ->orWhere('descripcion', 'LIKE', "%{$this->search}%");
+                  ->orWhere('descripcion', 'LIKE', "%{$this->search}%")
+                    ->orWhere('categoria', 'LIKE', "%{$this->search}%");
             });
         }
 
