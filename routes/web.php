@@ -54,7 +54,6 @@ use App\Mail\TutoriaInstanteNotificacionMail;
 
 use Illuminate\Support\Facades\Mail;
 
-<<<<<<< HEAD
 
 use App\Http\Controllers\pruebaController;
 
@@ -85,15 +84,7 @@ Route::get('/probar-correo', function () {
     Mail::raw(implode("\n", $lines), function ($message) use ($to, $random) {
         $message->to($to)
             ->subject("Prueba random {$random}");
-=======
-use Illuminate\Support\Facades\Http;
 
-Route::get('/probar-correo', function () {
-
-    Mail::send('emails.confirmationTutorInstant', [], function ($message) {
-        $message->to('@gmail.com')
-            ->subject('Prueba de diseño');
->>>>>>> main
     });
 
     return "Correo enviado a {$to} (código: {$random})";
