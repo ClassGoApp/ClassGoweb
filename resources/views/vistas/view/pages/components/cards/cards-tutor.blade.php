@@ -38,7 +38,7 @@
                                 <div class="stat-value">
                                     <span class="stat-icon-emoji">⭐</span>{{ number_format($tutor->avg_rating, 1) }}
                                 </div>
-                                <div class="stat-label">Rating</div>
+                                <div class="stat-label" data-translate="rating">Calificación</div>
                             </div>
 
                             <div class="stat-item">
