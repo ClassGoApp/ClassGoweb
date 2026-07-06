@@ -44,7 +44,7 @@
                     </div>
                     <div class="profile-details-actions">
                         <x-primary-button type="submit" wire:loading.class="am-btn_disable" wire:target="updateInfo">
-                            {{ __('general.save_update') }}
+                            {{ __('general.save_changes') }}
                         </x-primary-button>
                     </div>
                 </form>

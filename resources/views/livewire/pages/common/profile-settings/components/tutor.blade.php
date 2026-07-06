@@ -307,7 +307,7 @@
         <div class="profile-details-actions">
             <x-primary-button class="button_save" type="submit" wire:loading.class="am-btn_disable"
                 wire:target="updateInfo">
-                {{ __('general.save_update_HERE') }}
+                {{ __('general.save_changes') }}
             </x-primary-button>
         </div>
     </form>
