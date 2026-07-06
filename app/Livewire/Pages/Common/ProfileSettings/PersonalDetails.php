@@ -6,6 +6,7 @@ use App\Models\Country;
 use App\Models\Language;
 use App\Models\UserLanguage;
 use App\Services\ProfileService;
+use App\Http\Controllers\Api\ProfileController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Livewire\Attributes\Layout;
@@ -180,6 +181,7 @@ class PersonalDetails extends Component
     public $enableGooglePlaces = false;
     public $select_lema;
     public bool $attemptedSave = false;
+    public bool $videoDeleted = false;
     /**
      * Inicializa el componente
      */
@@ -339,7 +341,18 @@ class PersonalDetails extends Component
                 if (!empty($profileData['image'])) {
                     $this->dispatch('update_image', image: resizedImage($profileData['image'], 36, 36));
                 }
+                
+                // Actualizar propiedad del componente
+                $this->image = $profileData['image'];
             }
+            if ($this->videoDeleted) {
+                // Invocar el controlador de la API para eliminar el video anterior físicamente y de la BD
+                $profileController = new ProfileController();
+                $profileController->deleteProfileVideo(Auth::user()->id);
+                $profileData['intro_video'] = null;
+                $this->videoDeleted = false;
+            }
+
             if ($this->intro_video instanceof \Livewire\Features\SupportFileUploads\TemporaryUploadedFile) {
                 // Guardar temporalmente en storage
                 $filename = time() . '_' . $this->intro_video->getClientOriginalName();
@@ -351,6 +364,9 @@ class PersonalDetails extends Component
                 }
                 rename(storage_path('app/' . $tempPath), $destinationPath . '/' . $filename);
                 $profileData['intro_video'] = 'profile_videos/' . $filename;
+                
+                // Actualizar propiedad del componente
+                $this->intro_video = $profileData['intro_video'];
             }
 
             $this->profileService->setUserProfile($profileData); // Guarda los datos
@@ -469,7 +485,8 @@ class PersonalDetails extends Component
                 $this->imageName = '';
             } else if ($type === 'video') {
                 if ($this->intro_video && !$this->intro_video instanceof \Livewire\Features\SupportFileUploads\TemporaryUploadedFile) {
-                    Storage::disk('public')->delete($this->intro_video);
+                    // Marcar para ser eliminado al guardar cambios
+                    $this->videoDeleted = true;
                 }
                 $this->intro_video = null;
                 $this->videoName = '';
