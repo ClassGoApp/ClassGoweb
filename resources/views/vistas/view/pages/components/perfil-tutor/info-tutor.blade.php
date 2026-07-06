@@ -26,43 +26,43 @@
 <div class="tutor-tabs-card" id="reservar">
     <div class="tutor-tabs-nav">
         <nav class="tutor-tabs-list" aria-label="Tabs">
-            <button onclick="changeTab(event, 'introduccion')" class="tutor-tab-btn active">Sobre mí</button>                            
-            <button onclick="changeTab(event, 'disponibilidad')" class="tutor-tab-btn">Disponibilidad</button>
-            <button onclick="changeTab(event, 'curriculum')" class="tutor-tab-btn">Aspectos Destacados</button>
-            <button onclick="changeTab(event, 'resenas')" class="tutor-tab-btn">Reseñas</button>
+            <button onclick="changeTab(event, 'introduccion')" class="tutor-tab-btn active" data-translate="perfil_sobre_mi">Sobre mí</button>                            
+            <button onclick="changeTab(event, 'disponibilidad')" class="tutor-tab-btn" data-translate="perfil_disponibilidad">Disponibilidad</button>
+            <button onclick="changeTab(event, 'curriculum')" class="tutor-tab-btn" data-translate="perfil_curriculum">Aspectos Destacados</button>
+            <button onclick="changeTab(event, 'resenas')" class="tutor-tab-btn" data-translate="perfil_resenas">Reseñas</button>
         </nav>
     </div>
     
     <div class="tutor-tabs-content">
         <div id="introduccion" class="tutor-tab-content">
             <div>
-                <h3 class="tutor-section-title">Hola👋 Soy {{ $tutor->profile->first_name ?? '' }}</h3>
-                <p class="tutor-section-text">{{ $tutor->profile->description ?? '" Soy un Tutor verificado y aprobado por ClassGo! Listo para responder tus dudas."' }}</p>
+                <h3 class="tutor-section-title" data-translate="perfil_saludo">Hola👋 Soy {{ $tutor->profile->first_name ?? '' }}</h3>
+                <p class="tutor-section-text" data-translate="perfil_descripcion_predeterminada">{{ $tutor->profile->description ?? '" Soy un Tutor verificado y aprobado por ClassGo! Listo para responder tus dudas."' }}</p>
             </div>
 
             <hr class="tutor-section-divider">
             <div>
-                <h3 class="tutor-section-title">Puedo hablar</h3>
+                <h3 class="tutor-section-title" data-translate="perfil_puedo_hablar">Puedo hablar</h3>
                 <div class="space-languages-perfil">                @if($tutor->languages && count($tutor->languages))
                     @foreach($tutor->languages as $lang)
                         <span class="tutor-language-tag">{{ $lang->name }}</span>
                     @endforeach
                 @else
-                    <span class="tutor-language-tag">No especificado</span>
+                    <span class="tutor-language-tag" data-translate="perfil_no_especificado">No especificado</span>
                 @endif
                 </div>
             </div>
         </div>
         
         <div id="disponibilidad" class="tutor-tab-content hidden">
-            {{-- <h3 class="tutor-section-title-lg">Reserva una sesión</h3> --}}
+            {{-- <h3 class="tutor-section-title-lg" data-translate="perfil_Reserva">Reserva una sesión</h3> --}}
             {{-- <<<<======LOGICA PARA RESERVAR=======>>>>>>--}}
             <livewire:reserva :tutorId="$tutor->id" />
             
         </div>
         
         <div id="curriculum" class="tutor-tab-content hidden">
-            <nav class="tutor-subtabs-nav"><button onclick="changeSubTab(event, 'educacion')" class="tutor-subtab-btn active">Educación</button><button onclick="changeSubTab(event, 'experiencia')" class="tutor-subtab-btn">Experiencia</button><button onclick="changeSubTab(event, 'certificaciones')" class="tutor-subtab-btn">Certificación</button></nav>
+            <nav class="tutor-subtabs-nav"><button onclick="changeSubTab(event, 'educacion')" class="tutor-subtab-btn active" data-translate="perfil_educacion">Educación</button><button onclick="changeSubTab(event, 'experiencia')" class="tutor-subtab-btn" data-translate="perfil_experiencia">Experiencia</button><button onclick="changeSubTab(event, 'certificaciones')" class="tutor-subtab-btn" data-translate="perfil_certificacion">Certificación</button></nav>
 
             <div id="educacion" class="tutor-subtab-content">
                 @include('vistas.view.pages.components.perfil-tutor.education', [
@@ -85,7 +85,7 @@
         </div>
 
         <div id="resenas" class="tutor-tab-content hidden">
-            <h3 class="tutor-section-title" style="margin-bottom: 1.5rem;">Reseñas de estudiantes</h3>
+            <h3 class="tutor-section-title" style="margin-bottom: 1.5rem;" data-translate="perfil_resenas_estudiantes">Reseñas de estudiantes</h3>
 
             <!--CONTENIDO DE COMENTARIOS Y CALIFICACIONES-->
             @include('vistas.view.pages.components.perfil-tutor.coments', [

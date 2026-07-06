@@ -49,7 +49,7 @@
                                 <div class="stat-value">
                                     <span class="stat-icon-emoji">📖</span>{{ $tutor->subjects_count }}
                                 </div>
-                                <div class="stat-label">Materias</div>
+                                <div class="stat-label" data-translate="subjects">Materias</div>
                             </div>
 
                             <div class="stat-item">
