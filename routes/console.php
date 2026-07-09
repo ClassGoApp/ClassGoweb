@@ -11,8 +11,7 @@ Artisan::command('inspire', function () {
 
 
 Schedule::command('app:complete-slot-bookings', )->everyMinute();
-
-
+Schedule::command('app:expire-bookings')->everyMinute();
 
 Schedule::command('batches:tick')->everyMinute();
 

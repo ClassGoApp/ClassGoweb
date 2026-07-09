@@ -9,12 +9,13 @@ class BookingStatus implements CastsAttributes
 {
 
     public static $statuses = [
-        'Aceptado'      => 1,
-        'Pendiente'     => 2,
-        'No completado' => 3,
-        'Rechazado'     => 4,
-        'Completado'    => 5,
-        'Cursando'      => 6,
+        'Aceptado'          => 1,
+        'Pendiente'         => 2,
+        'No completado'     => 3,
+        'Rechazado'         => 4,
+        'Completado'        => 5,
+        'Cursando'          => 6,
+        'Pendiente de pago' => 7,
     ];
 
     /**

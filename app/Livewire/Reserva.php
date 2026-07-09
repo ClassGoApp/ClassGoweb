@@ -82,6 +82,13 @@ class Reserva extends Component
     // ============== End Variables Cupones ===============//
 
     public bool $isAugustPromotion = false;
+    public bool $isVirtual = false;
+    public bool $showVirtualModal = false;
+    public ?string $startTime = null;
+    public int $duration = 20;
+    public ?string $endTime = null;
+    public ?string $timeRangeError = null;
+    public array $tutorConfiguredRanges = [];
 
     // País detectado desde Cloudflare CF-IPCountry ('BO' = Bolivia, otro = internacional)
     public string $paisDetectado = 'XX';
@@ -269,29 +276,190 @@ class Reserva extends Component
             return;
         }
         $this->selectedDay = $day;
-        $this->selectedTimes = []; // Resetea la hora al cambiar de día
+        $this->selectedTimes = [];
+        $this->startTime = null;
+        $this->endTime = null;
+        $this->duration = 20;
+        $this->timeRangeError = null;
 
         if ($month == $fecha_actual->month && $day == $fecha_actual->day) {
             $slotsForToday = $this->timeSlotsByDay[$day] ?? [];
-            // dd($slotsForToday);
             $slotfiltrados = [];
             $horaActual = $fecha_actual->format('H:i');
 
-            // dd($horaActual);
             for ($i = 0; $i < count($slotsForToday); $i++) {
-
                 if ($slotsForToday[$i]['time'] > $horaActual) {
-
                     $slotfiltrados[] = $slotsForToday[$i];
                 }
             }
-            // dd($slotfiltrados);
             $this->availableTimeSlots = $slotfiltrados;
         } else {
             $this->availableTimeSlots = $this->timeSlotsByDay[$day] ?? [];
         }
 
-        // $this->availableTimeSlots = $this->timeSlotsByDay[$day] ?? [];
+        // Determinar si es virtual o configurado
+        $slots = $this->timeSlotsByDay[$day] ?? [];
+        $hasConfigured = false;
+        foreach ($slots as $s) {
+            if (($s['slot_id'] ?? 0) > 0) {
+                $hasConfigured = true;
+                break;
+            }
+        }
+        $this->isVirtual = !$hasConfigured;
+
+        $this->tutorConfiguredRanges = [];
+        if (!$this->isVirtual) {
+            $slotIds = collect($slots)->pluck('slot_id')->unique()->filter()->toArray();
+            if (!empty($slotIds)) {
+                $realSlots = DB::table('user_subject_slots')->whereIn('id', $slotIds)->get();
+                foreach ($realSlots as $rs) {
+                    $this->tutorConfiguredRanges[] = [
+                        'start' => Carbon::parse($rs->start_time)->format('H:i'),
+                        'end' => Carbon::parse($rs->end_time)->format('H:i'),
+                    ];
+                }
+            }
+        }
+
+        // Seleccionar hora por defecto
+        if ($this->isVirtual) {
+            if ($month == $fecha_actual->month && $day == $fecha_actual->day) {
+                $nowTime = now()->addMinutes(10);
+                if ($nowTime->format('H:i') < '07:00') {
+                    $this->startTime = '07:00';
+                } elseif ($nowTime->format('H:i') > '23:20') {
+                    $this->startTime = '23:20';
+                } else {
+                    $this->startTime = $nowTime->format('H:i');
+                }
+            } else {
+                $this->startTime = '07:00';
+            }
+        } else {
+            if (!empty($this->tutorConfiguredRanges)) {
+                $this->startTime = $this->tutorConfiguredRanges[0]['start'];
+            }
+        }
+
+        $this->calculateAndValidate();
+    }
+
+    public function updatedStartTime($value)
+    {
+        $this->calculateAndValidate();
+    }
+
+    public function updatedDuration($value)
+    {
+        $this->calculateAndValidate();
+    }
+
+    public function calculateAndValidate()
+    {
+        $this->timeRangeError = null;
+        $this->endTime = null;
+
+        if (empty($this->startTime) || !$this->selectedDay) {
+            return;
+        }
+
+        try {
+            $start = Carbon::parse($this->startTime);
+            $end = $start->copy()->addMinutes($this->duration);
+            $this->endTime = $end->format('H:i');
+
+            $fechaBase = $this->currentDate->copy()->setDay($this->selectedDay)->format('Y-m-d');
+            $startDateTime = Carbon::parse($fechaBase . ' ' . $this->startTime . ':00');
+            $endDateTime = Carbon::parse($fechaBase . ' ' . $this->endTime . ':00');
+
+            // 1. Validar límites generales (07:00 a 23:40)
+            $limitStart = Carbon::parse($fechaBase . ' 07:00:00');
+            $limitEnd = Carbon::parse($fechaBase . ' 23:40:00');
+
+            if ($startDateTime->lt($limitStart) || $endDateTime->gt($limitEnd)) {
+                $this->timeRangeError = 'El horario seleccionado debe estar entre las 07:00 y las 23:40.';
+                $this->resetCalculatedMonto();
+                return;
+            }
+
+            // 2. Validar que no esté en el pasado
+            if ($endDateTime->lte(now())) {
+                $this->timeRangeError = 'No puedes seleccionar un horario en el pasado.';
+                $this->resetCalculatedMonto();
+                return;
+            }
+
+            // 3. Validar traslape con reservas existentes (status 1, 2, 7)
+            $reservas = SlotBooking::where('tutor_id', $this->tutorId)
+                ->whereIn('status', [1, 2, 7])
+                ->where(function ($query) use ($startDateTime, $endDateTime) {
+                    $query->where('start_time', '<', $endDateTime->toDateTimeString())
+                          ->where('end_time', '>', $startDateTime->toDateTimeString());
+                })
+                ->exists();
+
+            if ($reservas) {
+                $this->timeRangeError = 'El horario seleccionado coincide con una reserva existente o pendiente.';
+                $this->resetCalculatedMonto();
+                return;
+            }
+
+            // 4. Validar caché / locks de otros estudiantes
+            $cursor = $startDateTime->copy();
+            while ($cursor->lt($endDateTime)) {
+                $segStart = $cursor->format('H:i');
+                $segEnd = $cursor->copy()->addMinutes(20)->format('H:i');
+                $cacheKey = "booking_lock:{$this->tutorId}:{$fechaBase}:{$segStart}:{$segEnd}";
+
+                if (Cache::has($cacheKey)) {
+                    if (auth()->check() && Cache::get($cacheKey) != auth()->user()->id) {
+                        $this->timeRangeError = 'Parte de este horario está bloqueado temporalmente por otro estudiante.';
+                        $this->resetCalculatedMonto();
+                        return;
+                    } elseif (!auth()->check()) {
+                        $this->timeRangeError = 'Parte de este horario está bloqueado temporalmente por otro estudiante.';
+                        $this->resetCalculatedMonto();
+                        return;
+                    }
+                }
+                $cursor->addMinutes(20);
+            }
+
+            // 5. Validar disponibilidad del tutor si es un día configurado
+            if (!$this->isVirtual) {
+                $rangeCovered = false;
+                foreach ($this->tutorConfiguredRanges as $r) {
+                    $slotStart = Carbon::parse($fechaBase . ' ' . $r['start'] . ':00');
+                    $slotEnd = Carbon::parse($fechaBase . ' ' . $r['end'] . ':00');
+
+                    if ($startDateTime->greaterThanOrEqualTo($slotStart) && $endDateTime->lte($slotEnd)) {
+                        $rangeCovered = true;
+                        break;
+                    }
+                }
+
+                if (!$rangeCovered) {
+                    $this->timeRangeError = 'El horario seleccionado debe estar dentro de los rangos de disponibilidad del tutor.';
+                    $this->resetCalculatedMonto();
+                    return;
+                }
+            }
+
+            // Si pasa todas las validaciones, calculamos el monto final
+            $this->calcularMontoFinal();
+
+        } catch (\Exception $e) {
+            Log::error('Error validating range: ' . $e->getMessage());
+            $this->timeRangeError = 'Error al procesar el horario seleccionado.';
+            $this->resetCalculatedMonto();
+        }
+    }
+
+    private function resetCalculatedMonto()
+    {
+        $this->montoFinal = 0.0;
+        $this->descuento = 0.0;
     }
 
     /**
@@ -364,7 +532,7 @@ class Reserva extends Component
     public function calcularMontoFinal()
     {
         // Si no hay nada seleccionado, el monto es el precio base (o 0, según prefieras)
-        $cantidadBloques = count($this->selectedTimes) ?: 1;
+        $cantidadBloques = (int) ($this->duration / 20) ?: 1;
         $montoBaseTotal = $this->precioTutor * $cantidadBloques;
 
         if ($this->isAugustPromotion) {
@@ -385,14 +553,38 @@ class Reserva extends Component
 
     public function openReservationModal()
     {
-        if (! $this->selectedDay || empty($this->selectedTimes)) {
-            session()->flash('error', 'Por favor, selecciona un día y al menos una hora.');
+        $this->calculateAndValidate();
 
+        if ($this->timeRangeError) {
+            session()->flash('error', $this->timeRangeError);
             return;
+        }
+
+        if (!$this->selectedDay || !$this->startTime || !$this->endTime) {
+            session()->flash('error', 'Por favor, selecciona un día y un horario válido.');
+            return;
+        }
+
+        // Generar selectedTimes dinámicamente en bloques de 20 minutos
+        $start = Carbon::parse($this->startTime);
+        $end = Carbon::parse($this->endTime);
+        $cursor = $start->copy();
+        
+        $this->selectedTimes = [];
+        while ($cursor->lt($end)) {
+            $this->selectedTimes[] = $cursor->format('H:i');
+            $cursor->addMinutes(20);
         }
 
         $estudianteId = auth()->user()->id;
         $fechaBase = $this->currentDate->copy()->setDay($this->selectedDay)->format('Y-m-d');
+
+        // Si el slot es virtual, abrir el modal de solicitud simplificado
+        if ($this->isVirtual) {
+            $this->reservaExitosa = false;
+            $this->showVirtualModal = true;
+            return;
+        }
 
         $lockedKeys = []; // Para revertir si falla alguno
 
@@ -454,6 +646,67 @@ class Reserva extends Component
         }
         $this->reservaExitosa = false;
         $this->showModal = true;
+    }
+
+    public function closeVirtualModal()
+    {
+        $this->showVirtualModal = false;
+        $this->reservaExitosa = false;
+        $this->showModal = false;
+    }
+
+    /**
+     * Crea la reserva virtual (pendiente de aceptación del tutor). No requiere pago.
+     */
+    public function makeVirtualRequest()
+    {
+        $this->validate(['selectedSubject' => 'required']);
+
+        $estudianteId = auth()->user()->id;
+        $fechaBase = $this->currentDate->copy()->setDay($this->selectedDay)->format('Y-m-d');
+
+        $fechasParaReservar = [];
+        foreach ($this->selectedTimes as $hora) {
+            $fechasParaReservar[] = $this->currentDate->copy()
+                ->setDay($this->selectedDay)
+                ->setTimeFromTimeString($hora.':00')
+                ->format('Y-m-d H:i:s');
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $slotBookingService = app(SlotBookingService::class);
+            $reserva = $slotBookingService->crearReservaContinua(
+                $estudianteId,
+                $this->tutorId,
+                $this->selectedSubject,
+                $fechasParaReservar,
+                $this->montoFinal
+            );
+
+            DB::commit();
+
+            $this->showVirtualModal = true;
+            $this->reservaExitosa = true;
+
+            $this->releaseCurrentLocks();
+            $this->resetSelection();
+            $this->loadMonthData();
+
+            session()->flash('success_message', 'Solicitud enviada al tutor. Recibirás una notificación cuando sea aceptada.');
+
+        } catch (\Throwable $e) {
+            if (DB::transactionLevel() > 0) {
+                DB::rollBack();
+            }
+            Log::error('ERROR makeVirtualRequest', [
+                'message' => $e->getMessage(),
+                'student_id' => $estudianteId,
+                'tutor_id' => $this->tutorId,
+            ]);
+            session()->flash('error', 'Hubo un error al enviar tu solicitud: '.$e->getMessage());
+        }
     }
 
     private function releaseLocks($keys)
@@ -553,8 +806,10 @@ class Reserva extends Component
             'isAugustPromotion' => $isAugustPromotion,
         ]);
 
-        if ($isAugustPromotion || ! empty($this->cuponCode)) {
-            $sessionFee = 0;
+        if ($this->isVirtual || $isAugustPromotion || ! empty($this->cuponCode)) {
+            if ($isAugustPromotion || ! empty($this->cuponCode)) {
+                $sessionFee = 0;
+            }
             $this->validate([
                 'selectedSubject' => 'required',
             ]);
@@ -619,7 +874,9 @@ class Reserva extends Component
                 ]);
             }
 
-            if ($this->porcentaje == 100 || $isAugustPromotion) {
+            if ($this->isVirtual) {
+                $path = null;
+            } elseif ($this->porcentaje == 100 || $isAugustPromotion) {
                 $path = 'qr/77b1a7da.jpg';
             } else {
                 $imageService = app(ImagenesService::class);
@@ -801,52 +1058,105 @@ class Reserva extends Component
             })
             ->get();
 
+        // Agrupar los slots reales configurados del tutor por día
+        $slotsByDay = [];
         foreach ($tiempolibre as $slot) {
             $slotDate = Carbon::parse($slot->date)->startOfDay();
-
             if ($slotDate->year == $year && $slotDate->month == $month) {
-                $day = $slotDate->day;
+                $slotsByDay[$slotDate->day][] = $slot;
+            }
+        }
 
-                if (! isset($processedData[$day])) {
-                    $processedData[$day] = [];
+        $daysInMonth = $monthStart->daysInMonth;
+        for ($day = 1; $day <= $daysInMonth; $day++) {
+            $targetDate = Carbon::create($year, $month, $day)->startOfDay();
+
+            // No generar disponibilidad para días del pasado
+            if ($targetDate->isBefore(Carbon::today())) {
+                continue;
+            }
+
+            if (isset($slotsByDay[$day])) {
+                // Si el tutor tiene horarios configurados para ese día, mostrar sus horarios normalmente
+                foreach ($slotsByDay[$day] as $slot) {
+                    $horaInicio = Carbon::parse($slot->start_time)->format('H:i:s');
+                    $horaFin = Carbon::parse($slot->end_time)->format('H:i:s');
+
+                    $startTime = $targetDate->copy()->setTimeFromTimeString($horaInicio);
+                    $endTime = $targetDate->copy()->setTimeFromTimeString($horaFin);
+
+                    $currentTime = $startTime->copy();
+
+                    while ($currentTime->lessThan($endTime)) {
+                        $timeString = $currentTime->format('H:i');
+                        $isBooked = $this->slotFallsInBookedRange($currentTime, $reservasDelMes);
+
+                        if (! $isBooked) {
+                            $startFormatted = $timeString;
+                            $endFormatted = $currentTime->copy()->addMinutes(20)->format('H:i');
+                            $dateStr = $targetDate->format('Y-m-d');
+                            $cacheKey = "booking_lock:{$this->tutorId}:{$dateStr}:{$startFormatted}:{$endFormatted}";
+
+                            if (Cache::has($cacheKey)) {
+                                if (auth()->check() && Cache::get($cacheKey) != auth()->user()->id) {
+                                    $isBooked = true;
+                                } elseif (! auth()->check()) {
+                                    $isBooked = true;
+                                }
+                            }
+                        }
+
+                        $processedData[$day][] = [
+                            'time' => $timeString,
+                            'status' => $isBooked ? 'occupied' : 'free',
+                            'slot_id' => $slot->id,
+                        ];
+
+                        $currentTime->addMinutes(20);
+                    }
                 }
+            } else {
+                // Si no tiene ningún horario disponible para ese día, mostrar bloques virtuales de 7am a 23:40pm
+                $stepMinutes = 20;
+                $rangeStart = Carbon::parse($targetDate->format('Y-m-d') . ' 07:00:00');
+                $rangeEnd   = Carbon::parse($targetDate->format('Y-m-d') . ' 23:40:00');
+                $cursor = $rangeStart->copy();
 
-                $horaInicio = Carbon::parse($slot->start_time)->format('H:i:s');
-                $horaFin = Carbon::parse($slot->end_time)->format('H:i:s');
+                while ($cursor->copy()->addMinutes($stepMinutes)->lte($rangeEnd)) {
+                    $segStart = $cursor->copy();
+                    $segEnd   = $cursor->copy()->addMinutes($stepMinutes);
 
-                $startTime = $slotDate->copy()->setTimeFromTimeString($horaInicio);
-                $endTime = $slotDate->copy()->setTimeFromTimeString($horaFin);
+                    // No mostrar horarios que ya pasaron
+                    $now = now();
+                    if ($segEnd->lte($now) || ($segStart->lte($now) && $segEnd->gt($now))) {
+                        $cursor->addMinutes($stepMinutes);
+                        continue;
+                    }
 
-                $currentTime = $startTime->copy();
-
-                while ($currentTime->lessThan($endTime)) {
-                    $timeString = $currentTime->format('H:i');
-
-                    $isBooked = $this->slotFallsInBookedRange($currentTime, $reservasDelMes);
+                    $isBooked = $this->slotFallsInBookedRange($segStart, $reservasDelMes);
 
                     if (! $isBooked) {
-                        $startFormatted = $timeString;
-                        $endFormatted = $currentTime->copy()->addMinutes(20)->format('H:i');
-                        $dateStr = $slotDate->format('Y-m-d');
+                        $startFormatted = $segStart->format('H:i');
+                        $endFormatted = $segEnd->format('H:i');
+                        $dateStr = $targetDate->format('Y-m-d');
                         $cacheKey = "booking_lock:{$this->tutorId}:{$dateStr}:{$startFormatted}:{$endFormatted}";
 
-                        // Si está bloqueado temporalmente por otro estudiante
                         if (Cache::has($cacheKey)) {
                             if (auth()->check() && Cache::get($cacheKey) != auth()->user()->id) {
-                                $isBooked = true;
+                                    $isBooked = true;
                             } elseif (! auth()->check()) {
-                                $isBooked = true;
+                                    $isBooked = true;
                             }
                         }
                     }
 
                     $processedData[$day][] = [
-                        'time' => $timeString,
+                        'time' => $segStart->format('H:i'),
                         'status' => $isBooked ? 'occupied' : 'free',
-                        'slot_id' => $slot->id,
+                        'slot_id' => 0, // 0 indica que es un slot virtual
                     ];
 
-                    $currentTime->addMinutes(20);
+                    $cursor->addMinutes($stepMinutes);
                 }
             }
         }

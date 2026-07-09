@@ -46,6 +46,18 @@ class BookingNotificationService
             $this->sendCursandoNotificationToStudent($booking);
         }
 
+        // Caso 3: Cambio a "Pendiente" (2) - Notificar al tutor para que acepte/rechace
+        if ($newStatus === 'Pendiente' || $newStatus === '2' || $newStatus === 2) {
+            Log::info('BookingNotificationService: Enviando notificación de tutoría pendiente al tutor');
+            $this->sendPendingTutorAcceptanceNotification($booking);
+        }
+
+        // Caso 4: Cambio a "Pendiente de pago" (7) - Notificar al estudiante para que pague
+        if ($newStatus === 'Pendiente de pago' || $newStatus === '7' || $newStatus === 7) {
+            Log::info('BookingNotificationService: Enviando notificación de pendiente de pago al estudiante');
+            $this->sendTutorAcceptedNotification($booking);
+        }
+
         // // Siempre emitir evento de broadcasting para la app móvil
         // $this->emitBroadcastingEvent($booking, $newStatus);
     }
@@ -567,5 +579,330 @@ class BookingNotificationService
             </p>
         </body>
         </html>';
+    }
+
+    /**
+     * Envía una notificación al tutor sobre una nueva tutoría virtual pendiente de aceptación.
+     */
+    public function sendPendingTutorAcceptanceNotification(SlotBooking $booking): void
+    {
+        try {
+            // bookee = User tutor (BelongsTo tutor_id)
+            // booker = User estudiante (BelongsTo student_id)
+            $booking->load(['bookee', 'booker', 'subject']);
+            $tutorUser  = $booking->bookee;
+            $studentUser = $booking->booker;
+
+            if (!$tutorUser || !$tutorUser->email) {
+                Log::error('sendPendingTutorAcceptanceNotification: tutor sin email', [
+                    'booking_id' => $booking->id,
+                    'tutor_id'   => $booking->tutor_id,
+                ]);
+                return;
+            }
+
+            $tutorName   = $tutorUser->profile->full_name ?? $tutorUser->email;
+            $studentName = $studentUser ? ($studentUser->profile->full_name ?? $studentUser->email) : 'Estudiante';
+
+            $subject = '⏳ Nueva solicitud de tutoría pendiente - ' . $studentName;
+
+            $sessionDate = $booking->start_time ? date('d/m/Y', strtotime($booking->start_time)) : 'Fecha no definida';
+            $sessionTime = $booking->start_time ? date('H:i', strtotime($booking->start_time)) : 'Hora no definida';
+
+            $acceptUrl = route('booking.tutor-accept-email', ['booking' => $booking->id]);
+            $rejectUrl = route('booking.tutor-reject-email', ['booking' => $booking->id]);
+
+            $html = '
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset="utf-8">
+                <title>Solicitud de Tutoría</title>
+            </head>
+            <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
+                <div style="background-color: #e7f3ff; border: 2px solid #0056b3; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                    <h2 style="color: #0056b3; margin: 0 0 15px 0;">⏳ Nueva Solicitud de Tutoría Pendiente</h2>
+                    <p><strong>Hola ' . $tutorName . ',</strong></p>
+                    <p>Has recibido una nueva solicitud de tutoría. Tienes 4 horas para aceptarla o rechazarla.</p>
+                </div>
+
+                <div style="background-color: #f8f9fa; border: 1px solid #dee2e6; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                    <h3 style="color: #495057; margin: 0 0 15px 0;">📋 Detalles:</h3>
+                    <ul>
+                        <li><strong>Estudiante:</strong> ' . $studentName . '</li>
+                        <li><strong>Materia:</strong> ' . ($booking->subject ? $booking->subject->name : 'Materia no definida') . '</li>
+                        <li><strong>Fecha:</strong> ' . $sessionDate . '</li>
+                        <li><strong>Hora:</strong> ' . $sessionTime . '</li>
+                    </ul>
+                </div>
+
+                <div style="margin: 30px 0; text-align: center;">
+                    <a href="' . $acceptUrl . '" style="background-color: #28a745; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block; font-weight: bold; margin-right: 10px;">Aceptar Tutoría</a>
+                    <a href="' . $rejectUrl . '" style="background-color: #dc3545; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block; font-weight: bold;">Rechazar Tutoría</a>
+                </div>
+
+                <p><strong>Equipo ClassGo</strong></p>
+            </body>
+            </html>';
+
+            Mail::send([], [], function ($message) use ($tutorUser, $subject, $html) {
+                $message->to($tutorUser->email)
+                        ->subject($subject)
+                        ->html($html);
+            });
+
+            Log::info('✅ Email pendiente enviado al tutor', [
+                'tutor_id'   => $tutorUser->id,
+                'tutor_email' => $tutorUser->email,
+                'booking_id' => $booking->id,
+            ]);
+
+            if ($tutorUser->fcm_token) {
+                $this->sendPushNotification($tutorUser, [
+                    'title' => '⏳ Nueva solicitud de tutoría',
+                    'body'  => "Tienes una solicitud de tutoría de {$studentName} para el {$sessionDate}",
+                    'data'  => [
+                        'booking_id' => $booking->id,
+                        'type'       => 'booking_pending_tutor',
+                        'status'     => 'Pendiente'
+                    ]
+                ]);
+            }
+
+        } catch (\Exception $e) {
+            Log::error('Error sendPendingTutorAcceptanceNotification: ' . $e->getMessage(), [
+                'booking_id' => $booking->id,
+                'trace'      => $e->getTraceAsString(),
+            ]);
+        }
+    }
+
+    /**
+     * Envía una notificación al estudiante de que el tutor aceptó la tutoría y requiere pago.
+     */
+    public function sendTutorAcceptedNotification(SlotBooking $booking): void
+    {
+        try {
+            $booking->load(['tutor', 'booker', 'subject']);
+            $tutor = $booking->tutor;
+            $student = $booking->booker;
+
+            if (!$student) return;
+
+            $subject = '💳 Tu tutoría fue aceptada - Sube tu comprobante de pago';
+            
+            $sessionDate = $booking->start_time ? date('d/m/Y', strtotime($booking->start_time)) : 'Fecha no definida';
+            $sessionTime = $booking->start_time ? date('H:i', strtotime($booking->start_time)) : 'Hora no definida';
+
+            $paymentUrl = route('student.bookings');
+
+            $html = '
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset="utf-8">
+                <title>Tutoría Aceptada</title>
+            </head>
+            <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
+                <div style="background-color: #fff3cd; border: 2px solid #ffc107; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                    <h2 style="color: #856404; margin: 0 0 15px 0;">💳 ¡Tutoría Aceptada! Completa tu pago</h2>
+                    <p><strong>Hola ' . ($student->profile->full_name ?? 'Estudiante') . ',</strong></p>
+                    <p>Tu tutor, ' . ($tutor->profile->full_name ?? 'Tutor') . ', ha aceptado tu solicitud de tutoría.</p>
+                    <p style="color: #dc3545; font-weight: bold;">Tienes 4 horas a partir de ahora para subir tu comprobante de pago en la plataforma; de lo contrario, la reserva se cancelará automáticamente.</p>
+                </div>
+                
+                <div style="background-color: #f8f9fa; border: 1px solid #dee2e6; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                    <h3 style="color: #495057; margin: 0 0 15px 0;">📋 Detalles de la Tutoría:</h3>
+                    <ul>
+                        <li><strong>Tutor:</strong> ' . ($tutor->profile->full_name ?? 'Tutor') . '</li>
+                        <li><strong>Materia:</strong> ' . ($booking->subject ? $booking->subject->name : 'Materia no definida') . '</li>
+                        <li><strong>Fecha:</strong> ' . $sessionDate . '</li>
+                        <li><strong>Hora:</strong> ' . $sessionTime . '</li>
+                        <li><strong>Monto a pagar:</strong> Bs. ' . number_format($booking->session_fee, 2) . '</li>
+                    </ul>
+                </div>
+                
+                <div style="margin: 30px 0; text-align: center;">
+                    <a href="' . $paymentUrl . '" style="background-color: #023047; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block; font-weight: bold;">Ir a Pagar / Subir Comprobante</a>
+                </div>
+                
+                <p><strong>Equipo ClassGo</strong></p>
+            </body>
+            </html>';
+
+            Mail::send([], [], function ($message) use ($student, $subject, $html) {
+                $message->to($student->email)
+                        ->subject($subject)
+                        ->html($html);
+            });
+
+            if ($student->fcm_token) {
+                $this->sendPushNotification($student, [
+                    'title' => '💳 Sube tu comprobante de pago',
+                    'body' => "El tutor aceptó tu tutoría. Tienes 4 horas para realizar el pago.",
+                    'data' => [
+                        'booking_id' => $booking->id,
+                        'type' => 'booking_accepted_tutor',
+                        'status' => 'Pendiente de pago'
+                    ]
+                ]);
+            }
+
+        } catch (\Exception $e) {
+            Log::error('Error sendTutorAcceptedNotification: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Envía una notificación al estudiante cuando la tutoría expira por falta de aceptación del tutor.
+     */
+    public function sendTutorExpiredNotification(SlotBooking $booking): void
+    {
+        try {
+            $booking->load(['tutor', 'booker', 'subject']);
+            $tutor = $booking->tutor;
+            $student = $booking->booker;
+
+            if (!$student) return;
+
+            $subject = '❌ Solicitud de tutoría no confirmada (Expirada)';
+            $sessionDate = $booking->start_time ? date('d/m/Y', strtotime($booking->start_time)) : 'Fecha no definida';
+
+            $html = '
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset="utf-8">
+                <title>Tutoría Expirada</title>
+            </head>
+            <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
+                <div style="background-color: #f8d7da; border: 2px solid #dc3545; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                    <h2 style="color: #721c24; margin: 0 0 15px 0;">❌ Solicitud de Tutoría Expirada</h2>
+                    <p><strong>Hola ' . ($student->profile->full_name ?? 'Estudiante') . ',</strong></p>
+                    <p>Lamentamos informarte que tu solicitud de tutoría con ' . ($tutor->profile->full_name ?? 'Tutor') . ' para el ' . $sessionDate . ' expiró porque el tutor no pudo responder a tiempo.</p>
+                    <p>El horario ha sido liberado. Te invitamos a buscar otros tutores disponibles en la plataforma.</p>
+                </div>
+                <p><strong>Equipo ClassGo</strong></p>
+            </body>
+            </html>';
+
+            Mail::send([], [], function ($message) use ($student, $subject, $html) {
+                $message->to($student->email)
+                        ->subject($subject)
+                        ->html($html);
+            });
+
+            if ($student->fcm_token) {
+                $this->sendPushNotification($student, [
+                    'title' => '❌ Solicitud de tutoría expirada',
+                    'body' => "El tutor no confirmó a tiempo tu solicitud.",
+                    'data' => [
+                        'booking_id' => $booking->id,
+                        'type' => 'booking_expired_tutor',
+                        'status' => 'Rechazado'
+                    ]
+                ]);
+            }
+
+        } catch (\Exception $e) {
+            Log::error('Error sendTutorExpiredNotification: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Envía una notificación al estudiante y tutor cuando la tutoría expira por falta de pago del estudiante.
+     */
+    public function sendStudentExpiredNotification(SlotBooking $booking): void
+    {
+        try {
+            $booking->load(['tutor', 'booker', 'subject']);
+            $tutor = $booking->tutor;
+            $student = $booking->booker;
+
+            $sessionDate = $booking->start_time ? date('d/m/Y', strtotime($booking->start_time)) : 'Fecha no definida';
+
+            // 1. Notificar al estudiante
+            if ($student) {
+                $subjectStudent = '❌ Reserva de tutoría cancelada por falta de pago';
+                $htmlStudent = '
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <meta charset="utf-8">
+                    <title>Tutoría Cancelada</title>
+                </head>
+                <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
+                    <div style="background-color: #f8d7da; border: 2px solid #dc3545; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                        <h2 style="color: #721c24; margin: 0 0 15px 0;">❌ Reserva Cancelada</h2>
+                        <p><strong>Hola ' . ($student->profile->full_name ?? 'Estudiante') . ',</strong></p>
+                        <p>Tu reserva para el ' . $sessionDate . ' ha sido cancelada automáticamente porque no se registró el comprobante de pago dentro del límite de 4 horas.</p>
+                        <p>El horario del tutor ha sido liberado.</p>
+                    </div>
+                    <p><strong>Equipo ClassGo</strong></p>
+                </body>
+                </html>';
+
+                Mail::send([], [], function ($message) use ($student, $subjectStudent, $htmlStudent) {
+                    $message->to($student->email)
+                            ->subject($subjectStudent)
+                            ->html($htmlStudent);
+                });
+
+                if ($student->fcm_token) {
+                    $this->sendPushNotification($student, [
+                        'title' => '❌ Reserva cancelada por falta de pago',
+                        'body' => "Tu reserva para el {$sessionDate} fue cancelada por falta de pago.",
+                        'data' => [
+                            'booking_id' => $booking->id,
+                            'type' => 'booking_expired_payment',
+                            'status' => 'Rechazado'
+                        ]
+                    ]);
+                }
+            }
+
+            // 2. Notificar al tutor
+            if ($tutor) {
+                $subjectTutor = '⚠️ Tutoría cancelada (Estudiante no realizó el pago)';
+                $htmlTutor = '
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <meta charset="utf-8">
+                    <title>Tutoría Cancelada</title>
+                </head>
+                <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
+                    <div style="background-color: #fff3cd; border: 2px solid #ffc107; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                        <h2 style="color: #856404; margin: 0 0 15px 0;">⚠️ Horario Liberado (Falta de pago)</h2>
+                        <p><strong>Hola ' . ($tutor->profile->full_name ?? 'Tutor') . ',</strong></p>
+                        <p>Te informamos que la tutoría solicitada por ' . ($student->profile->full_name ?? 'Estudiante') . ' para el ' . $sessionDate . ' ha sido cancelada porque el estudiante no realizó el pago a tiempo.</p>
+                        <p>Tu horario para esta fecha ha sido liberado automáticamente y vuelves a estar disponible.</p>
+                    </div>
+                    <p><strong>Equipo ClassGo</strong></p>
+                </body>
+                </html>';
+
+                Mail::send([], [], function ($message) use ($tutor, $subjectTutor, $htmlTutor) {
+                    $message->to($tutor->email)
+                            ->subject($subjectTutor)
+                            ->html($htmlTutor);
+                });
+
+                if ($tutor->fcm_token) {
+                    $this->sendPushNotification($tutor, [
+                        'title' => '⚠️ Horario liberado',
+                        'body' => "La tutoría del {$sessionDate} fue cancelada porque el estudiante no pagó a tiempo.",
+                        'data' => [
+                            'booking_id' => $booking->id,
+                            'type' => 'booking_expired_payment_tutor',
+                            'status' => 'Rechazado'
+                        ]
+                    ]);
+                }
+            }
+
+        } catch (\Exception $e) {
+            Log::error('Error sendStudentExpiredNotification: ' . $e->getMessage());
+        }
     }
 } 

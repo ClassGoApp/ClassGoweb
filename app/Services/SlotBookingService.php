@@ -130,19 +130,36 @@ class SlotBookingService implements interfaces\ISlotBookingService
         $booking->end_time = $endTime->format('Y-m-d H:i:s');
         $booking->booked_at = now();
         $booking->user_subject_slot_id = null;
-        $booking->status = 1;
+        
+        // Verificar si existe un slot configurado para el tutor en esa fecha/hora
+        $slotDate = $startTime->toDateString();
+        $startStr = $startTime->toTimeString();
+        
+        $hasConfiguredSlot = \Illuminate\Support\Facades\DB::table('user_subject_slots')
+            ->where('user_id', $tutorId)
+            ->where('date', $slotDate)
+            ->where('start_time', '<=', $startStr)
+            ->where('end_time', '>', $startStr)
+            ->exists();
+
+        $booking->status = $hasConfiguredSlot ? 1 : 2;
 
         Log::info('DEBUG crearReservaContinua - antes de generar link', [
             'start_time' => $booking->start_time,
             'end_time' => $booking->end_time,
+            'status' => $booking->status,
         ]);
 
-        $link = $this->generarlink($booking);
-        $booking->meeting_link = $link;
-
-        Log::info('DEBUG crearReservaContinua - link generado', [
-            'meeting_link' => $link,
-        ]);
+        if ($booking->status === 1) {
+            $link = $this->generarlink($booking);
+            $booking->meeting_link = $link;
+            Log::info('DEBUG crearReservaContinua - link generado', [
+                'meeting_link' => $link,
+            ]);
+        } else {
+            $booking->meeting_link = null;
+            Log::info('DEBUG crearReservaContinua - link omitido (es tutoría virtual pendiente)');
+        }
 
         $booking->save();
 

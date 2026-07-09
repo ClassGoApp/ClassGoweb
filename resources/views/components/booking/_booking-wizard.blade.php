@@ -1497,6 +1497,7 @@
 </style>
 
 
+@push('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         console.log('🚀 WIZARD CARGADO - 3 instituciones');
@@ -3047,5 +3048,6 @@
 
     });
 </script>
+@endpush
 
 </div>

@@ -108,47 +108,92 @@
                     </h4>
                     <!--<div class="tutor-time-selector-col">
                     <h4 class="tutor-section-title">Selecciona una hora</h4>-->
-                    <div class="tutor-time-selector-box">
-                        @if (!empty($availableTimeSlots))
-                            <div class="tutor-time-slots">
-                                @foreach ($availableTimeSlots as $slot)
-                                    {{-- @php
-                                        $isOccupied = $slot['status'] === 'occupied';
-                                        $isTimeSelected = $selectedTime === $slot['time'];
-                                        $slotClasses = 'tutor-time-slot-btn';
-                                        if ($isOccupied) {
-                                            $slotClasses .= ' occupied';
-                                        }
-                                        if ($isTimeSelected) {
-                                            $slotClasses .= ' selected';
-                                        }
-
-                                    @endphp --}}
-
-                                    {{-- Busca este bloque dentro de tu foreach de horas --}}
-                                    @php
-                                        $isOccupied = $slot['status'] === 'occupied';
-
-                                        // CAMBIO: Ahora verificamos si la hora existe en el array selectedTimes
-                                        $isTimeSelected = in_array($slot['time'], $selectedTimes);
-
-                                        $slotClasses = 'tutor-time-slot-btn';
-                                        if ($isOccupied) {
-                                            $slotClasses .= ' occupied';
-                                        }
-                                        if ($isTimeSelected) {
-                                            $slotClasses .= ' selected';
-                                        }
-                                    @endphp
-                                    <button wire:click="selectTime('{{ $slot['time'] }}')" class="{{ $slotClasses }}"
-                                        @if ($isOccupied) disabled @endif>
-                                        {{ $slot['time'] }}
-                                    </button>
-                                @endforeach
+                    <div class="tutor-time-selector-box" style="padding: 16px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px;">
+                        @php
+                            $minTime = '07:00';
+                            if ($selectedDay) {
+                                $selectedDateObj = $currentDate->copy()->setDay($selectedDay);
+                                if ($selectedDateObj->isToday()) {
+                                    $minTime = now()->format('H:i');
+                                    if ($minTime < '07:00') {
+                                        $minTime = '07:00';
+                                    }
+                                }
+                            }
+                        @endphp
+                        
+                        {{-- Mensaje de Disponibilidad Real si no es Virtual --}}
+                        @if(!$isVirtual)
+                            <div style="margin-bottom: 16px;">
+                                <span style="font-weight: 600; font-size: 0.9rem; color: #475569; display: block; margin-bottom: 8px;">Horarios disponibles del tutor para este día:</span>
+                                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                    @foreach($tutorConfiguredRanges as $range)
+                                        <span style="background: rgba(59, 130, 246, 0.1); color: #2563eb; border: 1px solid rgba(59, 130, 246, 0.2); padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; font-weight: 500;">
+                                            {{ $range['start'] }} - {{ $range['end'] }}
+                                        </span>
+                                    @endforeach
+                                </div>
                             </div>
                         @else
-                            <p class="tutor-no-availability">Horas no disponible</p>
+                            <div style="margin-bottom: 16px;">
+                                <span style="background: rgba(16, 185, 129, 0.1); color: #059669; border: 1px solid rgba(16, 185, 129, 0.2); padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; font-weight: 500; display: inline-block;">
+                                    Tutoría virtual libre (cualquier rango en pasos de 20 min)
+                                </span>
+                            </div>
                         @endif
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+                            {{-- HORA DE INICIO --}}
+                            <div>
+                                <label for="start-time-input" style="display: block; font-weight: 600; font-size: 0.85rem; color: #475569; margin-bottom: 6px;">Hora de Inicio</label>
+                                <div style="position: relative;">
+                                    <input type="time" id="start-time-input" wire:model.blur="startTime"
+                                        min="{{ $minTime }}" max="23:20"
+                                        style="width: 100%; padding: 11px 16px; background-color: #ffffff; border: 1px solid #cbd5e1; border-radius: 10px; color: #1e293b; font-size: 0.95rem; outline: none; box-sizing: border-box; box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05); transition: all 0.2s ease-in-out;"
+                                        onfocus="this.style.borderColor='#3b82f6'; this.style.boxShadow='0 0 0 4px rgba(59, 130, 246, 0.15)'"
+                                        onblur="this.style.borderColor='#cbd5e1'; this.style.boxShadow='none'">
+                                </div>
+                            </div>
+
+                            {{-- DURACIÓN --}}
+                            <div>
+                                <label for="duration-select" style="display: block; font-weight: 600; font-size: 0.85rem; color: #475569; margin-bottom: 6px;">Duración</label>
+                                <select id="duration-select" wire:model.live="duration" class="select-input"
+                                    style="box-sizing: border-box;">
+                                    <option value="20">20 minutos</option>
+                                    <option value="40">40 minutos</option>
+                                    <option value="60">60 minutos (1 hr)</option>
+                                    <option value="80">80 minutos</option>
+                                    <option value="100">100 minutos</option>
+                                    <option value="120">120 minutos (2 hrs)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        {{-- RESULTADOS Y ERRORES --}}
+                        @if($timeRangeError)
+                            <div style="padding: 10px 12px; background: #fee2e2; border: 1px solid #fca5a5; border-radius: 8px; color: #b91c1c; font-size: 0.85rem; font-weight: 500;">
+                                ⚠️ {{ $timeRangeError }}
+                            </div>
+                        @elseif($startTime && $endTime)
+                            <div style="padding: 12px; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; font-size: 0.9rem; color: #1e293b; display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <span style="display: block; font-size: 0.75rem; color: #64748b; text-transform: uppercase; font-weight: 600; letter-spacing: 0.05em;">Hora de Finalización</span>
+                                    <span style="font-size: 1.1rem; font-weight: 700; color: #1d4ed8;">{{ $endTime }}</span>
+                                </div>
+                                <div style="text-align: right;">
+                                    <span style="display: block; font-size: 0.75rem; color: #64748b; text-transform: uppercase; font-weight: 600; letter-spacing: 0.05em;">Costo Total</span>
+                                    <span style="font-size: 1.1rem; font-weight: 700; color: #047857;">
+                                        @if($this->isAugustPromotion)
+                                            Gratis (Promo)
+                                        @else
+                                            {{ number_format($montoFinal, 2) }} Bs.
+                                        @endif
+                                    </span>
+                                </div>
+                            </div>
+                        @endif
+
                     </div>
                 </div>
             @endif
@@ -164,12 +209,25 @@
 
                 <span class="tutor-tooltip-wrapper">
 
-                    <button wire:click="openReservationModal" wire:loading.attr="disabled" class="tutor-pay-btn">Pagar y
-                        reservar</button>
+                    <button wire:click="openReservationModal"
+                        wire:loading.attr="disabled"
+                        {{ $timeRangeError ? 'disabled' : '' }}
+                        class="tutor-pay-btn"
+                        style="{{ $timeRangeError ? 'opacity: 0.45; cursor: not-allowed; pointer-events: none;' : '' }}">
+                        @if($isVirtual)
+                            Solicitar disponibilidad
+                        @else
+                            Pagar y reservar
+                        @endif
+                    </button>
 
                     <div class="tutor-tooltip-content">
                         <strong>Paso 3:</strong>
-                        <p>Haz clic aquí para confirmar tu reserva y realizar el pago.</p>
+                        @if($isVirtual)
+                            <p>Envía una solicitud al tutor para este horario. Podrás realizar el pago una vez que el tutor la acepte.</p>
+                        @else
+                            <p>Haz clic aquí para confirmar tu reserva y realizar el pago inmediato.</p>
+                        @endif
                         <div class="tutor-tooltip-arrow"></div>
                     </div>
 
@@ -221,7 +279,140 @@
         </div>
     @endguest
 
-    <!-- =========================== MODAL RESERVA ====================================-->
+    <!-- ==================== MODAL SOLICITAR DISPONIBILIDAD (VIRTUAL) ==================== -->
+    @if ($showVirtualModal)
+        <div class="modal-overlay is-visible">
+            <div class="modal-content" style="position: relative; overflow: auto; max-width: 540px;">
+
+                @if ($reservaExitosa)
+                    {{-- PANTALLA DE ÉXITO --}}
+                    <div x-init="setTimeout(() => $wire.closeVirtualModal(), 2500)"
+                        style="padding: 40px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px;">
+                        <div style="width: 70px; height: 70px; background-color: #d1fae5; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #10b981; font-size: 2rem; font-weight: bold;">
+                            ✓
+                        </div>
+                        <h2 style="font-size: 1.5rem; font-weight: 700; color: #0f172a; margin: 0;">
+                            ¡Solicitud enviada!
+                        </h2>
+                        <p style="font-size: 1rem; color: #64748b; margin: 0; max-width: 360px; text-align: center;">
+                            Tu solicitud ha sido enviada al tutor. Recibirás una notificación en tu correo cuando sea aceptada o rechazada.
+                        </p>
+                    </div>
+                @else
+                    {{-- FORMULARIO SIMPLIFICADO --}}
+                    <form wire:submit.prevent="makeVirtualRequest"
+                        x-data="{ errorMateria: false, validarForm() { this.errorMateria = !$wire.selectedSubject; if (!this.errorMateria) { $wire.makeVirtualRequest(); } } }"
+                        @submit.prevent="validarForm()">
+
+                        {{-- ENCABEZADO --}}
+                        <div style="padding: 24px 28px 16px 28px; border-bottom: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: space-between;">
+                            <div>
+                                <h2 style="margin: 0; font-size: 1.3rem; font-weight: 700; color: #0f172a;">Solicitar disponibilidad</h2>
+                                <p style="margin: 4px 0 0 0; font-size: 0.85rem; color: #64748b;">El tutor tendrá 4 horas para confirmar o rechazar tu solicitud.</p>
+                            </div>
+                            <button type="button" wire:click="closeVirtualModal"
+                                style="background: none; border: none; cursor: pointer; color: #94a3b8; padding: 4px; border-radius: 6px; line-height: 1;">
+                                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                                    <path d="M6 6L18 18M18 6L6 18"/>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div style="padding: 24px 28px;">
+
+                            {{-- BANNER INFORMATIVO --}}
+                            <div style="display: flex; gap: 12px; align-items: flex-start; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 10px; padding: 14px 16px; margin-bottom: 20px;">
+                                <div style="flex-shrink: 0; margin-top: 2px;">
+                                    <svg width="20" height="20" fill="none" stroke="#2563eb" stroke-width="2" viewBox="0 0 24 24">
+                                        <circle cx="12" cy="12" r="10"/><path d="M12 16v-4m0-4h.01"/>
+                                    </svg>
+                                </div>
+                                <p style="margin: 0; font-size: 0.88rem; color: #1d4ed8; line-height: 1.5;">
+                                    Estás solicitando un horario fuera de los bloques configurados. <strong>No se realizará ningún cobro ahora.</strong> El pago se solicita únicamente si el tutor acepta.
+                                </p>
+                            </div>
+
+                            {{-- RESUMEN DE HORARIO --}}
+                            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px 18px; margin-bottom: 20px;">
+                                <p style="margin: 0 0 10px 0; font-size: 0.8rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;">Resumen del Horario</p>
+                                <div style="display: flex; flex-direction: column; gap: 8px; font-size: 0.92rem; color: #1e293b;">
+                                    <div style="display: flex; justify-content: space-between;">
+                                        <span style="color: #64748b; font-weight: 600;">Fecha:</span>
+                                        <span style="font-weight: 600;">{{ $currentDate->copy()->setDay($selectedDay)->translatedFormat('j \d\e F \d\e Y') }}</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between;">
+                                        <span style="color: #64748b; font-weight: 600;">Horario:</span>
+                                        <span style="font-weight: 600;">{{ \Carbon\Carbon::parse($startTime)->format('h:i a') }} - {{ \Carbon\Carbon::parse($endTime)->format('h:i a') }}</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between;">
+                                        <span style="color: #64748b; font-weight: 600;">Duración:</span>
+                                        <span style="font-weight: 600;">{{ $duration }} minutos</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; border-top: 1px solid #e2e8f0; padding-top: 8px; margin-top: 4px;">
+                                        <span style="color: #64748b; font-weight: 600;">Precio estimado:</span>
+                                        <span style="font-weight: 700; color: #047857; font-size: 1.05rem;">{{ number_format($montoFinal, 2) }} Bs.</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{-- SELECTOR DE MATERIA --}}
+                            <div class="custom-select-container" x-data="{
+                                open: false,
+                                selectedName: '{{ $selectedSubject ? $materiasTutor->where('subject.id', $selectedSubject)->first()?->subject->name ?? 'Elegir materia' : 'Elegir materia' }}'
+                            }" x-on:click.away="open = false">
+
+                                <label class="input-label">Materia</label>
+
+                                <input type="hidden" id="materia-virtual" wire:model="selectedSubject">
+
+                                <button type="button" class="custom-select-trigger" :class="{ 'input-error-active': errorMateria }" x-on:click="open = !open">
+                                    <span x-text="selectedName" :class="{ 'select-placeholder': !$wire.selectedSubject }"></span>
+                                    <svg class="select-arrow" :class="{ 'arrow-rotate': open }" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="6 9 12 15 18 9"></polyline>
+                                    </svg>
+                                </button>
+
+                                <template x-if="errorMateria">
+                                    <p class="field-error-message">Debes seleccionar una materia.</p>
+                                </template>
+
+                                <div class="custom-select-options" x-show="open" x-transition style="display: none;">
+                                    @foreach ($materiasTutor as $materia)
+                                        <div class="custom-option"
+                                            :class="{ 'is-selected': $wire.selectedSubject == '{{ $materia->subject->id }}' }"
+                                            x-on:click="$wire.set('selectedSubject', '{{ $materia->subject->id }}'); selectedName = '{{ addslashes($materia->subject->name) }}'; open = false; errorMateria = false;">
+                                            <span class="option-text">{{ $materia->subject->name }}</span>
+                                            <span class="option-check" x-show="$wire.selectedSubject == '{{ $materia->subject->id }}'">✓</span>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+
+                            {{-- ACCIONES --}}
+                            <div class="action-buttons" style="margin-top: 24px;" wire:loading.remove wire:target="makeVirtualRequest">
+                                <button type="button" wire:click="closeVirtualModal" class="btn btn-primary">
+                                    Cancelar
+                                </button>
+                                <button type="submit" class="btn btn-primary" style="background-color: #0284c7; color: #fff; border-color: #0284c7;">
+                                    Enviar solicitud
+                                </button>
+                            </div>
+
+                            {{-- LOADING --}}
+                            <div wire:loading wire:target="makeVirtualRequest" style="text-align: center; padding: 16px 0; color: #64748b; font-size: 0.9rem;">
+                                <div class="main-loading-ring" style="margin: 0 auto 10px;"></div>
+                                Enviando tu solicitud...
+                            </div>
+
+                        </div>
+                    </form>
+                @endif
+
+            </div>
+        </div>
+    @endif
+
+    <!-- =========================== MODAL RESERVA (PAGO) ==================================-->
     @if ($showModal)
         <div class="modal-overlay is-visible">
             <div class="modal-content" style="position: relative; overflow: auto;">
