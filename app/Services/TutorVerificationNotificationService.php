@@ -176,6 +176,7 @@ class TutorVerificationNotificationService
             $query->where('name', 'student');
         })
         ->with('profile')
+        ->with('fcmTokens')
         ->get();
         
         Log::info('TutorVerificationNotificationService: Estudiantes encontrados', [
@@ -300,14 +301,15 @@ class TutorVerificationNotificationService
         $this->sendEmailToStudent($student, $tutorInfo);
         
         // Enviar notificación push si tiene FCM token
-        if ($student->fcm_token) {
-            $this->sendPushNotificationToStudent($student, $tutorInfo);
+        $fcmToken = $student->fcmTokens()->first()?->token;
+        if ($fcmToken) {
+            $this->sendPushNotificationToStudent($student, $tutorInfo, $fcmToken);
         }
 
         Log::info('TutorVerificationNotificationService: Notificación enviada al estudiante', [
             'student_id' => $student->id,
             'student_email' => $student->email,
-            'has_fcm_token' => !empty($student->fcm_token)
+            'has_fcm_token' => !empty($fcmToken)
         ]);
     }
 
@@ -324,8 +326,9 @@ class TutorVerificationNotificationService
         $this->sendEmailToStudentSilent($student, $tutorInfo);
         
         // Enviar notificación push si tiene FCM token
-        if ($student->fcm_token) {
-            $this->sendPushNotificationToStudentSilent($student, $tutorInfo);
+        $fcmToken = $student->fcmTokens()->first()?->token;
+        if ($fcmToken) {
+            $this->sendPushNotificationToStudentSilent($student, $tutorInfo, $fcmToken);
         }
     }
 
@@ -409,9 +412,10 @@ class TutorVerificationNotificationService
      *
      * @param User $student
      * @param array $tutorInfo
+     * @param string $fcmToken
      * @return void
      */
-    private function sendPushNotificationToStudent(User $student, array $tutorInfo): void
+    private function sendPushNotificationToStudent(User $student, array $tutorInfo, string $fcmToken): void
     {
         try {
             $title = '🎉 ¡Nuevo Tutor Verificado!';
@@ -423,7 +427,7 @@ class TutorVerificationNotificationService
             $fcmService = new \App\Services\FcmService();
             
             $result = $fcmService->sendNotification(
-                $student->fcm_token,
+                $fcmToken,
                 $title,
                 $body,
                 [
@@ -452,9 +456,10 @@ class TutorVerificationNotificationService
      *
      * @param User $student
      * @param array $tutorInfo
+     * @param string $fcmToken
      * @return void
      */
-    private function sendPushNotificationToStudentSilent(User $student, array $tutorInfo): void
+    private function sendPushNotificationToStudentSilent(User $student, array $tutorInfo, string $fcmToken): void
     {
         try {
             $title = '🎉 ¡Nuevo Tutor Verificado!';
@@ -466,7 +471,7 @@ class TutorVerificationNotificationService
             $fcmService = new \App\Services\FcmService();
             
             $fcmService->sendNotification(
-                $student->fcm_token,
+                $fcmToken,
                 $title,
                 $body,
                 [

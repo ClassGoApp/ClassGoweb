@@ -60,7 +60,7 @@ class BookingNotificationService
     {
         try {
             // Obtener el usuario tutor directamente
-            $tutor = User::find($booking->tutor_id);
+            $tutor = User::with('fcmTokens')->find($booking->tutor_id);
             if (!$tutor) {
                 Log::warning('Usuario tutor no encontrado', [
                     'booking_id' => $booking->id,
@@ -89,14 +89,15 @@ class BookingNotificationService
             $this->sendManualEmailToTutor($tutor, $notificationData);
 
             // Enviar push notification si está configurado
+            $fcmToken = $tutor->fcmTokens()->first()?->token;
             Log::info('Verificando FCM token del tutor', [
                 'tutor_id' => $tutor->id,
-                'has_fcm_token' => !empty($tutor->fcm_token),
-                'fcm_token_length' => strlen($tutor->fcm_token ?? ''),
-                'fcm_token_preview' => $tutor->fcm_token ? substr($tutor->fcm_token, 0, 20) . '...' : 'N/A'
+                'has_fcm_token' => !empty($fcmToken),
+                'fcm_token_length' => strlen($fcmToken ?? ''),
+                'fcm_token_preview' => $fcmToken ? substr($fcmToken, 0, 20) . '...' : 'N/A'
             ]);
             
-            if ($tutor->fcm_token) {
+            if ($fcmToken) {
                 $sessionDate = $booking->start_time ? date('d/m/Y', strtotime($booking->start_time)) : 'Fecha no definida';
                 $this->sendPushNotification($tutor, [
                     'title' => '🎉 ¡Tutoría Aceptada!',
@@ -106,7 +107,7 @@ class BookingNotificationService
                         'type' => 'booking_accepted',
                         'status' => 'Aceptado'
                     ]
-                ]);
+                ], $fcmToken);
             }
 
             Log::info('Notificación de aceptación enviada al tutor', [
@@ -132,7 +133,7 @@ class BookingNotificationService
     {
         try {
             // Obtener el usuario estudiante directamente
-            $student = User::find($booking->student_id);
+            $student = User::with('fcmTokens')->find($booking->student_id);
             if (!$student) {
                 Log::warning('Usuario estudiante no encontrado', [
                     'booking_id' => $booking->id,
@@ -161,14 +162,15 @@ class BookingNotificationService
             $this->sendManualEmailToStudent($student, $notificationData);
 
             // Enviar push notification si está configurado
+            $fcmToken = $student->fcmTokens()->first()?->token;
             Log::info('Verificando FCM token del estudiante (aceptado)', [
                 'student_id' => $student->id,
-                'has_fcm_token' => !empty($student->fcm_token),
-                'fcm_token_length' => strlen($student->fcm_token ?? ''),
-                'fcm_token_preview' => $student->fcm_token ? substr($student->fcm_token, 0, 20) . '...' : 'N/A'
+                'has_fcm_token' => !empty($fcmToken),
+                'fcm_token_length' => strlen($fcmToken ?? ''),
+                'fcm_token_preview' => $fcmToken ? substr($fcmToken, 0, 20) . '...' : 'N/A'
             ]);
             
-            if ($student->fcm_token) {
+            if ($fcmToken) {
                 $sessionDate = $booking->start_time ? date('d/m/Y', strtotime($booking->start_time)) : 'Fecha no definida';
                 $this->sendPushNotification($student, [
                     'title' => '✅ Tutoría Aceptada',
@@ -178,7 +180,7 @@ class BookingNotificationService
                         'type' => 'booking_accepted',
                         'status' => 'Aceptado'
                     ]
-                ]);
+                ], $fcmToken);
             }
 
             Log::info('Notificación de aceptación enviada al estudiante', [
@@ -204,7 +206,7 @@ class BookingNotificationService
     {
         try {
             // Obtener el usuario estudiante directamente
-            $student = User::find($booking->student_id);
+            $student = User::with('fcmTokens')->find($booking->student_id);
             if (!$student) {
                 Log::warning('Usuario estudiante no encontrado', [
                     'booking_id' => $booking->id,
@@ -233,14 +235,15 @@ class BookingNotificationService
             $this->sendManualEmailToStudent($student, $notificationData);
 
             // Enviar push notification si está configurado
+            $fcmToken = $student->fcmTokens()->first()?->token;
             Log::info('Verificando FCM token del estudiante (cursando)', [
                 'student_id' => $student->id,
-                'has_fcm_token' => !empty($student->fcm_token),
-                'fcm_token_length' => strlen($student->fcm_token ?? ''),
-                'fcm_token_preview' => $student->fcm_token ? substr($student->fcm_token, 0, 20) . '...' : 'N/A'
+                'has_fcm_token' => !empty($fcmToken),
+                'fcm_token_length' => strlen($fcmToken ?? ''),
+                'fcm_token_preview' => $fcmToken ? substr($fcmToken, 0, 20) . '...' : 'N/A'
             ]);
             
-            if ($student->fcm_token) {
+            if ($fcmToken) {
                 $this->sendPushNotification($student, [
                     'title' => '🚀 ¡La tutoría está comenzando!',
                     'body' => "Tu sesión con {$notificationData['tutorName']} está por comenzar. ¡Únete ahora!",
@@ -290,17 +293,23 @@ class BookingNotificationService
     }
 
     /**
-     * Envía notificación push (método placeholder)
+     * Envía notificación push con FCM token explícito o desde relación
      *
      * @param $user
      * @param array $data
+     * @param string|null $fcmToken Token FCM explícito (múltiples dispositivos)
      * @return void
      */
-    private function sendPushNotification($user, array $data): void
+    private function sendPushNotification($user, array $data, string $fcmToken = null): void
     {
         try {
+            // Si no se pasa token, obtenerlo de relación (backwards compatible)
+            if (!$fcmToken) {
+                $fcmToken = $user->fcmTokens()?->first()?->token;
+            }
+
             // Verificar si el usuario tiene FCM token
-            if (!$user->fcm_token) {
+            if (!$fcmToken) {
                 Log::warning('Usuario no tiene FCM token configurado', [
                     'user_id' => $user->id,
                     'email' => $user->email
@@ -310,8 +319,8 @@ class BookingNotificationService
 
             Log::info('Iniciando envío de push notification', [
                 'user_id' => $user->id,
-                'fcm_token_exists' => !empty($user->fcm_token),
-                'fcm_token_length' => strlen($user->fcm_token),
+                'fcm_token_exists' => !empty($fcmToken),
+                'fcm_token_length' => strlen($fcmToken),
                 'title' => $data['title'] ?? 'Sin título',
                 'body' => $data['body'] ?? 'Sin contenido'
             ]);
@@ -325,14 +334,14 @@ class BookingNotificationService
 
             Log::info('Enviando notificación a Firebase', [
                 'user_id' => $user->id,
-                'fcm_token' => substr($user->fcm_token, 0, 20) . '...',
+                'fcm_token' => substr($fcmToken, 0, 20) . '...',
                 'title' => $title,
                 'body' => $body,
                 'data' => $notificationData
             ]);
 
             $result = $fcmService->sendNotification(
-                $user->fcm_token,
+                $fcmToken,
                 $title,
                 $body,
                 $notificationData
