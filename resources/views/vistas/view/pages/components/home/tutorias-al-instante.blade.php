@@ -1,7 +1,7 @@
 <div class="instant-info-container">
 
     <!-- LADO IZQUIERDO -->
-    <div class="instant-info-text">
+    <div  class="instant-info-text">
 
         <div class="instant-badge">
             <span class="check-icon">✓</span>
@@ -61,7 +61,7 @@
                         <input type="checkbox" id="terms-checkbox">
                         Acepto los <a href="{{ url('terminos') }}#tutorias-instantaneas" target="_blank"
                             style="color: #9be7ff; text-decoration: underline; display: block;">
-                            términos y condiciones
+                            términos y condiciones_Prueba
                         </a>
                     </label>
 
@@ -70,8 +70,8 @@
                     {{-- <a id="accept-terms-btn" class="instant-btn" style="cursor: pointer" href="#"
                         onclick="event.preventDefault(); acceptTerms('{{ $role }}')"> --}}
 
-                    <a id="accept-terms-btn" class="instant-btn" href="#"
-                        onclick="event.preventDefault(); acceptTerms('{{ $role }}')">
+                    <a id="accept-terms-btn" class="instant-btn" href="/"
+                        onclick="event.preventDefault(); acceptTerms('{{ $role }}');">
                         <svg width="18" height="18" viewBox="0 0 24 24">
                             <path d="M13 2L3 14H11L9 22L21 10H13Z" fill="currentColor" />
                         </svg>
@@ -839,7 +839,7 @@
         }
 
         if (!checkbox.checked) {
-            showTermsAlert('Debes aceptar los términos y condiciones.', 'error');
+            showTermsAlert('Debes aceptar los términos y condiciones.hazlo', 'error');
             return;
         }
 
@@ -874,6 +874,7 @@
                     document.getElementById('cta-after').style.display = 'block';
 
                     showTermsAlert('Términos aceptados correctamente.', 'success');
+                    
                 } else {
                     showTermsAlert(data.message || 'No se pudo aceptar los términos.', 'error');
                 }
@@ -888,6 +889,6 @@
                 }
             });
         // Si ya aceptó términos, redirigir
-        window.location.href = "{{ route('student.subjects.pick') }}";
+        
     }
 </script>

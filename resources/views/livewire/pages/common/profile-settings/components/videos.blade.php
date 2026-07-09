@@ -1,4 +1,18 @@
-<div style="width: 100%; height: 100%;">
+<div style="width: 100%; height: 100%;" x-data="{ 
+    introVideo: @entangle('intro_video'), 
+    videoUrl: null 
+}" x-init="
+    $watch('introVideo', value => {
+        if (!value) {
+            videoUrl = null;
+        } else if (typeof value === 'string' && !value.startsWith('livewire-file:')) {
+            videoUrl = '{{ asset('storage') }}/' + value.replace(/^\//, '');
+        }
+    });
+    if (introVideo && typeof introVideo === 'string' && !introVideo.startsWith('livewire-file:')) {
+        videoUrl = '{{ asset('storage') }}/' + introVideo.replace(/^\//, '');
+    }
+">
     <h1 style="font-size: 14px; font-weight: 600; color: #848382; text-align: left; margin-bottom: 8px;">
         No es Obligatorio subir un video. pero es muy recomendable para que los estudiantes te conozcan mejor.
     </h1>
@@ -11,19 +25,14 @@
             <!-- Preview del video ampliado -->
             
             <div class="profile-video-preview mb-4">
-                
-                @if($intro_video instanceof \Livewire\Features\SupportFileUploads\TemporaryUploadedFile)
-                    <video controls style="width: 500px; height: 300px; border-radius: 14px; object-fit: cover; background: #00384d;">
-                        <source src="{{ $intro_video->temporaryUrl() }}" type="video/mp4">
-                    </video>
-                @elseif($intro_video)
-                    <video controls style="width: 400px; height: 300px; border-radius: 14px; object-fit: cover; background: #00384d;">
-                        <source src="{{ asset('storage/' . $intro_video) }}" type="video/mp4">
-                            
-                    </video>
-                @else
-                    <div class="w-full aspect-video bg-gray-900 rounded-lg mb-4 flex items-center justify-center"><video controls="" class="w-full h-full rounded-lg" poster="https://placehold.co/400x225/023047/ffffff?text=Video"></video></div>
-                @endif
+                <template x-if="videoUrl">
+                    <video :src="videoUrl" controls style="width: 400px; height: 300px; border-radius: 14px; object-fit: cover; background: #00384d;"></video>
+                </template>
+                <template x-if="!videoUrl">
+                    <div class="w-full aspect-video bg-gray-900 rounded-lg mb-4 flex items-center justify-center">
+                        <video controls="" class="w-full h-full rounded-lg" poster="https://placehold.co/400x225/023047/ffffff?text=Video"></video>
+                    </div>
+                </template>
             </div>
             <!-- Controles y formatos -->
             <div class="w-100 d-flex flex-column align-items-center justify-content-center">
@@ -32,7 +41,14 @@
                         <i class="bi bi-cloud-arrow-up me-2"></i>
                         {{ __('profile.upload_video') }}
                         <input id="video-upload" type="file" class="d-none" wire:model="intro_video"
-                            accept="video/*" onchange="validateVideoSize(this)" wire:loading.attr="disabled">
+                            accept="video/*" 
+                            x-on:change="
+                                const file = $event.target.files[0];
+                                if (file) {
+                                    videoUrl = URL.createObjectURL(file);
+                                }
+                            "
+                            onchange="validateVideoSize(this)" wire:loading.attr="disabled">
                     </label>
                     @if($intro_video)
                     <button type="button" class="btn "style="background-color:red ;color:white" wire:click="removeMedia('video')">

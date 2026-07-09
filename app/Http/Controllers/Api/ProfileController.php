@@ -628,4 +628,67 @@ class ProfileController extends Controller
             ], 500);
         }
     }
+
+    /**
+     * Eliminar el video de introducción del perfil del usuario
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function deleteProfileVideo($id)
+    {
+        try {
+            $user = User::with('profile')->find($id);
+            if (!$user) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Usuario no encontrado'
+                ], 404);
+            }
+
+            $profile = $user->profile;
+            if (!$profile) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Perfil no encontrado'
+                ], 404);
+            }
+
+            if ($profile->intro_video) {
+                $filePath = public_path('storage/' . $profile->intro_video);
+                if (file_exists($filePath)) {
+                    Log::info('Eliminando video de introducción', ['path' => $profile->intro_video]);
+                    unlink($filePath);
+                }
+                
+                $profile->intro_video = null;
+                $profile->save();
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Video de introducción eliminado correctamente',
+                'data' => [
+                    'id' => $user->id,
+                    'profile' => [
+                        'id' => $profile->id,
+                        'user_id' => $profile->user_id,
+                        'intro_video' => null,
+                    ]
+                ]
+            ], 200);
+
+        } catch (\Exception $e) {
+            Log::error('Error al eliminar el video del perfil:', [
+                'user_id' => $id,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al eliminar el video del perfil',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
 }

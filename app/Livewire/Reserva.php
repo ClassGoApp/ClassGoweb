@@ -1,76 +1,94 @@
 <?php
 
-
 namespace App\Livewire;
 
 use App\Models\PaymentSlotBooking;
 use App\Models\SlotBooking;
-use App\Models\Subject;
 use App\Models\User;
 use App\Models\UserSubject;
-use App\Services\CuponesService;
-use Carbon\Carbon;
-use Livewire\Component;
-use Livewire\WithFileUploads;
-use App\Services\SlotBookingService;
 use App\Services\ImagenesService;
 use App\Services\interfaces\ICuponesService;
+use App\Services\MailService;
 use App\Services\PagosTutorReservaService;
+use App\Services\SlotBookingService;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use App\Services\MailService;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
-
+use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class Reserva extends Component
 {
     use WithFileUploads;
 
     public Carbon $currentDate;
+
     public ?int $selectedDay = null;
 
     // Para guardar la hora seleccionada
-    // public ?string $selectedTime = null; 
+    // public ?string $selectedTime = null;
     public array $selectedTimes = [];
 
     // Datos de ejemplo que simulan la BBDD
     public array $daysWithAvailability = []; // Días con horas disponibles (para el círculo naranja)
+
     public array $timeSlotsByDay = [];     // Todas las horas (libres y ocupadas) por día
+
     public array $availableTimeSlots = []; // Horas que se muestran al seleccionar un día
+
     // Propiedades para el formulario del modal
     public $paymentReceipt;
+
     public $selectedSubject;
+
     public $showModal = false;
+
+    public $reservaExitosa = false;
 
     // ============ Variables de Cupones ============//
     public $showModalCupones = false;
+
     public $cuponSelecionado = false;
 
     public $cupones = false;
-    public $introCupon = true; //Opcion por defecto
+
+    public $introCupon = true; // Opcion por defecto
+
     public $cuponCode = '';
+
     public $key = 1;
+
     public $cuponMensage = '';
+
     protected $validCupones = ['DESCUENTO10', 'OFERTA25', 'PROMO100']; // =======> SOLO DATOS DE PRUEBA!!!!!
+
     public $comprobante = true;
+
     public $banner100 = true;
+
     protected $cuponservice;
 
     public $cuponesUsuario = [];
 
     public float $porcentaje = 0.0;
+
     public float $precioTutor = 15.0;
+
     public float $montoFinal = 0.0;
+
     public float $descuento = 0.0;
 
-
-    //============== End Variables Cupones ===============//
+    // ============== End Variables Cupones ===============//
 
     public bool $isAugustPromotion = false;
 
+    // País detectado desde Cloudflare CF-IPCountry ('BO' = Bolivia, otro = internacional)
+    public string $paisDetectado = 'XX';
+
     // Propiedades para el tutor
     public $tutorId;
+
     public $materiasTutor;
 
     public function mount(ICuponesService $cuponservice, $tutorId)
@@ -79,6 +97,14 @@ class Reserva extends Component
         $this->currentDate = Carbon::now();
         $this->isAugustPromotion = $this->currentDate->month === 8; // ✅ Verificar si es agosto
         $this->cuponservice = $cuponservice;  // OK
+
+        // Detectar país del visitante via Cloudflare (funciona en producción con CF activo)
+        // En local: usar LOCAL_COUNTRY del .env para simular país (ej: LOCAL_COUNTRY=BO)
+        // Si no existe ninguno de los dos, usar 'XX' (mostrará Takenos por defecto)
+        $cfHeader = strtoupper(trim((string) request()->header('CF-IPCountry', '')));
+        $envPais = strtoupper(trim((string) env('LOCAL_COUNTRY', '')));
+        $pais = $cfHeader !== '' ? $cfHeader : ($envPais !== '' ? $envPais : 'XX');
+        $this->paisDetectado = $pais;
 
         if (auth()->check()) {
             $this->cuponesUsuario = $this->cuponservice->todosLosCupones(auth()->user());
@@ -95,10 +121,10 @@ class Reserva extends Component
         $this->calcularMontoFinal();
 
         $this->loadMonthData();
-        $this->materiasTutor = UserSubject::where("user_id", $this->tutorId)->get();
+        $this->materiasTutor = UserSubject::where('user_id', $this->tutorId)->get();
     }
 
-    //================== FUNCIONES DE CUPONES ====================//
+    // ================== FUNCIONES DE CUPONES ====================//
     // public function calcularMontoFinal()
     // {
     //     $montoBase = $this->precioTutor;
@@ -121,22 +147,24 @@ class Reserva extends Component
     // }
 
     public function mostrarCupones()
-    { //lista de cupones que se extraerá de la base de datos
+    { // lista de cupones que se extraerá de la base de datos
         $this->cupones = true;
         $this->cuponMensage = '';
     }
+
     public function ocultarCupones()
-    { //ocultar la lista
+    { // ocultar la lista
         $this->cupones = false;
     }
+
     public function cuponSeleccionado()
-    { //Para mostrar el cupón selecionado cambiando la vista
+    { // Para mostrar el cupón selecionado cambiando la vista
         $this->cuponSelecionado = true;
         $this->introCupon = false;
     }
 
     public function quitarCupon()
-    { //Para quitar el cupón seleccionado
+    { // Para quitar el cupón seleccionado
         $this->introCupon = true;
         $this->cuponSelecionado = false;
         $this->comprobante = true;
@@ -147,13 +175,14 @@ class Reserva extends Component
 
         $this->calcularMontoFinal();
     }
+
     public function ocultarComprobante()
     {
         $this->comprobante = false;
     }
 
     public function selecionarCupon($codigo)
-    { //Selecionar el cupó
+    { // Selecionar el cupó
 
         $service = $this->cuponservice ?? app(ICuponesService::class);
         $this->cuponCode = $codigo;
@@ -174,27 +203,28 @@ class Reserva extends Component
 
     public function ocultarBanner()
     {
-        //Este código cambia el banner por un qr si es que el cupon no es de 100%
+        // Este código cambia el banner por un qr si es que el cupon no es de 100%
         $this->banner100 = false;
     }
 
-    //Método para aplicar nuevo cupón Verificar de BD
+    // Método para aplicar nuevo cupón Verificar de BD
     public function aplicarCupon()
     {
         $service = $this->cuponservice ?? app(ICuponesService::class);
-        if ($service->existeCupon($this->cuponCode) && !$service->verificaUsoCupon($this->cuponCode, auth()->user())) {
+        if ($service->existeCupon($this->cuponCode) && ! $service->verificaUsoCupon($this->cuponCode, auth()->user())) {
             $service->canjeaCupon($this->cuponCode, auth()->user());
             $this->cuponesUsuario = $service->todosLosCupones(auth()->user());
             $this->porcentaje = $service->porcentajeCupon($this->cuponCode);
             $this->calcularMontoFinal();
             $this->cuponSeleccionado();
-            //Por el momento oculanto el comprobante, luego verificar si es el 100% el cupon introducido
+            // Por el momento oculanto el comprobante, luego verificar si es el 100% el cupon introducido
             $this->ocultarComprobante();
         } else {
             $this->cuponMensage = 'Cupón Invalido';
         }
     }
-    //==================== END FUNCIONES DE CUPONES =======================//
+
+    // ==================== END FUNCIONES DE CUPONES =======================//
     /**
      * Carga los datos de disponibilidad para el mes actual.
      * En un caso real, aquí harías una única consulta a tu BBDD para el mes visible.
@@ -210,12 +240,10 @@ class Reserva extends Component
         $this->timeSlotsByDay = $this->processRealSlotData($hoarioslibres, $currentYear, $currentMonth);
         // Determina qué días tienen al menos una hora libre para marcarlos en naranja
         $this->daysWithAvailability = collect($this->timeSlotsByDay)
-            ->filter(fn($slots) => collect($slots)->where('status', 'free')->isNotEmpty())
+            ->filter(fn ($slots) => collect($slots)->where('status', 'free')->isNotEmpty())
             ->keys()
             ->toArray();
     }
-
-
 
     public function goToPreviousMonth()
     {
@@ -223,8 +251,6 @@ class Reserva extends Component
         $this->resetSelection();
         $this->loadMonthData(); // Recarga los datos para el nuevo mes
     }
-
-
 
     public function goToNextMonth()
     {
@@ -239,21 +265,19 @@ class Reserva extends Component
     public function selectDay(int $day, string $month)
     {
         $fecha_actual = now();
-        if ($this->isPastDay($day))
+        if ($this->isPastDay($day)) {
             return;
+        }
         $this->selectedDay = $day;
         $this->selectedTimes = []; // Resetea la hora al cambiar de día
 
-
-
         if ($month == $fecha_actual->month && $day == $fecha_actual->day) {
             $slotsForToday = $this->timeSlotsByDay[$day] ?? [];
-            //dd($slotsForToday);
+            // dd($slotsForToday);
             $slotfiltrados = [];
             $horaActual = $fecha_actual->format('H:i');
 
-
-            //dd($horaActual); 
+            // dd($horaActual);
             for ($i = 0; $i < count($slotsForToday); $i++) {
 
                 if ($slotsForToday[$i]['time'] > $horaActual) {
@@ -261,19 +285,18 @@ class Reserva extends Component
                     $slotfiltrados[] = $slotsForToday[$i];
                 }
             }
-            //dd($slotfiltrados);
+            // dd($slotfiltrados);
             $this->availableTimeSlots = $slotfiltrados;
         } else {
             $this->availableTimeSlots = $this->timeSlotsByDay[$day] ?? [];
         }
 
-        //$this->availableTimeSlots = $this->timeSlotsByDay[$day] ?? [];
+        // $this->availableTimeSlots = $this->timeSlotsByDay[$day] ?? [];
     }
 
     /**
      * Se ejecuta cuando el usuario hace clic en una hora.
      */
-
     public function selectTime(string $time)
     {
         $slot = collect($this->availableTimeSlots)->firstWhere('time', $time);
@@ -281,16 +304,18 @@ class Reserva extends Component
         if ($slot && $slot['status'] === 'free') {
             // 1. Lógica para DESELECCIONAR (Toggle)
             if (in_array($time, $this->selectedTimes)) {
-                // Al deseleccionar, para evitar huecos, lo ideal es resetear o 
+                // Al deseleccionar, para evitar huecos, lo ideal es resetear o
                 // solo permitir deseleccionar los extremos. Por simplicidad, reseteamos:
                 $this->selectedTimes = array_diff($this->selectedTimes, [$time]);
                 $this->calcularMontoFinal();
+
                 return;
             }
 
             // 2. Lógica para SELECCIONAR
             if (count($this->selectedTimes) >= 6) {
                 session()->flash('error', 'Máximo 6 bloques.');
+
                 return;
             }
 
@@ -298,8 +323,9 @@ class Reserva extends Component
             if (count($this->selectedTimes) > 0) {
                 $esContinuo = $this->verificarContinuidad($time);
 
-                if (!$esContinuo) {
+                if (! $esContinuo) {
                     session()->flash('error', 'Debes seleccionar bloques horarios consecutivos.');
+
                     return;
                 }
             }
@@ -331,6 +357,7 @@ class Reserva extends Component
                 break;
             }
         }
+
         return $esValido;
     }
 
@@ -343,6 +370,7 @@ class Reserva extends Component
         if ($this->isAugustPromotion) {
             $this->montoFinal = 0.0;
             $this->descuento = $montoBaseTotal;
+
             return;
         }
 
@@ -355,14 +383,11 @@ class Reserva extends Component
         }
     }
 
-
-
-
-
     public function openReservationModal()
     {
-        if (!$this->selectedDay || empty($this->selectedTimes)) {
+        if (! $this->selectedDay || empty($this->selectedTimes)) {
             session()->flash('error', 'Por favor, selecciona un día y al menos una hora.');
+
             return;
         }
 
@@ -374,7 +399,7 @@ class Reserva extends Component
         foreach ($this->selectedTimes as $hora) {
             $fechaVerificar = $this->currentDate->copy()
                 ->setDay($this->selectedDay)
-                ->setTimeFromTimeString($hora . ':00')
+                ->setTimeFromTimeString($hora.':00')
                 ->format('Y-m-d H:i:s');
 
             $horaCarbon = Carbon::parse($hora);
@@ -390,6 +415,7 @@ class Reserva extends Component
             if ($existe) {
                 $this->releaseLocks($lockedKeys);
                 session()->flash('error', "Ya tienes una reserva activa el día {$this->selectedDay} a las {$hora}.");
+
                 return;
             }
 
@@ -404,6 +430,7 @@ class Reserva extends Component
                 $this->releaseLocks($lockedKeys);
                 session()->flash('error', "El horario de las {$hora} ya no está disponible o fue tomado por otro estudiante en este momento. Por favor, selecciona otro.");
                 $this->loadMonthData(); // Actualiza disponibilidad tras el error, como solicitado
+
                 return;
             }
 
@@ -411,28 +438,30 @@ class Reserva extends Component
             $cacheKey = "booking_lock:{$this->tutorId}:{$fechaBase}:{$hora}:{$endFormatted}";
 
             $added = Cache::add($cacheKey, $estudianteId, now()->addMinutes(15));
-            if (!$added) {
+            if (! $added) {
                 if (Cache::get($cacheKey) == $estudianteId) {
                     $lockedKeys[] = $cacheKey; // Ya lo teníamos bloqueado, seguimos
                 } else {
                     $this->releaseLocks($lockedKeys);
                     session()->flash('error', "El horario de las {$hora} acaba de ser reservado temporalmente por otro estudiante. Por favor, selecciona otro.");
                     $this->loadMonthData();
+
                     return;
                 }
             } else {
                 $lockedKeys[] = $cacheKey;
             }
         }
-
+        $this->reservaExitosa = false;
         $this->showModal = true;
     }
 
     private function releaseLocks($keys)
     {
         $estudianteId = auth()->check() ? auth()->user()->id : null;
-        if (!$estudianteId)
+        if (! $estudianteId) {
             return;
+        }
         foreach ($keys as $key) {
             if (Cache::get($key) == $estudianteId) {
                 Cache::forget($key);
@@ -442,7 +471,7 @@ class Reserva extends Component
 
     private function releaseCurrentLocks()
     {
-        if (auth()->check() && $this->selectedDay && !empty($this->selectedTimes)) {
+        if (auth()->check() && $this->selectedDay && ! empty($this->selectedTimes)) {
             $estudianteId = auth()->user()->id;
             $fechaBase = $this->currentDate->copy()->setDay($this->selectedDay)->format('Y-m-d');
 
@@ -456,6 +485,24 @@ class Reserva extends Component
                 }
             }
         }
+    }
+
+    /**
+     * Se ejecuta automáticamente cuando cambia la materia seleccionada.
+     * Limpia el estado de error rojo al instante.
+     */
+    public function updatedSelectedSubject()
+    {
+        $this->resetValidation('selectedSubject');
+    }
+
+    /**
+     * Se ejecuta automáticamente cuando se empieza a subir el comprobante.
+     * Limpia el estado de error rojo al instante.
+     */
+    public function updatedPaymentReceipt()
+    {
+        $this->resetValidation('paymentReceipt');
     }
 
     public function closeModal()
@@ -481,12 +528,9 @@ class Reserva extends Component
         $this->reset(['paymentReceipt', 'selectedSubject']);
     }
 
-
     /**
      * Finaliza la reserva. Se llama desde el formulario del modal.
      */
-
-
     public function makeReservation()
     {
         $sessionFee = $this->montoFinal;
@@ -509,7 +553,7 @@ class Reserva extends Component
             'isAugustPromotion' => $isAugustPromotion,
         ]);
 
-        if ($isAugustPromotion || !empty($this->cuponCode)) {
+        if ($isAugustPromotion || ! empty($this->cuponCode)) {
             $sessionFee = 0;
             $this->validate([
                 'selectedSubject' => 'required',
@@ -524,7 +568,7 @@ class Reserva extends Component
         foreach ($this->selectedTimes as $hora) {
             $fechasParaReservar[] = $this->currentDate->copy()
                 ->setDay($this->selectedDay)
-                ->setTimeFromTimeString($hora . ':00')
+                ->setTimeFromTimeString($hora.':00')
                 ->format('Y-m-d H:i:s');
         }
 
@@ -543,10 +587,11 @@ class Reserva extends Component
 
             if ($ocupado) {
                 // Si alguien tomó el horario mientras estábamos en el modal
-                session()->flash('error', "El rango seleccionado ya no está disponible, fue tomado por otro estudiante. Por favor reserva otro horario.");
+                session()->flash('error', 'El rango seleccionado ya no está disponible, fue tomado por otro estudiante. Por favor reserva otro horario.');
                 $this->releaseCurrentLocks();
                 $this->loadMonthData(); // Actualizar disponibilidad después del error
                 $this->showModal = false; // Cerramos el modal para que pueda seleccionar nuevamente
+
                 return;
             }
         }
@@ -554,7 +599,7 @@ class Reserva extends Component
         try {
             DB::beginTransaction();
 
-            $pagostutorreserva = new PagosTutorReservaService();
+            $pagostutorreserva = new PagosTutorReservaService;
 
             if ($this->porcentaje > 0) {
                 $sessionFee = $sessionFee - ($sessionFee * $this->porcentaje / 100);
@@ -564,7 +609,7 @@ class Reserva extends Component
                 'sessionFee' => $sessionFee,
             ]);
 
-            if (!empty($this->cuponCode)) {
+            if (! empty($this->cuponCode)) {
                 $service->cuponCanjeado($this->cuponCode, auth()->user());
                 $this->cuponesUsuario = $service->todosLosCupones(auth()->user());
 
@@ -649,7 +694,8 @@ class Reserva extends Component
                 'trace' => $e->getTraceAsString(),
             ]);
 
-            session()->flash('error', 'Hubo un error al procesar tu reserva: ' . $e->getMessage());
+            session()->flash('error', 'Hubo un error al procesar tu reserva: '.$e->getMessage());
+
             return;
         }
 
@@ -675,43 +721,50 @@ class Reserva extends Component
             ]);
         }
 
-        $this->quitarCupon();
-        $this->showModal = false;
+        // $this->quitarCupon();
+        // $this->showModal = false;
 
-        // Liberar bloqueos de caché (ya se guardó en DB con estado válido)
+        // // Liberar bloqueos de caché (ya se guardó en DB con estado válido)
+        // $this->releaseCurrentLocks();
+
+        // $this->resetSelection();
+        // $this->loadMonthData();
+
+        // Log::info('DEBUG makeReservation - final OK', [
+        //     'booking_id' => $reserva->id,
+        // ]);
+
+        // session()->flash('success_message', '¡Reserva realizada correctamente!');
+        // // $this->dispatch('reload-page', section: 'reservas-tutor');
+        // $this->dispatch('reserva-exitosa');
+
+        $this->quitarCupon();
+
         $this->releaseCurrentLocks();
 
         $this->resetSelection();
         $this->loadMonthData();
 
-        Log::info('DEBUG makeReservation - final OK', [
-            'booking_id' => $reserva->id,
-        ]);
+        $this->reservaExitosa = true;
 
-        session()->flash('success_message', '¡Reserva realizada correctamente!');
-        $this->dispatch('reload-page', section: 'reservas-tutor');
+        session()->flash('success_message', 'Tutor reservado exitosamente.');
+
     }
-
-
 
     private function resetSelection()
     {
         $this->reset(['selectedDay', 'selectedTimes', 'availableTimeSlots', 'paymentReceipt']);
     }
 
-
-
     private function isPastDay(int $day): bool
     {
         return $this->currentDate->copy()->setDay($day)->isBefore(Carbon::today());
     }
 
-
     /**
      * Método auxiliar para procesar los datos reales de la BBDD
      * Genera slots de 20 minutos entre start_time y end_time para cada fecha
      */
-
     private function slotFallsInBookedRange(Carbon $slotDateTime, $reservas)
     {
         foreach ($reservas as $reserva) {
@@ -754,7 +807,7 @@ class Reserva extends Component
             if ($slotDate->year == $year && $slotDate->month == $month) {
                 $day = $slotDate->day;
 
-                if (!isset($processedData[$day])) {
+                if (! isset($processedData[$day])) {
                     $processedData[$day] = [];
                 }
 
@@ -771,7 +824,7 @@ class Reserva extends Component
 
                     $isBooked = $this->slotFallsInBookedRange($currentTime, $reservasDelMes);
 
-                    if (!$isBooked) {
+                    if (! $isBooked) {
                         $startFormatted = $timeString;
                         $endFormatted = $currentTime->copy()->addMinutes(20)->format('H:i');
                         $dateStr = $slotDate->format('Y-m-d');
@@ -781,7 +834,7 @@ class Reserva extends Component
                         if (Cache::has($cacheKey)) {
                             if (auth()->check() && Cache::get($cacheKey) != auth()->user()->id) {
                                 $isBooked = true;
-                            } elseif (!auth()->check()) {
+                            } elseif (! auth()->check()) {
                                 $isBooked = true;
                             }
                         }
@@ -790,7 +843,7 @@ class Reserva extends Component
                     $processedData[$day][] = [
                         'time' => $timeString,
                         'status' => $isBooked ? 'occupied' : 'free',
-                        'slot_id' => $slot->id
+                        'slot_id' => $slot->id,
                     ];
 
                     $currentTime->addMinutes(20);
@@ -801,17 +854,10 @@ class Reserva extends Component
         return $processedData;
     }
 
-
-
-
-
-
     /**
      * Verifica si un slot específico está reservado
      * Aquí deberías consultar tu tabla de reservas/bookings
      */
-
-
     private function isTimeSlotBooked($tutorId, $dateTime)
     {
         return SlotBooking::where('tutor_id', $tutorId)
@@ -829,7 +875,9 @@ class Reserva extends Component
         return view('livewire.reserva', [
             'startDay' => $startDay,
             'daysInMonth' => $daysInMonth,
-            'materiasTutor' => $this->materiasTutor
+            'materiasTutor' => $this->materiasTutor,
+            // Pasar el país detectado para que Alpine.js elija la pestaña inicial
+            'paisDetectado' => $this->paisDetectado,
         ]);
     }
 }
