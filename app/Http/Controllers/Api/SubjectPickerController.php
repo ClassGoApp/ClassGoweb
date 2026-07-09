@@ -212,7 +212,19 @@ class SubjectPickerController extends Controller
                     ];
                 })
                 ->filter(fn($cat) => $cat['materias']->isNotEmpty())
-                ->reverse()
+                ->sort(function ($a, $b) {
+                    $pA = ($a['id_categoria'] >= 2000 && $a['id_categoria'] < 3000) ? 1 
+                        : (($a['id_categoria'] >= 3000 && $a['id_categoria'] < 4000) ? 2 : 3);
+                    
+                    $pB = ($b['id_categoria'] >= 2000 && $b['id_categoria'] < 3000) ? 1 
+                        : (($b['id_categoria'] >= 3000 && $b['id_categoria'] < 4000) ? 2 : 3);
+
+                    if ($pA !== $pB) {
+                        return $pA <=> $pB;
+                    }
+
+                    return $a['id_categoria'] <=> $b['id_categoria'];
+                })
                 ->values()
                 ->toArray();
         });
