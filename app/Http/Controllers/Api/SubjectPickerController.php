@@ -212,6 +212,7 @@ class SubjectPickerController extends Controller
                     ];
                 })
                 ->filter(fn($cat) => $cat['materias']->isNotEmpty())
+                ->reverse()
                 ->values()
                 ->toArray();
         });
