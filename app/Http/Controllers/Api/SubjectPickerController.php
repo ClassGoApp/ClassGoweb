@@ -351,11 +351,12 @@ class SubjectPickerController extends Controller
                 // Traer email + nombre del perfil en 1 query
                 $user = DB::table('users as u')
                     ->leftJoin('profiles as p', 'p.user_id', '=', 'u.id')
+                    ->leftJoin('fcm_tokens', 'fcm_tokens.user_id', '=', 'u.id')
                     ->where('u.id', $it->user_id)
                     ->first([
                         'u.id',
                         'u.email',
-                        'u.fcm_token',
+                        'fcm_tokens.token as fcm_token',
                         'p.first_name',
                         'p.last_name',
                     ]);
@@ -1253,8 +1254,9 @@ class SubjectPickerController extends Controller
             // 2. Notificar al tutor ELEGIDO
             $chosenTutorInfo = DB::table('users as u')
                 ->leftJoin('profiles as p', 'p.user_id', '=', 'u.id')
+                ->leftJoin('fcm_tokens', 'fcm_tokens.user_id', '=', 'u.id')
                 ->where('u.id', $tutorId)
-                ->first(['u.id', 'u.fcm_token', 'p.first_name', 'p.last_name']);
+                ->first(['u.id', 'fcm_tokens.token as fcm_token', 'p.first_name', 'p.last_name']);
 
             if ($chosenTutorInfo && $chosenTutorInfo->fcm_token) {
                 $nombreTutor = trim(($chosenTutorInfo->first_name ?? '') . ' ' . ($chosenTutorInfo->last_name ?? ''));
@@ -1282,11 +1284,12 @@ class SubjectPickerController extends Controller
             // Obtenemos directamente los tokens de los items que acabamos de marcar como "expired"
             $rejectedTokens = DB::table('email_batch_items as ebi')
                 ->join('users as u', 'u.id', '=', 'ebi.user_id')
+                ->leftJoin('fcm_tokens', 'fcm_tokens.user_id', '=', 'u.id')
                 ->where('ebi.batch_id', $batchRow->id)
                 ->where('ebi.id', '!=', $item->id)
                 ->where('ebi.status', 'expired')
-                ->whereNotNull('u.fcm_token') // Filtramos desde BD para mayor velocidad
-                ->pluck('u.fcm_token')
+                ->whereNotNull('fcm_tokens.token')
+                ->pluck('fcm_tokens.token')
                 ->toArray();
 
             // Si hay tokens rechazados, enviamos un solo Request masivo
@@ -2289,7 +2292,10 @@ class SubjectPickerController extends Controller
             
             // 1. Buscamos el token del tutor y el nombre del estudiante
             // 1. Buscamos al tutor en perfiles y unimos con usuarios para obtener el token
-            $tutor = DB::table('users')->where('id', $b->tutor_id)->first(['id', 'fcm_token']);
+            $tutor = DB::table('users')
+                ->leftJoin('fcm_tokens', 'fcm_tokens.user_id', '=', 'users.id')
+                ->where('users.id', $b->tutor_id)
+                ->first(['users.id', 'fcm_tokens.token as fcm_token']);
             $studentProfile = DB::table('profiles')->where('user_id', $studentId)->first(['first_name', 'last_name']);
             
             $studentName = trim(($studentProfile->first_name ?? 'El estudiante') . ' ' . ($studentProfile->last_name ?? ''));
