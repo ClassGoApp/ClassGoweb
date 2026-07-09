@@ -246,6 +246,7 @@ Route::post('user/{id}/profile-image', [ProfileController::class, 'updateProfile
 
 // Ruta para actualizar solo archivos del perfil del usuario
 Route::post('user/{id}/profile-files', [ProfileController::class, 'updateUserProfileFiles']);
+Route::delete('user/{id}/profile-video', [ProfileController::class, 'deleteProfileVideo']);
 
 // Ruta para actualizar datos del perfil del usuario
 Route::put('user/{id}/profile', [ProfileController::class, 'updateUserProfile']);
