@@ -17,6 +17,8 @@ use App\Services\SlotBookingService;
 use App\Services\interfaces;
 use App\Models\SlotBooking;
 use App\Services\BookingNotificationService;
+use Illuminate\Support\Facades\Mail;
+use App\Models\User;
 
 
 class BookingController extends Controller
@@ -1185,5 +1187,93 @@ class BookingController extends Controller
                 'debug'   => app()->environment('local') ? $e->getMessage() : null,
             ], 500);
         }
+    }
+        /**
+     * Envía un correo a todos los tutores de una materia
+     * cuando no hay tutores disponibles para reservar.
+     */
+    public function solicitarTutor(Request $request)
+    {
+        $request->validate([
+            'subject_id'     => 'required|integer|exists:subjects,id',
+            'preferred_date' => 'required|date|after_or_equal:today',
+            'preferred_time' => 'required|string|max:30',
+            'note'           => 'nullable|string|max:300',
+        ]);
+
+        $subjectId     = (int) $request->subject_id;
+        $preferredDate = $request->preferred_date;
+        $preferredTime = $request->preferred_time;
+        $note          = $request->note ?? '';
+        $student       = Auth::user();
+
+        // Nombre de la materia
+        $subject = DB::table('subjects')->where('id', $subjectId)->first();
+        if (!$subject) {
+            return response()->json(['success' => false, 'message' => 'Materia no encontrada.'], 404);
+        }
+
+        // Obtener tutores que tengan esa materia para notificarles
+        $tutorIds = DB::table('user_subject')
+            ->where('subject_id', $subjectId)
+            ->pluck('user_id')
+            ->unique()
+            ->values();
+
+        if ($tutorIds->isEmpty()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No hay tutores registrados para esta materia.',
+            ]);
+        }
+
+        $tutors = User::whereIn('id', $tutorIds)->get();
+
+        $sent         = 0;
+        $errors       = 0;
+        $dashboardUrl = url('/tutor/bookings');
+        $requestDate  = now()->format('d/m/Y H:i');
+        $subjectName  = $subject->name;
+        $studentName  = $student->name ?? $student->first_name ?? 'Un estudiante';
+
+        // Formatear fecha para mostrar
+        try {
+            $formattedDate = \Carbon\Carbon::parse($preferredDate)->translatedFormat('l d \d\e F \d\e Y');
+        } catch (\Throwable $e) {
+            $formattedDate = $preferredDate;
+        }
+
+        foreach ($tutors as $tutor) {
+            try {
+                Mail::send(
+                    'emails.solicitar-tutor',
+                    [
+                        'tutorName'     => $tutor->name ?? $tutor->first_name ?? 'Tutor',
+                        'subjectName'   => $subjectName,
+                        'requestDate'   => $requestDate,
+                        'preferredDate' => $formattedDate,
+                        'preferredTime' => $preferredTime,
+                        'note'          => $note,
+                        'studentName'   => $studentName,
+                        'dashboardUrl'  => $dashboardUrl,
+                    ],
+                    function ($message) use ($tutor, $subjectName) {
+                        $message->to($tutor->email)
+                                ->subject("📚 Solicitud de tutoría: {$subjectName}");
+                    }
+                );
+                $sent++;
+            } catch (\Throwable $e) {
+                Log::error("solicitarTutor: error al enviar correo a {$tutor->email}: " . $e->getMessage());
+                $errors++;
+            }
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => "Solicitud enviada a {$sent} tutor(es) de {$subjectName}.",
+            'sent'    => $sent,
+            'errors'  => $errors,
+        ]);
     }
 }

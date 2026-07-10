@@ -389,6 +389,7 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
 
                 Route::post('/validar-cupon', [BookingController::class, 'validateCoupon'])->name('validar-cupon');
                 Route::post('/reservar', [BookingController::class, 'storeBooking'])->name('reservar');
+                Route::post('/solicitar-tutor', [BookingController::class, 'solicitarTutor'])->name('solicitar-tutor');
             });
         });
     });
