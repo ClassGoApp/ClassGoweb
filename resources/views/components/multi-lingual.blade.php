@@ -23,5 +23,32 @@
                 </div>
             </div>
         </form>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const currentLang = @json($selectedLang);
+
+                localStorage.setItem('selectedLanguage', currentLang);
+
+                if (typeof selectLanguage === 'function') {
+                    selectLanguage(currentLang, false);
+                }
+
+                document.querySelectorAll('.locale-menu li[data-lang]').forEach(function (item) {
+                    item.addEventListener('click', function () {
+                        const lang = this.getAttribute('data-lang');
+
+                        localStorage.setItem('selectedLanguage', lang);
+
+                        if (typeof selectLanguage === 'function') {
+                            selectLanguage(lang, false);
+                        }
+
+                        document.dispatchEvent(new CustomEvent('languageChanged', {
+                            detail: { lang: lang }
+                        }));
+                    });
+                });
+            });
+        </script>
     @endif
 @endif

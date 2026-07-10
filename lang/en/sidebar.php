@@ -56,7 +56,7 @@ return [
     'groups' => 'Groups',
     'subjects' => 'Subjects',
     'subject_groups' => 'Subject groups',
-    'bookings' => 'My Bookings',
+    'bookings' => 'Bookings',
     'invoices' => 'Invoices',
     'certificates' => 'Certificates',
     'my_certificates' => 'My Certificates',
@@ -74,8 +74,8 @@ return [
     'history_tutorials' => 'history tutorials',
     'discover_tutor_text1' => 'Discover an online tutor',
     'discover_tutor_text2' => 'skilled for your studies',
-    'promociones' => 'Promociones',
+    'promociones' => 'Promotions',
     'manage_tutors' => 'Manage Tutors',
     'tutors' => 'Tutors',
-    'manage_cupones'=> 'Manage Cupons   '
+    'manage_cupones'=> 'Manage Cupons'
 ];
