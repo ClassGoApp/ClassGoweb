@@ -2195,15 +2195,14 @@ class SubjectPickerController extends Controller
                 return response()->json(['ok' => false, 'message' => 'Forbidden'], 403);
             }
 
-            $isFromPendingPayment = ((int)$b->status === 7);
-
-            // ✅ Expirar en demanda si está pendiente(2) y ya pasaron 7 min (solo para flujo normal instantáneo)
-            if ((int)$b->status === 2 && !empty($b->booked_at) && $b->user_subject_slot_id !== null) {
+            // ✅ Expirar en demanda si está pendiente(2) y ya pasaron 7 min
+            if ((int)$b->status === 2 && !empty($b->booked_at)) {
                 $bookedAt = \Carbon\Carbon::parse($b->booked_at);
                 if ($bookedAt->lte(now()->subMinutes($ttlMinutes))) {
                     DB::table('slot_bookings')->where('id', $bookingId)->update([
                         'status' => 3, // no completado / expirado
                         'meeting_link' => null,
+                        // 'updated_at' => now(),
                     ]);
 
                     return response()->json([
@@ -2214,8 +2213,8 @@ class SubjectPickerController extends Controller
                 }
             }
 
-            // ✅ Solo permitir si está pendiente(2) o pendiente de pago (7)
-            if ((int)$b->status !== 2 && (int)$b->status !== 7) {
+            // ✅ Solo permitir si está pendiente(2)
+            if ((int)$b->status !== 2) {
                 return response()->json([
                     'ok' => false,
                     'message' => 'Estado inválido para subir comprobante',
@@ -2248,6 +2247,18 @@ class SubjectPickerController extends Controller
                 ]
             );
 
+            // meet link genérico (opcional)
+            // $genericMeet = ;
+            // if (empty($b->meeting_link)) {
+            //     DB::table('slot_bookings')
+            //         ->where('id', $bookingId)
+            //         ->update([
+            //             'meeting_link' => $genericMeet,
+            //             //'updated_at' => now(),
+            //         ]);
+            // } else {
+            //     $genericMeet = $b->meeting_link;
+            // }
             $meetingLink = $b->meeting_link; // $b viene de DB::table, puede ser null
 
             if (empty($meetingLink)) {
@@ -2267,35 +2278,8 @@ class SubjectPickerController extends Controller
                         ->where('id', $bookingId)
                         ->update([
                             'meeting_link' => $meetingLink,
+                            // 'updated_at' => now(),
                         ]);
-                }
-            }
-
-            if ($isFromPendingPayment) {
-                // Actualizar reserva a estado 1 (Aceptado)
-                DB::table('slot_bookings')
-                    ->where('id', $bookingId)
-                    ->update([
-                        'status' => 1,
-                        'meeting_link' => $meetingLink,
-                    ]);
-
-                // Actualizar pago a estado 2 (Pagado)
-                DB::table('slot_payments')
-                    ->where('slot_booking_id', $bookingId)
-                    ->update([
-                        'status' => 2,
-                        'receipt_pdf' => $imageUrl,
-                        'updated_at' => now(),
-                    ]);
-
-                // Notificar a ambos usuarios sobre la confirmación de la tutoría
-                try {
-                    $bookingModel = SlotBooking::find($bookingId);
-                    $notificationService = app(\App\Services\BookingNotificationService::class);
-                    $notificationService->handleStatusChangeNotification($bookingModel, '', 1);
-                } catch (\Throwable $e) {
-                    Log::error('Notification error on receipt confirmation: ' . $e->getMessage());
                 }
             }
             
@@ -2339,7 +2323,7 @@ class SubjectPickerController extends Controller
             return response()->json([
                 'ok' => true,
                 'booking_id' => $bookingId,
-                'message' => $isFromPendingPayment ? 'Comprobante subido. Tutoría confirmada.' : 'Comprobante subido. Esperando aprobación del tutor.',
+                'message' => 'Comprobante subido. Esperando aprobación del tutor.',
                 'receipt_url' => '/storage/' . ltrim($imageUrl, '/'),
                 'meeting_link' => $meetingLink,
             ]);

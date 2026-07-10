@@ -29,9 +29,8 @@
                     this.selectedTutoria = {};
                     this.updateCharLeft();
                     // Escuchar cambios de Livewire para resetear el modal
-                    var self = this;
-                    Livewire.hook('effect', function() {
-                        self.showModal = false;
+                    Livewire.hook('effect', () => {
+                        this.showModal = false;
                     });
                 },
                 updateCharLeft() {
@@ -44,68 +43,10 @@
                 openModal(tutoria) {
                     this.selectedTutoria = tutoria;
                     this.showModal = true;
-                    if (tutoria.status_num === 7 && '{{ optional(Auth::user())->role }}' === 'student') {
-                        const container = document.getElementById('tutor-payment-details');
-                        if (container) container.textContent = 'Cargando datos de pago...';
-                        fetch('/student/booking/tutor-payment/' + tutoria.tutor_id)
-                            .then(function(res) { return res.json(); })
-                            .then(function(data) {
-                                if (data.success && data.payment) {
-                                    let html = '';
-                                    if (data.payment.bank) {
-                                        const b = data.payment.bank;
-                                        html += '<strong>Banco:</strong> ' + (b.bank_name || '') + '<br>' +
-                                                 '<strong>Cuenta:</strong> ' + (b.account_number || '') + '<br>' +
-                                                 '<strong>Titular:</strong> ' + (b.account_holder || '') + '<br>' +
-                                                 '<strong>Documento:</strong> ' + (b.holder_id || '') + '<br>';
-                                    } else {
-                                        html += 'El tutor no tiene datos bancarios registrados.<br>';
-                                    }
-                                    if (data.payment.qr_url) {
-                                        html += '<div style=\'margin-top: 10px; text-align: center;\'>' +
-                                                    '<img src=\'' + data.payment.qr_url + '\' style=\'max-width: 120px; border: 1px solid #ccc; border-radius: 4px;\'>' +
-                                                 '</div>';
-                                    }
-                                    if (container) container.innerHTML = html;
-                                } else {
-                                    if (container) container.textContent = 'No se pudieron cargar los datos de pago.';
-                                }
-                            })
-                            .catch(function(err) {
-                                if (container) container.textContent = 'Error al cargar datos de pago.';
-                            });
-                    }
                 },
                 closeModal() {
                     this.showModal = false;
                     this.selectedTutoria = {};
-                },
-                async submitReceipt(bookingId) {
-                    const fileInput = document.getElementById('receipt-file-input');
-                    if (!fileInput || !fileInput.files[0]) {
-                        alert('Por favor selecciona un archivo.');
-                        return;
-                    }
-                    const formData = new FormData();
-                    formData.append('comprobante', fileInput.files[0]);
-                    formData.append('_token', '{{ csrf_token() }}');
-
-                    try {
-                        const res = await fetch('/student/bookings/' + bookingId + '/receipt', {
-                            method: 'POST',
-                            body: formData
-                        });
-                        const data = await res.json();
-                        if (data.success) {
-                            alert('Comprobante subido exitosamente. La tutoría ha sido confirmada.');
-                            window.location.reload();
-                        } else {
-                            alert(data.message || 'Error al subir el comprobante.');
-                        }
-                    } catch (err) {
-                        console.error(err);
-                        alert('Error al enviar el archivo.');
-                    }
                 }
             }">
             <!--Upcomming Bookings-->
@@ -263,7 +204,6 @@
                                 'no completado' => '#64748B',
                                 'rechazado' => '#FF9800', // naranja
                                 'completado' => '#3B82F6', // azul
-                                'pendiente de pago' => '#8B5CF6', // morado
                             ];
 
                             $statusMap = [
@@ -272,14 +212,12 @@
                                 3 => 'No completado',
                                 4 => 'Observado',
                                 5 => 'Completado',
-                                7 => 'Pendiente de pago',
                                 'pendiente' => 'Pendiente',
                                 'aceptado' => 'Aceptado',
                                 'no_completado' => 'No completado',
                                 'no completado' => 'No completado',
                                 'rechazado' => 'Rechazado',
                                 'completado' => 'Completado',
-                                'pendiente de pago' => 'Pendiente de pago',
                             ];
                         @endphp
                         @if ($showBy == 'daily')
@@ -332,11 +270,7 @@
                                                                 hora_inicio: '{{ \Carbon\Carbon::parse($booking['start_time'])->format('H:i') }}',
                                                                 hora_fin: '{{ \Carbon\Carbon::parse($booking['end_time'])->format('H:i') }}',
                                                                 fecha: '{{ \Carbon\Carbon::parse($booking['start_time'])->format('Y-m-d') }}',
-                                                                id: '{{ $booking['id'] }}',
-                                                                 status_num: {{ $booking['status_num'] }},
-                                                                 student_id: {{ $booking['student_id'] }},
-                                                                 tutor_id: {{ $booking['tutor_id'] }},
-                                                                 materia: '{{ $booking['subject_name'] }}',
+                                                                materia: '{{ $booking['subject_name'] }}',
                                                                 meeting_link: '{{ $booking['meeting_link'] ?? '' }}'
                                                             })">
                                                                         {{ $statusMap[$booking['status_num']] ?? $booking['status_num'] }}
@@ -389,11 +323,7 @@
                                                                     hora_inicio: '{{ \Carbon\Carbon::parse($booking['start_time'])->format('H:i') }}',
                                                                     hora_fin: '{{ \Carbon\Carbon::parse($booking['end_time'])->format('H:i') }}',
                                                                     fecha: '{{ \Carbon\Carbon::parse($booking['start_time'])->format('Y-m-d') }}',
-                                                                    id: '{{ $booking['id'] }}',
-                                                                                 status_num: {{ $booking['status_num'] }},
-                                                                                 student_id: {{ $booking['student_id'] }},
-                                                                                 tutor_id: {{ $booking['tutor_id'] }},
-                                                                                 materia: '{{ $booking['subject_name'] }}',
+                                                                    materia: '{{ $booking['subject_name'] }}',
                                                                     meeting_link: '{{ $booking['meeting_link'] ?? '' }}'
                                                                 })">
                                                                             Estado:
@@ -482,11 +412,7 @@
                                                         hora_inicio: '{{ \Carbon\Carbon::parse($booking['start_time'])->format('H:i') }}',
                                                         hora_fin: '{{ \Carbon\Carbon::parse($booking['end_time'])->format('H:i') }}',
                                                         fecha: '{{ \Carbon\Carbon::parse($booking['start_time'])->format('Y-m-d') }}',
-                                                        id: '{{ $booking['id'] }}',
-                                                         status_num: {{ $booking['status_num'] }},
-                                                         student_id: {{ $booking['student_id'] }},
-                                                         tutor_id: {{ $booking['tutor_id'] }},
-                                                         materia: '{{ $booking['subject_name'] }}',
+                                                        materia: '{{ $booking['subject_name'] }}',
                                                         meeting_link: '{{ $showLink ? $booking['meeting_link'] ?? '' : '' }}'
                                                     })">
                                                                         Estado:
@@ -562,44 +488,7 @@
                             <span style="color: #888;">No disponible</span>
                         </template>
                     </p>
-                    <!-- Acciones del Tutor si está Pendiente (estado 2) -->
-                    <template x-if="selectedTutoria.status_num === 2 && '{{ optional(Auth::user())->role }}' === 'tutor'">
-                        <div style="margin-top: 16px; display: flex; gap: 10px; width: 100%;">
-                            <button @click="$wire.tutorAccept(selectedTutoria.id)"
-                                style="flex: 1; padding: 10px 20px; background-color: #28a745; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">
-                                Aceptar
-                            </button>
-                            <button @click="$wire.tutorReject(selectedTutoria.id)"
-                                style="flex: 1; padding: 10px 20px; background-color: #dc3545; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">
-                                Rechazar
-                            </button>
-                        </div>
-                    </template>
-
-                    <!-- Acciones del Estudiante si está Pendiente de pago (estado 7) -->
-                    <template x-if="selectedTutoria.status_num === 7 && '{{ optional(Auth::user())->role }}' === 'student'">
-                        <div style="margin-top: 16px; border-top: 1px solid #eee; padding-top: 16px;">
-                            <p style="color: #856404; background: #fff3cd; padding: 10px; border-radius: 6px; font-size: 0.9rem; margin-bottom: 12px;">
-                                ⚠️ <strong>Acción Requerida:</strong> Por favor realiza la transferencia a los datos bancarios del tutor y sube tu comprobante de pago a continuación.
-                            </p>
-
-                            <!-- Datos Bancarios del Tutor -->
-                            <div style="background: #f8f9fa; border: 1px solid #dee2e6; padding: 12px; border-radius: 6px; margin-bottom: 12px; font-size: 0.85rem;">
-                                <h5 style="margin: 0 0 6px 0; font-weight: 600;">Datos de Pago del Tutor:</h5>
-                                <div id="tutor-payment-details">Cargando datos de pago...</div>
-                            </div>
-
-                            <form @submit.prevent="submitReceipt(selectedTutoria.id)" enctype="multipart/form-data">
-                                <div style="margin-bottom: 12px;">
-                                    <label style="display:block; font-size: 0.85rem; font-weight: 600; margin-bottom: 4px;">Comprobante de pago (JPG, PNG, PDF):</label>
-                                    <input type="file" id="receipt-file-input" required class="form-control" style="font-size: 0.85rem;">
-                                </div>
-                                <button type="submit" style="width: 100%; padding: 8px 16px; background-color: #28a745; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">
-                                    Subir Comprobante y Confirmar
-                                </button>
-                            </form>
-                        </div>
-                    </template>
+                    <!-- Más campos aquí -->
 
                     <button @click="closeModal"
                         style="
@@ -702,7 +591,7 @@
                         ...config,
                         minDate: @js(\Carbon\Carbon::now(getUserTimezone())->toDateString())
                     }
-                @endrole
+                @endrole ()
             } else if (showBy == 'weekly') {
                 config = {
                     ...config,

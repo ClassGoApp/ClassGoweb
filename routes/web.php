@@ -231,9 +231,6 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
 
 
     Route::middleware(['auth', 'verified', 'onlineUser'])->group(function () {
-        Route::get('/booking/{booking}/tutor-accept-email', [BookingController::class, 'tutorAcceptFromEmail'])->name('booking.tutor-accept-email');
-        Route::get('/booking/{booking}/tutor-reject-email', [BookingController::class, 'tutorRejectFromEmail'])->name('booking.tutor-reject-email');
-
         Route::post('/openai/submit', [OpenAiController::class, 'submit'])->name('openai.submit');
         Route::post('/accept-terms', [HomeController::class, 'acceptTerms'])->name('accept.terms');
         Route::post('favourite-tutor', [SearchController::class, 'favouriteTutor'])->name('favourite-tutor');
