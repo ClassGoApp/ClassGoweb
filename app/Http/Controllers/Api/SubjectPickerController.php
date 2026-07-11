@@ -7,17 +7,26 @@ use App\Mail\TutoriaInstanteAceptada;
 use App\Mail\TutorTutoriaNotificationMail;
 use App\Models\EmailBatch;
 use App\Models\EmailBatchItem;
-use App\Models\SlotBooking;
 use App\Models\User;
+
+
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
+
+use Illuminate\Support\Str;
+
+
+use App\Models\FcmToken;
+use App\Models\SlotBooking;
+use App\Services\FcmService;
 use App\Services\SlotBookingService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Str;
+
 
 class SubjectPickerController extends Controller
 {
@@ -345,12 +354,10 @@ class SubjectPickerController extends Controller
                 // Traer email + nombre del perfil en 1 query
                 $user = DB::table('users as u')
                     ->leftJoin('profiles as p', 'p.user_id', '=', 'u.id')
-                    ->leftJoin('fcm_tokens', 'fcm_tokens.user_id', '=', 'u.id')
                     ->where('u.id', $it->user_id)
                     ->first([
                         'u.id',
                         'u.email',
-                        'fcm_tokens.token as fcm_token',
                         'p.first_name',
                         'p.last_name',
                     ]);
@@ -358,16 +365,24 @@ class SubjectPickerController extends Controller
                 if (! $user || ! $user->email) {
                     throw new \Exception('user_email_missing');
                 }
+                
+                // Obtener TODOS los tokens FCM activos del usuario
+                $tokens = DB::table('fcm_tokens')
+                    ->where('user_id', $it->user_id)
+                    ->whereNotNull('token')
+                    ->where('token', '!=', '')
+                    ->pluck('token')
+                    ->unique()
+                    ->toArray();
 
-                if ($user->fcm_token) {
-                    $notificacionController = app(NotificacionController::class);
-                    $notificacionController->enviarATutores(
-                        request: new Request([
-                            'title' => 'Solicitud de tutoría instantánea',
-                            'body' => "Tienes una solicitud de tutoría instantánea para {$subjectName}. Entra y espera a ser elegido.",
+                if (!empty($tokens)) {
+                    $fcmService = new FcmService();
+                    $results = $fcmService->sendNotificationToTokens(
+                        $tokens,
+                        'Solicitud de tutoría instantánea',
+                        "Tienes una solicitud de tutoría instantánea para {$subjectName}. Entra y espera a ser elegido.",
+                        [
                             'type' => 'tutoria_instant',
-                            'only' => true,
-                            'tokens' => json_encode([$user->fcm_token]),
                             'screen' => 'solicitud_tutor',
                             'data_tutor' => json_encode([
                                 'id' => $user->id,
@@ -376,8 +391,18 @@ class SubjectPickerController extends Controller
                                 'batch_id' => $batchId,
                                 'accept_token' => $it->accept_token,
                             ]),
-                        ])
+                        ]
                     );
+
+                    foreach ($results as $result) {
+                        if (!$result['success'] && $result['remove_token']) {
+                            FcmToken::where('token', $result['token'])->delete();
+                            Log::warning('sendBatchEmails: Token FCM inválido eliminado', [
+                                'user_id' => $user->id,
+                                'token_preview' => substr($result['token'], 0, 20) . '...',
+                            ]);
+                        }
+                    }
                 }
 
                 $tutorName = trim(($user->first_name ?? '').' '.($user->last_name ?? ''));
@@ -1280,29 +1305,34 @@ class SubjectPickerController extends Controller
             // ====================================================================
             // 🔔 INICIO LÓGICA DE NOTIFICACIONES
             // ====================================================================
-
-            $notificacionController = app(NotificacionController::class);
-
+            
             // 1. Obtener nombre de la materia (asumiendo que tienes una tabla subjects)
             $subjectName = DB::table('subjects')->where('id', $batchRow->subject_id)->value('name') ?? 'la materia solicitada';
 
-            // 2. Notificar al tutor ELEGIDO
+            // 2. Notificar al tutor ELEGIDO usando todos sus tokens activos
+            $chosenTutorTokens = DB::table('fcm_tokens')
+                ->where('user_id', $tutorId)
+                ->whereNotNull('token')
+                ->where('token', '!=', '')
+                ->pluck('token')
+                ->unique()
+                ->toArray();
+
             $chosenTutorInfo = DB::table('users as u')
                 ->leftJoin('profiles as p', 'p.user_id', '=', 'u.id')
-                ->leftJoin('fcm_tokens', 'fcm_tokens.user_id', '=', 'u.id')
                 ->where('u.id', $tutorId)
-                ->first(['u.id', 'fcm_tokens.token as fcm_token', 'p.first_name', 'p.last_name']);
+                ->first(['u.id', 'p.first_name', 'p.last_name']);
 
-            if ($chosenTutorInfo && $chosenTutorInfo->fcm_token) {
-                $nombreTutor = trim(($chosenTutorInfo->first_name ?? '').' '.($chosenTutorInfo->last_name ?? ''));
-
-                $notificacionController->enviarATutores(
-                    request: new Request([
-                        'title' => '¡Felicidades, fuiste elegido!',
-                        'body' => "El estudiante te ha seleccionado para la tutoría de {$subjectName}. ¡Entra a la sala ahora!",
+            if (!empty($chosenTutorTokens)) {
+                $nombreTutor = trim(($chosenTutorInfo->first_name ?? '') . ' ' . ($chosenTutorInfo->last_name ?? ''));
+                
+                $fcmService = new FcmService();
+                $results = $fcmService->sendNotificationToTokens(
+                    $chosenTutorTokens,
+                    '¡Felicidades, fuiste elegido!',
+                    "El estudiante te ha seleccionado para la tutoría de {$subjectName}. ¡Entra a la sala ahora!",
+                    [
                         'type' => 'tutoria_elegida',
-                        'only' => true,
-                        'tokens' => json_encode([$chosenTutorInfo->fcm_token]),
                         'screen' => 'tutor_aceptado',
                         'data_tutor' => json_encode([
                             'id' => $chosenTutorInfo->id,
@@ -1311,8 +1341,18 @@ class SubjectPickerController extends Controller
                             'batch_id' => $batchRow->id,
                             'booking_id' => $bookingId,
                         ]),
-                    ])
+                    ]
                 );
+
+                foreach ($results as $result) {
+                    if (!$result['success'] && $result['remove_token']) {
+                        FcmToken::where('token', $result['token'])->delete();
+                        Log::warning('reserveTutor: Token FCM inválido eliminado (elegido)', [
+                            'user_id' => $chosenTutorInfo->id,
+                            'token_preview' => substr($result['token'], 0, 20) . '...',
+                        ]);
+                    }
+                }
             }
 
             // 3. Notificar a los tutores RECHAZADOS / NO ELEGIDOS
@@ -1327,22 +1367,31 @@ class SubjectPickerController extends Controller
                 ->pluck('fcm_tokens.token')
                 ->toArray();
 
-            // Si hay tokens rechazados, enviamos un solo Request masivo
-            if (! empty($rejectedTokens)) {
-                $notificacionController->enviarATutores(
-                    request: new Request([
-                        'title' => 'Tutoría asignada a otro tutor',
-                        'body' => 'El estudiante ha elegido a otro tutor en esta ocasión. ¡Gracias por tu tiempo y sigue atento!',
+            // Si hay tokens rechazados, enviamos a todos
+            if (!empty($rejectedTokens)) {
+                $fcmService = new FcmService();
+                $results = $fcmService->sendNotificationToTokens(
+                    $rejectedTokens,
+                    'Tutoría asignada a otro tutor',
+                    "El estudiante ha elegido a otro tutor en esta ocasión. ¡Gracias por tu tiempo y sigue atento!",
+                    [
                         'type' => 'tutoria_no_elegida',
-                        'only' => true,
-                        'tokens' => json_encode($rejectedTokens), // Enviamos todo el array de tokens a Firebase
                         'screen' => 'tutor_rechazado',
                         'data_tutor' => json_encode([
                             'batch_id' => $batchRow->id,
                             'materia' => $subjectName,
                         ]),
-                    ])
+                    ]
                 );
+
+                foreach ($results as $result) {
+                    if (!$result['success'] && $result['remove_token']) {
+                        FcmToken::where('token', $result['token'])->delete();
+                        Log::warning('reserveTutor: Token FCM inválido eliminado (rechazado)', [
+                            'token_preview' => substr($result['token'], 0, 20) . '...',
+                        ]);
+                    }
+                }
             }
             // ====================================================================
             // 🔔 FIN LÓGICA DE NOTIFICACIONES
@@ -2341,37 +2390,46 @@ class SubjectPickerController extends Controller
             // ====================================================================
             // 🔔 INICIO LÓGICA DE NOTIFICACIONES (Notificar al Tutor)
             // ====================================================================
-
-            // 1. Buscamos el token del tutor y el nombre del estudiante
-            // 1. Buscamos al tutor en perfiles y unimos con usuarios para obtener el token
-            $tutor = DB::table('users')
-                ->leftJoin('fcm_tokens', 'fcm_tokens.user_id', '=', 'users.id')
-                ->where('users.id', $b->tutor_id)
-                ->first(['users.id', 'fcm_tokens.token as fcm_token']);
+            
+            // 1. Buscamos todos los tokens del tutor y el nombre del estudiante
+            $tutorTokens = DB::table('fcm_tokens')
+                ->where('user_id', $b->tutor_id)
+                ->whereNotNull('token')
+                ->where('token', '!=', '')
+                ->pluck('token')
+                ->unique()
+                ->toArray();
             $studentProfile = DB::table('profiles')->where('user_id', $studentId)->first(['first_name', 'last_name']);
 
             $studentName = trim(($studentProfile->first_name ?? 'El estudiante').' '.($studentProfile->last_name ?? ''));
 
-            // 2. Si el tutor existe y tiene un token configurado, enviamos la alerta
-
-            if ($tutor && ! empty($tutor->fcm_token)) {
-                $notificacionController = app(NotificacionController::class);
-
-                $notificacionController->enviarATutores(
-                    request: new Request([
-                        'title' => '¡Tu estudiante te está esperando!',
-                        'body' => "{$studentName} acaba de entrar a la sala de Meet. ¡Únete a la clase ahora!",
+            // 2. Si el tutor tiene tokens, enviamos la alerta a todos ellos
+            
+            if (!empty($tutorTokens)) {
+                $fcmService = new FcmService();
+                $results = $fcmService->sendNotificationToTokens(
+                    $tutorTokens,
+                    '¡Tu estudiante te está esperando!',
+                    "{$studentName} acaba de entrar a la sala de Meet. ¡Únete a la clase ahora!",
+                    [
                         'type' => 'estudiante_unido_meet',
-                        'only' => true,
-                        'tokens' => json_encode([$tutor->fcm_token]),
                         'screen' => 'tutoria_lista',
                         'data_tutor' => json_encode([
                             'booking_id' => $b->id,
-                            'meeting_link' => $meetingLink, // ✅ Pasamos el link directo en la data
+                            'meeting_link' => $meetingLink,
                             'student_name' => $studentName,
                         ]),
-                    ])
+                    ]
                 );
+
+                foreach ($results as $result) {
+                    if (!$result['success'] && $result['remove_token']) {
+                        FcmToken::where('token', $result['token'])->delete();
+                        Log::warning('studentUploadReceipt: Token FCM inválido eliminado', [
+                            'token_preview' => substr($result['token'], 0, 20) . '...',
+                        ]);
+                    }
+                }
             }
 
             // ====================================================================

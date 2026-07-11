@@ -108,6 +108,19 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPasswordC
         return $this->hasMany(FcmToken::class);
     }
 
+    public function activeFcmTokens(): HasMany
+    {
+        return $this->fcmTokens()
+            ->whereNotNull('token')
+            ->where('token', '!=', '')
+            ->orderByDesc('updated_at');
+    }
+
+    public function latestFcmToken(): ?string
+    {
+        return $this->activeFcmTokens()->value('token');
+    }
+
     public function accountSetting(): HasMany
     {
         return $this->hasMany(AccountSetting::class, 'user_id');
