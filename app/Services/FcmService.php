@@ -81,4 +81,56 @@ class FcmService
             throw $e;
         }
     }
+
+    public function sendNotificationToTokens(array $fcmTokens, $title, $body, $data = []): array
+    {
+        $results = [];
+
+        foreach ($fcmTokens as $fcmToken) {
+            try {
+                $result = $this->sendNotification($fcmToken, $title, $body, $data);
+
+                $results[] = [
+                    'token' => $fcmToken,
+                    'success' => true,
+                    'result' => $result,
+                    'remove_token' => false,
+                ];
+            } catch (\Throwable $e) {
+                $removeToken = $this->shouldRemoveTokenFromException($e);
+
+                Log::warning('FcmService: Error en token individual', [
+                    'fcm_token_preview' => substr($fcmToken, 0, 20) . '...',
+                    'error' => $e->getMessage(),
+                    'error_class' => get_class($e),
+                    'remove_token' => $removeToken,
+                ]);
+
+                $results[] = [
+                    'token' => $fcmToken,
+                    'success' => false,
+                    'error' => $e->getMessage(),
+                    'error_class' => get_class($e),
+                    'remove_token' => $removeToken,
+                ];
+            }
+        }
+
+        return $results;
+    }
+
+    private function shouldRemoveTokenFromException(\Throwable $e): bool
+    {
+        $message = strtolower($e->getMessage());
+
+        if (str_contains($message, 'invalid registration token') ||
+            str_contains($message, 'not registered') ||
+            str_contains($message, 'requested entity was not found') ||
+            str_contains($message, 'unregistered') ||
+            str_contains($message, 'registration token is not a valid fcm registration token')) {
+            return true;
+        }
+
+        return false;
+    }
 } 
