@@ -21,10 +21,11 @@ use Illuminate\Support\Facades\Log;
 use App\Services\MailService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
-
+use Livewire\Attributes\On;
 
 class Reserva extends Component
 {
+
     use WithFileUploads;
 
     public Carbon $currentDate;
@@ -64,6 +65,8 @@ class Reserva extends Component
     public float $montoFinal = 0.0;
     public float $descuento = 0.0;
 
+    public $material_apoyo=null;
+    public ?string $descripcion_material_apoyo=null;
 
     //============== End Variables Cupones ===============//
 
@@ -485,8 +488,18 @@ class Reserva extends Component
     /**
      * Finaliza la reserva. Se llama desde el formulario del modal.
      */
+    public function confirmac(){
+        dd("CONFIMADA bro");
+    }
 
+    #[On("archivo-agregado")]
+    public function agregarMaterialApoyo($archivo_temporal, $description= null){
+        // dd($archivo_temporal);
+        $this->material_apoyo = $archivo_temporal;
+        $this->descripcion_material_apoyo = $description;
+    }
 
+    #[On("ReservacionConfirmada")]
     public function makeReservation()
     {
         $sessionFee = $this->montoFinal;
@@ -585,13 +598,18 @@ class Reserva extends Component
                 'path' => $path,
             ]);
 
+            //----Guardamos el matarial de apoyo adjuntado por el estudiante ----//
+            
+            
             $slotBookingService = app(SlotBookingService::class);
             $reserva = $slotBookingService->crearReservaContinua(
                 $estudianteId,
                 $this->tutorId,
                 $this->selectedSubject,
                 $fechasParaReservar,
-                $sessionFee
+                $sessionFee,
+                $this->material_apoyo,
+                $this->descripcion_material_apoyo,
             );
 
             Log::info('DEBUG makeReservation - reserva creada', [

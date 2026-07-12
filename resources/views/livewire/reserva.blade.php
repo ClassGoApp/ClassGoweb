@@ -222,7 +222,7 @@
     @if ($showModal)
         <div class="modal-overlay is-visible">
             <div class="modal-content">
-                <form wire:submit="makeReservation" class="modal-body">
+                <form  class="modal-body">
                     @if ($banner100)
                         @if ($isAugustPromotion)
                             <div class="modal-promocion-column">
@@ -242,7 +242,7 @@
 
 
                     <div class="modal-form-column">
-                        <h2 class="form-title">Confirmar Reserva</h2>
+                        <h2 class="form-title">Confirmar Reserva--p</h2>
                         <!--Cupones-->
                         <div class="coupon-section">
                             <label for="coupon" class="input-label" style="padding-top: 0.5rem">¿Tienes un cupón de
@@ -397,10 +397,11 @@
                         <div class="action-buttons">
                             <button type="button" wire:click="closeModal" wire:loading.attr="disabled" class="btn btn-primary">Cancelar</button>
 
-                            <button type="submit" wire:loading.attr="disabled" class="btn btn-primary">Reservar</button>
+                            <button  wire:loading.attr="disabled" type="button" style="background-color: #FB8500; color: white;" wire:click='$dispatch("openModalMaterialApoyo")' class="btn btn-primary">Siguiente</button>
                         </div>
                     </div>
                 </form>
+                <livewire:modal-material-apoyo />
             </div>
         </div>
     @endif

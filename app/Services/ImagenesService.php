@@ -3,7 +3,8 @@
 
 namespace App\Services;
 
-
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\UploadedFile;
 class ImagenesService
 {
     /**
@@ -42,5 +43,28 @@ class ImagenesService
                     copy($source, $destination);
 
         return 'uploads/bookings/' . $fileName;
+    }
+
+       public function guardarMaterialApoyoEstudiante(UploadedFile $file): array
+    {
+        // 1. Verificación de seguridad usando el método nativo de UploadedFile
+        if (!$file->isValid()) {
+            throw new \Exception("El archivo no se subió correctamente al servidor o está corrupto.");
+        }
+
+        // 2. Extraemos la información original del archivo
+        $originName = $file->getClientOriginalName();
+        $extencion = $file->getClientOriginalExtension();
+
+        // 3. Guardamos en el disco 'public'. 
+        // El método store() hace todo el trabajo: genera el hash y lo guarda en la carpeta especificada.
+        $rutaDefinitiva = $file->store('supporting_materials', 'public');
+
+        // 4. Retornamos el array con las claves listas para tu base de datos
+        return [
+            "supporting_material" => $rutaDefinitiva, // Usé el nombre de tu columna en lugar de "path"
+            "originName"          => $originName,
+            "extencion"           => $extencion,
+        ];
     }
 }

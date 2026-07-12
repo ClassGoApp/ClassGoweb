@@ -60,11 +60,24 @@ class Navigation extends Component
             ],
             [
                 'studentSortOrder' => 2,
-                'route' => 'student.bookings',
-                'onActiveRoute' => ['student.bookings','student.reschedule-session'],
-                'title' => __('sidebar.bookings'),
+                'route' => '#', // Como ahora es un menú padre, no necesita llevar a una ruta directa
+                'onActiveRoute' => ['student.bookings', 'student.reschedule-session','student.tutorias', 'student.material-apoyo'],
+                'title' => 'Mis Tutorías', // Cambiamos el nombre general
                 'icon'  => '<i class="am-icon-calender-day"></i>',
                 'accessibility' => ['student'],
+                // Agregamos el submenú con los dos enlaces
+                'submenu' => [
+                    [
+                        'route' => 'student.bookings',
+                        'onActiveRoute' => ['student.bookings', 'student.reschedule-session'],
+                        'title' => 'Calendario',
+                    ],
+                    [
+                        'route' => 'student.tutorias', // Asegúrate de que este sea el nombre exacto de tu ruta en web.php
+                        'onActiveRoute' => ['student.tutorias', 'student.material-apoyo'],
+                        'title' => 'Archivos Adjuntos',
+                    ]
+                ]
             ],
             [
                 'tutorSortOrder' => 2,
@@ -75,12 +88,6 @@ class Navigation extends Component
                 'icon'  => '<i class="am-icon-user-01"></i>',
                 'accessibility' => ['tutor','student'],
             ],
-
-
-
-
-
-
 
             // [
             //     'route' => 'student.tuition-settings',
@@ -100,6 +107,14 @@ class Navigation extends Component
                 'title' => __('sidebar.manage_bookings'),
                 'icon'  => '<i class="am-icon-calender-day"></i>',
                 'accessibility' => ['tutor'],
+            ],
+            [
+                'tutorSortOrder' => 4, // Puedes cambiar este número para subirlo o bajarlo en la lista
+                'route' => 'tutor.finances', // Asegúrate de crear esta ruta en tu archivo web.php
+                'onActiveRoute' => ['tutor.finances'], 
+                'title' => 'Finanzas',
+                'icon'  => '<i class="am-icon-dollar"></i>', // Reutilicé el icono de dólar que tenías antes
+                'accessibility' => ['tutor'], // Esto garantiza que SOLO el tutor lo vea
             ],
             // [
              //   'tutorSortOrder' => 9,

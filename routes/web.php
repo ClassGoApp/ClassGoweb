@@ -49,7 +49,7 @@ use App\Http\Controllers\BeforeBlogsController;
 use App\Http\Controllers\BookingController;
 
 use App\Http\Controllers\Api\SubjectPickerController;
-
+use App\Livewire\PruebaABEL;
 use App\Mail\TutoriaInstanteNotificacionMail;
 
 use Illuminate\Support\Facades\Mail;
@@ -72,7 +72,13 @@ Route::get('/control-horas', function () {
 });
 
 
-
+Route::middleware(['auth'])->group(function () {
+    // Ejemplo de ruta para gestionar materiales de apoyo
+    Route::get('/student/tutorias', \App\Livewire\TutoriasDetalles::class)
+        ->name('student.tutorias');
+        Route::get('/tutor/tutorias', \App\Livewire\TutoriasDetalles::class)
+        ->name('tutor.tutorias');
+});
 // Route::get('/waitlist/accept', [SubjectPickerController::class, 'acceptWaitlist'])
 //     ->name('waitlist.accept');
 
@@ -241,8 +247,10 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
 
         Route::middleware('student')->get('checkout', Checkout::class)->name('checkout');
         Route::middleware('student')->get('thank-you/{id}', ThankYou::class)->name('thank-you');
+
         Route::middleware('role:tutor')->prefix('tutor')->name('tutor.')->group(function () {
-            Route::get('dashboard', ManageAccount::class)->name('dashboard');
+            Route::get('finances', ManageAccount::class)->name('finances');
+            Route::get('dashboard', \App\Livewire\TutoriasDetalles::class)->name('dashboard');
             Route::get('payouts', Payouts::class)->name('payouts');
             Route::get('profile', fn() => redirect('tutor.profile.personal-details'))->name('profile');
 
