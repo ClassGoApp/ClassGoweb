@@ -159,6 +159,11 @@
                                     
 
                                     <div id="js-slots-container"></div>
+                                    <div style="margin-top: 16px; text-align: center;">
+                                        <button type="button" id="js-req-custom-schedule-btn" style="border: 2px solid #219EBC; color: #219EBC; font-size: 13px; padding: 8px 16px; border-radius: 12px; font-weight: 600; cursor: pointer; background: transparent; transition: all 0.15s ease;">
+                                            Solicitar otro horario
+                                        </button>
+                                    </div>
                                     <button type="button" id="js-scroll-calendar" class="btn-scroll-calendar" aria-label="Subir al calendario">
                                         <span class="chev-up" aria-hidden="true"></span>
                                     </button>
@@ -344,7 +349,7 @@
                                 <h3 style="color:#023047; font-size: 18px; font-weight: 700; margin-bottom: 8px; text-align: center;">
                                     Solicitud de Tutores
                                 </h3>
-                                <p style="color: #6b7280; font-size: 13px; margin-bottom: 16px; text-align: center;">
+                                <p id="js-req-desc-text" style="color: #6b7280; font-size: 13px; margin-bottom: 16px; text-align: center;">
                                     No encontramos tutores disponibles. Envía una solicitud a todos los tutores calificados completando lo siguiente:
                                 </p>
 
@@ -992,6 +997,11 @@
             grid-template-columns: 1fr;
             gap: 12px;
         }
+    }
+
+    #js-req-custom-schedule-btn:hover {
+        background: #219EBC !important;
+        color: #fff !important;
     }
 
     /* Estilos del Reloj Digital */
@@ -1772,6 +1782,8 @@
 
         let selectedTutor = null;
         let selectedTutorName = null;
+        let targetTutorId = null;
+        let targetTutorName = null;
         let selectedTutorPrice = 0;
 
 
@@ -2051,6 +2063,8 @@
         function resetModalState() {
             currentStep = 1;
             hasNoTutors = false;
+            targetTutorId = null;
+            targetTutorName = null;
 
 
             selectedInstitution = null;
@@ -2693,7 +2707,7 @@
                 return;
             }
             if (currentStep === 'request_tutor') {
-                currentStep = 1;
+                currentStep = targetTutorId ? 2 : 1;
                 updateStepUI();
                 updateContent();
                 updateNavButtons();
@@ -2713,6 +2727,55 @@
             });
 
 
+        });
+
+        const reqCustomScheduleBtn = document.getElementById('js-req-custom-schedule-btn');
+        reqCustomScheduleBtn?.addEventListener('click', () => {
+            targetTutorId = selectedTutor;
+            targetTutorName = selectedTutorName;
+            
+            currentStep = 'request_tutor';
+            document.getElementById('js-req-subject-name').textContent = selectedSubjectName;
+            
+            const descText = document.getElementById('js-req-desc-text');
+            if (descText) {
+                descText.textContent = `Envía una propuesta de horario directamente a ${targetTutorName} completando lo siguiente:`;
+            }
+
+            reqSelectedDate = todayStr();
+            const reqLabel = document.getElementById('js-req-selected-date-label');
+            if (reqLabel) reqLabel.textContent = 'Hoy';
+            
+            const now = new Date();
+            renderReqMiniCalendar(now.getFullYear(), now.getMonth());
+
+            clockHour = 10;
+            clockMinute = 0;
+            clockAmPm = 'AM';
+            selectedDurationMins = 20;
+
+            const hourSel = document.getElementById('js-clock-hour');
+            if (hourSel) hourSel.value = '10';
+            const minSel = document.getElementById('js-clock-minute');
+            if (minSel) minSel.value = '0';
+
+            document.getElementById('js-clock-ampm-am')?.classList.add('active');
+            document.getElementById('js-clock-ampm-pm')?.classList.remove('active');
+
+            document.querySelectorAll('.duration-chip').forEach(c => {
+                if (parseInt(c.dataset.mins) === 20) c.classList.add('active');
+                else c.classList.remove('active');
+            });
+
+            updateProposalTime();
+
+            document.getElementById('js-req-note').value = '';
+            document.getElementById('js-req-message').style.display = 'none';
+
+            updateStepUI();
+            updateContent();
+            updateNavButtons();
+            scrollTopStep();
         });
 
         // ====== EVENTOS PASO 1 ======
@@ -3427,6 +3490,16 @@
             document.getElementById('content-step-request_tutor').style.display = 'none';
 
             try {
+                const payload = {
+                    subject_id: selectedSubject,
+                    preferred_date: reqDate,
+                    preferred_time: reqTime,
+                    note: reqNote
+                };
+                if (targetTutorId) {
+                    payload.tutor_id = targetTutorId;
+                }
+
                 const response = await fetch('/student/booking/solicitar-tutor', {
                     method: 'POST',
                     headers: {
@@ -3435,12 +3508,7 @@
                         // ESTA LÍNEA ES VITAL: Obliga a Laravel a devolver JSON incluso si hay errores
                         'Accept': 'application/json' 
                     },
-                    body: JSON.stringify({
-                        subject_id: selectedSubject,
-                        preferred_date: reqDate,
-                        preferred_time: reqTime,
-                        note: reqNote
-                    })
+                    body: JSON.stringify(payload)
                 });
 
                 // Si la respuesta HTTP indica un error (ej. 422 de validación o 500 del servidor)

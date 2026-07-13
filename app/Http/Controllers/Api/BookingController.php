@@ -503,6 +503,7 @@ class BookingController extends Controller
             'preferred_date' => 'required|date|after_or_equal:today',
             'preferred_time' => 'required|string|max:30',
             'note'           => 'nullable|string|max:300',
+            'tutor_id'       => 'nullable|integer|exists:users,id',
         ]);
 
         $subjectId     = (int) $request->subject_id;
@@ -517,21 +518,31 @@ class BookingController extends Controller
             return response()->json(['success' => false, 'message' => 'Materia no encontrada.'], 404);
         }
 
-        // Obtener tutores que tengan esa materia para notificarles
-        $tutorIds = DB::table('user_subject')
-            ->where('subject_id', $subjectId)
-            ->pluck('user_id')
-            ->unique()
-            ->values();
+        if ($request->filled('tutor_id')) {
+            $tutors = User::where('id', (int) $request->tutor_id)->get();
+            if ($tutors->isEmpty()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Tutor no encontrado.',
+                ], 404);
+            }
+        } else {
+            // Obtener tutores que tengan esa materia para notificarles
+            $tutorIds = DB::table('user_subject')
+                ->where('subject_id', $subjectId)
+                ->pluck('user_id')
+                ->unique()
+                ->values();
 
-        if ($tutorIds->isEmpty()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'No hay tutores registrados para esta materia.',
-            ]);
+            if ($tutorIds->isEmpty()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No hay tutores registrados para esta materia.',
+                ]);
+            }
+
+            $tutors = User::whereIn('id', $tutorIds)->get();
         }
-
-        $tutors = User::whereIn('id', $tutorIds)->get();
 
         $sent         = 0;
         $errors       = 0;
