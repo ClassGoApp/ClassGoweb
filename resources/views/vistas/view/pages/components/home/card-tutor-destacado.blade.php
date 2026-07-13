@@ -63,7 +63,7 @@
                         {{-- Botones --}}
                         <div class="tutor-actions">
                             <button class="btn-perfil" onclick="window.location.href='{{ route('tutor', ['slug' => $tutor->profile['slug']]) }}'">
-                                Ver perfil
+                                <span data-translate="view_profile">Ver perfil</span>
                             </button>
 
                             @auth
@@ -93,11 +93,11 @@
                         </svg>
                     </div>
 
-                    <h3>Ver más tutores</h3>
-                    <p>Buscas tutores de acuerdo a lo que deseas aprender.</p>
+                    <h3 data-translate="see_more_tutors">Ver más tutores</h3>
+                    <p data-translate="find_tutors_description">Buscas tutores de acuerdo a lo que deseas aprender.</p>
 
                     <a href="{{ route('buscar') }}" class="btn-explorar-final">
-                        <span>Explorar</span>
+                        <span data-translate="explore_tutors">Explorar</span>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                         </svg>

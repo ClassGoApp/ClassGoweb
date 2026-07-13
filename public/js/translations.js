@@ -49,6 +49,11 @@ const translations = {
     featured_tutors: "Tutores Destacados",
     rating: "Calificación",
     subjects: "Materias",
+    view_profile: "Ver perfil",
+    see_more_tutors: "Ver más tutores",
+    find_tutors_description:
+      "Busca tutores de acuerdo a lo que deseas aprender.",
+    explore_tutors: "Explorar",
     // Perfil del tutor
     perfil_sobre_mi: "Sobre mí",
     perfil_disponibilidad: "Disponibilidad",
@@ -763,6 +768,40 @@ const translations = {
     booking_coupon_invalid: "Cupón inválido o vencido.",
     booking_scroll_calendar: "Subir al calendario",
     booking_qr_alt: "QR de pago",
+    //Principal Tutor Al Instante
+    instant_badge_text: "tutores ya son parte de tutorías al instante",
+    instant_title: "Tutorías al instante",
+    instant_subtitle: "ayuda real, en minutos",
+    instant_description:
+      "¿Tienes una duda ahora? Conéctate de inmediato con un tutor verificado y resuelve tus preguntas sin esperas ni citas largas.",
+    instant_login: "Iniciar sesión",
+    instant_accept_terms_prefix: "Acepto los",
+    instant_terms_conditions: "términos y condiciones",
+    instant_accept_continue: "Aceptar y continuar",
+    instant_view_terms: "Ver términos",
+    instant_view: "Ver",
+    instant_request_tutor_now: "Pedir tutor ahora",
+    instant_terms_accepted_success: "Términos aceptados correctamente.",
+    instant_terms_required: "Debes aceptar los términos y condiciones.",
+    instant_only_students:
+      "Las tutorías al instante solo están disponibles para estudiantes. Los tutores solo deben aceptar los términos y condiciones.",
+    instant_checkbox_not_found: "No se encontró el checkbox de términos.",
+    instant_accept_terms_error: "Error al aceptar términos.",
+    instant_accept_terms_failed: "No se pudo aceptar los términos.",
+    instant_unexpected_error: "Ocurrió un error inesperado.",
+    instant_subject_math: "MATEMÁTICAS",
+    instant_subject_programming: "PROGRAMACIÓN",
+    instant_subject_calculus: "CÁLCULO",
+    instant_subject_literature: "LITERATURA",
+    instant_subject_marketing: "MARKETING",
+    //Principal Floating
+    floating_instant_tutoring: "¡Tutoría al Instante!",
+    floating_apply_here: "¡Postúlate aquí!",
+    floating_need_help: "¿Necesitas ayuda?",
+    floating_close: "Cerrar",
+    floating_Whatsapp: "Escríbenos por WhatsApp",
+    floating_Preguntas: "Preguntas Frecuentes",
+    floating_correo: "Escríbenos por correo",
   },
   en: {
     // Navbar
@@ -810,6 +849,10 @@ const translations = {
     featured_tutors: "Featured Tutors",
     rating: "Rating",
     subjects: "Subjects",
+    view_profile: "View profile",
+    see_more_tutors: "See more tutors",
+    find_tutors_description: "Find tutors according to what you want to learn.",
+    explore_tutors: "Explore",
     // Perfil del tutor
     perfil_sobre_mi: "About Me",
     perfil_disponibilidad: "Availability",
@@ -1503,6 +1546,41 @@ const translations = {
     booking_coupon_invalid: "Invalid or expired coupon.",
     booking_scroll_calendar: "Scroll up to calendar",
     booking_qr_alt: "Payment QR",
+
+    //Principal Tutor Al Instante
+    instant_badge_text: "tutors are already part of instant tutoring",
+    instant_title: "Instant tutoring",
+    instant_subtitle: "real help, in minutes",
+    instant_description:
+      "Do you have a question right now? Connect immediately with a verified tutor and solve your doubts without waiting or long appointments.",
+    instant_login: "Log in",
+    instant_accept_terms_prefix: "I accept the",
+    instant_terms_conditions: "terms and conditions",
+    instant_accept_continue: "Accept and continue",
+    instant_view_terms: "View terms",
+    instant_view: "View",
+    instant_request_tutor_now: "Request a tutor now",
+    instant_terms_accepted_success: "Terms accepted successfully.",
+    instant_terms_required: "You must accept the terms and conditions.",
+    instant_only_students:
+      "Instant tutoring is only available for students. Tutors only need to accept the terms and conditions.",
+    instant_checkbox_not_found: "The terms checkbox was not found.",
+    instant_accept_terms_error: "Error accepting terms.",
+    instant_accept_terms_failed: "Could not accept the terms.",
+    instant_unexpected_error: "An unexpected error occurred.",
+    instant_subject_math: "MATHEMATICS",
+    instant_subject_programming: "PROGRAMMING",
+    instant_subject_calculus: "CALCULUS",
+    instant_subject_literature: "LITERATURE",
+    instant_subject_marketing: "MARKETING",
+    //Principal Floating
+    floating_instant_tutoring: "Instant Tutoring!",
+    floating_apply_here: "Apply here!",
+    floating_need_help: "Need help?",
+    floating_close: "Close",
+    floating_Whatsapp: "Message us on WhatsApp",
+    floating_Preguntas: "Frequently Asked Questions",
+    floating_correo: "Contact Us by Email",
   },
   pt: {
     // Navbar
@@ -1551,6 +1629,11 @@ const translations = {
     featured_tutors: "Tutores em Destaque",
     rating: "Avaliação",
     subjects: "Matérias",
+    view_profile: "Ver perfil",
+    see_more_tutors: "Ver mais tutores",
+    find_tutors_description:
+      "Busque tutores de acordo com o que você deseja aprender.",
+    explore_tutors: "Explorar",
     // Perfil del tutor
     perfil_sobre_mi: "Sobre mim",
     perfil_disponibilidad: "Disponibilidade",
@@ -2196,7 +2279,7 @@ const translations = {
     booking_back: "Voltar",
     booking_finish: "Finalizar reserva",
     // Reservas del estudiante
-    student_bookings_new_booking: "Nova Reserve",
+    student_bookings_new_booking: "Nova Reserva",
     student_bookings_status: "Status:",
     student_bookings_tutoring_plural: "Tutorias",
     student_bookings_details: "Detalhes da tutoria",
@@ -2262,6 +2345,42 @@ const translations = {
     booking_coupon_invalid: "Cupom inválido ou vencido.",
     booking_scroll_calendar: "Subir ao calendário",
     booking_qr_alt: "QR de pagamento",
+
+    //Principal Tutor Al Instante
+    instant_badge_text: "tutores já fazem parte das tutorias instantâneas",
+    instant_title: "Tutorias instantâneas",
+    instant_subtitle: "ajuda real, em minutos",
+    instant_description:
+      "Você tem uma dúvida agora? Conecte-se imediatamente com um tutor verificado e resolva suas perguntas sem esperas nem agendamentos longos.",
+    instant_login: "Entrar",
+    instant_accept_terms_prefix: "Aceito os",
+    instant_terms_conditions: "termos e condições",
+    instant_accept_continue: "Aceitar e continuar",
+    instant_view_terms: "Ver termos",
+    instant_view: "Ver",
+    instant_request_tutor_now: "Solicitar tutor agora",
+    instant_terms_accepted_success: "Termos aceitos corretamente.",
+    instant_terms_required: "Você deve aceitar os termos e condições.",
+    instant_only_students:
+      "As tutorias instantâneas estão disponíveis apenas para estudantes. Os tutores só precisam aceitar os termos e condições.",
+    instant_checkbox_not_found:
+      "A caixa de seleção dos termos não foi encontrada.",
+    instant_accept_terms_error: "Erro ao aceitar os termos.",
+    instant_accept_terms_failed: "Não foi possível aceitar os termos.",
+    instant_unexpected_error: "Ocorreu um erro inesperado.",
+    instant_subject_math: "MATEMÁTICA",
+    instant_subject_programming: "PROGRAMAÇÃO",
+    instant_subject_calculus: "CÁLCULO",
+    instant_subject_literature: "LITERATURA",
+    instant_subject_marketing: "MARKETING",
+    //Principal Floating
+    floating_instant_tutoring: "Tutoria Instantânea!",
+    floating_apply_here: "Candidate-se aqui!",
+    floating_need_help: "Precisa de ajuda?",
+    floating_close: "Fechar",
+    floating_Whatsapp: "Fale conosco pelo WhatsApp",
+    floating_Preguntas: "Perguntas frequentes",
+    floating_correos: "Entre em contato conosco por e-mail",
   },
 };
 
