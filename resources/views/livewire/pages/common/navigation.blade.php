@@ -51,9 +51,10 @@
                                 @php
                                     $isActiveChild = in_array($activeRoute, $subItem['onActiveRoute']);
                                 @endphp
-                                <li style="margin-bottom: 4px; line-height: none; list-style: none;">
+                                <li style="margin-bottom: 4px; color: #3a64ab;line-height: none; list-style: none;">
                                     <a href="{{ route($subItem['route']) }}" {{ empty($item['disableNavigate']) ? 'wire:navigate.remove' : '' }} 
-                                       style="color: {{ $isActiveChild ? '#1a9bb7' : '#585858' }}; font-size: 1em; font-weight: {{ $isActiveChild ? 'bold' : 'normal' }}; display: block; text-decoration: none; border-radius: 5px; transition: background-color 0.3s, color 0.3s;">
+                                       style="color: {{ $isActiveChild ? '#fff7f7' : '#585858' }}; font-size: 1em; font-weight: {{ $isActiveChild ? 'bold' : 'normal' }}; display: block;
+                                        background-color: {{$isActiveChild ? "#1a9bb7" :""}}; text-decoration: none; border-radius: 5px;  padding: 4px 6px;  transition: background-color 0.3s, color 0.3s;">
                                         {{ $subItem['title'] }}
                                     </a>
                                 </li>

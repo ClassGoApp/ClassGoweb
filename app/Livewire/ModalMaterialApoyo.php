@@ -17,15 +17,18 @@ class ModalMaterialApoyo extends Component
     public bool $isOpen = false;
 
     // Validación: Máximo 5MB (5120 KB) y extensiones específicas
-    #[Validate('nullable|file|mimes:pdf,doc,docx,xls,xlsx,jpg,jpeg,png|max:5120')]
+    #[Validate('nullable|file|mimes:pdf,doc,docx,ods,odt,xls,xlsx,jpg,jpeg,png|max:5120')]
     public $archivo=null;
 
-    #[Validate('nullable|string|min:2|max:500')]
+    #[Validate('nullable|string|min:2|max:700')]
     public ?string $descripcion=null;
     
+    public $modalUpdArchivo=null;
+
     #[On("openModalMaterialApoyo")]
-    public function openModal(){
-        
+    public function openModal($modalUpdat=null, $data=null){
+        $this->modalUpdArchivo=$modalUpdat;
+        // dd($modalUpdat);
         $this->isOpen = true;
 
         $this->reset(['archivo', 'descripcion']);
@@ -45,7 +48,7 @@ class ModalMaterialApoyo extends Component
             
             // Validamos la descripción antes de continuar
             $this->validate([
-                'descripcion' => 'required|string|min:2|max:500',
+                'descripcion' => 'required|string|min:2|max:700',
             ], [
                 // Mensaje personalizado amigable
                 'descripcion.required' => 'Por favor, escribe una breve descripción para darle contexto al profesor sobre tu archivo.',

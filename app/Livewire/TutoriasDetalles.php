@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Services\ImagenesService;
 use App\Services\SlotBookingService;
 use Illuminate\Support\Facades\Storage;
+use Livewire\Attributes\On;
 
 class TutoriasDetalles extends Component
 {
@@ -61,9 +62,21 @@ class TutoriasDetalles extends Component
     public function updatedNewMaterial(ImagenesService $imagenesService)
     {
         $this->validate([
-            'newMaterial' => 'required|file|max:10240|mimes:pdf,xlsx,doc,docx,png,jpg,jpeg', // Máx 10MB
+            'newMaterial' => 'required|file|max:5120|mimes:pdf,xlsx,doc,docx,png,jpg,jpeg', // Máx 5MB
         ]);
 
+        
+        
+    }
+    
+    public function UserData($iduser){
+        return  User::find($iduser)->profile()->first();    
+
+    }
+
+    #[On('archivo-agregado')]
+    public function saveFileEvent($archivo_temporal=null, $description=null){
+        // dd("Llego",$archivo_temporal, $description);    
         $booking = SlotBooking::find($this->selectedBookingId);
 
         if ($booking) {
@@ -71,22 +84,20 @@ class TutoriasDetalles extends Component
             if ($booking->supporting_material && Storage::disk('public')->exists($booking->supporting_material)) {
                 Storage::disk('public')->delete($booking->supporting_material);
             }
-            // Guardar el nuevo archivo en la carpeta 'materiales_apoyo' en el storage público
-            $fileProcesado = $imagenesService->guardarMaterialApoyoEstudiante($this->newMaterial);
+            
             // Actualizar la base de datos con la ruta exacta tal como se ve en tu captura
             $booking->update([
-                'supporting_material' => $fileProcesado["supporting_material"],
-                "originName"=> $fileProcesado["originName"],
-                "extencion"=> $fileProcesado["extencion"],
+                'supporting_material' => $archivo_temporal["supporting_material"]??null,
+                "originName"=> $archivo_temporal["originName"]??null,
+                "extencion"=> $archivo_temporal["extencion"]??null,
+                'description'=> $description,
             ]);
 
             $this->reset('newMaterial');
         }
     }
-    public function UserData($iduser){
-        return  User::find($iduser)->profile()->first();    
 
-    }
+
     // Descargar el archivo actual
     public function downloadMaterial()
     {

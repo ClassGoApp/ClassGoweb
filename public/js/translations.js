@@ -1,7 +1,7 @@
 // ===========================
 // translations.js
 // ===========================
-//REGLAS DE USO DE LA TRADUCCION: hola me presento soy un pasante que a duras pena duerme para usar esto es tan simple como apretar ctrl + F buscar la linea de texto que buscas y cambiarla, recuerda que tambien tiene que cambiar su version en ingles y Portugues
+//REGLAS DE USO DE LA TRADUCCION: hola me presento soy un pasante,para usar esto es tan simple como apretar ctrl + F buscar la linea de texto que buscas y cambiarla, recuerda que tambien tiene que cambiar su version en ingles y Portugues
 // Diccionario de traducciones
 const translations = {
   es: {
@@ -47,6 +47,7 @@ const translations = {
     est_check: "Estudiantes registrados",
     play_s: "En Play Store",
     featured_tutors: "Tutores Destacados",
+    rating: "Calificación",
     selected_tutors: "Encuentra tu Tutor Ideal",
     academic_variety:
       "Explora diversas temáticas para potenciar tu aprendizaje.",
@@ -99,6 +100,10 @@ const translations = {
     buscar_tutor_txt2:
       "Domina cualquier materia con la ayuda de nuestros tutores expertos y alcanza tus metas académicas.",
     buscar_tutor_txt3: "¿Que deseas aprender?",
+    buscar_tutor_placeholder_1: "Busca por nombre del tutor: Gabriel Alpiry...",
+    buscar_tutor_placeholder_2:
+      "Busca por materia: Matemáticas, Contabilidad...",
+    buscar_tutor_placeholder_3: "Buscar por temas: Álgebra, Cálculo...",
     filtro_materias_txt1: "Materias que te pueden ayudar",
     filtro_materias_txt2: "Explora Nuestras Materias",
     filtro_materias_txt3: "Tutores listos en distintas áreas",
@@ -676,6 +681,7 @@ const translations = {
     play_s: "On Play Store",
     search_tutors: "Search Tutors",
     featured_tutors: "Featured Tutors",
+    rating: "Rating",
     selected_tutors: "Find Your Ideal Tutor",
     academic_variety:
       "Discover a variety of academic and practical subjects to enhance your learning experience",
@@ -725,7 +731,13 @@ const translations = {
     buscar_tutor_txt1: "Discover an Online Tutor for Your Studies",
     buscar_tutor_txt2:
       "Master any subject with the help of our expert tutors and achieve your academic goals.",
+    buscar_tutor_placeholder_1: "Search by tutor name: Gabriel Alpiry...",
+    buscar_tutor_placeholder_2: "Search by subject: Mathematics, Accounting...",
+    buscar_tutor_placeholder_3: "Search by topics: Algebra, Calculus...",
     buscar_tutor_txt3: "What do you want to learn?",
+    buscar_tutor_placeholder_1: "Search by tutor name: Gabriel Alpiry...",
+    buscar_tutor_placeholder_2: "Search by subject: Mathematics, Accounting...",
+    buscar_tutor_placeholder_3: "Search by topics: Algebra, Calculus...",
     filtro_materias_txt1: "Subjects That Can Help You",
     filtro_materias_txt2: "Explore Our Subjects",
     filtro_materias_txt3: "Tutors ready in different areas to help you",
@@ -1286,6 +1298,7 @@ const translations = {
     play_s: "Na Play Store",
     search_tutors: "Procurar Tutores",
     featured_tutors: "Tutores em Destaque",
+    rating: "Avaliação",
     selected_tutors: "Encontre Seu Tutor Ideal",
     academic_variety:
       "Descubra uma variedade de temas acadêmicos e práticos para aprimorar sua experiência de aprendizado",
@@ -1338,6 +1351,11 @@ const translations = {
     buscar_tutor_txt2:
       "Domine qualquer matéria com a ajuda de nossos tutores especializados e alcance seus objetivos acadêmicos.",
     buscar_tutor_txt3: "O que você deseja aprender?",
+    buscar_tutor_placeholder_1:
+      "Pesquise pelo nome do tutor: Gabriel Alpiry...",
+    buscar_tutor_placeholder_2:
+      "Pesquise por matéria: Matemática, Contabilidade...",
+    buscar_tutor_placeholder_3: "Pesquise por temas: Álgebra, Cálculo...",
     filtro_materias_txt1: "Disciplinas que podem te ajudar",
     filtro_materias_txt2: "Explore Nossas Disciplinas",
     filtro_materias_txt3: "Tutores prontos em diferentes áreas",
@@ -1913,6 +1931,12 @@ function selectLanguage(lang, closeDropdown = true) {
       el.innerHTML = translations[lang][key]; // innerHTML respeta <br>
     }
   });
+
+  document.dispatchEvent(
+    new CustomEvent("languageChanged", {
+      detail: { lang: lang },
+    }),
+  );
 
   if (closeDropdown) toggleDropdown();
 }

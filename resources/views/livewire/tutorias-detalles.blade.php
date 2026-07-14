@@ -1,54 +1,57 @@
-
-
-
 <div class="cg-ma-container">
     <div class="cg-ma-header">
-        <h1 class="cg-ma-title">{{ auth()->user()->hasRole("tutor")?"Mis Tutorías" : "Tutorías"  }}</h1>
+        <h1 class="cg-ma-title">{{ auth()->user()->hasRole("tutor") ? "Mis Tutorías" : "Tutorías"  }}</h1>
         {!! auth()->user()->hasRole('student') ? '<p class="cg-ma-subtitle">Selecciona una tutoría para gestionar sus archivos adjuntos.</p>' : '' !!}
-
     </div>
 
-        <div class="cg-ma-layout">
+    <div class="cg-ma-layout">
+        
+        <aside class="cg-ma-sidebar">
+            <div class="cg-ma-sidebar-header">
+            </div>
             
-            <aside class="cg-ma-sidebar">
-                <div class="cg-ma-sidebar-header">
-                    {{-- Próximas Tutorías ({{ count($slotBookings) }}) --}}
-                </div>
-                
-                <div class="cg-ma-booking-list">
-                    @forelse($slotBookings as $booking)
-                        <div 
-                            wire:click="selectBooking({{ $booking->id }})" 
-                            class="cg-ma-booking-item {{ $selectedBookingId == $booking->id ? 'is-active' : '' }}"
-                        >   
-                            <div style="position: relative;">
-                                <div class="cg-ma-booking-top" >
-                                    <span class="cg-ma-date">{{ \Carbon\Carbon::parse($booking->start_time)->format('d M') }}</span>
-                                    <p style="font-size:.8em; font-weight: 700; position: absolute; right: 0; top: 50%; transform: translateY(-50%); color: #22ad2f; ">{{ $firstBooking == $booking->id ? "Tú próxima tutoría." : "" }}</p>
-                                </div>  
-                            </div>
-                            <span class="cg-ma-subject">{{ $booking->subject->name ?? $booking->description ?? 'Sesión #' . $booking->id }}</span>
-                            <h4 class="cg-ma-tutor">{{auth()->user()->hasRole("student") ? 'Tutor: ' . ($this->UserData($booking->tutor_id)->first_name ?? 'ID ' . $booking->tutor_id) : 'Estudiante: ' . ($this->UserData($booking->student_id)->first_name ?? 'ID ' . $booking->student_id)}}</h4>
-                            <p class="cg-ma-info">
-                                Horarios: {{ \Carbon\Carbon::parse($booking->start_time)->format('H:i') }} - {{ \Carbon\Carbon::parse($booking->end_time)->format('H:i') }} 
-                                • {{ $booking->supporting_material ? '1 archivo' : 'Sin material' }}
-                            </p>
+            <div class="cg-ma-booking-list">
+                @forelse($slotBookings as $booking)
+                    <div 
+                        wire:click="selectBooking({{ $booking->id }})" 
+                        class="cg-ma-booking-item {{ $selectedBookingId == $booking->id ? 'is-active' : '' }}"
+                    >   
+                        <div style="position: relative; margin-bottom: 4px; display: flex; align-items: center; min-height: 20px;">
+                            <span class="cg-ma-date">{{ \Carbon\Carbon::parse($booking->start_time)->format('d M Y') }}</span>
+                            
+                            {{-- PUNTO VERDE Y TEXTO DINÁMICO --}}
+                            @if($firstBooking == $booking->id)
+                                <div class="cg-ma-next-badge">
+                                    <span class="cg-ma-dot"></span>
+                                    <p>Tú próxima tutoría.</p>
+                                </div>
+                            @endif
                         </div>
-                    @empty
-                        <div class="cg-ma-empty">No tienes tutorías futuras programadas.</div>
-                    @endforelse
-                </div>
-            </aside>
-            {{-- {{ dd($slotBookings) }} --}}
-            <main class="cg-ma-workspace">
-                @if($selectedBooking)
+                        <span class="cg-ma-subject">{{ $booking->subject->name ?? $booking->description ?? 'Sesión #' . $booking->id }}</span>
+                        <h4 class="cg-ma-tutor">{{auth()->user()->hasRole("student") ? 'Tutor: ' . ($this->UserData($booking->tutor_id)->first_name ?? 'ID ' . $booking->tutor_id) : 'Estudiante: ' . ($this->UserData($booking->student_id)->first_name ?? 'ID ' . $booking->student_id)}}</h4>
+                        <p class="cg-ma-info">
+                            Horarios: {{ \Carbon\Carbon::parse($booking->start_time)->format('H:i') }} - {{ \Carbon\Carbon::parse($booking->end_time)->format('H:i') }} 
+                            • {{ $booking->supporting_material ? '1 archivo' : 'Sin material' }}
+                        </p>
+                    </div>
+                @empty
+                    <div class="cg-ma-empty">No tienes tutorías futuras programadas.</div>
+                @endforelse
+            </div>
+        </aside>
+
+        <main class="cg-ma-workspace">
+            @if($selectedBooking)
+                <div class="cg-ma-workspace-content">
                     <div class="cg-ma-detail-header">
                         <span class="cg-ma-badge">{{ $selectedBooking->subject->name ?? 'Materia ID: ' . $selectedBooking->subject_id }}</span>
                         <p class="cg-ma-detail-meta">
                             Día: {{ \Carbon\Carbon::parse($selectedBooking->start_time)->translatedFormat('l, d \d\e F, Y') }} | 
                             Horario: {{ \Carbon\Carbon::parse($selectedBooking->start_time)->format('H:i') }} a {{ \Carbon\Carbon::parse($selectedBooking->end_time)->format('H:i') }} hrs
                         </p>
-                        <p style=" color: #666; font-weight: 500; font-size: 0.9rem; margin-top: 10px; margin-bottom: 5px;">Estado: <span style=" margin-left: 4px; color: #0284c7; font-weight: 600">{{ $selectedBooking->status }}</span></p>
+                        <p style="color: #666; font-weight: 500; font-size: 0.9rem; margin-top: 10px; margin-bottom: 5px;">
+                            Estado: <span style="margin-left: 4px; color: #0284c7; font-weight: 600">{{ $selectedBooking->status }}</span>
+                        </p>
                     </div>
 
                     @if (auth()->user()->hasRole('student'))
@@ -56,18 +59,24 @@
                             <label class="cg-ma-dropzone">
                                 <span class="cg-ma-dropzone-icon">☁️</span>
                                 <span class="cg-ma-dropzone-text">
-                                    {{ $selectedBooking->supporting_material ? 'Haz clic aquí para reemplazar el archivo actual' : 'Haz clic aquí para subir o arrastra tu archivo' }}
+                                        {{ $selectedBooking->supporting_material ? 'Haz clic aquí para reemplazar el archivo actual' : 'Haz clic aquí para subir el archivo' }}
                                 </span>
-                                <span class="cg-ma-dropzone-hint">Soporta PDF, Word e Imágenes (Máx. 10 MB)</span>
-                                <input type="file" wire:model="newMaterial" class="cg-ma-file-input" />
-                            </label>
-                            
+                                {{-- {{ dd($selectedBooking) }} --}}
+                                <span class="cg-ma-dropzone-hint">Soporta PDF, Excel, Word e Imágenes (Máx. 5 MB)</span>
+                                
+                                    {{-- Si NO hay archivo: input tipo botón que dispara el evento para abrir el modal --}}
+                                <input type="button" 
+                                    wire:click="$dispatch('openModalMaterialApoyo', { modalUpdat:true } )" 
+                                    class="cg-ma-file-input" />
+                            </label>                            
+                                
                             <div wire:loading wire:target="newMaterial" class="cg-ma-loading">
                                 Subiendo archivo, por favor espera...
                             </div>
-                            
+                                
                             @error('newMaterial') <span style="color: red; font-size: 0.8rem; display: block; margin-top: 5px;">No se pudo cargar el archivo</span> @enderror
                         </div>
+                        <livewire:modal-material-apoyo/>
                     @endif
                     
                     <div class="cg-ma-files-section">
@@ -76,8 +85,7 @@
                         <div class="cg-ma-files-grid">
                             @if($selectedBooking->supporting_material)
                                 @php
-                                    // Extraer el nombre real del archivo desde la ruta guardada
-                                    $fileName = basename($selectedBooking->originName);
+                                    $fileName = basename($selectedBooking->originName ?? $selectedBooking->supporting_material);
                                     $extension = pathinfo($fileName, PATHINFO_EXTENSION);
                                 @endphp
                                 <div class="cg-ma-file-card">
@@ -98,34 +106,41 @@
                                     </div>
                                 </div>
                             @else
-                                <p class="cg-ma-empty">Aún no han subido material para esta clase.</p>
+                                <p class="cg-ma-empty">Sin Material Adjuntado.</p>
                             @endif
                         </div>
-                        <p class="cg-ma-detail-title" style="width: 30%">{!! $selectedBooking->description ? 'Contexto: ' . $selectedBooking->description : 'Sin descripción' !!} </p>
-                           {{-- <span style="padding: 5px">   'Sin descripción' }} </span> --}}
-                        </p>
+                        
+                        {{-- CAJA DE CONTEXTO AJUSTADA PARA TEXTOS LARGOS --}}
+                        <div class="cg-ma-description-box">
+                            {!! $selectedBooking->description ? '<strong style="display:block; margin-bottom: 8px; color: #334155;">Contexto:</strong>' . $selectedBooking->description : '<em>Sin descripción</em>' !!}
+                        </div>
 
                     </div>
-                @else
-                    <div class="cg-ma-no-selection">
-                        <p>👈 Selecciona una tutoría de la lista para gestionar su material de apoyo.</p>
-                    </div>
-                @endif
-            </main>
-            {{-- <x-detalles-tutorias saludo="SALUDANDO" :datos="['rol'=>3, 'nombre'=> 'John Doe']" /> --}}
-        </div>
+                </div>
+            @else
+                <div class="cg-ma-no-selection">
+                    <p>👈 Selecciona una tutoría de la lista para gestionar su material de apoyo.</p>
+                </div>
+            @endif
+        </main>
+    </div>
 
-        <style>
-            /* ==========================================================================
-   Contenedor Principal y Encabezado
+<style>
+/* ==========================================================================
+   Contenedor Principal y Adaptabilidad (Viewport Fit)
    ========================================================================== */
 .cg-ma-container {
+    width: 100%;
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     color: #333333;
     box-sizing: border-box;
+    height: calc(100vh - 100px); 
+    min-height: 500px; 
+    display: flex;
+    flex-direction: column;
 }
 
 .cg-ma-container *, .cg-ma-container *::before, .cg-ma-container *::after {
@@ -133,7 +148,8 @@
 }
 
 .cg-ma-header {
-    margin-bottom: 24px;
+    flex-shrink: 0;
+    margin-bottom: 20px;
 }
 
 .cg-ma-title {
@@ -150,57 +166,61 @@
 }
 
 /* ==========================================================================
-   Estructura Layout (Grid Responsivo)
+   Estructura Layout (Responsivo)
    ========================================================================== */
 .cg-ma-layout {
-    display: grid;
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
     gap: 20px;
-    align-items: start;
+    flex-grow: 1;
+    overflow: hidden; 
+    min-height: 0; 
 }
 
 @media (min-width: 992px) {
     .cg-ma-layout {
+        display: grid;
         grid-template-columns: 360px 1fr;
+        height: 100%;
     }
 }
 
 /* ==========================================================================
-   Columna Izquierda: Barra Lateral (Scroll independiente)
+   Columna Izquierda: Barra Lateral
    ========================================================================== */
 .cg-ma-sidebar {
     background: #ffffff;
     border: 1px solid #e5e7eb;
     border-radius: 12px;
-    overflow: hidden;
+    display: flex;
+    flex-direction: column;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+    overflow: hidden; 
+    max-height: 40vh; 
+}
+
+@media (min-width: 992px) {
+    .cg-ma-sidebar {
+        max-height: 100%; 
+    }
 }
 
 .cg-ma-sidebar-header {
     padding: 14px 18px;
     background-color: #f9fafb;
     border-bottom: 1px solid #e5e7eb;
-    font-weight: 600;
-    font-size: 0.9rem;
-    color: #374151;
+    flex-shrink: 0;
 }
 
 .cg-ma-booking-list {
-    max-height: 600px; /* Limite vertical para activar scroll en pantallas pequeñas */
-    overflow-y: auto;
+    flex-grow: 1;
+    overflow-y: auto; 
+    height: 100%;
 }
 
-/* Estilización discreta del scrollbar */
-.cg-ma-booking-list::-webkit-scrollbar,
-.cg-ma-files-grid::-webkit-scrollbar {
-    width: 6px;
-}
-.cg-ma-booking-list::-webkit-scrollbar-thumb,
-.cg-ma-files-grid::-webkit-scrollbar-thumb {
-    background-color: #cbd5e1;
-    border-radius: 4px;
-}
-
+/* ==========================================================================
+   Elemento de Tutoría y Punto Verde
+   ========================================================================== */
 .cg-ma-booking-item {
     padding: 16px 18px;
     border-bottom: 1px solid #f1f5f9;
@@ -218,27 +238,46 @@
     border-left-color: #0284c7;
 }
 
-.cg-ma-booking-top {
+.cg-ma-date {
+    font-size: 0.75rem;
+    color: #94a3b8;
+}
+
+.cg-ma-next-badge {
+    position: absolute;
+    right: 0;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    margin-bottom: 4px;
+    gap: 6px;
+}
+
+.cg-ma-next-badge p {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #22ad2f;
+    margin: 0;
+}
+
+.cg-ma-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #22ad2f;
+    border-radius: 50%;
+    display: inline-block;
+    box-shadow: 0 0 0 2px rgba(34, 173, 47, 0.2);
 }
 
 .cg-ma-subject {
+    display: block;
     font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
     color: #64748b;
+    margin-bottom: 4px;
 }
 
 .cg-ma-booking-item.is-active .cg-ma-subject {
     color: #0284c7;
-}
-
-.cg-ma-date {
-    font-size: 0.75rem;
-    color: #94a3b8;
 }
 
 .cg-ma-tutor {
@@ -255,15 +294,29 @@
 }
 
 /* ==========================================================================
-   Columna Derecha: Área de Trabajo (Scroll independiente)
+   Columna Derecha: Área de Trabajo
    ========================================================================== */
 .cg-ma-workspace {
     background: #ffffff;
-    border: 1px solid #e5e7eb;
+    border: 1px solid #8aaef7;
     border-radius: 12px;
-    padding: 24px;
+    display: flex;
+    flex-direction: column;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
-    min-height: 450px;
+    flex-grow: 1;
+    overflow-y: auto; 
+    height: auto;
+    min-height: 0; 
+}
+
+@media (min-width: 992px) {
+    .cg-ma-workspace {
+        height: 100%;
+    }
+}
+
+.cg-ma-workspace-content {
+    padding: 24px;
     display: flex;
     flex-direction: column;
 }
@@ -272,16 +325,18 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-grow: 1;
+    height: 100%;
     color: #64748b;
     font-size: 0.95rem;
-    min-height: 300px;
+    padding: 40px 20px;
 }
 
+/* Detalles del área de trabajo */
 .cg-ma-detail-header {
     border-bottom: 1px solid #f1f5f9;
     padding-bottom: 16px;
     margin-bottom: 20px;
+    flex-shrink: 0;
 }
 
 .cg-ma-badge {
@@ -295,24 +350,10 @@
     margin-bottom: 8px;
 }
 
-.cg-ma-detail-title {
-    margin: 0 0 6px 0;
-    font-size: 1.03rem;
-    color: #0f172a;
-    max-width: 100%;
-}
-
-.cg-ma-detail-meta {
-    margin: 0;
-    font-size: 0.85rem;
-    color: #64748b;
-}
-
-/* ==========================================================================
-   Zona de Carga (Drag & Drop)
-   ========================================================================== */
+/* Componente Dropzone */
 .cg-ma-upload-box {
     margin-bottom: 24px;
+    flex-shrink: 0;
 }
 
 .cg-ma-dropzone {
@@ -325,7 +366,7 @@
     border-radius: 10px;
     background-color: #f8fafc;
     cursor: pointer;
-    transition: border-color 0.2s ease, background-color 0.2s ease;
+    transition: all 0.2s ease;
     text-align: center;
 }
 
@@ -351,23 +392,11 @@
     margin-top: 4px;
 }
 
-.cg-ma-file-input {
-    display: none;
-}
+.cg-ma-file-input { display: none; }
 
-.cg-ma-loading {
-    margin-top: 10px;
-    font-size: 0.85rem;
-    color: #0284c7;
-    font-weight: 500;
-    text-align: center;
-}
-
-/* ==========================================================================
-   Lista de Archivos
-   ========================================================================== */
+/* Grilla de Archivos */
 .cg-ma-files-section {
-    flex-grow: 1;
+    flex-shrink: 0;
 }
 
 .cg-ma-section-title {
@@ -375,7 +404,6 @@
     font-weight: 700;
     text-transform: uppercase;
     color: #94a3b8;
-    letter-spacing: 0.5px;
     margin: 0 0 12px 0;
 }
 
@@ -383,14 +411,11 @@
     display: grid;
     grid-template-columns: 1fr;
     gap: 12px;
-    max-height: 280px; /* Evita que el contenedor crezca infinitamente y activa scroll */
-    overflow-y: auto;
-    padding-right: 4px;
 }
 
-@media (min-width: 640px) {
+@media (min-width: 768px) {
     .cg-ma-files-grid {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     }
 }
 
@@ -402,23 +427,22 @@
     background-color: #f8fafc;
     border: 1px solid #e2e8f0;
     border-radius: 8px;
+    flex-wrap: wrap; 
+    gap: 10px;
 }
 
 .cg-ma-file-info {
     display: flex;
     align-items: center;
     gap: 12px;
-    overflow: hidden;
-    margin-right: 10px;
+    min-width: 0; 
+    flex: 1;
 }
 
-.cg-ma-file-icon {
-    font-size: 1.5rem;
-    flex-shrink: 0;
-}
+.cg-ma-file-icon { font-size: 1.5rem; flex-shrink: 0; }
 
 .cg-ma-file-details {
-    overflow: hidden;
+    min-width: 0;
 }
 
 .cg-ma-file-name {
@@ -445,41 +469,74 @@
 }
 
 .cg-ma-btn-view {
-    padding: 4px 10px;
+    padding: 6px 12px;
     font-size: 0.75rem;
     font-weight: 600;
     color: #475569;
     background-color: #ffffff;
     border: 1px solid #cbd5e1;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
-    transition: all 0.15s ease;
-}
-
-.cg-ma-btn-view:hover {
-    background-color: #f1f5f9;
-    color: #0f172a;
 }
 
 .cg-ma-btn-delete {
-    padding: 4px 6px;
-    font-size: 0.85rem;
+    padding: 6px;
+    font-size: 0.95rem;
     background: transparent;
     border: none;
     cursor: pointer;
-    opacity: 0.6;
-    transition: opacity 0.15s ease;
+    opacity: 0.7;
 }
 
-.cg-ma-btn-delete:hover {
-    opacity: 1;
+.cg-ma-btn-delete:hover { opacity: 1; }
+
+
+/* ==========================================================================
+   CAJA DE CONTEXTO / DESCRIPCIÓN (Romper palabras y scroll)
+   ========================================================================== */
+.cg-ma-description-box {
+    margin-top: 24px;
+    padding: 16px;
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    color: #475569;
+    line-height: 1.6;
+    
+    /* 1. Obligar a romper palabras gigantes (pepedpeeeee...) */
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    
+    /* 2. Respetar los saltos de línea (párrafos) que escriba el usuario */
+    white-space: pre-wrap; 
+    
+    /* 3. Evitar que crezca infinitamente (Scroll interno) */
+    max-height: 200px;
+    overflow-y: auto;
+    
+    width: 100%;
+    box-sizing: border-box;
 }
 
-.cg-ma-empty {
-    font-size: 0.85rem;
-    color: #94a3b8;
-    font-style: italic;
-    padding: 12px 0;
+
+/* Scrollbars Personalizados para todos los contenedores */
+.cg-ma-booking-list::-webkit-scrollbar,
+.cg-ma-workspace::-webkit-scrollbar,
+.cg-ma-description-box::-webkit-scrollbar {
+    width: 6px;
+}
+.cg-ma-booking-list::-webkit-scrollbar-track,
+.cg-ma-workspace::-webkit-scrollbar-track,
+.cg-ma-description-box::-webkit-scrollbar-track {
+    background: transparent;
+}
+.cg-ma-booking-list::-webkit-scrollbar-thumb,
+.cg-ma-workspace::-webkit-scrollbar-thumb,
+.cg-ma-description-box::-webkit-scrollbar-thumb {
+    background-color: #cbd5e1;
+    border-radius: 10px;
 }
 </style>
 </div>

@@ -61,6 +61,15 @@ Route::get('slot-detail/{id}',                                  [TutorController
 Route::apiResource('tutor-education',                           EducationController::class)->only(['show','store','update','destroy']);
 Route::apiResource('tutor-experience',                          ExperienceController::class)->only(['show','store','update','destroy']);
 Route::apiResource('tutor-certification',                       CertificationController::class)->only(['show','store','destroy']);
+
+// Endpoints nuevos para móvil: categoría/materia/tutor
+Route::get('subject-groups', [UserSubjectController::class, 'getSubjectGroups']);
+Route::get('subject-groups/{groupId}/subjects', [UserSubjectController::class, 'getSubjectsByGroup']);
+Route::get('tutor-subjects/available', [UserSubjectController::class, 'getAvailableSubjects']);
+Route::get('users/{userId}/subjects', [UserSubjectController::class, 'index']);
+Route::post('users/{userId}/subj
+ects', [UserSubjectController::class, 'store']);
+
 Route::apiResource('tutor-subjects',                            UserSubjectController::class)->only(['index','show','store','update','destroy']);
 
 // Rutas adicionales para gestión de materias de tutores
@@ -246,6 +255,7 @@ Route::post('user/{id}/profile-image', [ProfileController::class, 'updateProfile
 
 // Ruta para actualizar solo archivos del perfil del usuario
 Route::post('user/{id}/profile-files', [ProfileController::class, 'updateUserProfileFiles']);
+Route::delete('user/{id}/profile-video', [ProfileController::class, 'deleteProfileVideo']);
 
 // Ruta para actualizar datos del perfil del usuario
 Route::put('user/{id}/profile', [ProfileController::class, 'updateUserProfile']);

@@ -7,12 +7,12 @@
     <div class="buscar-header-content">
         <div class="container container--center">
             
-            <h1 class="header-main__title" style="color: white;">Descubre un Tutor en Línea para tus Estudios</h1>
-            <p class="header-main__subtitle" style="color: white">
+            <h1 class="header-main__title" data-translate="buscar_tutor_txt1" style="color: white;">Descubre un Tutor en Línea para tus Estudios</h1>
+            <p class="header-main__subtitle" data-translate="buscar_tutor_txt2" style="color: white">
                 Domina cualquier materia con la ayuda de nuestros tutores expertos y alcanza tus metas académicas.
             </p>
             <livewire:buscar-tutor>
-            <p class="header-main__subtitle" style="padding-top: 1rem; color:white;" id="texto">
+            <p class="header-main__subtitle" data-translate="buscar_tutor_txt3" style="padding-top: 1rem; color:white;" id="texto">
                 ¿Que deseas aprender?
             </p>
             <div class="loading-indicator">
@@ -225,47 +225,69 @@
 
     // MANTENER EL SCRIPT DEL PLACEHOLDER ANIMADO
     document.addEventListener('DOMContentLoaded', () => {
-        const inputElement = document.getElementById('searchInput');
-        if (!inputElement) return;
+    const inputElement = document.getElementById('searchInput');
+    if (!inputElement) return;
 
-        const texts = [
-            "Busca por nombre del tutor: Gariel Alpiry...",
-            "Busca por materia: Matemáticas, Contabilidad...",
-            "Buscar por temas: Álgebra, Cálculo..."
+    const typingSpeed = 70;
+    const erasingSpeed = 40;
+    const newTextDelay = 500;
+
+    let texts = getPlaceholderTexts();
+    let textIndex = 0;
+    let charIndex = 0;
+    let animationTimeout;
+
+    function getPlaceholderTexts(lang = localStorage.getItem("selectedLanguage") || "es") {
+        const currentLang = translations[lang] ? lang : "es";
+
+        return [
+            translations[currentLang].buscar_tutor_placeholder_1,
+            translations[currentLang].buscar_tutor_placeholder_2,
+            translations[currentLang].buscar_tutor_placeholder_3,
         ];
+    }
 
-        const typingSpeed = 70;
-        const erasingSpeed = 40;
-        const newTextDelay = 500;
-        
-        let textIndex = 0;
-        let charIndex = 0;
+    function type() {
+        if (charIndex < texts[textIndex].length) {
+            inputElement.placeholder += texts[textIndex].charAt(charIndex);
+            charIndex++;
 
-        function type() {
-            if (charIndex < texts[textIndex].length) {
-                inputElement.placeholder += texts[textIndex].charAt(charIndex);
-                charIndex++;
-                setTimeout(type, typingSpeed);
-            } else {
-                setTimeout(erase, newTextDelay);
-            }
+            animationTimeout = setTimeout(type, typingSpeed);
+        } else {
+            animationTimeout = setTimeout(erase, newTextDelay);
         }
+    }
 
-        function erase() {
-            if (charIndex > 0) {
-                inputElement.placeholder = texts[textIndex].substring(0, charIndex - 1);
-                charIndex--;
-                setTimeout(erase, erasingSpeed);
-            } else {
-                textIndex++;
-                if (textIndex >= texts.length) {
-                    textIndex = 0;
-                }
-                setTimeout(type, typingSpeed);
+    function erase() {
+        if (charIndex > 0) {
+            inputElement.placeholder = texts[textIndex].substring(0, charIndex - 1);
+            charIndex--;
+
+            animationTimeout = setTimeout(erase, erasingSpeed);
+        } else {
+            textIndex++;
+
+            if (textIndex >= texts.length) {
+                textIndex = 0;
             }
-        }
 
-        setTimeout(type, newTextDelay); 
+            animationTimeout = setTimeout(type, typingSpeed);
+        }
+    }
+
+    document.addEventListener("languageChanged", (event) => {
+        console.log("Placeholder recibió idioma:", event.detail.lang);
+        clearTimeout(animationTimeout);
+
+        texts = getPlaceholderTexts(event.detail.lang);
+        textIndex = 0;
+        charIndex = 0;
+        inputElement.placeholder = "";
+
+        animationTimeout = setTimeout(type, newTextDelay);
     });
+
+    animationTimeout = setTimeout(type, newTextDelay);
+});
 </script>
 @endsection
