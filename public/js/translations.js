@@ -171,6 +171,17 @@ const translations = {
       "En ClassGo creemos en el poder de la colaboración para transformar el aprendizaje. Por eso, trabajamos junto a instituciones educativas, clubes y organizaciones comprometidas con la formación académica y el desarrollo personal.",
     alianzas_Classgo_1:
       "En ClassGo creemos en el poder de la colaboración para transformar el aprendizaje.",
+    // Nosotros - Alianzas dinámicas
+    alliance_category_professional_college: "Colegio de Profesionales",
+    alliance_category_university_institute: "Universidad e Instituto",
+    alliance_category_companies: "Empresas",
+    alliance_category_others: "Otros",
+    alliance_active_singular: "alianza activa",
+    alliance_active_plural: "alianzas activas",
+    alliance_view_details: "Ver detalles",
+    alliance_detailed_information: "Información Detallada",
+    alliance_visit_official_site: "Visitar sitio oficial",
+    alliance_return: "Regresar",
     // Buscar Tutor
     /*no traduce pero si detesta al json*/
     /*tutores_encontrar: "Tutores / Encontrar tutor",
@@ -802,6 +813,57 @@ const translations = {
     floating_Whatsapp: "Escríbenos por WhatsApp",
     floating_Preguntas: "Preguntas Frecuentes",
     floating_correo: "Escríbenos por correo",
+    // Buscar Tutor
+    filter_all: "Todos",
+    tutor_verified_approved: "Tutor verificado y aprobado por ClassGo!",
+    view_subjects: "Ver Materias",
+    all_my_subjects: "Todas mis materias:",
+    review_singular: "reseña",
+    review_plural: "reseñas",
+    cta_share_knowledge_title:
+      "Comparte tu conocimiento. Transforma el futuro.",
+    cta_share_knowledge_subtitle:
+      "Ayuda a estudiantes a alcanzar sus metas, genera un ingreso extra y sé parte de esta comunidad de aprendizaje. Tu pasión por enseñar puede marcar la diferencia.",
+    cta_become_tutor_button: "¿Deseas dar tutorías?",
+    cta_register_tutor_note: "Regístrate como tutor y comienza a enseñar",
+    // Blogs - Filtro
+    blog_search_placeholder: "Buscar por palabra clave",
+    blog_no_matches: "Sin coincidencias",
+    // Blogs - Listado
+    blog_all_blogs: "Todos los blogs",
+    blog_select_category: "Seleccionar categoría",
+    blog_order_by: "Ordenar por",
+    blog_most_recent: "Más recientes",
+    blog_most_popular: "Más populares",
+    blog_category_general: "General",
+    blog_no_available: "No hay blogs disponibles.",
+    // Blog - Detalle
+    blog: "Blog",
+    blog_reading_time: "min de lectura",
+    blog_file_not_found: "Archivo no encontrado",
+    blog_view_singular: "visita",
+    blog_view_plural: "visitas",
+    blog_popular_blogs: "Blogs Populares",
+    // Buscar Tutor - Filtro antiguo/comentado
+    tutor_search_keyword_label: "Buscar por palabra clave",
+    tutor_search_keyword_placeholder: "Buscar por palabra clave",
+    tutor_search_subject_group_label: "Grupo de materias",
+    tutor_search_choose_subject_group: "Elige grupo de materias",
+    tutor_search_exact_sciences: "Ciencias Exactas",
+    tutor_search_humanities: "Humanidades",
+    tutor_search_languages: "Idiomas",
+    tutor_search_session: "Sesión",
+    tutor_search_language: "Idioma:",
+    tutor_search_book_session: "Reservar una sesión",
+    // Buscar Tutor - Buscador dinámico
+    tutor_live_search_placeholder:
+      "¿Qué necesitas aprender? Busca por nombre del tutor o materia.",
+    tutor_search_per_tutoring: "/ tutoría",
+    tutor_search_i_can_teach: "Puedo enseñar:",
+    tutor_search_no_results_title: "¡Vaya! No encontramos resultados.",
+    tutor_search_no_results_message:
+      "Pero no te preocupes, ¡estamos aquí para ayudarte! Es posible que el tutor o la materia que buscas no esté disponible, o que haya un error de escritura.",
+    tutor_search_contact_us: "Contáctanos",
   },
   en: {
     // Navbar
@@ -969,6 +1031,17 @@ const translations = {
       "At ClassGo, we believe in the power of collaboration to transform learning. That’s why we work alongside educational institutions, clubs, and organizations committed to academic growth and personal development.",
     alianzas_Classgo_1:
       "At ClassGo we believe in the power of collaboration to transform learning.",
+    // About Us - Dynamic alliances
+    alliance_category_professional_college: "Professional Associations",
+    alliance_category_university_institute: "Universities and Institutes",
+    alliance_category_companies: "Companies",
+    alliance_category_others: "Others",
+    alliance_active_singular: "active alliance",
+    alliance_active_plural: "active alliances",
+    alliance_view_details: "View details",
+    alliance_detailed_information: "Detailed Information",
+    alliance_visit_official_site: "Visit official site",
+    alliance_return: "Back",
     // Buscar Tutor
     /*no traduce pero si detesta al json*/
     /*tutores_encontrar: "Tutors / Find a tutor",
@@ -1056,6 +1129,7 @@ const translations = {
     revisar_solicitudes_desc:
       "Review incoming student requests and manage your bookings by accepting lessons that fit your availability. Confirm bookings to connect with students and start teaching as scheduled.",
     dirige_clase: "Lead your class with Meet",
+    dirige_clase2: "Host the tutoring session with Google Meet",
     dirige_clase_desc:
       "Connect at the scheduled time and start delivering your session. Use the platform's integrated video conferencing tool to engage with your students and provide an interactive learning experience.",
     proceso_calidad: "We guarantee a quality process",
@@ -1581,6 +1655,56 @@ const translations = {
     floating_Whatsapp: "Message us on WhatsApp",
     floating_Preguntas: "Frequently Asked Questions",
     floating_correo: "Contact Us by Email",
+    // Buscar Tutor
+    filter_all: "All",
+    tutor_verified_approved: "Tutor verified and approved by ClassGo!",
+    view_subjects: "View Subjects",
+    all_my_subjects: "All my subjects:",
+    review_singular: "review",
+    review_plural: "reviews",
+    cta_share_knowledge_title: "Share your knowledge. Transform the future.",
+    cta_share_knowledge_subtitle:
+      "Help students achieve their goals, earn extra income, and become part of this learning community. Your passion for teaching can make a difference.",
+    cta_become_tutor_button: "Do you want to give tutoring sessions?",
+    cta_register_tutor_note: "Register as a tutor and start teaching",
+    // Blogs - Filter
+    blog_search_placeholder: "Search by keyword",
+    blog_no_matches: "No matches found",
+    // Blogs - List
+    blog_all_blogs: "All blogs",
+    blog_select_category: "Select category",
+    blog_order_by: "Sort by",
+    blog_most_recent: "Most recent",
+    blog_most_popular: "Most popular",
+    blog_category_general: "General",
+    blog_no_available: "No blogs available.",
+    // Blog - Detail
+    blog: "Blog",
+    blog_reading_time: "min read",
+    blog_file_not_found: "File not found",
+    blog_view_singular: "view",
+    blog_view_plural: "views",
+    blog_popular_blogs: "Popular Blogs",
+    // Search Tutor - Old/commented filter
+    tutor_search_keyword_label: "Search by keyword",
+    tutor_search_keyword_placeholder: "Search by keyword",
+    tutor_search_subject_group_label: "Subject group",
+    tutor_search_choose_subject_group: "Choose subject group",
+    tutor_search_exact_sciences: "Exact Sciences",
+    tutor_search_humanities: "Humanities",
+    tutor_search_languages: "Languages",
+    tutor_search_session: "Session",
+    tutor_search_language: "Language:",
+    tutor_search_book_session: "Book a session",
+    // Search Tutor - Dynamic search
+    tutor_live_search_placeholder:
+      "What do you need to learn? Search by tutor name or subject.",
+    tutor_search_per_tutoring: "/ tutoring session",
+    tutor_search_i_can_teach: "I can teach:",
+    tutor_search_no_results_title: "Oops! We couldn't find any results.",
+    tutor_search_no_results_message:
+      "But don't worry, we're here to help! The tutor or subject you're looking for may not be available, or there may be a typing error.",
+    tutor_search_contact_us: "Contact us",
   },
   pt: {
     // Navbar
@@ -1753,6 +1877,17 @@ const translations = {
       "Na ClassGo, acreditamos no poder da colaboração para transformar o aprendizado. Por isso, trabalhamos junto a instituições de ensino, clubes e organizações comprometidas com o desenvolvimento acadêmico e pessoal.",
     alianzas_Classgo_1:
       "Na ClassGo, acreditamos no poder da colaboração para transformar o aprendizado.",
+    // Sobre nós - Alianças dinâmicas
+    alliance_category_professional_college: "Colégio de Profissionais",
+    alliance_category_university_institute: "Universidade e Instituto",
+    alliance_category_companies: "Empresas",
+    alliance_category_others: "Outros",
+    alliance_active_singular: "aliança ativa",
+    alliance_active_plural: "alianças ativas",
+    alliance_view_details: "Ver detalhes",
+    alliance_detailed_information: "Informação Detalhada",
+    alliance_visit_official_site: "Visitar site oficial",
+    alliance_return: "Voltar",
     // Buscar Tutor
     /*no traduce pero si detesta al json*/
     /*tutores_encontrar: "Tutores / Encontrar tutor",
@@ -1842,6 +1977,7 @@ const translations = {
     revisar_solicitudes_desc:
       "Revise as solicitações recebidas dos alunos e gerencie suas reservas aceitando aulas que se ajustem à sua disponibilidade. Confirme as reservas para se conectar com os alunos e começar a ensinar conforme o programado.",
     dirige_clase: "Conduza sua aula com o Meet",
+    dirige_clase2: "Conduza a tutoria com o Google Meet",
     dirige_clase_desc:
       "Conecte-se no horário agendado e comece a ministrar sua sessão. Use a ferramenta de videoconferência integrada da plataforma para interagir com seus alunos e oferecer uma experiência de aprendizagem envolvente.",
     proceso_calidad: "Garantimos um processo de qualidade",
@@ -2380,7 +2516,58 @@ const translations = {
     floating_close: "Fechar",
     floating_Whatsapp: "Fale conosco pelo WhatsApp",
     floating_Preguntas: "Perguntas frequentes",
-    floating_correos: "Entre em contato conosco por e-mail",
+    floating_correo: "Entre em contato conosco por e-mail",
+    // Buscar Tutor
+    filter_all: "Todos",
+    tutor_verified_approved: "Tutor verificado e aprovado pela ClassGo!",
+    view_subjects: "Ver Matérias",
+    all_my_subjects: "Todas as minhas matérias:",
+    review_singular: "avaliação",
+    review_plural: "avaliações",
+    cta_share_knowledge_title:
+      "Compartilhe seu conhecimento. Transforme o futuro.",
+    cta_share_knowledge_subtitle:
+      "Ajude estudantes a alcançar seus objetivos, gere uma renda extra e faça parte desta comunidade de aprendizagem. Sua paixão por ensinar pode fazer a diferença.",
+    cta_become_tutor_button: "Deseja dar tutorias?",
+    cta_register_tutor_note: "Registre-se como tutor e comece a ensinar",
+    // Blogs - Filtro
+    blog_search_placeholder: "Buscar por palavra-chave",
+    blog_no_matches: "Sem coincidências",
+    // Blogs - Lista
+    blog_all_blogs: "Todos os blogs",
+    blog_select_category: "Selecionar categoria",
+    blog_order_by: "Ordenar por",
+    blog_most_recent: "Mais recentes",
+    blog_most_popular: "Mais populares",
+    blog_category_general: "Geral",
+    blog_no_available: "Não há blogs disponíveis.",
+    // Blog - Detalhe
+    blog: "Blog",
+    blog_reading_time: "min de leitura",
+    blog_file_not_found: "Arquivo não encontrado",
+    blog_view_singular: "visita",
+    blog_view_plural: "visitas",
+    blog_popular_blogs: "Blogs Populares",
+    // Buscar Tutor - Filtro antigo/comentado
+    tutor_search_keyword_label: "Buscar por palavra-chave",
+    tutor_search_keyword_placeholder: "Buscar por palavra-chave",
+    tutor_search_subject_group_label: "Grupo de matérias",
+    tutor_search_choose_subject_group: "Escolha o grupo de matérias",
+    tutor_search_exact_sciences: "Ciências Exatas",
+    tutor_search_humanities: "Humanidades",
+    tutor_search_languages: "Idiomas",
+    tutor_search_session: "Sessão",
+    tutor_search_language: "Idioma:",
+    tutor_search_book_session: "Reservar uma sessão",
+    // Buscar Tutor - Busca dinâmica
+    tutor_live_search_placeholder:
+      "O que você precisa aprender? Busque pelo nome do tutor ou pela matéria.",
+    tutor_search_per_tutoring: "/ tutoria",
+    tutor_search_i_can_teach: "Posso ensinar:",
+    tutor_search_no_results_title: "Ops! Não encontramos resultados.",
+    tutor_search_no_results_message:
+      "Mas não se preocupe, estamos aqui para ajudar! O tutor ou a matéria que você procura pode não estar disponível, ou pode haver um erro de digitação.",
+    tutor_search_contact_us: "Fale conosco",
   },
 };
 

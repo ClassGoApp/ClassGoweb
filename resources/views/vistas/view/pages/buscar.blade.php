@@ -27,7 +27,7 @@
             
             <!-- Filtros de materias -->
             <div id="filterControls" class="filter-controls__list">
-                <button class="filter-btn filter-btn--active" data-subject-id="all">Todos</button>
+                <button class="filter-btn filter-btn--active" data-subject-id="all" data-translate="filter_all">Todos</button>
                 @foreach ($topSubjects as $item)
                     <button class="filter-btn" data-subject-id="{{ $item->subject_id }}">{{ $item->subject->name }}</button>
                 @endforeach
@@ -78,12 +78,18 @@
                                     </p>
                                 </div>
                                 
-                                <p class="card-tutor__description">{{ $tutor->profile->tagline ?? ' Tutor verificado y aprobado por ClassGo! '}}</p>
+                                <p class="card-tutor__description" data-translate="tutor_verified_approved">
+                                    Tutor verificado y aprobado por ClassGo!
+                                </p>
                             </div>
                             
                             <div class="card-tutor__footer">
-                                <button @click="expandedCard = {{ $tutorId }}" class="card-tutor__button-materias">Ver Materias</button>
-                                <button class="card-tutor__button" onclick="window.location.href='{{ route('tutor', ['slug' => $tutor->profile['slug']]) }}'">Ver Perfil</button>
+                                <button @click="expandedCard = {{ $tutorId }}" class="card-tutor__button-materias" data-translate="view_subjects">
+                                    Ver Materias
+                                </button>
+                                <button class="card-tutor__button" onclick="window.location.href='{{ route('tutor', ['slug' => $tutor->profile['slug']]) }}'" data-translate="view_profile">
+                                    Ver Perfil
+                                </button>
                             </div>
                         </div>
 
@@ -104,7 +110,7 @@
                                 </button>
                             </div>
                             
-                            <p class="detail-panel__subtitle">Todas mis materias:</p>
+                            <p class="detail-panel__subtitle" data-translate="all_my_subjects">Todas mis materias:</p>
                             
                             <div class="detail-panel__tags-container">
                                 @foreach ($tutor->userSubjects as $index => $userSubject)
@@ -118,8 +124,15 @@
                                         <svg class="rating-info__star" fill="currentColor" viewBox="0 0 20 20">
                                             <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
                                         </svg>
-                                        <span class="rating-info__text">{{ number_format($tutor->avg_rating ?? 0, 1) }} 
-                                            ({{ $tutor->total_reviews }} {{ $tutor->total_reviews == 1 ? 'reseña' : 'reseñas' }})
+                                        <span class="rating-info__text">
+                                            {{ number_format($tutor->avg_rating ?? 0, 1) }}
+                                            ({{ $tutor->total_reviews }}
+                                            @if ($tutor->total_reviews == 1)
+                                                <span data-translate="review_singular">reseña</span>
+                                            @else
+                                                <span data-translate="review_plural">reseñas</span>
+                                            @endif
+                                            )
                                         </span>
                                     </div>
                                 </div>
@@ -137,21 +150,21 @@
                 <div class="cta-card">
                     <div class="cta-card__content">
                         
-                        <h2 class="cta-card__title">
+                        <h2 class="cta-card__title" data-translate="cta_share_knowledge_title">
                             Comparte tu conocimiento. Transforma el futuro.
                         </h2>
                         
-                        <p class="cta-card__subtitle">
+                        <p class="cta-card__subtitle" data-translate="cta_share_knowledge_subtitle">
                             Ayuda a estudiantes a alcanzar sus metas, genera un ingreso extra y sé parte de esta comunidad de aprendizaje. Tu pasión por enseñar puede marcar la diferencia.
                         </p>
                         
                         <div class="cta-card__action">
-                            <a href="{{ route('login', ['mode' => 'register'])}}" class="cta-card__button">
+                            <a href="{{ route('login', ['mode' => 'register'])}}" class="cta-card__button" data-translate="cta_become_tutor_button">
                                 ¿Deseas dar tutorías?
                             </a>
                         </div>
 
-                        <p class="cta-card__note">
+                        <p class="cta-card__note" data-translate="cta_register_tutor_note">
                             Regístrate como tutor y comienza a enseñar
                         </p>
                         
