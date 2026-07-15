@@ -28,11 +28,13 @@
             <div>
                 <h4 class="tutor-section-title">
                     <span class="tutor-tooltip-wrapper">
-                        Mis días disponibles <span style="font-size: 0.8em; color: #fbbf24; cursor: help;">ⓘ</span>
+                        <span data-translate="reservation_available_days">Mis días disponibles</span> <span style="font-size: 0.8em; color: #fbbf24; cursor: help;">ⓘ</span>
 
                         <div class="tutor-tooltip-content tooltip-left-align">
-                            <strong>Paso 1:</strong>
-                            <p>Busca en el calendario los días marcados (círculos) y haz clic en el que prefieras.</p>
+                            <strong data-translate="reservation_step_1">Paso 1:</strong>
+                            <p data-translate="reservation_step_1_desc">
+                                Busca en el calendario los días marcados (círculos) y haz clic en el que prefieras.
+                            </p>
                             <div class="tutor-tooltip-arrow"></div>
                         </div>
                     </span>
@@ -50,7 +52,12 @@
                                 stroke-linejoin="round" class="tutor-calendar-nav-icon">
                                 <path d="m15 18-6-6 6-6"></path>
                             </svg></button>
-                        <h5 class="tutor-calendar-month">{{ $currentDate->translatedFormat('F Y') }}</h5>
+                        <h5 class="tutor-calendar-month"
+                            data-calendar-month
+                            data-month="{{ $currentDate->month }}"
+                            data-year="{{ $currentDate->year }}">
+                            {{ $currentDate->translatedFormat('F Y') }}
+                        </h5>
                         <button wire:click="goToNextMonth" class="tutor-calendar-nav-btn"><svg
                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -59,13 +66,13 @@
                             </svg></button>
                     </div>
                     <div class="tutor-calendar-grid">
-                        <div class="tutor-calendar-day-label">D</div>
-                        <div class="tutor-calendar-day-label">L</div>
-                        <div class="tutor-calendar-day-label">M</div>
-                        <div class="tutor-calendar-day-label">M</div>
-                        <div class="tutor-calendar-day-label">J</div>
-                        <div class="tutor-calendar-day-label">V</div>
-                        <div class="tutor-calendar-day-label">S</div>
+                        <div class="tutor-calendar-day-label" data-translate="calendar_day_sun_short">D</div>
+                        <div class="tutor-calendar-day-label" data-translate="calendar_day_mon_short">L</div>
+                        <div class="tutor-calendar-day-label" data-translate="calendar_day_tue_short">M</div>
+                        <div class="tutor-calendar-day-label" data-translate="calendar_day_wed_short">M</div>
+                        <div class="tutor-calendar-day-label" data-translate="calendar_day_thu_short">J</div>
+                        <div class="tutor-calendar-day-label" data-translate="calendar_day_fri_short">V</div>
+                        <div class="tutor-calendar-day-label" data-translate="calendar_day_sat_short">S</div>
                         @for ($i = 0; $i < $startDay; $i++)
                             <div></div>
                         @endfor
@@ -97,11 +104,13 @@
                 <div class="tutor-time-selector-col">
                     <h4 class="tutor-section-title">
                         <span class="tutor-tooltip-wrapper">
-                            Selecciona una hora <span style="font-size: 0.8em; color: #fbbf24; cursor: help;">ⓘ</span>
+                            <span data-translate="reservation_select_time">Selecciona una hora</span> <span style="font-size: 0.8em; color: #fbbf24; cursor: help;">ⓘ</span>
 
                             <div class="tutor-tooltip-content tooltip-left-align">
-                                <strong>Paso 2:</strong>
-                                <p>Elige un bloque de horario disponible para confirmar la tutoria.</p>
+                                <strong data-translate="reservation_step_2">Paso 2:</strong>
+                                <p data-translate="reservation_step_2_desc">
+                                    Elige un bloque de horario disponible para confirmar la tutoría.
+                                </p>
                                 <div class="tutor-tooltip-arrow"></div>
                             </div>
                         </span>
@@ -147,7 +156,9 @@
                                 @endforeach
                             </div>
                         @else
-                            <p class="tutor-no-availability">Horas no disponible</p>
+                            <p class="tutor-no-availability" data-translate="reservation_no_hours_available">
+                                Horas no disponible
+                            </p>
                         @endif
                     </div>
                 </div>
@@ -164,12 +175,15 @@
 
                 <span class="tutor-tooltip-wrapper">
 
-                    <button wire:click="openReservationModal" wire:loading.attr="disabled" class="tutor-pay-btn">Pagar y
-                        reservar</button>
+                    <button wire:click="openReservationModal" wire:loading.attr="disabled" class="tutor-pay-btn" data-translate="reservation_pay_and_book">
+                        Pagar y reservar
+                    </button>
 
                     <div class="tutor-tooltip-content">
-                        <strong>Paso 3:</strong>
-                        <p>Haz clic aquí para confirmar tu reserva y realizar el pago.</p>
+                        <strong data-translate="reservation_step_3">Paso 3:</strong>
+                        <p data-translate="reservation_step_3_desc">
+                            Haz clic aquí para confirmar tu reserva y realizar el pago.
+                        </p>
                         <div class="tutor-tooltip-arrow"></div>
                     </div>
 
@@ -187,13 +201,18 @@
                         </path>
                     </svg>
                     <div>
-                        <p class="alert-title">Función solo para Estudiantes</p>
-                        <p class="alert-text">
+                        <p class="alert-title" data-translate="reservation_only_students_title">
+                            Función solo para Estudiantes
+                        </p>
+
+                        <p class="alert-text" data-translate="reservation_only_students_desc">
                             Para poder reservar una sesión, necesitas utilizar una cuenta de tipo "Estudiante".
                         </p>
+
                         <p class="alert-text alert-subtext">
-                            Si tienes una, por favor <a href="/logout" class="alert-link">cierra sesión</a> y vuelve a ingresar
-                            con tu cuenta de estudiante.
+                            <span data-translate="reservation_only_students_logout_prefix">Si tienes una, por favor</span>
+                            <a href="/logout" class="alert-link" data-translate="reservation_logout_link">cierra sesión</a>
+                            <span data-translate="reservation_only_students_logout_suffix">y vuelve a ingresar con tu cuenta de estudiante.</span>
                         </p>
                     </div>
                 </div>
@@ -211,10 +230,16 @@
                         d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
                 <div>
-                    <p class="alert-title">¡Casi listo para reservar!</p>
+                    <p class="alert-title" data-translate="reservation_guest_title">
+                        ¡Casi listo para reservar!
+                    </p>
+
                     <p class="alert-text">
-                        Para agendar una sesión, solo necesitas <a href="/login" class="alert-link">iniciar sesión</a> o
-                        <a href="/register" class="alert-link">crear tu cuenta</a> de estudiante.
+                        <span data-translate="reservation_guest_desc_prefix">Para agendar una sesión, solo necesitas</span>
+                        <a href="/login" class="alert-link" data-translate="reservation_login_link">iniciar sesión</a>
+                        <span data-translate="reservation_or">o</span>
+                        <a href="/register" class="alert-link" data-translate="reservation_register_link">crear tu cuenta</a>
+                        <span data-translate="reservation_guest_desc_suffix">de estudiante.</span>
                     </p>
                 </div>
             </div>
@@ -236,12 +261,11 @@
                             ✓
                         </div>
 
-                        <h2 style="font-size: 1.5rem; font-weight: 700; color: #0f172a; margin: 0;">
+                        <h2 style="font-size: 1.5rem; font-weight: 700; color: #0f172a; margin: 0;" data-translate="reservation_success_title">
                             ¡Reserva realizada exitosamente!
                         </h2>
 
-                        <p
-                            style="display:block !important; font-size: 1rem; color: #64748b; margin: 0; max-width: 340px;">
+                        <p style="display:block !important; font-size: 1rem; color: #64748b; margin: 0; max-width: 340px;" data-translate="reservation_success_desc">
                             También podrás ver tus reservas en el panel de tu perfil.
                         </p>
                     </div>
@@ -384,11 +408,13 @@
 
                         {{-- COLUMNA FORMULARIO --}}
                         <div class="modal-form-column">
-                            <h2 class="form-title">Confirmar Reserva</h2>
+                            <h2 class="form-title" data-translate="reservation_confirm_title">
+                                Confirmar Reserva
+                            </h2>
 
                             {{-- CUPÓN --}}
                             <div class="coupon-section">
-                                <label for="coupon" class="input-label" style="padding-top: 0.5rem">
+                                <label for="coupon" class="input-label" style="padding-top: 0.5rem" data-translate="reservation_coupon_question">
                                     ¿Tienes un cupón de descuento?
                                 </label>
 
@@ -396,10 +422,12 @@
                                     @if ($introCupon)
                                         <div class="coupon-input-group">
                                             <input type="text" wire:model="cuponCode" wire:click="mostrarCupones"
-                                                placeholder="Ej. classgo25" class="coupon-input">
+                                                placeholder="Ej. classgo25"
+                                                data-placeholder-key="reservation_coupon_placeholder"
+                                                class="coupon-input">
 
                                             <button type="button" wire:click="aplicarCupon" id="btnAplicar"
-                                                class="btn-coupon btn btn-secondary">
+                                                class="btn-coupon btn btn-secondary" data-translate="reservation_apply_coupon">
                                                 Aplicar
                                             </button>
                                         </div>
@@ -408,14 +436,13 @@
                                     @if ($cuponSelecionado)
                                         <div id="appliedCouponContainer" class="applied-coupon-container">
                                             <p class="applied-coupon-text">
-                                                Cupón aplicado: <br>
+                                                <span data-translate="reservation_coupon_applied">Cupón aplicado:</span> <br>
                                                 <span id="appliedCouponCode" class="applied-coupon-code">
                                                     {{ $cuponCode }}
                                                 </span>
                                             </p>
 
-                                            <button type="button" wire:click="quitarCupon"
-                                                class="remove-coupon-btn">
+                                            <button type="button" wire:click="quitarCupon" class="remove-coupon-btn" data-translate="reservation_remove_coupon">
                                                 Quitar
                                             </button>
                                         </div>
@@ -448,7 +475,9 @@
                                     x-on:livewire-upload-error="isUploading = false"
                                     x-on:livewire-upload-progress="progress = $event.detail.progress">
 
-                                    <label class="input-label">Comprobante de pago</label>
+                                    <label class="input-label" data-translate="reservation_payment_receipt">
+                                        Comprobante de pago
+                                    </label>
 
                                     <label for="comprobante"
                                         class="file-upload-cta-box {{ $errors->has('paymentReceipt') ? 'input-error-active' : '' }}"
@@ -486,7 +515,7 @@
                                         <div class="file-upload-content">
                                             @if ($paymentReceipt)
                                                 <div class="cta-text-group">
-                                                    <p class="file-upload-text cta-title-success">
+                                                    <p class="file-upload-text cta-title-success" data-translate="reservation_receipt_uploaded">
                                                         ¡Comprobante adjuntado con éxito!
                                                     </p>
 
@@ -495,16 +524,17 @@
                                                     </p>
                                                 </div>
 
-                                                <span class="cta-action-link">Cambiar archivo</span>
+                                                <span class="cta-action-link" data-translate="reservation_change_file">
+                                                    Cambiar archivo
+                                                </span>
                                             @else
                                                 <div class="cta-text-group">
-                                                    <p class="file-upload-text cta-main-title">
+                                                    <p class="file-upload-text cta-main-title" data-translate="reservation_upload_receipt">
                                                         ¡Sube tu comprobante de pago!
                                                     </p>
 
-                                                    <p class="file-upload-subtext">
-                                                        Haz clic para buscar tu captura o arrastra el archivo aquí
-                                                        mismo.
+                                                    <p class="file-upload-subtext" data-translate="reservation_upload_receipt_desc">
+                                                        Haz clic para buscar tu captura o arrastra el archivo aquí mismo.
                                                     </p>
                                                 </div>
                                             @endif
@@ -527,7 +557,9 @@
                                         </div>
 
                                         <div class="progress-meta">
-                                            <span class="progress-text">Subiendo archivo al servidor...</span>
+                                            <span class="progress-text" data-translate="reservation_uploading_file">
+                                                Subiendo archivo al servidor...
+                                            </span>
                                             <span class="progress-percentage" x-text="progress + '%'">0%</span>
                                         </div>
                                     </div>
@@ -538,11 +570,15 @@
 
                             <div class="custom-select-container" x-data="{
                                 open: false,
-                                selectedName: '{{ $selectedSubject ? $materiasTutor->where('subject.id', $selectedSubject)->first()?->subject->name ?? 'Elegir materia' : 'Elegir materia' }}'
+                                selectedName: '{{ $selectedSubject ? $materiasTutor->where('subject.id', $selectedSubject)->first()?->subject->name ?? 'Elegir materia' : 'Elegir materia' }}',
+                                subjectPlaceholder: reservationText('reservation_choose_subject', 'Elegir materia')
                             }"
-                                x-on:click.away="open = false">
+                            x-init="if (!{{ $selectedSubject ? 'true' : 'false' }}) selectedName = subjectPlaceholder"
+                            x-on:click.away="open = false">
 
-                                <label class="input-label">Materia</label>
+                                <label class="input-label" data-translate="reservation_subject_label">
+                                    Materia
+                                </label>
 
                                 <input type="hidden" id="materia" wire:model="selectedSubject">
 
@@ -598,14 +634,14 @@
                                 <div class="info-box" wire:loading.remove wire:target="makeReservation">
 
                                     <p class="info-box-p" style="display:block !important">
-                                        <strong>Fecha:</strong>
+                                        <strong data-translate="reservation_date_label">Fecha:</strong>
                                         <span>
                                             {{ $currentDate->copy()->setDay($selectedDay)->translatedFormat('j \de F \de Y') }}
                                         </span>
                                     </p>
 
                                     <p class="info-box-p" style="display:block !important">
-                                        <strong>Horario:</strong>
+                                        <strong data-translate="reservation_schedule_label">Horario:</strong>
 
                                         @php
                                             sort($selectedTimes);
@@ -617,18 +653,30 @@
 
                                         <span>{{ $horaInicio }} - {{ $horaFin }}</span>
                                         <br>
-                                        <small>({{ count($selectedTimes) }} sesiones de 20 min continuas)</small>
+                                        <small>
+                                            ({{ count($selectedTimes) }}
+                                            @if(count($selectedTimes) == 1)
+                                                <span data-translate="reservation_session_singular">sesión de 20 min continua</span>
+                                            @else
+                                                <span data-translate="reservation_session_plural">sesiones de 20 min continuas</span>
+                                            @endif
+                                            )
+                                        </small>
                                     </p>
 
                                     @if ($descuento > 0)
                                         <p class="info-box-p" style="display:block !important;">
-                                            <strong>Descuento ({{ $porcentaje }}%):</strong>
+                                            <strong>
+                                                <span data-translate="reservation_discount_label">Descuento</span> ({{ $porcentaje }}%):
+                                            </strong>
                                             -{{ number_format($descuento, 2) }} Bs.
                                         </p>
                                     @endif
 
                                     <p class="info-box-p" style="display:block !important;">
-                                        <strong>Total a Pagar:</strong>
+                                        <strong data-translate="reservation_total_to_pay">
+                                            Total a Pagar:
+                                        </strong>
 
                                         <span
                                             style="font-size: 1.25rem; font-weight: bold; color: var(--secundary-color);">
@@ -642,12 +690,12 @@
                             <div class="action-buttons" wire:loading.remove wire:target="makeReservation">
 
                                 <button type="button" wire:click="closeModal" wire:loading.attr="disabled"
-                                    wire:target="makeReservation" class="btn btn-primary">
+                                    wire:target="makeReservation" class="btn btn-primary" data-translate="reservation_cancel">
                                     Cancelar
                                 </button>
 
                                 <button type="submit" wire:loading.attr="disabled" wire:target="makeReservation"
-                                    class="btn btn-primary">
+                                    class="btn btn-primary" data-translate="reservation_book">
                                     Reservar
                                 </button>
                             </div>
@@ -660,11 +708,11 @@
                     <div class="loading-center-box">
                         <div class="main-loading-ring"></div>
 
-                        <h3 class="loading-view-title">
+                        <h3 class="loading-view-title" data-translate="reservation_processing_title">
                             Procesando tu reserva
                         </h3>
 
-                        <p class="loading-view-desc">
+                        <p class="loading-view-desc" data-translate="reservation_processing_desc">
                             Estamos asegurando tus bloques de horario y validando los datos con el servidor.
                             Por favor, no cierres esta ventana.
                         </p>
@@ -678,5 +726,91 @@
 
     @endif
 
+    <script>
+    function reservationText(key, fallback = '') {
+        const lang = localStorage.getItem('selectedLanguage') || 'es';
+
+        if (typeof translations === 'undefined') {
+            return fallback;
+        }
+
+        const t = translations[lang] || translations.es;
+
+        return t[key] || fallback;
+    }
+
+    function applyReservationPlaceholders() {
+        const lang = localStorage.getItem('selectedLanguage') || 'es';
+
+        if (typeof translations === 'undefined') {
+            return;
+        }
+
+        const t = translations[lang] || translations.es;
+
+        document.querySelectorAll('[data-placeholder-key]').forEach((element) => {
+            const key = element.getAttribute('data-placeholder-key');
+
+            if (t[key]) {
+                element.setAttribute('placeholder', t[key]);
+            }
+        });
+    }
+
+    function applyReservationCalendarMonth() {
+        const lang = localStorage.getItem('selectedLanguage') || 'es';
+
+        const localeMap = {
+            es: 'es-BO',
+            en: 'en-US',
+            pt: 'pt-BR'
+        };
+
+        const locale = localeMap[lang] || 'es-BO';
+
+        document.querySelectorAll('[data-calendar-month]').forEach((element) => {
+            const month = parseInt(element.getAttribute('data-month'), 10);
+            const year = parseInt(element.getAttribute('data-year'), 10);
+
+            if (!month || !year) return;
+
+            const date = new Date(year, month - 1, 1);
+
+            let text = new Intl.DateTimeFormat(locale, {
+                month: 'long',
+                year: 'numeric'
+            }).format(date);
+
+            text = text.charAt(0).toUpperCase() + text.slice(1);
+
+            element.textContent = text;
+        });
+    }
+
+    function applyReservationTranslationsAfterLivewire() {
+        const lang = localStorage.getItem('selectedLanguage') || 'es';
+
+        applyReservationPlaceholders();
+        applyReservationCalendarMonth();
+
+        if (typeof selectLanguage === 'function') {
+            selectLanguage(lang, false);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', applyReservationTranslationsAfterLivewire);
+    document.addEventListener('livewire:navigated', applyReservationTranslationsAfterLivewire);
+
+    document.addEventListener('languageChanged', function() {
+        applyReservationPlaceholders();
+        applyReservationCalendarMonth();
+    });
+
+    document.addEventListener('livewire:init', function() {
+        Livewire.hook('morph.updated', function() {
+            setTimeout(applyReservationTranslationsAfterLivewire, 50);
+        });
+    });
+</script>
 
 </div>

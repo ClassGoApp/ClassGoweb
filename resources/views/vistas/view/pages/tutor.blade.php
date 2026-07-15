@@ -7,8 +7,13 @@
     <main class="tutor-main">
         <!-- Breadcrumbs -->
         <div class="tutor-breadcrumbs">
-            <a href="#" class="tutor-breadcrumb-link">Tutores</a> / 
-            <a href="{{ route('buscar')}}" class="tutor-breadcrumb-link">Encontrar tutor</a> / 
+            <a href="#" class="tutor-breadcrumb-link" data-translate="tutor_profile_breadcrumb_tutors">
+                Tutores
+            </a> / 
+
+            <a href="{{ route('buscar')}}" class="tutor-breadcrumb-link" data-translate="tutor_profile_breadcrumb_find_tutor">
+                Encontrar tutor
+            </a> / 
             <span class="tutor-breadcrumb-current">{{ $tutor->profile->first_name ?? '' }} {{ $tutor->profile->last_name ?? '' }}</span>
         </div>
 
@@ -45,6 +50,32 @@
     @include('vistas.view.pages.modals.modal-reserva.content')
 
     <script>
+        function tutorProfileText(key, fallback = '') {
+            const lang = localStorage.getItem('selectedLanguage') || 'es';
+
+            if (typeof translations === 'undefined') {
+                return fallback;
+            }
+
+            const t = translations[lang] || translations.es;
+
+            return t[key] || fallback;
+        }
+
+        function applyTutorProfileDynamicTranslations() {
+            const favoriteBtn = document.getElementById('favorite-btn-blue');
+            const textFavorito = document.getElementById('text-favorito');
+
+            if (favoriteBtn && textFavorito) {
+                const isFavorited = favoriteBtn.classList.contains('is-favorited-blue');
+
+                textFavorito.textContent = isFavorited
+                    ? tutorProfileText('tutor_profile_in_favorites', 'En tus Favoritos')
+                    : tutorProfileText('tutor_profile_add_favorites', 'Añadir a Favoritos');
+            }
+        }
+
+        document.addEventListener('languageChanged', applyTutorProfileDynamicTranslations);
         //Para los botones de favoritos
         document.addEventListener('DOMContentLoaded', () => {
             const favoriteBtn = document.getElementById('favorite-btn-blue');
@@ -59,26 +90,27 @@
                     favoriteBtn.classList.add('is-favorited-blue');
                 }
 
+                applyTutorProfileDynamicTranslations();
 
                 favoriteBtn.addEventListener('click', () => {
-                    // Alternar la clase en el botón
-                    const newFavoriteState = !favoriteBtn.classList.toggle('is-favorited-blue');
+                    const newFavoriteState = favoriteBtn.classList.toggle('is-favorited-blue');
 
-                    // Guardar el nuevo estado en el almacenamiento local
                     localStorage.setItem(localStorageKey, newFavoriteState);
 
-                    // Puedes añadir aquí la lógica para interactuar con el servidor
                     console.log(estiloFavorito);
 
                     if (newFavoriteState) {
-                        textFavorito.textContent = 'Añadir a Favoritos';
-                        
+                        textFavorito.textContent = tutorProfileText(
+                            'tutor_profile_in_favorites',
+                            'En tus Favoritos'
+                        );
                     } else {
                         console.log('Botón con corazón azul desactivado.');
-                        textFavorito.textContent = 'En tus Favoritos';
+                        textFavorito.textContent = tutorProfileText(
+                            'tutor_profile_add_favorites',
+                            'Añadir a Favoritos'
+                        );
                     }
-
-                    
                 });
             }
         });
@@ -247,7 +279,12 @@
             const btnFacebook = document.getElementById('btn-share-facebook');
             const slug = @json($tutor->profile->slug ?? '');
             const shareUrl = `https://classgoapp.com/tutores/${slug}`;
-            const shareMsg = 'Hecha un vistazo a mi perfil en ClassGo!';
+            function getTutorShareMessage() {
+                return tutorProfileText(
+                    'share_modal_description',
+                    'Echa un vistazo a mi perfil en ClassGo!'
+                );
+            }
 
             btnShare.addEventListener('click', function() {
                 modalShare.style.display = 'flex';
@@ -257,11 +294,13 @@
             });
             // WhatsApp
             btnWhatsapp.addEventListener('click', function() {
+                const shareMsg = getTutorShareMessage();
                 const url = `https://wa.me/?text=${encodeURIComponent(shareMsg + ' ' + shareUrl)}`;
                 window.open(url, '_blank');
             });
             // Facebook
             btnFacebook.addEventListener('click', function() {
+                const shareMsg = getTutorShareMessage();
                 const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${encodeURIComponent(shareMsg)}`;
                 window.open(url, '_blank');
             });

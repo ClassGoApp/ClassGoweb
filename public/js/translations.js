@@ -864,6 +864,132 @@ const translations = {
     tutor_search_no_results_message:
       "Pero no te preocupes, ¡estamos aquí para ayudarte! Es posible que el tutor o la materia que buscas no esté disponible, o que haya un error de escritura.",
     tutor_search_contact_us: "Contáctanos",
+    // Perfil Tutor - Reseñas
+    review_based_on: "Basado en",
+    review_rating_singular: "calificación",
+    review_rating_plural: "calificaciones",
+    review_leave_title: "Deja tu reseña",
+    review_comment_placeholder: "Escribe tu reseña aquí (opcional)...",
+    review_submit_button: "Enviar reseña",
+    review_sending: "Enviando...",
+    // Perfil Tutor - Mis Tutorías
+    tutor_profile_my_tutoring: "Mis Tutorías",
+    subject_group_others: "Otros",
+    subject_group_secondary: "Secundaria",
+    subject_group_primary: "Primaria",
+    subject_group_basic: "Básico",
+    // Reclutamiento - Modal
+    recruitment_minimize_title:
+      "Minimizar (puedes volver a abrirlo cuando quieras desde el botón flotante)",
+    recruitment_confirm_title: "¿Estás seguro?",
+    recruitment_confirm_message:
+      "Si cierras desde aquí no podrás acceder al formulario después. Para minimizar y poder usar el botón flotante más tarde, presiona la <strong>✕</strong> de arriba.",
+    recruitment_confirm_yes: "Sí, no volver a mostrar",
+    recruitment_confirm_no: "No, mantener activo",
+    recruitment_heading_prefix: "Únete a nosotros, estamos buscando",
+    recruitment_heading_highlight: "tu talento.",
+    recruitment_area_title: "Sin importar tu área:",
+    recruitment_area_desc:
+      "Ya seas de TI, Marketing, Administración, Contabilidad o cualquier otra área, en ClassGo hay un lugar para ti.",
+    recruitment_commitment_title: "Compromiso Real:",
+    recruitment_commitment_desc:
+      "Envíanos tu información ahora mismo. Nuestro equipo de RRHH revisará tu perfil y",
+    recruitment_commitment_contact:
+      "nos pondremos en contacto contigo enseguida.",
+    recruitment_growth_title: "Crecimiento Exponencial:",
+    recruitment_growth_desc:
+      "Buscamos socios estratégicos para transformar la empresa.",
+    recruitment_current_priority: "Prioridad actual:",
+    recruitment_priority_areas:
+      "TI • Marketing • Finanzas • Administración • Ventas • ¡Y más!",
+    recruitment_form_time: "Solo te tomará unos minutos.",
+    // Perfil Tutor - Acciones
+    tutor_profile_per_tutoring: "/ tutoría",
+    tutor_profile_verified: "Tutor verificado",
+    tutor_profile_reserve: "Reservar",
+    tutor_profile_tooltip_title: "¡Reserva ahora!",
+    tutor_profile_tooltip_desc:
+      "Haz clic para ver el calendario y seleccionar el horario disponible.",
+    tutor_profile_my_panel: "Mi Panel",
+    tutor_profile_search_more_tutors: "Buscar más Tutores",
+    tutor_profile_share_profile: "Compartir Perfil",
+    // Perfil Tutor - Modal compartir
+    share_modal_title: "Compartir perfil",
+    share_modal_description: "Echa un vistazo a mi perfil en ClassGo!",
+    share_modal_whatsapp: "Compartir en WhatsApp",
+    share_modal_facebook: "Compartir en Facebook",
+    // Reserva Tutor
+    reservation_available_days: "Mis días disponibles",
+    reservation_step_1: "Paso 1:",
+    reservation_step_1_desc:
+      "Busca en el calendario los días marcados (círculos) y haz clic en el que prefieras.",
+    reservation_select_time: "Selecciona una hora",
+    reservation_step_2: "Paso 2:",
+    reservation_step_2_desc:
+      "Elige un bloque de horario disponible para confirmar la tutoría.",
+    reservation_no_hours_available: "Horas no disponible",
+    reservation_pay_and_book: "Pagar y reservar",
+    reservation_step_3: "Paso 3:",
+    reservation_step_3_desc:
+      "Haz clic aquí para confirmar tu reserva y realizar el pago.",
+    reservation_only_students_title: "Función solo para Estudiantes",
+    reservation_only_students_desc:
+      'Para poder reservar una sesión, necesitas utilizar una cuenta de tipo "Estudiante".',
+    reservation_only_students_logout_prefix: "Si tienes una, por favor",
+    reservation_logout_link: "cierra sesión",
+    reservation_only_students_logout_suffix:
+      "y vuelve a ingresar con tu cuenta de estudiante.",
+    reservation_guest_title: "¡Casi listo para reservar!",
+    reservation_guest_desc_prefix: "Para agendar una sesión, solo necesitas",
+    reservation_login_link: "iniciar sesión",
+    reservation_or: "o",
+    reservation_register_link: "crear tu cuenta",
+    reservation_guest_desc_suffix: "de estudiante.",
+    reservation_success_title: "¡Reserva realizada exitosamente!",
+    reservation_success_desc:
+      "También podrás ver tus reservas en el panel de tu perfil.",
+    reservation_confirm_title: "Confirmar Reserva",
+    reservation_coupon_question: "¿Tienes un cupón de descuento?",
+    reservation_coupon_placeholder: "Ej. classgo25",
+    reservation_apply_coupon: "Aplicar",
+    reservation_coupon_applied: "Cupón aplicado:",
+    reservation_remove_coupon: "Quitar",
+    reservation_payment_receipt: "Comprobante de pago",
+    reservation_receipt_uploaded: "¡Comprobante adjuntado con éxito!",
+    reservation_change_file: "Cambiar archivo",
+    reservation_upload_receipt: "¡Sube tu comprobante de pago!",
+    reservation_upload_receipt_desc:
+      "Haz clic para buscar tu captura o arrastra el archivo aquí mismo.",
+    reservation_uploading_file: "Subiendo archivo al servidor...",
+    reservation_subject_label: "Materia",
+    reservation_choose_subject: "Elegir materia",
+    reservation_date_label: "Fecha:",
+    reservation_schedule_label: "Horario:",
+    reservation_session_singular: "sesión de 20 min continua",
+    reservation_session_plural: "sesiones de 20 min continuas",
+    reservation_discount_label: "Descuento",
+    reservation_total_to_pay: "Total a Pagar:",
+    reservation_cancel: "Cancelar",
+    reservation_book: "Reservar",
+    reservation_processing_title: "Procesando tu reserva",
+    reservation_processing_desc:
+      "Estamos asegurando tus bloques de horario y validando los datos con el servidor. Por favor, no cierres esta ventana.",
+    calendar_day_sun_short: "D",
+    calendar_day_mon_short: "L",
+    calendar_day_tue_short: "M",
+    calendar_day_wed_short: "M",
+    calendar_day_thu_short: "J",
+    calendar_day_fri_short: "V",
+    calendar_day_sat_short: "S",
+    // Perfil Tutor - Reseñas vacías
+    reviews_empty_title: "Aún no hay reseñas",
+    reviews_empty_message:
+      "¡Sé el primero en compartir tu opinión sobre este tutor!",
+    // Perfil Tutor - Página principal
+    tutor_profile_breadcrumb_tutors: "Tutores",
+    tutor_profile_breadcrumb_find_tutor: "Encontrar tutor",
+    tutor_profile_add_favorites: "Añadir a Favoritos",
+    tutor_profile_in_favorites: "En tus Favoritos",
   },
   en: {
     // Navbar
@@ -1705,6 +1831,131 @@ const translations = {
     tutor_search_no_results_message:
       "But don't worry, we're here to help! The tutor or subject you're looking for may not be available, or there may be a typing error.",
     tutor_search_contact_us: "Contact us",
+    // Tutor Profile - Reviews
+    review_based_on: "Based on",
+    review_rating_singular: "rating",
+    review_rating_plural: "ratings",
+    review_leave_title: "Leave your review",
+    review_comment_placeholder: "Write your review here (optional)...",
+    review_submit_button: "Submit review",
+    review_sending: "Sending...",
+    // Tutor Profile - My Tutoring
+    tutor_profile_my_tutoring: "My Tutoring Sessions",
+    subject_group_others: "Others",
+    subject_group_secondary: "Secondary",
+    subject_group_primary: "Primary",
+    subject_group_basic: "Basic",
+    // Recruitment - Modal
+    recruitment_minimize_title:
+      "Minimize (you can reopen it anytime from the floating button)",
+    recruitment_confirm_title: "Are you sure?",
+    recruitment_confirm_message:
+      "If you close it from here, you won't be able to access the form later. To minimize it and use the floating button later, press the <strong>✕</strong> above.",
+    recruitment_confirm_yes: "Yes, don't show again",
+    recruitment_confirm_no: "No, keep active",
+    recruitment_heading_prefix: "Join us, we are looking for",
+    recruitment_heading_highlight: "your talent.",
+    recruitment_area_title: "No matter your area:",
+    recruitment_area_desc:
+      "Whether you are in IT, Marketing, Administration, Accounting, or any other area, ClassGo has a place for you.",
+    recruitment_commitment_title: "Real Commitment:",
+    recruitment_commitment_desc:
+      "Send us your information right now. Our HR team will review your profile and",
+    recruitment_commitment_contact: "we will contact you shortly.",
+    recruitment_growth_title: "Exponential Growth:",
+    recruitment_growth_desc:
+      "We are looking for strategic partners to transform the company.",
+    recruitment_current_priority: "Current priority:",
+    recruitment_priority_areas:
+      "IT • Marketing • Finance • Administration • Sales • And more!",
+    recruitment_form_time: "It will only take a few minutes.",
+    // Tutor Profile - Actions
+    tutor_profile_per_tutoring: "/ tutoring session",
+    tutor_profile_verified: "Verified tutor",
+    tutor_profile_reserve: "Book",
+    tutor_profile_tooltip_title: "Book now!",
+    tutor_profile_tooltip_desc:
+      "Click to view the calendar and select an available time.",
+    tutor_profile_my_panel: "My Dashboard",
+    tutor_profile_search_more_tutors: "Search more tutors",
+    tutor_profile_share_profile: "Share Profile",
+    // Tutor Profile - Share modal
+    share_modal_title: "Share profile",
+    share_modal_description: "Take a look at my ClassGo profile!",
+    share_modal_whatsapp: "Share on WhatsApp",
+    share_modal_facebook: "Share on Facebook",
+    // Tutor Reservation
+    reservation_available_days: "My available days",
+    reservation_step_1: "Step 1:",
+    reservation_step_1_desc:
+      "Look for the marked days on the calendar (circles) and click the one you prefer.",
+    reservation_select_time: "Select a time",
+    reservation_step_2: "Step 2:",
+    reservation_step_2_desc:
+      "Choose an available time block to confirm the tutoring session.",
+    reservation_no_hours_available: "No hours available",
+    reservation_pay_and_book: "Pay and book",
+    reservation_step_3: "Step 3:",
+    reservation_step_3_desc:
+      "Click here to confirm your reservation and make the payment.",
+    reservation_only_students_title: "Feature only for Students",
+    reservation_only_students_desc:
+      'To book a session, you need to use a "Student" account.',
+    reservation_only_students_logout_prefix: "If you have one, please",
+    reservation_logout_link: "log out",
+    reservation_only_students_logout_suffix:
+      "and sign in again with your student account.",
+    reservation_guest_title: "Almost ready to book!",
+    reservation_guest_desc_prefix: "To schedule a session, you only need to",
+    reservation_login_link: "log in",
+    reservation_or: "or",
+    reservation_register_link: "create your account",
+    reservation_guest_desc_suffix: "as a student.",
+    reservation_success_title: "Reservation completed successfully!",
+    reservation_success_desc:
+      "You will also be able to view your reservations in your profile panel.",
+    reservation_confirm_title: "Confirm Reservation",
+    reservation_coupon_question: "Do you have a discount coupon?",
+    reservation_coupon_placeholder: "E.g. classgo25",
+    reservation_apply_coupon: "Apply",
+    reservation_coupon_applied: "Coupon applied:",
+    reservation_remove_coupon: "Remove",
+    reservation_payment_receipt: "Payment receipt",
+    reservation_receipt_uploaded: "Receipt uploaded successfully!",
+    reservation_change_file: "Change file",
+    reservation_upload_receipt: "Upload your payment receipt!",
+    reservation_upload_receipt_desc:
+      "Click to browse your screenshot or drag the file here.",
+    reservation_uploading_file: "Uploading file to the server...",
+    reservation_subject_label: "Subject",
+    reservation_choose_subject: "Choose subject",
+    reservation_date_label: "Date:",
+    reservation_schedule_label: "Schedule:",
+    reservation_session_singular: "continuous 20 min session",
+    reservation_session_plural: "continuous 20 min sessions",
+    reservation_discount_label: "Discount",
+    reservation_total_to_pay: "Total to Pay:",
+    reservation_cancel: "Cancel",
+    reservation_book: "Book",
+    reservation_processing_title: "Processing your reservation",
+    reservation_processing_desc:
+      "We are securing your time blocks and validating the data with the server. Please do not close this window.",
+    calendar_day_sun_short: "S",
+    calendar_day_mon_short: "M",
+    calendar_day_tue_short: "T",
+    calendar_day_wed_short: "W",
+    calendar_day_thu_short: "T",
+    calendar_day_fri_short: "F",
+    calendar_day_sat_short: "S",
+    // Tutor Profile - Empty reviews
+    reviews_empty_title: "No reviews yet",
+    reviews_empty_message:
+      "Be the first to share your opinion about this tutor!",
+    // Tutor Profile - Main page
+    tutor_profile_breadcrumb_tutors: "Tutors",
+    tutor_profile_breadcrumb_find_tutor: "Find tutor",
+    tutor_profile_add_favorites: "Add to Favorites",
+    tutor_profile_in_favorites: "In your Favorites",
   },
   pt: {
     // Navbar
@@ -2568,6 +2819,131 @@ const translations = {
     tutor_search_no_results_message:
       "Mas não se preocupe, estamos aqui para ajudar! O tutor ou a matéria que você procura pode não estar disponível, ou pode haver um erro de digitação.",
     tutor_search_contact_us: "Fale conosco",
+    // Perfil do Tutor - Avaliações
+    review_based_on: "Baseado em",
+    review_rating_singular: "avaliação",
+    review_rating_plural: "avaliações",
+    review_leave_title: "Deixe sua avaliação",
+    review_comment_placeholder: "Escreva sua avaliação aqui (opcional)...",
+    review_submit_button: "Enviar avaliação",
+    review_sending: "Enviando...",
+    // Perfil do Tutor - Minhas Tutorias
+    tutor_profile_my_tutoring: "Minhas Tutorias",
+    subject_group_others: "Outros",
+    subject_group_secondary: "Ensino Secundário",
+    subject_group_primary: "Ensino Primário",
+    subject_group_basic: "Básico",
+    // Recrutamento - Modal
+    recruitment_minimize_title:
+      "Minimizar (você poderá abri-lo novamente quando quiser pelo botão flutuante)",
+    recruitment_confirm_title: "Tem certeza?",
+    recruitment_confirm_message:
+      "Se você fechar por aqui, não poderá acessar o formulário depois. Para minimizar e usar o botão flutuante mais tarde, pressione o <strong>✕</strong> acima.",
+    recruitment_confirm_yes: "Sim, não mostrar novamente",
+    recruitment_confirm_no: "Não, manter ativo",
+    recruitment_heading_prefix: "Junte-se a nós, estamos procurando",
+    recruitment_heading_highlight: "seu talento.",
+    recruitment_area_title: "Não importa sua área:",
+    recruitment_area_desc:
+      "Seja de TI, Marketing, Administração, Contabilidade ou qualquer outra área, na ClassGo há um lugar para você.",
+    recruitment_commitment_title: "Compromisso Real:",
+    recruitment_commitment_desc:
+      "Envie suas informações agora mesmo. Nossa equipe de RH revisará seu perfil e",
+    recruitment_commitment_contact: "entraremos em contato com você em breve.",
+    recruitment_growth_title: "Crescimento Exponencial:",
+    recruitment_growth_desc:
+      "Buscamos parceiros estratégicos para transformar a empresa.",
+    recruitment_current_priority: "Prioridade atual:",
+    recruitment_priority_areas:
+      "TI • Marketing • Finanças • Administração • Vendas • E mais!",
+    recruitment_form_time: "Levará apenas alguns minutos.",
+    // Perfil do Tutor - Ações
+    tutor_profile_per_tutoring: "/ tutoria",
+    tutor_profile_verified: "Tutor verificado",
+    tutor_profile_reserve: "Reservar",
+    tutor_profile_tooltip_title: "Reserve agora!",
+    tutor_profile_tooltip_desc:
+      "Clique para ver o calendário e selecionar um horário disponível.",
+    tutor_profile_my_panel: "Meu Painel",
+    tutor_profile_search_more_tutors: "Buscar mais tutores",
+    tutor_profile_share_profile: "Compartilhar Perfil",
+    // Perfil do Tutor - Modal compartilhar
+    share_modal_title: "Compartilhar perfil",
+    share_modal_description: "Dê uma olhada no meu perfil na ClassGo!",
+    share_modal_whatsapp: "Compartilhar no WhatsApp",
+    share_modal_facebook: "Compartilhar no Facebook",
+    // Reserva Tutor
+    reservation_available_days: "Meus dias disponíveis",
+    reservation_step_1: "Passo 1:",
+    reservation_step_1_desc:
+      "Procure no calendário os dias marcados (círculos) e clique no que preferir.",
+    reservation_select_time: "Selecione um horário",
+    reservation_step_2: "Passo 2:",
+    reservation_step_2_desc:
+      "Escolha um bloco de horário disponível para confirmar a tutoria.",
+    reservation_no_hours_available: "Horários não disponíveis",
+    reservation_pay_and_book: "Pagar e reservar",
+    reservation_step_3: "Passo 3:",
+    reservation_step_3_desc:
+      "Clique aqui para confirmar sua reserva e realizar o pagamento.",
+    reservation_only_students_title: "Função apenas para Estudantes",
+    reservation_only_students_desc:
+      'Para reservar uma sessão, você precisa usar uma conta do tipo "Estudante".',
+    reservation_only_students_logout_prefix: "Se você tiver uma, por favor",
+    reservation_logout_link: "encerre a sessão",
+    reservation_only_students_logout_suffix:
+      "e entre novamente com sua conta de estudante.",
+    reservation_guest_title: "Quase pronto para reservar!",
+    reservation_guest_desc_prefix: "Para agendar uma sessão, você só precisa",
+    reservation_login_link: "entrar",
+    reservation_or: "ou",
+    reservation_register_link: "criar sua conta",
+    reservation_guest_desc_suffix: "de estudante.",
+    reservation_success_title: "Reserva realizada com sucesso!",
+    reservation_success_desc:
+      "Você também poderá ver suas reservas no painel do seu perfil.",
+    reservation_confirm_title: "Confirmar Reserva",
+    reservation_coupon_question: "Você tem um cupom de desconto?",
+    reservation_coupon_placeholder: "Ex. classgo25",
+    reservation_apply_coupon: "Aplicar",
+    reservation_coupon_applied: "Cupom aplicado:",
+    reservation_remove_coupon: "Remover",
+    reservation_payment_receipt: "Comprovante de pagamento",
+    reservation_receipt_uploaded: "Comprovante anexado com sucesso!",
+    reservation_change_file: "Alterar arquivo",
+    reservation_upload_receipt: "Envie seu comprovante de pagamento!",
+    reservation_upload_receipt_desc:
+      "Clique para buscar sua captura ou arraste o arquivo aqui.",
+    reservation_uploading_file: "Enviando arquivo ao servidor...",
+    reservation_subject_label: "Matéria",
+    reservation_choose_subject: "Escolher matéria",
+    reservation_date_label: "Data:",
+    reservation_schedule_label: "Horário:",
+    reservation_session_singular: "sessão contínua de 20 min",
+    reservation_session_plural: "sessões contínuas de 20 min",
+    reservation_discount_label: "Desconto",
+    reservation_total_to_pay: "Total a Pagar:",
+    reservation_cancel: "Cancelar",
+    reservation_book: "Reservar",
+    reservation_processing_title: "Processando sua reserva",
+    reservation_processing_desc:
+      "Estamos garantindo seus blocos de horário e validando os dados com o servidor. Por favor, não feche esta janela.",
+    calendar_day_sun_short: "D",
+    calendar_day_mon_short: "S",
+    calendar_day_tue_short: "T",
+    calendar_day_wed_short: "Q",
+    calendar_day_thu_short: "Q",
+    calendar_day_fri_short: "S",
+    calendar_day_sat_short: "S",
+    // Perfil do Tutor - Avaliações vazias
+    reviews_empty_title: "Ainda não há avaliações",
+    reviews_empty_message:
+      "Seja o primeiro a compartilhar sua opinião sobre este tutor!",
+    // Perfil do Tutor - Página principal
+    tutor_profile_breadcrumb_tutors: "Tutores",
+    tutor_profile_breadcrumb_find_tutor: "Encontrar tutor",
+    tutor_profile_add_favorites: "Adicionar aos Favoritos",
+    tutor_profile_in_favorites: "Nos seus Favoritos",
   },
 };
 
