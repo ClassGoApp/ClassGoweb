@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Kreait\Firebase\Contract\Messaging;
 use Kreait\Firebase\Messaging\CloudMessage;
 use Kreait\Firebase\Messaging\Notification;
+use App\Models\FcmToken;
 use Kreait\Firebase\Factory;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
@@ -109,32 +110,73 @@ class NotificacionController extends Controller
                 $tokens = is_array($decoded) ? $decoded : [$tokens];
             }
 
-            if (count($tokens) === 1) {
-                $message = CloudMessage::withTarget('token', $tokens[0])
-                    ->withNotification(Notification::create(
-                        $request->title,
-                        $request->body
-                    ))
-                    ->withData([
-                        'type' => $request->type,
-                        'screen' => $request->screen,
-                        'data_tutor' => json_encode($request->data_tutor ?? ''),
-                    ]);
-                $result = $messaging->send($message);
-            } else {
-                $message = CloudMessage::new()
-                    ->withNotification(Notification::create(
-                        $request->title,
-                        $request->body
-                    ))
-                    ->withData([
-                        'type' => $request->type,
-                        'screen' => $request->screen,
-                        'data_tutor' => json_encode($request->data_tutor ?? ''),
-                    ]);
+            $tokens = array_values(array_filter($tokens, fn($token) => !empty($token)));
 
-                $result = $messaging->sendMulticast($message, $tokens);
+            if (empty($tokens)) {
+                return response()->json([
+                    'ok' => false,
+                    'message' => 'No hay tokens válidos para enviar'
+                ], 400);
             }
+
+            Log::info('NotificacionController: Iniciando envío privado de notificación', [
+                'token_count' => count($tokens),
+                'title' => $request->title,
+                'body' => $request->body,
+                'type' => $request->type,
+            ]);
+
+            if (count($tokens) === 1) {
+                try {
+                    $message = CloudMessage::withTarget('token', $tokens[0])
+                        ->withNotification(Notification::create(
+                            $request->title,
+                            $request->body
+                        ))
+                        ->withData([
+                            'type' => $request->type,
+                            'screen' => $request->screen,
+                            'data_tutor' => json_encode($request->data_tutor ?? ''),
+                        ]);
+
+                    $result = $messaging->send($message);
+
+                    return response()->json([
+                        'ok' => true,
+                        'message' => 'Notificación enviada a los tutores seleccionados',
+                        'result' => $result
+                    ]);
+                } catch (\Exception $e) {
+                    if ($this->shouldRemoveTokenFromErrorMessage($e->getMessage())) {
+                        FcmToken::where('token', $tokens[0])->delete();
+                        Log::warning('NotificacionController: Token FCM inválido eliminado', [
+                            'token_preview' => substr($tokens[0], 0, 20) . '...',
+                            'error' => $e->getMessage(),
+                            'user' => 'private_send'
+                        ]);
+                    }
+
+                    return response()->json([
+                        'ok' => false,
+                        'message' => 'Error al enviar notificación a token individual',
+                        'error' => $e->getMessage()
+                    ], 500);
+                }
+            }
+
+            $message = CloudMessage::new()
+                ->withNotification(Notification::create(
+                    $request->title,
+                    $request->body
+                ))
+                ->withData([
+                    'type' => $request->type,
+                    'screen' => $request->screen,
+                    'data_tutor' => json_encode($request->data_tutor ?? ''),
+                ]);
+
+            $result = $messaging->sendMulticast($message, $tokens);
+            $this->handleMulticastFailures($result, $tokens);
 
             return response()->json([
                 'ok' => true,
@@ -148,6 +190,60 @@ class NotificacionController extends Controller
                 'error' => $e->getMessage()
             ], 500);
         }
+    }
+
+    private function handleMulticastFailures($result, array $tokens): void
+    {
+        if (!method_exists($result, 'failures')) {
+            return;
+        }
+
+        foreach ($result->failures()->getItems() as $failure) {
+            $token = $failure->target()->value();
+            $errorMessage = $failure->error()->getMessage();
+            $errorClass = get_class($failure->error());
+            $shouldRemove = $this->shouldRemoveTokenFromErrorMessage($errorMessage) || $this->shouldRemoveTokenFromErrorClass($errorClass);
+
+            if ($shouldRemove) {
+                FcmToken::where('token', $token)->delete();
+                Log::warning('NotificacionController: Token FCM inválido eliminado tras sendMulticast', [
+                    'token_preview' => substr($token, 0, 20) . '...',
+                    'error' => $errorMessage,
+                    'error_class' => $errorClass,
+                ]);
+            } else {
+                Log::warning('NotificacionController: FCM failure registrado', [
+                    'token_preview' => substr($token, 0, 20) . '...',
+                    'error' => $errorMessage,
+                    'error_class' => $errorClass,
+                ]);
+            }
+        }
+    }
+
+    private function shouldRemoveTokenFromErrorMessage(string $message): bool
+    {
+        $lower = strtolower($message);
+
+        if (str_contains($lower, 'invalid registration token') ||
+            str_contains($lower, 'not registered') ||
+            str_contains($lower, 'requested entity was not found') ||
+            str_contains($lower, 'unregistered') ||
+            str_contains($lower, 'registration token is not a valid fcm registration token')) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private function shouldRemoveTokenFromErrorClass(string $errorClass): bool
+    {
+        return in_array($errorClass, [
+            'Kreait\\Firebase\\Exception\\Messaging\\NotFound',
+            'Kreait\\Firebase\\Exception\\Messaging\\InvalidArgument',
+            'Kreait\\Firebase\\Exception\\Messaging\\InvalidMessage',
+            'Kreait\\Firebase\\Exception\\Messaging\\Unregistered',
+        ], true);
     }
     public function enviarNotificacionMasiva(Request $request)
     {
@@ -282,17 +378,34 @@ class NotificacionController extends Controller
             }
 
             if (count($tokens) === 1) {
-                $message = CloudMessage::withTarget('token', $tokens[0])
-                    ->withNotification(Notification::create(
-                        $request->title,
-                        $request->body
-                    ))
-                    ->withData([
-                        'type' => $request->type,
-                        'screen' => $request->screen,
-                        'data' => json_encode($request->data ?? ''),
-                    ]);
-                $result = $messaging->send($message);
+                try {
+                    $message = CloudMessage::withTarget('token', $tokens[0])
+                        ->withNotification(Notification::create(
+                            $request->title,
+                            $request->body
+                        ))
+                        ->withData([
+                            'type' => $request->type,
+                            'screen' => $request->screen,
+                            'data' => json_encode($request->data ?? ''),
+                        ]);
+                    $result = $messaging->send($message);
+                } catch (\Exception $e) {
+                    if ($this->shouldRemoveTokenFromErrorMessage($e->getMessage()) || $this->shouldRemoveTokenFromErrorClass(get_class($e))) {
+                        FcmToken::where('token', $tokens[0])->delete();
+                        Log::warning('NotificacionController: Token FCM inválido eliminado en enviarNotificacionGenerica', [
+                            'token_preview' => substr($tokens[0], 0, 20) . '...',
+                            'error' => $e->getMessage(),
+                            'error_class' => get_class($e),
+                        ]);
+                    }
+
+                    return response()->json([
+                        'ok' => false,
+                        'message' => 'Error al enviar notificación a token individual',
+                        'error' => $e->getMessage()
+                    ], 500);
+                }
             } else {
                 $message = CloudMessage::new()
                     ->withNotification(Notification::create(
@@ -306,22 +419,25 @@ class NotificacionController extends Controller
                     ]);
 
                 $result = $messaging->sendMulticast($message, $tokens);
+                $this->handleMulticastFailures($result, $tokens);
             }
 
             $failures = [];
 
-            foreach ($result->failures()->getItems() as $failure) {
-                $failures[] = [
-                    'token' => $failure->target()->value(),
-                    'error' => $failure->error()->getMessage(),
-                ];
+            if (method_exists($result, 'failures')) {
+                foreach ($result->failures()->getItems() as $failure) {
+                    $failures[] = [
+                        'token' => $failure->target()->value(),
+                        'error' => $failure->error()->getMessage(),
+                    ];
+                }
             }
 
             return response()->json([
                 'ok' => true,
                 'message' => 'Proceso de envío terminado',
-                'success_count' => $result->successes()->count(),
-                'failure_count' => $result->failures()->count(),
+                'success_count' => method_exists($result, 'successes') ? $result->successes()->count() : null,
+                'failure_count' => method_exists($result, 'failures') ? $result->failures()->count() : null,
                 'valid_tokens' => count($tokens),
                 'failures' => $failures,
             ]);

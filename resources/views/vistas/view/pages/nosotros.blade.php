@@ -112,8 +112,31 @@
                                     @endif
                                 </div>
                                 <div style="line-height:1.3;">
-                                    <h2 style="color:#ffffff; margin:0; font-size:1.6rem; font-weight:700;">{{ ucfirst($categoria) }}</h2>
-                                    <p style="color:rgba(255,255,255,0.75); margin:0; font-size:0.85rem;">{{ $items->count() }} alianzas activas</p>
+                                    @php
+                                        $categoriaTranslateKey = match($categoria) {
+                                            'Colegio de Profesionales' => 'alliance_category_professional_college',
+                                            'Universidad e Instituto' => 'alliance_category_university_institute',
+                                            'Empresas' => 'alliance_category_companies',
+                                            'Otros' => 'alliance_category_others',
+                                            default => null
+                                        };
+                                    @endphp
+
+                                    <div style="line-height:1.3;">
+                                        <h2 style="color:#ffffff; margin:0; font-size:1.6rem; font-weight:700;"
+                                            @if($categoriaTranslateKey) data-translate="{{ $categoriaTranslateKey }}" @endif>
+                                            {{ ucfirst($categoria) }}
+                                        </h2>
+
+                                        <p style="color:rgba(255,255,255,0.75); margin:0; font-size:0.85rem;">
+                                            {{ $items->count() }}
+                                            @if($items->count() == 1)
+                                                <span data-translate="alliance_active_singular">alianza activa</span>
+                                            @else
+                                                <span data-translate="alliance_active_plural">alianzas activas</span>
+                                            @endif
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                             
@@ -147,7 +170,8 @@
                                         <div class="front-footer">
                                             <h3 class="alliance-name-front">{{ $alianza->titulo }}</h3>
                                             <button class="btn-base btn-more" onclick="toggleDetails('card-{{ $alianza->id }}')">
-                                                <i class="fas fa-plus-circle text-[10px]"></i> Ver detalles
+                                                <i class="fas fa-plus-circle text-[10px]"></i>
+                                                <span data-translate="alliance_view_details">Ver detalles</span>
                                             </button>
                                         </div>
                                         <!-- CAPA DE DESCRIPCIÓN  -->
@@ -175,7 +199,7 @@
                                                     class="detail-watermark">
                                             @endif
                                             <div class="detail-content">
-                                                <span class="detail-tag">Información Detallada</span>
+                                                <span class="detail-tag" data-translate="alliance_detailed_information">Información Detallada</span>
                                                 <h3 class="mt-1" style="font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 1.3rem; color: var(--dark-teal); text-align: center; line-height: 1.2;">
                                                     {{ $alianza->titulo }}
                                                 </h3>
@@ -186,10 +210,11 @@
                                                 
                                                 <div class="flex flex-col w-full px-4 mt-auto">
                                                     <a onclick="window.open('{{ $alianza->enlace }}', '_blank')" target="_blank" class="btn-base btn-visit shadow-xl">
-                                                        Visitar sitio oficial <i class="fas fa-external-link-alt ml-2 text-[10px]"></i>
+                                                        <span data-translate="alliance_visit_official_site">Visitar sitio oficial</span>
+                                                        <i class="fas fa-external-link-alt ml-2 text-[10px]"></i>
                                                     </a>
                                                     <button class="btn-base btn-return mx-auto" onclick="toggleDetails('card-{{ $alianza->id }}')">
-                                                        Regresar
+                                                        <span data-translate="alliance_return">Regresar</span>
                                                     </button>
                                                 </div>
                                             </div>

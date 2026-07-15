@@ -319,27 +319,13 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
             Route::get('/subjects/{subject_id}/tutors/not-available-now', [SubjectPickerController::class, 'tutorsNotAvailableNow']); //tutores no disponibles ahora
 
             Route::post('/batches/start', [SubjectPickerController::class, 'start']); // este envia los emails para el boton go inicializa todo
+            Route::post('/batches/{batch}/cancel', [SubjectPickerController::class, 'cancelBatch'])->name('batches.cancel');        
             Route::get('/batches/{batch}/status', [SubjectPickerController::class, 'status']); //estado de la batch
             Route::get('/batches/active', [SubjectPickerController::class, 'active']); //batch activa si hay
             Route::get('/subjects/{subject_id}/tutors', [SubjectPickerController::class, 'tutorsBySubject']); //tutores por materia
             /////////// oscar api/endpoint ///////////////////////////////////////
 
-            //             Route::get('/test-mail', function () {
-            //     $to = 'oscarcrodri3@gmail.com';
-
-            //     Mail::to($to)->send(new TutoriaInstanteNotificacionMail(
-            //         tutorName: 'Tutor Prueba',
-            //         subjectName: 'Matemática',
-            //         subjectId: 12,
-            //         gifUrl: 'https://media.giphy.com/media/3o7aD2saalBwwftBIY/giphy.gif',
-            //         description: 'Correo de prueba desde ClassGo.',
-            //         buttonUrl: 'https://classgo.test',
-            //         buttonText: 'Abrir ClassGo',
-            //     ));
-
-            //     return '✅ Email de prueba enviado a ' . $to;
-            // });
-
+        
             Route::get('/subject-groups/categorias-materias', [SubjectPickerController::class, 'categoriasMaterias']); //categorias y materias finales (en uso)
 
 

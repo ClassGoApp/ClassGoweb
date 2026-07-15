@@ -13,7 +13,7 @@
 
                     <div class="encabezado-modal">
 
-                        <h2 style="text-align: center; font-size: 24px; font-weight: bold; color: #333;">
+                        <h2 style="text-align: center; font-size: 24px; font-weight: bold; color: #333;" data-translate="booking_title">
                             Reserva tu Clase
                         </h2>
 
@@ -38,7 +38,7 @@
                                         style="width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">
                                         1
                                     </div>
-                                    <p class="step-label" style="font-size: 12px;">Materia</p>
+                                    <p class="step-label" style="font-size: 12px;" data-translate="booking_step_subject">Materia</p>
                                 </div>
 
                                 <div id="line-1" class="step-line" style="flex: 1; height: 2px; margin: 0 8px;">
@@ -49,7 +49,7 @@
                                         style="width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">
                                         2
                                     </div>
-                                    <p class="step-label" style="font-size: 12px;">Horario</p>
+                                    <p class="step-label" style="font-size: 12px;" data-translate="booking_step_schedule">Horario</p>
                                 </div>
 
                                 <div id="line-2" class="step-line" style="flex: 1; height: 2px; margin: 0 8px;">
@@ -60,7 +60,7 @@
                                         style="width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">
                                         3
                                     </div>
-                                    <p class="step-label" style="font-size: 12px;">Pago</p>
+                                    <p class="step-label" style="font-size: 12px;" data-translate="booking_step_payment">Pago</p>
                                 </div>
 
                             </div>
@@ -76,30 +76,32 @@
 
                                 <div>
                                     <label
-                                        style="display: block; font-weight: 600; margin-bottom: 8px; font-size: 14px;">
+                                        style="display: block; font-weight: 600; margin-bottom: 8px; font-size: 14px;"
+                                        data-translate="booking_institution_type">
                                         Tipo de institución
                                     </label>
                                     <select id="js-institution-select" class="sr-only" aria-hidden="true">
-                                        <option value="">Selecciona tipo de institución</option>
-                                        <option value="colegio">Colegio</option>
-                                        <option value="universidad">Universidad</option>
-                                        <option value="instituto">Instituto</option>
+                                        <option value="" data-translate="booking_select_institution">Selecciona tipo de institución</option>
+                                        <option value="colegio" data-translate="booking_school">Colegio</option>
+                                        <option value="universidad" data-translate="booking_university">Universidad</option>
+                                        <option value="instituto" data-translate="booking_institute">Instituto</option>
                                     </select>
 
 
                                     <div class="dd" id="js-inst-dd">
                                         <button type="button" class="dd-btn" id="js-inst-btn" aria-expanded="false">
-                                            <span class="dd-label" id="js-inst-label">Selecciona tipo de
-                                                institución</span>
+                                            <span class="dd-label" id="js-inst-label" data-translate="booking_select_institution">
+                                                Selecciona tipo de institución
+                                            </span>
                                             <span class="dd-chev" aria-hidden="true"></span>
                                         </button>
 
                                         <div class="dd-menu" id="js-inst-menu" role="listbox">
-                                            <button type="button" class="dd-item" data-value="colegio">Colegio</button>
+                                            <button type="button" class="dd-item" data-value="colegio" data-translate="booking_school">Colegio</button>
                                             <button type="button" class="dd-item"
-                                                data-value="universidad">Universidad</button>
+                                                data-value="universidad" data-translate="booking_university">Universidad</button>
                                             <button type="button" class="dd-item"
-                                                data-value="instituto">Instituto</button>
+                                                data-value="instituto" data-translate="booking_institute">Instituto</button>
                                         </div>
                                     </div>
                                 </div>
@@ -107,7 +109,8 @@
 
                                 <div>
                                     <label
-                                        style="display: block; font-weight: 600; margin-bottom: 8px; font-size: 14px;">
+                                        style="display: block; font-weight: 600; margin-bottom: 8px; font-size: 14px;"
+                                        data-translate="booking_available_subjects">
                                         Materias disponibles
                                     </label>
                                     <input id="js-subject-search" type="text" class="form-control"
@@ -118,7 +121,8 @@
                                         style="max-height: 295px; overflow-y: auto; border: 1px solid #219EBC;
                              border-radius: 4px; ">
                                         <p
-                                            style="padding: 16px; text-align: center; color: #666; margin: 0; font-size: 14px;">
+                                            style="padding: 16px; text-align: center; color: #666; margin: 0; font-size: 14px; "
+                                            data-translate="booking_select_institution_first">
                                             Selecciona un tipo de institución.
                                         </p>
                                     </div>
@@ -129,7 +133,7 @@
                             <div id="js-tutor-container"
                                 style="display:block; margin-top:24px; max-width:900px; margin-left:auto; margin-right:auto;">
 
-                                <p id="js-tutor-helper" style="margin-bottom:12px; color:#666; font-size:14px;">
+                                <p id="js-tutor-helper" style="margin-bottom:12px; color:#666; font-size:14px; text-align:center;" data-translate="booking_choose_subject">
                                     Elige una materia para ver los tutores disponibles.
                                 </p>
 
@@ -151,8 +155,8 @@
                                 <div>
                                     <div class="slots-head">
                                         <div>
-                                            <div class="slots-title">Horarios</div>
-                                            <div class="slots-sub" id="js-selected-date-label">Hoy</div>
+                                            <div class="slots-title" data-translate="booking_schedules">Horarios</div>
+                                            <div class="slots-sub" id="js-selected-date-label" data-translate="booking_today">Hoy</div>
                                         </div>
 
                                     </div>
@@ -176,45 +180,46 @@
 
                                
                                 <div>
-                                    <h3 style="color:#023047;font-size:18px; font-weight:600; margin-bottom:16px;">Resumen de reserva
+                                    <h3 style="color:#023047;font-size:18px; font-weight:600; margin-bottom:16px;" data-translate="booking_booking_summary">
+                                        Reserva tu Clase
                                     </h3>
 
                                     <div style="background:#f8f9fa;  border-radius:12px;">
                                         
                                         <div class="float-field">
-                                            <span class="float-label">Materia</span>
+                                            <span class="float-label" data-translate="booking_subject">Materia</span>
                                             <span class="float-value" id="js-summary-subject"></span>
                                         </div>
 
                                         <div class="float-field">
-                                            <span class="float-label">Tutor</span>
+                                            <span class="float-label" data-translate="booking_tutor">Tutor</span>
                                             <span class="float-value" id="js-summary-tutor"></span>
                                         </div>
 
                                         <div class="float-field">
-                                            <span class="float-label">Fecha</span>
+                                            <span class="float-label" data-translate="booking_date">Fecha</span>
                                             <span class="float-value" id="js-summary-date"></span>
                                         </div>
 
                                         <div class="float-field">
-                                            <span class="float-label">Hora</span>
+                                            <span class="float-label" data-translate="booking_time">Hora</span>
                                             <span class="float-value" id="js-summary-time"></span>
                                         </div>
 
                                         <hr style="margin:16px 0;">
 
                                         <div style="font-size:18px; font-weight:bold;">
-                                            <strong>Total:</strong>
+                                            <strong data-translate="booking_total">Total:</strong>
                                             <span id="js-summary-total" style="color:#219EBC;"></span>
                                         </div>
 
                                         <div id="js-summary-discount-row" style="display:none; margin-top:8px;">
-                                            <b>Descuento (<span id="js-summary-discount-pct">0</span>%):</b>
+                                            <b data-translate="booking_discount">Descuento</b> (<span id="js-summary-discount-pct">0</span>%):
                                             <span id="js-summary-discount-amount">-0.00</span> Bs.
                                         </div>
 
                                         <div id="js-summary-free-note"
-                                            style="display:none; margin-top:10px; color:#16a34a; font-weight:800;">
+                                            style="display:none; margin-top:10px; color:#16a34a; font-weight:800;" data-translate="booking_free_message">
                                             ¡Felicidades! Tienes una tutoría gratis <br>
                                              Presiona finalizar reserva.
                                         </div>
@@ -222,15 +227,14 @@
 
 
                                     <div style="margin-top:24px;">
-                                        <label style="display:block; font-weight:600; margin-bottom:8px;">
+                                        <label style="display:block; font-weight:600; margin-bottom:8px;" data-translate="booking_coupon_question">
                                             ¿Tienes un cupón de descuento?
                                         </label>
 
-                                       
                                         <div id="js-coupon-form" style="display:flex; gap:8px;">
                                             <input id="js-coupon-input" type="text" placeholder="Ej. classgo25"
                                                 style="flex:1; border:1px solid #e5e7eb; border-radius:10px; padding:12px;">
-                                            <button id="js-apply-coupon-btn" type="button">
+                                            <button id="js-apply-coupon-btn" type="button" data-translate="booking_apply">
                                                 Aplicar
                                             </button>
                                         </div>
@@ -241,10 +245,11 @@
                                         <div id="js-coupon-bar"
                                             style="display:none; margin-top:10px; border:2px dashed #86efac; background:#ecfdf5; padding:10px 12px; border-radius:12px; align-items:center; justify-content:space-between;">
                                             <div style="font-weight:700;">
-                                                Cupón aplicado: <span id="js-coupon-code">-</span>
+                                                <span data-translate="booking_coupon_applied">Cupón aplicado:</span>
+                                                <span id="js-coupon-code">-</span>
                                             </div>
                                             <button type="button" id="js-remove-coupon"
-                                                style="border:none; background:transparent; font-weight:800; color:#065f46; cursor:pointer;">
+                                                style="border:none; background:transparent; font-weight:800; color:#065f46; cursor:pointer;" data-translate="booking_remove">
                                                 Quitar
                                             </button>
                                         </div>
@@ -257,7 +262,9 @@
                                     
 
                                     <div style="background:#f8f9fa; padding:24px; border-radius:12px;">
-                                        <p style="color:#023047;font-size:14px; margin-bottom:12px;">Métodos de pago del tutor:</p>
+                                        <p style="color:#023047;font-size:14px; margin-bottom:12px;" data-translate="booking_tutor_payment_methods">
+                                            Métodos de pago del tutor:
+                                        </p>
 
                                        
                                         <div id="js-pay-grid"
@@ -294,7 +301,9 @@
                         </svg>
                         </span>
                     </div>
-                    <div style="color:#023047;margin-top:8px; font-weight:800;">Pago con QR</div>
+                    <div style="color:#023047;margin-top:8px; font-weight:800;" data-translate="booking_qr_payment">
+                        Pago con QR
+                    </div>
                 </div>
 
                 <div style="margin-top:12px; display:flex; justify-content:center;">
@@ -303,7 +312,7 @@
                         <img id="js-qr-img" src="" alt="QR de pago"
                             style="display:none; width:100%; height:100%; object-fit:contain;">
                         <span id="js-qr-empty"
-                            style="font-size:12px; color:#6b7280; padding:10px; text-align:center;">
+                            style="font-size:12px; color:#6b7280; padding:10px; text-align:center; " data-translate="booking_no_qr">
                             Sin QR configurado
                         </span>
                     </div>
@@ -311,14 +320,14 @@
 
                 <div style="display:flex; justify-content:center; margin-top:auto; padding-top:12px;">
                     <a id="js-open-qr" href="#" target="_blank" rel="noopener"
-                        style="display:none; text-decoration:none; border:1px solid #e5e7eb; background:#219EBC; color:#fff; border-radius:10px; padding:10px 12px;">
+                        style="display:none; text-decoration:none; border:1px solid #e5e7eb; background:#219EBC; color:#fff; border-radius:10px; padding:10px 12px; " data-translate="booking_view_qr">
                         Ver QR
                     </a>
                 </div>
             </div>
         </div>
 
-        <p id="js-pay-hint" style="display:none; margin:0 0 14px; font-size:12px; color:#6b7280;">
+        <p id="js-pay-hint" style="display:none; margin:0 0 14px; font-size:12px; color:#6b7280; " data-translate="booking_pay_hint">
             Realiza el pago con el método disponible y luego sube tu comprobante.
         </p>
 
@@ -326,7 +335,7 @@
         <div id="js-receipt-block">
             <label for="js-file-upload"
                 style="cursor:pointer; display:block; text-align:center; padding:32px; border:2px dashed #ddd; border-radius:8px;">
-                <p style="margin:0;">📄 Subir comprobante</p>
+                <p style="margin:0; " data-translate="booking_upload_receipt">📄 Subir comprobante</p>
                 <p id="js-file-name" style="font-size:12px; color:#999; margin-top:8px;"></p>
             </label>
 
@@ -347,14 +356,14 @@
                         <div
                             style="width: 64px; height: 64px; border: 4px solid #219EBC; border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite;">
                         </div>
-                        <p style="margin-top: 16px;">Procesando...</p>
+                        <p style="margin-top: 16px; " data-translate="booking_processing">Procesando...</p>
                     </div>
 
 
                     <div id="js-confirmation"
                         style="display: none; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: white; align-items: center; justify-content: center; flex-direction: column; text-align: center;">
                         <div style="font-size: 64px; color: #28a745; margin-bottom: 16px;">✓</div>
-                        <h3 style="color:black;font-size: 24px; font-weight: bold; margin-bottom: 8px;">¡Reserva exitosa!</h3>
+                        <h3 style="color:black;font-size: 24px; font-weight: bold; margin-bottom: 8px;" data-translate="booking_success">¡Reserva exitosa!</h3>
 
                     </div>
                 </div>
@@ -364,16 +373,17 @@
                 <div id="js-navigation-buttons">
 
 
-                    <button id="js-back-btn" type="button" class="btn btn-secondary">Cancelar</button>
-                    <button id="js-next-btn" type="button" class="btn btn-primary">Siguiente</button>
+                    <button id="js-back-btn" type="button" class="btn btn-secondary" data-translate="booking_cancel">Cancelar</button>
+                    <button id="js-next-btn" type="button" class="btn btn-primary" data-translate="booking_next">Siguiente</button>
                 </div>
 
 
             </div>
         </div>
  
-<link rel="stylesheet" href="/css/variables.css">
+        <script src="{{ asset('js/translations.js') }}"></script>
 
+<link rel="stylesheet" href="{{ asset('css/estilos/variables.css') }}">
 <style>
     @keyframes spin {
         to {
@@ -1548,6 +1558,68 @@
 
         const modalBox = document.getElementById('js-modal-body');
 
+    function bookingText(key, fallback = '') {
+    const lang = localStorage.getItem('selectedLanguage') || 'es';
+
+    if (typeof translations === 'undefined') {
+        return fallback;
+    }
+
+    const t = translations[lang] || translations.es;
+
+    return t[key] || fallback;
+    }
+
+    function bookingArray(key, fallback = []) {
+    const lang = localStorage.getItem('selectedLanguage') || 'es';
+
+    if (typeof translations === 'undefined') {
+        return fallback;
+    }
+
+    const t = translations[lang] || translations.es;
+
+    return Array.isArray(t[key]) ? t[key] : fallback;
+}
+
+    function translateBookingModal() {
+    if (typeof translations === 'undefined') {
+        console.warn('translations.js no está cargado en esta página.');
+        return;
+    }
+
+    const lang = localStorage.getItem('selectedLanguage') || 'es';
+    const t = translations[lang] || translations.es;
+
+    document.querySelectorAll('#js-booking-modal [data-translate]').forEach((element) => {
+        const key = element.getAttribute('data-translate');
+
+        if (t[key]) {
+            element.innerHTML = t[key];
+        }
+    });
+
+    if (subjectSearch && t.booking_search_subject) {
+        subjectSearch.placeholder = t.booking_search_subject;
+    }
+
+    if (couponInput && t.booking_coupon_placeholder) {
+        couponInput.placeholder = t.booking_coupon_placeholder;
+    }
+
+    const scrollCalendarBtn = document.getElementById('js-scroll-calendar');
+    if (scrollCalendarBtn && t.booking_scroll_calendar) {
+        scrollCalendarBtn.setAttribute('aria-label', t.booking_scroll_calendar);
+    }
+
+    const qrImage = document.getElementById('js-qr-img');
+    if (qrImage && t.booking_qr_alt) {
+        qrImage.setAttribute('alt', t.booking_qr_alt);
+    }
+
+    updateNavButtons();
+}
+
         function scrollTopStep() {
             if (!modalBox) return;
             modalBox.scrollTo({
@@ -1647,11 +1719,11 @@
 
         async function loadTutorPaymentInfo() {
             if (!payGrid) return;
-
+            const lang = localStorage.getItem('selectedLanguage') || 'es';
+            const t = translations[lang] || translations.es;
             payGrid.style.display = 'grid';
             payHint.style.display = 'block';
-            payHint.textContent =
-                'Realiza el pago escaneando el siguiente código QR y luego sube tu comprobante.';
+            payHint.textContent = t.booking_pay_hint;
 
             cardQR.style.display = 'block';
             const qrSrc = `/storage/qr/Qr-pagos.png`;
@@ -1686,6 +1758,8 @@
             modal.style.display = 'block';
             lockBody(true);
             resetModalState();
+
+             translateBookingModal();
 
             requestAnimationFrame(() => modal.classList.add('is-open'));
 
@@ -1793,7 +1867,7 @@
             if (institutionSelect) institutionSelect.value = ''; // select real (oculto)
 
 
-            if (instLabel) instLabel.textContent = 'Selecciona tipo de institución';
+            if (instLabel) instLabel.textContent = bookingText('booking_select_institution', 'Selecciona tipo de institución');
             if (instDD) {
                 instDD.classList.remove('has-value', 'is-open');
             }
@@ -1846,20 +1920,25 @@
             subjectSearch.value = '';
             subjectSearch.disabled = true;
 
-            subjectsList.innerHTML = `
-    <p style="padding: 16px; text-align: center; color: #666; margin: 0; font-size: 14px;">
-      Selecciona un tipo de institución.
-    </p>`;
+            const t = typeof translations !== 'undefined'
+                ? (translations[localStorage.getItem('selectedLanguage') || 'es'] || translations.es)
+                : null;
+
+            subjectsList.innerHTML = 
+            `<p style="padding: 16px; text-align: center; color: #666; margin: 0; font-size: 14px;"
+            data-translate="booking_select_institution_first">
+            ${t?.booking_select_institution_first || 'Selecciona un tipo de institución.'}
+            </p>`;
 
 
             tutorContainer.style.display = 'none';
-            tutorHelper.textContent = 'Elige una materia para ver los tutores disponibles.';
+            tutorHelper.textContent = bookingText('booking_choose_subject', 'Elige una materia para ver los tutores disponibles.');
             tutorList.innerHTML = '';
 
 
             slotsContainer.innerHTML = '';
             if (miniCalendarEl) miniCalendarEl.innerHTML = '';
-            if (selectedDateLabel) selectedDateLabel.textContent = 'Hoy';
+            if (selectedDateLabel) selectedDateLabel.textContent = bookingText('booking_today', 'Hoy');
 
 
             couponInput.value = '';
@@ -1946,10 +2025,12 @@
         }
 
         function monthName(m) {
-            const names = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto',
-                'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
-            ];
-            return `${names[m]}`;
+            const names = bookingArray('booking_months', [
+                'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+                'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+            ]);
+
+            return names[m];
         }
 
         function renderMiniCalendar(y, m) {
@@ -1960,7 +2041,7 @@
             const startDay = first.getDay();
             const daysInMonth = new Date(y, m + 1, 0).getDate();
 
-            const week = ['D', 'L', 'M', 'M', 'J', 'V', 'S'];
+            const week = bookingArray('booking_week_days_short', ['D', 'L', 'M', 'M', 'J', 'V', 'S']);
 
             miniCalendarEl.innerHTML = `
     <div class="mini-cal">
@@ -2036,7 +2117,9 @@
 
 
             const isToday = dateStr === todayStr();
-            selectedDateLabel.textContent = isToday ? 'Hoy' : dateStr;
+            selectedDateLabel.textContent = isToday
+                ? bookingText('booking_today', 'Hoy')
+                : dateStr;
 
 
             renderSlotsForDate(dateStr);
@@ -2047,14 +2130,17 @@
             const slots = slotsByDate[dateStr] || [];
             selectedSlots = [];
 
-
             if (!slots.length) {
-                slotsContainer.innerHTML = `
-      <p style="margin:0; padding:14px; color:#6b7280;">
-        Sin horarios disponibles ${dateStr === todayStr() ? 'hoy' : 'ese día'}.
-      </p>`;
-                return;
-            }
+             const emptySlotsMessage = dateStr === todayStr()
+                ? bookingText('booking_no_slots_today', 'Sin horarios disponibles hoy.')
+                : bookingText('booking_no_slots_that_day', 'Sin horarios disponibles ese día.');
+
+            slotsContainer.innerHTML = 
+            `<p style="margin:0; padding:14px; color:#6b7280;">
+            ${emptySlotsMessage}
+            </p>`;
+            return;
+        }
 
 
             slots.sort((a, b) => {
@@ -2180,7 +2266,7 @@
                                 chip.classList.add('active');
                             }
                         } else {
-                            alert("Solo puedes seleccionar un máximo de 6 bloques (2 horas).");
+                            alert(bookingText('booking_max_slots_alert', 'Solo puedes seleccionar un máximo de 6 bloques (2 horas).'));
                         }
                     }
 
@@ -2299,8 +2385,7 @@
 
 
                 if (typeof showFormMsg === 'function') {
-                    showFormMsg('Toca afuera otra vez para cerrar (así no pierdes tu progreso).',
-                        'error');
+                    showFormMsg(bookingText('booking_click_outside_alert', 'Toca afuera otra vez para cerrar (así no pierdes tu progreso).'), 'error');
                 }
 
                 setTimeout(() => (antiCloseArmed = false), 2000);
@@ -2318,13 +2403,13 @@
         nextBtn.addEventListener('click', async () => {
             if (currentStep === 1) {
                 if (!selectedSubject || !selectedTutor) {
-                    alert('Por favor selecciona una materia y un tutor');
+                    alert(bookingText('booking_select_subject_tutor_alert', 'Por favor selecciona una materia y un tutor'));
                     return;
                 }
                 await loadSlots();
             } else if (currentStep === 2) {
                 if (selectedSlots.length === 0) {
-                    alert('Por favor selecciona al menos un horario continuo.');
+                    alert(bookingText('booking_select_schedule_alert', 'Por favor selecciona al menos un horario continuo.'));
                     return;
                 }
 
@@ -2397,14 +2482,14 @@
 
             subjectSearch.value = '';
             subjectsList.innerHTML =
-                '<p style="padding: 16px; text-align: center; color: #666;">Cargando materias...</p>';
+            `<p style="padding: 16px; text-align: center; color: #666;">${bookingText('booking_loading_subjects', 'Cargando materias...')}</p>`;
 
 
 
             if (!selectedInstitution) {
                 subjectSearch.disabled = true;
                 subjectsList.innerHTML =
-                    '<p style="padding: 16px; text-align: center; color: #666;">Selecciona un tipo de institución.</p>';
+                    `<p style="padding: 16px; text-align: center; color: #666;">${bookingText('booking_select_institution_first', 'Selecciona un tipo de institución.')}</p>`;
                 return;
             }
 
@@ -2443,17 +2528,17 @@
 
                     showCouponBar(codigo);
 
-                    couponMessage.textContent = data.message;
+                    couponMessage.textContent = data.message || bookingText('booking_coupon_valid', 'Cupón aplicado correctamente.');
                     couponMessage.style.color = '#28a745';
 
                     recalcTotals();
                 } else {
-                    couponMessage.textContent = data.message;
+                    couponMessage.textContent = data.message || bookingText('booking_coupon_invalid', 'Cupón inválido o vencido.');
                     couponMessage.style.color = '#dc3545';
                 }
             } catch (error) {
                 console.error('Error:', error);
-                couponMessage.textContent = 'Error al validar cupón';
+                couponMessage.textContent = bookingText('booking_coupon_error', 'Error al validar cupón');
                 couponMessage.style.color = '#dc3545';
             }
         });
@@ -2554,17 +2639,23 @@
 
 
         function updateNavButtons() {
+    const lang = localStorage.getItem('selectedLanguage') || 'es';
+    const t = typeof translations !== 'undefined'
+        ? (translations[lang] || translations.es)
+        : null;
 
-            if (currentStep === 1) {
-                backBtn.disabled = false;
-                backBtn.textContent = 'Cancelar';
-            } else {
-                backBtn.disabled = false;
-                backBtn.textContent = 'Atrás';
-            }
+    backBtn.disabled = false;
 
-            nextBtn.textContent = currentStep === 3 ? 'Finalizar Reserva' : 'Siguiente';
-        }
+    if (currentStep === 1) {
+        backBtn.textContent = t?.booking_cancel || 'Cancelar';
+    } else {
+        backBtn.textContent = t?.booking_back || 'Atrás';
+    }
+
+    nextBtn.textContent = currentStep === 3
+        ? (t?.booking_finish || 'Finalizar Reserva')
+        : (t?.booking_next || 'Siguiente');
+}
 
         // ====== CARGA DE MATERIAS SEGÚN INSTITUCIÓN ======
         async function loadSubjectsByInstitution(institution) {
@@ -2576,16 +2667,16 @@
 
                 if (!data.success) {
                     subjectsList.innerHTML =
-                        '<p style="padding: 16px; text-align: center; color: red;">Error al cargar materias</p>';
+                        `<p style="padding: 16px; text-align: center; color: red;">${bookingText('booking_error_loading_subjects', 'Error al cargar materias')}</p>`;
                     return;
                 }
 
                 allSubjects = data.subjects || [];
 
-                if (allSubjects.length === 0) {
-                    subjectsList.innerHTML =
-                        '<p style="padding: 16px; text-align: center; color: white; margin: 0;">⚠️ No hay materias registradas para esta institución.</p>';
-                    return;
+               if (allSubjects.length === 0) {
+                   subjectsList.innerHTML =
+                        `<p style="padding: 16px; text-align: center; color: white; margin: 0;"> ${bookingText('booking_no_subjects', '⚠️ No hay materias registradas para esta institución.')}</p>`;
+                return;
                 }
 
                 renderSubjects(allSubjects);
@@ -2593,7 +2684,7 @@
             } catch (error) {
                 console.error('Error al cargar materias:', error);
                 subjectsList.innerHTML =
-                    '<p style="padding: 16px; text-align: center; color: red;">Error al cargar materias</p>';
+                    `<p style="padding: 16px; text-align: center; color: red;"> ${bookingText('booking_error_loading_subjects', 'Error al cargar materias')}</p>`;
             }
         }
 
@@ -2653,7 +2744,7 @@
         async function loadTutors(subjectId) {
 
             tutorContainer.style.display = 'block';
-            tutorHelper.textContent = 'Cargando tutores...';
+            tutorHelper.textContent = bookingText('booking_loading_tutors', 'Cargando tutores...');
             tutorList.innerHTML = '';
 
 
@@ -2673,17 +2764,17 @@
                 console.log('Respuesta tutores', data);
 
                 if (!data.success) {
-                    tutorHelper.textContent = data.message || 'Error al cargar tutores.';
+                    tutorHelper.textContent = data.message || bookingText('booking_error_loading_tutors', 'Error al cargar tutores.');
                     return;
                 }
 
                 if (!Array.isArray(data.tutors) || data.tutors.length === 0) {
-                    tutorHelper.textContent = 'No hay tutores disponibles para esta materia.';
+                    tutorHelper.textContent = bookingText('booking_no_tutors', 'No hay tutores disponibles para esta materia.');
                     tutorList.innerHTML = '';
                     return;
                 }
 
-                tutorHelper.textContent = 'Elige un tutor para continuar.';
+                tutorHelper.textContent = bookingText('booking_choose_tutor_continue', 'Elige un tutor para continuar.');
                 tutorList.innerHTML = '';
 
                 data.tutors.forEach((tutor, i) => {
@@ -2718,7 +2809,7 @@
                     card.addEventListener('click', () => {
                         tutorList.querySelectorAll('.tutor-card').forEach(c => c.classList
                             .remove('is-selected'));
-                        card.classList.add('is-selected');
+                        card.classList.add('is-selected'); 
 
                         selectedTutor = tutorId;
                         selectedTutorName = fullName;
@@ -2764,7 +2855,7 @@
 
             } catch (error) {
                 console.error('Error al cargar tutores', error);
-                tutorHelper.textContent = 'Error al cargar tutores.';
+                tutorHelper.textContent = bookingText('booking_error_loading_tutors', 'Error al cargar tutores.');
                 tutorList.innerHTML = '';
             }
         }
@@ -2775,7 +2866,7 @@
         // ====== CARGA DE HORARIOS ======
         async function loadSlots() {
             slotsContainer.innerHTML =
-                '<p style="text-align:center; padding: 24px;">Cargando horarios...</p>';
+                 `<p style="text-align:center; padding: 24px;">${bookingText('booking_loading_slots', 'Cargando horarios...')}</p>`;
 
             selectedSlots = [];
             slotsByDate = {};
@@ -2790,13 +2881,13 @@
 
                 if (!data.success) {
                     slotsContainer.innerHTML =
-                        '<p style="text-align:center; padding: 24px;">Error al cargar horarios</p>';
+                        `<p style="text-align:center; padding: 24px;">${bookingText('booking_error_loading_slots', 'Error al cargar horarios')}</p>`;
                     return;
                 }
 
                 if (!Array.isArray(data.slots) || data.slots.length === 0) {
                     slotsContainer.innerHTML =
-                        '<p style="text-align:center; padding: 24px;">No hay horarios disponibles</p>';
+                        `<p style="text-align:center; padding: 24px;">${bookingText('booking_no_slots', 'No hay horarios disponibles')}</p>`;
 
 
                     const now = new Date();
@@ -2822,7 +2913,7 @@
             } catch (error) {
                 console.error('Error al cargar horarios:', error);
                 slotsContainer.innerHTML =
-                    '<p style="text-align:center; padding: 24px;">Error al cargar horarios</p>';
+                    `<p style="text-align:center; padding: 24px;">${bookingText('booking_error_loading_slots', 'Error al cargar horarios')}</p>`;
             }
         }
 
@@ -2839,9 +2930,10 @@
 
             const durationMins = selectedSlots.length * 20;
             const durationTxt = durationMins >= 60 ?
-                (durationMins % 60 === 0 ? `${durationMins/60} hora(s)` :
-                    `${Math.floor(durationMins/60)} h ${durationMins%60} min`) :
-                `${durationMins} minutos`;
+                (durationMins % 60 === 0
+                ? `${durationMins / 60} ${bookingText('booking_duration_hour', 'hora(s)')}`
+                : `${Math.floor(durationMins / 60)} ${bookingText('booking_duration_hour_short', 'h')} ${durationMins % 60} ${bookingText('booking_duration_min_short', 'min')}`)
+                : `${durationMins} ${bookingText('booking_duration_minutes', 'minutos')}`;
 
             document.getElementById('js-summary-subject').textContent = subjectName;
             document.getElementById('js-summary-tutor').textContent = tutorName;
@@ -2865,13 +2957,13 @@
         }
 
         function showCouponBar(code) {
-            couponBar.style.display = 'flex';
-            couponCodeEl.textContent = code || '-';
+             if (couponBar) couponBar.style.display = 'flex';
+             if (couponCodeEl) couponCodeEl.textContent = code || '-';
         }
 
         function hideCouponBar() {
-            couponBar.style.display = 'none';
-            couponCodeEl.textContent = '-';
+            if (couponBar) couponBar.style.display = 'none';
+            if (couponCodeEl) couponCodeEl.textContent = '-';
         }
 
 
@@ -2904,7 +2996,7 @@
             //  Si NO es gratis, exige comprobante
             if (!isFreeBooking && !comprobanteFile) {
                 fileUpload.classList.add('input-error');
-                showFormMsg('🚫 Falta tu comprobante de pago. Súbelo para finalizar la reserva.', 'error');
+                showFormMsg(bookingText('booking_missing_receipt','🚫 Falta tu comprobante de pago. Súbelo para finalizar la reserva.'),'error');
 
                 if (receiptLabel) {
                     receiptLabel.scrollIntoView({
@@ -2955,7 +3047,7 @@
                     data = JSON.parse(raw);
                 } catch {
                     console.error('❌ Respuesta NO JSON del servidor:', raw);
-                    throw new Error('El servidor devolvió HTML/no JSON. Revisa logs de Laravel.');
+                    throw new Error(bookingText('booking_server_not_json', 'El servidor devolvió HTML/no JSON. Revisa logs de Laravel.'));
                 }
 
                 if (data.success) {
@@ -2971,14 +3063,14 @@
                 loader.style.display = 'none';
                 navigationButtons.style.display = 'flex';
                 showPayUIAfterError();
-                alert(data.message || 'Error al procesar la reserva');
+                alert(data.message || bookingText('booking_process_error', 'Error al procesar la reserva'));
 
             } catch (error) {
                 console.error('Error al procesar la reserva:', error);
                 loader.style.display = 'none';
                 navigationButtons.style.display = 'flex';
                 showPayUIAfterError();
-                alert(error.message || 'Error al procesar la reserva');
+                alert(error.message || bookingText('booking_process_error', 'Error al procesar la reserva'));
             }
         }
 
@@ -3032,7 +3124,7 @@
 
                 loader.style.display = 'none';
                 if (!data.success) {
-                    alert(data.message || 'Alguno de los horarios seleccionados ya no está disponible.');
+                    alert(data.message || bookingText('booking_slot_unavailable', 'Alguno de los horarios seleccionados ya no está disponible.'));
                     selectedSlots = [];
                     return false;
                 }
@@ -3040,10 +3132,28 @@
             } catch (e) {
                 loader.style.display = 'none';
                 console.error("Error holding slots", e);
-                alert("Error de conexión al intentar bloquear los horarios.");
+                alert(bookingText('booking_hold_connection_error', 'Error de conexión al intentar bloquear los horarios.'));
                 return false;
             }
         }
+                document.addEventListener('languageChanged', () => {
+                 translateBookingModal();
+
+                 if (calendarYear !== null && calendarMonth !== null && miniCalendarEl) {
+                     renderMiniCalendar(calendarYear, calendarMonth);
+                }
+
+                if (selectedDateLabel && selectedDate) {
+                    selectedDateLabel.textContent = selectedDate === todayStr()
+                        ? bookingText('booking_today', 'Hoy')
+                        : selectedDate;
+                }
+            });
+
+               if (typeof selectLanguage === 'function') {
+                const savedLang = localStorage.getItem('selectedLanguage') || 'es';
+                selectLanguage(savedLang, false);
+            }
 
     });
 </script>

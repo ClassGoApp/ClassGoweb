@@ -225,8 +225,12 @@ class AuthController extends Controller
             'fcm_token' => 'required|string',
         ]);
 
-        \App\Models\FcmToken::where('token', $request->fcm_token)
-            ->update(['user_id' => null]);
+        $deleted = \App\Models\FcmToken::where('token', $request->fcm_token)->delete();
+
+        \Log::info('FCM token detach request', [
+            'fcm_token' => substr($request->fcm_token, 0, 20) . '...',
+            'deleted' => $deleted
+        ]);
 
         return response()->json(['message' => 'FCM token eliminado correctamente']);
     }

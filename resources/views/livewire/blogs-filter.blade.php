@@ -1,9 +1,9 @@
 <div class="contendor-livewire-blogs">
     <header class="blog-section">
-        <h2 class="todos-blogs">Todos los blogs</h2>
+        <h2 class="todos-blogs" data-translate="blog_all_blogs">Todos los blogs</h2>
         <div class="blog-filters">
             <select wire:model.live="category">
-                <option value="">Seleccionar categoría </option>
+                <option value="" data-translate="blog_select_category">Seleccionar categoría</option>
 
                 @foreach ($categories as $cat)
                     <option value="{{ $cat->id }}">{{ ucfirst($cat->name) }}</option>
@@ -11,9 +11,9 @@
             </select>
 
             <select wire:model.live="order">
-                <option value="">Ordenar por</option>
-                <option value="recientes">Más recientes</option>
-                <option value="populares">Más populares</option>
+                <option value="" data-translate="blog_order_by">Ordenar por</option>
+                <option value="recientes" data-translate="blog_most_recent">Más recientes</option>
+                <option value="populares" data-translate="blog_most_popular">Más populares</option>
             </select>
         </div>
     </header>
@@ -80,7 +80,12 @@
 
 
                 <h4 class="categoria">
-                    {{ $blog->main_category ?? 'General' }} /
+                    @if ($blog->main_category)
+                        {{ $blog->main_category }}
+                    @else
+                        <span data-translate="blog_category_general">General</span>
+                    @endif
+                    /
                     {{ $blog->created_at ? $blog->created_at->format('d \d\e F \d\e Y') : '' }}
                 </h4>
 
@@ -105,7 +110,9 @@
             </a>
 
         @empty
-            <p style="font-weight: 500; height: 477px;">No hay blogs disponibles.</p>
+            <p style="font-weight: 500; height: 477px;" data-translate="blog_no_available">
+                No hay blogs disponibles.
+            </p>
         @endforelse
     </div>
 </div>

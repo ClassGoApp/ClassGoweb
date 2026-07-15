@@ -3,37 +3,34 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Collection;
-
+use App\Mail\TutoriaInstanteAceptada;
+use App\Mail\TutorTutoriaNotificationMail;
 use App\Models\EmailBatch;
 use App\Models\EmailBatchItem;
 use App\Models\User;
 
-use Illuminate\Support\Facades\Auth;
 
-use App\Mail\TutorTutoriaNotificationMail;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
 
 use Illuminate\Support\Str;
 
-use App\Mail\TutoriaInstanteAceptada;
 
+use App\Models\FcmToken;
 use App\Models\SlotBooking;
+use App\Services\FcmService;
 use App\Services\SlotBookingService;
-
-
+use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 
 class SubjectPickerController extends Controller
 {
-
-    //////////////////////////metoo de prueba para enviar mails desde el endpoint (sin pasar por batch)///////////////////////////////////////
-
+    // ////////////////////////metoo de prueba para enviar mails desde el endpoint (sin pasar por batch)///////////////////////////////////////
 
     public function sendLastFive()
     {
@@ -51,14 +48,14 @@ class SubjectPickerController extends Controller
         if ($users->isEmpty()) {
             return response()->json([
                 'ok' => false,
-                'message' => 'No hay usuarios con email.'
+                'message' => 'No hay usuarios con email.',
             ], 404);
         }
 
         // Datos de prueba
-        $sessionDate  = now()->format('d/m/Y');
-        $sessionTime  = now()->addMinutes(10)->format('H:i');
-        $meetingLink  = 'https://meet.google.com/xxx-yyyy-zzz';
+        $sessionDate = now()->format('d/m/Y');
+        $sessionTime = now()->addMinutes(10)->format('H:i');
+        $meetingLink = 'https://meet.google.com/xxx-yyyy-zzz';
         $oppositeName = 'Estudiante de prueba';
 
         $sent = [];
@@ -66,7 +63,7 @@ class SubjectPickerController extends Controller
 
         foreach ($users as $u) {
             try {
-                $userName = 'Tutor #' . $u->id;
+                $userName = 'Tutor #'.$u->id;
 
                 Mail::to($u->email)->send(
                     new TutorTutoriaNotificationMail(
@@ -83,7 +80,7 @@ class SubjectPickerController extends Controller
                 // opcional: pausa chica para no saturar el SMTP
                 usleep(150000); // 0.15s
             } catch (\Throwable $e) {
-                Log::error("sendLastFive mail fail {$u->email}: " . $e->getMessage());
+                Log::error("sendLastFive mail fail {$u->email}: ".$e->getMessage());
 
                 $failed[] = [
                     'email' => $u->email,
@@ -102,9 +99,7 @@ class SubjectPickerController extends Controller
         ]);
     }
 
-
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public function index()
     {
         $subjects = Cache::remember('subjects.all', 3600, function () {
@@ -199,24 +194,24 @@ class SubjectPickerController extends Controller
 
                     return [
                         'id_categoria' => (int) $first->id_categoria,
-                        'categoria'    => $first->categoria,
-                        'materias'     => $items
+                        'categoria' => $first->categoria,
+                        'materias' => $items
                             ->whereNotNull('id_materia')
                             ->unique('id_materia')
-                            ->map(fn($r) => [
+                            ->map(fn ($r) => [
                                 'id_materia' => (int) $r->id_materia,
-                                'materia'    => $r->materia,
+                                'materia' => $r->materia,
                             ])
                             ->sortBy('materia')
                             ->values(),
                     ];
                 })
-                ->filter(fn($cat) => $cat['materias']->isNotEmpty())
+                ->filter(fn ($cat) => $cat['materias']->isNotEmpty())
                 ->sort(function ($a, $b) {
-                    $pA = ($a['id_categoria'] >= 2000 && $a['id_categoria'] < 3000) ? 1 
+                    $pA = ($a['id_categoria'] >= 2000 && $a['id_categoria'] < 3000) ? 1
                         : (($a['id_categoria'] >= 3000 && $a['id_categoria'] < 4000) ? 2 : 3);
-                    
-                    $pB = ($b['id_categoria'] >= 2000 && $b['id_categoria'] < 3000) ? 1 
+
+                    $pB = ($b['id_categoria'] >= 2000 && $b['id_categoria'] < 3000) ? 1
                         : (($b['id_categoria'] >= 3000 && $b['id_categoria'] < 4000) ? 2 : 3);
 
                     if ($pA !== $pB) {
@@ -230,9 +225,10 @@ class SubjectPickerController extends Controller
         });
 
         return response()->json([
-            'data' => $data
+            'data' => $data,
         ]);
     }
+
     private function getTutorsAvailableNow(int $subjectId): Collection
     {
         // Solo tutores con rol "tutor" y que hayan aceptado términos (users.terms_accepted_at)
@@ -265,9 +261,6 @@ class SubjectPickerController extends Controller
         ]);
     }
 
-
-
-
     private function getTutorsNotAvailableNow(int $subjectId): Collection
     {
         return $this->baseTutorsBySubjectQuery($subjectId, false)
@@ -281,8 +274,6 @@ class SubjectPickerController extends Controller
             ->get();
     }
 
-
-
     public function tutorsNotAvailableNow(int $subject_id)
     {
         $tutors = $this->getTutorsNotAvailableNow($subject_id);
@@ -294,11 +285,10 @@ class SubjectPickerController extends Controller
         ]);
     }
 
-
     public function sendBatchEmails(Request $request)
     {
         $batchId = (int) $request->input('batch_id');
-        $limit   = (int) $request->input('limit', 10);
+        $limit = (int) $request->input('limit', 10);
 
         if ($batchId <= 0) {
             return response()->json(['ok' => false, 'message' => 'batch_id requerido'], 422);
@@ -309,17 +299,17 @@ class SubjectPickerController extends Controller
 
         // 0) Traer subject_id del batch (1 sola vez)
         $batch = DB::table('email_batches')->where('id', $batchId)->first(['id', 'subject_id']);
-        if (!$batch) {
+        if (! $batch) {
             return response()->json(['ok' => false, 'message' => 'Batch no existe'], 404);
         }
 
-        $subjectId   = (int) $batch->subject_id;
+        $subjectId = (int) $batch->subject_id;
         $subjectName = DB::table('subjects')->where('id', $subjectId)->value('name') ?? 'Materia';
 
         // Datos comunes del email (1 sola vez)
-        $gifUrl      = asset('images/tutoria-instant.gif'); // ajusta si tu gif está en otro lugar
+        $gifUrl = asset('images/tutoria-instant.gif'); // ajusta si tu gif está en otro lugar
         $description = "Tienes una solicitud de tutoría instantánea para {$subjectName}. Entra y espera a ser elegido.";
-        $buttonText  = "Entrar a sala de espera";
+        $buttonText = 'Entrar a sala de espera';
 
         // 1) Tomar N items pending y marcarlos sending (lock)
         $items = DB::transaction(function () use ($batchId, $limit, $now) {
@@ -364,49 +354,64 @@ class SubjectPickerController extends Controller
                 // Traer email + nombre del perfil en 1 query
                 $user = DB::table('users as u')
                     ->leftJoin('profiles as p', 'p.user_id', '=', 'u.id')
-                    ->leftJoin('fcm_tokens', 'fcm_tokens.user_id', '=', 'u.id')
                     ->where('u.id', $it->user_id)
                     ->first([
                         'u.id',
                         'u.email',
-                        'fcm_tokens.token as fcm_token',
                         'p.first_name',
                         'p.last_name',
                     ]);
 
-                if (!$user || !$user->email) {
+                if (! $user || ! $user->email) {
                     throw new \Exception('user_email_missing');
                 }
                 
-                if ($user->fcm_token) {
-                    $notificacionController = app(NotificacionController::class);
-                    $notificacionController->enviarATutores(
-                        request: new Request([
-                            'title' => 'Solicitud de tutoría instantánea',
-                            'body' => "Tienes una solicitud de tutoría instantánea para {$subjectName}. Entra y espera a ser elegido.",
+                // Obtener TODOS los tokens FCM activos del usuario
+                $tokens = DB::table('fcm_tokens')
+                    ->where('user_id', $it->user_id)
+                    ->whereNotNull('token')
+                    ->where('token', '!=', '')
+                    ->pluck('token')
+                    ->unique()
+                    ->toArray();
+
+                if (!empty($tokens)) {
+                    $fcmService = new FcmService();
+                    $results = $fcmService->sendNotificationToTokens(
+                        $tokens,
+                        'Solicitud de tutoría instantánea',
+                        "Tienes una solicitud de tutoría instantánea para {$subjectName}. Entra y espera a ser elegido.",
+                        [
                             'type' => 'tutoria_instant',
-                            'only' => true,
-                            'tokens' => json_encode([$user->fcm_token]),
                             'screen' => 'solicitud_tutor',
                             'data_tutor' => json_encode([
                                 'id' => $user->id,
-                                'nombre' => trim(($user->first_name ?? '') . ' ' . ($user->last_name ?? '')),
+                                'nombre' => trim(($user->first_name ?? '').' '.($user->last_name ?? '')),
                                 'materia' => $subjectName,
                                 'batch_id' => $batchId,
                                 'accept_token' => $it->accept_token,
                             ]),
-                        ])
+                        ]
                     );
+
+                    foreach ($results as $result) {
+                        if (!$result['success'] && $result['remove_token']) {
+                            FcmToken::where('token', $result['token'])->delete();
+                            Log::warning('sendBatchEmails: Token FCM inválido eliminado', [
+                                'user_id' => $user->id,
+                                'token_preview' => substr($result['token'], 0, 20) . '...',
+                            ]);
+                        }
+                    }
                 }
 
-                $tutorName = trim(($user->first_name ?? '') . ' ' . ($user->last_name ?? ''));
+                $tutorName = trim(($user->first_name ?? '').' '.($user->last_name ?? ''));
                 if ($tutorName === '') {
-                    $tutorName = 'Tutor #' . $it->user_id;
+                    $tutorName = 'Tutor #'.$it->user_id;
                 }
 
                 // Link del email con accept_token
                 $buttonUrl = route('waitlist.accept', ['t' => $it->accept_token]);
-
 
                 Mail::to($user->email)->send(
                     new \App\Mail\TutoriaInstanteNotificacionMail(
@@ -431,7 +436,7 @@ class SubjectPickerController extends Controller
 
                 usleep(150000);
             } catch (\Throwable $e) {
-                Log::error("Batch {$batchId} mail fail item {$it->id}: " . $e->getMessage());
+                Log::error("Batch {$batchId} mail fail item {$it->id}: ".$e->getMessage());
 
                 EmailBatchItem::where('id', $it->id)->update([
                     'status' => 'failed',
@@ -457,7 +462,6 @@ class SubjectPickerController extends Controller
             'failed' => $failed,
         ]);
     }
-
 
     public function start(Request $request)
     {
@@ -518,7 +522,6 @@ class SubjectPickerController extends Controller
                 'active_subject_id' => $subjectId,
             ]);
 
-
             $availableNow = $this->getTutorsAvailableNow($subjectId);
 
             $seen = [];
@@ -526,10 +529,11 @@ class SubjectPickerController extends Controller
 
             foreach ($availableNow as $t) {
                 $uid = (int) $t->user_id;
-                if ($uid > 0 && !isset($seen[$uid])) {
+                if ($uid > 0 && ! isset($seen[$uid])) {
                     $seen[$uid] = true;
                     $queue[] = $uid;
                 }
+
             }
 
             $items = [];
@@ -538,24 +542,24 @@ class SubjectPickerController extends Controller
 
             foreach ($queue as $uid) {
                 $items[] = [
-                    'batch_id'      => $batch->id,
-                    'user_id'       => $uid,
-                    'position'      => $pos++,
-                    'status'        => 'pending',
-                    'sent_at'       => null,
-                    'last_error'    => null,
+                    'batch_id' => $batch->id,
+                    'user_id' => $uid,
+                    'position' => $pos++,
+                    'status' => 'pending',
+                    'sent_at' => null,
+                    'last_error' => null,
 
                     // ✅ tu columna real
-                    'accept_token'  => Str::random(64), // 64 cabe perfecto en varchar(80)
-                    'accepted_at'   => null,
-                    'chosen_at'     => null,
+                    'accept_token' => Str::random(64), // 64 cabe perfecto en varchar(80)
+                    'accepted_at' => null,
+                    'chosen_at' => null,
 
-                    'created_at'    => $now,
-                    'updated_at'    => $now,
+                    'created_at' => $now,
+                    'updated_at' => $now,
                 ];
             }
 
-            if (!empty($items)) {
+            if (! empty($items)) {
                 EmailBatchItem::insert($items);
             } else {
                 $batch->update([
@@ -576,7 +580,62 @@ class SubjectPickerController extends Controller
         });
     }
 
+    public function cancelBatch(Request $request, EmailBatch $batch)
+{
+    $studentId = (int) Auth::id();
 
+    if ((int) $batch->created_by !== $studentId) {
+        return response()->json([
+            'ok' => false,
+            'message' => 'No tienes permiso para cancelar esta solicitud.',
+        ], 403);
+    }
+
+    if (in_array($batch->status, ['done', 'failed'], true)) {
+        session()->forget([
+            'active_batch_id',
+            'active_subject_id',
+        ]);
+
+        return response()->json([
+            'ok' => true,
+            'message' => 'La solicitud ya estaba cerrada.',
+            'redirect_to' => route('tutorias-instantaneas'),
+        ]);
+    }
+
+    DB::transaction(function () use ($batch) {
+        EmailBatchItem::query()
+            ->where('batch_id', $batch->id)
+            ->whereIn('status', ['pending', 'sending', 'sent', 'accepted', 'chosen'])
+            ->update([
+                'status' => 'expired',
+                'last_error' => 'cancelled_by_student',
+                'updated_at' => now(),
+            ]);
+
+        EmailBatch::query()
+            ->where('id', $batch->id)
+            ->update([
+                'status' => 'done',
+                'last_error' => 'cancelled_by_student',
+                'expires_at' => now(),
+                'updated_at' => now(),
+            ]);
+    });
+
+    session()->forget([
+        'active_batch_id',
+        'active_subject_id',
+    ]);
+
+    return response()->json([
+        'ok' => true,
+        'message' => 'Solicitud cancelada correctamente.',
+        'batch_id' => $batch->id,
+        'redirect_to' => route('tutorias-instantaneas'),
+    ]);
+}
 
     public function status(EmailBatch $batch)
     {
@@ -596,7 +655,7 @@ class SubjectPickerController extends Controller
                 'ebi.sent_at',
                 'ebi.last_error',
             ])
-            ->map(fn($it) => [
+            ->map(fn ($it) => [
                 'id' => $it->id,
                 'position' => $it->position,
                 'user_id' => $it->user_id,
@@ -630,12 +689,6 @@ class SubjectPickerController extends Controller
         ]);
     }
 
-
-
-
-
-
-
     public function active()
     {
         $studentId = (int) Auth::id();
@@ -645,8 +698,8 @@ class SubjectPickerController extends Controller
         if ($batchId) {
             $batch = EmailBatch::query()->find($batchId);
 
-            if ($batch && !in_array($batch->status, ['done', 'failed'], true)) {
-                if (!$batch->expires_at || now()->lt($batch->expires_at)) {
+            if ($batch && ! in_array($batch->status, ['done', 'failed'], true)) {
+                if (! $batch->expires_at || now()->lt($batch->expires_at)) {
 
                     $timing = $this->batchTimingPayload($batch);
 
@@ -661,7 +714,7 @@ class SubjectPickerController extends Controller
 
                         // ✅ CLAVE para contador cross-device
                         'expires_at_ms' => $timing['expires_at_ms'],
-                        'seconds_left'  => $timing['seconds_left'],
+                        'seconds_left' => $timing['seconds_left'],
                         'server_now_ms' => $timing['server_now_ms'],
                     ]);
                 }
@@ -682,7 +735,7 @@ class SubjectPickerController extends Controller
             ->orderByDesc('id')
             ->first();
 
-        if (!$batch) {
+        if (! $batch) {
             return response()->json(['active' => false]);
         }
 
@@ -705,7 +758,7 @@ class SubjectPickerController extends Controller
 
             // ✅ CLAVE para contador cross-device
             'expires_at_ms' => $timing['expires_at_ms'],
-            'seconds_left'  => $timing['seconds_left'],
+            'seconds_left' => $timing['seconds_left'],
             'server_now_ms' => $timing['server_now_ms'],
         ]);
     }
@@ -715,7 +768,7 @@ class SubjectPickerController extends Controller
         $token = (string) $request->query('t');
         if ($token === '') {
             $token = (string) $request->t;
-            if($token === '') {
+            if ($token === '') {
                 abort(404);
             }
         }
@@ -723,19 +776,23 @@ class SubjectPickerController extends Controller
 
         // 1) Buscar item por token
         $item = EmailBatchItem::where('accept_token', $token)->first();
-        if (!$item) abort(404);
+        if (! $item) {
+            abort(404);
+        }
 
         // 2) Buscar batch y validar expiración
         $batch = EmailBatch::find($item->batch_id);
-        if (!$batch) abort(404);
+        if (! $batch) {
+            abort(404);
+        }
 
         if ($batch->expires_at && now()->greaterThanOrEqualTo($batch->expires_at)) {
-            if($mobil){
+            if ($mobil) {
                 return response()->json([
                     'ok' => false,
                     'message' => 'La solicitud ha expirado',
                 ], 410);
-            }else{
+            } else {
                 return view('vistas.view.pages.tutorStateLink', [
                     'status' => 'expired',
                 ]);
@@ -748,7 +805,7 @@ class SubjectPickerController extends Controller
         //     $item->status = 'accepted';
         //     $item->save();
         // }
-        if (!$item->accepted_at) {
+        if (! $item->accepted_at) {
             $item->accepted_at = now();
             $item->status = 'accepted';
             $item->save();
@@ -762,7 +819,6 @@ class SubjectPickerController extends Controller
             ]);
         }
 
-
         $expiresAt = $batch->expires_at;
 
         $secondsLeft = $expiresAt ? now()->diffInSeconds($expiresAt, false) : null;
@@ -770,7 +826,7 @@ class SubjectPickerController extends Controller
         // ✅ timestamp absoluto (servidor) en milisegundos
         $expiresAtMs = $expiresAt ? ($expiresAt->getTimestamp() * 1000) : null;
 
-        if($mobil){
+        if ($mobil) {
             return response()->json([
                 'ok' => true,
                 'message' => '¡Has aceptado la solicitud de tutoría instantánea! Espera a ser elegido por el estudiante.',
@@ -782,7 +838,7 @@ class SubjectPickerController extends Controller
                 'expires_at_ms' => $expiresAtMs,
             ]);
 
-        }else{
+        } else {
             return view('vistas.view.pages.tutorStateLink', [
                 'status' => ($secondsLeft !== null && $secondsLeft <= 0) ? 'expired' : 'ok',
                 'batch_id' => $batch->id,
@@ -793,8 +849,6 @@ class SubjectPickerController extends Controller
             ]);
         }
     }
-
-
 
     /**
      * ✅ acceptedTutors()
@@ -810,7 +864,7 @@ class SubjectPickerController extends Controller
 
         $afterAt = $request->query('after_accepted_at');
         $afterId = (int) $request->query('after_id', 0);
-        $limit   = max(1, min((int)$request->query('limit', 20), 50));
+        $limit = max(1, min((int) $request->query('limit', 20), 50));
 
         $ratingsSub = $this->ratingsSubquery();
 
@@ -828,11 +882,11 @@ class SubjectPickerController extends Controller
         $this->applyAcceptedCursor($q, $afterAt, $afterId);
 
         // Rango dinámico (igual que requestBooking)
-        $waitMinutes    = 5;
+        $waitMinutes = 5;
         $sessionMinutes = 20;
 
         $startAt = now()->addMinutes($waitMinutes);
-        $endAt   = (clone $startAt)->addMinutes($sessionMinutes);
+        $endAt = (clone $startAt)->addMinutes($sessionMinutes);
 
         // TTL de reserva: 7 min (status=2)
         $reserveTtlMinutes = 7;
@@ -853,7 +907,7 @@ class SubjectPickerController extends Controller
                         });
                 })
                 ->where('sb.start_time', '<', $endAt->toDateTimeString())
-                ->where('sb.end_time',   '>', $startAt->toDateTimeString());
+                ->where('sb.end_time', '>', $startAt->toDateTimeString());
         });
 
         $rows = $q->orderBy('ebi.accepted_at')
@@ -869,7 +923,7 @@ class SubjectPickerController extends Controller
                 'p.image',
                 'p.price',
                 'p.verified_at',
-                DB::raw("CASE WHEN p.verified_at IS NULL THEN 0 ELSE 1 END as is_verified"),
+                DB::raw('CASE WHEN p.verified_at IS NULL THEN 0 ELSE 1 END as is_verified'),
                 DB::raw('COALESCE(rt.rating, 0.0) as rating'),
             ]);
 
@@ -894,13 +948,6 @@ class SubjectPickerController extends Controller
         //     'next_after_id' => $last?->id ?? $afterId,
         // ]);
     }
-
-
-
-
-
-
-
 
     public function chooseTutor(Request $request, EmailBatch $batch)
     {
@@ -970,7 +1017,7 @@ class SubjectPickerController extends Controller
                 ->lockForUpdate()
                 ->first();
 
-            if (!$item) {
+            if (! $item) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Item no pertenece al batch',
@@ -1031,12 +1078,11 @@ class SubjectPickerController extends Controller
         });
     }
 
-
-    ///////////////////////  nuevo ///////////////////////
+    // /////////////////////  nuevo ///////////////////////
     // ✅ Seguridad reusable
     private function ensureBatchOwner(EmailBatch $batch): void
     {
-        if ((int)$batch->created_by !== (int) Auth::id()) {
+        if ((int) $batch->created_by !== (int) Auth::id()) {
             abort(403, 'Forbidden');
         }
     }
@@ -1048,7 +1094,7 @@ class SubjectPickerController extends Controller
 
         return [
             'expires_at_ms' => $expiresAt ? $expiresAt->getTimestamp() * 1000 : null,
-            'seconds_left'  => $expiresAt ? now()->diffInSeconds($expiresAt, false) : null,
+            'seconds_left' => $expiresAt ? now()->diffInSeconds($expiresAt, false) : null,
             'server_now_ms' => now()->getTimestamp() * 1000,
         ];
     }
@@ -1113,14 +1159,12 @@ class SubjectPickerController extends Controller
         return $q;
     }
 
-
-
-
-
     // ✅ Cursor reusable para acceptedTutors
     private function applyAcceptedCursor($q, ?string $afterAt, int $afterId): void
     {
-        if (!$afterAt) return;
+        if (! $afterAt) {
+            return;
+        }
 
         $q->where(function ($w) use ($afterAt, $afterId) {
             $w->where('ebi.accepted_at', '>', $afterAt)
@@ -1134,7 +1178,7 @@ class SubjectPickerController extends Controller
     // Este es el endpoint que vas a poner en el botón de la card (“Solicitar”).
     public function reserveTutor(Request $request, EmailBatch $batch)
     {
-        if ((int)$batch->created_by !== (int)Auth::id()) {
+        if ((int) $batch->created_by !== (int) Auth::id()) {
             return response()->json(['message' => 'Forbidden'], 403);
         }
 
@@ -1142,24 +1186,27 @@ class SubjectPickerController extends Controller
             'item_id' => ['required', 'integer', 'min:1'],
         ]);
 
-        $itemId = (int)$data['item_id'];
+        $itemId = (int) $data['item_id'];
 
         return DB::transaction(function () use ($batch, $itemId) {
 
             $batchRow = DB::table('email_batches')
-                ->where('id', (int)$batch->id)
+                ->where('id', (int) $batch->id)
                 ->lockForUpdate()
                 ->first();
 
-            if (!$batchRow) return response()->json(['message' => 'Batch not found'], 404);
+            if (! $batchRow) {
+                return response()->json(['message' => 'Batch not found'], 404);
+            }
 
             if ($batchRow->expires_at && now()->greaterThanOrEqualTo($batchRow->expires_at)) {
                 return response()->json(['message' => 'Batch expirado'], 409);
             }
 
             // ✅ Si ya hay booking creado para este batch, idempotente
-            if (!empty($batchRow->booking_id)) {
-                $existing = DB::table('slot_bookings')->where('id', (int)$batchRow->booking_id)->first();
+            if (! empty($batchRow->booking_id)) {
+                $existing = DB::table('slot_bookings')->where('id', (int) $batchRow->booking_id)->first();
+
                 return response()->json([
                     'success' => true,
                     'message' => 'Booking ya reservado para este batch.',
@@ -1168,22 +1215,24 @@ class SubjectPickerController extends Controller
             }
 
             $item = DB::table('email_batch_items')
-                ->where('batch_id', (int)$batchRow->id)
+                ->where('batch_id', (int) $batchRow->id)
                 ->where('id', $itemId)
                 ->lockForUpdate()
                 ->first();
 
-            if (!$item) return response()->json(['message' => 'Item no pertenece al batch'], 404);
+            if (! $item) {
+                return response()->json(['message' => 'Item no pertenece al batch'], 404);
+            }
 
-            if ((string)$item->status !== 'accepted') {
+            if ((string) $item->status !== 'accepted') {
                 return response()->json(['message' => 'Solo se puede reservar un tutor aceptado'], 409);
             }
 
-            $studentId = (int)$batchRow->created_by;
-            $tutorId   = (int)$item->user_id;
+            $studentId = (int) $batchRow->created_by;
+            $tutorId = (int) $item->user_id;
 
             $start = now()->addMinutes(5)->startOfMinute();
-            $end   = (clone $start)->addMinutes(20);
+            $end = (clone $start)->addMinutes(20);
 
             // 🔒 Anti-solapamiento
             $conflict = DB::table('slot_bookings')
@@ -1198,46 +1247,44 @@ class SubjectPickerController extends Controller
                 return response()->json(['message' => 'Tutor ya reservado por otro estudiante. Elige otro.'], 409);
             }
 
-            $fee = (float)DB::table('profiles')->where('user_id', $tutorId)->value('price');
-            if ($fee < 0) $fee = 0;
+            $fee = (float) DB::table('profiles')->where('user_id', $tutorId)->value('price');
+            if ($fee < 0) {
+                $fee = 0;
+            }
 
             $ttlMinutes = 5; // TTL en minutos para completar el pago
 
             $bookingId = DB::table('slot_bookings')->insertGetId([
                 'student_id' => $studentId,
-                'tutor_id'   => $tutorId,
-                'subject_id' => (int)$batchRow->subject_id,
+                'tutor_id' => $tutorId,
+                'subject_id' => (int) $batchRow->subject_id,
                 'user_subject_slot_id' => null,
                 'start_time' => $start->toDateTimeString(),
-                'end_time'   => $end->toDateTimeString(),
+                'end_time' => $end->toDateTimeString(),
                 'session_fee' => $fee,
-                'booked_at'  => now()->toDateTimeString(),
+                'booked_at' => now()->toDateTimeString(),
                 'meeting_link' => null,
-                'status'     => 2, // Reserved / Pendiente de pago
-                'meta_data'  => json_encode([
+                'status' => 2, // Reserved / Pendiente de pago
+                'meta_data' => json_encode([
                     'source' => 'email_batch',
-                    'batch_id' => (int)$batchRow->id,
-                    'item_id'  => (int)$item->id,
+                    'batch_id' => (int) $batchRow->id,
+                    'item_id' => (int) $item->id,
                     'ttlMinutes' => $ttlMinutes,
                 ]),
-                //'created_at' => now(),
-                //'updated_at' => now(),
+                // 'created_at' => now(),
+                // 'updated_at' => now(),
             ]);
 
-
-
-
-
             // ✅ OJO: email_batch_items enum NO tiene "reserved" => usamos chosen
-            DB::table('email_batch_items')->where('id', (int)$item->id)->update([
+            DB::table('email_batch_items')->where('id', (int) $item->id)->update([
                 'status' => 'chosen',
                 'chosen_at' => now(),
                 'updated_at' => now(),
             ]);
 
             DB::table('email_batch_items')
-                ->where('batch_id', (int)$batchRow->id)
-                ->where('id', '!=', (int)$item->id)
+                ->where('batch_id', (int) $batchRow->id)
+                ->where('id', '!=', (int) $item->id)
                 ->whereIn('status', ['pending', 'sending', 'sent', 'accepted'])
                 ->update([
                     'status' => 'expired',
@@ -1246,10 +1293,10 @@ class SubjectPickerController extends Controller
                 ]);
 
             // ✅ Ahora sí: guardar booking_id en batch
-            DB::table('email_batches')->where('id', (int)$batchRow->id)->update([
+            DB::table('email_batches')->where('id', (int) $batchRow->id)->update([
                 'status' => 'matched',
                 'accepted_user_id' => $tutorId,
-                'accepted_item_id' => (int)$item->id,
+                'accepted_item_id' => (int) $item->id,
                 'accepted_at' => now(),
                 'booking_id' => $bookingId,
                 'updated_at' => now(),
@@ -1259,28 +1306,33 @@ class SubjectPickerController extends Controller
             // 🔔 INICIO LÓGICA DE NOTIFICACIONES
             // ====================================================================
             
-            $notificacionController = app(NotificacionController::class);
-
             // 1. Obtener nombre de la materia (asumiendo que tienes una tabla subjects)
             $subjectName = DB::table('subjects')->where('id', $batchRow->subject_id)->value('name') ?? 'la materia solicitada';
 
-            // 2. Notificar al tutor ELEGIDO
+            // 2. Notificar al tutor ELEGIDO usando todos sus tokens activos
+            $chosenTutorTokens = DB::table('fcm_tokens')
+                ->where('user_id', $tutorId)
+                ->whereNotNull('token')
+                ->where('token', '!=', '')
+                ->pluck('token')
+                ->unique()
+                ->toArray();
+
             $chosenTutorInfo = DB::table('users as u')
                 ->leftJoin('profiles as p', 'p.user_id', '=', 'u.id')
-                ->leftJoin('fcm_tokens', 'fcm_tokens.user_id', '=', 'u.id')
                 ->where('u.id', $tutorId)
-                ->first(['u.id', 'fcm_tokens.token as fcm_token', 'p.first_name', 'p.last_name']);
+                ->first(['u.id', 'p.first_name', 'p.last_name']);
 
-            if ($chosenTutorInfo && $chosenTutorInfo->fcm_token) {
+            if (!empty($chosenTutorTokens)) {
                 $nombreTutor = trim(($chosenTutorInfo->first_name ?? '') . ' ' . ($chosenTutorInfo->last_name ?? ''));
                 
-                $notificacionController->enviarATutores(
-                    request: new Request([
-                        'title' => '¡Felicidades, fuiste elegido!',
-                        'body' => "El estudiante te ha seleccionado para la tutoría de {$subjectName}. ¡Entra a la sala ahora!",
+                $fcmService = new FcmService();
+                $results = $fcmService->sendNotificationToTokens(
+                    $chosenTutorTokens,
+                    '¡Felicidades, fuiste elegido!',
+                    "El estudiante te ha seleccionado para la tutoría de {$subjectName}. ¡Entra a la sala ahora!",
+                    [
                         'type' => 'tutoria_elegida',
-                        'only' => true,
-                        'tokens' => json_encode([$chosenTutorInfo->fcm_token]),
                         'screen' => 'tutor_aceptado',
                         'data_tutor' => json_encode([
                             'id' => $chosenTutorInfo->id,
@@ -1289,8 +1341,18 @@ class SubjectPickerController extends Controller
                             'batch_id' => $batchRow->id,
                             'booking_id' => $bookingId,
                         ]),
-                    ])
+                    ]
                 );
+
+                foreach ($results as $result) {
+                    if (!$result['success'] && $result['remove_token']) {
+                        FcmToken::where('token', $result['token'])->delete();
+                        Log::warning('reserveTutor: Token FCM inválido eliminado (elegido)', [
+                            'user_id' => $chosenTutorInfo->id,
+                            'token_preview' => substr($result['token'], 0, 20) . '...',
+                        ]);
+                    }
+                }
             }
 
             // 3. Notificar a los tutores RECHAZADOS / NO ELEGIDOS
@@ -1305,22 +1367,31 @@ class SubjectPickerController extends Controller
                 ->pluck('fcm_tokens.token')
                 ->toArray();
 
-            // Si hay tokens rechazados, enviamos un solo Request masivo
+            // Si hay tokens rechazados, enviamos a todos
             if (!empty($rejectedTokens)) {
-                $notificacionController->enviarATutores(
-                    request: new Request([
-                        'title' => 'Tutoría asignada a otro tutor',
-                        'body' => "El estudiante ha elegido a otro tutor en esta ocasión. ¡Gracias por tu tiempo y sigue atento!",
+                $fcmService = new FcmService();
+                $results = $fcmService->sendNotificationToTokens(
+                    $rejectedTokens,
+                    'Tutoría asignada a otro tutor',
+                    "El estudiante ha elegido a otro tutor en esta ocasión. ¡Gracias por tu tiempo y sigue atento!",
+                    [
                         'type' => 'tutoria_no_elegida',
-                        'only' => true,
-                        'tokens' => json_encode($rejectedTokens), // Enviamos todo el array de tokens a Firebase
                         'screen' => 'tutor_rechazado',
                         'data_tutor' => json_encode([
                             'batch_id' => $batchRow->id,
                             'materia' => $subjectName,
                         ]),
-                    ])
+                    ]
                 );
+
+                foreach ($results as $result) {
+                    if (!$result['success'] && $result['remove_token']) {
+                        FcmToken::where('token', $result['token'])->delete();
+                        Log::warning('reserveTutor: Token FCM inválido eliminado (rechazado)', [
+                            'token_preview' => substr($result['token'], 0, 20) . '...',
+                        ]);
+                    }
+                }
             }
             // ====================================================================
             // 🔔 FIN LÓGICA DE NOTIFICACIONES
@@ -1339,15 +1410,10 @@ class SubjectPickerController extends Controller
         });
     }
 
-
-
-
-
-
     /**
      * ✅ Endpoint para obtener el ttlMinutes de un booking
      * GET /bookings/{bookingId}/ttl
-     * 
+     *
      * Devuelve:
      * - ttlMinutes: tiempo en minutos para completar el pago
      * - createdAt: cuándo se creó el booking
@@ -1365,16 +1431,16 @@ class SubjectPickerController extends Controller
             ->where('student_id', $studentId)
             ->first();
 
-        if (!$booking) {
+        if (! $booking) {
             return response()->json([
                 'ok' => false,
-                'message' => 'Booking no encontrado o no tienes acceso'
+                'message' => 'Booking no encontrado o no tienes acceso',
             ], 404);
         }
 
         // ✅ Parsear metadata JSON
         $metadata = [];
-        if (!empty($booking->meta_data)) {
+        if (! empty($booking->meta_data)) {
             try {
                 $metadata = json_decode($booking->meta_data, true) ?? [];
             } catch (\Throwable $e) {
@@ -1419,7 +1485,7 @@ class SubjectPickerController extends Controller
     /**
      * ✅ Endpoint para expirar un booking por TTL
      * POST /bookings/{bookingId}/expire
-     * 
+     *
      * Cambia el estado del booking a 3 (expirado/no completado)
      * Se usa cuando el contador de 5 minutos termina en el frontend
      * o automáticamente si el backend detecta que pasó el TTL
@@ -1435,25 +1501,25 @@ class SubjectPickerController extends Controller
             ->lockForUpdate()
             ->first();
 
-        if (!$booking) {
+        if (! $booking) {
             return response()->json([
                 'ok' => false,
-                'message' => 'Booking no encontrado o no tienes acceso'
+                'message' => 'Booking no encontrado o no tienes acceso',
             ], 404);
         }
 
         // ✅ Solo se puede expirar si está en estado 2 (pendiente/reservado)
-        if ((int)$booking->status !== 2) {
+        if ((int) $booking->status !== 2) {
             return response()->json([
                 'ok' => false,
                 'message' => 'Este booking no puede ser expirado (estado inválido)',
-                'current_status' => (int)$booking->status,
+                'current_status' => (int) $booking->status,
             ], 409);
         }
 
         // ✅ Parsear metadata
         $metadata = [];
-        if (!empty($booking->meta_data)) {
+        if (! empty($booking->meta_data)) {
             try {
                 $metadata = json_decode($booking->meta_data, true) ?? [];
             } catch (\Throwable $e) {
@@ -1493,7 +1559,7 @@ class SubjectPickerController extends Controller
     /**
      * ✅ Endpoint para forzar expiración sin validar TTL (admin/internal)
      * POST /bookings/{bookingId}/force-expire
-     * 
+     *
      * Este endpoint puede ser usado por el backend para expirar bookings
      * SIN esperar a que el frontend lo haga. Útil para cron jobs o tareas automáticas.
      */
@@ -1508,19 +1574,19 @@ class SubjectPickerController extends Controller
             ->lockForUpdate()
             ->first();
 
-        if (!$booking) {
+        if (! $booking) {
             return response()->json([
                 'ok' => false,
-                'message' => 'Booking no encontrado o no tienes acceso'
+                'message' => 'Booking no encontrado o no tienes acceso',
             ], 404);
         }
 
         // ✅ Solo si aún está pendiente
-        if (!in_array((int)$booking->status, [2], true)) {
+        if (! in_array((int) $booking->status, [2], true)) {
             return response()->json([
                 'ok' => false,
                 'message' => 'Este booking no puede ser expirado (estado inválido)',
-                'current_status' => (int)$booking->status,
+                'current_status' => (int) $booking->status,
             ], 409);
         }
 
@@ -1553,8 +1619,6 @@ class SubjectPickerController extends Controller
     {
         $studentId = (int) Auth::id();
 
-
-
         // misma validación que en storeBooking (misma forma)
         $request->validate([
             // 'comprobante' => 'required|file|mimes:jpg,jpeg,png,pdf|max:5120',
@@ -1571,43 +1635,47 @@ class SubjectPickerController extends Controller
                 ->lockForUpdate()
                 ->first();
 
-            if (!$booking) {
+            if (! $booking) {
                 DB::rollBack();
+
                 return response()->json(['ok' => false, 'message' => 'Forbidden'], 403);
             }
 
             // 2) Solo si está reservado (4)
             if ((int) $booking->status !== 4) {
                 DB::rollBack();
+
                 return response()->json([
                     'ok' => false,
-                    'message' => 'Este booking no admite comprobante (estado inválido).'
+                    'message' => 'Este booking no admite comprobante (estado inválido).',
                 ], 409);
             }
 
             // 3) Guardar archivo EXACTAMENTE como tu storeBooking (public/storage/qr + move)
             $file = $request->file('comprobante');
-            if (!$file) {
+            if (! $file) {
                 DB::rollBack();
+
                 return response()->json(['ok' => false, 'message' => 'Falta comprobante'], 422);
             }
 
             $original = preg_replace('/\s+/', '_', $file->getClientOriginalName());
-            $filename = uniqid() . '_' . $original;
+            $filename = uniqid().'_'.$original;
 
             $dest = public_path('storage/qr');
-            if (!file_exists($dest))
+            if (! file_exists($dest)) {
                 mkdir($dest, 0775, true);
+            }
 
             $file->move($dest, $filename);
-            $imageUrl = 'qr/' . $filename;
-            $publicUrl = asset('storage/' . $imageUrl);
+            $imageUrl = 'qr/'.$filename;
+            $publicUrl = asset('storage/'.$imageUrl);
 
             // 4) Upsert comprobante (1 por booking)
             DB::table('payment_slot_bookings')->updateOrInsert(
                 ['slot_booking_id' => $bookingId],
                 [
-                    'image_url'  => $imageUrl,
+                    'image_url' => $imageUrl,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]
@@ -1624,14 +1692,14 @@ class SubjectPickerController extends Controller
             DB::table('slot_payments')->updateOrInsert(
                 ['slot_booking_id' => $bookingId],
                 [
-                    'payment_date'   => now()->toDateString(),
+                    'payment_date' => now()->toDateString(),
                     'payment_method' => 'transfer',
-                    'amount'         => (float) ($booking->session_fee ?? 0),
-                    'status'         => 2, // Pendiente
-                    'message'        => 'Pago pendiente de verificación',
-                    'receipt_pdf'    => $imageUrl,
-                    'created_at'     => now(),
-                    'updated_at'     => now(),
+                    'amount' => (float) ($booking->session_fee ?? 0),
+                    'status' => 2, // Pendiente
+                    'message' => 'Pago pendiente de verificación',
+                    'receipt_pdf' => $imageUrl,
+                    'created_at' => now(),
+                    'updated_at' => now(),
                 ]
             );
 
@@ -1641,11 +1709,12 @@ class SubjectPickerController extends Controller
                 ->where('u.id', (int) $booking->tutor_id)
                 ->first(['u.email', 'p.first_name', 'p.last_name']);
 
-            if (!$tutor || empty($tutor->email)) {
+            if (! $tutor || empty($tutor->email)) {
                 DB::rollBack();
+
                 return response()->json([
                     'ok' => false,
-                    'message' => 'Tutor sin email, no se puede notificar.'
+                    'message' => 'Tutor sin email, no se puede notificar.',
                 ], 422);
             }
 
@@ -1658,7 +1727,6 @@ class SubjectPickerController extends Controller
                 ->where('id', (int) $booking->subject_id)
                 ->value('name');
 
-
             DB::commit();
 
             // 7) Respuesta para frontend (misma vista)
@@ -1667,11 +1735,12 @@ class SubjectPickerController extends Controller
                 'booking_id' => $bookingId,
                 'booking_status' => 4, // reserved
                 'image_url' => $imageUrl,
-                'public_url' => '/storage/' . $imageUrl,
+                'public_url' => '/storage/'.$imageUrl,
                 'message' => 'Comprobante subido. Espera aprobación del tutor.',
             ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
             DB::rollBack();
+
             return response()->json([
                 'ok' => false,
                 'message' => 'Validación fallida',
@@ -1689,9 +1758,6 @@ class SubjectPickerController extends Controller
         }
     }
 
-
-
-
     public function tutorWaitlistStatus(Request $request)
     {
         $token = (string) $request->query('t');
@@ -1703,41 +1769,45 @@ class SubjectPickerController extends Controller
 
         // 1) item por token
         $item = DB::table('email_batch_items')->where('accept_token', $token)->first();
-        if (!$item) return response()->json(['ok' => false, 'message' => 'Invalid token'], 404);
+        if (! $item) {
+            return response()->json(['ok' => false, 'message' => 'Invalid token'], 404);
+        }
 
         // 2) batch
-        $batch = DB::table('email_batches')->where('id', (int)$item->batch_id)->first();
-        if (!$batch) return response()->json(['ok' => false, 'message' => 'Batch not found'], 404);
+        $batch = DB::table('email_batches')->where('id', (int) $item->batch_id)->first();
+        if (! $batch) {
+            return response()->json(['ok' => false, 'message' => 'Batch not found'], 404);
+        }
 
-        $batchStatus  = (string)($batch->status ?? '');
-        $batchExpired = !empty($batch->expires_at) && now()->greaterThanOrEqualTo($batch->expires_at);
+        $batchStatus = (string) ($batch->status ?? '');
+        $batchExpired = ! empty($batch->expires_at) && now()->greaterThanOrEqualTo($batch->expires_at);
 
-        $isChosen = ($batchStatus === 'matched' && (int)$batch->accepted_item_id === (int)$item->id);
-        $bookingId = (int)($batch->booking_id ?? 0);
+        $isChosen = ($batchStatus === 'matched' && (int) $batch->accepted_item_id === (int) $item->id);
+        $bookingId = (int) ($batch->booking_id ?? 0);
 
         // Si no es elegido y ya está matched/done/failed => cortar
-        if (!$isChosen && $batchStatus === 'matched') {
+        if (! $isChosen && $batchStatus === 'matched') {
             return response()->json([
                 'ok' => true,
                 'ui_state' => 'batch_expired_waiting',
                 'message' => 'El estudiante ya eligió a otro tutor. Gracias.',
             ]);
         }
-        if (!$isChosen && in_array($batchStatus, ['done', 'failed'], true)) {
+        if (! $isChosen && in_array($batchStatus, ['done', 'failed'], true)) {
             return response()->json([
                 'ok' => true,
                 'ui_state' => 'batch_expired_waiting',
                 'message' => 'Esta solicitud ya terminó.',
             ]);
         }
-        if (!$isChosen && $batchExpired) {
+        if (! $isChosen && $batchExpired) {
             return response()->json([
                 'ok' => true,
                 'ui_state' => 'batch_expired_waiting',
                 'message' => 'El batch expiró y no fuiste elegido.',
             ]);
         }
-        if (!$isChosen) {
+        if (! $isChosen) {
             return response()->json([
                 'ok' => true,
                 'ui_state' => 'waiting',
@@ -1762,14 +1832,16 @@ class SubjectPickerController extends Controller
                 ->lockForUpdate()
                 ->first();
 
-            if (!$booking) return response()->json(['ok' => false, 'message' => 'Booking not found'], 404);
+            if (! $booking) {
+                return response()->json(['ok' => false, 'message' => 'Booking not found'], 404);
+            }
 
-            if ((int)$booking->tutor_id !== (int)$item->user_id) {
+            if ((int) $booking->tutor_id !== (int) $item->user_id) {
                 return response()->json(['ok' => false, 'message' => 'Token mismatch'], 403);
             }
 
             // ✅ Expira en demanda: si booking está pendiente(2) y pasaron 7 min desde booked_at
-            if ((int)$booking->status === 2 && !empty($booking->booked_at)) {
+            if ((int) $booking->status === 2 && ! empty($booking->booked_at)) {
                 $bookedAt = \Carbon\Carbon::parse($booking->booked_at);
 
                 if ($bookedAt->lte(now()->subMinutes($ttlMinutes))) {
@@ -1791,25 +1863,29 @@ class SubjectPickerController extends Controller
                 ->where('slot_booking_id', $bookingId)
                 ->first();
 
-            $hasReceipt = (bool)$receipt;
-            $receiptUrl = $receipt?->image_url ? ('/storage/' . ltrim($receipt->image_url, '/')) : null;
+            $hasReceipt = (bool) $receipt;
+            $receiptUrl = $receipt?->image_url ? ('/storage/'.ltrim($receipt->image_url, '/')) : null;
 
             // UI state
-            $status = (int)($booking->status ?? 0);
+            $status = (int) ($booking->status ?? 0);
 
             $uiState = 'payment_phase';
-            if ($status === 1) $uiState = 'accepted';
-            if ($status === 3) $uiState = 'rejected'; // aquí incluye expirado/no completado
+            if ($status === 1) {
+                $uiState = 'accepted';
+            }
+            if ($status === 3) {
+                $uiState = 'rejected';
+            } // aquí incluye expirado/no completado
 
             $canAccept = ($status === 2) && $hasReceipt;
             $canReject = ($status === 2);
-            $canJoinMeet = ($status === 1) && !empty($booking->meeting_link);
+            $canJoinMeet = ($status === 1) && ! empty($booking->meeting_link);
 
             return response()->json([
                 'ok' => true,
                 'ui_state' => $uiState,
                 'batch' => [
-                    'id' => (int)$batch->id,
+                    'id' => (int) $batch->id,
                     'status' => $batchStatus,
                     'expires_at' => $batch->expires_at,
                     'expired' => $batchExpired,
@@ -1819,7 +1895,7 @@ class SubjectPickerController extends Controller
                     'booking_id' => $bookingId,
                 ],
                 'booking' => [
-                    'id' => (int)$booking->id,
+                    'id' => (int) $booking->id,
                     'status' => $status,
                     'start_time' => $booking->start_time,
                     'end_time' => $booking->end_time,
@@ -1840,9 +1916,6 @@ class SubjectPickerController extends Controller
         });
     }
 
-
-
-
     // Valida token
 
     // Verifica que ese tutor fue el elegido en el batch
@@ -1860,7 +1933,9 @@ class SubjectPickerController extends Controller
     public function tutorAcceptBooking(Request $request)
     {
         $token = (string) $request->query('t');
-        if ($token === '') return response()->json(['ok' => false, 'message' => 'Missing token'], 400);
+        if ($token === '') {
+            return response()->json(['ok' => false, 'message' => 'Missing token'], 400);
+        }
 
         $ttlMinutes = 7;
 
@@ -1871,34 +1946,44 @@ class SubjectPickerController extends Controller
                 ->lockForUpdate()
                 ->first();
 
-            if (!$item) return response()->json(['ok' => false, 'message' => 'Invalid token'], 404);
+            if (! $item) {
+                return response()->json(['ok' => false, 'message' => 'Invalid token'], 404);
+            }
 
             $batch = DB::table('email_batches')
-                ->where('id', (int)$item->batch_id)
+                ->where('id', (int) $item->batch_id)
                 ->lockForUpdate()
                 ->first();
 
-            if (!$batch) return response()->json(['ok' => false, 'message' => 'Batch not found'], 404);
+            if (! $batch) {
+                return response()->json(['ok' => false, 'message' => 'Batch not found'], 404);
+            }
 
-            $isChosen = ((string)$batch->status === 'matched' && (int)$batch->accepted_item_id === (int)$item->id);
-            if (!$isChosen) return response()->json(['ok' => false, 'message' => 'Not chosen'], 409);
+            $isChosen = ((string) $batch->status === 'matched' && (int) $batch->accepted_item_id === (int) $item->id);
+            if (! $isChosen) {
+                return response()->json(['ok' => false, 'message' => 'Not chosen'], 409);
+            }
 
-            $bookingId = (int)($batch->booking_id ?? 0);
-            if ($bookingId <= 0) return response()->json(['ok' => false, 'message' => 'Booking not created yet'], 409);
+            $bookingId = (int) ($batch->booking_id ?? 0);
+            if ($bookingId <= 0) {
+                return response()->json(['ok' => false, 'message' => 'Booking not created yet'], 409);
+            }
 
             $booking = DB::table('slot_bookings')
                 ->where('id', $bookingId)
                 ->lockForUpdate()
                 ->first();
 
-            if (!$booking) return response()->json(['ok' => false, 'message' => 'Booking not found'], 404);
+            if (! $booking) {
+                return response()->json(['ok' => false, 'message' => 'Booking not found'], 404);
+            }
 
-            if ((int)$booking->tutor_id !== (int)$item->user_id) {
+            if ((int) $booking->tutor_id !== (int) $item->user_id) {
                 return response()->json(['ok' => false, 'message' => 'Token mismatch'], 403);
             }
 
             // ✅ TTL 7 min (expira en demanda)
-            if ((int)$booking->status === 2 && !empty($booking->booked_at)) {
+            if ((int) $booking->status === 2 && ! empty($booking->booked_at)) {
                 $bookedAt = \Carbon\Carbon::parse($booking->booked_at);
                 if ($bookedAt->lte(now()->subMinutes($ttlMinutes))) {
                     DB::table('slot_bookings')->where('id', $bookingId)->update([
@@ -1908,7 +1993,7 @@ class SubjectPickerController extends Controller
                     ]);
 
                     // también cerramos batch para no dejarlo colgado
-                    DB::table('email_batches')->where('id', (int)$batch->id)->update([
+                    DB::table('email_batches')->where('id', (int) $batch->id)->update([
                         'status' => 'done',
                         'last_error' => 'booking_expired_before_tutor_accept',
                         'updated_at' => now(),
@@ -1922,11 +2007,11 @@ class SubjectPickerController extends Controller
             }
 
             // ✅ ahora el estado válido para aceptar es 2 (pendiente)
-            if ((int)$booking->status !== 2) {
+            if ((int) $booking->status !== 2) {
                 return response()->json([
                     'ok' => false,
                     'message' => 'Booking status invalid for accept',
-                    'booking_status' => (int)$booking->status,
+                    'booking_status' => (int) $booking->status,
                 ], 409);
             }
 
@@ -1934,16 +2019,16 @@ class SubjectPickerController extends Controller
                 ->where('slot_booking_id', $bookingId)
                 ->first();
 
-            if (!$receipt || empty($receipt->image_url)) {
+            if (! $receipt || empty($receipt->image_url)) {
                 return response()->json(['ok' => false, 'message' => 'No receipt uploaded'], 409);
             }
 
             // generar link
-            $tutorias = DB::table('slot_bookings')->where('id', (int)$bookingId)->first();
+            $tutorias = DB::table('slot_bookings')->where('id', (int) $bookingId)->first();
             $meetingLink = $tutorias->meeting_link;
 
             // activar booking
-            DB::table('slot_bookings')->where('id', (int)$bookingId)->update([
+            DB::table('slot_bookings')->where('id', (int) $bookingId)->update([
                 'status' => 1, // aceptado
                 // 'meeting_link' => $meetingLink,
                 // 'updated_at' => now(),
@@ -1953,7 +2038,7 @@ class SubjectPickerController extends Controller
                 ->update([
                     'status' => 2, // Pagado
                     'message' => 'Pago verificado por el tutor',
-                    //'updated_at' => now(),
+                    // 'updated_at' => now(),
                 ]);
 
             // pagos
@@ -1965,17 +2050,14 @@ class SubjectPickerController extends Controller
 
             // 3) cerrar batch (importante para que siguientes batchs funcionen)
             DB::table('email_batches')
-                ->where('id', (int)$batch->id)
+                ->where('id', (int) $batch->id)
                 ->update([
                     'status' => 'done',
                     // 'last_error' => null,
-                    //'updated_at' => now(),
+                    // 'updated_at' => now(),
                 ]);
 
-
-
-
-            //////////////// despues reemplazar por link real de vista/email ////////////////
+            // ////////////// despues reemplazar por link real de vista/email ////////////////
             // Datos estudiante
             $info = $this->bookingEmailData($bookingId);
 
@@ -1984,7 +2066,7 @@ class SubjectPickerController extends Controller
                 $emails = [$info['student_email'], $info['tutor_email']];
                 // Formatear las horas ANTES de pasarlas al Mailable
                 $startTimeFormatted = \Carbon\Carbon::parse($b->start_time)->format('H:i');
-                $endTimeFormatted   = \Carbon\Carbon::parse($b->end_time)->format('H:i');
+                $endTimeFormatted = \Carbon\Carbon::parse($b->end_time)->format('H:i');
 
                 foreach ($emails as $email) {
                     Mail::to($email)->queue(new TutoriaInstanteAceptada(
@@ -1999,12 +2081,12 @@ class SubjectPickerController extends Controller
                 }
             }
 
-            ////////////////////////////////////////////////////////////////////////////////
+            // //////////////////////////////////////////////////////////////////////////////
 
             // Marcar a todos los demás como no elegidos (para que su UI deje de esperar)
             DB::table('email_batch_items')
-                ->where('batch_id', (int)$batch->id)
-                ->where('id', '!=', (int)$item->id)
+                ->where('batch_id', (int) $batch->id)
+                ->where('id', '!=', (int) $item->id)
                 ->whereIn('status', ['pending', 'sending', 'sent', 'accepted', 'chosen'])
                 ->update([
                     'status' => 'expired',
@@ -2024,8 +2106,6 @@ class SubjectPickerController extends Controller
         });
     }
 
-
-
     // Valida token
 
     // Verifica que fue elegido
@@ -2038,12 +2118,12 @@ class SubjectPickerController extends Controller
 
     // Libera el batch (para que el estudiante pueda elegir otro tutor) sin crear nuevo batch (si quieres)
 
-
-
     public function tutorRejectBooking(Request $request)
     {
         $token = (string) $request->query('t');
-        if ($token === '') return response()->json(['ok' => false, 'message' => 'Missing token'], 400);
+        if ($token === '') {
+            return response()->json(['ok' => false, 'message' => 'Missing token'], 400);
+        }
 
         $data = $request->validate([
             'reason' => ['nullable', 'string', 'max:255'],
@@ -2057,33 +2137,43 @@ class SubjectPickerController extends Controller
                 ->lockForUpdate()
                 ->first();
 
-            if (!$item) return response()->json(['ok' => false, 'message' => 'Invalid token'], 404);
+            if (! $item) {
+                return response()->json(['ok' => false, 'message' => 'Invalid token'], 404);
+            }
 
             $batch = DB::table('email_batches')
-                ->where('id', (int)$item->batch_id)
+                ->where('id', (int) $item->batch_id)
                 ->lockForUpdate()
                 ->first();
 
-            if (!$batch) return response()->json(['ok' => false, 'message' => 'Batch not found'], 404);
+            if (! $batch) {
+                return response()->json(['ok' => false, 'message' => 'Batch not found'], 404);
+            }
 
-            $isChosen = ((string)$batch->status === 'matched' && (int)$batch->accepted_item_id === (int)$item->id);
-            if (!$isChosen) return response()->json(['ok' => false, 'message' => 'Not chosen'], 409);
+            $isChosen = ((string) $batch->status === 'matched' && (int) $batch->accepted_item_id === (int) $item->id);
+            if (! $isChosen) {
+                return response()->json(['ok' => false, 'message' => 'Not chosen'], 409);
+            }
 
-            $bookingId = (int)($batch->booking_id ?? 0);
-            if ($bookingId <= 0) return response()->json(['ok' => false, 'message' => 'Booking not created yet'], 409);
+            $bookingId = (int) ($batch->booking_id ?? 0);
+            if ($bookingId <= 0) {
+                return response()->json(['ok' => false, 'message' => 'Booking not created yet'], 409);
+            }
 
             $booking = DB::table('slot_bookings')
                 ->where('id', $bookingId)
                 ->lockForUpdate()
                 ->first();
 
-            if (!$booking) return response()->json(['ok' => false, 'message' => 'Booking not found'], 404);
+            if (! $booking) {
+                return response()->json(['ok' => false, 'message' => 'Booking not found'], 404);
+            }
 
-            if ((int)$booking->tutor_id !== (int)$item->user_id) {
+            if ((int) $booking->tutor_id !== (int) $item->user_id) {
                 return response()->json(['ok' => false, 'message' => 'Token mismatch'], 403);
             }
 
-            if ((int)$booking->status !== 4) {
+            if ((int) $booking->status !== 4) {
                 return response()->json(['ok' => false, 'message' => 'Booking status invalid for reject'], 409);
             }
 
@@ -2100,13 +2190,13 @@ class SubjectPickerController extends Controller
             ]);
 
             // ✅ No usamos status='rejected' (no existe). Solo anotamos error.
-            DB::table('email_batch_items')->where('id', (int)$item->id)->update([
+            DB::table('email_batch_items')->where('id', (int) $item->id)->update([
                 'last_error' => $reason,
                 'updated_at' => now(),
             ]);
 
             // ✅ Liberar batch para que estudiante elija otro (ahora sí existe booking_id)
-            DB::table('email_batches')->where('id', (int)$batch->id)->update([
+            DB::table('email_batches')->where('id', (int) $batch->id)->update([
                 'status' => 'done',
                 'booking_id' => null,
                 'accepted_user_id' => null,
@@ -2116,7 +2206,7 @@ class SubjectPickerController extends Controller
                 'updated_at' => now(),
             ]);
 
-            /////////////////// correo gmail/////////////////////////
+            // ///////////////// correo gmail/////////////////////////
             $info = $this->bookingEmailData($bookingId);
             if ($info) {
                 $b = $info['booking'];
@@ -2125,11 +2215,11 @@ class SubjectPickerController extends Controller
                 $htmlStudent = "
         <h3>❌ Tutoría rechazada</h3>
         <p><b>Booking:</b> #{$bookingId}</p>
-        <p><b>Materia:</b> " . e($info['subject_name']) . "</p>
-        <p><b>Tutor:</b> " . e($info['tutor_name'] ?: '-') . "</p>
-        <p><b>Motivo:</b> " . e($reason) . "</p>
+        <p><b>Materia:</b> ".e($info['subject_name']).'</p>
+        <p><b>Tutor:</b> '.e($info['tutor_name'] ?: '-').'</p>
+        <p><b>Motivo:</b> '.e($reason).'</p>
         <p>Puedes volver y elegir otro tutor.</p>
-    ";
+    ';
 
                 $this->mailHtml(
                     $info['student_email'],
@@ -2141,10 +2231,10 @@ class SubjectPickerController extends Controller
                 $htmlTutor = "
         <h3>❌ Rechazaste la tutoría</h3>
         <p><b>Booking:</b> #{$bookingId}</p>
-        <p><b>Materia:</b> " . e($info['subject_name']) . "</p>
-        <p><b>Estudiante:</b> " . e($info['student_name'] ?: '-') . "</p>
-        <p><b>Motivo:</b> " . e($reason) . "</p>
-    ";
+        <p><b>Materia:</b> ".e($info['subject_name']).'</p>
+        <p><b>Estudiante:</b> '.e($info['student_name'] ?: '-').'</p>
+        <p><b>Motivo:</b> '.e($reason).'</p>
+    ';
 
                 $this->mailHtml(
                     $info['tutor_email'],
@@ -2152,9 +2242,9 @@ class SubjectPickerController extends Controller
                     $htmlTutor
                 );
             }
-            /////////////////////cambiar por vista/email /////////////////////////
+            // ///////////////////cambiar por vista/email /////////////////////////
             DB::table('email_batch_items')
-                ->where('batch_id', (int)$batch->id)
+                ->where('batch_id', (int) $batch->id)
                 ->update([
                     'status' => 'expired',
                     'last_error' => 'batch_closed_rejected',
@@ -2171,7 +2261,6 @@ class SubjectPickerController extends Controller
         });
     }
 
-
     //     Método: studentUploadReceipt(Request $request, $booking)
 
     // Valida que el booking sea del estudiante
@@ -2183,7 +2272,6 @@ class SubjectPickerController extends Controller
     // Inserta/actualiza payment_slot_bookings con image_url
 
     // Crea link genérico si quieres cumplir tu regla “al pagar ya existe link” (para pruebas)
-
 
     public function studentUploadReceipt(Request $request, $booking)
     {
@@ -2203,16 +2291,16 @@ class SubjectPickerController extends Controller
                 ->lockForUpdate()
                 ->first();
 
-            if (!$b) {
+            if (! $b) {
                 return response()->json(['ok' => false, 'message' => 'Booking no encontrado'], 404);
             }
 
-            if ((int)$b->student_id !== $studentId) {
+            if ((int) $b->student_id !== $studentId) {
                 return response()->json(['ok' => false, 'message' => 'Forbidden'], 403);
             }
 
             // ✅ Expirar en demanda si está pendiente(2) y ya pasaron 7 min
-            if ((int)$b->status === 2 && !empty($b->booked_at)) {
+            if ((int) $b->status === 2 && ! empty($b->booked_at)) {
                 $bookedAt = \Carbon\Carbon::parse($b->booked_at);
                 if ($bookedAt->lte(now()->subMinutes($ttlMinutes))) {
                     DB::table('slot_bookings')->where('id', $bookingId)->update([
@@ -2230,11 +2318,11 @@ class SubjectPickerController extends Controller
             }
 
             // ✅ Solo permitir si está pendiente(2)
-            if ((int)$b->status !== 2) {
+            if ((int) $b->status !== 2) {
                 return response()->json([
                     'ok' => false,
                     'message' => 'Estado inválido para subir comprobante',
-                    'booking_status' => (int)$b->status,
+                    'booking_status' => (int) $b->status,
                 ], 409);
             }
 
@@ -2243,16 +2331,16 @@ class SubjectPickerController extends Controller
 
             $original = preg_replace('/\s+/', '_', $file->getClientOriginalName());
             $safeOriginal = preg_replace('/[^A-Za-z0-9_\.\-]/', '', $original);
-            $filename = uniqid() . '_' . $safeOriginal;
+            $filename = uniqid().'_'.$safeOriginal;
 
             $dest = public_path('storage/qr');
-            if (!is_dir($dest)) {
+            if (! is_dir($dest)) {
                 mkdir($dest, 0775, true);
             }
 
             $file->move($dest, $filename);
 
-            $imageUrl = 'qr/' . $filename;
+            $imageUrl = 'qr/'.$filename;
 
             DB::table('payment_slot_bookings')->updateOrInsert(
                 ['slot_booking_id' => $bookingId],
@@ -2289,7 +2377,7 @@ class SubjectPickerController extends Controller
 
                 $meetingLink = $slotBookingService->generarlink($bookingModel) ?: 'http://meet.google.com/upy-mxim-nrm';
 
-                if (!empty($meetingLink)) {
+                if (! empty($meetingLink)) {
                     DB::table('slot_bookings')
                         ->where('id', $bookingId)
                         ->update([
@@ -2298,43 +2386,52 @@ class SubjectPickerController extends Controller
                         ]);
                 }
             }
-            
+
             // ====================================================================
             // 🔔 INICIO LÓGICA DE NOTIFICACIONES (Notificar al Tutor)
             // ====================================================================
             
-            // 1. Buscamos el token del tutor y el nombre del estudiante
-            // 1. Buscamos al tutor en perfiles y unimos con usuarios para obtener el token
-            $tutor = DB::table('users')
-                ->leftJoin('fcm_tokens', 'fcm_tokens.user_id', '=', 'users.id')
-                ->where('users.id', $b->tutor_id)
-                ->first(['users.id', 'fcm_tokens.token as fcm_token']);
+            // 1. Buscamos todos los tokens del tutor y el nombre del estudiante
+            $tutorTokens = DB::table('fcm_tokens')
+                ->where('user_id', $b->tutor_id)
+                ->whereNotNull('token')
+                ->where('token', '!=', '')
+                ->pluck('token')
+                ->unique()
+                ->toArray();
             $studentProfile = DB::table('profiles')->where('user_id', $studentId)->first(['first_name', 'last_name']);
-            
-            $studentName = trim(($studentProfile->first_name ?? 'El estudiante') . ' ' . ($studentProfile->last_name ?? ''));
 
-            // 2. Si el tutor existe y tiene un token configurado, enviamos la alerta
+            $studentName = trim(($studentProfile->first_name ?? 'El estudiante').' '.($studentProfile->last_name ?? ''));
+
+            // 2. Si el tutor tiene tokens, enviamos la alerta a todos ellos
             
-            if ($tutor && !empty($tutor->fcm_token)) {
-                $notificacionController = app(NotificacionController::class);
-                
-                $notificacionController->enviarATutores(
-                    request: new Request([
-                        'title' => '¡Tu estudiante te está esperando!',
-                        'body' => "{$studentName} acaba de entrar a la sala de Meet. ¡Únete a la clase ahora!",
+            if (!empty($tutorTokens)) {
+                $fcmService = new FcmService();
+                $results = $fcmService->sendNotificationToTokens(
+                    $tutorTokens,
+                    '¡Tu estudiante te está esperando!',
+                    "{$studentName} acaba de entrar a la sala de Meet. ¡Únete a la clase ahora!",
+                    [
                         'type' => 'estudiante_unido_meet',
-                        'only' => true,
-                        'tokens' => json_encode([$tutor->fcm_token]),
-                        'screen' => 'tutoria_lista', 
+                        'screen' => 'tutoria_lista',
                         'data_tutor' => json_encode([
                             'booking_id' => $b->id,
-                            'meeting_link' => $meetingLink, // ✅ Pasamos el link directo en la data
+                            'meeting_link' => $meetingLink,
                             'student_name' => $studentName,
                         ]),
-                    ])
+                    ]
                 );
+
+                foreach ($results as $result) {
+                    if (!$result['success'] && $result['remove_token']) {
+                        FcmToken::where('token', $result['token'])->delete();
+                        Log::warning('studentUploadReceipt: Token FCM inválido eliminado', [
+                            'token_preview' => substr($result['token'], 0, 20) . '...',
+                        ]);
+                    }
+                }
             }
-            
+
             // ====================================================================
             // 🔔 FIN LÓGICA DE NOTIFICACIONES
             // ====================================================================
@@ -2343,7 +2440,7 @@ class SubjectPickerController extends Controller
                 'ok' => true,
                 'booking_id' => $bookingId,
                 'message' => 'Comprobante subido. Esperando aprobación del tutor.',
-                'receipt_url' => '/storage/' . ltrim($imageUrl, '/'),
+                'receipt_url' => '/storage/'.ltrim($imageUrl, '/'),
                 'meeting_link' => $meetingLink,
             ]);
         });
@@ -2359,8 +2456,6 @@ class SubjectPickerController extends Controller
 
         return response()->json(['ok' => false, 'message' => 'No link yet'], 404);
     }
-
-
 
     /**
      * ✅ studentBookingStatus()
@@ -2382,16 +2477,16 @@ class SubjectPickerController extends Controller
                 ->lockForUpdate()
                 ->first();
 
-            if (!$b) {
+            if (! $b) {
                 return response()->json(['ok' => false, 'message' => 'Booking no encontrado'], 404);
             }
 
-            if ((int)$b->student_id !== $studentId) {
+            if ((int) $b->student_id !== $studentId) {
                 return response()->json(['ok' => false, 'message' => 'Forbidden'], 403);
             }
 
             // ✅ Expira en demanda: si está pendiente(2) y ya pasaron 7 min desde booked_at
-            if ((int)$b->status === 2 && !empty($b->booked_at)) {
+            if ((int) $b->status === 2 && ! empty($b->booked_at)) {
                 $bookedAt = \Carbon\Carbon::parse($b->booked_at);
 
                 if ($bookedAt->lte(now()->subMinutes($ttlMinutes))) {
@@ -2415,20 +2510,26 @@ class SubjectPickerController extends Controller
                 ->first();
 
             $hasReceipt = (bool) $receipt;
-            $receiptUrl = $receipt?->image_url ? ('/storage/' . ltrim($receipt->image_url, '/')) : null;
+            $receiptUrl = $receipt?->image_url ? ('/storage/'.ltrim($receipt->image_url, '/')) : null;
 
             // UI state
             $ui = 'payment_phase'; // por defecto: pendiente
-            if ((int)$b->status === 1) $ui = 'accepted';
-            if ((int)$b->status === 3) $ui = 'rejected'; // aquí “rejected/expired” (no completado)
-            if ((int)$b->status === 5) $ui = 'completed';
+            if ((int) $b->status === 1) {
+                $ui = 'accepted';
+            }
+            if ((int) $b->status === 3) {
+                $ui = 'rejected';
+            } // aquí “rejected/expired” (no completado)
+            if ((int) $b->status === 5) {
+                $ui = 'completed';
+            }
 
             return response()->json([
                 'ok' => true,
                 'ui_state' => $ui,
                 'booking' => [
-                    'id' => (int)$b->id,
-                    'status' => (int)$b->status,
+                    'id' => (int) $b->id,
+                    'status' => (int) $b->status,
                     'start_time' => $b->start_time,
                     'end_time' => $b->end_time,
                     'session_fee' => $b->session_fee,
@@ -2442,8 +2543,6 @@ class SubjectPickerController extends Controller
             ]);
         });
     }
-
-
 
     // //     verifica dueño del batch
 
@@ -2465,10 +2564,6 @@ class SubjectPickerController extends Controller
 
     // // devuelve payload para tu JS (precio, horario, meet_link genérico)
 
-
-
-
-
     /**
      * ✅ requestBooking()
      * - Crea slot_bookings en status=2 (pendiente)
@@ -2481,7 +2576,7 @@ class SubjectPickerController extends Controller
      */
     public function requestBooking(Request $request, EmailBatch $batch)
     {
-        if ((int)$batch->created_by !== (int)Auth::id()) {
+        if ((int) $batch->created_by !== (int) Auth::id()) {
             return response()->json(['ok' => false, 'message' => 'Forbidden'], 403);
         }
 
@@ -2489,8 +2584,8 @@ class SubjectPickerController extends Controller
             'item_id' => ['required', 'integer', 'min:1'],
         ]);
 
-        $itemId    = (int)$data['item_id'];
-        $studentId = (int)Auth::id();
+        $itemId = (int) $data['item_id'];
+        $studentId = (int) Auth::id();
 
         return DB::transaction(function () use ($batch, $itemId, $studentId) {
 
@@ -2499,16 +2594,16 @@ class SubjectPickerController extends Controller
                 ->lockForUpdate()
                 ->firstOrFail();
 
-            if (!empty($b->booking_id)) {
-                $booking = DB::table('slot_bookings')->where('id', (int)$b->booking_id)->first();
+            if (! empty($b->booking_id)) {
+                $booking = DB::table('slot_bookings')->where('id', (int) $b->booking_id)->first();
 
                 return response()->json([
                     'ok' => true,
                     'message' => 'Booking ya creado para este batch.',
                     'batch_id' => $b->id,
                     'booking' => $booking ? [
-                        'id' => (int)$booking->id,
-                        'status' => (int)$booking->status,
+                        'id' => (int) $booking->id,
+                        'status' => (int) $booking->status,
                         'start_time' => $booking->start_time,
                         'end_time' => $booking->end_time,
                         'session_fee' => $booking->session_fee,
@@ -2523,7 +2618,7 @@ class SubjectPickerController extends Controller
                 ->lockForUpdate()
                 ->first();
 
-            if (!$item) {
+            if (! $item) {
                 return response()->json(['ok' => false, 'message' => 'Item no pertenece al batch'], 404);
             }
 
@@ -2535,17 +2630,17 @@ class SubjectPickerController extends Controller
                 ], 409);
             }
 
-            $tutorId = (int)$item->user_id;
+            $tutorId = (int) $item->user_id;
 
             // Horario dinámico
-            $waitMinutes    = 5;
+            $waitMinutes = 5;
             $sessionMinutes = 20;
 
             $startAt = now()->addMinutes($waitMinutes);
-            $endAt   = (clone $startAt)->addMinutes($sessionMinutes);
+            $endAt = (clone $startAt)->addMinutes($sessionMinutes);
 
             // Precio
-            $precio = (float)DB::table('profiles')->where('user_id', $tutorId)->value('price');
+            $precio = (float) DB::table('profiles')->where('user_id', $tutorId)->value('price');
             if ($precio <= 0) {
                 return response()->json(['ok' => false, 'message' => 'Tutor sin precio configurado'], 422);
             }
@@ -2568,7 +2663,7 @@ class SubjectPickerController extends Controller
                 })
                 ->where(function ($q) use ($startAt, $endAt) {
                     $q->where('start_time', '<', $endAt->toDateTimeString())
-                        ->where('end_time',   '>', $startAt->toDateTimeString());
+                        ->where('end_time', '>', $startAt->toDateTimeString());
                 })
                 ->lockForUpdate()
                 ->exists();
@@ -2587,7 +2682,7 @@ class SubjectPickerController extends Controller
             $bookingId = DB::table('slot_bookings')->insertGetId([
                 'student_id' => $studentId,
                 'tutor_id' => $tutorId,
-                'subject_id' => (int)$b->subject_id,
+                'subject_id' => (int) $b->subject_id,
                 'user_subject_slot_id' => null,
                 'start_time' => $startAt->toDateTimeString(),
                 'end_time' => $endAt->toDateTimeString(),
@@ -2601,8 +2696,8 @@ class SubjectPickerController extends Controller
                     'wait_minutes' => $waitMinutes,
                     'session_minutes' => $sessionMinutes,
                     'reserve_ttl_minutes' => $reserveTtlMinutes,
-                    'batch_id' => (int)$b->id,
-                    'accepted_item_id' => (int)$item->id,
+                    'batch_id' => (int) $b->id,
+                    'accepted_item_id' => (int) $item->id,
                 ]),
             ]);
 
@@ -2620,7 +2715,7 @@ class SubjectPickerController extends Controller
                 ->update([
                     'status' => 'matched',
                     'accepted_user_id' => $tutorId,
-                    'accepted_item_id' => (int)$item->id,
+                    'accepted_item_id' => (int) $item->id,
                     'accepted_at' => now(),
                     'booking_id' => $bookingId,
                     'updated_at' => now(),
@@ -2629,7 +2724,7 @@ class SubjectPickerController extends Controller
             // expirar otros items
             EmailBatchItem::query()
                 ->where('batch_id', $b->id)
-                ->where('id', '!=', (int)$item->id)
+                ->where('id', '!=', (int) $item->id)
                 ->whereIn('status', ['pending', 'sending', 'sent', 'accepted'])
                 ->update([
                     'status' => 'expired',
@@ -2640,23 +2735,22 @@ class SubjectPickerController extends Controller
             return response()->json([
                 'ok' => true,
                 'message' => 'Booking creado. Sube comprobante para revisión del tutor.',
-                'batch_id' => (int)$b->id,
-                'item_id' => (int)$item->id,
+                'batch_id' => (int) $b->id,
+                'item_id' => (int) $item->id,
                 'booking' => [
-                    'id' => (int)$bookingId,
+                    'id' => (int) $bookingId,
                     'status' => 2,
                     'tutor_id' => $tutorId,
                     'student_id' => $studentId,
-                    'subject_id' => (int)$b->subject_id,
+                    'subject_id' => (int) $b->subject_id,
                     'start_time' => $startAt->toDateTimeString(),
                     'end_time' => $endAt->toDateTimeString(),
-                    'session_fee' => (float)$precio,
+                    'session_fee' => (float) $precio,
                     'meeting_link' => $meetLink,
                 ],
             ]);
         });
     }
-
 
     public function studentMeet(Request $request, $booking)
     {
@@ -2667,17 +2761,17 @@ class SubjectPickerController extends Controller
             ->where('id', $bookingId)
             ->first();
 
-        if (!$b) {
+        if (! $b) {
             abort(404, 'Booking no encontrado');
         }
 
         // Seguridad: solo el dueño (estudiante) puede abrir su meet
-        if ((int)$b->student_id !== $studentId) {
+        if ((int) $b->student_id !== $studentId) {
             abort(403, 'Forbidden');
         }
 
         // Solo permitir si ya está aceptado (Active=1)
-        if ((int)$b->status !== 1) {
+        if ((int) $b->status !== 1) {
             abort(409, 'Aún no está confirmada la tutoría');
         }
 
@@ -2691,14 +2785,12 @@ class SubjectPickerController extends Controller
         return redirect()->away($link);
     }
 
-
-
-
-
-    ////////////////////para emails/////////////////////
+    // //////////////////para emails/////////////////////
     private function mailHtml(?string $to, string $subject, string $html): void
     {
-        if (!$to) return;
+        if (! $to) {
+            return;
+        }
 
         Mail::html($html, function ($m) use ($to, $subject) {
             $m->to($to)->subject($subject);
@@ -2708,26 +2800,28 @@ class SubjectPickerController extends Controller
     private function bookingEmailData(int $bookingId): array
     {
         $b = DB::table('slot_bookings as sb')->where('sb.id', $bookingId)->first();
-        if (!$b) return [];
+        if (! $b) {
+            return [];
+        }
 
         $tutor = DB::table('users as u')
             ->leftJoin('profiles as p', 'p.user_id', '=', 'u.id')
-            ->where('u.id', (int)$b->tutor_id)
+            ->where('u.id', (int) $b->tutor_id)
             ->first(['u.email', 'p.first_name', 'p.last_name']);
 
         $student = DB::table('users as u')
             ->leftJoin('profiles as p', 'p.user_id', '=', 'u.id')
-            ->where('u.id', (int)$b->student_id)
+            ->where('u.id', (int) $b->student_id)
             ->first(['u.email', 'p.first_name', 'p.last_name', 'p.phone_number']);
 
-        $subjectName = DB::table('subjects')->where('id', (int)$b->subject_id)->value('name');
+        $subjectName = DB::table('subjects')->where('id', (int) $b->subject_id)->value('name');
 
         return [
             'booking' => $b,
             'tutor_email' => $tutor->email ?? null,
-            'tutor_name' => trim(($tutor->first_name ?? '') . ' ' . ($tutor->last_name ?? '')),
+            'tutor_name' => trim(($tutor->first_name ?? '').' '.($tutor->last_name ?? '')),
             'student_email' => $student->email ?? null,
-            'student_name' => trim(($student->first_name ?? '') . ' ' . ($student->last_name ?? '')),
+            'student_name' => trim(($student->first_name ?? '').' '.($student->last_name ?? '')),
             'student_phone' => $student->phone_number ?? '-',
             'subject_name' => $subjectName ?: '-',
         ];

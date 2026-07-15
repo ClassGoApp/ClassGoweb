@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\FcmToken;
 use App\Models\User;
 use App\Models\UserSubject;
 use Illuminate\Support\Facades\Log;
@@ -300,11 +301,8 @@ class TutorVerificationNotificationService
         // Enviar correo electrónico
         $this->sendEmailToStudent($student, $tutorInfo);
         
-        // Enviar notificación push si tiene FCM token
-        $fcmToken = $student->fcmTokens()->first()?->token;
-        if ($fcmToken) {
-            $this->sendPushNotificationToStudent($student, $tutorInfo, $fcmToken);
-        }
+        // Enviar notificación push si tiene FCM tokens activos
+        $this->sendPushNotificationToStudent($student, $tutorInfo);
 
         Log::info('TutorVerificationNotificationService: Notificación enviada al estudiante', [
             'student_id' => $student->id,
@@ -325,11 +323,8 @@ class TutorVerificationNotificationService
         // Enviar correo electrónico
         $this->sendEmailToStudentSilent($student, $tutorInfo);
         
-        // Enviar notificación push si tiene FCM token
-        $fcmToken = $student->fcmTokens()->first()?->token;
-        if ($fcmToken) {
-            $this->sendPushNotificationToStudentSilent($student, $tutorInfo, $fcmToken);
-        }
+        // Enviar notificación push si tiene FCM tokens activos
+        $this->sendPushNotificationToStudentSilent($student, $tutorInfo);
     }
 
     /**
@@ -415,7 +410,7 @@ class TutorVerificationNotificationService
      * @param string $fcmToken
      * @return void
      */
-    private function sendPushNotificationToStudent(User $student, array $tutorInfo, string $fcmToken): void
+    private function sendPushNotificationToStudent(User $student, array $tutorInfo): void
     {
         try {
             $title = '🎉 ¡Nuevo Tutor Verificado!';
@@ -423,11 +418,19 @@ class TutorVerificationNotificationService
             // Generar el texto del cuerpo basado en las materias del tutor
             $body = $this->generateNotificationBody($tutorInfo);
             
-            // Usar el servicio de Firebase para enviar la notificación
+            // Usar el servicio de Firebase para enviar la notificación a todos los tokens activos
             $fcmService = new \App\Services\FcmService();
-            
-            $result = $fcmService->sendNotification(
-                $fcmToken,
+            $tokens = $student->activeFcmTokens()->pluck('token')->toArray();
+
+            if (empty($tokens)) {
+                Log::info('TutorVerificationNotificationService: No hay tokens FCM activos para el estudiante', [
+                    'student_id' => $student->id
+                ]);
+                return;
+            }
+
+            $results = $fcmService->sendNotificationToTokens(
+                $tokens,
                 $title,
                 $body,
                 [
@@ -437,11 +440,24 @@ class TutorVerificationNotificationService
                 ]
             );
 
-            Log::info('TutorVerificationNotificationService: Push notification enviada al estudiante', [
-                'student_id' => $student->id,
-                'result' => $result,
-                'body' => $body
-            ]);
+            foreach ($results as $result) {
+                if ($result['success']) {
+                    Log::info('TutorVerificationNotificationService: Push notification enviada a token', [
+                        'student_id' => $student->id,
+                        'token_preview' => substr($result['token'], 0, 20) . '...', 
+                        'body' => $body
+                    ]);
+                }
+
+                if (!$result['success'] && $result['remove_token']) {
+                    FcmToken::where('token', $result['token'])->delete();
+                    Log::warning('TutorVerificationNotificationService: Token FCM inválido eliminado', [
+                        'student_id' => $student->id,
+                        'token_preview' => substr($result['token'], 0, 20) . '...',
+                        'error' => $result['error'] ?? 'unknown'
+                    ]);
+                }
+            }
 
         } catch (\Exception $e) {
             Log::error('TutorVerificationNotificationService: Error al enviar push notification al estudiante', [
@@ -459,7 +475,7 @@ class TutorVerificationNotificationService
      * @param string $fcmToken
      * @return void
      */
-    private function sendPushNotificationToStudentSilent(User $student, array $tutorInfo, string $fcmToken): void
+    private function sendPushNotificationToStudentSilent(User $student, array $tutorInfo): void
     {
         try {
             $title = '🎉 ¡Nuevo Tutor Verificado!';
@@ -467,11 +483,16 @@ class TutorVerificationNotificationService
             // Generar el texto del cuerpo basado en las materias del tutor
             $body = $this->generateNotificationBody($tutorInfo);
             
-            // Usar el servicio de Firebase para enviar la notificación
+            // Usar el servicio de Firebase para enviar la notificación a todos los tokens activos
             $fcmService = new \App\Services\FcmService();
-            
-            $fcmService->sendNotification(
-                $fcmToken,
+            $tokens = $student->activeFcmTokens()->pluck('token')->toArray();
+
+            if (empty($tokens)) {
+                return;
+            }
+
+            $results = $fcmService->sendNotificationToTokens(
+                $tokens,
                 $title,
                 $body,
                 [
@@ -480,6 +501,12 @@ class TutorVerificationNotificationService
                     'tutor_name' => $tutorInfo['name']
                 ]
             );
+
+            foreach ($results as $result) {
+                if (!$result['success'] && $result['remove_token']) {
+                    FcmToken::where('token', $result['token'])->delete();
+                }
+            }
 
         } catch (\Exception $e) {
             // Solo log de error, sin detalles

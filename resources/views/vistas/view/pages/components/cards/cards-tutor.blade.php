@@ -45,7 +45,7 @@
                                 <div class="stat-value">
                                     <span class="stat-icon-emoji">📖</span>{{ $tutor->subjects_count }}4
                                 </div>
-                                <div class="stat-label">Materias</div>
+                                <div class="stat-label" data-translate="Subjects">Materias</div>
                             </div>
 
                             <div class="stat-item">
