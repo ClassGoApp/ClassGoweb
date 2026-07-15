@@ -180,4 +180,11 @@ return [
     'certificate_info' => 'Se nenhum certificado for selecionado, os alunos não receberão certificado ao final da sessão.',
     'dispute_success_msg' => 'Disputa enviada com sucesso',
     'dispute_session' => 'Sessão contestada',
+
+    'status_accepted' => 'Aceito',
+    'status_pending' => 'Pendente',
+    'status_not_completed' => 'Não concluído',
+    'status_observed' => 'Observado',
+    'status_completed' => 'Concluído',
+    'status_rejected' => 'Rejeitado',
 ];

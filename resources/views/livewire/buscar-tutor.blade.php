@@ -7,7 +7,7 @@
                 <div class="buscartutor-search-keyword">
                     <div class="buscartutor-search-input-wrap">
                         <!-- BUSCADOR-->
-                        <!--desktop-->
+                        <!--desktop--> 
                         <div class="buscador-desktop">
                             <input type="text"
                             id="keyword-search"
@@ -43,7 +43,8 @@
             </div>
             <input id="searchInput" 
             type="text" 
-            placeholder="" 
+            placeholder="¿Qué necesitas aprender? Busca por nombre del tutor o materia."
+            data-placeholder-key="tutor_live_search_placeholder"
             wire:model.live.debounce.500ms="search"
             class="search-field__input">
         </div>
@@ -65,15 +66,45 @@
                         <a href="{{ route('tutor', ['slug' => $profile['slug']]) }}">
                             <h3 class="buscartutor-tutor-name">{{ $profile['full_name'] }}</h3>
                             <div class="desk infor-tutor card-tutor__price-duration">
-                                <p class="card-tutor__price">💸 {{ $profile['price'] ?? '15.00'}} Bs. <span class="card-tutor__price-duration">/ tutoría</span></p>
-                                <span class="">⭐ {{ $profile['avg_rating'] }}/5 ( {{ $profile['total_reviews'] }} reseñas)</span>
-                                <span>🌐 Idioma: {{ $profile['native_language'] ?? 'N/A' }}</span> 
+                                <p class="card-tutor__price">
+                                    💸 {{ $profile['price'] ?? '15.00'}} Bs.
+                                    <span class="card-tutor__price-duration" data-translate="tutor_search_per_tutoring">/ tutoría</span>
+                                </p>
+
+                                <span>
+                                    ⭐ {{ $profile['avg_rating'] }}/5
+                                    ({{ $profile['total_reviews'] }}
+                                    @if ($profile['total_reviews'] == 1)
+                                        <span data-translate="review_singular">reseña</span>
+                                    @else
+                                        <span data-translate="review_plural">reseñas</span>
+                                    @endif
+                                    )
+                                </span>
+
+                                <span>
+                                    🌐 <span data-translate="tutor_search_language">Idioma:</span>
+                                    {{ $profile['native_language'] ?? 'N/A' }}
+                                </span>
                             </div>
                             
                             <!--Solo mobile-->
                             <div class="mobile infor-tutor card-tutor__price-duration">
-                                <p class="card-tutor__price">💸 {{ $profile['price'] ?? '15.00'}} Bs. <span class="card-tutor__price-duration">/ tutoría</span></p>
-                                <span class="">⭐ {{ $profile['avg_rating'] }}/5 ( {{ $profile['total_reviews'] }} reseñas)</span>
+                                <p class="card-tutor__price">
+                                    💸 {{ $profile['price'] ?? '15.00'}} Bs.
+                                    <span class="card-tutor__price-duration" data-translate="tutor_search_per_tutoring">/ tutoría</span>
+                                </p>
+
+                                <span>
+                                    ⭐ {{ $profile['avg_rating'] }}/5
+                                    ({{ $profile['total_reviews'] }}
+                                    @if ($profile['total_reviews'] == 1)
+                                        <span data-translate="review_singular">reseña</span>
+                                    @else
+                                        <span data-translate="review_plural">reseñas</span>
+                                    @endif
+                                    )
+                                </span>
                             </div>
                                         
                         </a>
@@ -84,7 +115,8 @@
                                         
                                         <span class="subjects-matched">
                                             {{-- Muestra solo los sujetos que coincidieron con la búsqueda --}}
-                                            <span>Puedo enseñar:</span> <strong>{{ implode(', ', $profile['matched_subjects']) }}</strong>
+                                            <span data-translate="tutor_search_i_can_teach">Puedo enseñar:</span>
+                                            <strong>{{ implode(', ', $profile['matched_subjects']) }}</strong>
                                         </span>
 
                                     @else
@@ -114,7 +146,10 @@
                                         @endphp
                                         
                                         <span class="subjects-summary">
-                                            <span><strong>Puedo enseñar:</strong> {{ $subjectList }}</span>
+                                            <span>
+                                            <strong data-translate="tutor_search_i_can_teach">Puedo enseñar:</strong>
+                                            {{ $subjectList }}
+                                        </span>
                                         </span>
 
                                     @endif
@@ -127,7 +162,9 @@
                         </p> --}}
                     </div>
                     <div class="buscartutor-tutor-actions">
-                        <a href="{{ route('tutor', ['slug' => $profile['slug']]) }}" class="buscartutor-tutor-btn buscartutor-tutor-btn-blue">
+                        <a href="{{ route('tutor', ['slug' => $profile['slug']]) }}"
+                        class="buscartutor-tutor-btn buscartutor-tutor-btn-blue"
+                        data-translate="view_profile">
                             Ver Perfil
                         </a>
                     </div>
@@ -141,17 +178,18 @@
                         <img src="{{ asset('images/Tugo-rostro.png') }}" alt="">
                     </div>
 
-                    <h2 class="no-results-title">
+                    <h2 class="no-results-title" data-translate="tutor_search_no_results_title">
                         ¡Vaya! No encontramos resultados.
                     </h2>
-                    <p class="no-results-message">
+
+                    <p class="no-results-message" data-translate="tutor_search_no_results_message">
                         Pero no te preocupes, ¡estamos aquí para ayudarte! Es posible que el tutor o la materia que buscas no esté disponible, o que haya un error de escritura.
                     </p>
 
                     <div class="contactanos-btn">
-                        <a href="https://wa.link/8f8z6i" class="no-results-contact-btn" target="_blank">
-                            Contáctanos
-                        </a>
+                        <a href="https://wa.link/8f8z6i" class="no-results-contact-btn" target="_blank" data-translate="tutor_search_contact_us">
+                        Contáctanos
+                    </a>
                     </div>
                 </div>
             @endforelse
@@ -173,5 +211,49 @@
     </section>
 
     @endif
+
+    <script>
+        function tutorLiveSearchText(key, fallback = '') {
+            const lang = localStorage.getItem('selectedLanguage') || 'es';
+
+            if (typeof translations === 'undefined') {
+                return fallback;
+            }
+
+            const t = translations[lang] || translations.es;
+
+            return t[key] || fallback;
+        }
+
+        function applyTutorLiveSearchTranslations() {
+            const lang = localStorage.getItem('selectedLanguage') || 'es';
+
+            const input = document.querySelector('#searchInput');
+
+            if (input) {
+                input.placeholder = tutorLiveSearchText(
+                    'tutor_live_search_placeholder',
+                    '¿Qué necesitas aprender? Busca por nombre del tutor o materia.'
+                );
+            }
+
+            if (typeof selectLanguage === 'function') {
+                selectLanguage(lang, false);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', applyTutorLiveSearchTranslations);
+        document.addEventListener('livewire:navigated', applyTutorLiveSearchTranslations);
+
+        document.addEventListener('languageChanged', () => {
+            applyTutorLiveSearchTranslations();
+        });
+
+        document.addEventListener('livewire:init', () => {
+            Livewire.hook('morph.updated', () => {
+                setTimeout(applyTutorLiveSearchTranslations, 50);
+            });
+        });
+    </script>
 
 </div>

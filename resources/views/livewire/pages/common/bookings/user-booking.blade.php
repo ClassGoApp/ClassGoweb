@@ -7,7 +7,7 @@
         <!-- Botón Nueva Reserva (solo para estudiantes) -->
         @role('student')
             <div class="reserva-modal" style=" margin-bottom: 24px;">
-                <button class="js-open-booking btn btn-primary" style="background:#219EBC;padding: 12px 24px; font-weight: 600;">
+                <button class="js-open-booking btn btn-primary" style="background:#219EBC;padding: 12px 24px; font-weight: 600;" data-translate="student_bookings_new_booking">
                      Nueva Reserva
                 </button>
             </div>
@@ -43,6 +43,10 @@
                 openModal(tutoria) {
                     this.selectedTutoria = tutoria;
                     this.showModal = true;
+
+                    setTimeout(() => {
+                        document.dispatchEvent(new CustomEvent('studentBookingModalOpened'));
+                    }, 50);
                 },
                 closeModal() {
                     this.showModal = false;
@@ -207,17 +211,18 @@
                             ];
 
                             $statusMap = [
-                                1 => 'Aceptado',
-                                2 => 'Pendiente',
-                                3 => 'No completado',
-                                4 => 'Observado',
-                                5 => 'Completado',
-                                'pendiente' => 'Pendiente',
-                                'aceptado' => 'Aceptado',
-                                'no_completado' => 'No completado',
-                                'no completado' => 'No completado',
-                                'rechazado' => 'Rechazado',
-                                'completado' => 'Completado',
+                                1 => __('calendar.status_accepted'),
+                                2 => __('calendar.status_pending'),
+                                3 => __('calendar.status_not_completed'),
+                                4 => __('calendar.status_observed'),
+                                5 => __('calendar.status_completed'),
+
+                                'pendiente' => __('calendar.status_pending'),
+                                'aceptado' => __('calendar.status_accepted'),
+                                'no_completado' => __('calendar.status_not_completed'),
+                                'no completado' => __('calendar.status_not_completed'),
+                                'rechazado' => __('calendar.status_rejected'),
+                                'completado' => __('calendar.status_completed'),
                             ];
                         @endphp
                         @if ($showBy == 'daily')
@@ -229,10 +234,10 @@
                                 wire:key="dailytab-{{ $selectedDay }}">
                                 <table class="am-booking-clander-daily" wire:key="table-{{ $selectedDay }}">
                                     <thead>
-                                        <tr>
-                                            <th>{{ __('calendar.time') }}</th>
-                                            <th>{{ parseToUserTz($currentDate)->format('F j, Y \G\M\T P') }}</th>
-                                        </tr>
+                                        <th>
+                                            {{ parseToUserTz($currentDate)->translatedFormat('F j, Y') }}
+                                            GMT {{ parseToUserTz($currentDate)->format('P') }}
+                                        </th>
                                     </thead>
                                     <tbody>
                                         @php
@@ -266,12 +271,12 @@
                                                                 @if ($bookingStart >= $slotStart && $bookingStart < $slotEnd)
                                                                     <div style="background: {{ $statusColors[strtolower(trim($booking['status']))] ?? '#FACC15' }} !important; color:black;padding:5px;border-radius:5px; cursor:pointer; width: 100%;"
                                                                         @click="openModal({
-                                                                estado: '{{ $statusMap[$booking['status_num']] ?? $booking['status_num'] }}',
-                                                                hora_inicio: '{{ \Carbon\Carbon::parse($booking['start_time'])->format('H:i') }}',
-                                                                hora_fin: '{{ \Carbon\Carbon::parse($booking['end_time'])->format('H:i') }}',
-                                                                fecha: '{{ \Carbon\Carbon::parse($booking['start_time'])->format('Y-m-d') }}',
-                                                                materia: '{{ $booking['subject_name'] }}',
-                                                                meeting_link: '{{ $booking['meeting_link'] ?? '' }}'
+                                                                estado: @js($statusMap[$booking['status_num']] ?? $booking['status_num']),
+                                                                hora_inicio: @js(\Carbon\Carbon::parse($booking['start_time'])->format('H:i')),
+                                                                hora_fin: @js(\Carbon\Carbon::parse($booking['end_time'])->format('H:i')),
+                                                                fecha: @js(\Carbon\Carbon::parse($booking['start_time'])->format('Y-m-d')),
+                                                                materia: @js($booking['subject_name']),
+                                                                meeting_link: @js($booking['meeting_link'] ?? '')
                                                             })">
                                                                         {{ $statusMap[$booking['status_num']] ?? $booking['status_num'] }}
                                                                     </div>
@@ -319,14 +324,15 @@
                                                                     @foreach ($upcomingBookings[$d->toDateString()] as $booking)
                                                                         <div style="background:{{ $statusColors[strtolower(trim($booking['status']))] ?? '#FACC15' }} !important;color:black;padding:5px 8px;border-radius:5px;margin-bottom:5px; font-size:14px; cursor:pointer;"
                                                                             @click="openModal({
-                                                                    estado: '{{ $statusMap[$booking['status_num']] ?? $booking['status_num'] }}',
-                                                                    hora_inicio: '{{ \Carbon\Carbon::parse($booking['start_time'])->format('H:i') }}',
-                                                                    hora_fin: '{{ \Carbon\Carbon::parse($booking['end_time'])->format('H:i') }}',
-                                                                    fecha: '{{ \Carbon\Carbon::parse($booking['start_time'])->format('Y-m-d') }}',
-                                                                    materia: '{{ $booking['subject_name'] }}',
-                                                                    meeting_link: '{{ $booking['meeting_link'] ?? '' }}'
+                                                                    estado: @js($statusMap[$booking['status_num']] ?? $booking['status_num']),
+                                                                    hora_inicio: @js(\Carbon\Carbon::parse($booking['start_time'])->format('H:i')),
+                                                                    hora_fin: @js(\Carbon\Carbon::parse($booking['end_time'])->format('H:i')),
+                                                                    fecha: @js(\Carbon\Carbon::parse($booking['start_time'])->format('Y-m-d')),
+                                                                    materia: @js($booking['subject_name']),
+                                                                    meeting_link: @js($booking['meeting_link'] ?? '')
                                                                 })">
-                                                                            Estado:
+                                                                            <span data-translate="student_bookings_status"></span>
+                                                                            
                                                                             <b>{{ $statusMap[$booking['status_num']] ?? $booking['status_num'] }}</b><br>
                                                                             {{ \Carbon\Carbon::parse($booking['start_time'])->format('h:i a') }}
                                                                             -
@@ -383,7 +389,7 @@
                                                                 @foreach ($upcomingBookings[$startOfCalendar->toDateString()] as $booking)
                                                                     @php $totalBookings += 1; @endphp
                                                                 @endforeach
-                                                                <em> {{ $totalBookings }} Tutorías </em>
+                                                                <em>{{ $totalBookings }}<span data-translate="student_bookings_tutoring_plural">Tutorías</span></em>
                                                             @endif
                                                         </div>
                                                         @if (isset($upcomingBookings[$startOfCalendar->toDateString()]))
@@ -408,14 +414,14 @@
                                                                     @endphp
                                                                     <div style="background: {{ $statusColors[strtolower(trim($booking['status']))] ?? '#FACC15' }} !important; color: #222; padding:5px; border-radius:5px; cursor:pointer;"
                                                                         @click="openModal({
-                                                        estado: '{{ $statusMap[$booking['status_num']] ?? $booking['status_num'] }}',
-                                                        hora_inicio: '{{ \Carbon\Carbon::parse($booking['start_time'])->format('H:i') }}',
-                                                        hora_fin: '{{ \Carbon\Carbon::parse($booking['end_time'])->format('H:i') }}',
-                                                        fecha: '{{ \Carbon\Carbon::parse($booking['start_time'])->format('Y-m-d') }}',
-                                                        materia: '{{ $booking['subject_name'] }}',
-                                                        meeting_link: '{{ $showLink ? $booking['meeting_link'] ?? '' : '' }}'
+                                                        estado: @js($statusMap[$booking['status_num']] ?? $booking['status_num']),
+                                                        hora_inicio: @js(\Carbon\Carbon::parse($booking['start_time'])->format('H:i')),
+                                                        hora_fin: @js(\Carbon\Carbon::parse($booking['end_time'])->format('H:i')),
+                                                        fecha: @js(\Carbon\Carbon::parse($booking['start_time'])->format('Y-m-d')),
+                                                        materia: @js($booking['subject_name']),
+                                                        meeting_link: @js($booking['meeting_link'] ?? '')
                                                     })">
-                                                                        Estado:
+                                                                        <span data-translate="student_bookings_status"></span>
                                                                         <b>{{ $statusMap[$booking['status_num']] ?? $booking['status_num'] }}</b><br>
                                                                         {{ \Carbon\Carbon::parse($booking['start_time'])->format('h:i a') }}
                                                                         -
@@ -457,27 +463,28 @@
                     color: #333;
                     ">
                     <h3
-                        style="font-size: 1.4rem; font-weight: 600; margin-bottom: 20px; text-align: center; color: #222;">
+                        style="font-size: 1.4rem; font-weight: 600; margin-bottom: 20px; text-align: center; color: #222; "
+    data-translate="student_bookings_details">
                         Detalles de la tutoría
                     </h3>
 
                     <p style="margin: 8px 0; font-size: 1rem;">
-                        <strong>Estado:</strong> <span x-text="selectedTutoria.estado" style="color: #007BFF;"></span>
+                        <strong data-translate="student_bookings_status">Estado:</strong> <span x-text="selectedTutoria.estado" style="color: #007BFF;"></span>
                     </p>
                     <p style="margin: 8px 0; font-size: 1rem;">
-                        <strong>Fecha:</strong> <span x-text="selectedTutoria.fecha"></span>
+                        <strong data-translate="student_bookings_date">Fecha:</strong> <span x-text="selectedTutoria.fecha"></span>
                     </p>
                     <p style="margin: 8px 0; font-size: 1rem;">
-                        <strong>Hora inicio:</strong> <span x-text="selectedTutoria.hora_inicio"></span>
+                        <strong data-translate="student_bookings_start_time">Hora inicio:</strong> <span x-text="selectedTutoria.hora_inicio"></span>
                     </p>
                     <p style="margin: 8px 0; font-size: 1rem;">
-                        <strong>Hora fin:</strong> <span x-text="selectedTutoria.hora_fin"></span>
+                        <strong data-translate="student_bookings_end_time">Hora fin:</strong> <span x-text="selectedTutoria.hora_fin"></span>
                     </p>
                     <p style="margin: 8px 0; font-size: 1rem;">
-                        <strong>Materia:</strong> <span x-text="selectedTutoria.materia"></span>
+                        <strong data-translate="student_bookings_subject">Materia:</strong> <span x-text="selectedTutoria.materia"></span>
                     </p>
                     <p style="margin: 8px 0; font-size: 1rem;">
-                        <strong>Link de la tutoría:</strong>
+                        <strong data-translate="student_bookings_link">Link de la tutoría:</strong>
                         <template x-if="selectedTutoria.meeting_link">
                             <a :href="selectedTutoria.meeting_link" target="_blank"
                                 style="color: #007BFF; text-decoration: underline; word-break: break-all;">
@@ -485,7 +492,7 @@
                             </a>
                         </template>
                         <template x-if="!selectedTutoria.meeting_link">
-                            <span style="color: #888;">No disponible</span>
+                            <span style="color: #888;" data-translate="student_bookings_not_available">No disponible</span>
                         </template>
                     </p>
                     <!-- Más campos aquí -->
@@ -503,7 +510,7 @@
                         transition: background-color 0.3s ease;
                     "
                         onmouseover="this.style.backgroundColor='#0056b3'"
-                        onmouseout="this.style.backgroundColor='#007BFF'">
+                        onmouseout="this.style.backgroundColor='#007BFF'" data-translate="student_bookings_close">
                         Cerrar
                     </button>
                 </div>
@@ -551,6 +558,8 @@
 @endpush
 @push('scripts')
     <script defer src="{{ asset('js/flatpicker.js') }}"></script>
+    <script defer src="https://npmcdn.com/flatpickr/dist/l10n/es.js"></script>
+    <script defer src="https://npmcdn.com/flatpickr/dist/l10n/pt.js"></script>
     <script defer src="{{ asset('js/weekSelect.min.js') }}"></script>
     <script defer src="{{ asset('js/flatpicker-month-year-plugin.js') }}"></script>
 @endpush
@@ -559,14 +568,30 @@
     <script>
         let flatpickrInstance = null;
         initFlatPicker('daily', 'today');
+
         $wire.dispatch('initSelect2', {
             target: '.am-select2'
-        })
+        });
+
         document.addEventListener('initCalendarJs', (event) => {
             setTimeout(() => {
                 initFlatPicker(event.detail.showBy, event.detail.currentDate, event.detail.range);
             }, 100);
-        })
+        });
+
+        function getFlatpickrLocale() {
+            const lang = localStorage.getItem('selectedLanguage') || 'es';
+
+            if (lang === 'es' && flatpickr?.l10ns?.es) {
+                return flatpickr.l10ns.es;
+            }
+
+            if (lang === 'pt' && flatpickr?.l10ns?.pt) {
+                return flatpickr.l10ns.pt;
+            }
+
+            return 'default';
+        }
 
         function initFlatPicker(showBy, currentDate, range = []) {
             if (flatpickrInstance) {
@@ -575,10 +600,11 @@
             let config = {
                 defaultDate: currentDate,
                 disableMobile: true,
+                locale: getFlatpickrLocale(),
                 onChange: function(selectedDates, dateStr, instance) {
                     @this.call('jumpToDate', dateStr);
                 }
-            }
+            };
             if (showBy == 'daily') {
                 config = {
                     ...config,
@@ -626,7 +652,7 @@
             const [startStr, endStr] = range.split('-');
 
             const monthMap = {
-                January: 0,
+                Januarys: 0,
                 February: 1,
                 March: 2,
                 April: 3,
@@ -640,12 +666,19 @@
                 December: 11
             };
 
-            const parseDate = (str) => new Date(`${monthMap[str.split(' ')[0]]}/${str.split(' ')[1]}/${year}`);
+            const parseDate = (str) => {
+                const parts = str.trim().split(' ');
+                return new Date(year, monthMap[parts[0]], parts[1]);
+            };
 
             try {
                 const startDate = parseDate(startStr);
                 const endDate = parseDate(endStr);
-                if (isNaN(startDate) || isNaN(endDate)) throw new Error('Invalid date');
+
+                if (isNaN(startDate) || isNaN(endDate)) {
+                    throw new Error('Invalid date');
+                }
+
                 return {
                     start: startDate.toISOString().split('T')[0],
                     end: endDate.toISOString().split('T')[0]
@@ -654,5 +687,23 @@
                 return null;
             }
         }
+
+            function applyStudentBookingsTranslations() {
+                const lang = localStorage.getItem('selectedLanguage') || 'es';
+
+                if (typeof selectLanguage === 'function') {
+                    selectLanguage(lang, false);
+                }
+            }
+
+            document.addEventListener('DOMContentLoaded', applyStudentBookingsTranslations);
+            document.addEventListener('livewire:navigated', applyStudentBookingsTranslations);
+            document.addEventListener('studentBookingModalOpened', applyStudentBookingsTranslations);
+
+            document.addEventListener('languageChanged', () => {
+                if (typeof initFlatPicker === 'function') {
+                    initFlatPicker(@js($showBy), @js($currentDate));
+                }
+            });
     </script>
 @endscript

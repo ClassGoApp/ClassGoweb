@@ -16,7 +16,7 @@
                 </svg>
             </i>
 
-            <span class="instant-tooltip" >
+            <span class="instant-tooltip" data-translate="floating_instant_tutoring">
                 ¡Tutoría al Instante!
             </span>
     
@@ -33,17 +33,17 @@
         <button class="am-recruitment-fab" onclick="showRecruitmentModal()" title="¡Únete a nuestro equipo!">
             <i class="fas fa-user-plus"></i>
             <span class="am-recruitment-badge"></span>
-            <span class="am-recruitment-tooltip">¡Postúlate aquí!</span>
+            <span class="am-recruitment-tooltip" data-translate="floating_apply_here">¡Postúlate aquí!</span>
         </button>
     @endif
     <button id="fab-main-button" class="fab-main">
         <i id="fab-main-icon" class="fas fa-question"></i>
         {{-- <img id="fab-main-icon" class="tutoria-disponible-boton" src="{{ asset('images/logoClassgo.png') }}" alt=""> --}}
 
-        <span id="fab-tooltip-closed" class="fab-main__tooltip fab-main__tooltip--closed">
+        <span id="fab-tooltip-closed" class="fab-main__tooltip fab-main__tooltip--closed" data-translate="floating_need_help">
             ¿Necesitas ayuda?
         </span>
-        <span id="fab-tooltip-open" class="fab-main__tooltip fab-main__tooltip--open hidden">
+        <span id="fab-tooltip-open" class="fab-main__tooltip fab-main__tooltip--open hidden" data-translate="floating_close">
             Cerrar
         </span>
     </button>
