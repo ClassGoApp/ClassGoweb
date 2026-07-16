@@ -1043,8 +1043,8 @@ new #[Layout('layouts.guest')] class extends Component {
 
                     <x-application-logo class="cg-mobile-logo" />
 
-                    <h2 class="cg-title">Crear Cuenta</h2>
-                    <p class="cg-desc">Únase a nuestra comunidad educativa</p>
+                    <h2 class="cg-title" data-translate="auth_create_account">Crear Cuenta</h2>
+                    <p class="cg-desc" data-translate="auth_join_community">Únase a nuestra comunidad educativa</p>
 
                     <div class="cg-input-row">
                         <div class="cg-input-group">
@@ -1053,7 +1053,7 @@ new #[Layout('layouts.guest')] class extends Component {
                                     <path
                                         d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
                                 </svg>
-                                <input type="text" wire:model="reg_first_name" placeholder="Nombre" />
+                                <input type="text" wire:model="reg_first_name" placeholder="Nombre" data-placeholder-key="auth_first_name" />
                             </div>
                             @error('reg_first_name') <span class="cg-error-text">{{ $message }}</span> @enderror
                         </div>
@@ -1063,7 +1063,7 @@ new #[Layout('layouts.guest')] class extends Component {
                                     <path
                                         d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
                                 </svg>
-                                <input type="text" wire:model="reg_last_name" placeholder="Apellido" />
+                                <input type="text" wire:model="reg_last_name" placeholder="Apellido" data-placeholder-key="auth_last_name" />
                             </div>
                             @error('reg_last_name') <span class="cg-error-text">{{ $message }}</span> @enderror
                         </div>
@@ -1075,9 +1075,13 @@ new #[Layout('layouts.guest')] class extends Component {
                                 <path
                                     d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
                             </svg>
-                            <input type="email" wire:model="reg_email" placeholder="Correo electrónico" />
+                            <input type="email" wire:model="reg_email" placeholder="Correo electrónico" data-placeholder-key="auth_email" />
                         </div>
-                        @error("reg_email") <span class="cg-error-text">El email ya esta en uso</span> @enderror
+                        @error("reg_email")
+                            <span class="cg-error-text" data-translate="auth_email_in_use">
+                                El email ya está en uso
+                            </span>
+                        @enderror
                     </div>
 
                     @if($isProfilePhoneMendatory)
@@ -1087,7 +1091,7 @@ new #[Layout('layouts.guest')] class extends Component {
                                     <path
                                         d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" />
                                 </svg>
-                                <input type="text" wire:model="phone_number" placeholder="Teléfono" />
+                                <input type="text" wire:model="phone_number" placeholder="Teléfono" data-placeholder-key="auth_phone" />
                             </div>
                             @error('phone_number') <span class="cg-error-text">{{ $message }}</span> @enderror
                         </div>
@@ -1099,7 +1103,7 @@ new #[Layout('layouts.guest')] class extends Component {
                                 <path
                                     d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z" />
                             </svg>
-                            <input type="password" wire:model="reg_password" id="reg-pass" placeholder="Contraseña" />
+                            <input type="password" wire:model="reg_password" id="reg-pass" placeholder="Contraseña" data-placeholder-key="auth_password" />
                             <svg class="cg-icon cg-icon-toggle" id="toggleRegPass" viewBox="0 0 24 24">
                                 <path
                                     d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />
@@ -1115,7 +1119,7 @@ new #[Layout('layouts.guest')] class extends Component {
                                     d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z" />
                             </svg>
                             <input type="password" wire:model="reg_password_confirmation" id="reg-pass-confirm"
-                                placeholder="Confirmar Contraseña" />
+                                placeholder="Confirmar Contraseña" data-placeholder-key="auth_confirm_password" />
                             <svg class="cg-icon cg-icon-toggle" id="toggleRegConfirm" viewBox="0 0 24 24">
                                 <path
                                     d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />
@@ -1124,7 +1128,7 @@ new #[Layout('layouts.guest')] class extends Component {
                     </div>
 
                     <div class="cg-roles-wrap">
-                        <p class="cg-roles-title">Quiero ser:</p>
+                        <p class="cg-roles-title" data-translate="auth_i_want_to_be">Quiero ser:</p>
                         <div class="cg-roles-row">
                             <label>
                                 <input type="radio" wire:model="user_role" value="student">
@@ -1133,7 +1137,7 @@ new #[Layout('layouts.guest')] class extends Component {
                                         <path
                                             d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z" />
                                     </svg>
-                                    <span>Estudiante</span>
+                                    <span data-translate="auth_student">Estudiante</span>
                                 </div>
                             </label>
 
@@ -1144,7 +1148,7 @@ new #[Layout('layouts.guest')] class extends Component {
                                         <path
                                             d="M20 17.17L18.83 16H4V4h16v13.17zM20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h4v2h8v-2h4c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM9 10h6v2H9z" />
                                     </svg>
-                                    <span>Tutor</span>
+                                    <span data-translate="auth_tutor">Tutor</span>
                                 </div>
                             </label>
                         </div>
@@ -1168,7 +1172,7 @@ new #[Layout('layouts.guest')] class extends Component {
                     </div>
 
                     <button type="submit" class="cg-btn-primary" wire:loading.attr="disabled" wire:target="register">
-                        <span wire:loading.remove wire:target="register">REGISTRARME</span>
+                        <span wire:loading.remove wire:target="register" data-translate="auth_register_me">REGISTRARME</span>
                         <span wire:loading wire:target="register">...</span>
                     </button>
 
@@ -1197,8 +1201,12 @@ new #[Layout('layouts.guest')] class extends Component {
                         </div>
                     @endif
 
-                    <p class="cg-mobile-toggle">¿Ya tienes cuenta? <a href="#"
-                            @click.prevent="isRegister = false; showForgot = false">Inicia Sesión</a></p>
+                    <p class="cg-mobile-toggle">
+                        <span data-translate="auth_already_have_account">¿Ya tienes cuenta?</span>
+                        <a href="#" @click.prevent="isRegister = false; showForgot = false" data-translate="auth_login_link">
+                            Inicia Sesión
+                        </a>
+                    </p>
                 </form>
             </div>
 
@@ -1217,8 +1225,8 @@ new #[Layout('layouts.guest')] class extends Component {
 
                         <x-application-logo class="cg-mobile-logo" />
 
-                        <h2 class="cg-title">¡Bienvenido!</h2>
-                        <p class="cg-desc">Ingresa tus datos para continuar</p>
+                        <h2 class="cg-title" data-translate="auth_welcome">¡Bienvenido!</h2>
+                        <p class="cg-desc" data-translate="auth_enter_data">Ingresa tus datos para continuar</p>
 
                         <div class="cg-input-group">
                             <div class="cg-input-box {{ $errors->get('form.email') ? 'error' : '' }}">
@@ -1227,7 +1235,7 @@ new #[Layout('layouts.guest')] class extends Component {
                                         d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
                                 </svg>
                                 <input x-model="form.email" wire:model="form.email" type="email"
-                                    placeholder="Correo electrónico" />
+                                placeholder="Correo electrónico" data-placeholder-key="auth_email" />
                             </div>
                             <x-input-error field_name="form.email" class="cg-error-text"
                                 style="position:absolute; top:100%; left:0;" />
@@ -1240,7 +1248,7 @@ new #[Layout('layouts.guest')] class extends Component {
                                         d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z" />
                                 </svg>
                                 <input x-model="form.password" wire:model="form.password" id="login-password"
-                                    type="password" placeholder="Contraseña" />
+                                type="password" placeholder="Contraseña" data-placeholder-key="auth_password" />
                                 <svg class="cg-icon cg-icon-toggle" id="toggleLoginPass" viewBox="0 0 24 24">
                                     <path
                                         d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />
@@ -1250,11 +1258,14 @@ new #[Layout('layouts.guest')] class extends Component {
                                 style="position:absolute; top:100%; left:0;" />
                         </div>
 
-                        <a href="#" @click.prevent="showForgot = true" class="cg-forgot">¿Olvidaste tu contraseña?</a>
+                        <a href="#" @click.prevent="showForgot = true" class="cg-forgot" data-translate="auth_forgot_password">
+                            ¿Olvidaste tu contraseña?
+                        </a>
 
-                        <x-primary-button wire:loading.class="am-btn_disable"
-                            wire:target="login"><span>{{ __('auth.login_btn') }}</span><i
-                                class="icon icon-arrow-right"></i></x-primary-button>
+                        <x-primary-button wire:loading.class="am-btn_disable" wire:target="login">
+                            <span data-translate="auth_login_button">INICIAR SESIÓN</span>
+                            <i class="icon icon-arrow-right"></i>
+                        </x-primary-button>
 
                         @if (!empty(setting('_api.enable_social_login')) && ((!empty(setting('_api.social_google_client_id')) && !empty(setting('_api.social_google_client_secret')))))
                             <div class="am-signinoption">
@@ -1282,8 +1293,12 @@ new #[Layout('layouts.guest')] class extends Component {
                         @endif
 
 
-                        <p class="cg-mobile-toggle">¿Nuevo aquí? <a href="#" @click.prevent="isRegister = true">Crea una
-                                cuenta</a></p>
+                        <p class="cg-mobile-toggle">
+                            <span data-translate="auth_new_here">¿Nuevo aquí?</span>
+                            <a href="#" @click.prevent="isRegister = true" data-translate="auth_create_account_link">
+                                Crea una cuenta
+                            </a>
+                        </p>
                     </form>
                 </div>
 
@@ -1297,8 +1312,10 @@ new #[Layout('layouts.guest')] class extends Component {
 
                         <x-application-logo class="cg-mobile-logo" />
 
-                        <h2 class="cg-title">Recuperar Cuenta</h2>
-                        <p class="cg-desc">Introduce tu correo y te enviaremos un enlace de recuperación.</p>
+                        <h2 class="cg-title" data-translate="auth_recover_account">Recuperar Cuenta</h2>
+                        <p class="cg-desc" data-translate="auth_recover_desc">
+                            Introduce tu correo y te enviaremos un enlace de recuperación.
+                        </p>
 
                         @if($forgot_status)
                             <div class="cg-success-box">{{ $forgot_status }}</div>
@@ -1311,7 +1328,7 @@ new #[Layout('layouts.guest')] class extends Component {
                                         d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
                                 </svg>
                                 <input type="email" wire:model="forgot_email" placeholder="Correo electrónico"
-                                    autofocus />
+                                    data-placeholder-key="auth_email" autofocus />
                             </div>
                             @error('forgot_email')
                                 <span class="cg-error-text">{{ $message }}</span>
@@ -1320,13 +1337,17 @@ new #[Layout('layouts.guest')] class extends Component {
 
                         <button type="submit" class="cg-btn-primary" wire:loading.attr="disabled"
                             wire:target="sendPasswordResetLink">
-                            <span wire:loading.remove wire:target="sendPasswordResetLink">ENVIAR ENLACE</span>
-                            <span wire:loading wire:target="sendPasswordResetLink">ENVIANDO...</span>
+                            <span wire:loading.remove wire:target="sendPasswordResetLink" data-translate="auth_send_link">
+                                ENVIAR ENLACE
+                            </span>
+                            <span wire:loading wire:target="sendPasswordResetLink" data-translate="auth_sending">
+                                ENVIANDO...
+                            </span>
                         </button>
 
                         <a href="#" @click.prevent="showForgot = false; $wire.set('forgot_status', '')"
                             class="cg-forgot" style="align-self: center; margin-top: 20px;">
-                            ← Volver a Iniciar Sesión
+                            <span data-translate="auth_back_to_login">← Volver a Iniciar Sesión</span>
                         </a>
                     </form>
                 </div>
@@ -1339,10 +1360,11 @@ new #[Layout('layouts.guest')] class extends Component {
                     <div class="cg-overlay-panel cg-overlay-left">
                         <x-application-logo class="cg-logo-overlay" />
 
-                        <h1>¿Ya eres parte?</h1>
-                        <p>Inicia sesión con tu cuenta personal</p>
-                        <button class="cg-btn-ghost" @click="isRegister = false; showForgot = false">INICIAR
-                            SESIÓN</button>
+                        <h1 data-translate="auth_already_part">¿Ya eres parte?</h1>
+                        <p data-translate="auth_login_personal_account">Inicia sesión con tu cuenta personal</p>
+                        <button class="cg-btn-ghost" @click="isRegister = false; showForgot = false" data-translate="auth_login_button">
+                            INICIAR SESIÓN
+                        </button>
                     </div>
                     <div class="cg-overlay-panel cg-overlay-right">
                         <x-application-logo class="cg-logo-overlay" />
@@ -1350,9 +1372,11 @@ new #[Layout('layouts.guest')] class extends Component {
                         <img src="{{ asset('images/login/Tugosistemas.png') }}" class="cg-overlay-img"
                             alt="Mascota Tugo">
 
-                        <h1>¿Eres Nuevo?</h1>
-                        <p>Regístrate y comienza tu aventura</p>
-                        <button class="cg-btn-ghost" @click="isRegister = true">CREAR CUENTA</button>
+                        <h1 data-translate="auth_are_you_new">¿Eres Nuevo?</h1>
+                        <p data-translate="auth_register_adventure">Regístrate y comienza tu aventura</p>
+                        <button class="cg-btn-ghost" @click="isRegister = true" data-translate="auth_create_account_button">
+                            CREAR CUENTA
+                        </button>
                     </div>
                 </div>
 
@@ -1372,8 +1396,10 @@ new #[Layout('layouts.guest')] class extends Component {
                     </svg>
                 </button>
 
-                <h3 class="cg-modal-title">Registrarse con Google</h3>
-                <p class="cg-modal-subtitle">Selecciona cómo deseas registrarte en ClassGo</p>
+                <h3 class="cg-modal-title" data-translate="auth_register_google_title">Registrarse con Google</h3>
+                <p class="cg-modal-subtitle" data-translate="auth_google_select_role">
+                    Selecciona cómo deseas registrarte en ClassGo
+                </p>
 
                 <div class="cg-modal-roles">
                     <label class="cg-modal-role-option">
@@ -1382,7 +1408,7 @@ new #[Layout('layouts.guest')] class extends Component {
                             <svg viewBox="0 0 24 24">
                                 <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z" />
                             </svg>
-                            <span>Estudiante</span>
+                            <span data-translate="auth_student">Estudiante</span>
                         </div>
                     </label>
 
@@ -1393,7 +1419,7 @@ new #[Layout('layouts.guest')] class extends Component {
                                 <path
                                     d="M20 17.17L18.83 16H4V4h16v13.17zM20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h4v2h8v-2h4c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM9 10h6v2H9z" />
                             </svg>
-                            <span>Tutor</span>
+                            <span data-translate="auth_tutor">Tutor</span>
                         </div>
                     </label>
                 </div>
@@ -1422,9 +1448,9 @@ new #[Layout('layouts.guest')] class extends Component {
                                 d="M10.5003 4.97884C11.8461 4.97884 13.0544 5.44134 14.0044 6.34967L16.6336 3.72051C15.0461 2.24134 12.9711 1.33301 10.5003 1.33301C6.91693 1.33301 3.81693 3.38717 2.30859 6.38301L5.37109 8.75801C6.09193 6.59134 8.11276 4.97884 10.5003 4.97884Z"
                                 fill="#EA4335" />
                         </svg>
-                        Continuar con Google
+                        <span data-translate="auth_continue_google">Continuar con Google</span>
                     </span>
-                    <span wire:loading wire:target="redirectGoogle">Cargando...</span>
+                    <span wire:loading wire:target="redirectGoogle" data-translate="auth_loading">Cargando...</span>
                 </button>
             </div>
         </div>
@@ -1434,18 +1460,56 @@ new #[Layout('layouts.guest')] class extends Component {
 @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            function authText(key, fallback = '') {
+                const lang = localStorage.getItem('selectedLanguage') || 'es';
+
+                if (typeof translations === 'undefined') {
+                    return fallback;
+                }
+
+                const t = translations[lang] || translations.es;
+
+                return t[key] || fallback;
+            }
+
+            function applyAuthPlaceholders() {
+                document.querySelectorAll('[data-placeholder-key]').forEach((element) => {
+                    const key = element.getAttribute('data-placeholder-key');
+                    const fallback = element.getAttribute('placeholder') || '';
+
+                    element.setAttribute('placeholder', authText(key, fallback));
+                });
+            }
+
+            function applyAuthTranslationsAfterLoad() {
+                const lang = localStorage.getItem('selectedLanguage') || 'es';
+
+                applyAuthPlaceholders();
+
+                if (typeof selectLanguage === 'function') {
+                    selectLanguage(lang, false);
+                }
+            }
+
+            applyAuthTranslationsAfterLoad();
+
+            document.addEventListener('languageChanged', function() {
+                applyAuthPlaceholders();
+            });
+
             const toggleInput = (btnId, inputId) => {
                 const btn = document.getElementById(btnId);
                 const inp = document.getElementById(inputId);
+
                 if (btn && inp) {
                     btn.addEventListener('click', () => {
                         const type = inp.getAttribute('type') === 'password' ? 'text' : 'password';
                         inp.setAttribute('type', type);
-                        // Toggle para SVG: Cambia opacidad para simular on/off
                         btn.style.opacity = type === 'text' ? '1' : '0.5';
                     });
                 }
             }
+
             toggleInput('toggleLoginPass', 'login-password');
             toggleInput('toggleRegPass', 'reg-pass');
             toggleInput('toggleRegConfirm', 'reg-pass-confirm');
