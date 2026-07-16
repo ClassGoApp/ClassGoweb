@@ -390,11 +390,18 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
                 Route::post('/validar-cupon', [BookingController::class, 'validateCoupon'])->name('validar-cupon');
                 Route::post('/reservar', [BookingController::class, 'storeBooking'])->name('reservar');
                 Route::post('/solicitar-tutor', [BookingController::class, 'solicitarTutor'])->name('solicitar-tutor');
+                Route::get('/get-counter/{token}', [BookingController::class, 'getCounterDetails'])->name('get-counter');
             });
         });
     });
 
     Route::post('/remove-cart', [SiteController::class, 'removeCart']);
+
+    // Rutas para la negociación de horarios (Ping-Pong) con tokens
+    Route::get('/solicitud-clase/{token}', [BookingController::class, 'showNegotiation'])->name('tutor-request.negotiate');
+    Route::post('/solicitud-clase/{token}/rechazar', [BookingController::class, 'rejectNegotiation'])->name('tutor-request.reject');
+    Route::post('/solicitud-clase/{token}/contraofertar', [BookingController::class, 'counterNegotiation'])->name('tutor-request.counter');
+    Route::post('/solicitud-clase/{token}/aceptar', [BookingController::class, 'acceptNegotiation'])->name('tutor-request.accept');
 
     Route::get('tutor/{slug}', [SearchController::class, 'tutorDetail'])->name('tutor-detail');
     Route::get('{gateway}/process/payment', [SiteController::class, 'processPayment'])->name('payment.process');

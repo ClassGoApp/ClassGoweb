@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Solicitud de Tutoría - {{ $subjectName }}</title>
+    <title>Nueva Contrapropuesta de Tutoría - {{ $subjectName }}</title>
 </head>
 <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f3f4f6;">
 
@@ -16,18 +16,18 @@
 
                     <!-- Header -->
                     <tr>
-                        <td style="background-color: #219EBC; padding: 28px 24px; text-align: left;">
+                        <td style="background-color: #FB8500; padding: 28px 24px; text-align: left;">
                             <table width="100%" cellpadding="0" cellspacing="0" border="0">
                                 <tr>
                                     <td>
                                         <div style="color: #ffffff; font-size: 22px; font-weight: bold;">
-                                            ¡Hola, {{ $tutorName }}!
+                                            Hola, {{ $recipientName }}
                                         </div>
-                                        <div style="color: #e0f4fb; font-size: 14px; margin-top: 4px;">
-                                            Tienes una nueva solicitud de tutoría con fecha preferida
+                                        <div style="color: #ffebd5; font-size: 14px; margin-top: 4px;">
+                                            Tienes una nueva contrapropuesta de horario
                                         </div>
                                     </td>
-                                    <td align="right" style="font-size: 38px;">📬</td>
+                                    <td align="right" style="font-size: 38px;">🔄</td>
                                 </tr>
                             </table>
                         </td>
@@ -36,48 +36,40 @@
                     <!-- Cuerpo -->
                     <tr>
                         <td style="padding: 32px 32px 24px;">
-
                             <p style="color: #374151; font-size: 16px; line-height: 1.7; margin: 0 0 20px;">
-                                El estudiante <strong style="color: #023047;">{{ $studentName }}</strong>
-                                está buscando un tutor para
-                                <strong style="color: #023047;">{{ $subjectName }}</strong>
-                                y ha indicado su disponibilidad preferida.
+                                <strong style="color: #023047;">{{ $senderName }}</strong> ha enviado una contrapropuesta de horario para la clase de <strong style="color: #023047;">{{ $subjectName }}</strong>.
                             </p>
 
-                            <!-- Info box: Detalles de la solicitud -->
+                            <!-- Info box: Nueva Propuesta -->
                             <table width="100%" cellpadding="0" cellspacing="0" border="0"
-                                style="background-color: #f0f9ff; border-left: 4px solid #219EBC; border-radius: 6px; margin-bottom: 20px;">
+                                style="background-color: #fff7ed; border-left: 4px solid #FB8500; border-radius: 6px; margin-bottom: 20px;">
                                 <tr>
                                     <td style="padding: 16px 20px;">
-                                        <p style="margin: 0 0 10px; font-size: 13px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600;">
-                                            Detalles de la solicitud
+                                        <p style="margin: 0 0 10px; font-size: 13px; color: #c2410c; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600;">
+                                            Nuevo Horario Propuesto
                                         </p>
                                         <p style="margin: 0 0 8px; font-size: 15px; color: #111827;">
-                                            📚 <strong>Materia:</strong> {{ $subjectName }}
+                                            📅 <strong>Fecha:</strong> {{ $counterDate }}
                                         </p>
                                         <p style="margin: 0 0 8px; font-size: 15px; color: #111827;">
-                                            📅 <strong>Fecha preferida:</strong> {{ $preferredDate }}
-                                        </p>
-                                        <p style="margin: 0 0 8px; font-size: 15px; color: #111827;">
-                                            🕐 <strong>Horario preferido:</strong> {{ $preferredTime }}
+                                            🕐 <strong>Hora de Inicio:</strong> {{ $counterTime }}
                                         </p>
                                         <p style="margin: 0; font-size: 15px; color: #111827;">
-                                            📝 <strong>Solicitado el:</strong> {{ $requestDate }}
+                                            ⏳ <strong>Duración:</strong> {{ $counterDuration }}
                                         </p>
                                     </td>
                                 </tr>
                             </table>
 
-                            <!-- Nota adicional (solo si hay) -->
                             @if(!empty($note))
                             <table width="100%" cellpadding="0" cellspacing="0" border="0"
-                                style="background-color: #fefce8; border-left: 4px solid #facc15; border-radius: 6px; margin-bottom: 20px;">
+                                style="background-color: #f8fafc; border-left: 4px solid #cbd5e1; border-radius: 6px; margin-bottom: 20px;">
                                 <tr>
                                     <td style="padding: 14px 20px;">
-                                        <p style="margin: 0 0 6px; font-size: 13px; color: #92400e; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">
-                                            💬 Nota del estudiante
+                                        <p style="margin: 0 0 6px; font-size: 13px; color: #475569; font-weight: 600; text-transform: uppercase;">
+                                            💬 Comentario
                                         </p>
-                                        <p style="margin: 0; font-size: 14px; color: #78350f; font-style: italic; line-height: 1.5;">
+                                        <p style="margin: 0; font-size: 14px; color: #334155; font-style: italic; line-height: 1.5;">
                                             "{{ $note }}"
                                         </p>
                                     </td>
@@ -86,7 +78,7 @@
                             @endif
 
                             <p style="color: #374151; font-size: 15px; line-height: 1.6; margin: 0 0 28px;">
-                                Puedes <strong>Aceptar</strong> la propuesta de horario directamente, <strong>Rechazarla</strong>, o enviar una <strong>Contrapropuesta</strong> con un nuevo horario que tengas libre.
+                                Por favor, revisa esta contrapropuesta. Puedes aceptarla, rechazarla o enviar otra contraoferta de regreso.
                             </p>
 
                             <!-- CTA Button -->
@@ -97,12 +89,11 @@
                                             style="display: inline-block; background-color: #FB8500; color: #ffffff; text-decoration: none;
                                                    font-size: 15px; font-weight: bold; padding: 14px 36px; border-radius: 8px;
                                                    letter-spacing: 0.03em;">
-                                            Ver Propuesta / Responder →
+                                            Ver Contrapropuesta →
                                         </a>
                                     </td>
                                 </tr>
                             </table>
-
                         </td>
                     </tr>
 
@@ -110,9 +101,7 @@
                     <tr>
                         <td style="background-color: #f9fafb; padding: 20px 32px; border-top: 1px solid #e5e7eb;">
                             <p style="margin: 0; font-size: 12px; color: #9ca3af; text-align: center;">
-                                Este correo fue enviado automáticamente por <strong>ClassGo</strong> porque un
-                                estudiante solicitó tutoría en <strong>{{ $subjectName }}</strong>.<br>
-                                Si no deseas recibir estas notificaciones, configúralo en tu perfil.
+                                Este correo fue enviado automáticamente por <strong>ClassGo</strong>.
                             </p>
                         </td>
                     </tr>

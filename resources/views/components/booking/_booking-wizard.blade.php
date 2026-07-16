@@ -1784,6 +1784,7 @@
         let selectedTutorName = null;
         let targetTutorId = null;
         let targetTutorName = null;
+        let tutorRequestToken = null;
         let selectedTutorPrice = 0;
 
 
@@ -2065,6 +2066,7 @@
             hasNoTutors = false;
             targetTutorId = null;
             targetTutorName = null;
+            tutorRequestToken = null;
 
 
             selectedInstitution = null;
@@ -3606,6 +3608,10 @@
                     formData.append('comprobante', comprobanteFile);
                 }
 
+                if (tutorRequestToken) {
+                    formData.append('tutor_request_token', tutorRequestToken);
+                }
+
                 const response = await fetch('/student/booking/reservar-multi', {
                     method: 'POST',
                     headers: {
@@ -3709,6 +3715,125 @@
                 return false;
             }
         }
+
+        async function checkUrlForCounterOffer() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const acceptCounterToken = urlParams.get('accept_counter');
+            if (!acceptCounterToken) return;
+
+            // Mostrar cargando
+            loader.style.display = 'flex';
+            openModal();
+
+            try {
+                const response = await fetch(`/student/booking/get-counter/${acceptCounterToken}`);
+                const data = await response.json();
+                
+                if (!data.success) {
+                    alert(data.message || 'La contrapropuesta ya no está activa o no fue encontrada.');
+                    closeModal();
+                    loader.style.display = 'none';
+                    return;
+                }
+
+                // Cargar datos
+                tutorRequestToken = acceptCounterToken;
+                selectedSubject = data.subject_id;
+                selectedSubjectName = data.subject_name;
+                selectedTutor = data.tutor_id;
+                selectedTutorName = data.tutor_name;
+                selectedTutorPrice = data.price;
+                selectedDate = data.counter_date;
+
+                // Crear los slots de 20 minutos correspondientes basándonos en la duración
+                // data.counter_time ej: "10:30 AM" o "02:30 PM"
+                
+                let timeStr = data.counter_time.trim();
+                if (timeStr.includes(' - ')) {
+                    timeStr = timeStr.split(' - ')[0].trim();
+                }
+                const match = timeStr.match(/^(\d+):(\d+)\s*(AM|PM)$/i);
+                if (match) {
+                    let hours = parseInt(match[1]);
+                    const minutes = parseInt(match[2]);
+                    const ampm = match[3].toUpperCase();
+
+                    if (ampm === 'PM' && hours !== 12) hours += 12;
+                    if (ampm === 'AM' && hours === 12) hours = 0;
+
+                    let startMins = hours * 60 + minutes;
+
+                    // Mapeo de duración a minutos totales
+                    let totalDurationMins = 20;
+                    const dur = data.counter_duration.toLowerCase();
+                    if (dur.includes('20')) totalDurationMins = 20;
+                    else if (dur.includes('40')) totalDurationMins = 40;
+                    else if (dur.includes('1 hora') || dur === '1h') totalDurationMins = 60;
+                    else if (dur.includes('1h 20') || dur.includes('1h 20m')) totalDurationMins = 80;
+                    else if (dur.includes('1h 40') || dur.includes('1h 40m')) totalDurationMins = 100;
+                    else if (dur.includes('2 hora') || dur === '2h') totalDurationMins = 120;
+
+                    const blocksCount = totalDurationMins / 20;
+                    selectedSlots = [];
+
+                    for (let i = 0; i < blocksCount; i++) {
+                        const blockStart = startMins + i * 20;
+                        const blockEnd = startMins + (i + 1) * 20;
+
+                        const sh = Math.floor(blockStart / 60);
+                        const sm = blockStart % 60;
+                        const startFormatted = String(sh).padStart(2, '0') + ':' + String(sm).padStart(2, '0');
+
+                        const eh = Math.floor(blockEnd / 60);
+                        const em = blockEnd % 60;
+                        const endFormatted = String(eh).padStart(2, '0') + ':' + String(em).padStart(2, '0');
+
+                        // Mismo formato: "slot_id|start_time|end_time"
+                        const slotId = `0|${startFormatted}|${endFormatted}`;
+                        const displayTime = `${startFormatted} - ${endFormatted}`;
+
+                        selectedSlots.push({
+                            id: slotId,
+                            date: data.counter_date,
+                            time: displayTime,
+                            start: startFormatted,
+                            end: endFormatted
+                        });
+                    }
+                } else {
+                    console.error('No se pudo parsear el formato de hora de la contrapropuesta:', data.counter_time);
+                }
+
+                // Cargar UI
+                const pMateria = document.getElementById('js-summary-materia');
+                if (pMateria) pMateria.textContent = selectedSubjectName;
+                const pTutor = document.getElementById('js-summary-tutor');
+                if (pTutor) pTutor.textContent = selectedTutorName;
+
+                // Renderizar resumen del paso 3
+                updateSummary();
+
+                // Cambiar a Paso 3
+                currentStep = 3;
+                updateStepUI();
+                updateContent();
+                updateNavButtons();
+                scrollTopStep();
+
+                // Calcular totales
+                recalcTotals();
+
+            } catch (error) {
+                console.error('Error pre-cargando contrapropuesta:', error);
+                alert('Ocurrió un error al cargar la contrapropuesta.');
+                closeModal();
+            } finally {
+                loader.style.display = 'none';
+            }
+        }
+
+        // Ejecutar chequeo de URL
+        checkUrlForCounterOffer();
 
     });
 </script>

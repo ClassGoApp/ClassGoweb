@@ -19,6 +19,7 @@ use App\Models\SlotBooking;
 use App\Services\BookingNotificationService;
 use Illuminate\Support\Facades\Mail;
 use App\Models\User;
+use \Illuminate\Support\Str;
 
 
 class BookingController extends Controller
@@ -959,13 +960,14 @@ class BookingController extends Controller
     public function storeMultiBooking(Request $request, CuponesService $cuponesService)
     {
         $request->validate([
-            'subject_id'  => 'required|exists:subjects,id',
-            'tutor_id'    => 'required|exists:users,id',
-            'slots'       => 'required|array',
-            'slot_date'   => 'required',
-            'coupon_id'   => 'nullable|exists:coupons,id',
-            'is_free'     => 'nullable|in:0,1',
-            'comprobante' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
+            'subject_id'          => 'required|exists:subjects,id',
+            'tutor_id'            => 'required|exists:users,id',
+            'slots'               => 'required|array',
+            'slot_date'           => 'required',
+            'coupon_id'           => 'nullable|exists:coupons,id',
+            'is_free'             => 'nullable|in:0,1',
+            'comprobante'         => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
+            'tutor_request_token' => 'nullable|string',
         ]);
 
         DB::beginTransaction();
@@ -1163,6 +1165,15 @@ class BookingController extends Controller
                 Cache::forget("booking_lock:{$tutorId}:{$dateStr}:{$parts[1]}:{$parts[2]}");
             }
 
+            if ($request->filled('tutor_request_token')) {
+                DB::table('tutor_requests')
+                    ->where('student_token', $request->tutor_request_token)
+                    ->update([
+                        'status'     => 'accepted',
+                        'updated_at' => now()
+                    ]);
+            }
+
             DB::commit();
             
             return response()->json([
@@ -1245,21 +1256,66 @@ class BookingController extends Controller
         $dashboardUrl = url('/tutor/bookings');
         $requestDate  = now()->format('d/m/Y H:i');
         $subjectName  = $subject->name;
-        $studentName  = $student->name ?? $student->first_name ?? 'Un estudiante';
+        $studentProfile = DB::table('profiles')->where('user_id', $student->id)->first();
+        $studentName = ($studentProfile ? trim(($studentProfile->first_name ?? '') . ' ' . ($studentProfile->last_name ?? '')) : '') ?: ($student->name ?? 'Un estudiante');
 
         // Formatear fecha para mostrar
         try {
-            $formattedDate = \Carbon\Carbon::parse($preferredDate)->translatedFormat('l d \d\e F \d\e Y');
+            $formattedDate = Carbon::parse($preferredDate)->translatedFormat('l d \d\e F \d\e Y');
         } catch (\Throwable $e) {
             $formattedDate = $preferredDate;
         }
 
         foreach ($tutors as $tutor) {
             try {
+                $tutorToken = Str::random(40);
+                $studentToken = Str::random(40);
+
+                // Calcular duración de forma dinámica a partir del rango
+                $durationStr = '20 min';
+                if (strpos($preferredTime, ' - ') !== false) {
+                    try {
+                        list($startStr, $endStr) = explode(' - ', $preferredTime);
+                        $startC = Carbon::parse($startStr);
+                        $endC = Carbon::parse($endStr);
+                        $diffMins = $endC->diffInMinutes($startC);
+                        if ($diffMins == 20) $durationStr = '20 min';
+                        elseif ($diffMins == 40) $durationStr = '40 min';
+                        elseif ($diffMins == 60) $durationStr = '1 hora';
+                        elseif ($diffMins == 80) $durationStr = '1h 20m';
+                        elseif ($diffMins == 100) $durationStr = '1h 40m';
+                        elseif ($diffMins == 120) $durationStr = '2 horas';
+                    } catch (\Throwable $e) {
+                        // fallback
+                    }
+                }
+
+                // Guardar en la base de datos
+                DB::table('tutor_requests')->insert([
+                    'student_id'       => $student->id,
+                    'tutor_id'         => $tutor->id,
+                    'subject_id'       => $subjectId,
+                    'status'           => 'pending',
+                    'current_date'     => $preferredDate,
+                    'current_time'     => $preferredTime,
+                    'current_duration' => $durationStr,
+                    'note'             => $note,
+                    'student_token'    => $studentToken,
+                    'tutor_token'      => $tutorToken,
+                    'created_at'       => now(),
+                    'updated_at'       => now(),
+                ]);
+
+                // Obtener tutor name
+                $tutorProfile = DB::table('profiles')->where('user_id', $tutor->id)->first();
+                $tutorName = ($tutorProfile ? trim(($tutorProfile->first_name ?? '') . ' ' . ($tutorProfile->last_name ?? '')) : '') ?: 'Tutor';
+
+                $actionUrl = route('tutor-request.negotiate', ['token' => $tutorToken]);
+
                 Mail::send(
                     'emails.solicitar-tutor',
                     [
-                        'tutorName'     => $tutor->name ?? $tutor->first_name ?? 'Tutor',
+                        'tutorName'     => $tutorName,
                         'subjectName'   => $subjectName,
                         'requestDate'   => $requestDate,
                         'preferredDate' => $formattedDate,
@@ -1267,6 +1323,7 @@ class BookingController extends Controller
                         'note'          => $note,
                         'studentName'   => $studentName,
                         'dashboardUrl'  => $dashboardUrl,
+                        'actionUrl'     => $actionUrl,
                     ],
                     function ($message) use ($tutor, $subjectName) {
                         $message->to($tutor->email)
@@ -1285,6 +1342,264 @@ class BookingController extends Controller
             'message' => "Solicitud enviada a {$sent} tutor(es) de {$subjectName}.",
             'sent'    => $sent,
             'errors'  => $errors,
+        ]);
+    }
+
+    public function showNegotiation($token)
+    {
+        $request = DB::table('tutor_requests')
+            ->where('tutor_token', $token)
+            ->orWhere('student_token', $token)
+            ->first();
+
+        if (!$request) {
+            abort(404, 'Solicitud no encontrada.');
+        }
+
+        $role = ($request->tutor_token === $token) ? 'tutor' : 'student';
+
+        $student = DB::table('users')
+            ->leftJoin('profiles', 'users.id', '=', 'profiles.user_id')
+            ->where('users.id', $request->student_id)
+            ->select('users.*', DB::raw("TRIM(CONCAT(COALESCE(profiles.first_name,''), ' ', COALESCE(profiles.last_name,''))) as full_name"), 'profiles.first_name', 'profiles.last_name')
+            ->first();
+
+        $tutor = DB::table('users')
+            ->leftJoin('profiles', 'users.id', '=', 'profiles.user_id')
+            ->where('users.id', $request->tutor_id)
+            ->select('users.*', DB::raw("TRIM(CONCAT(COALESCE(profiles.first_name,''), ' ', COALESCE(profiles.last_name,''))) as full_name"), 'profiles.first_name', 'profiles.last_name')
+            ->first();
+        $subject = DB::table('subjects')->where('id', $request->subject_id)->first();
+
+        try {
+            $formattedDate = Carbon::parse($request->current_date)->translatedFormat('l d \d\e F \d\e Y');
+        } catch (\Throwable $e) {
+            $formattedDate = $request->current_date;
+        }
+
+        return view('vistas.view.pages.solicitud-tutor', compact('request', 'role', 'student', 'tutor', 'subject', 'formattedDate', 'token'));
+    }
+
+    public function rejectNegotiation($token)
+    {
+        $tRequest = DB::table('tutor_requests')
+            ->where('tutor_token', $token)
+            ->orWhere('student_token', $token)
+            ->first();
+
+        if (!$tRequest || in_array($tRequest->status, ['rejected', 'accepted'])) {
+            return response()->json(['success' => false, 'message' => 'Solicitud no válida o ya finalizada.'], 422);
+        }
+
+        $role = ($tRequest->tutor_token === $token) ? 'tutor' : 'student';
+
+        DB::table('tutor_requests')->where('id', $tRequest->id)->update([
+            'status'     => 'rejected',
+            'updated_at' => now(),
+        ]);
+
+        $student = DB::table('users')
+            ->leftJoin('profiles', 'users.id', '=', 'profiles.user_id')
+            ->where('users.id', $tRequest->student_id)
+            ->select('users.*', DB::raw("TRIM(CONCAT(COALESCE(profiles.first_name,''), ' ', COALESCE(profiles.last_name,''))) as full_name"), 'profiles.first_name', 'profiles.last_name')
+            ->first();
+
+        $tutor = DB::table('users')
+            ->leftJoin('profiles', 'users.id', '=', 'profiles.user_id')
+            ->where('users.id', $tRequest->tutor_id)
+            ->select('users.*', DB::raw("TRIM(CONCAT(COALESCE(profiles.first_name,''), ' ', COALESCE(profiles.last_name,''))) as full_name"), 'profiles.first_name', 'profiles.last_name')
+            ->first();
+
+        $subject = DB::table('subjects')->where('id', $tRequest->subject_id)->first();
+        $subjectName = $subject->name;
+
+        $recipient = ($role === 'tutor') ? $student : $tutor;
+        $senderName = ($role === 'tutor') ? ($tutor->full_name ?: ($tutor->name ?? 'Tutor')) : ($student->full_name ?: ($student->name ?? 'Estudiante'));
+
+        try {
+            Mail::send(
+                'emails.solicitud-tutor-rechazada',
+                [
+                    'recipientName' => $recipient->full_name ?: ($recipient->name ?? 'Usuario'),
+                    'senderName'    => $senderName,
+                    'subjectName'   => $subjectName,
+                ],
+                function ($message) use ($recipient, $subjectName) {
+                    $message->to($recipient->email)
+                            ->subject("❌ Solicitud de tutoría rechazada: {$subjectName}");
+                }
+            );
+        } catch (\Throwable $e) {
+            Log::error("rejectNegotiation mail error: " . $e->getMessage());
+        }
+
+        return response()->json(['success' => true, 'message' => 'Solicitud rechazada con éxito.']);
+    }
+
+    public function acceptNegotiation($token)
+    {
+        $tRequest = DB::table('tutor_requests')
+            ->where('tutor_token', $token)
+            ->orWhere('student_token', $token)
+            ->first();
+
+        if (!$tRequest || in_array($tRequest->status, ['rejected', 'accepted'])) {
+            return response()->json(['success' => false, 'message' => 'Solicitud no válida o ya finalizada.'], 422);
+        }
+
+        $role = ($tRequest->tutor_token === $token) ? 'tutor' : 'student';
+
+        DB::table('tutor_requests')->where('id', $tRequest->id)->update([
+            'status'     => 'accepted',
+            'updated_at' => now(),
+        ]);
+
+        $student = DB::table('users')
+            ->leftJoin('profiles', 'users.id', '=', 'profiles.user_id')
+            ->where('users.id', $tRequest->student_id)
+            ->select('users.*', DB::raw("TRIM(CONCAT(COALESCE(profiles.first_name,''), ' ', COALESCE(profiles.last_name,''))) as full_name"), 'profiles.first_name', 'profiles.last_name')
+            ->first();
+
+        $tutor = DB::table('users')
+            ->leftJoin('profiles', 'users.id', '=', 'profiles.user_id')
+            ->where('users.id', $tRequest->tutor_id)
+            ->select('users.*', DB::raw("TRIM(CONCAT(COALESCE(profiles.first_name,''), ' ', COALESCE(profiles.last_name,''))) as full_name"), 'profiles.first_name', 'profiles.last_name')
+            ->first();
+
+        $subject = DB::table('subjects')->where('id', $tRequest->subject_id)->first();
+        $subjectName = $subject->name;
+
+        // Si el tutor acepta, notificar al estudiante con su student_token
+        if ($role === 'tutor') {
+            $actionUrl = url('/student/bookings?accept_counter=' . $tRequest->student_token);
+            try {
+                Mail::send(
+                    'emails.solicitud-tutor-aceptada',
+                    [
+                        'studentName'   => $student->full_name ?: ($student->name ?? 'Estudiante'),
+                        'tutorName'     => $tutor->full_name ?: ($tutor->name ?? 'Tutor'),
+                        'subjectName'   => $subjectName,
+                        'preferredDate' => $tRequest->current_date,
+                        'preferredTime' => $tRequest->current_time,
+                        'actionUrl'     => $actionUrl,
+                    ],
+                    function ($message) use ($student, $subjectName) {
+                        $message->to($student->email)
+                                ->subject("✅ ¡Propuesta de tutoría aceptada!: {$subjectName}");
+                    }
+                );
+            } catch (\Throwable $e) {
+                Log::error("acceptNegotiation mail error: " . $e->getMessage());
+            }
+        }
+
+        return response()->json(['success' => true, 'message' => 'Solicitud aceptada con éxito.']);
+    }
+
+    public function counterNegotiation(Request $request, $token)
+    {
+        $request->validate([
+            'counter_date'     => 'required|date|after_or_equal:today',
+            'counter_time'     => 'required|string|max:50',
+            'counter_duration' => 'required|string|max:50',
+            'note'             => 'nullable|string|max:300',
+        ]);
+
+        $tRequest = DB::table('tutor_requests')
+            ->where('tutor_token', $token)
+            ->orWhere('student_token', $token)
+            ->first();
+
+        if (!$tRequest || in_array($tRequest->status, ['rejected', 'accepted'])) {
+            return response()->json(['success' => false, 'message' => 'Solicitud no válida o ya finalizada.'], 422);
+        }
+
+        $role = ($tRequest->tutor_token === $token) ? 'tutor' : 'student';
+        $newStatus = ($role === 'tutor') ? 'countered_by_tutor' : 'countered_by_student';
+
+        DB::table('tutor_requests')->where('id', $tRequest->id)->update([
+            'status'           => $newStatus,
+            'current_date'     => $request->counter_date,
+            'current_time'     => $request->counter_time,
+            'current_duration' => $request->counter_duration,
+            'note'             => $request->note ?? '',
+            'updated_at'       => now(),
+        ]);
+
+        $student = DB::table('users')
+            ->leftJoin('profiles', 'users.id', '=', 'profiles.user_id')
+            ->where('users.id', $tRequest->student_id)
+            ->select('users.*', DB::raw("TRIM(CONCAT(COALESCE(profiles.first_name,''), ' ', COALESCE(profiles.last_name,''))) as full_name"), 'profiles.first_name', 'profiles.last_name')
+            ->first();
+
+        $tutor = DB::table('users')
+            ->leftJoin('profiles', 'users.id', '=', 'profiles.user_id')
+            ->where('users.id', $tRequest->tutor_id)
+            ->select('users.*', DB::raw("TRIM(CONCAT(COALESCE(profiles.first_name,''), ' ', COALESCE(profiles.last_name,''))) as full_name"), 'profiles.first_name', 'profiles.last_name')
+            ->first();
+
+        $subject = DB::table('subjects')->where('id', $tRequest->subject_id)->first();
+        $subjectName = $subject->name;
+
+        $recipient = ($role === 'tutor') ? $student : $tutor;
+        $recipientToken = ($role === 'tutor') ? $tRequest->student_token : $tRequest->tutor_token;
+        $senderName = ($role === 'tutor') ? ($tutor->full_name ?: ($tutor->name ?? 'Tutor')) : ($student->full_name ?: ($student->name ?? 'Estudiante'));
+
+        $actionUrl = route('tutor-request.negotiate', ['token' => $recipientToken]);
+
+        try {
+            Mail::send(
+                'emails.solicitud-tutor-contraoferta',
+                [
+                    'recipientName'   => $recipient->full_name ?: ($recipient->name ?? 'Usuario'),
+                    'senderName'      => $senderName,
+                    'subjectName'     => $subjectName,
+                    'counterDate'     => $request->counter_date,
+                    'counterTime'     => $request->counter_time,
+                    'counterDuration' => $request->counter_duration,
+                    'note'            => $request->note ?? '',
+                    'actionUrl'       => $actionUrl,
+                ],
+                function ($message) use ($recipient, $subjectName) {
+                    $message->to($recipient->email)
+                            ->subject("🔄 Nueva contrapropuesta de tutoría: {$subjectName}");
+                }
+            );
+        } catch (\Throwable $e) {
+            Log::error("counterNegotiation mail error: " . $e->getMessage());
+        }
+
+        return response()->json(['success' => true, 'message' => 'Contrapropuesta enviada con éxito.']);
+    }
+
+    public function getCounterDetails($token)
+    {
+        $tRequest = DB::table('tutor_requests')->where('student_token', $token)->first();
+
+        if (!$tRequest) {
+            return response()->json(['success' => false, 'message' => 'Propuesta no encontrada.'], 404);
+        }
+
+        if (in_array($tRequest->status, ['rejected'])) {
+            return response()->json(['success' => false, 'message' => 'Esta propuesta ya fue rechazada.'], 422);
+        }
+
+        $tutor = DB::table('users')->where('id', $tRequest->tutor_id)->first();
+        $subject = DB::table('subjects')->where('id', $tRequest->subject_id)->first();
+
+        $price = (float) DB::table('profiles')->where('user_id', $tRequest->tutor_id)->value('price');
+
+        return response()->json([
+            'success'          => true,
+            'tutor_id'         => $tRequest->tutor_id,
+            'tutor_name'       => $tutor->name ?? (isset($tutor->first_name) ? $tutor->first_name : 'Tutor'),
+            'subject_id'       => $tRequest->subject_id,
+            'subject_name'     => $subject->name,
+            'counter_date'     => $tRequest->current_date,
+            'counter_time'     => $tRequest->current_time,
+            'counter_duration' => $tRequest->current_duration,
+            'price'            => $price,
+            'status'           => $tRequest->status,
         ]);
     }
 }

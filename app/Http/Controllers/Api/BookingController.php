@@ -23,6 +23,7 @@ use App\Services\CuponesService;
 use App\Models\UserCoupon;
 use App\Models\SlotBooking;
 use App\Services\BookingNotificationService;
+use \Illuminate\Support\Str;
 
 class BookingController extends Controller
 {
@@ -549,21 +550,66 @@ class BookingController extends Controller
         $dashboardUrl = url('/tutor/bookings');
         $requestDate  = now()->format('d/m/Y H:i');
         $subjectName  = $subject->name;
-        $studentName  = $student->name ?? $student->first_name ?? 'Un estudiante';
+        $studentProfile = DB::table('profiles')->where('user_id', $student->id)->first();
+        $studentName = ($studentProfile ? trim(($studentProfile->first_name ?? '') . ' ' . ($studentProfile->last_name ?? '')) : '') ?: ($student->name ?? 'Un estudiante');
 
         // Formatear fecha para mostrar
         try {
-            $formattedDate = \Carbon\Carbon::parse($preferredDate)->translatedFormat('l d \d\e F \d\e Y');
+            $formattedDate = Carbon::parse($preferredDate)->translatedFormat('l d \d\e F \d\e Y');
         } catch (\Throwable $e) {
             $formattedDate = $preferredDate;
         }
 
         foreach ($tutors as $tutor) {
             try {
+                $tutorToken = Str::random(40);
+                $studentToken = Str::random(40);
+
+                // Calcular duración de forma dinámica a partir del rango
+                $durationStr = '20 min';
+                if (strpos($preferredTime, ' - ') !== false) {
+                    try {
+                        list($startStr, $endStr) = explode(' - ', $preferredTime);
+                        $startC = Carbon::parse($startStr);
+                        $endC = Carbon::parse($endStr);
+                        $diffMins = $endC->diffInMinutes($startC);
+                        if ($diffMins == 20) $durationStr = '20 min';
+                        elseif ($diffMins == 40) $durationStr = '40 min';
+                        elseif ($diffMins == 60) $durationStr = '1 hora';
+                        elseif ($diffMins == 80) $durationStr = '1h 20m';
+                        elseif ($diffMins == 100) $durationStr = '1h 40m';
+                        elseif ($diffMins == 120) $durationStr = '2 horas';
+                    } catch (\Throwable $e) {
+                        // fallback
+                    }
+                }
+
+                //Obtner tutor
+                $tutorProfile = DB::table('profiles')->where('user_id', $tutor->id)->first();
+                $tutorName = ($tutorProfile ? trim(($tutorProfile->first_name ?? '') . ' ' . ($tutorProfile->last_name ?? '')) : '') ?: ($tutor->name ?? 'Tutor');
+
+                // Guardar en la base de datos
+                DB::table('tutor_requests')->insert([
+                    'student_id'       => $student->id,
+                    'tutor_id'         => $tutor->id,
+                    'subject_id'       => $subjectId,
+                    'status'           => 'pending',
+                    'current_date'     => $preferredDate,
+                    'current_time'     => $preferredTime,
+                    'current_duration' => $durationStr,
+                    'note'             => $note,
+                    'student_token'    => $studentToken,
+                    'tutor_token'      => $tutorToken,
+                    'created_at'       => now(),
+                    'updated_at'       => now(),
+                ]);
+
+                $actionUrl = route('tutor-request.negotiate', ['token' => $tutorToken]);
+
                 Mail::send(
                     'emails.solicitar-tutor',
                     [
-                        'tutorName'     => $tutor->name ?? $tutor->first_name ?? 'Tutor',
+                        'tutorName'     => $tutorName,
                         'subjectName'   => $subjectName,
                         'requestDate'   => $requestDate,
                         'preferredDate' => $formattedDate,
@@ -571,6 +617,7 @@ class BookingController extends Controller
                         'note'          => $note,
                         'studentName'   => $studentName,
                         'dashboardUrl'  => $dashboardUrl,
+                        'actionUrl'     => $actionUrl,
                     ],
                     function ($message) use ($tutor, $subjectName) {
                         $message->to($tutor->email)
