@@ -246,7 +246,14 @@
         document.addEventListener('livewire:navigated', applyTutorLiveSearchTranslations);
 
         document.addEventListener('languageChanged', () => {
-            applyTutorLiveSearchTranslations();
+            const input = document.querySelector('#searchInput');
+
+            if (input) {
+                input.placeholder = tutorLiveSearchText(
+                    'tutor_live_search_placeholder',
+                    '¿Qué necesitas aprender? Busca por nombre del tutor o materia.'
+                );
+            }
         });
 
         document.addEventListener('livewire:init', () => {

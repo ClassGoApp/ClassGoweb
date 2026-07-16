@@ -651,6 +651,57 @@ const translations = {
     barreras_regulatorias_insalvables: "Barreras regulatorias insalvables",
     conflictos_legales_viabilidad:
       "Conflictos legales que afecten la viabilidad del servicio",
+    // Términos - Tutorías al instante
+    tutorias_instantaneas: "12. TUTORÍAS AL INSTANTE (MODALIDAD ON-DEMAND)",
+    tutorias_instantaneas_descripcion:
+      "Esta modalidad permite a los estudiantes solicitar asistencia pedagógica inmediata sin reserva previa, bajo un sistema de emparejamiento dinámico (matching).",
+
+    procedimiento_estudiante: "12.1 Procedimiento para el Estudiante",
+    tutorias_solicitud_label: "Solicitud:",
+    tutorias_solicitud_desc:
+      "El estudiante seleccionará una materia y subcategoría específica. Al confirmar, entrará en una Sala de Espera Virtual.",
+    tutorias_seleccion_tutor_label: "Selección de Tutor:",
+    tutorias_seleccion_tutor_desc:
+      "La plataforma mostrará en tiempo real (con actualización cada 5 segundos) a los tutores que acepten la solicitud. El estudiante es libre de elegir al tutor de su preferencia basándose en el perfil, precio o calificación.",
+    tutorias_reserva_pago_label: "Reserva y Pago:",
+    tutorias_reserva_pago_desc:
+      "Una vez seleccionado el tutor, se generará una reserva temporal y se mostrará un Código QR de pago.",
+    tutorias_acceso_sesion_label: "Acceso a la Sesión:",
+    tutorias_acceso_sesion_desc:
+      "Tras la confirmación del pago, el sistema redirigirá al estudiante a una sala de Google Meet generada automáticamente con las credenciales del tutor.",
+
+    procedimiento_tutor: "12.2 Procedimiento para el Tutor",
+    tutorias_notificacion_label: "Notificación:",
+    tutorias_notificacion_desc:
+      "Los tutores disponibles recibirán una alerta vía Gmail con la solicitud de tutoría.",
+    tutorias_estados_solicitud_label: "Estados de la Solicitud:",
+    tutorias_estados_solicitud_desc:
+      "El tutor gestionará su participación a través de cuatro estados:",
+    tutorias_estado_espera: "Espera: Disponibilidad para recibir alertas.",
+    tutorias_estado_solicitado:
+      "Solicitado: El tutor ha aceptado la alerta y espera la elección del estudiante.",
+    tutorias_estado_expirado:
+      "Expirado: La solicitud no fue completada en el tiempo límite.",
+    tutorias_estado_elegido:
+      "Elegido (Match): El estudiante ha seleccionado al tutor y se espera la confirmación del pago.",
+    tutorias_rol_anfitrion_label: "Rol de Anfitrión:",
+    tutorias_rol_anfitrion_desc:
+      'Una vez confirmado el pago, el tutor deberá presionar el botón de "Ir al Meet". El tutor actúa obligatoriamente como anfitrión de la sala, utilizando la integración de Google Calendar y Meet de la plataforma.',
+
+    condiciones_tutorias_instantaneas:
+      "13. CONDICIONES ESPECÍFICAS DE TUTORÍAS AL INSTANTE",
+    tutorias_tiempo_conexion_label: "13.1 Tiempo de Conexión:",
+    tutorias_tiempo_conexion_desc:
+      "Una vez efectuado el pago y generado el enlace de Google Meet, ambas partes tienen un máximo de 5 minutos para ingresar a la sala.",
+    tutorias_fallos_match_label: "13.2 Fallos en el Proceso de Match:",
+    tutorias_fallos_match_desc:
+      "Si el estudiante realiza el pago pero, por problemas técnicos de la plataforma, no se genera el link de Meet, se procederá al reembolso total conforme a la cláusula 4.2.",
+    tutorias_responsabilidad_vinculo_label: "13.3 Responsabilidad del Vínculo:",
+    tutorias_responsabilidad_vinculo_desc:
+      'ClassGo no se hace responsable si el tutor, tras ser elegido y pagado, no inicia la sesión. En este caso, se sancionará al tutor bajo la política de "No Show" (Falta Grave) y se reembolsará al estudiante.',
+    tutorias_estabilidad_red_label: "13.4 Estabilidad de Red:",
+    tutorias_estabilidad_red_desc:
+      "Dado que la vista de espera se actualiza cada 5 segundos, el usuario acepta que ligeros desfases de red pueden afectar la visualización de tutores disponibles.",
     descarga_terminos_pdf: "Descarga términos y condiciones en PDF",
     boton_descargar_pdf: "Descargar PDF",
     //Blogs
@@ -990,6 +1041,94 @@ const translations = {
     tutor_profile_breadcrumb_find_tutor: "Encontrar tutor",
     tutor_profile_add_favorites: "Añadir a Favoritos",
     tutor_profile_in_favorites: "En tus Favoritos",
+    // Carrusel de tutores
+    tutor_carousel_prev: "Anterior",
+    tutor_carousel_next: "Siguiente",
+    tutor_carousel_photo_of: "Foto de",
+    tutor_carousel_verified_tutor: "Tutor Verificado",
+    tutor_carousel_more: "Más",
+    tutor_carousel_subjects: "Materias",
+    tutor_carousel_per_20min: "/20min",
+    tutor_carousel_looking_more: "¿Buscas más?",
+    tutor_carousel_explore_available:
+      "Explora todos nuestros tutores disponibles.",
+    tutor_carousel_explore_all: "Explorar Todo",
+    // Carrusel de tutores
+    tutor_carousel_prev: "Anterior",
+    tutor_carousel_next: "Siguiente",
+    tutor_carousel_photo_of: "Foto de",
+    tutor_carousel_professional_tutor: "Tutor Profesional",
+    //Encuesta de satisfacción
+    encuesta_rating_low: "Nada probable 😞",
+    encuesta_rating_medium: "Tal vez 🤔",
+    encuesta_rating_high: "¡Sin duda! 🤩",
+    // Encuesta - textos dinámicos
+    encuesta_comment_placeholder: "O escribe aquí...",
+    encuesta_btn_finish: "Finalizar Encuesta",
+    encuesta_auth_completed_title: "¡Encuesta Completada!",
+    encuesta_auth_completed_desc:
+      "Tu opinión es muy valiosa para nosotros. Como agradecimiento, te enviaremos un cupón del 50% descuento al número que está asociado a tu cuenta.",
+    encuesta_close: "Cerrar",
+    encuesta_select_option: "Selecciona una opción",
+    encuesta_select_rating: "Selecciona una calificación",
+    encuesta_write_comment: "Escribe un comentario",
+    encuesta_sending: "Enviando...",
+    encuesta_finish: "Finalizar",
+    encuesta_unknown_error: "Error desconocido",
+    encuesta_connection_error: "Error de conexión",
+    encuesta_min_digits: "Mínimo 8 dígitos",
+    encuesta_number_used: "El número ya fue usado. Ingresa otro.",
+    encuesta_saved_success: "Datos guardados correctamente",
+    encuesta_save_error: "Ocurrió un error al guardar.",
+    encuesta_attention_title: "¡Atención!",
+    encuesta_duplicate_phone_message:
+      "El número asociado a esta cuenta ya fue usado. Actualiza tu número; si no fuiste tú, contáctanos.",
+    encuesta_missing_phone_title: "¡Falta un pequeño paso!",
+    encuesta_missing_phone_desc:
+      "Necesitamos tu número de teléfono en tu perfil para poder enviarte el cupón de descuento.",
+    encuesta_go_profile: "Ir a mi perfil",
+    encuesta_cancel: "Cancelar",
+    // Auth login/register
+    auth_create_account: "Crear Cuenta",
+    auth_join_community: "Únase a nuestra comunidad educativa",
+    auth_first_name: "Nombre",
+    auth_last_name: "Apellido",
+    auth_email: "Correo electrónico",
+    auth_phone: "Teléfono",
+    auth_password: "Contraseña",
+    auth_confirm_password: "Confirmar Contraseña",
+    auth_email_in_use: "El email ya está en uso",
+    auth_i_want_to_be: "Quiero ser:",
+    auth_student: "Estudiante",
+    auth_tutor: "Tutor",
+    auth_register_me: "REGISTRARME",
+    auth_already_have_account: "¿Ya tienes cuenta?",
+    auth_login_link: "Inicia Sesión",
+
+    auth_welcome: "¡Bienvenido!",
+    auth_enter_data: "Ingresa tus datos para continuar",
+    auth_forgot_password: "¿Olvidaste tu contraseña?",
+    auth_new_here: "¿Nuevo aquí?",
+    auth_create_account_link: "Crea una cuenta",
+
+    auth_recover_account: "Recuperar Cuenta",
+    auth_recover_desc:
+      "Introduce tu correo y te enviaremos un enlace de recuperación.",
+    auth_send_link: "ENVIAR ENLACE",
+    auth_sending: "ENVIANDO...",
+    auth_back_to_login: "← Volver a Iniciar Sesión",
+
+    auth_already_part: "¿Ya eres parte?",
+    auth_login_personal_account: "Inicia sesión con tu cuenta personal",
+    auth_login_button: "INICIAR SESIÓN",
+    auth_are_you_new: "¿Eres Nuevo?",
+    auth_register_adventure: "Regístrate y comienza tu aventura",
+    auth_create_account_button: "CREAR CUENTA",
+
+    auth_register_google_title: "Registrarse con Google",
+    auth_google_select_role: "Selecciona cómo deseas registrarte en ClassGo",
+    auth_continue_google: "Continuar con Google",
+    auth_loading: "Cargando...",
   },
   en: {
     // Navbar
@@ -1621,6 +1760,57 @@ const translations = {
     barreras_regulatorias_insalvables: "insurmountable regulatory barriers",
     conflictos_legales_viabilidad:
       "legal conflicts affecting service viability",
+    // Terms - Instant tutoring
+    tutorias_instantaneas: "12. INSTANT TUTORING (ON-DEMAND MODE)",
+    tutorias_instantaneas_descripcion:
+      "This mode allows students to request immediate academic assistance without a prior reservation, through a dynamic matching system.",
+
+    procedimiento_estudiante: "12.1 Student Procedure",
+    tutorias_solicitud_label: "Request:",
+    tutorias_solicitud_desc:
+      "The student will select a specific subject and subcategory. Once confirmed, they will enter a Virtual Waiting Room.",
+    tutorias_seleccion_tutor_label: "Tutor Selection:",
+    tutorias_seleccion_tutor_desc:
+      "The platform will display in real time, with updates every 5 seconds, the tutors who accept the request. The student is free to choose the tutor they prefer based on profile, price, or rating.",
+    tutorias_reserva_pago_label: "Booking and Payment:",
+    tutorias_reserva_pago_desc:
+      "Once the tutor is selected, a temporary booking will be generated and a QR payment code will be displayed.",
+    tutorias_acceso_sesion_label: "Session Access:",
+    tutorias_acceso_sesion_desc:
+      "After payment confirmation, the system will redirect the student to a Google Meet room automatically generated with the tutor's credentials.",
+
+    procedimiento_tutor: "12.2 Tutor Procedure",
+    tutorias_notificacion_label: "Notification:",
+    tutorias_notificacion_desc:
+      "Available tutors will receive an alert via Gmail with the tutoring request.",
+    tutorias_estados_solicitud_label: "Request Statuses:",
+    tutorias_estados_solicitud_desc:
+      "The tutor will manage their participation through four statuses:",
+    tutorias_estado_espera: "Waiting: Availability to receive alerts.",
+    tutorias_estado_solicitado:
+      "Requested: The tutor has accepted the alert and is waiting for the student's selection.",
+    tutorias_estado_expirado:
+      "Expired: The request was not completed within the time limit.",
+    tutorias_estado_elegido:
+      "Chosen (Match): The student has selected the tutor and payment confirmation is pending.",
+    tutorias_rol_anfitrion_label: "Host Role:",
+    tutorias_rol_anfitrion_desc:
+      'Once payment is confirmed, the tutor must press the "Go to Meet" button. The tutor is required to act as the host of the room, using the platform\'s Google Calendar and Meet integration.',
+
+    condiciones_tutorias_instantaneas:
+      "13. SPECIFIC CONDITIONS FOR INSTANT TUTORING",
+    tutorias_tiempo_conexion_label: "13.1 Connection Time:",
+    tutorias_tiempo_conexion_desc:
+      "Once payment has been made and the Google Meet link has been generated, both parties have a maximum of 5 minutes to enter the room.",
+    tutorias_fallos_match_label: "13.2 Match Process Failures:",
+    tutorias_fallos_match_desc:
+      "If the student makes the payment but, due to technical issues on the platform, the Meet link is not generated, a full refund will be issued according to clause 4.2.",
+    tutorias_responsabilidad_vinculo_label: "13.3 Link Responsibility:",
+    tutorias_responsabilidad_vinculo_desc:
+      'ClassGo is not responsible if the tutor, after being chosen and paid, does not start the session. In this case, the tutor will be sanctioned under the "No Show" policy (Serious Misconduct), and the student will be refunded.',
+    tutorias_estabilidad_red_label: "13.4 Network Stability:",
+    tutorias_estabilidad_red_desc:
+      "Since the waiting view updates every 5 seconds, the user accepts that slight network delays may affect the display of available tutors.",
     descarga_terminos_pdf: "Download terms and conditions in PDF",
     boton_descargar_pdf: "Download PDF",
     //Blogs
@@ -1956,6 +2146,93 @@ const translations = {
     tutor_profile_breadcrumb_find_tutor: "Find tutor",
     tutor_profile_add_favorites: "Add to Favorites",
     tutor_profile_in_favorites: "In your Favorites",
+    // Tutor carousel
+    tutor_carousel_prev: "Previous",
+    tutor_carousel_next: "Next",
+    tutor_carousel_photo_of: "Photo of",
+    tutor_carousel_verified_tutor: "Verified Tutor",
+    tutor_carousel_more: "More",
+    tutor_carousel_subjects: "Subjects",
+    tutor_carousel_per_20min: "/20min",
+    tutor_carousel_looking_more: "Looking for more?",
+    tutor_carousel_explore_available: "Explore all our available tutors.",
+    tutor_carousel_explore_all: "Explore All",
+    // Tutor carousel
+    tutor_carousel_prev: "Previous",
+    tutor_carousel_next: "Next",
+    tutor_carousel_photo_of: "Photo of",
+    tutor_carousel_professional_tutor: "Professional Tutor",
+    //Encuesta de satisfacción
+    encuesta_rating_low: "Not likely 😞",
+    encuesta_rating_medium: "Maybe 🤔",
+    encuesta_rating_high: "Absolutely! 🤩",
+    // Survey - dynamic texts
+    encuesta_comment_placeholder: "Or write here...",
+    encuesta_btn_finish: "Finish Survey",
+    encuesta_auth_completed_title: "Survey Completed!",
+    encuesta_auth_completed_desc:
+      "Your opinion is very valuable to us. As a thank you, we will send you a 50% discount coupon to the number associated with your account.",
+    encuesta_close: "Close",
+    encuesta_select_option: "Select an option",
+    encuesta_select_rating: "Select a rating",
+    encuesta_write_comment: "Write a comment",
+    encuesta_sending: "Sending...",
+    encuesta_finish: "Finish",
+    encuesta_unknown_error: "Unknown error",
+    encuesta_connection_error: "Connection error",
+    encuesta_min_digits: "Minimum 8 digits",
+    encuesta_number_used:
+      "This number has already been used. Enter another one.",
+    encuesta_saved_success: "Data saved successfully",
+    encuesta_save_error: "An error occurred while saving.",
+    encuesta_attention_title: "Attention!",
+    encuesta_duplicate_phone_message:
+      "The number associated with this account has already been used. Update your number; if it wasn't you, contact us.",
+    encuesta_missing_phone_title: "One small step is missing!",
+    encuesta_missing_phone_desc:
+      "We need your phone number in your profile so we can send you the discount coupon.",
+    encuesta_go_profile: "Go to my profile",
+    encuesta_cancel: "Cancel",
+    // Auth login/register
+    auth_create_account: "Create Account",
+    auth_join_community: "Join our educational community",
+    auth_first_name: "First name",
+    auth_last_name: "Last name",
+    auth_email: "Email address",
+    auth_phone: "Phone",
+    auth_password: "Password",
+    auth_confirm_password: "Confirm Password",
+    auth_email_in_use: "This email is already in use",
+    auth_i_want_to_be: "I want to be:",
+    auth_student: "Student",
+    auth_tutor: "Tutor",
+    auth_register_me: "SIGN UP",
+    auth_already_have_account: "Already have an account?",
+    auth_login_link: "Log in",
+
+    auth_welcome: "Welcome!",
+    auth_enter_data: "Enter your details to continue",
+    auth_forgot_password: "Forgot your password?",
+    auth_new_here: "New here?",
+    auth_create_account_link: "Create an account",
+
+    auth_recover_account: "Recover Account",
+    auth_recover_desc: "Enter your email and we will send you a recovery link.",
+    auth_send_link: "SEND LINK",
+    auth_sending: "SENDING...",
+    auth_back_to_login: "← Back to Login",
+
+    auth_already_part: "Already a member?",
+    auth_login_personal_account: "Log in with your personal account",
+    auth_login_button: "LOG IN",
+    auth_are_you_new: "Are you new?",
+    auth_register_adventure: "Sign up and start your adventure",
+    auth_create_account_button: "CREATE ACCOUNT",
+
+    auth_register_google_title: "Sign up with Google",
+    auth_google_select_role: "Select how you want to register on ClassGo",
+    auth_continue_google: "Continue with Google",
+    auth_loading: "Loading...",
   },
   pt: {
     // Navbar
@@ -2604,6 +2881,57 @@ const translations = {
     barreras_regulatorias_insalvables: "Barreiras regulatórias intransponíveis",
     conflictos_legales_viabilidad:
       "Conflitos legais que afetem a viabilidade do serviço",
+    // Termos - Tutorias instantâneas
+    tutorias_instantaneas: "12. TUTORIAS INSTANTÂNEAS (MODALIDADE ON-DEMAND)",
+    tutorias_instantaneas_descripcion:
+      "Esta modalidade permite que os estudantes solicitem assistência pedagógica imediata sem reserva prévia, por meio de um sistema dinâmico de pareamento.",
+
+    procedimiento_estudiante: "12.1 Procedimento para o Estudante",
+    tutorias_solicitud_label: "Solicitação:",
+    tutorias_solicitud_desc:
+      "O estudante selecionará uma matéria e subcategoria específica. Ao confirmar, entrará em uma Sala de Espera Virtual.",
+    tutorias_seleccion_tutor_label: "Seleção do Tutor:",
+    tutorias_seleccion_tutor_desc:
+      "A plataforma mostrará em tempo real, com atualização a cada 5 segundos, os tutores que aceitarem a solicitação. O estudante é livre para escolher o tutor de sua preferência com base no perfil, preço ou avaliação.",
+    tutorias_reserva_pago_label: "Reserva e Pagamento:",
+    tutorias_reserva_pago_desc:
+      "Uma vez selecionado o tutor, será gerada uma reserva temporária e será exibido um Código QR de pagamento.",
+    tutorias_acceso_sesion_label: "Acesso à Sessão:",
+    tutorias_acceso_sesion_desc:
+      "Após a confirmação do pagamento, o sistema redirecionará o estudante para uma sala do Google Meet gerada automaticamente com as credenciais do tutor.",
+
+    procedimiento_tutor: "12.2 Procedimento para o Tutor",
+    tutorias_notificacion_label: "Notificação:",
+    tutorias_notificacion_desc:
+      "Os tutores disponíveis receberão um alerta via Gmail com a solicitação de tutoria.",
+    tutorias_estados_solicitud_label: "Estados da Solicitação:",
+    tutorias_estados_solicitud_desc:
+      "O tutor gerenciará sua participação por meio de quatro estados:",
+    tutorias_estado_espera: "Espera: Disponibilidade para receber alertas.",
+    tutorias_estado_solicitado:
+      "Solicitado: O tutor aceitou o alerta e aguarda a escolha do estudante.",
+    tutorias_estado_expirado:
+      "Expirado: A solicitação não foi concluída dentro do tempo limite.",
+    tutorias_estado_elegido:
+      "Escolhido (Match): O estudante selecionou o tutor e aguarda-se a confirmação do pagamento.",
+    tutorias_rol_anfitrion_label: "Papel de Anfitrião:",
+    tutorias_rol_anfitrion_desc:
+      'Após a confirmação do pagamento, o tutor deverá pressionar o botão "Ir para o Meet". O tutor atua obrigatoriamente como anfitrião da sala, utilizando a integração da plataforma com Google Calendar e Meet.',
+
+    condiciones_tutorias_instantaneas:
+      "13. CONDIÇÕES ESPECÍFICAS DAS TUTORIAS INSTANTÂNEAS",
+    tutorias_tiempo_conexion_label: "13.1 Tempo de Conexão:",
+    tutorias_tiempo_conexion_desc:
+      "Depois de efetuado o pagamento e gerado o link do Google Meet, ambas as partes têm no máximo 5 minutos para entrar na sala.",
+    tutorias_fallos_match_label: "13.2 Falhas no Processo de Match:",
+    tutorias_fallos_match_desc:
+      "Se o estudante realizar o pagamento, mas por problemas técnicos da plataforma o link do Meet não for gerado, será feito o reembolso total conforme a cláusula 4.2.",
+    tutorias_responsabilidad_vinculo_label: "13.3 Responsabilidade do Vínculo:",
+    tutorias_responsabilidad_vinculo_desc:
+      'A ClassGo não se responsabiliza se o tutor, após ser escolhido e pago, não iniciar a sessão. Nesse caso, o tutor será sancionado conforme a política de "No Show" (Falta Grave) e o estudante será reembolsado.',
+    tutorias_estabilidad_red_label: "13.4 Estabilidade da Rede:",
+    tutorias_estabilidad_red_desc:
+      "Como a visualização de espera é atualizada a cada 5 segundos, o usuário aceita que pequenos atrasos de rede podem afetar a exibição dos tutores disponíveis.",
     descarga_terminos_pdf: "Baixar termos e condições em PDF",
     boton_descargar_pdf: "Baixar PDF",
     //Blogs
@@ -2944,6 +3272,93 @@ const translations = {
     tutor_profile_breadcrumb_find_tutor: "Encontrar tutor",
     tutor_profile_add_favorites: "Adicionar aos Favoritos",
     tutor_profile_in_favorites: "Nos seus Favoritos",
+    // Carrossel de tutores
+    tutor_carousel_prev: "Anterior",
+    tutor_carousel_next: "Próximo",
+    tutor_carousel_photo_of: "Foto de",
+    tutor_carousel_verified_tutor: "Tutor Verificado",
+    tutor_carousel_more: "Mais",
+    tutor_carousel_subjects: "Matérias",
+    tutor_carousel_per_20min: "/20min",
+    tutor_carousel_looking_more: "Procura mais?",
+    tutor_carousel_explore_available:
+      "Explore todos os nossos tutores disponíveis.",
+    tutor_carousel_explore_all: "Explorar Tudo",
+    // Carrossel de tutores
+    tutor_carousel_prev: "Anterior",
+    tutor_carousel_next: "Próximo",
+    tutor_carousel_photo_of: "Foto de",
+    tutor_carousel_professional_tutor: "Tutor Profissional",
+    //Encuesta de satisfacción
+    encuesta_rating_low: "Pouco provável 😞",
+    encuesta_rating_medium: "Talvez 🤔",
+    encuesta_rating_high: "Com certeza! 🤩",
+    // Pesquisa - textos dinâmicos
+    encuesta_comment_placeholder: "Ou escreva aqui...",
+    encuesta_btn_finish: "Finalizar Pesquisa",
+    encuesta_auth_completed_title: "Pesquisa Concluída!",
+    encuesta_auth_completed_desc:
+      "Sua opinião é muito valiosa para nós. Como agradecimento, enviaremos um cupom de 50% de desconto para o número associado à sua conta.",
+    encuesta_close: "Fechar",
+    encuesta_select_option: "Selecione uma opção",
+    encuesta_select_rating: "Selecione uma avaliação",
+    encuesta_write_comment: "Escreva um comentário",
+    encuesta_sending: "Enviando...",
+    encuesta_finish: "Finalizar",
+    encuesta_unknown_error: "Erro desconhecido",
+    encuesta_connection_error: "Erro de conexão",
+    encuesta_min_digits: "Mínimo de 8 dígitos",
+    encuesta_number_used: "Este número já foi usado. Insira outro.",
+    encuesta_saved_success: "Dados salvos com sucesso",
+    encuesta_save_error: "Ocorreu um erro ao salvar.",
+    encuesta_attention_title: "Atenção!",
+    encuesta_duplicate_phone_message:
+      "O número associado a esta conta já foi usado. Atualize seu número; se não foi você, entre em contato conosco.",
+    encuesta_missing_phone_title: "Falta um pequeno passo!",
+    encuesta_missing_phone_desc:
+      "Precisamos do seu número de telefone no seu perfil para enviar o cupom de desconto.",
+    encuesta_go_profile: "Ir para meu perfil",
+    encuesta_cancel: "Cancelar",
+    // Auth login/register
+    auth_create_account: "Criar Conta",
+    auth_join_community: "Junte-se à nossa comunidade educacional",
+    auth_first_name: "Nome",
+    auth_last_name: "Sobrenome",
+    auth_email: "E-mail",
+    auth_phone: "Telefone",
+    auth_password: "Senha",
+    auth_confirm_password: "Confirmar Senha",
+    auth_email_in_use: "Este e-mail já está em uso",
+    auth_i_want_to_be: "Quero ser:",
+    auth_student: "Estudante",
+    auth_tutor: "Tutor",
+    auth_register_me: "CADASTRAR-ME",
+    auth_already_have_account: "Já tem uma conta?",
+    auth_login_link: "Iniciar sessão",
+
+    auth_welcome: "Bem-vindo!",
+    auth_enter_data: "Insira seus dados para continuar",
+    auth_forgot_password: "Esqueceu sua senha?",
+    auth_new_here: "Novo aqui?",
+    auth_create_account_link: "Criar uma conta",
+
+    auth_recover_account: "Recuperar Conta",
+    auth_recover_desc: "Digite seu e-mail e enviaremos um link de recuperação.",
+    auth_send_link: "ENVIAR LINK",
+    auth_sending: "ENVIANDO...",
+    auth_back_to_login: "← Voltar para Login",
+
+    auth_already_part: "Já faz parte?",
+    auth_login_personal_account: "Inicie sessão com sua conta pessoal",
+    auth_login_button: "INICIAR SESSÃO",
+    auth_are_you_new: "É novo?",
+    auth_register_adventure: "Cadastre-se e comece sua aventura",
+    auth_create_account_button: "CRIAR CONTA",
+
+    auth_register_google_title: "Cadastrar-se com Google",
+    auth_google_select_role: "Selecione como deseja se cadastrar na ClassGo",
+    auth_continue_google: "Continuar com Google",
+    auth_loading: "Carregando...",
   },
 };
 

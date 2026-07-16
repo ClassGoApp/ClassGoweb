@@ -3,7 +3,13 @@
 
 
 <div class="carousel-wrapper" data-carousel="new-tutor-carousel">
-    <button class="carousel-btn prev" type="button" aria-label="Anterior" disabled>‹</button>
+    <button class="carousel-btn prev" 
+        type="button" 
+        aria-label="Anterior" 
+        data-aria-label-key="tutor_carousel_prev"
+        disabled>
+        ‹
+    </button>
 
     <div class="carousel-viewport">
         <div class="carousel-track">
@@ -13,7 +19,9 @@
                     {{-- FOTO (Izquierda) --}}
                     <div class="tutor-image-container">
                         <img src="{{ $tutor->profile->image ? asset('storage/' . $tutor->profile->image) : asset('images/tutors/default.png') }}" 
-                             alt="Foto de {{ $tutor->profile->first_name }}" 
+                            alt="Foto de {{ $tutor->profile->first_name }}"
+                            data-alt-prefix-key="tutor_carousel_photo_of"
+                            data-tutor-name="{{ $tutor->profile->first_name }}" 
                              class="tutor-foto"
                              onerror="this.src='{{ asset('images/tutors/default.png') }}'">
                     </div>
@@ -35,7 +43,11 @@
                             
                             {{-- Cargo --}}
                             <span class="tutor-cargo">
-                                {{ Str::limit($tutor->profile->tagline ?? 'Tutor Verificado', 30) }}
+                                @if(!empty($tutor->profile->tagline))
+                                    {{ Str::limit($tutor->profile->tagline, 30) }}
+                                @else
+                                    <span data-translate="tutor_carousel_verified_tutor">Tutor Verificado</span>
+                                @endif
                             </span>
 
                             {{-- Materias (Chips Grises) --}}
@@ -45,7 +57,10 @@
                                 @endforeach
 
                                 @if($tutor->subjects->count() > 5)
-                                    <span class="more-materias">+{{ $tutor->subjects->count() - 5 }} Más</span> 
+                                    <span class="more-materias">
+                                        +{{ $tutor->subjects->count() - 5 }}
+                                        <span data-translate="tutor_carousel_more">Más</span>
+                                    </span> 
                                 @endif
                             </div>
                         </div>
@@ -54,23 +69,26 @@
                         <div class="tutor-bottom">
                             <div class="tutor-stats">
                                 <div class="stat-item">
-                                    <strong style="font-size: 1.2em; margin-right: 4px;">{{ $tutor->subjects_count }}</strong> 
-                                    Materias
+                                    <strong style="font-size: 1.2em; margin-right: 4px;">{{ $tutor->subjects_count }}</strong>
+                                    <span data-translate="tutor_carousel_subjects">Materias</span>
                                 </div>
                                 <div class="stat-item">
                                     <span class="stat-icon" style="color: #f39c12;">⭐</span> 
                                     <strong>{{ number_format($tutor->avg_rating, 1) }}</strong>
                                 </div>
                                 <div class="stat-item">
-                                    <strong>{{ $tutor->hourly_rate ?? '15' }}Bs</strong>/20min
+                                    <strong>{{ $tutor->hourly_rate ?? '15' }}Bs</strong>
+                                    <span data-translate="tutor_carousel_per_20min">/20min</span>
                                 </div>
                             </div>
 
                             <div class="tutor-actions">
                                 <button class="btn-perfil btn-blue" onclick="window.location.href='{{ route('tutor', ['slug' => $tutor->profile['slug']]) }}'">
-                                    Ver Perfil
+                                    <span data-translate="view_profile">Ver Perfil</span>
                                 </button> 
-                                <button class="btn-perfil btn-outline">Ver Materias</button>
+                                <button class="btn-perfil btn-outline" data-translate="view_subjects">
+                                    Ver Materias
+                                </button>
                                 <button class="btn-bookmark">
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
                                 </button>
@@ -83,17 +101,36 @@
              {{-- CARD FINAL "VER MÁS" --}}
              <div class="tutor-card see-more-card" style="justify-content: center; align-items: center; background: #f0f4f8;">
                 <div class="tutor-card-content" style="text-align: center; background: transparent; justify-content: center; align-items: center;">
-                    <h3 class="tutor-nombre" style="justify-content: center; font-size: 2em; margin-bottom: 10px;">¿Buscas más?</h3>
-                    <p style="margin: 0 0 20px 0; color: #666; font-size: 1.1rem;">Explora todos nuestros tutores disponibles.</p>
+                    <h3 class="tutor-nombre" 
+                        style="justify-content: center; font-size: 2em; margin-bottom: 10px;"
+                        data-translate="tutor_carousel_looking_more">
+                        ¿Buscas más?
+                    </h3>
+
+                    <p style="margin: 0 0 20px 0; color: #666; font-size: 1.1rem;"
+                    data-translate="tutor_carousel_explore_available">
+                        Explora todos nuestros tutores disponibles.
+                    </p>
+
                     <a href="{{ route('buscar') }}">
-                        <button class="btn-perfil btn-blue" style="padding: 12px 30px; width: auto;">Explorar Todo</button>
+                        <button class="btn-perfil btn-blue" 
+                            style="padding: 12px 30px; width: auto;"
+                            data-translate="tutor_carousel_explore_all">
+                            Explorar Todo
+                        </button>
                     </a>
                 </div>
             </div>
 
         </div>
     </div>
-    <button class="carousel-btn next" type="button" aria-label="Siguiente" disabled>›</button>
+    <button class="carousel-btn next" 
+        type="button" 
+        aria-label="Siguiente" 
+        data-aria-label-key="tutor_carousel_next"
+        disabled>
+        ›
+    </button>
 </div>
 
 <style>
@@ -491,7 +528,51 @@
             }, 100);
         }
 
-        setupTutorCarousel();
+        function tutorCarouselText(key, fallback = '') {
+            const lang = localStorage.getItem('selectedLanguage') || 'es';
+
+            if (typeof translations === 'undefined') {
+                return fallback;
+            }
+
+            const t = translations[lang] || translations.es;
+
+            return t[key] || fallback;
+        }
+
+        function applyTutorCarouselAttributeTranslations() {
+            const lang = localStorage.getItem('selectedLanguage') || 'es';
+
+            if (typeof translations === 'undefined') {
+                return;
+            }
+
+            const t = translations[lang] || translations.es;
+
+            document.querySelectorAll('[data-aria-label-key]').forEach((element) => {
+                const key = element.getAttribute('data-aria-label-key');
+
+                if (t[key]) {
+                    element.setAttribute('aria-label', t[key]);
+                }
+            });
+
+            document.querySelectorAll('[data-alt-prefix-key]').forEach((element) => {
+                const key = element.getAttribute('data-alt-prefix-key');
+                const tutorName = element.getAttribute('data-tutor-name') || '';
+
+                if (t[key]) {
+                    element.setAttribute('alt', `${t[key]} ${tutorName}`);
+                }
+            });
+        }
+
+            setupTutorCarousel();
+            applyTutorCarouselAttributeTranslations();
+
+            document.addEventListener('languageChanged', function() {
+                applyTutorCarouselAttributeTranslations();
+        });
     });
 </script>
 {{-- Recuerda agregar el JS correspondiente si usas este archivo --}}
