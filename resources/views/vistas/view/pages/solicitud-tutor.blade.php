@@ -86,6 +86,7 @@
     .status-countered_student { background: #ffedd5; color: #c2410c; }
     .status-accepted { background: #dcfce7; color: #15803d; }
     .status-rejected { background: #fee2e2; color: #b91c1c; }
+    .status-paid { background: #dbeafe; color: #1e40af; }
 
     /* Cards */
     .info-card {
@@ -346,6 +347,273 @@
         border-color: #219EBC;
         color: white;
     }
+
+    /* Styling for Payment Modal */
+    .pay-modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(15, 23, 42, 0.6);
+        backdrop-filter: blur(4px);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    .pay-modal-overlay.is-open {
+        display: flex;
+        opacity: 1;
+    }
+    .pay-modal-box {
+        background: #ffffff;
+        border-radius: 20px;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        width: 100%;
+        max-width: 600px;
+        position: relative;
+        padding: 30px;
+        max-height: 90vh;
+        overflow-y: auto;
+        transform: translateY(20px);
+        transition: transform 0.3s ease;
+        text-align: left;
+    }
+    .pay-modal-overlay.is-open .pay-modal-box {
+        transform: translateY(0);
+    }
+    .pay-modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #e2e8f0;
+        padding-bottom: 15px;
+        margin-bottom: 20px;
+    }
+    .pay-modal-title {
+        font-size: 20px;
+        font-weight: 700;
+        color: #023047;
+    }
+    .pay-modal-close {
+        background: none;
+        border: none;
+        font-size: 28px;
+        color: #94a3b8;
+        cursor: pointer;
+        line-height: 1;
+    }
+    .pay-modal-close:hover {
+        color: #ef4444;
+    }
+
+    /* Tabs */
+    .pay-tabs {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+        background: #f1f5f9;
+        padding: 4px;
+        border-radius: 10px;
+    }
+    .pay-tab-btn {
+        flex: 1;
+        border: none;
+        background: none;
+        padding: 10px;
+        font-weight: 600;
+        font-size: 14px;
+        border-radius: 8px;
+        cursor: pointer;
+        color: #64748b;
+        transition: all 0.2s ease;
+    }
+    .pay-tab-btn.active {
+        background: #ffffff;
+        color: #023047;
+        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+    }
+
+    /* QR Code Section */
+    .pay-qr-container {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .pay-qr-image {
+        width: 180px;
+        height: 180px;
+        border: 1px dashed #cbd5e1;
+        border-radius: 12px;
+        padding: 8px;
+        background: #fff;
+        object-fit: contain;
+        margin: 0 auto 10px;
+        display: block;
+    }
+    .pay-qr-btn-download {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: #f1f5f9;
+        color: #023047;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 13px;
+        padding: 8px 16px;
+        border-radius: 8px;
+        border: 1px solid #e2e8f0;
+        transition: all 0.2s ease;
+    }
+    .pay-qr-btn-download:hover {
+        background: #e2e8f0;
+    }
+
+    /* Details and Totals Card */
+    .pay-summary-card {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 20px;
+    }
+    .pay-summary-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 8px;
+        font-size: 14px;
+    }
+    .pay-summary-row:last-child {
+        margin-bottom: 0;
+    }
+    .pay-summary-label {
+        color: #64748b;
+    }
+    .pay-summary-value {
+        font-weight: 600;
+        color: #023047;
+    }
+
+    /* Coupon Area */
+    .pay-coupon-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: #023047;
+        margin-bottom: 8px;
+    }
+    .pay-coupon-group {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 12px;
+    }
+    .pay-coupon-input {
+        flex: 1;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        padding: 10px;
+        font-size: 14px;
+        outline: none;
+        transition: border-color 0.2s ease;
+    }
+    .pay-coupon-input:focus {
+        border-color: #219EBC;
+    }
+    .pay-coupon-btn {
+        background: #023047;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 10px 16px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+    .pay-coupon-btn:hover {
+        background: #054a6b;
+    }
+    .pay-coupon-bar {
+        display: none;
+        background: #ecfdf5;
+        border: 1px dashed #6ee7b7;
+        padding: 10px;
+        border-radius: 8px;
+        font-size: 13px;
+        color: #065f46;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+    }
+    .pay-coupon-msg {
+        font-size: 12px;
+        min-height: 15px;
+        margin-bottom: 15px;
+    }
+
+    /* Receipt Upload Box */
+    .pay-upload-box {
+        border: 2px dashed #cbd5e1;
+        border-radius: 12px;
+        padding: 24px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        margin-bottom: 24px;
+        display: block;
+    }
+    .pay-upload-box:hover {
+        border-color: #219EBC;
+        background: #f8fafc;
+    }
+    .pay-upload-box.input-error {
+        border-color: #ef4444;
+        background: #fee2e2;
+    }
+    .pay-upload-box.has-file {
+        border-color: #10b981;
+        background: #ecfdf5;
+    }
+    .pay-upload-text {
+        font-weight: 600;
+        color: #023047;
+        margin-bottom: 4px;
+    }
+    .pay-upload-subtext {
+        font-size: 12px;
+        color: #64748b;
+    }
+
+    /* Footer Buttons */
+    .pay-actions {
+        display: flex;
+        gap: 12px;
+    }
+    .pay-btn {
+        flex: 1;
+        padding: 12px;
+        font-size: 15px;
+        font-weight: 600;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    .pay-btn-secondary {
+        background: #f1f5f9;
+        border: 1px solid #cbd5e1;
+        color: #475569;
+    }
+    .pay-btn-secondary:hover {
+        background: #e2e8f0;
+    }
+    .pay-btn-primary {
+        background: #15803d;
+        border: none;
+        color: #fff;
+    }
+    .pay-btn-primary:hover {
+        background: #166534;
+    }
 </style>
 
 <div class="container">
@@ -364,6 +632,8 @@
             <span class="status-badge status-accepted">Aceptada</span>
         @elseif($request->status === 'rejected')
             <span class="status-badge status-rejected">Rechazada / Cancelada</span>
+        @elseif($request->status === 'paid')
+            <span class="status-badge status-paid">Pagada / Reservada</span>
         @endif
     </div>
 
@@ -420,7 +690,32 @@
 
     <!-- Active Action Buttons -->
     <div class="btn-group">
-        @if($request->status === 'accepted')
+        @if($request->status === 'paid')
+            <div class="status-text" style="color: #1e40af; border-left: 4px solid #1e40af; background: #eff6ff; width: 100%; padding: 15px; border-radius: 12px; font-weight: 500; text-align: left; display: block !important; box-sizing: border-box; margin-bottom: 15px;">
+                🎉 <strong>Tutoría Confirmada:</strong> Esta solicitud ya ha sido pagada y agendada exitosamente. ¡Buen aprendizaje!
+            </div>
+            @if($meetingLink)
+                <a href="{{ $meetingLink }}" target="_blank" class="btn btn-primary" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; width: 100%; box-sizing: border-box; font-weight: 600; padding: 12px 24px; border-radius: 12px; background-color: #219EBC; border-color: #219EBC; color: white;">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 20px; height: 20px; vertical-align: middle;">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z" />
+                    </svg>
+                    Ir a la Reunión de Google Meet
+                </a>
+            @else
+                <div class="status-text" style="color: #64748b; font-style: italic; margin-top: 5px;">
+                    El enlace de Google Meet no está disponible en este momento.
+                </div>
+            @endif
+        @elseif($isSlotBooked)
+            <div class="status-text" style="color: #b45309; border-left: 4px solid #d97706; background: #fef3c7; width: 100%; padding: 15px; border-radius: 12px; font-weight: 500; margin-bottom: 15px; text-align: left; display: block !important; box-sizing: border-box;">
+                ⚠️ <strong>Horario no disponible:</strong> Este horario ya ha sido reservado. Si lo deseas, puedes proponer un nuevo horario usando el botón de abajo.
+            </div>
+            @if($role === 'student')
+                <button class="btn btn-orange" style="margin-bottom: 10px;" onclick="toggleCounterPanel()">
+                    🔄 Proponer Nuevo Horario (Contraofertar)
+                </button>
+            @endif
+        @elseif($request->status === 'accepted')
             @if($role === 'student')
                 <button class="btn btn-primary" onclick="proceedToPayment()">
                     💳 Pagar y Reservar Tutoría
@@ -527,6 +822,98 @@
     </div>
 </div>
 
+@if($role === 'student')
+    <!-- MODAL DE PAGO PREMIUM -->
+    <div id="payment-modal" class="pay-modal-overlay">
+        <div class="pay-modal-box">
+            <div class="pay-modal-header">
+                <h3 class="pay-modal-title">Pagar y Reservar Tutoría</h3>
+                <button type="button" class="pay-modal-close" onclick="closePayModal()">&times;</button>
+            </div>
+
+            <!-- Métodos de pago (Tabs) -->
+            <div class="pay-tabs">
+                <button type="button" id="tab-bolivia" class="pay-tab-btn active" onclick="switchPayMethod('bolivia')">
+                    🇧🇴 QR Bolivia
+                </button>
+                <button type="button" id="tab-takenos" class="pay-tab-btn" onclick="switchPayMethod('takenos')">
+                    Takenos Internacional
+                </button>
+            </div>
+
+            <!-- QR code visualizer -->
+            <div class="pay-qr-container">
+                <img id="modal-qr-image" src="{{ asset('storage/qr/Qr-pagos.png') }}" alt="QR Bolivia" class="pay-qr-image">
+                <a id="modal-qr-download" href="{{ asset('storage/qr/Qr-pagos.png') }}" download="QR-Pago-Bolivia.png" class="pay-qr-btn-download">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    <span>Descargar QR Bolivia</span>
+                </a>
+            </div>
+
+            <!-- Resumen de reserva -->
+            <div class="pay-summary-card">
+                <div class="pay-summary-row">
+                    <span class="pay-summary-label">Materia:</span>
+                    <span class="pay-summary-value">{{ $subject->name }}</span>
+                </div>
+                <div class="pay-summary-row">
+                    <span class="pay-summary-label">Tutor:</span>
+                    <span class="pay-summary-value">{{ $tutor->full_name }}</span>
+                </div>
+                <div class="pay-summary-row">
+                    <span class="pay-summary-label">Fecha:</span>
+                    <span class="pay-summary-value">{{ $formattedDate }}</span>
+                </div>
+                <div class="pay-summary-row">
+                    <span class="pay-summary-label">Horario:</span>
+                    <span class="pay-summary-value">{{ $request->current_time }} ({{ $request->current_duration }})</span>
+                </div>
+                <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 12px 0;">
+                <div class="pay-summary-row" id="coupon-discount-row" style="display: none;">
+                    <span class="pay-summary-label">Descuento (<span id="coupon-discount-pct">0</span>%):</span>
+                    <span class="pay-summary-value" style="color: #ef4444;" id="coupon-discount-val">-0.00 Bs.</span>
+                </div>
+                <div class="pay-summary-row" style="font-size: 16px; font-weight: 700;">
+                    <span class="pay-summary-label" style="color: #023047;">Total a Pagar:</span>
+                    <span class="pay-summary-value" style="color: #219EBC;" id="modal-total-display">Bs. 0.00</span>
+                </div>
+            </div>
+
+            <!-- Sección de Cupones -->
+            <div class="pay-coupon-title">¿Tienes un cupón de descuento?</div>
+            <div class="pay-coupon-group" id="coupon-input-group">
+                <input type="text" id="modal-coupon-input" placeholder="Ej. classgo25" class="pay-coupon-input">
+                <button type="button" class="pay-coupon-btn" onclick="validateModalCoupon()">Aplicar</button>
+            </div>
+            
+            <div class="pay-coupon-bar" id="modal-coupon-bar">
+                <span>Cupón aplicado: <strong id="modal-coupon-code-text"></strong></span>
+                <button type="button" style="border: none; background: transparent; color: #065f46; font-weight: 700; cursor: pointer;" onclick="removeModalCoupon()">Quitar</button>
+            </div>
+
+            <div class="pay-coupon-msg" id="modal-coupon-msg"></div>
+
+            <!-- Subir Comprobante -->
+            <div class="pay-coupon-title">Subir comprobante de pago</div>
+            <label for="modal-receipt-file" class="pay-upload-box" id="receipt-upload-box">
+                <p class="pay-upload-text" id="upload-box-text">📄 Subir comprobante</p>
+                <p class="pay-upload-subtext">Selecciona tu captura o imagen del pago</p>
+                <input type="file" id="modal-receipt-file" accept="image/*,application/pdf" style="display: none;" onchange="handleReceiptFileSelected()">
+            </label>
+
+            <!-- Acciones -->
+            <div class="pay-actions">
+                <button type="button" class="pay-btn pay-btn-secondary" onclick="closePayModal()">Cancelar</button>
+                <button type="button" class="pay-btn pay-btn-primary" id="confirm-payment-btn" onclick="submitPayment()">Confirmar Reserva</button>
+            </div>
+        </div>
+    </div>
+@endif
+
 <script>
     // Variables de Estado
     const token = "{{ $token }}";
@@ -538,7 +925,14 @@
         minDate: "today",
         dateFormat: "Y-m-d",
         locale: "es",
-        disableMobile: "true"
+    });
+
+    // Abrir modal de pago automáticamente si viene el parámetro open_payment=1 y no está pagada
+    window.addEventListener('DOMContentLoaded', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('open_payment') === '1' && "{{ $request->status }}" !== 'paid') {
+            openPayModal();
+        }
     });
 
     function toggleCounterPanel() {
@@ -686,9 +1080,267 @@
         }
     }
 
+    // === PAYMENT MODAL SCRIPT LOGIC ===
+    let baseTutorPrice = parseFloat("{{ $tutor->price ?? 0 }}");
+    let durationTxt = "{{ $request->current_duration ?? '20 min' }}";
+    
+    // Calculate blocks count
+    let durationMins = 20;
+    const dur = durationTxt.toLowerCase();
+    if (dur.includes('20')) durationMins = 20;
+    else if (dur.includes('40')) durationMins = 40;
+    else if (dur.includes('1 hora') || dur === '1h' || dur.includes('60')) durationMins = 60;
+    else if (dur.includes('1h 20') || dur.includes('1h 20m') || dur.includes('80')) durationMins = 80;
+    else if (dur.includes('1h 40') || dur.includes('1h 40m') || dur.includes('100')) durationMins = 100;
+    else if (dur.includes('2 hora') || dur === '2h' || dur.includes('120')) durationMins = 120;
+    
+    const blocksCount = durationMins / 20;
+    let baseTotal = baseTutorPrice * blocksCount;
+    
+    let appliedDiscountDecimal = 0;
+    let appliedDiscountPct = 0;
+    let selectedCouponId = null;
+    let isFreeBooking = false;
+    let receiptFile = null;
+
+    function openPayModal() {
+        const modal = document.getElementById('payment-modal');
+        if (modal) {
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('is-open'), 10);
+            calculateAndDisplayTotals();
+        }
+    }
+
+    function closePayModal() {
+        const modal = document.getElementById('payment-modal');
+        if (modal) {
+            modal.classList.remove('is-open');
+            setTimeout(() => modal.style.display = 'none', 300);
+        }
+    }
+
+    function switchPayMethod(method) {
+        const tabBolivia = document.getElementById('tab-bolivia');
+        const tabTakenos = document.getElementById('tab-takenos');
+        const qrImage = document.getElementById('modal-qr-image');
+        const qrDownload = document.getElementById('modal-qr-download');
+
+        if (method === 'bolivia') {
+            tabBolivia.classList.add('active');
+            tabTakenos.classList.remove('active');
+            qrImage.src = "{{ asset('storage/qr/Qr-pagos.png') }}";
+            qrImage.alt = "QR Bolivia";
+            qrDownload.href = "{{ asset('storage/qr/Qr-pagos.png') }}";
+            qrDownload.download = "QR-Pago-Bolivia.png";
+            qrDownload.querySelector('span').textContent = "Descargar QR Bolivia";
+        } else {
+            tabBolivia.classList.remove('active');
+            tabTakenos.classList.add('active');
+            qrImage.src = "{{ asset('storage/qr/qr-takenos.png') }}";
+            qrImage.alt = "QR Takenos";
+            qrDownload.href = "{{ asset('storage/qr/qr-takenos.png') }}";
+            qrDownload.download = "QR-Takenos-Internacional.png";
+            qrDownload.querySelector('span').textContent = "Descargar QR Takenos";
+        }
+    }
+
+    function calculateAndDisplayTotals() {
+        let currentPrice = baseTotal * (1 - appliedDiscountDecimal);
+        if (currentPrice < 0) currentPrice = 0;
+        isFreeBooking = currentPrice <= 0.00001;
+        
+        document.getElementById('modal-total-display').textContent = `Bs. ${currentPrice.toFixed(2)}`;
+        
+        const discountRow = document.getElementById('coupon-discount-row');
+        if (appliedDiscountPct > 0) {
+            discountRow.style.display = 'flex';
+            document.getElementById('coupon-discount-pct').textContent = appliedDiscountPct;
+            const discountVal = baseTotal - currentPrice;
+            document.getElementById('coupon-discount-val').textContent = `-${discountVal.toFixed(2)} Bs.`;
+        } else {
+            discountRow.style.display = 'none';
+        }
+    }
+
+    async function validateModalCoupon() {
+        const code = document.getElementById('modal-coupon-input').value.trim();
+        if (!code) return;
+        const msgEl = document.getElementById('modal-coupon-msg');
+        msgEl.textContent = 'Validando...';
+        msgEl.style.color = '#64748b';
+        
+        try {
+            const res = await fetch('/student/booking/validar-cupon', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: JSON.stringify({ codigo: code })
+            });
+            const data = await res.json();
+            if (data.success) {
+                selectedCouponId = data.coupon_id;
+                appliedDiscountDecimal = parseFloat(data.descuento || 0);
+                appliedDiscountPct = Math.round(appliedDiscountDecimal * 100);
+                
+                document.getElementById('coupon-input-group').style.display = 'none';
+                document.getElementById('modal-coupon-bar').style.display = 'flex';
+                document.getElementById('modal-coupon-code-text').textContent = code;
+                
+                msgEl.textContent = data.message;
+                msgEl.style.color = '#28a745';
+                
+                calculateAndDisplayTotals();
+            } else {
+                msgEl.textContent = data.message;
+                msgEl.style.color = '#dc3545';
+            }
+        } catch (e) {
+            msgEl.textContent = 'Error al validar cupón';
+            msgEl.style.color = '#dc3545';
+        }
+    }
+
+    function removeModalCoupon() {
+        selectedCouponId = null;
+        appliedDiscountDecimal = 0;
+        appliedDiscountPct = 0;
+        
+        document.getElementById('modal-coupon-input').value = '';
+        document.getElementById('coupon-input-group').style.display = 'flex';
+        document.getElementById('modal-coupon-bar').style.display = 'none';
+        document.getElementById('modal-coupon-msg').textContent = '';
+        
+        calculateAndDisplayTotals();
+    }
+
+    function handleReceiptFileSelected() {
+        const fileInput = document.getElementById('modal-receipt-file');
+        const box = document.getElementById('receipt-upload-box');
+        const text = document.getElementById('upload-box-text');
+        
+        if (fileInput.files.length > 0) {
+            receiptFile = fileInput.files[0];
+            box.classList.add('has-file');
+            box.classList.remove('input-error');
+            text.textContent = `✓ ${receiptFile.name}`;
+        } else {
+            receiptFile = null;
+            box.classList.remove('has-file');
+            text.textContent = '📄 Subir comprobante';
+        }
+    }
+
+    function getSlotsArray() {
+        const timeStr = "{{ $request->current_time }}";
+        let startPart = timeStr.trim();
+        if (startPart.includes(' - ')) {
+            startPart = startPart.split(' - ')[0].trim();
+        }
+        
+        const match = startPart.match(/^(\d+):(\d+)(?:\s*(AM|PM))?$/i);
+        if (!match) return [];
+        
+        let hours = parseInt(match[1]);
+        const minutes = parseInt(match[2]);
+        const ampm = match[3] ? match[3].toUpperCase() : null;
+        if (ampm) {
+            if (ampm === 'PM' && hours !== 12) hours += 12;
+            if (ampm === 'AM' && hours === 12) hours = 0;
+        }
+        
+        const startMins = hours * 60 + minutes;
+        const slots = [];
+        
+        for (let i = 0; i < blocksCount; i++) {
+            const blockStart = startMins + i * 20;
+            const blockEnd = startMins + (i + 1) * 20;
+            
+            const sh = Math.floor(blockStart / 60);
+            const sm = blockStart % 60;
+            const startFormatted = String(sh).padStart(2, '0') + ':' + String(sm).padStart(2, '0');
+            
+            const eh = Math.floor(blockEnd / 60);
+            const em = blockEnd % 60;
+            const endFormatted = String(eh).padStart(2, '0') + ':' + String(em).padStart(2, '0');
+            
+            slots.push(`0|${startFormatted}|${endFormatted}`);
+        }
+        return slots;
+    }
+
+    async function submitPayment() {
+        if (!isFreeBooking && !receiptFile) {
+            const box = document.getElementById('receipt-upload-box');
+            box.classList.add('input-error');
+            Swal.fire('Comprobante requerido', 'Por favor sube la captura de tu comprobante de pago.', 'warning');
+            return;
+        }
+        
+        const confirmBtn = document.getElementById('confirm-payment-btn');
+        confirmBtn.disabled = true;
+        confirmBtn.textContent = 'Procesando...';
+        
+        Swal.fire({
+            title: 'Procesando...',
+            text: 'Estamos registrando tu reserva, por favor espera.',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+        
+        const slots = getSlotsArray();
+        const formData = new FormData();
+        formData.append('subject_id', "{{ $request->subject_id }}");
+        formData.append('tutor_id', "{{ $request->tutor_id }}");
+        formData.append('slot_date', "{{ $request->current_date }}");
+        formData.append('is_free', isFreeBooking ? '1' : '0');
+        if (selectedCouponId) {
+            formData.append('coupon_id', selectedCouponId);
+        }
+        if (!isFreeBooking && receiptFile) {
+            formData.append('comprobante', receiptFile);
+        }
+        formData.append('tutor_request_token', token);
+        
+        slots.forEach(slot => formData.append('slots[]', slot));
+        
+        try {
+            const response = await fetch('/student/booking/reservar-multi', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: formData
+            });
+            const data = await response.json();
+            if (data.success) {
+                closePayModal();
+                Swal.fire({
+                    title: '¡Reserva Exitosa!',
+                    text: 'Tu clase ha sido agendada e ingresada correctamente.',
+                    icon: 'success',
+                    confirmButtonColor: '#219EBC'
+                }).then(() => {
+                    location.reload();
+                });
+            } else {
+                confirmBtn.disabled = false;
+                confirmBtn.textContent = 'Confirmar Reserva';
+                Swal.fire('Error', data.message || 'No se pudo completar la reserva.', 'error');
+            }
+        } catch (e) {
+            confirmBtn.disabled = false;
+            confirmBtn.textContent = 'Confirmar Reserva';
+            Swal.fire('Error', 'Error de conexión con el servidor.', 'error');
+        }
+    }
+
     function proceedToPayment() {
-        // Redirigir al estudiante a la página de bookings con el token para iniciar el wizard en Step 3
-        window.location.href = `/student/bookings?accept_counter=${token}`;
+        openPayModal();
     }
 </script>
 @endsection

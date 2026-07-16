@@ -959,6 +959,7 @@ class BookingController extends Controller
      */
     public function storeMultiBooking(Request $request, CuponesService $cuponesService)
     {
+        Log::info('reservar-multi data:', $request->all());
         $request->validate([
             'subject_id'          => 'required|exists:subjects,id',
             'tutor_id'            => 'required|exists:users,id',
@@ -981,6 +982,7 @@ class BookingController extends Controller
 
             if (count($slots) === 0 || count($slots) > 6) {
                 DB::rollBack();
+                Log::warning('reservar-multi check: count($slots) = ' . count($slots));
                 return response()->json(['success' => false, 'message' => 'Cantidad de bloques inválida.'], 400);
             }
 
@@ -998,6 +1000,7 @@ class BookingController extends Controller
 
             if ($endAt->lte($startAt) || $endAt->lte(now())) {
                 DB::rollBack();
+                Log::warning('reservar-multi check: Rango horario inválido o en el pasado. startAt: ' . $startAt->toDateTimeString() . ', endAt: ' . $endAt->toDateTimeString() . ', now: ' . now()->toDateTimeString());
                 return response()->json(['success' => false, 'message' => 'Rango horario inválido o en el pasado'], 400);
             }
 
@@ -1012,6 +1015,7 @@ class BookingController extends Controller
 
             if ($exists) {
                 DB::rollBack();
+                Log::warning('reservar-multi check: Horario ya reservado para tutor: ' . $tutorId);
                 return response()->json([
                     'success' => false,
                     'message' => 'Parte de este horario ya ha sido reservado por otro estudiante o no está disponible.'
@@ -1169,7 +1173,7 @@ class BookingController extends Controller
                 DB::table('tutor_requests')
                     ->where('student_token', $request->tutor_request_token)
                     ->update([
-                        'status'     => 'accepted',
+                        'status'     => 'paid',
                         'updated_at' => now()
                     ]);
             }
@@ -1367,7 +1371,7 @@ class BookingController extends Controller
         $tutor = DB::table('users')
             ->leftJoin('profiles', 'users.id', '=', 'profiles.user_id')
             ->where('users.id', $request->tutor_id)
-            ->select('users.*', DB::raw("TRIM(CONCAT(COALESCE(profiles.first_name,''), ' ', COALESCE(profiles.last_name,''))) as full_name"), 'profiles.first_name', 'profiles.last_name')
+            ->select('users.*', DB::raw("TRIM(CONCAT(COALESCE(profiles.first_name,''), ' ', COALESCE(profiles.last_name,''))) as full_name"), 'profiles.first_name', 'profiles.last_name', 'profiles.price')
             ->first();
         $subject = DB::table('subjects')->where('id', $request->subject_id)->first();
 
@@ -1377,7 +1381,67 @@ class BookingController extends Controller
             $formattedDate = $request->current_date;
         }
 
-        return view('vistas.view.pages.solicitud-tutor', compact('request', 'role', 'student', 'tutor', 'subject', 'formattedDate', 'token'));
+        // Verificar si el horario ya fue reservado en la base de datos
+        $isSlotBooked = false;
+        $meetingLink = null;
+        if (in_array($request->status, ['accepted', 'countered_by_tutor', 'paid'])) {
+            try {
+                $durationMins = 20;
+                $dur = strtolower($request->current_duration);
+                if (strpos($dur, '20') !== false) $durationMins = 20;
+                elseif (strpos($dur, '40') !== false) $durationMins = 40;
+                elseif (strpos($dur, '1 hora') !== false || $dur === '1h' || strpos($dur, '60') !== false) $durationMins = 60;
+                elseif (strpos($dur, '1h 20') !== false || strpos($dur, '1h 20m') !== false || strpos($dur, '80') !== false) $durationMins = 80;
+                elseif (strpos($dur, '1h 40') !== false || strpos($dur, '1h 40m') !== false || strpos($dur, '100') !== false) $durationMins = 100;
+                elseif (strpos($dur, '2 hora') !== false || $dur === '2h' || strpos($dur, '120') !== false) $durationMins = 120;
+
+                $timeStr = trim($request->current_time);
+                if (strpos($timeStr, ' - ') !== false) {
+                    list($startStr, $endStr) = explode(' - ', $timeStr);
+                } else {
+                    $startStr = $timeStr;
+                }
+
+                $startStr = trim($startStr);
+                if (preg_match('/^(\d+):(\d+)\s*(AM|PM)$/i', $startStr, $matches)) {
+                    $hours = (int)$matches[1];
+                    $minutes = (int)$matches[2];
+                    $ampm = strtoupper($matches[3]);
+                    if ($ampm === 'PM' && $hours !== 12) $hours += 12;
+                    if ($ampm === 'AM' && $hours === 12) $hours = 0;
+                } else {
+                    list($hours, $minutes) = explode(':', $startStr);
+                    $hours = (int)$hours;
+                    $minutes = (int)$minutes;
+                }
+
+                $startAt = Carbon::parse($request->current_date)->setTime($hours, $minutes, 0);
+                $endAt = $startAt->copy()->addMinutes($durationMins);
+
+                if ($request->status === 'paid') {
+                    $booking = DB::table('slot_bookings')
+                        ->where('student_id', $request->student_id)
+                        ->where('tutor_id', $request->tutor_id)
+                        ->where('start_time', $startAt->toDateTimeString())
+                        ->first();
+                    if ($booking) {
+                        $meetingLink = $booking->meeting_link;
+                    }
+                } else {
+                    $isSlotBooked = DB::table('slot_bookings')
+                        ->where('tutor_id', $request->tutor_id)
+                        ->whereIn('status', [0, 1])
+                        ->where(function($query) use ($startAt, $endAt) {
+                            $query->where('start_time', '<', $endAt->toDateTimeString())
+                                  ->where('end_time', '>', $startAt->toDateTimeString());
+                        })->exists();
+                }
+            } catch (\Throwable $e) {
+                // Ignore parse errors, default false
+            }
+        }
+
+        return view('vistas.view.pages.solicitud-tutor', compact('request', 'role', 'student', 'tutor', 'subject', 'formattedDate', 'token', 'isSlotBooked', 'meetingLink'));
     }
 
     public function rejectNegotiation($token)
@@ -1471,7 +1535,7 @@ class BookingController extends Controller
 
         // Si el tutor acepta, notificar al estudiante con su student_token
         if ($role === 'tutor') {
-            $actionUrl = url('/student/bookings?accept_counter=' . $tRequest->student_token);
+            $actionUrl = route('tutor-request.negotiate', ['token' => $tRequest->student_token]) . '?open_payment=1';
             try {
                 Mail::send(
                     'emails.solicitud-tutor-aceptada',

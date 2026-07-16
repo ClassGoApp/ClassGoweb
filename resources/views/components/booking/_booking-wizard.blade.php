@@ -3752,14 +3752,15 @@
                 if (timeStr.includes(' - ')) {
                     timeStr = timeStr.split(' - ')[0].trim();
                 }
-                const match = timeStr.match(/^(\d+):(\d+)\s*(AM|PM)$/i);
+                const match = timeStr.match(/^(\d+):(\d+)(?:\s*(AM|PM))?$/i);
                 if (match) {
                     let hours = parseInt(match[1]);
                     const minutes = parseInt(match[2]);
-                    const ampm = match[3].toUpperCase();
-
-                    if (ampm === 'PM' && hours !== 12) hours += 12;
-                    if (ampm === 'AM' && hours === 12) hours = 0;
+                    const ampm = match[3] ? match[3].toUpperCase() : null;
+                    if (ampm) {
+                        if (ampm === 'PM' && hours !== 12) hours += 12;
+                        if (ampm === 'AM' && hours === 12) hours = 0;
+                    }
 
                     let startMins = hours * 60 + minutes;
 
