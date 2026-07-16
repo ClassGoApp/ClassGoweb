@@ -543,40 +543,128 @@
             </div>
         </div>
         <div class="terminos-generic" id="tutorias-instantaneas">
-            <h1 class="terminos-titulos" data-translate="tutorias_instantaneas">12. TUTORÍAS AL INSTANTE (MODALIDAD ON-DEMAND)</h1>
-            <p>Esta modalidad permite a los estudiantes solicitar asistencia pedagógica inmediata sin reserva previa, bajo un sistema de emparejamiento dinámico (matching).</p>
+            <h1 class="terminos-titulos" data-translate="tutorias_instantaneas">
+                12. TUTORÍAS AL INSTANTE (MODALIDAD ON-DEMAND)
+            </h1>
+
+            <p data-translate="tutorias_instantaneas_descripcion">
+                Esta modalidad permite a los estudiantes solicitar asistencia pedagógica inmediata sin reserva previa, bajo un sistema de emparejamiento dinámico (matching).
+            </p>
+
             <div>
-                <h2 class="terminos-subtitulos" data-translate="procedimiento_estudiante">12.1 Procedimiento para el Estudiante</h2>
+                <h2 class="terminos-subtitulos" data-translate="procedimiento_estudiante">
+                    12.1 Procedimiento para el Estudiante
+                </h2>
+
                 <ul class="terminos-ul">
-                    <li><strong>Solicitud:</strong> El estudiante seleccionará una materia y subcategoría específica. Al confirmar, entrará en una Sala de Espera Virtual.</li>
-                    <li><strong>Selección de Tutor:</strong> La plataforma mostrará en tiempo real (con actualización cada 5 segundos) a los tutores que acepten la solicitud. El estudiante es libre de elegir al tutor de su preferencia basándose en el perfil, precio o calificación.</li>
-                    <li><strong>Reserva y Pago:</strong> Una vez seleccionado el tutor, se generará una reserva temporal y se mostrará un Código QR de pago.</li>
-                    <li><strong>Acceso a la Sesión:</strong> Tras la confirmación del pago, el sistema redirigirá al estudiante a una sala de Google Meet generada automáticamente con las credenciales del tutor.</li>
+                    <li>
+                        <strong data-translate="tutorias_solicitud_label">Solicitud:</strong>
+                        <span data-translate="tutorias_solicitud_desc">
+                            El estudiante seleccionará una materia y subcategoría específica. Al confirmar, entrará en una Sala de Espera Virtual.
+                        </span>
+                    </li>
+
+                    <li>
+                        <strong data-translate="tutorias_seleccion_tutor_label">Selección de Tutor:</strong>
+                        <span data-translate="tutorias_seleccion_tutor_desc">
+                            La plataforma mostrará en tiempo real (con actualización cada 5 segundos) a los tutores que acepten la solicitud. El estudiante es libre de elegir al tutor de su preferencia basándose en el perfil, precio o calificación.
+                        </span>
+                    </li>
+
+                    <li>
+                        <strong data-translate="tutorias_reserva_pago_label">Reserva y Pago:</strong>
+                        <span data-translate="tutorias_reserva_pago_desc">
+                            Una vez seleccionado el tutor, se generará una reserva temporal y se mostrará un Código QR de pago.
+                        </span>
+                    </li>
+
+                    <li>
+                        <strong data-translate="tutorias_acceso_sesion_label">Acceso a la Sesión:</strong>
+                        <span data-translate="tutorias_acceso_sesion_desc">
+                            Tras la confirmación del pago, el sistema redirigirá al estudiante a una sala de Google Meet generada automáticamente con las credenciales del tutor.
+                        </span>
+                    </li>
                 </ul>
             </div>
+
             <div>
-                <h2 class="terminos-subtitulos" data-translate="procedimiento_tutor">12.2 Procedimiento para el Tutor</h2>
+                <h2 class="terminos-subtitulos" data-translate="procedimiento_tutor">
+                    12.2 Procedimiento para el Tutor
+                </h2>
+
                 <ul class="terminos-ul">
-                    <li><strong>Notificación:</strong> Los tutores disponibles recibirán una alerta vía Gmail con la solicitud de tutoría.</li>
-                    <li><strong>Estados de la Solicitud:</strong> El tutor gestionará su participación a través de cuatro estados:
+                    <li>
+                        <strong data-translate="tutorias_notificacion_label">Notificación:</strong>
+                        <span data-translate="tutorias_notificacion_desc">
+                            Los tutores disponibles recibirán una alerta vía Gmail con la solicitud de tutoría.
+                        </span>
+                    </li>
+
+                    <li>
+                        <strong data-translate="tutorias_estados_solicitud_label">Estados de la Solicitud:</strong>
+                        <span data-translate="tutorias_estados_solicitud_desc">
+                            El tutor gestionará su participación a través de cuatro estados:
+                        </span>
+
                         <ol type="1">
-                            <li>Espera: Disponibilidad para recibir alertas.</li>
-                            <li>Solicitado: El tutor ha aceptado la alerta y espera la elección del estudiante.</li>
-                            <li>Expirado: La solicitud no fue completada en el tiempo límite.</li>
-                            <li>Elegido (Match): El estudiante ha seleccionado al tutor y se espera la confirmación del pago.</li>
+                            <li data-translate="tutorias_estado_espera">
+                                Espera: Disponibilidad para recibir alertas.
+                            </li>
+                            <li data-translate="tutorias_estado_solicitado">
+                                Solicitado: El tutor ha aceptado la alerta y espera la elección del estudiante.
+                            </li>
+                            <li data-translate="tutorias_estado_expirado">
+                                Expirado: La solicitud no fue completada en el tiempo límite.
+                            </li>
+                            <li data-translate="tutorias_estado_elegido">
+                                Elegido (Match): El estudiante ha seleccionado al tutor y se espera la confirmación del pago.
+                            </li>
                         </ol>
                     </li>
-                    <li><strong>Rol de Anfitrión:</strong> Una vez confirmado el pago, el tutor deberá presionar el botón de "Ir al Meet". El tutor actúa obligatoriamente como anfitrión de la sala, utilizando la integración de Google Calendar y Meet de la plataforma.</li>
+
+                    <li>
+                        <strong data-translate="tutorias_rol_anfitrion_label">Rol de Anfitrión:</strong>
+                        <span data-translate="tutorias_rol_anfitrion_desc">
+                            Una vez confirmado el pago, el tutor deberá presionar el botón de "Ir al Meet". El tutor actúa obligatoriamente como anfitrión de la sala, utilizando la integración de Google Calendar y Meet de la plataforma.
+                        </span>
+                    </li>
                 </ul>
             </div>
         </div>
+
         <div class="terminos-generic">
-            <h1 class="terminos-titulos" data-translate="condiciones_tutorias_instantaneas">13. CONDICIONES ESPECÍFICAS DE TUTORÍAS AL INSTANTE</h1>
+            <h1 class="terminos-titulos" data-translate="condiciones_tutorias_instantaneas">
+                13. CONDICIONES ESPECÍFICAS DE TUTORÍAS AL INSTANTE
+            </h1>
+
             <ul class="terminos-ul">
-                <li><strong>13.1 Tiempo de Conexión:</strong> Una vez efectuado el pago y generado el enlace de Google Meet, ambas partes tienen un máximo de 5 minutos para ingresar a la sala.</li>
-                <li><strong>13.2 Fallos en el Proceso de Match:</strong> Si el estudiante realiza el pago pero, por problemas técnicos de la plataforma, no se genera el link de Meet, se procederá al reembolso total conforme a la cláusula 4.2.</li>
-                <li><strong>13.3 Responsabilidad del Vínculo:</strong> ClassGo no se hace responsable si el tutor, tras ser elegido y pagado, no inicia la sesión. En este caso, se sancionará al tutor bajo la política de "No Show" (Falta Grave) y se reembolsará al estudiante.</li>
-                <li><strong>13.4 Estabilidad de Red:</strong> Dado que la vista de espera se actualiza cada 5 segundos, el usuario acepta que ligeros desfases de red pueden afectar la visualización de tutores disponibles.</li>
+                <li>
+                    <strong data-translate="tutorias_tiempo_conexion_label">13.1 Tiempo de Conexión:</strong>
+                    <span data-translate="tutorias_tiempo_conexion_desc">
+                        Una vez efectuado el pago y generado el enlace de Google Meet, ambas partes tienen un máximo de 5 minutos para ingresar a la sala.
+                    </span>
+                </li>
+
+                <li>
+                    <strong data-translate="tutorias_fallos_match_label">13.2 Fallos en el Proceso de Match:</strong>
+                    <span data-translate="tutorias_fallos_match_desc">
+                        Si el estudiante realiza el pago pero, por problemas técnicos de la plataforma, no se genera el link de Meet, se procederá al reembolso total conforme a la cláusula 4.2.
+                    </span>
+                </li>
+
+                <li>
+                    <strong data-translate="tutorias_responsabilidad_vinculo_label">13.3 Responsabilidad del Vínculo:</strong>
+                    <span data-translate="tutorias_responsabilidad_vinculo_desc">
+                        ClassGo no se hace responsable si el tutor, tras ser elegido y pagado, no inicia la sesión. En este caso, se sancionará al tutor bajo la política de "No Show" (Falta Grave) y se reembolsará al estudiante.
+                    </span>
+                </li>
+
+                <li>
+                    <strong data-translate="tutorias_estabilidad_red_label">13.4 Estabilidad de Red:</strong>
+                    <span data-translate="tutorias_estabilidad_red_desc">
+                        Dado que la vista de espera se actualiza cada 5 segundos, el usuario acepta que ligeros desfases de red pueden afectar la visualización de tutores disponibles.
+                    </span>
+                </li>
             </ul>
         </div>
         <div class="terminos-generic">
