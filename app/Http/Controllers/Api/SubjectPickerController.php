@@ -2375,7 +2375,7 @@ class SubjectPickerController extends Controller
                 // Llamar al servicio (DI rápido con app())
                 $slotBookingService = app(SlotBookingService::class);
 
-                $meetingLink = $slotBookingService->generarlink($bookingModel) ?: 'https://meet.google.com/upy-mxim-nrm';
+                $meetingLink = $slotBookingService->generarlink($bookingModel) ?: 'http://meet.google.com/upy-mxim-nrm';
 
                 if (! empty($meetingLink)) {
                     DB::table('slot_bookings')

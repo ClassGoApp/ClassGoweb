@@ -168,9 +168,9 @@
     @auth
         @role('student')
             <!-- Hover Boton Pagar y Reservar
-                                                                                                                    <div class="tutor-pay-btn-box">
-                                                                                                                        <button wire:click="openReservationModal" class="tutor-pay-btn">Pagar y reservar</button>
-                                                                                                                    </div>-->
+            <div class="tutor-pay-btn-box">
+                <button wire:click="openReservationModal" class="tutor-pay-btn">Pagar y reservar</button>
+            </div>-->
             <div class="tutor-pay-btn-box">
 
                 <span class="tutor-tooltip-wrapper">
@@ -694,9 +694,10 @@
                                     Cancelar
                                 </button>
 
-                                <button type="submit" wire:loading.attr="disabled" wire:target="makeReservation"
-                                    class="btn btn-primary" data-translate="reservation_book">
-                                    Reservar
+                                <button wire:loading.attr="disabled" type="button" style="background-color: #FB8500; color: white;" 
+                                    wire:click='$dispatch("openModalMaterialApoyo")'
+                                    class="btn btn-primary">
+                                    Siguiente
                                 </button>
                             </div>
                         </div>
@@ -719,6 +720,7 @@
                     </div>
                 </div>
 
+                <livewire:modal-material-apoyo />
 
             </div>
 

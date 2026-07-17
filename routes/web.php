@@ -49,21 +49,45 @@ use App\Http\Controllers\BeforeBlogsController;
 use App\Http\Controllers\BookingController;
 
 use App\Http\Controllers\Api\SubjectPickerController;
-
+use App\Livewire\PruebaABEL;
 use App\Mail\TutoriaInstanteNotificacionMail;
 
 use Illuminate\Support\Facades\Mail;
 
-use Illuminate\Support\Facades\Http;
+
+use App\Http\Controllers\pruebaController;
+
+Route::get('/prueba/{id}', [pruebaController::class, 'debugMeetLink']);
+
+// Route::get('/probar-correo', function () {
+
+//     Mail::send('emails.confirmationTutorInstant', [], function ($message) {
+//         $message->to('ronaldflores200403@gmail.com')
+//             ->subject('Prueba de diseño');
+//     });
+
+//     return 'Correo enviado';
+// });
 
 Route::get('/probar-correo', function () {
 
-    Mail::send('emails.confirmationTutorInstant', [], function ($message) {
-        $message->to('@gmail.com')
-            ->subject('Prueba de diseño');
+    $to = 'ronaldflores200403@gmail.com';
+
+    $random = "hola mundo";
+    $lines = [
+        "Hola 👋",
+        "Tu código random es: {$random}",
+        "Hora servidor: " . now()->toDateTimeString(),
+        "Fin ✅",
+    ];
+
+    Mail::raw(implode("\n", $lines), function ($message) use ($to, $random) {
+        $message->to($to)
+            ->subject("Prueba random {$random}");
+
     });
 
-    return 'Correo enviado';
+    return "Correo enviado a {$to} (código: {$random})";
 });
 
 
@@ -72,7 +96,13 @@ Route::get('/control-horas', function () {
 });
 
 
-
+Route::middleware(['auth'])->group(function () {
+    // Ejemplo de ruta para gestionar materiales de apoyo
+    Route::get('/student/tutorias', \App\Livewire\TutoriasDetalles::class)
+        ->name('student.tutorias');
+        Route::get('/tutor/tutorias', \App\Livewire\TutoriasDetalles::class)
+        ->name('tutor.tutorias');
+});
 // Route::get('/waitlist/accept', [SubjectPickerController::class, 'acceptWaitlist'])
 //     ->name('waitlist.accept');
 
@@ -241,8 +271,10 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
 
         Route::middleware('student')->get('checkout', Checkout::class)->name('checkout');
         Route::middleware('student')->get('thank-you/{id}', ThankYou::class)->name('thank-you');
+
         Route::middleware('role:tutor')->prefix('tutor')->name('tutor.')->group(function () {
-            Route::get('dashboard', ManageAccount::class)->name('dashboard');
+            Route::get('finances', ManageAccount::class)->name('finances');
+            Route::get('dashboard', \App\Livewire\TutoriasDetalles::class)->name('dashboard');
             Route::get('payouts', Payouts::class)->name('payouts');
             Route::get('profile', fn() => redirect('tutor.profile.personal-details'))->name('profile');
 
@@ -314,8 +346,8 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
 
             Route::post('/batches/{batch}/dispatch', [SubjectPickerController::class, 'dispatchEmails'])
                 ->name('batches.dispatch');
-            Route::get('/batches/{batch}/dispatch', [SubjectPickerController::class, 'dispatchEmails'])
-                ->name('batches.dispatch');
+            Route::get('/batches/{batch}/dispatch',     [SubjectPickerController::class, 'dispatchEmails'])
+                ->name('batches.dispatchd');
             Route::post('/batches/{batch}/choose', [SubjectPickerController::class, 'chooseTutor'])
                 ->name('batches.choose');
 

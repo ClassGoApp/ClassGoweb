@@ -6,6 +6,7 @@ use App\Jobs\SendNotificationJob;
 use App\Models\Code;
 use App\Models\User;
 use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
@@ -30,6 +31,9 @@ class RegisterService
             'phone_number' => $request['phone_number']
         ]);
         $user->assignRole($request['user_role']);
+
+        // Disparar evento Registered para que Laravel envíe el correo de verificación de email
+        event(new Registered($user));
 
         // realiza las operaciones necesarias para los cupones
         $this->generaCupones($request, $user);

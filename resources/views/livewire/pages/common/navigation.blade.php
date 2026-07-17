@@ -11,19 +11,72 @@
         </div>
     </div>
     <nav class="am-navigation">
-        <ul >
-            @foreach ( $menuItems as $item)
-                @if(in_array($role, $item['accessibility']))
-                <li @class(['am-active-nav' => in_array($activeRoute, $item['onActiveRoute'])]) style="">
-                    <a href="{{ route($item['route']) }}" {{ empty($item['disableNavigate'])  ? 'wire:navigate.remove' : '' }} style="color: {{ in_array($activeRoute, $item['onActiveRoute']) ? 'white' : 'black' }};">
-                        {!! $item['icon'] !!}
-                        {{ $item['title'] }}
-                    </a>
-                </li>
+    <ul>
+        @foreach ($menuItems as $item)
+            @if(in_array($role, $item['accessibility']))
+                @php
+                    $isActiveParent = in_array($activeRoute, $item['onActiveRoute']);
+                @endphp
+
+                @if(isset($item['submenu']))
+                    {{-- Contenedor del acordeón --}}
+                    <li x-data="{ open: false }" style="list-style: none; margin: 0; padding: 0;">
+                        
+                        {{-- BOTÓN PADRE --}}
+                        <a href="javascript:void(0);" @click="open = !open" 
+                           style="display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; border-radius: 10px; width: 100%; box-sizing: border-box; background-color: {{ $isActiveParent ? '#1a9bb7' : 'transparent' }}; color: {{ $isActiveParent ? 'white' : '#585858' }}; text-decoration: none; transition: background-color 0.3s;">
+                            
+                            {{-- Contenedor del icono y el texto (Evita que el texto se rompa en dos líneas) --}}
+                            <div style="display: flex; align-items: center; gap: 10px; white-space: nowrap;">
+                                {!! $item['icon'] !!}
+                                <span>{{ $item['title'] }}</span>
+                            </div>
+                            
+                            {{-- Contenedor estricto para la flecha. Esto EVITA que se vuelva gigante --}}
+                            <span style="display: flex; align-items: center; justify-content: center; width: 16px; height: 16px; min-width: 16px; max-width: 16px; flex-shrink: 0;">
+                                <svg x-bind:style="open ? 'transform: rotate(180deg);' : ''" style="transition: transform 0.3s ease; width: 14px; height: 14px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </span>
+                        </a>
+                        
+                        {{-- SUBMENÚ (Efecto Acordeón con max-height) --}}
+                        <ul x-bind:style="open ? 'max-height: 150px; opacity: 1;' : 'max-height: 0px; opacity: 0;'" 
+                            style="overflow: hidden; transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out; margin: 0; padding-left: 35px; list-style: none; display: block;">
+                            
+                            {{-- Espaciador superior opcional para que no quede pegado al abrir --}}
+                            <div style="padding-top: 5px;"></div>
+
+                            @foreach($item['submenu'] as $subItem)
+                                @php
+                                    $isActiveChild = in_array($activeRoute, $subItem['onActiveRoute']);
+                                @endphp
+                                <li style="margin-bottom: 4px; color: #3a64ab;line-height: none; list-style: none;">
+                                    <a href="{{ route($subItem['route']) }}" {{ empty($item['disableNavigate']) ? 'wire:navigate.remove' : '' }} 
+                                       style="color: {{ $isActiveChild ? '#fff7f7' : '#585858' }}; font-size: 1em; font-weight: {{ $isActiveChild ? 'bold' : 'normal' }}; display: block;
+                                        background-color: {{$isActiveChild ? "#1a9bb7" :""}}; text-decoration: none; border-radius: 5px;  padding: 4px 6px;  transition: background-color 0.3s, color 0.3s;">
+                                        {{ $subItem['title'] }}
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </li>
+                @else   
+                    {{-- BOTÓN NORMAL (SIN SUBMENÚ) --}}
+                    <li @class(['am-active-nav' => $isActiveParent]) style="list-style: none; width: 100%;">
+                        <a href="{{ route($item['route']) }}" {{ empty($item['disableNavigate']) ? 'wire:navigate.remove' : '' }} 
+                           style="display: flex; align-items: center; padding: 10px 15px; border-radius: 10px; width: 100%; box-sizing: border-box; background-color: {{ $isActiveParent ? '#1a9bb7' : 'transparent' }}; color: {{ $isActiveParent ? 'white' : '#585858' }}; text-decoration: none;">
+                            <div style="display: flex; align-items: center; gap: 10px; white-space: nowrap;">
+                                {!! $item['icon'] !!}
+                                <span>{{ $item['title'] }}</span>
+                            </div>
+                        </a>
+                    </li>
                 @endif
-            @endforeach
-        </ul>
-    </nav>
+            @endif
+        @endforeach
+    </ul>
+</nav>
     <div class="am-navigation_footer">
         <!--<div class="am-wallet">
             <div class="am-wallet_title">
