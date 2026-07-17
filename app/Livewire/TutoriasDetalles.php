@@ -2,6 +2,8 @@
 
 namespace App\Livewire;
 
+use App\Models\Attachment;
+use App\Services\AttachmentsService;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use App\Models\SlotBooking;
@@ -18,6 +20,7 @@ class TutoriasDetalles extends Component
     public $selectedBookingId = null;
     public $newMaterial = null;
     public $firstBooking = null;
+    public $mostrarBotonSubida = false;
 
     // Puedes pasar este array de 5 datos al montar el componente
     public function mount()
@@ -41,6 +44,9 @@ class TutoriasDetalles extends Component
     {
         return $this->getBookingsByRol();
     }
+    
+    // Reseteamos el botón dinámico cuando el usuario cambie de tutoría seleccionada
+    
 
     // Obtener la reserva seleccionada actualmente
     public function getSelectedBookingProperty()
@@ -48,26 +54,32 @@ class TutoriasDetalles extends Component
         if (!$this->selectedBookingId) {
                 return null;
             }
+            
         return $this->getBookingsByRol()->firstWhere('id', $this->selectedBookingId);
     }
+
+    // ESCUCHADOR: Cuando el modal termine de guardar o actualizar, forzamos la reactividad
+    #[On('ReservacionConfirmada')]
+    public function refrescarTutorias()
+    {
+        if ($this->selectedBooking) {
+            // Esto limpia la caché de Eloquent y recarga los attachments reales de la BD
+            $this->selectedBooking->refresh(); 
+        }
+        // Ocultamos el botón dinámico generado tras completar la acción
+        $this->mostrarBotonSubida = false; 
+    }
+
 
     // Cambiar la sesión activa en el panel derecho
     public function selectBooking($id)
     {
         $this->selectedBookingId = $id;
+        $this->mostrarBotonSubida = null;
+        // dd($this->getBookingsByRol()->firstWhere('id', $this->selectedBookingId)->attachments );
         $this->reset('newMaterial'); // Limpiar el input de carga
     }
 
-    // Subir un nuevo archivo de apoyo y actualizar la columna 'supporting_material'
-    public function updatedNewMaterial(ImagenesService $imagenesService)
-    {
-        $this->validate([
-            'newMaterial' => 'required|file|max:5120|mimes:pdf,xlsx,doc,docx,png,jpg,jpeg', // Máx 5MB
-        ]);
-
-        
-        
-    }
     
     public function UserData($iduser){
         return  User::find($iduser)->profile()->first();    
@@ -78,57 +90,36 @@ class TutoriasDetalles extends Component
     public function saveFileEvent($archivo_temporal=null, $description=null){
         // dd("Llego",$archivo_temporal, $description);    
         $booking = SlotBooking::find($this->selectedBookingId);
-
+        $serviceAttachment = app(AttachmentsService::class);
         if ($booking) {
             // Si ya tenía un material subido anteriormente, lo borramos del disco
-            if ($booking->supporting_material && Storage::disk('public')->exists($booking->supporting_material)) {
-                Storage::disk('public')->delete($booking->supporting_material);
-            }
-            
+            $serviceAttachment->createAttachment($booking, $archivo_temporal, $description);
             // Actualizar la base de datos con la ruta exacta tal como se ve en tu captura
-            $booking->update([
-                'supporting_material' => $archivo_temporal["supporting_material"]??null,
-                "originName"=> $archivo_temporal["originName"]??null,
-                "extencion"=> $archivo_temporal["extencion"]??null,
-                'description'=> $description,
-            ]);
-
+            
             $this->reset('newMaterial');
         }
     }
 
 
     // Descargar el archivo actual
-    public function downloadMaterial()
-    {
-        $booking = $this->selectedBooking;
-        
-        if ($booking && $booking->supporting_material && Storage::disk('public')->exists($booking->supporting_material)) {
+    public function downloadMaterial(Attachment $file)
+    {   
+        if ($file && $file->path && Storage::disk('public')->exists($file->path)) {
             return Storage::disk('public')->download(
-                $booking->supporting_material, 
-                $booking->originName
+                $file->path, 
+                $file->original_name
             );
         }
     }
 
     // Eliminar el archivo de apoyo actual
-    public function deleteMaterial()
+    public function deleteMaterial($idFile) #Falta probar 16 de julion 2 am
     {
+        // dd($idFile,"id file");
         $booking = SlotBooking::find($this->selectedBookingId);
-
-        if ($booking && $booking->supporting_material) {
-            // Borrar físicamente del storage
-            if (Storage::disk('public')->exists($booking->supporting_material)) {
-                Storage::disk('public')->delete($booking->supporting_material);
-            }
-
-            // Dejar el campo nulo en la BD
-            $booking->update([
-                'supporting_material' => null,
-                'description'=> null,
-                'originName'=> null,
-                'extencion'=> null,
-            ]);
+        $serviceAttachment = (new AttachmentsService());
+        if ($booking) {
+            $serviceAttachment->deleteAttachment($idFile);
         }
     }
 

@@ -6,6 +6,7 @@ use App\Models\PaymentSlotBooking;
 use App\Models\SlotBooking;
 use App\Models\User;
 use App\Models\UserSubject;
+use App\Services\AttachmentsService;
 use App\Services\ImagenesService;
 use App\Services\interfaces\ICuponesService;
 use App\Services\MailService;
@@ -658,7 +659,9 @@ class Reserva extends Component
                 $this->material_apoyo,
                 $this->descripcion_material_apoyo,
             );
-
+            if($this->material_apoyo){
+                app(AttachmentsService::class)->createAttachment($reserva, $this->material_apoyo, $this->descripcion_material_apoyo);
+            }
             Log::info('DEBUG makeReservation - reserva creada', [
                 'booking_id' => $reserva->id,
                 'start_time' => $reserva->start_time,

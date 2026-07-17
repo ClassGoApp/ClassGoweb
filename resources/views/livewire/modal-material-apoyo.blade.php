@@ -4,7 +4,7 @@
         <div class="modal-ma-container">
             
             <div class="modal-ma-header">
-                <h2 class="modal-ma-title">Adjuntar Archivo</h2>
+                <h2 class="modal-ma-title">{{ $idFile?  "Editar Material": "Adjuntar Archivo"}}</h2>
                 <button type="button" wire:click="$set('isOpen', false)" class="modal-ma-close-btn" aria-label="Cerrar">
                     &times;
                 </button>

@@ -11,7 +11,9 @@
             </div>
             
             <div class="cg-ma-booking-list">
+                {{-- {{ dd($slotBookings) }} --}}
                 @forelse($slotBookings as $booking)
+                {{-- {{ dd($booking->attachments->count()) }} --}}
                     <div 
                         wire:click="selectBooking({{ $booking->id }})" 
                         class="cg-ma-booking-item {{ $selectedBookingId == $booking->id ? 'is-active' : '' }}"
@@ -27,11 +29,20 @@
                                 </div>
                             @endif
                         </div>
+                        @php
+                            $files = $booking?->attachments;
+                            $quantityFiles = $files->count();
+                            // dd($quantityFiles);
+                            //OBtener datos del usuario correspondiente 
+                            $tutor = $this->UserData($booking->tutor_id);
+                            $student = $this->UserData($booking->student_id);        
+                        @endphp
+
                         <span class="cg-ma-subject">{{ $booking->subject->name ?? $booking->description ?? 'Sesión #' . $booking->id }}</span>
-                        <h4 class="cg-ma-tutor">{{auth()->user()->hasRole("student") ? 'Tutor: ' . ($this->UserData($booking->tutor_id)->first_name ?? 'ID ' . $booking->tutor_id) : 'Estudiante: ' . ($this->UserData($booking->student_id)->first_name ?? 'ID ' . $booking->student_id)}}</h4>
+                        <h4 class="cg-ma-tutor">{{auth()->user()->hasRole("student") ? 'Tutor: ' . ($tutor->first_name . " " . $tutor->last_name) ?? 'ID ' . $booking->tutor_id : 'Estudiante: ' . $student->first_name . " " . $student->last_name ?? 'ID ' . $booking->student_id}}</h4>
                         <p class="cg-ma-info">
                             Horarios: {{ \Carbon\Carbon::parse($booking->start_time)->format('H:i') }} - {{ \Carbon\Carbon::parse($booking->end_time)->format('H:i') }} 
-                            • {{ $booking->supporting_material ? '1 archivo' : 'Sin material' }}
+                            • {{ $quantityFiles ? " {$quantityFiles} archivo/s" : 'Sin material' }}
                         </p>
                     </div>
                 @empty
@@ -39,9 +50,14 @@
                 @endforelse
             </div>
         </aside>
-
         <main class="cg-ma-workspace">
             @if($selectedBooking)
+            
+                @php
+                    $files = $selectedBooking?->attachments;
+                    $quantityFiles = $files->count();
+                @endphp
+
                 <div class="cg-ma-workspace-content">
                     <div class="cg-ma-detail-header">
                         <span class="cg-ma-badge">{{ $selectedBooking->subject->name ?? 'Materia ID: ' . $selectedBooking->subject_id }}</span>
@@ -55,66 +71,87 @@
                     </div>
 
                     @if (auth()->user()->hasRole('student'))
-                        <div class="cg-ma-upload-box">
-                            <label class="cg-ma-dropzone">
-                                <span class="cg-ma-dropzone-icon">☁️</span>
-                                <span class="cg-ma-dropzone-text">
-                                        {{ $selectedBooking->supporting_material ? 'Haz clic aquí para reemplazar el archivo actual' : 'Haz clic aquí para subir el archivo' }}
-                                </span>
-                                {{-- {{ dd($selectedBooking) }} --}}
-                                <span class="cg-ma-dropzone-hint">Soporta PDF, Excel, Word e Imágenes (Máx. 5 MB)</span>
-                                
-                                    {{-- Si NO hay archivo: input tipo botón que dispara el evento para abrir el modal --}}
-                                <input type="button" 
-                                    wire:click="$dispatch('openModalMaterialApoyo', { modalUpdat:true } )" 
-                                    class="cg-ma-file-input" />
-                            </label>                            
-                                
-                            <div wire:loading wire:target="newMaterial" class="cg-ma-loading">
-                                Subiendo archivo, por favor espera...
-                            </div>
-                                
-                            @error('newMaterial') <span style="color: red; font-size: 0.8rem; display: block; margin-top: 5px;">No se pudo cargar el archivo</span> @enderror
+                        <!-- SECCIÓN DE BOTONES DE ACCIÓN (Reemplaza la dropzone gigante) -->
+                        <div class="cg-ma-actions-bar" style="margin-bottom: 25px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+                            
+                            <!-- Botón disparador principal -->
+                            <button type="button" 
+                                    wire:click="$set('mostrarBotonSubida', true)" 
+                                    class="cg-ma-btn-trigger"
+                                    style="background-color: #0f172a; color: white; padding: 10px 18px; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+                                ➕ Agregar material
+                            </button>
+
+                            <!-- TAG GENERADO DINÁMICAMENTE (Solo aparece al pulsar el anterior) -->
+                            @if($mostrarBotonSubida)
+                                <button type="button" 
+                                        wire:click="$dispatch('openModalMaterialApoyo', { modalUpdat: true})" 
+                                        class="cg-ma-btn-dynamic-upload"
+                                        style="background-color: #10b981; color: white; padding: 10px 18px; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; animation: fadeIn 0.3s ease-in-out;">
+                                    📎 Adjuntar archivo para esta tutoría
+                                </button>
+                            @endif
+                            
                         </div>
+                        
                         <livewire:modal-material-apoyo/>
                     @endif
                     
                     <div class="cg-ma-files-section">
                         <h3 class="cg-ma-section-title">Archivo adjunto para esta clase</h3>
-                        
-                        <div class="cg-ma-files-grid">
-                            @if($selectedBooking->supporting_material)
-                                @php
-                                    $fileName = basename($selectedBooking->originName ?? $selectedBooking->supporting_material);
-                                    $extension = pathinfo($fileName, PATHINFO_EXTENSION);
-                                @endphp
-                                <div class="cg-ma-file-card">
-                                    <div class="cg-ma-file-info">
-                                        <span class="cg-ma-file-icon">
-                                            {{ in_array($extension, ['pdf', 'doc', 'docx']) ? '📄' : '🖼️' }}
-                                        </span>
-                                        <div class="cg-ma-file-details">
-                                            <p class="cg-ma-file-name" title="{{ $fileName }}">{{ $fileName }}</p>
-                                            <p class="cg-ma-file-size">Guardado</p>
+                       @forelse ($files as $file)
+                            <!-- CONTENEDOR UNIFICADO (Agrupa archivo + contexto con el mismo fondo) -->
+                            <div class="cg-ma-unified-card-wrapper" style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px; margin-bottom: 16px;">
+                                
+                                <!-- Bloque del Archivo -->
+                                <div class="cg-ma-files-grid" style="margin-bottom: 12px;">
+                                    <div class="cg-ma-file-card" style="margin-bottom: 0;">
+                                        <div class="cg-ma-file-info">
+                                            <span class="cg-ma-file-icon">
+                                                {{ in_array($file->extension, ['pdf', 'doc', 'docx']) ? '📄' : '🖼️' }}
+                                            </span>
+                                            <div class="cg-ma-file-details">
+                                                <p class="cg-ma-file-name" title="{{ $file->original_name }}">{{ $file->original_name }}</p>
+                                                <p class="cg-ma-file-size">Guardado</p>
+                                            </div>
+                                        </div>
+                                        <div class="cg-ma-file-actions">
+                                            <button wire:click="downloadMaterial({{ $file->id }})" class="cg-ma-btn-view">Descargar</button>
+                                            @if (auth()->user()->hasRole('student'))
+                                                <!-- Botón Eliminar con SVG -->
+                                                <button wire:click="deleteMaterial({{ $file->id }})" 
+                                                        wire:confirm="¿Estás seguro de eliminar este material de apoyo?" 
+                                                        class="cg-ma-btn-delete" 
+                                                        style="display: inline-flex; align-items: center; justify-content: center; padding: 6px; width: 36px; height: 36px;" 
+                                                        title="Eliminar">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width: 18px; height: 18px;">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                                                    </svg>
+                                                </button>
+
+                                                <!-- Botón Editar con SVG -->
+                                                <button wire:click="$dispatch('openModalMaterialApoyo', { modalUpdat: true, idfile: {{ $file->id }} })" 
+                                                        class="cg-ma-btn-delete" 
+                                                        style="background-color: #f59e0b; display: inline-flex; align-items: center; justify-content: center; padding: 6px; width: 36px; height: 36px;" 
+                                                        title="Editar">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width: 18px; height: 18px; color: white;">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                                                    </svg>
+                                                </button>
+                                            @endif
                                         </div>
                                     </div>
-                                    <div class="cg-ma-file-actions">
-                                        <button wire:click="downloadMaterial" class="cg-ma-btn-view">Descargar</button>
-                                        @if (auth()->user()->hasRole('student'))
-                                            <button wire:click="deleteMaterial" wire:confirm="¿Estás seguro de eliminar este material de apoyo?" class="cg-ma-btn-delete" title="Eliminar">🗑️</button>
-                                        @endif
-                                    </div>
                                 </div>
-                            @else
-                                <p class="cg-ma-empty">Sin Material Adjuntado.</p>
-                            @endif
-                        </div>
-                        
-                        {{-- CAJA DE CONTEXTO AJUSTADA PARA TEXTOS LARGOS --}}
-                        <div class="cg-ma-description-box">
-                            {!! $selectedBooking->description ? '<strong style="display:block; margin-bottom: 8px; color: #334155;">Contexto:</strong>' . $selectedBooking->description : '<em>Sin descripción</em>' !!}
-                        </div>
+                                
+                                <!-- Bloque del Contexto (Dentro del contenedor, integrado estéticamente) -->
+                                <div class="cg-ma-description-box" style="margin-bottom: 0; height: auto; min-height: auto; max-height: 110px; overflow-y: auto; background-color: transparent; border: none; padding: 2px 6px;">
+                                    {!! $file->description ? '<strong style="display:block; margin-bottom: 6px; color: #334155;">Contexto:</strong>' . $file->description : '<em>Sin descripción</em>' !!}
+                                </div>
 
+                            </div>
+                        @empty
+                            <p class="cg-ma-empty">Sin Material Adjuntado.</p>
+                        @endforelse
                     </div>
                 </div>
             @else
@@ -240,7 +277,8 @@
 
 .cg-ma-date {
     font-size: 0.75rem;
-    color: #94a3b8;
+    font-weight: 800;
+    color: #75868f;
 }
 
 .cg-ma-next-badge {
@@ -290,7 +328,8 @@
 .cg-ma-info {
     margin: 0;
     font-size: 0.8rem;
-    color: #64748b;
+    font-weight: 700;
+    color: #8c96a3;
 }
 
 /* ==========================================================================
@@ -496,13 +535,13 @@
    ========================================================================== */
 .cg-ma-description-box {
     margin-top: 24px;
-    padding: 16px;
+    padding: 8px;
     background-color: #f8fafc;
     border: 1px solid #e2e8f0;
     border-radius: 8px;
     font-size: 0.95rem;
     color: #475569;
-    line-height: 1.6;
+    /* line-height: 1.3; */
     
     /* 1. Obligar a romper palabras gigantes (pepedpeeeee...) */
     overflow-wrap: break-word;
@@ -510,10 +549,10 @@
     word-break: break-word;
     
     /* 2. Respetar los saltos de línea (párrafos) que escriba el usuario */
-    white-space: pre-wrap; 
+    /* white-space: pre-wrap;  */
     
     /* 3. Evitar que crezca infinitamente (Scroll interno) */
-    max-height: 200px;
+    max-height: 70px;
     overflow-y: auto;
     
     width: 100%;

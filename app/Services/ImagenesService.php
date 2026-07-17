@@ -45,26 +45,37 @@ class ImagenesService
         return 'uploads/bookings/' . $fileName;
     }
 
-       public function guardarMaterialApoyoEstudiante(UploadedFile $file): array
+       public function guardarMaterialApoyoEstudiante(UploadedFile $file, string $targetModelClass = null): array
     {
         // 1. Verificación de seguridad usando el método nativo de UploadedFile
         if (!$file->isValid()) {
             throw new \Exception("El archivo no se subió correctamente al servidor o está corrupto.");
         }
-
-        // 2. Extraemos la información original del archivo
-        $originName = $file->getClientOriginalName();
-        $extencion = $file->getClientOriginalExtension();
-
-        // 3. Guardamos en el disco 'public'. 
-        // El método store() hace todo el trabajo: genera el hash y lo guarda en la carpeta especificada.
-        $rutaDefinitiva = $file->store('supporting_materials', 'public');
-
+        // 2. Extraemos el nombre de la carpeta de forma dinámica
+        // Si nos pasan "App\Models\SlotBooking", class_basename lo convierte en "SlotBooking"
+        // y luego lo formateamos a plural ("slot_bookings").
+        if($targetModelClass){
+            $folderName=  $this->snake_case_plural(class_basename($targetModelClass));
+        }else{
+            $folderName= "slot_bookings";
+        }
+        
+        // 3. Guardamos en la carpeta dinámica dentro del disco public
+        $rutaDefinitiva = $file->store("uploads/{$folderName}", 'public');
+        
         // 4. Retornamos el array con las claves listas para tu base de datos
         return [
-            "supporting_material" => $rutaDefinitiva, // Usé el nombre de tu columna en lugar de "path"
-            "originName"          => $originName,
-            "extencion"           => $extencion,
+            "path"       => $rutaDefinitiva,
+            "originName" => $file->getClientOriginalName(),
+            "extension"  => $file->getClientOriginalExtension(),
+            "size"       => $file->getSize(),
+            "mime_type"  => $file->getClientMimeType(), // Mantenemos tu clave mine_type
         ];
     }
+
+    function snake_case_plural(string $className): string
+    {
+        return strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $className)) . 's';
+    }
+
 }
