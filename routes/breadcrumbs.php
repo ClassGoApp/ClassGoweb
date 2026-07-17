@@ -9,9 +9,23 @@ $roleInfo = getUserRole();
 $role = !empty($roleInfo) ? $roleInfo['roleName'] : '';
 
 $disputeId = request()->route('id') ?? null;
+// Breadcrumbs::for('tutor.dashboard', function (BreadcrumbTrail $trail) {
+//     $trail->push(__('general.dashboard'), route('tutor.dashboard'));
+//     $trail->push(__('general.my_earnings'), route('tutor.dashboard'));
+// });
+
 Breadcrumbs::for('tutor.dashboard', function (BreadcrumbTrail $trail) {
     $trail->push(__('general.dashboard'), route('tutor.dashboard'));
-    $trail->push(__('general.my_earnings'), route('tutor.dashboard'));
+    $trail->push(__('Tutorias'), route('tutor.dashboard'));
+});
+
+
+Breadcrumbs::for('tutor.finances', function (BreadcrumbTrail $trail) {
+    $trail->push( __("Finanzas"), route('tutor.finances'));
+});
+
+Breadcrumbs::for('student.tutorias', function (BreadcrumbTrail $trail) {
+    $trail->push( __("Tutorias"), route('student.tutorias'));    
 });
 
 if($role != 'admin'){

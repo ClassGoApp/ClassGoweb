@@ -46,6 +46,7 @@ class PersonalDetails extends Component
     public  string $confirm         = '';
     private $googleCalenderService  = null;
     public $activeRoute1            = false;
+    public $isConnectingGoogleCalendar = false;
     // Propiedades del formulario
     public $state;
     public $first_name = ''; 
@@ -390,9 +391,8 @@ class PersonalDetails extends Component
             
             // 👉 Verificar estado de verificación solo para tutores
             $user = Auth::user();
-            if ($this)
-            // Solo redireccionar si es tutor y no está verificado
-            if ($user->hasRole('tutor') && !$user->verified) {
+            // Solo redireccionar si es tutor, no está verificado y no se está conectando a Google Calendar
+            if (!$this->isConnectingGoogleCalendar && $user->hasRole('tutor') && !$user->verified) {
                 // 👉 REDIRECCIÓN CUANDO NO ESTÁ VERIFICADO (solo para tutores)
                 $this->redirectRoute('tutor.profile.identification');
                 return;
@@ -634,6 +634,14 @@ public function boot()
 
     public function connectCalender()
     {
+        $this->isConnectingGoogleCalendar = true;
+        $this->updateInfo();
+        $this->isConnectingGoogleCalendar = false;
+
+        if ($this->getErrorBag()->isNotEmpty()) {
+            return;
+        }
+
         $response = isDemoSite();
         if( $response ){
             $this->dispatch('showAlertMessage', type: 'error', title:  __('general.demosite_res_title') , message: __('general.demosite_res_txt'));
@@ -641,7 +649,6 @@ public function boot()
         }
         // livewire.pages.common.profile-settings.personal-details
         $authUrlResponse = $this->googleCalenderService->getAuthUrl();
-        // dd($authUrlResponse, "aver que es esto");
         
         if($authUrlResponse['status'] == Response::HTTP_OK){
             $this->redirect($authUrlResponse['url']);

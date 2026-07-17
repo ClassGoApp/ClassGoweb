@@ -5,6 +5,7 @@
 			<div class="col-12">
 				<ol class="am-breadcrumb">
 					<li><a href="{{ url('/') }}">{{ __('sidebar.home') }}</a></li>
+					
 					<li><em>/</em></li>
 					<li><a href="{{ route('find-tutors') }}">{{  __('sidebar.find_tutor') }}</a></li>
 					<li><em>/</em></li>

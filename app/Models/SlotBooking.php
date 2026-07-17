@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
-
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 class SlotBooking extends Model
 {
     use HasFactory;
@@ -114,5 +114,11 @@ class SlotBooking extends Model
     public function payment(): HasOne
     {
         return $this->hasOne(SlotPayment::class, 'slot_booking_id');
+    }
+
+    public function attachments(): MorphMany
+    {
+        // Pasamos el modelo hijo y el nombre del prefijo 'attachable'
+        return $this->morphMany(Attachment::class, 'attachable');
     }
 }
