@@ -61,7 +61,7 @@ class GoogleController extends Controller
             \Log::error('Error al guardar el token en accountSetting: ' . $e->getMessage());
         }
 
-        return redirect()->route('tutor.profile.account-settings')->with('success', 'Google Calendar conectado correctamente');
+        return redirect()->route('tutor.profile.personal-details')->with('success', 'Google Calendar conectado correctamente');
     }
 
 

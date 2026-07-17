@@ -33,13 +33,13 @@ class SiteController extends Controller
         $googleToken                    = $this->googleCalenderService->getAccessTokenInfo($request->get('code'));
 
         if(!empty($googleToken['error'])){
-            return redirect()->route('tutor.profile.account-settings')->with('error',__('passwords.failed_retrieve_Google_token'));
+            return redirect()->route('tutor.profile.personal-details')->with('error',__('passwords.failed_retrieve_Google_token'));
         }
 
         $primaryCalendar         = $this->googleCalenderService->getUserPrimaryCalendar($googleToken['access_token']);
         $primaryCalendar['data']['minutes'] = 30;
         $this->userService->setAccountSetting(['google_access_token','google_calendar_info'],[$googleToken,$primaryCalendar['data']]);
-        return redirect()->route(Auth::user()->role.'.profile.account-settings')->with('success',__('passwords.connect_calender'));
+        return redirect()->route(Auth::user()->role.'.profile.personal-details')->with('success',__('passwords.connect_calender'));
     }
 
     public function completeBooking($id, BookingService $bookingService) {
