@@ -9,9 +9,11 @@
     </span>
 
     <input wire:model.live.debounce.300ms="search" wire:keydown.enter="searchBlogs" class="filtro-blog-input"
-        type="text" placeholder="Buscar por palabra clave">
+    type="text" placeholder="Buscar por palabra clave" data-placeholder-key="blog_search_placeholder">
 
-    <button type="submit" class="button-buscar" wire:click.prevent="searchBlogs">Buscar</button>
+    <button type="submit" class="button-buscar" wire:click.prevent="searchBlogs" data-translate="bus">
+        Buscar
+    </button>
 
 
     <div class="content-sugerencias">
@@ -22,7 +24,7 @@
                         {{ Str::limit($s->title, 40) }}
                     </li>
                 @empty
-                    <div class="sin-coincidencias">Sin coincidencias</div>
+                    <div class="sin-coincidencias" data-translate="blog_no_matches">Sin coincidencias</div>
                 @endforelse
             </ul>
         @endif
@@ -31,23 +33,69 @@
 
 </div>
 <script>
- 
+    function blogText(key, fallback = '') {
+        const lang = localStorage.getItem('selectedLanguage') || 'es';
+
+        if (typeof translations === 'undefined') {
+            return fallback;
+        }
+
+        const t = translations[lang] || translations.es;
+
+        return t[key] || fallback;
+    }
+
+    function applyBlogPlaceholder() {
+        const input = document.querySelector('.filtro-blog-input');
+
+        if (input) {
+            input.placeholder = blogText('blog_search_placeholder', 'Buscar por palabra clave');
+        }
+    }
+
+    function applyBlogFilterTranslations() {
+        const lang = localStorage.getItem('selectedLanguage') || 'es';
+
+        applyBlogPlaceholder();
+
+        if (typeof selectLanguage === 'function') {
+            selectLanguage(lang, false);
+        }
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
         const filtro = document.querySelector('.filtro');
         const sugerencias = document.querySelector('.content-sugerencias');
         const input = document.querySelector('.filtro-blog-input');
+
+        applyBlogFilterTranslations();
+
         document.addEventListener('click', function(event) {
             if (sugerencias && filtro && !filtro.contains(event.target)) {
                 sugerencias.classList.add('oculto');
             }
         });
 
-        input.addEventListener('focus', function() {
-            if (sugerencias) {
-                if (sugerencias.querySelector('ul')?.children.length > 0) {
-                    sugerencias.classList.remove('oculto');
+        if (input) {
+            input.addEventListener('focus', function() {
+                if (sugerencias) {
+                    if (sugerencias.querySelector('ul')?.children.length > 0) {
+                        sugerencias.classList.remove('oculto');
+                    }
                 }
-            }
+            });
+        }
+    });
+
+    document.addEventListener('languageChanged', function() {
+        applyBlogPlaceholder();
+    });
+
+    document.addEventListener('livewire:navigated', applyBlogFilterTranslations);
+
+    document.addEventListener('livewire:init', function() {
+        Livewire.hook('morph.updated', function() {
+            setTimeout(applyBlogFilterTranslations, 50);
         });
     });
 </script>

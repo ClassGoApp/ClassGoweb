@@ -5,16 +5,16 @@
 
         <div class="instant-badge">
             <span class="check-icon">✓</span>
-            {{ $Tutores_instant_disponibles < 10 ? 10 : $Tutores_instant_disponibles }} tutores ya son parte de tutorías
-            al instante
+            {{ $Tutores_instant_disponibles < 10 ? 10 : $Tutores_instant_disponibles }}
+            <span data-translate="instant_badge_text">tutores ya son parte de tutorías al instante</span>
         </div>
 
         <h2>
-            Tutorías al instante
-            <span>ayuda real, en minutos</span>
+            <span data-translate="instant_title">Tutorías al instante</span>
+            <span data-translate="instant_subtitle">ayuda real, en minutos</span>
         </h2>
 
-        <p>
+        <p data-translate="instant_description">
             ¿Tienes una duda ahora? Conéctate de inmediato con un tutor verificado
             y resuelve tus preguntas sin esperas ni citas largas.
         </p>
@@ -45,7 +45,7 @@
                     <svg width="18" height="18" viewBox="0 0 24 24">
                         <path d="M13 2L3 14H11L9 22L21 10H13Z" fill="currentColor" />
                     </svg>
-                    Iniciar sesión
+                    <span data-translate="instant_login">Iniciar sesión</span>
                 </a>
             </div>
 
@@ -59,9 +59,11 @@
                     <label for="terms-checkbox"
                         style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
                         <input type="checkbox" id="terms-checkbox">
-                        Acepto los <a href="{{ url('terminos') }}#tutorias-instantaneas" target="_blank"
-                            style="color: #9be7ff; text-decoration: underline; display: block;">
-                            términos y condiciones_Prueba
+                        <span data-translate="instant_accept_terms_prefix">Acepto los</span>
+                        <a href="{{ url('terminos') }}#tutorias-instantaneas" target="_blank"
+                            style="color: #9be7ff; text-decoration: underline; display: block;"
+                            data-translate="instant_terms_conditions">
+                            términos y condiciones
                         </a>
                     </label>
 
@@ -75,7 +77,7 @@
                         <svg width="18" height="18" viewBox="0 0 24 24">
                             <path d="M13 2L3 14H11L9 22L21 10H13Z" fill="currentColor" />
                         </svg>
-                        Aceptar y continuar
+                        <span data-translate="instant_accept_continue">Aceptar y continuar</span>
                     </a>
                 </div>
             </div>
@@ -87,14 +89,16 @@
                         <svg width="18" height="18" viewBox="0 0 24 24">
                             <path d="M13 2L3 14H11L9 22L21 10H13Z" fill="currentColor" />
                         </svg>
-                        Ver términos
+                        <span data-translate="instant_view_terms">Ver términos</span>
                     </a>
                 @else
                     <label for="terms-checkbox"
                         style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
 
-                        Ver <a href="{{ url('terminos') }}#tutorias-instantaneas" target="_blank"
-                            style="color: #9be7ff; text-decoration: underline; display: block;">
+                        <span data-translate="instant_view">Ver</span>
+                        <a href="{{ url('terminos') }}#tutorias-instantaneas" target="_blank"
+                            style="color: #9be7ff; text-decoration: underline; display: block;"
+                            data-translate="instant_terms_conditions">
                             términos y condiciones
                         </a>
                     </label>
@@ -102,11 +106,11 @@
                         <svg width="18" height="18" viewBox="0 0 24 24">
                             <path d="M13 2L3 14H11L9 22L21 10H13Z" fill="currentColor" />
                         </svg>
-                        Pedir tutor ahora
+                        <span data-translate="instant_request_tutor_now">Pedir tutor ahora</span>
                     </a>
                 @endif
             </div>
-            <div id="terms-alert">
+            <div id="terms-alert" data-translate="instant_terms_accepted_success">
                 Términos aceptados correctamente.
             </div>
         </div>
@@ -144,7 +148,7 @@
                         </svg>
                     </div>
 
-                    <span class="mini-badge">MATEMÁTICAS</span>
+                    <span class="mini-badge" data-translate="instant_subject_math">MATEMÁTICAS</span>
                     <div class="mini-price">
                         Bs. 30
                     </div>
@@ -160,7 +164,7 @@
                                 d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12Zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8Z" />
                         </svg>
                     </div>
-                    <span class="mini-badge">PROGRAMACIÓN</span>
+                    <span class="mini-badge" data-translate="instant_subject_programming">PROGRAMACIÓN</span>
                     <div class="mini-price">
                         Bs. 35
                     </div>
@@ -176,7 +180,7 @@
                                 d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12Zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8Z" />
                         </svg>
                     </div>
-                    <span class="mini-badge">CÁLCULO</span>
+                    <span class="mini-badge" data-translate="instant_subject_calculus">CÁLCULO</span>
                     <div class="mini-price">
                         Bs. 30
                     </div>
@@ -192,7 +196,7 @@
                                 d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12Zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8Z" />
                         </svg>
                     </div>
-                    <span class="mini-badge">LITERATURA</span>
+                    <span class="mini-badge" data-translate="instant_subject_literature">LITERATURA</span>
                     <div class="mini-price">
                         Bs. 40
                     </div>
@@ -208,7 +212,7 @@
                                 d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12Zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8Z" />
                         </svg>
                     </div>
-                    <span class="mini-badge">MARKETING</span>
+                    <span class="mini-badge" data-translate="instant_subject_marketing">MARKETING</span>
                     <div class="mini-price">
                         Bs. 25
                     </div>
@@ -709,6 +713,18 @@
 
     animate();
 
+    function instantText(key, fallback = '') {
+        const lang = localStorage.getItem('selectedLanguage') || 'es';
+
+        if (typeof translations === 'undefined') {
+            return fallback;
+        }
+
+        const t = translations[lang] || translations.es;
+
+        return t[key] || fallback;
+    }
+
     function showTermsAlert(message, type = 'success') {
         const alertBox = document.getElementById('terms-alert');
 
@@ -739,17 +755,17 @@
     }
 
     function redirigirSegunRol(role) {
-        const ctaTerms = document.getElementById('cta-terms');
+    const ctaTerms = document.getElementById('cta-terms');
 
-        if (ctaTerms && window.getComputedStyle(ctaTerms).display !== 'none') {
-            showTermsAlert('Debes aceptar los términos y condiciones.', 'error');
-            return;
-        }
-
-        if (role !== 'tutor') {
-            window.location.href = "{{ route('student.subjects.pick') }}";
-        }
+    if (ctaTerms && window.getComputedStyle(ctaTerms).display !== 'none') {
+        showTermsAlert('Debes aceptar los términos y condiciones.', 'error');
+        return;
     }
+
+    if (role !== 'tutor') {
+        window.location.href = "{{ route('student.subjects.pick') }}";
+    }
+}
 
     function irAlInstanteDesdeFlotante() {
         const ctaTerms = document.getElementById('cta-terms');
@@ -785,7 +801,10 @@
         const ctaTerms = document.getElementById('cta-terms');
 
         if (ctaTerms && window.getComputedStyle(ctaTerms).display !== 'none') {
-            showTermsAlert('Debes aceptar los términos y condiciones.', 'error');
+            showTermsAlert(
+                instantText('instant_terms_required', 'Debes aceptar los términos y condiciones.'),
+                'error'
+            );
             return;
         }
 
@@ -799,7 +818,10 @@
             const intendedUrl = window.location.origin + window.location.pathname + '#tutorias-instantaneas-seccion';
             window.location.href = "{{ route('login') }}?redirect=" + encodeURIComponent(intendedUrl);
         @elseif ($isTutor)
-            showTermsAlert('Las tutorías al instante solo están disponibles para estudiantes. Los tutores solo deben aceptar los términos y condiciones.', 'error');
+            showTermsAlert(
+                instantText('instant_only_students', 'Las tutorías al instante solo están disponibles para estudiantes. Los tutores solo deben aceptar los términos y condiciones.'),
+                'error'
+            );
         @else
             redirigirSegunRol('student');
         @endif
@@ -819,7 +841,10 @@
                 });
                 // Mostrar alerta después del scroll
                 setTimeout(() => {
-                    showTermsAlert('Debes aceptar los términos y condiciones.', 'error');
+                    showTermsAlert(
+                        instantText('instant_terms_required', 'Debes aceptar los términos y condiciones.'),
+                        'error'
+                    );
                 }, 300);
             }
             return;
@@ -834,12 +859,18 @@
         const btn = document.getElementById('accept-terms-btn');
 
         if (!checkbox) {
-            showTermsAlert('No se encontró el checkbox de términos.', 'error');
+            showTermsAlert(
+                instantText('instant_checkbox_not_found', 'No se encontró el checkbox de términos.'),
+                'error'
+            );
             return;
         }
 
         if (!checkbox.checked) {
-            showTermsAlert('Debes aceptar los términos y condiciones.hazlo', 'error');
+            showTermsAlert(
+            instantText('instant_terms_required', 'Debes aceptar los términos y condiciones.'),
+            'error'
+        );
             return;
         }
 
@@ -863,7 +894,7 @@
                 const data = await response.json();
 
                 if (!response.ok) {
-                    throw new Error(data.message || 'Error al aceptar términos.');
+                    throw new Error(data.message || instantText('instant_accept_terms_error', 'Error al aceptar términos.'));
                 }
 
                 return data;
@@ -873,14 +904,23 @@
                     document.getElementById('cta-terms').style.display = 'none';
                     document.getElementById('cta-after').style.display = 'block';
 
-                    showTermsAlert('Términos aceptados correctamente.', 'success');
+                    showTermsAlert(
+                        instantText('instant_terms_accepted_success', 'Términos aceptados correctamente.'),
+                        'success'
+                    );
                     
                 } else {
-                    showTermsAlert(data.message || 'No se pudo aceptar los términos.', 'error');
+                    showTermsAlert(
+                        data.message || instantText('instant_accept_terms_failed', 'No se pudo aceptar los términos.'),
+                        'error'
+                    );
                 }
             })
             .catch(error => {
-                showTermsAlert(error.message || 'Ocurrió un error inesperado.', 'error');
+                showTermsAlert(
+                    error.message || instantText('instant_unexpected_error', 'Ocurrió un error inesperado.'),
+                    'error'
+                );
             })
             .finally(() => {
                 if (btn) {

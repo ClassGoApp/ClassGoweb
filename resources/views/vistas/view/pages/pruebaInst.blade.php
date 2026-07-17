@@ -292,15 +292,6 @@
             background: white;
         }
 
-        /* .category-bar {
-                                                                                display: flex;
-                                                                                align-items: center;
-                                                                                gap: .6rem;
-                                                                                overflow-x: auto;
-                                                                                padding: 1rem 0 1rem;
-                                                                                margin-bottom: 1rem;
-                                                                                scrollbar-width: none;
-                                                                            } */
 
         .category-bar {
             display: flex;
@@ -510,12 +501,6 @@
             box-shadow: 0 8px 25px rgba(255, 140, 0, 0.15);
         }
 
-        /* .subject-card-btn.is-selected .subject-initial {
-                                                                            background: var(--terciary-color2);
-                                                                            color: #fff;
-                                                                        } */
-
-
         .subject-card-btn.is-selected .subject-initial {
             background: linear-gradient(135deg, #FF8C00 0%, #FFA500 100%);
             color: white;
@@ -561,6 +546,7 @@
         }
 
         .radar-ripple {
+            pointer-events: none;
             position: absolute;
             width: 100%;
             height: 100%;
@@ -1367,6 +1353,169 @@
             position: relative;
             z-index: 40;
         }
+
+        /* estilos del boton cancelar */
+        .btn-cancel-batch {
+            margin-top: 0.8rem;
+            background: #ef4444;
+            color: #fff;
+            border: none;
+            border-radius: 999px;
+            padding: 0.65rem 1.1rem;
+            font-size: 0.68rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            cursor: pointer;
+            letter-spacing: .12em;
+            box-shadow: 0 10px 20px rgba(239, 68, 68, .18);
+            transition: var(--transition);
+        }
+
+        .btn-cancel-batch:hover {
+            background: #dc2626;
+            transform: translateY(-1px);
+        }
+
+        .btn-cancel-batch:disabled {
+            opacity: .65;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /*  estilos del boton despues de presionar cancelar(boton de decisiom si-no)*/
+
+        .btn-cancel-batch {
+            margin-top: 0.8rem;
+            background: #ef4444;
+            color: #fff;
+            border: none;
+            border-radius: 999px;
+            padding: 0.65rem 1.1rem;
+            font-size: 0.68rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            cursor: pointer;
+            letter-spacing: .12em;
+            box-shadow: 0 10px 20px rgba(239, 68, 68, .18);
+            transition: var(--transition);
+        }
+
+        .btn-cancel-batch:hover {
+            background: #dc2626;
+            transform: translateY(-1px);
+        }
+
+        .btn-cancel-batch:disabled {
+            opacity: .65;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .cancel-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 5000;
+            background: rgba(15, 23, 42, 0.58);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .cancel-modal.hidden {
+            display: none !important;
+        }
+
+        .cancel-modal__box {
+            width: min(92vw, 390px);
+            background: #ffffff;
+            border-radius: 1.6rem;
+            padding: 1.8rem;
+            text-align: center;
+            box-shadow: 0 35px 80px rgba(0, 0, 0, .28);
+            animation: cancelModalIn .22s ease-out;
+        }
+
+        @keyframes cancelModalIn {
+            from {
+                opacity: 0;
+                transform: translateY(16px) scale(.96);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .cancel-modal__icon {
+            width: 58px;
+            height: 58px;
+            margin: 0 auto 1rem;
+            border-radius: 50%;
+            background: #fee2e2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+        }
+
+        .cancel-modal__box h3 {
+            font-size: 1.15rem;
+            font-weight: 900;
+            color: var(--primary-color);
+            margin-bottom: .5rem;
+        }
+
+        .cancel-modal__box p {
+            font-size: .85rem;
+            color: var(--text-muted);
+            font-weight: 700;
+            line-height: 1.5;
+            margin-bottom: 1.3rem;
+        }
+
+        .cancel-modal__actions {
+            display: flex;
+            gap: .7rem;
+        }
+
+        .cancel-modal__btn {
+            flex: 1;
+            border: none;
+            border-radius: .9rem;
+            padding: .85rem .8rem;
+            font-size: .75rem;
+            font-weight: 900;
+            cursor: pointer;
+            transition: var(--transition);
+            text-transform: uppercase;
+        }
+
+        .cancel-modal__btn--secondary {
+            background: #f1f5f9;
+            color: #334155;
+        }
+
+        .cancel-modal__btn--secondary:hover {
+            background: #e2e8f0;
+        }
+
+        .cancel-modal__btn--danger {
+            background: #ef4444;
+            color: #ffffff;
+        }
+
+        .cancel-modal__btn--danger:hover {
+            background: #dc2626;
+        }
+
+        .cancel-modal__btn:disabled {
+            opacity: .65;
+            cursor: not-allowed;
+        }
     </style>
 
     <section>
@@ -1688,6 +1837,33 @@
                             Expira en: <b id="batchExpireCountdown" class="expire-normal">--:--</b>
                         </div>
 
+                        <button id="btnCancelBatch" type="button" class="btn-cancel-batch hidden">
+                            Cancelar solicitud (30s)
+                        </button>
+                        <div id="cancelBatchModal" class="cancel-modal hidden">
+                            <div class="cancel-modal__box">
+                                <div class="cancel-modal__icon">⚠️</div>
+
+                                <h3>Cancelar solicitud</h3>
+
+                                <p>
+                                    ¿Seguro que deseas cancelar esta solicitud de tutoría?
+                                    Podrás volver a elegir otra materia y presionar Go nuevamente.
+                                </p>
+
+                                <div class="cancel-modal__actions">
+                                    <button type="button" id="btnCancelNo"
+                                        class="cancel-modal__btn cancel-modal__btn--secondary">
+                                        No, continuar
+                                    </button>
+
+                                    <button type="button" id="btnCancelYes"
+                                        class="cancel-modal__btn cancel-modal__btn--danger">
+                                        Sí, cancelar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                         <div id="waitMsg"
                             style="margin-top:.6rem;font-size:.85rem;color:var(--text-muted);font-weight:800;"></div>
                     </div>
@@ -1768,34 +1944,34 @@
 
     <script>
         /* ========================================================================
-            CLASSGO | Student - Instant Tutors Script
-            ------------------------------------------------------------------------
-            FLUJO:
-            1) Cargar Categorías/Materias
-            2) Seleccionar Materia (solo una) + mostrar FAB
-            3) Crear Batch + mostrar Radar + polling:
-            - status (cada 60s)
-            - tutores aceptados (cada 5s)
-            - countdown expiración (cada 1s)
-            4) Mostrar cards de tutores + reservar + abrir checkout (flip)
-            5) Subir comprobante + pagar + polling booking (cada 2.5s)
-            6) Nueva solicitud / reset
-            
-            ENDPOINTS:
-            - GET  /student/subject-groups/categorias-materias
-            - POST /student/batches/start
-            - GET  /student/batches/active
-            - GET  /student/batches/{batchId}/status
-            - GET  /student/batches/{batchId}/accepted-tutors?limit=50
-            - POST /student/batches/{batchId}/reserve
-            - POST /student/bookings/{bookingId}/receipt
-            GET  /student/bookings/{bookingId}/status
-            - GET  /student/bookings/{bookingId}/meet
+                                    CLASSGO | Student - Instant Tutors Script
+                                    ------------------------------------------------------------------------
+                                    FLUJO:
+                                    1) Cargar Categorías/Materias
+                                    2) Seleccionar Materia (solo una) + mostrar FAB
+                                    3) Crear Batch + mostrar Radar + polling:
+                                    - status (cada 60s)
+                                    - tutores aceptados (cada 5s)
+                                    - countdown expiración (cada 1s)
+                                    4) Mostrar cards de tutores + reservar + abrir checkout (flip)
+                                    5) Subir comprobante + pagar + polling booking (cada 2.5s)
+                                    6) Nueva solicitud / reset
+                                    
+                                    ENDPOINTS:
+                                    - GET  /student/subject-groups/categorias-materias
+                                    - POST /student/batches/start
+                                    - GET  /student/batches/active
+                                    - GET  /student/batches/{batchId}/status
+                                    - GET  /student/batches/{batchId}/accepted-tutors?limit=50
+                                    - POST /student/batches/{batchId}/reserve
+                                    - POST /student/bookings/{bookingId}/receipt
+                                    GET  /student/bookings/{bookingId}/status
+                                    - GET  /student/bookings/{bookingId}/meet
 
-            NOTAS:
-            - fetchAcceptedTutors() se pausa si state.activeHeroId existe (checkout abierto)
-            - closeHero(true) debe existir en otro lado o aquí (si no, revienta)
-                                                                                                                                ======================================================================== */
+                                    NOTAS:
+                                    - fetchAcceptedTutors() se pausa si state.activeHeroId existe (checkout abierto)
+                                    - closeHero(true) debe existir en otro lado o aquí (si no, revienta)
+                                                                                                                                                        ======================================================================== */
 
 
         /* ========================================================================
@@ -2020,13 +2196,13 @@
 
         <div class="subject-grid ${collapsedClass}" id="${gridId}">
           ${items.map(sub => `
-                <button class="subject-card-btn" onclick="seleccionarMateria(this, ${sub.id}, '${sub.name.replaceAll("'", "\\'")}')">
-                    <div class="subject-initial">${sub.name.charAt(0)}</div>
-                    <div class="subject-meta">
-                        <div class="subject-title">${sub.name}</div>
-                    </div>
-                </button>
-                `).join('')}
+                                        <button class="subject-card-btn" onclick="seleccionarMateria(this, ${sub.id}, '${sub.name.replaceAll("'", "\\'")}')">
+                                            <div class="subject-initial">${sub.name.charAt(0)}</div>
+                                            <div class="subject-meta">
+                                                <div class="subject-title">${sub.name}</div>
+                                            </div>
+                                        </button>
+                                        `).join('')}
         </div>
     </section>
     `;
@@ -2096,6 +2272,13 @@
         const batchExpireCountdownEl = document.getElementById('batchExpireCountdown');
         const waitMsg = document.getElementById('waitMsg');
         const btnNewSearch = document.getElementById('btnNewSearch');
+        const btnCancelBatch = document.getElementById('btnCancelBatch');
+        const cancelBatchModal = document.getElementById('cancelBatchModal');
+        const btnCancelNo = document.getElementById('btnCancelNo');
+        const btnCancelYes = document.getElementById('btnCancelYes');
+
+        let cancelBatchTimer = null;
+        let cancelBatchSecondsLeft = 30;
 
 
         /* ========================================================================
@@ -2325,6 +2508,7 @@
         function startPolling(batchId) {
             currentBatchId = batchId;
 
+            startCancelBatchCountdown();
             // reset deltas y accepted
             lastSentCount = null;
             acceptedAfterId = 0;
@@ -2530,13 +2714,13 @@
               ${img ? `<img class="avatar" src="${escapeHtml(img)}" alt="${name}">` : ``}
 
               ${verified ? `
-                                                                                                                                                <span class="verified">
-                                                                                                                                                  <svg viewBox="0 0 24 24" class="verified-icon">
-                                                                                                                                                    <path d="M12 2l4 2 4 .6 1.4 4L22 12l-1.6 3.4L20 19l-4 .6-4 2-4-2-4-.6L3.6 15.4 2 12l1.4-3.4L4 4.6l4-.6 4-2z"/>
-                                                                                                                                                    <path d="M9.5 12.5l1.7 1.7 3.8-3.8"/>
-                                                                                                                                                  </svg>
-                                                                                                                                                </span>
-                                                                                                                                              ` : ``}
+                                                                                                                                                                        <span class="verified">
+                                                                                                                                                                          <svg viewBox="0 0 24 24" class="verified-icon">
+                                                                                                                                                                            <path d="M12 2l4 2 4 .6 1.4 4L22 12l-1.6 3.4L20 19l-4 .6-4 2-4-2-4-.6L3.6 15.4 2 12l1.4-3.4L4 4.6l4-.6 4-2z"/>
+                                                                                                                                                                            <path d="M9.5 12.5l1.7 1.7 3.8-3.8"/>
+                                                                                                                                                                          </svg>
+                                                                                                                                                                        </span>
+                                                                                                                                                                      ` : ``}
             </div>
           </div>
 
@@ -2931,6 +3115,162 @@
             state.activeHeroId = null;
         }
 
+        /* ========================================================================
+              accion del boton de cancelar
+            ======================================================================== */
+        function startCancelBatchCountdown() {
+            if (!btnCancelBatch) return;
+
+            if (cancelBatchTimer) {
+                clearInterval(cancelBatchTimer);
+            }
+
+            cancelBatchSecondsLeft = 30;
+
+            btnCancelBatch.classList.remove('hidden');
+            btnCancelBatch.disabled = false;
+            btnCancelBatch.textContent = `Cancelar solicitud (${cancelBatchSecondsLeft}s)`;
+
+            cancelBatchTimer = setInterval(() => {
+                cancelBatchSecondsLeft--;
+
+                if (cancelBatchSecondsLeft <= 0) {
+                    clearInterval(cancelBatchTimer);
+                    cancelBatchTimer = null;
+
+                    btnCancelBatch.classList.add('hidden');
+                    btnCancelBatch.disabled = true;
+                    btnCancelBatch.textContent = 'Cancelar solicitud';
+
+                    closeCancelBatchModal();
+                    return;
+                }
+
+                btnCancelBatch.textContent = `Cancelar solicitud (${cancelBatchSecondsLeft}s)`;
+            }, 1000);
+        }
+
+        function stopCancelBatchCountdown() {
+            if (cancelBatchTimer) {
+                clearInterval(cancelBatchTimer);
+                cancelBatchTimer = null;
+            }
+
+            if (btnCancelBatch) {
+                btnCancelBatch.classList.add('hidden');
+                btnCancelBatch.disabled = true;
+                btnCancelBatch.textContent = 'Cancelar solicitud';
+            }
+        }
+
+        function openCancelBatchModal() {
+            if (!cancelBatchModal) return;
+            cancelBatchModal.classList.remove('hidden');
+        }
+
+        function closeCancelBatchModal() {
+            if (!cancelBatchModal) return;
+            cancelBatchModal.classList.add('hidden');
+        }
+
+
+        btnCancelBatch?.addEventListener('click', () => {
+            if (!currentBatchId) {
+                alert('No hay una solicitud activa para cancelar.');
+                return;
+            }
+
+            if (cancelBatchSecondsLeft <= 0) {
+                return;
+            }
+
+            openCancelBatchModal();
+        });
+
+        btnCancelYes?.addEventListener('click', async () => {
+            if (!currentBatchId) {
+                closeCancelBatchModal();
+                alert('No hay una solicitud activa para cancelar.');
+                return;
+            }
+
+            btnCancelYes.disabled = true;
+            btnCancelNo.disabled = true;
+
+            const originalYesText = btnCancelYes.textContent;
+            btnCancelYes.textContent = 'Cancelando...';
+
+            try {
+                const csrf = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+                const res = await fetch(`/student/batches/${currentBatchId}/cancel`, {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        ...(csrf ? {
+                            'X-CSRF-TOKEN': csrf
+                        } : {}),
+                    },
+                    credentials: 'same-origin',
+                    body: JSON.stringify({})
+                });
+
+                const raw = await res.text();
+
+                let json = {};
+                try {
+                    json = JSON.parse(raw);
+                } catch (e) {
+                    console.error('Respuesta no JSON:', raw);
+                    alert('La ruta respondió HTML o no existe. Revisa route:list.');
+
+                    btnCancelYes.disabled = false;
+                    btnCancelNo.disabled = false;
+                    btnCancelYes.textContent = originalYesText;
+                    return;
+                }
+
+                if (!res.ok || !json.ok) {
+                    alert(json.message || `No se pudo cancelar la solicitud. HTTP ${res.status}`);
+
+                    btnCancelYes.disabled = false;
+                    btnCancelNo.disabled = false;
+                    btnCancelYes.textContent = originalYesText;
+                    return;
+                }
+
+                closeCancelBatchModal();
+                stopCancelBatchCountdown();
+
+                currentBatchId = null;
+                stopPollingAll();
+
+                state.activeHeroId = null;
+                state.receipts = {};
+                bookingByHeroId.clear();
+                acceptedMap.clear();
+
+                window.location.href = json.redirect_to || "{{ route('tutorias-instantaneas') }}";
+
+            } catch (error) {
+                console.error(error);
+                alert('Error inesperado al cancelar la solicitud.');
+
+                btnCancelYes.disabled = false;
+                btnCancelNo.disabled = false;
+                btnCancelYes.textContent = originalYesText;
+            }
+        });
+        btnCancelNo?.addEventListener('click', () => {
+            closeCancelBatchModal();
+        });
+
+        cancelBatchModal?.addEventListener('click', (event) => {
+            if (event.target === cancelBatchModal) {
+                closeCancelBatchModal();
+            }
+        });
 
         /* ========================================================================
           10) BOTÓN: Nueva solicitud (reset total)

@@ -1,17 +1,31 @@
 <link rel="stylesheet" href="{{ asset('css/recruitment.css') }}">
 <div id="recruitment-modal" class="am-recruitment-modal">
     <div class="am-modal-header-recruitment">
-        <button type="button" class="am-close-modal" onclick="closeRecruitmentModal()" title="Minimizar (puedes volver a abrirlo cuando quieras desde el botón flotante)">✕</button>
+        <button type="button" 
+            class="am-close-modal" 
+            onclick="closeRecruitmentModal()" 
+            title="Minimizar (puedes volver a abrirlo cuando quieras desde el botón flotante)"
+            data-title-key="recruitment_minimize_title">
+            ✕
+        </button>
     </div>
 
     <!-- Custom confirmation overlay -->
     <div id="recruitment-confirm-overlay" class="am-confirm-overlay">
         <div class="am-confirm-card">
-            <h3>¿Estás seguro?</h3>
-            <p class="texto-advertencia">Si cierras desde aquí no podrás acceder al formulario después. Para minimizar y poder usar el botón flotante más tarde, presiona la <strong>✕</strong> de arriba.</p>
+            <h3 data-translate="recruitment_confirm_title">¿Estás seguro?</h3>
+
+            <p class="texto-advertencia" data-translate="recruitment_confirm_message">
+                Si cierras desde aquí no podrás acceder al formulario después. Para minimizar y poder usar el botón flotante más tarde, presiona la <strong>✕</strong> de arriba.
+            </p>
             <div class="am-confirm-buttons">
-                <button type="button" class="am-confirm-btn am-confirm-btn-yes" onclick="confirmDismiss()">Sí, no volver a mostrar</button>
-                <button type="button" class="am-confirm-btn am-confirm-btn-no" onclick="cancelDismiss()">No, mantener activo</button>
+                <button type="button" class="am-confirm-btn am-confirm-btn-yes" onclick="confirmDismiss()" data-translate="recruitment_confirm_yes">
+                    Sí, no volver a mostrar
+                </button>
+
+                <button type="button" class="am-confirm-btn am-confirm-btn-no" onclick="cancelDismiss()" data-translate="recruitment_confirm_no">
+                    No, mantener activo
+                </button>
             </div>
         </div>
     </div>
@@ -19,42 +33,55 @@
     <div class="am-recruitment-content">
         <div class="am-side-info">
             
-            <h2>Unete a nosotros estamos buscando <span>tu talento.</span></h2>
+            <h2>
+                <span data-translate="recruitment_heading_prefix">Únete a nosotros, estamos buscando</span>
+                <span data-translate="recruitment_heading_highlight">tu talento.</span>
+            </h2>
             
             <ul class="am-phrase-list">
 
                 <li>
                     <i class="am-icon-check-circle"></i>
                     <div>
-                        <strong>Sin importar tu área:</strong> 
-                        Ya seas de TI, Marketing, Administración, Contabilidad o cualquier otra área, en ClassGo hay un lugar para ti.
+                        <strong data-translate="recruitment_area_title">Sin importar tu área:</strong>
+                        <span data-translate="recruitment_area_desc">
+                            Ya seas de TI, Marketing, Administración, Contabilidad o cualquier otra área, en ClassGo hay un lugar para ti.
+                        </span>
                     </div>
                 </li>
                 <li>
                     <i class="am-icon-check-circle"></i>
                     <div>
-                        <strong>Compromiso Real:</strong> 
-                        Envíanos tu información ahora mismo. Nuestro equipo de RRHH revisará tu perfil y <strong>nos pondremos en contacto contigo enseguida.</strong>
-                    </div>
+                        <strong data-translate="recruitment_commitment_title">Compromiso Real:</strong>
+                        <span data-translate="recruitment_commitment_desc">
+                            Envíanos tu información ahora mismo. Nuestro equipo de RRHH revisará tu perfil y
+                        </span>
+                        <strong data-translate="recruitment_commitment_contact">nos pondremos en contacto contigo enseguida.</strong>
+                        </div>
                 </li>
                 <li>
                     <i class="am-icon-check-circle"></i>
                     <div>
-                        <strong>Crecimiento Exponencial:</strong> 
-                        Buscamos socios estratégicos para transformar la empresa.
+                        <strong data-translate="recruitment_growth_title">Crecimiento Exponencial:</strong>
+                        <span data-translate="recruitment_growth_desc">
+                            Buscamos socios estratégicos para transformar la empresa.
+                        </span>
                     </div>
                 </li>
             </ul>
 
             <div class="am-areas-badge">
-                <strong>Prioridad actual:</strong> TI • Marketing • Finanzas • Administración • Ventas • ¡Y más!
+                <strong data-translate="recruitment_current_priority">Prioridad actual:</strong>
+                <span data-translate="recruitment_priority_areas">TI • Marketing • Finanzas • Administración • Ventas • ¡Y más!</span>
             </div>
         </div>
 
         <div class="am-form-side">
             <div style="text-align: center; margin-bottom: 20px;">
                 <h3 style="color: var(--primary-color); margin:0;"></h3>
-                <p style="font-size: 1.1rem; color:var(--primary-color); font-weight: 600;">Solo te tomará unos minutos.</p>
+                <p style="font-size: 1.1rem; color:var(--primary-color); font-weight: 600;" data-translate="recruitment_form_time">
+                    Solo te tomará unos minutos.
+                </p>
             </div>
 
             <livewire:frontend.recruitment-form />
@@ -200,6 +227,27 @@
         // Show tooltip after the modal closes
         showRecruitmentTooltip();
     }
+
+     function applyRecruitmentAttributeTranslations() {
+        const lang = localStorage.getItem('selectedLanguage') || 'es';
+
+        if (typeof translations === 'undefined') {
+            return;
+        }
+
+        const t = translations[lang] || translations.es;
+
+        document.querySelectorAll('[data-title-key]').forEach((element) => {
+            const key = element.getAttribute('data-title-key');
+
+            if (t[key]) {
+                element.setAttribute('title', t[key]);
+            }
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', applyRecruitmentAttributeTranslations);
+    document.addEventListener('languageChanged', applyRecruitmentAttributeTranslations);
 
     document.addEventListener('DOMContentLoaded', function() {
         const modalId = 'classgo_recruitment_auto_shown';

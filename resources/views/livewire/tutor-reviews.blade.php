@@ -11,7 +11,13 @@
                 @endfor
             </div>
             <div class="tutor-reviews-count" style="color:#888;">
-                Basado en {{ $totalReviews }} {{ $totalReviews == 1 ? 'calificación' : 'calificaciones' }}
+                <span data-translate="review_based_on">Basado en</span>
+                {{ $totalReviews }}
+                @if ($totalReviews == 1)
+                    <span data-translate="review_rating_singular">calificación</span>
+                @else
+                    <span data-translate="review_rating_plural">calificaciones</span>
+                @endif
             </div>
         </div>
 
@@ -44,7 +50,9 @@
         @role('student')
             @if($canReview)
                 <div class="review-form-container">
-                    <h2 class="review-form__title">Deja tu reseña</h2>
+                    <h2 class="review-form__title" data-translate="review_leave_title">
+                        Deja tu reseña
+                    </h2>
                     
                     <form wire:submit="submitReview" id="review-form">
                         <div id="star-rating" class="review-form__rating-wrapper">
@@ -71,6 +79,7 @@
                                 rows="5" 
                                 class="review-form__textarea" 
                                 placeholder="Escribe tu reseña aquí (opcional)..."
+                                data-placeholder-key="review_comment_placeholder"
                             ></textarea>
                         </div>
                         @error('comment') 
@@ -84,8 +93,8 @@
                                 wire:loading.attr="disabled"
                                 wire:loading.class="opacity-50"
                             >
-                                <span wire:loading.remove>Enviar reseña</span>
-                                <span wire:loading>Enviando...</span>
+                                <span wire:loading.remove data-translate="review_submit_button">Enviar reseña</span>
+                                <span wire:loading data-translate="review_sending">Enviando...</span>
                             </button>
                         </div>
                     </form>
@@ -209,7 +218,51 @@
 
     @push('scripts')
     <script>
+        function reviewText(key, fallback = '') {
+            const lang = localStorage.getItem('selectedLanguage') || 'es';
+
+            if (typeof translations === 'undefined') {
+                return fallback;
+            }
+
+            const t = translations[lang] || translations.es;
+
+            return t[key] || fallback;
+        }
+
+        function applyReviewPlaceholders() {
+            const textarea = document.querySelector('.review-form__textarea');
+
+            if (textarea) {
+                textarea.placeholder = reviewText(
+                    'review_comment_placeholder',
+                    'Escribe tu reseña aquí (opcional)...'
+                );
+            }
+        }
+
+        function applyReviewTranslationsAfterLivewire() {
+            const lang = localStorage.getItem('selectedLanguage') || 'es';
+
+            applyReviewPlaceholders();
+
+            if (typeof selectLanguage === 'function') {
+                selectLanguage(lang, false);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', applyReviewTranslationsAfterLivewire);
+        document.addEventListener('livewire:navigated', applyReviewTranslationsAfterLivewire);
+
+        document.addEventListener('languageChanged', function() {
+            applyReviewPlaceholders();
+        });
+
         document.addEventListener('livewire:init', () => {
+            Livewire.hook('morph.updated', () => {
+                setTimeout(applyReviewTranslationsAfterLivewire, 50);
+            });
+
             // Escuchar el evento para ocultar la alerta
             Livewire.on('hide-alert-after', (event) => {
                 setTimeout(() => {
@@ -222,9 +275,9 @@
             stars.forEach((star, index) => {
                 star.addEventListener('touchstart', function(e) {
                     e.preventDefault();
-                    // Remover clase active de todas las estrellas
+
                     stars.forEach(s => s.classList.remove('active'));
-                    // Agregar clase active hasta la estrella tocada
+
                     for(let i = 0; i <= index; i++) {
                         stars[i].classList.add('active');
                     }

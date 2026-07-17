@@ -12,20 +12,21 @@
             <div class="preguntas-header-content">
                 <div class="preguntas-header-text align-left">
                     <nav class="breadcrumb">
-                        <a href="{{ route('home') }}" class="breadcrumb-link">Inicio</a> / <span class="breadcrumb-current">Preguntas</span>
+                        <a href="{{ route('home') }}" class="breadcrumb-link" data-translate="inicio">Inicio</a> / 
+                        <span class="breadcrumb-current" data-translate="preguntas">Preguntas</span>
                     </nav>
-                    <h1>Encuentra tu respuesta</h1>
-                    <p>Empoderando a los estudiantes en todo el mundo</p>
+                    <h1 data-translate="encuentra_respuesta">Encuentra tu respuesta</h1>
+                    <p data-translate="empoderando_estudiantes">Empoderando a los estudiantes en todo el mundo</p>
                 </div>
                 <div class="preguntas-tabs tabs-centered">
                     <div class="tab-buttons">
                         <button class="tab-button active" data-tab="estudiantes">
                             <i class="fa-solid fa-book"></i>
-                            Para estudiantes
+                            <span data-translate="para_estudiantes_faq">Para estudiantes</span>
                         </button>
                         <button class="tab-button" data-tab="tutores">
                             <i class="fa-solid fa-briefcase"></i>
-                            Para tutores
+                            <span data-translate="para_tutores_faq">Para tutores</span>
                         </button>
                     </div>
                 </div>
@@ -39,73 +40,73 @@
                         <div class="preguntas-faq">
                             <div class="faq-item">
                                 <div class="faq-question" onclick="toggleFaq(this)">
-                                    <h3>¿Cómo encontrar un tutor?</h3>
+                                    <h3 data-translate="faq_encontrar_tutor">¿Cómo encontrar un tutor?</h3>
                                     <div class="faq-toggle">
                                         <i class="fa-solid fa-chevron-down"></i>
                                     </div>
                                 </div>
                                 <div class="faq-answer">
-                                    <p>Utilice la barra de búsqueda para encontrar tutores disponibles según la materia o tema que necesites</p>
+                                    <p data-translate="faq_encontrar_tutor_desc">Utilice la barra de búsqueda para encontrar tutores disponibles según la materia o tema que necesites</p>
                                 </div>
                             </div>
 
                             <div class="faq-item">
                                 <div class="faq-question" onclick="toggleFaq(this)">
-                                    <h3>¿Cómo reservo una sesión?</h3>
+                                    <h3 data-translate="faq_reservar_sesion">¿Cómo reservo una sesión?</h3>
                                     <div class="faq-toggle">
                                         <i class="fa-solid fa-chevron-down"></i>
                                     </div>
                                 </div>
                                 <div class="faq-answer">
-                                    <p>Una vez que encuentres un tutor, consulta su perfil y selecciona un horario disponible que te convenga. Haz clic en "Reservar” y sigue las instrucciones para confirmar tu sesión.</p>
+                                    <p data-translate="faq_reservar_sesion_desc">Una vez que encuentres un tutor, consulta su perfil y selecciona un horario disponible que te convenga. Haz clic en "Reservar” y sigue las instrucciones para confirmar tu sesión.</p>
                                 </div>
                             </div>
 
                             <div class="faq-item">
                                 <div class="faq-question" onclick="toggleFaq(this)">
-                                    <h3>¿Qué pasa si necesito cancelar o reprogramar una sesión?</h3>
+                                    <h3 data-translate="faq_cancelar_reprogramar">¿Qué pasa si necesito cancelar o reprogramar una sesión?</h3>
                                     <div class="faq-toggle">
                                         <i class="fa-solid fa-chevron-down"></i>
                                     </div>
                                 </div>
                                 <div class="faq-answer">
-                                    <p>Las tutorías no pueden cancelarse una vez reservadas. Si ocurrió algún inconveniente, contactanos y con gusto te ayudaremos </p>
+                                    <p data-translate="faq_cancelar_reprogramar_desc">Las tutorías no pueden cancelarse una vez reservadas. Si ocurrió algún inconveniente, contactanos y con gusto te ayudaremos</p>
                                 </div>
                             </div>
 
                             <div class="faq-item">
                                 <div class="faq-question" onclick="toggleFaq(this)">
-                                    <h3>¿Cómo pago las sesiones?</h3>
+                                    <h3 data-translate="faq_pagos">¿Cómo pago las sesiones?</h3>
                                     <div class="faq-toggle">
                                         <i class="fa-solid fa-chevron-down"></i>
                                     </div>
                                 </div>
                                 <div class="faq-answer">
-                                    <p>Los pagos se realizan a través del Qr proporcionado en tu reserva o también por transferencia bancaria con los datos que se muestran en pantalla.</p>
+                                    <p data-translate="faq_pagos_desc">Los pagos se realizan a través del Qr proporcionado en tu reserva o también por transferencia bancaria con los datos que se muestran en pantalla.</p>
                                 </div>
                             </div>
 
                             <div class="faq-item">
                                 <div class="faq-question" onclick="toggleFaq(this)">
-                                    <h3>¿Qué debo hacer si mi tutor no se presenta?</h3>
+                                    <h3 data-translate="faq_tutor_no_presente">¿Qué debo hacer si mi tutor no se presenta?</h3>
                                     <div class="faq-toggle">
                                         <i class="fa-solid fa-chevron-down"></i>
                                     </div>
                                 </div>
                                 <div class="faq-answer">
-                                    <p>Si tu tutor no se presenta a una sesión programada, comuníquese con nuestro equipo de soporte de inmediato para obtener ayuda y agender una reprogramación o agendar un reembolso.</p>
+                                    <p data-translate="faq_tutor_no_presente_desc">Si tu tutor no se presenta a una sesión programada, comuníquese con nuestro equipo de soporte de inmediato para obtener ayuda y agender una reprogramación o agendar un reembolso.</p>
                                 </div>
                             </div>
 
                             <div class="faq-item">
                                 <div class="faq-question" onclick="toggleFaq(this)">
-                                    <h3>¿Cómo puedo dejar comentarios para mi tutor?</h3>
+                                    <h3 data-translate="faq_comentarios_tutor">¿Cómo puedo dejar comentarios para mi tutor?</h3>
                                     <div class="faq-toggle">
                                         <i class="fa-solid fa-chevron-down"></i>
                                     </div>
                                 </div>
                                 <div class="faq-answer">
-                                    <p>Entra al perfil del tutor, desliza hacia abajo y dirígete a la sección de reseñas, donde podrás ver las calificaciones y comentarios de los estudiantes.</p>
+                                    <p data-translate="faq_comentarios_tutor_desc">Entra al perfil del tutor, desliza hacia abajo y dirígete a la sección de reseñas, donde podrás ver las calificaciones y comentarios de los estudiantes.</p>
                                 </div>
                             </div>
                         </div>
@@ -123,49 +124,57 @@
                         <div class="preguntas-faq">
                             <div class="faq-item">
                                 <div class="faq-question" onclick="toggleFaq(this)">
-                                    <h3>¿Cómo puedo ser tutor?</h3>
+                                    <h3 data-translate="faq_ser_tutor">¿Cómo puedo ser tutor?</h3>
                                     <div class="faq-toggle">
                                         <i class="fa-solid fa-chevron-down"></i>
                                     </div>
                                 </div>
                                 <div class="faq-answer">
-                                    <p>Si no te creaste aún cuenta <a href="{{ route('login') }}"> <span>haz click aquí</span></a> y rellena el formulario y al final selecciona "Tutor". Cree su perfil y envie la documentación necesaria para su aprobación.</p>
+                                    <p>
+                                        <span data-translate="faq_ser_tutor_desc_txt1">Si no te creaste aún cuenta </span>
+                                        <a href="{{ route('login') }}">
+                                            <span data-translate="faq_ser_tutor_desc_link">haz click aquí</span>
+                                        </a>
+                                        <span data-translate="faq_ser_tutor_desc_txt2">
+                                            y rellena el formulario y al final selecciona "Tutor". Cree su perfil y envie la documentación necesaria para su aprobación.
+                                        </span>
+                                    </p>
                                 </div>
                             </div>
 
                             <div class="faq-item">
                                 <div class="faq-question" onclick="toggleFaq(this)">
-                                    <h3>¿Qué cualificaciones necesito para ser tutor?</h3>
+                                    <h3 data-translate="faq_cualificaciones_tutor">¿Qué cualificaciones necesito para ser tutor?</h3>
                                     <div class="faq-toggle">
                                         <i class="fa-solid fa-chevron-down"></i>
                                     </div>
                                 </div>
                                 <div class="faq-answer">
-                                    <p>No es requisito tener titulación académica. Si quieres enseñar "algo" puedes hacerlo.</p>
+                                    <p data-translate="faq_cualificaciones_tutor_desc">No es requisito tener titulación académica. Si quieres enseñar "algo" puedes hacerlo.</p>
                                 </div>
                             </div>
 
                             <div class="faq-item">
                                 <div class="faq-question" onclick="toggleFaq(this)">
-                                    <h3>¿Cómo configuro mi disponibilidad?</h3>
+                                    <h3 data-translate="faq_configurar_disponibilidad">¿Cómo configuro mi disponibilidad?</h3>
                                     <div class="faq-toggle">
                                         <i class="fa-solid fa-chevron-down"></i>
                                     </div>
                                 </div>
                                 <div class="faq-answer">
-                                    <p>Inicia sesión en tu cuenta, accede a la sección “Administrar tiempo disponible” y actualiza tu calendario con tus franjas horarias disponibles.</p>
+                                    <p data-translate="faq_configurar_disponibilidad_desc">Inicia sesión en tu cuenta, accede a la sección “Administrar tiempo disponible” y actualiza tu calendario con tus franjas horarias disponibles.</p>
                                 </div>
                             </div>
 
                             <div class="faq-item">
                                 <div class="faq-question" onclick="toggleFaq(this)">
-                                    <h3>¿Qué debo hacer si un estudiante cancela una sesión?</h3>
+                                    <h3 data-translate="faq_estudiante_cancela">¿Qué debo hacer si un estudiante cancela una sesión?</h3>
                                     <div class="faq-toggle">
                                         <i class="fa-solid fa-chevron-down"></i>
                                     </div>
                                 </div>
                                 <div class="faq-answer">
-                                    <p>Los estudiantes no tienen la opción de cancelar una sesión después de reservarla. Si el alumno te informa de algún problema, recomiéndale escribir a nuestro contacto para recibir ayuda.</p>
+                                    <p data-translate="faq_estudiante_cancela_desc">Los estudiantes no tienen la opción de cancelar una sesión después de reservarla. Si el alumno te informa de algún problema, recomiéndale escribir a nuestro contacto para recibir ayuda.</p>
                                 </div>
                             </div>
                         </div>

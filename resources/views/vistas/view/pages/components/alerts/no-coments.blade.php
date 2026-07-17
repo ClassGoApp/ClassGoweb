@@ -5,8 +5,13 @@
         </svg>
         
         <div class="empty-state__text-group">
-            <h3 class="empty-state__title">Aún no hay reseñas</h3>
-            <p class="empty-state__message">¡Sé el primero en compartir tu opinión sobre este tutor!</p>
+            <h3 class="empty-state__title" data-translate="reviews_empty_title">
+                Aún no hay reseñas
+            </h3>
+
+            <p class="empty-state__message" data-translate="reviews_empty_message">
+                ¡Sé el primero en compartir tu opinión sobre este tutor!
+            </p>
         </div>
     </div>
 </div>

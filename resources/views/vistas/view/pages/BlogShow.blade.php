@@ -9,9 +9,9 @@
         <div class="header-blog-menu"></div>
         <div class="content-bread">
             <nav class="bread-list">
-                <a class="bread" href="{{ url('/') }}" class="bread-link">Inicio</a>
+                <a class="bread" href="{{ url('/') }}" class="bread-link" data-translate="inicio">Inicio</a>
                 <span class="bread-separator">/</span>
-                <a class="bread" href="{{ route('blogs.index') }}" class="bread-link">Blog</a>
+                <a class="bread" href="{{ route('blogs.index') }}" class="bread-link" data-translate="blog">Blog</a>
                 <span class="bread-separator">/</span>
                 <span class="bread">{{ $categories->first()->name ?? 'Lorem' }}</span>
             </nav>
@@ -25,7 +25,7 @@
                 </h6>
                 <span class="meta-separator"> - </span>
                 <h6 class="meta-desc">
-                    {{ $reading_time }} min de lectura
+                    {{ $reading_time }} <span data-translate="blog_reading_time">min de lectura</span>
                 </h6>
             </nav>
             <h1 class="titulo-blog">
@@ -56,7 +56,7 @@
                     @else
                         <div class="tb-no-image">
                             <i class="icon-image"></i>
-                            <small>File not found</small>
+                            <small data-translate="blog_file_not_found">File not found</small>
                         </div>
                     @endif
                 @else
@@ -87,7 +87,14 @@
                 <div class="stats-bar">
                     <div class="left-stats">
                         <i class="fa-solid fa-eye"></i>
-                        <span>{{ $views_count }} visitas</span>
+                        <span>
+                            {{ $views_count }}
+                            @if ($views_count == 1)
+                                <span data-translate="blog_view_singular">visita</span>
+                            @else
+                                <span data-translate="blog_view_plural">visitas</span>
+                            @endif
+                        </span>
                     </div>
 
                 </div>
@@ -98,7 +105,7 @@
         <div id="image-modal" class="image-modal" onclick="closeImageModal()">
     <img id="image-modal-content" />
 </div>
-        <div class="card-populares">Blogs Populares</div>
+        <div class="card-populares" data-translate="blog_popular_blogs">Blogs Populares</div>
         <div class="content-cards" id="content-cards">
 
 
@@ -132,7 +139,12 @@
 
 
                     <h4 class="categoria">
-                        {{ $blog->main_category ?? 'General' }} /
+                        @if ($blog->main_category)
+                            {{ $blog->main_category }}
+                        @else
+                            <span data-translate="blog_category_general">General</span>
+                        @endif
+                        /
                         {{ $blog->created_at ? $blog->created_at->format('d \d\e F \d\e Y') : '' }}
                     </h4>
 
@@ -156,7 +168,9 @@
                     @endif
                 </a>
             @empty
-                <p style="font-weight: 500;">No hay blogs disponibles.</p>
+                <p style="font-weight: 500;" data-translate="blog_no_available">
+                    No hay blogs disponibles.
+                </p>
             @endforelse
         </div>
 
