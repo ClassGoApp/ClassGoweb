@@ -1162,7 +1162,9 @@ new #[Layout('layouts.guest')] class extends Component {
                     <div class="cg-terms">
                         <label>
                             <input type="checkbox" wire:model="terms">
-                            <span>{!! __('auth.register_terms') !!}</span>
+                            <span data-translate="auth_register_terms">
+                                Acepto los <a href="https://www.classgoapp.com/terminos" target="_blank">Términos de servicio</a> y la <a href="https://www.classgoapp.com/terminos" target="_blank">Política de privacidad</a>
+                            </span>
                         </label>
                         @error('terms') <span class="cg-error-text" style="top: 100%;"><svg class="cg-icon-error"
                             viewBox="0 0 24 24">
@@ -1178,7 +1180,9 @@ new #[Layout('layouts.guest')] class extends Component {
 
                     @if (!empty(setting('_api.enable_social_login')) && ((!empty(setting('_api.social_google_client_id')) && !empty(setting('_api.social_google_client_secret')))))
                         <div class="am-signinoption">
-                            <span class="am-signinoption_br"><em>{{ __('auth.or') }}</em></span>
+                            <span class="am-signinoption_br">
+                                <em data-translate="auth_or">o</em>
+                            </span>
                             <a href="#" @click.prevent="showGoogleModal = true" wire:loading.class="am-btn_disable"
                                 class="am-signinoption_btn">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21"
@@ -1196,7 +1200,7 @@ new #[Layout('layouts.guest')] class extends Component {
                                         d="M10.5003 4.97884C11.8461 4.97884 13.0544 5.44134 14.0044 6.34967L16.6336 3.72051C15.0461 2.24134 12.9711 1.33301 10.5003 1.33301C6.91693 1.33301 3.81693 3.38717 2.30859 6.38301L5.37109 8.75801C6.09193 6.59134 8.11276 4.97884 10.5003 4.97884Z"
                                         fill="#EA4335" />
                                 </svg>
-                                {{ __('auth.register_google') }}
+                                <span data-translate="auth_register_google_title">Registrarse con Google</span>
                             </a>
                         </div>
                     @endif
@@ -1269,7 +1273,9 @@ new #[Layout('layouts.guest')] class extends Component {
 
                         @if (!empty(setting('_api.enable_social_login')) && ((!empty(setting('_api.social_google_client_id')) && !empty(setting('_api.social_google_client_secret')))))
                             <div class="am-signinoption">
-                                <span class="am-signinoption_br"><em>{{ __('auth.or') }}</em></span>
+                                <span class="am-signinoption_br">
+                                    <em data-translate="auth_or">o</em>
+                                </span>
                                 <a href="#" wire:click.prevent="redirectGoogleLogin" wire:target="redirectGoogleLogin"
                                     wire:loading.class="am-btn_disable" class="am-signinoption_btn">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21"
@@ -1287,7 +1293,7 @@ new #[Layout('layouts.guest')] class extends Component {
                                             d="M10.5003 4.97884C11.8461 4.97884 13.0544 5.44134 14.0044 6.34967L16.6336 3.72051C15.0461 2.24134 12.9711 1.33301 10.5003 1.33301C6.91693 1.33301 3.81693 3.38717 2.30859 6.38301L5.37109 8.75801C6.09193 6.59134 8.11276 4.97884 10.5003 4.97884Z"
                                             fill="#EA4335" />
                                     </svg>
-                                    {{ __('auth.sign_in_with_google') }}
+                                    <span data-translate="auth_sign_in_with_google">Iniciar sesión con Google</span>
                                 </a>
                             </div>
                         @endif
@@ -1345,7 +1351,7 @@ new #[Layout('layouts.guest')] class extends Component {
                             </span>
                         </button>
 
-                        <a href="#" @click.prevent="showForgot = false; $wire.set('forgot_status', '')"
+                        <a href="#" @click.prevent="showForgot = false"
                             class="cg-forgot" style="align-self: center; margin-top: 20px;">
                             <span data-translate="auth_back_to_login">← Volver a Iniciar Sesión</span>
                         </a>
@@ -1427,7 +1433,9 @@ new #[Layout('layouts.guest')] class extends Component {
                 <div class="cg-modal-terms">
                     <label>
                         <input type="checkbox" wire:model="google_terms" x-model="localTerms">
-                        <span>{!! __('auth.register_terms') !!}</span>
+                        <span data-translate="auth_register_terms">
+                            Acepto los <a href="https://www.classgoapp.com/terminos" target="_blank">Términos de servicio</a> y la <a href="https://www.classgoapp.com/terminos" target="_blank">Política de privacidad</a>
+                        </span>
                     </label>
                 </div>
 
@@ -1491,10 +1499,18 @@ new #[Layout('layouts.guest')] class extends Component {
                 }
             }
 
+            window.applyAuthTranslationsAfterLoad = applyAuthTranslationsAfterLoad;
+
             applyAuthTranslationsAfterLoad();
 
             document.addEventListener('languageChanged', function() {
                 applyAuthPlaceholders();
+            });
+
+            document.addEventListener('livewire:init', function() {
+                Livewire.hook('morph.updated', function() {
+                    setTimeout(applyAuthTranslationsAfterLoad, 50);
+                });
             });
 
             const toggleInput = (btnId, inputId) => {
