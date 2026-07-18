@@ -31,8 +31,8 @@ const translations = {
     todos_derechos: "Todos los derechos reservados.",
     desarrolladores: "Desarrolladores",
     // Home
-    learn: "Aclara tus dudas al instante con",
-    tutoring: "Tutorías en Línea",
+    learn: "Tutorías en Línea",
+    tutoring: "Cuando más lo necesitas",
     reach_goals:
       "Alcanza tus metas con tutorías personalizadas de los mejores expertos.<br> Conéctate con tutores dedicados para asegurar tu éxito.",
     reach_goals_short:
@@ -1164,8 +1164,8 @@ const translations = {
     desarrolladores: "Developers",
 
     // Home
-    learn: "Clear up your doubts instantly with",
-    tutoring: "Online Tutoring",
+    learn: "Online Tutoring",
+    tutoring: "When you need it most",
     reach_goals:
       "Achieve your goals with personalized tutoring from top experts.<br> Connect with dedicated tutors to ensure your success.",
     reach_goals_short:
@@ -2274,8 +2274,8 @@ const translations = {
     desarrolladores: "Desenvolvedores",
 
     // Home
-    learn: "Esclareça suas dúvidas na hora com",
-    tutoring: "Aulas Online",
+    learn: "Tutorias Online",
+    tutoring: "Quando você mais precisa",
     reach_goals:
       "Alcance seus objetivos com aulas personalizadas dos melhores especialistas.<br> Conecte-se com tutores dedicados para garantir seu sucesso.",
     reach_goals_short:
