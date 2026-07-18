@@ -1861,9 +1861,93 @@
                                         class="cancel-modal__btn cancel-modal__btn--danger">
                                         Sí, cancelar
                                     </button>
+                                 </div>
+                            </div>
+                        </div>
+
+                        <!-- Modal de Solicitar Horarios -->
+                        <div id="reqScheduleModal" class="cancel-modal hidden">
+                            <div class="cancel-modal__box" style="width: min(92vw, 450px); text-align: left;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem;">
+                                    <h3 style="font-size: 1.25rem; font-weight: 900; color: var(--primary-color); margin: 0;">Solicitar Horarios</h3>
+                                    <button type="button" onclick="closeReqScheduleModal()" style="background: none; border: none; font-size: 1.5rem; font-weight: bold; cursor: pointer; color: var(--text-muted);">&times;</button>
+                                </div>
+
+                                <div style="margin-bottom: 1rem;">
+                                    <label style="display: block; font-size: 0.75rem; font-weight: 700; color: var(--primary-color); margin-bottom: 0.3rem;">Materia Solicitada</label>
+                                    <div id="reqScheduleSubjectName" style="background: #f1f5f9; padding: 0.75rem 1rem; border-radius: 0.8rem; font-weight: 800; font-size: 0.9rem; color: var(--primary-color);">Materia</div>
+                                </div>
+
+                                <div style="margin-bottom: 1rem;">
+                                    <label style="display: block; font-size: 0.75rem; font-weight: 700; color: var(--primary-color); margin-bottom: 0.3rem;">Fecha sugerida (Hoy)</label>
+                                    <input type="text" id="reqScheduleDate" readonly style="width: 100%; padding: 0.75rem 1rem; border-radius: 0.8rem; border: 1px solid #e2e8f0; background: #f8fafc; font-weight: 800; font-size: 0.9rem; color: var(--text-muted); outline: none;" />
+                                </div>
+
+                                <!-- Hora de inicio -->
+                                <div style="margin-bottom: 1rem;">
+                                    <label style="display: block; font-size: 0.75rem; font-weight: 700; color: var(--primary-color); margin-bottom: 0.3rem;">Hora de inicio</label>
+                                    <div style="display: flex; gap: 0.5rem;">
+                                        <select id="reqScheduleHour" style="flex: 1; padding: 0.75rem; border-radius: 0.8rem; border: 1px solid #e2e8f0; font-weight: 800; font-size: 0.9rem; color: var(--primary-color); outline: none; background: #fff;">
+                                            <option value="1">01</option>
+                                            <option value="2">02</option>
+                                            <option value="3">03</option>
+                                            <option value="4">04</option>
+                                            <option value="5">05</option>
+                                            <option value="6">06</option>
+                                            <option value="7">07</option>
+                                            <option value="8">08</option>
+                                            <option value="9">09</option>
+                                            <option value="10">10</option>
+                                            <option value="11">11</option>
+                                            <option value="12" selected>12</option>
+                                        </select>
+                                        <select id="reqScheduleMinute" style="flex: 1; padding: 0.75rem; border-radius: 0.8rem; border: 1px solid #e2e8f0; font-weight: 800; font-size: 0.9rem; color: var(--primary-color); outline: none; background: #fff;">
+                                            <option value="00" selected>00</option>
+                                            <option value="05">05</option>
+                                            <option value="10">10</option>
+                                            <option value="15">15</option>
+                                            <option value="20">20</option>
+                                            <option value="25">25</option>
+                                            <option value="30">30</option>
+                                            <option value="35">35</option>
+                                            <option value="40">40</option>
+                                            <option value="45">45</option>
+                                            <option value="50">50</option>
+                                            <option value="55">55</option>
+                                        </select>
+                                        <select id="reqScheduleAmPm" style="flex: 1; padding: 0.75rem; border-radius: 0.8rem; border: 1px solid #e2e8f0; font-weight: 800; font-size: 0.9rem; color: var(--primary-color); outline: none; background: #fff;">
+                                            <option value="AM">AM</option>
+                                            <option value="PM" selected>PM</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Duración -->
+                                <div style="margin-bottom: 1.2rem;">
+                                    <label style="display: block; font-size: 0.75rem; font-weight: 700; color: var(--primary-color); margin-bottom: 0.3rem;">Duración sugerida</label>
+                                    <select id="reqScheduleDuration" style="width: 100%; padding: 0.75rem; border-radius: 0.8rem; border: 1px solid #e2e8f0; font-weight: 800; font-size: 0.9rem; color: var(--primary-color); outline: none; background: #fff;">
+                                        <option value="20 min" selected>20 min</option>
+                                        <option value="40 min">40 min</option>
+                                        <option value="1 hora">1 hora</option>
+                                        <option value="1h 20m">1h 20m</option>
+                                        <option value="1h 40m">1h 40m</option>
+                                        <option value="2 horas">2 horas</option>
+                                    </select>
+                                </div>
+
+                                <!-- Nota opcional -->
+                                <div style="margin-bottom: 1.5rem;">
+                                    <label style="display: block; font-size: 0.75rem; font-weight: 700; color: var(--primary-color); margin-bottom: 0.3rem;">Nota opcional</label>
+                                    <textarea id="reqScheduleNote" placeholder="Ej. Necesito ayuda con la tarea de álgebra..." maxlength="300" style="width: 100%; height: 80px; padding: 0.75rem; border-radius: 0.8rem; border: 1px solid #e2e8f0; font-family: inherit; font-size: 0.85rem; outline: none; resize: none;"></textarea>
+                                </div>
+
+                                <div style="display: flex; gap: 0.7rem;">
+                                    <button type="button" onclick="closeReqScheduleModal()" class="cancel-modal__btn cancel-modal__btn--secondary" style="flex: 1; padding: 0.85rem;">Cancelar</button>
+                                    <button type="button" id="btnSubmitReqSchedule" onclick="submitReqSchedule()" class="cancel-modal__btn" style="flex: 1; background: var(--orange); color: white; padding: 0.85rem; font-weight: 900;">Enviar Solicitud</button>
                                 </div>
                             </div>
                         </div>
+
                         <div id="waitMsg"
                             style="margin-top:.6rem;font-size:.85rem;color:var(--text-muted);font-weight:800;"></div>
                     </div>
@@ -1875,10 +1959,17 @@
                             style="font-size:.8rem;font-weight:1000;letter-spacing:.22em;color:#94a3b8;text-transform:uppercase;">
                             Tutores que aceptaron
                         </h3>
-                        <button id="btnNewSearch" type="button" class="pill hidden"
-                            style="letter-spacing:.14em;font-size:.6rem;">
-                            Nueva solicitud
-                        </button>
+                        <div style="display: flex; gap: 0.5rem; align-items: center;">
+                            <button id="btnNewSearch" type="button" class="pill hidden"
+                                style="letter-spacing:.14em;font-size:.6rem;">
+                                Nueva solicitud
+                            </button>
+                            <button id="btnRequestSchedule" type="button" class="pill hidden"
+                                style="letter-spacing:.14em;font-size:.6rem; background: var(--orange); color: white; border-color: var(--orange);"
+                                onclick="openReqScheduleModal()">
+                                Solicitar horarios
+                            </button>
+                        </div>
                     </div>
 
                     <div id="tutor-results" class="tutor-grid"></div>
@@ -2272,6 +2363,7 @@
         const batchExpireCountdownEl = document.getElementById('batchExpireCountdown');
         const waitMsg = document.getElementById('waitMsg');
         const btnNewSearch = document.getElementById('btnNewSearch');
+        const btnRequestSchedule = document.getElementById('btnRequestSchedule');
         const btnCancelBatch = document.getElementById('btnCancelBatch');
         const cancelBatchModal = document.getElementById('cancelBatchModal');
         const btnCancelNo = document.getElementById('btnCancelNo');
@@ -2370,6 +2462,9 @@
                     batchExpireCountdownEl.classList.remove('expire-normal', 'expire-soon');
                     batchExpireCountdownEl.classList.add('expire-dead', 'expire-pulse');
                     if (waitMsg) waitMsg.textContent = 'El batch expiró. Inicia una nueva solicitud.';
+                    if (acceptedMap.size === 0 && btnRequestSchedule) {
+                        btnRequestSchedule.classList.remove('hidden');
+                    }
                     return;
                 }
 
@@ -2498,6 +2593,9 @@
                 currentBatchId = null;
                 if (btnNewSearch) btnNewSearch.classList.remove('hidden');
                 if (waitMsg) waitMsg.textContent = 'La búsqueda terminó. Puedes iniciar una nueva solicitud.';
+                if (acceptedMap.size === 0 && btnRequestSchedule) {
+                    btnRequestSchedule.classList.remove('hidden');
+                }
             }
         }
 
@@ -2518,6 +2616,7 @@
 
             if (wBatchId) wBatchId.textContent = String(batchId);
             if (btnNewSearch) btnNewSearch.classList.add('hidden');
+            if (btnRequestSchedule) btnRequestSchedule.classList.add('hidden');
             if (waitMsg) waitMsg.textContent = '';
 
             startBatchExpireCountdown();
@@ -3272,12 +3371,20 @@
             }
         });
 
+        document.getElementById('reqScheduleModal')?.addEventListener('click', (event) => {
+            if (event.target === document.getElementById('reqScheduleModal')) {
+                closeReqScheduleModal();
+            }
+        });
+
         /* ========================================================================
           10) BOTÓN: Nueva solicitud (reset total)
         ======================================================================== */
         btnNewSearch?.addEventListener('click', async () => {
             currentBatchId = null;
             stopPollingAll();
+
+            btnRequestSchedule?.classList.add('hidden');
 
             state.activeHeroId = null; // ✅ importante
             state.receipts = {}; // opcional, pero recomendable
@@ -3366,6 +3473,143 @@
                 closeQRModal();
             }
         });
+
+        function openReqScheduleModal() {
+            const modal = document.getElementById('reqScheduleModal');
+            const subjectLabel = document.getElementById('reqScheduleSubjectName');
+            const dateInput = document.getElementById('reqScheduleDate');
+            
+            if (subjectLabel) {
+                subjectLabel.textContent = materiaSeleccionadaNombre || 'Materia';
+            }
+            
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+            const todayStr = `${yyyy}-${mm}-${dd}`;
+            if (dateInput) {
+                dateInput.value = todayStr;
+            }
+            
+            const noteInput = document.getElementById('reqScheduleNote');
+            if (noteInput) noteInput.value = '';
+            
+            const hourInput = document.getElementById('reqScheduleHour');
+            if (hourInput) hourInput.value = '12';
+            
+            const minuteInput = document.getElementById('reqScheduleMinute');
+            if (minuteInput) minuteInput.value = '00';
+            
+            const ampmInput = document.getElementById('reqScheduleAmPm');
+            if (ampmInput) ampmInput.value = 'PM';
+            
+            const durationInput = document.getElementById('reqScheduleDuration');
+            if (durationInput) durationInput.value = '20 min';
+            
+            if (modal) {
+                modal.classList.remove('hidden');
+            }
+        }
+
+        function closeReqScheduleModal() {
+            const modal = document.getElementById('reqScheduleModal');
+            if (modal) {
+                modal.classList.add('hidden');
+            }
+        }
+
+        async function submitReqSchedule() {
+            const btnSubmit = document.getElementById('btnSubmitReqSchedule');
+            if (btnSubmit) btnSubmit.disabled = true;
+
+            const subjectId = materiaSeleccionadaId;
+            const dateVal = document.getElementById('reqScheduleDate').value;
+            const hour = document.getElementById('reqScheduleHour').value;
+            const minute = document.getElementById('reqScheduleMinute').value;
+            const ampm = document.getElementById('reqScheduleAmPm').value;
+            const duration = document.getElementById('reqScheduleDuration').value;
+            const note = document.getElementById('reqScheduleNote').value.trim();
+
+            if (!subjectId) {
+                alert('No se ha seleccionado ninguna materia.');
+                if (btnSubmit) btnSubmit.disabled = false;
+                return;
+            }
+
+            let startHour24 = parseInt(hour);
+            let startMinute = parseInt(minute);
+            if (ampm === 'PM' && startHour24 !== 12) {
+                startHour24 += 12;
+            } else if (ampm === 'AM' && startHour24 === 12) {
+                startHour24 = 0;
+            }
+
+            const startTimeStr = `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')} ${ampm}`;
+
+            let durationMins = 20;
+            if (duration === '20 min') durationMins = 20;
+            else if (duration === '40 min') durationMins = 40;
+            else if (duration === '1 hora') durationMins = 60;
+            else if (duration === '1h 20m') durationMins = 80;
+            else if (duration === '1h 40m') durationMins = 100;
+            else if (duration === '2 horas') durationMins = 120;
+
+            const totalMins = startHour24 * 60 + startMinute + durationMins;
+            const endHour24 = Math.floor(totalMins / 60) % 24;
+            const endMinute = totalMins % 60;
+
+            const endAmPm = endHour24 >= 12 ? 'PM' : 'AM';
+            let endHour12 = endHour24 % 12;
+            if (endHour12 === 0) endHour12 = 12;
+
+            const endTimeStr = `${String(endHour12).padStart(2, '0')}:${String(endMinute).padStart(2, '0')} ${endAmPm}`;
+
+            const timeRangeStr = `${startTimeStr} - ${endTimeStr}`;
+
+            const payload = {
+                subject_id: subjectId,
+                preferred_date: dateVal,
+                preferred_time: timeRangeStr,
+                note: note,
+                notify_admin: true
+            };
+
+            const csrf = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+            try {
+                const response = await fetch('/student/booking/solicitar-tutor', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrf,
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await response.json();
+
+                if (!response.ok || !data.success) {
+                    let errorText = data.message || 'Error al enviar la solicitud.';
+                    if (response.status === 422 && data.errors) {
+                        errorText = 'Revisa los campos:\n';
+                        for (const field in data.errors) {
+                            errorText += `- ${data.errors[field][0]}\n`;
+                        }
+                    }
+                    alert(errorText);
+                } else {
+                    alert('¡Solicitud enviada con éxito a los tutores calificados!');
+                    closeReqScheduleModal();
+                }
+            } catch (error) {
+                console.error('Error al solicitar tutor:', error);
+                alert('Ocurrió un error al procesar tu solicitud.');
+            } finally {
+                if (btnSubmit) btnSubmit.disabled = false;
+            }
+        }
 
         init();
     </script>

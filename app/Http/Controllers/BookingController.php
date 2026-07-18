@@ -1334,10 +1334,66 @@ class BookingController extends Controller
                                 ->subject("📚 Solicitud de tutoría: {$subjectName}");
                     }
                 );
+
+                // Obtener TODOS los tokens FCM activos del tutor
+                $tutorTokens = DB::table('fcm_tokens')
+                    ->where('user_id', $tutor->id)
+                    ->whereNotNull('token')
+                    ->where('token', '!=', '')
+                    ->pluck('token')
+                    ->unique()
+                    ->toArray();
+
+                if (!empty($tutorTokens)) {
+                    $fcmService = new \App\Services\FcmService();
+                    $fcmService->sendNotificationToTokens(
+                        $tutorTokens,
+                        'Nueva solicitud de tutoría',
+                        "El estudiante {$studentName} te ha solicitado una tutoría de {$subjectName}.",
+                        [
+                            'type' => 'solicitud_tutor_personalizada',
+                            'screen' => 'solicitud_detalle',
+                            'data_tutor' => json_encode([
+                                'id' => $tutor->id,
+                                'nombre' => $studentName,
+                                'materia' => $subjectName,
+                                'date' => $preferredDate,
+                                'time' => $preferredTime,
+                                'duration' => $durationStr,
+                                'note' => $note,
+                                'token' => $tutorToken,
+                            ]),
+                        ]
+                    );
+                }
                 $sent++;
             } catch (\Throwable $e) {
                 Log::error("solicitarTutor: error al enviar correo a {$tutor->email}: " . $e->getMessage());
                 $errors++;
+            }
+        }
+
+        // Notificar al encargado (MAIL_ADMIN en .env) — solo en solicitud de horario desde batch expirado
+        if ($request->notify_admin && ($adminEmail = env('MAIL_ADMIN'))) {
+            try {
+                Mail::send(
+                    'emails.admin-solicitud-horario',
+                    [
+                        'studentName'   => $studentName,
+                        'studentEmail'  => $student->email,
+                        'subjectName'   => $subjectName,
+                        'preferredDate' => $formattedDate,
+                        'preferredTime' => $preferredTime,
+                        'note'          => $note,
+                        'requestDate'   => $requestDate,
+                    ],
+                    function ($message) use ($adminEmail, $subjectName) {
+                        $message->to($adminEmail)
+                                ->subject("🗓️ Nueva solicitud de horario: {$subjectName}");
+                    }
+                );
+            } catch (\Throwable $e) {
+                Log::error('solicitarTutor: error al notificar al encargado: ' . $e->getMessage());
             }
         }
 
@@ -1497,6 +1553,38 @@ class BookingController extends Controller
             Log::error("rejectNegotiation mail error: " . $e->getMessage());
         }
 
+        // Enviar notificación push (FCM)
+        try {
+            $recipientTokens = DB::table('fcm_tokens')
+                ->where('user_id', $recipient->id)
+                ->whereNotNull('token')
+                ->where('token', '!=', '')
+                ->pluck('token')
+                ->unique()
+                ->toArray();
+
+            if (!empty($recipientTokens)) {
+                $recipientToken = ($role === 'tutor') ? $tRequest->student_token : $tRequest->tutor_token;
+                $fcmService = new \App\Services\FcmService();
+                $fcmService->sendNotificationToTokens(
+                    $recipientTokens,
+                    'Solicitud de tutoría rechazada',
+                    "La solicitud de tutoría de {$subjectName} fue rechazada por {$senderName}.",
+                    [
+                        'type' => 'solicitud_tutor_personalizada',
+                        'screen' => 'solicitud_detalle',
+                        'data_tutor' => json_encode([
+                            'id' => $tRequest->id,
+                            'token' => $recipientToken,
+                            'status' => 'rejected',
+                        ]),
+                    ]
+                );
+            }
+        } catch (\Throwable $e) {
+            Log::error("rejectNegotiation FCM error: " . $e->getMessage());
+        }
+
         return response()->json(['success' => true, 'message' => 'Solicitud rechazada con éxito.']);
     }
 
@@ -1555,6 +1643,44 @@ class BookingController extends Controller
             } catch (\Throwable $e) {
                 Log::error("acceptNegotiation mail error: " . $e->getMessage());
             }
+        }
+
+        // Enviar notificación push (FCM)
+        try {
+            $recipient = ($role === 'tutor') ? $student : $tutor;
+            $recipientToken = ($role === 'tutor') ? $tRequest->student_token : $tRequest->tutor_token;
+            $senderName = ($role === 'tutor') ? ($tutor->full_name ?: ($tutor->name ?? 'Tutor')) : ($student->full_name ?: ($student->name ?? 'Estudiante'));
+            $body = ($role === 'tutor') 
+                ? "El tutor {$senderName} ha aceptado tu solicitud de tutoría de {$subjectName}."
+                : "El estudiante {$senderName} ha aceptado tu propuesta de tutoría de {$subjectName}.";
+
+            $recipientTokens = DB::table('fcm_tokens')
+                ->where('user_id', $recipient->id)
+                ->whereNotNull('token')
+                ->where('token', '!=', '')
+                ->pluck('token')
+                ->unique()
+                ->toArray();
+
+            if (!empty($recipientTokens)) {
+                $fcmService = new \App\Services\FcmService();
+                $fcmService->sendNotificationToTokens(
+                    $recipientTokens,
+                    'Propuesta de tutoría aceptada',
+                    $body,
+                    [
+                        'type' => 'solicitud_tutor_personalizada',
+                        'screen' => 'solicitud_detalle',
+                        'data_tutor' => json_encode([
+                            'id' => $tRequest->id,
+                            'token' => $recipientToken,
+                            'status' => 'accepted',
+                        ]),
+                    ]
+                );
+            }
+        } catch (\Throwable $e) {
+            Log::error("acceptNegotiation FCM error: " . $e->getMessage());
         }
 
         return response()->json(['success' => true, 'message' => 'Solicitud aceptada con éxito.']);
@@ -1631,6 +1757,41 @@ class BookingController extends Controller
             );
         } catch (\Throwable $e) {
             Log::error("counterNegotiation mail error: " . $e->getMessage());
+        }
+
+        // Enviar notificación push (FCM)
+        try {
+            $recipientTokens = DB::table('fcm_tokens')
+                ->where('user_id', $recipient->id)
+                ->whereNotNull('token')
+                ->where('token', '!=', '')
+                ->pluck('token')
+                ->unique()
+                ->toArray();
+
+            if (!empty($recipientTokens)) {
+                $fcmService = new \App\Services\FcmService();
+                $fcmService->sendNotificationToTokens(
+                    $recipientTokens,
+                    'Nueva contrapropuesta de tutoría',
+                    "{$senderName} ha enviado una contrapropuesta para la tutoría de {$subjectName}.",
+                    [
+                        'type' => 'solicitud_tutor_personalizada',
+                        'screen' => 'solicitud_detalle',
+                        'data_tutor' => json_encode([
+                            'id' => $tRequest->id,
+                            'token' => $recipientToken,
+                            'status' => $newStatus,
+                            'date' => $request->counter_date,
+                            'time' => $request->counter_time,
+                            'duration' => $request->counter_duration,
+                            'note' => $request->note ?? '',
+                        ]),
+                    ]
+                );
+            }
+        } catch (\Throwable $e) {
+            Log::error("counterNegotiation FCM error: " . $e->getMessage());
         }
 
         return response()->json(['success' => true, 'message' => 'Contrapropuesta enviada con éxito.']);

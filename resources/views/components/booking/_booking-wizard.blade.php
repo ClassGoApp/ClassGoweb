@@ -1776,7 +1776,7 @@
 
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    (function() {
         console.log('🚀 WIZARD CARGADO - 3 instituciones');
 
 
@@ -1931,15 +1931,16 @@
 
 
 
-        document.addEventListener('keydown', (e) => {
+        if (window._bookingWizardEscapeListener) {
+            document.removeEventListener('keydown', window._bookingWizardEscapeListener);
+        }
+        window._bookingWizardEscapeListener = (e) => {
             if (e.key !== 'Escape') return;
             if (!modal || modal.style.display !== 'block') return;
-
-
             if (loader && loader.style.display === 'flex') return;
-
             closeModal();
-        });
+        };
+        document.addEventListener('keydown', window._bookingWizardEscapeListener);
 
 
         const institutionSelect = document.getElementById('js-institution-select');
@@ -2125,15 +2126,23 @@
         });
 
 
-        document.addEventListener('click', (e) => {
+        if (window._bookingWizardCloseDDClickListener) {
+            document.removeEventListener('click', window._bookingWizardCloseDDClickListener);
+        }
+        window._bookingWizardCloseDDClickListener = (e) => {
             if (!dd) return;
             if (!dd.contains(e.target)) closeDD();
-        });
+        };
+        document.addEventListener('click', window._bookingWizardCloseDDClickListener);
 
 
-        document.addEventListener('keydown', (e) => {
+        if (window._bookingWizardCloseDDEscapeListener) {
+            document.removeEventListener('keydown', window._bookingWizardCloseDDEscapeListener);
+        }
+        window._bookingWizardCloseDDEscapeListener = (e) => {
             if (e.key === 'Escape') closeDD();
-        });
+        };
+        document.addEventListener('keydown', window._bookingWizardCloseDDEscapeListener);
 
 
         function resetModalState() {
@@ -2311,7 +2320,11 @@
         });
 
 
-        window.addEventListener('resize', toggleScrollCalendarBtn);
+        if (window._bookingWizardResizeListener) {
+            window.removeEventListener('resize', window._bookingWizardResizeListener);
+        }
+        window._bookingWizardResizeListener = toggleScrollCalendarBtn;
+        window.addEventListener('resize', window._bookingWizardResizeListener);
 
 
         toggleScrollCalendarBtn();
@@ -2660,12 +2673,16 @@
         }
 
 
-        document.addEventListener('click', function(e) {
+        if (window._bookingWizardOpenClickListener) {
+            document.removeEventListener('click', window._bookingWizardOpenClickListener);
+        }
+        window._bookingWizardOpenClickListener = function(e) {
             if (e.target.closest('.js-open-booking')) {
                 e.preventDefault();
                 openModal();
             }
-        });
+        };
+        document.addEventListener('click', window._bookingWizardOpenClickListener);
         closeBtn.addEventListener('click', closeModal);
 
         let antiCloseArmed = false;
@@ -3077,43 +3094,34 @@
 
 
         function updateNavButtons() {
-    const lang = localStorage.getItem('selectedLanguage') || 'es';
-    const t = typeof translations !== 'undefined'
-        ? (translations[lang] || translations.es)
-        : null;
+            const lang = localStorage.getItem('selectedLanguage') || 'es';
+            const t = typeof translations !== 'undefined'
+                ? (translations[lang] || translations.es)
+                : null;
+
+            backBtn.disabled = false;
 
             if (currentStep === 1) {
-                backBtn.disabled = false;
-                backBtn.textContent = 'Cancelar';
+                backBtn.textContent = t?.booking_cancel || 'Cancelar';
                 if (hasNoTutors) {
-                    nextBtn.textContent = 'Solicitar Tutores';
+                    nextBtn.textContent = t?.booking_request_tutors || 'Solicitar Tutores';
                     nextBtn.classList.add('btn-request'); // Cambia a naranja
                 } else {
-                    nextBtn.textContent = 'Siguiente';
+                    nextBtn.textContent = t?.booking_next || 'Siguiente';
+                    nextBtn.classList.remove('btn-request');
                 }
             } else if (currentStep === 'request_tutor') {
-                backBtn.disabled = false;
-                backBtn.textContent = 'Atrás';
-                nextBtn.textContent = 'Enviar Solicitud';
+                backBtn.textContent = t?.booking_back || 'Atrás';
+                nextBtn.textContent = t?.booking_send_request || 'Enviar Solicitud';
                 nextBtn.classList.add('btn-request'); // Mantiene el naranja
             } else {
-                backBtn.disabled = false;
-                backBtn.textContent = 'Atrás';
-                nextBtn.textContent = currentStep === 3 ? 'Finalizar Reserva' : 'Siguiente';
+                backBtn.textContent = t?.booking_back || 'Atrás';
+                nextBtn.textContent = currentStep === 3
+                    ? (t?.booking_finish || 'Finalizar Reserva')
+                    : (t?.booking_next || 'Siguiente');
+                nextBtn.classList.remove('btn-request');
             }
         }
-    backBtn.disabled = false;
-
-    if (currentStep === 1) {
-        backBtn.textContent = t?.booking_cancel || 'Cancelar';
-    } else {
-        backBtn.textContent = t?.booking_back || 'Atrás';
-    }
-
-    nextBtn.textContent = currentStep === 3
-        ? (t?.booking_finish || 'Finalizar Reserva')
-        : (t?.booking_next || 'Siguiente');
-}
 
         // ====== CARGA DE MATERIAS SEGÚN INSTITUCIÓN ======
         async function loadSubjectsByInstitution(institution) {
@@ -3818,19 +3826,23 @@
                 return false;
             }
         }
-                document.addEventListener('languageChanged', () => {
-                 translateBookingModal();
-
-                 if (calendarYear !== null && calendarMonth !== null && miniCalendarEl) {
-                     renderMiniCalendar(calendarYear, calendarMonth);
+                if (window._bookingWizardLanguageChangedListener) {
+                    document.removeEventListener('languageChanged', window._bookingWizardLanguageChangedListener);
                 }
+                window._bookingWizardLanguageChangedListener = () => {
+                    translateBookingModal();
 
-                if (selectedDateLabel && selectedDate) {
-                    selectedDateLabel.textContent = selectedDate === todayStr()
-                        ? bookingText('booking_today', 'Hoy')
-                        : selectedDate;
-                }
-            });
+                    if (calendarYear !== null && calendarMonth !== null && miniCalendarEl) {
+                        renderMiniCalendar(calendarYear, calendarMonth);
+                    }
+
+                    if (selectedDateLabel && selectedDate) {
+                        selectedDateLabel.textContent = selectedDate === todayStr()
+                            ? bookingText('booking_today', 'Hoy')
+                            : selectedDate;
+                    }
+                };
+                document.addEventListener('languageChanged', window._bookingWizardLanguageChangedListener);
 
                if (typeof selectLanguage === 'function') {
                 const savedLang = localStorage.getItem('selectedLanguage') || 'es';
@@ -3957,7 +3969,7 @@
         // Ejecutar chequeo de URL
         checkUrlForCounterOffer();
 
-    });
+    })();
 </script>
 
 </div>
