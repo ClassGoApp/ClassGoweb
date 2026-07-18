@@ -47,7 +47,8 @@ class IdentityController extends Controller
         }
 
         if($identity){
-            return $this->error(data: null,message: __('api.already_exists'),code: Response::HTTP_NOT_FOUND);
+            $userVerification = $userIdentity->getUserIdentityVerification()->load('address');
+            return $this->success(data: new IdentityResource($userVerification),message: __('api.identity_verification_data_submitted_successfully'));
         }
 
 
@@ -68,26 +69,23 @@ class IdentityController extends Controller
 
         if ($request->hasFile('image')) {
             $fileName    = uniqueFileName('public/identity', $request->image->getClientOriginalName());
-            $verificationData['personal_photo'] = $request->image->storeAs('personal_photo', $fileName, 'public');
-        } else {
-            $verificationData['personal_photo'] = $request->image;
+            $request->image->move(public_path('storage/identity_photo'), $fileName);
+            $verificationData['personal_photo'] = 'identity_photo/' . $fileName;
         }
 
         if(Auth::user()->hasRole('student')){
 
             if ($request->hasFile('transcript')) {
                 $fileName    = uniqueFileName('public/identity', $request->transcript->getClientOriginalName());
-                $verificationData['transcript'] = $request->transcript->storeAs('transcript', $fileName, 'public');
-            } else {
-                $verificationData['transcript'] = $request->transcript;
+                $request->transcript->move(public_path('storage/identity_photo'), $fileName);
+                $verificationData['transcript'] = 'identity_photo/' . $fileName;
             }
         } 
         else{
             if ($request->hasFile('identificationCard')) {
                 $fileName    = uniqueFileName('public/identity', $request->identificationCard->getClientOriginalName());
-            $verificationData['attachments'] = $request->identificationCard->storeAs('identificationCard', $fileName, 'public');
-            } else {
-                $verificationData['attachments'] = $request->identificationCard;
+                $request->identificationCard->move(public_path('storage/identity_photo'), $fileName);
+                $verificationData['attachments'] = 'identity_photo/' . $fileName;
             }
         }
 

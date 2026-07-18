@@ -278,4 +278,16 @@ class HomeController extends Controller
             ->whereNotNull('users.terms_accepted_at')
             ->count();
     }
+
+    public function stats()
+    {
+        $counts = $this->countUserService->getUserCounts();
+
+        return response()->json([
+            'success' => true,
+            'total_users' => (int) $counts['totalUsers'],
+            'total_tutors' => (int) $counts['tutorCount'],
+            'total_students' => (int) $counts['studentCount'],
+        ]);
+    }
 }

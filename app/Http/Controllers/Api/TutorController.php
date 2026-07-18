@@ -525,7 +525,7 @@ class TutorController extends Controller
                 ]);
 
             if ($request->filled('tutor_id')) {
-                $query->where('id', $request->tutor_id);
+                $query->where('users.id', $request->tutor_id);
             }
 
             // Ordenar por el nombre del tutor (usando el perfil relacionado)
@@ -545,7 +545,7 @@ class TutorController extends Controller
 
             $result = $tutors->map(function ($tutor) {
                 $rutaBD = $tutor->profile ? $tutor->profile->image : null;
-                $url = $rutaBD ? url('public/storage/' . $rutaBD) : null;
+                $url = $rutaBD ? url('storage/' . $rutaBD) : null;
                 $fullName = $tutor->profile ? trim($tutor->profile->first_name . ' ' . $tutor->profile->last_name) : 'N/A';
 
                 return [
@@ -599,7 +599,7 @@ class TutorController extends Controller
                 'tutor' => [
                     'id' => $tutor->id,
                     'name' => $tutor->profile ? $tutor->profile->full_name : 'N/A',
-                    'image' => $tutor->profile ? url('public/storage/' . $tutor->profile->image) : null,
+                    'image' => $tutor->profile ? url('storage/' . $tutor->profile->image) : null,
                     'price' => $tutor->profile ? (float) $tutor->profile->price : null,
                 ],
                 'current_time' => $now->format('Y-m-d H:i:s'),
@@ -997,7 +997,7 @@ class TutorController extends Controller
                         'first_name' => $tutor->profile ? $tutor->profile->first_name : null,
                         'last_name' => $tutor->profile ? $tutor->profile->last_name : null,
                         'full_name' => $tutor->profile ? $tutor->profile->first_name . ' ' . $tutor->profile->last_name : 'N/A',
-                        'image' => $tutor->profile ? url('public/storage/' . $tutor->profile->image) : null,
+                        'image' => $tutor->profile ? url('storage/' . $tutor->profile->image) : null,
                         'available_for_tutoring' => $tutor->available_for_tutoring,
                         'price' => $tutor->profile ? (float) $tutor->profile->price : null,
                         'completed_courses_count' => $tutor->completed_courses_count,
