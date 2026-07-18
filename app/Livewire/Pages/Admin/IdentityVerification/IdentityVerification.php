@@ -140,6 +140,21 @@ class IdentityVerification extends Component
                     $this->notifyStudentsAboutTutorVerification($userIdentityVerification->user);
                 } else {
                     dispatch(new SendNotificationJob('identityVerificationRejected', $userIdentityVerification->user, ['name' => $userIdentityVerification?->name]));
+
+                    try {
+                        $fcmToken = $userIdentityVerification->user->latestFcmToken();
+                        if ($fcmToken) {
+                            $fcmService = app(FcmService::class);
+                            $fcmService->sendNotification(
+                                $fcmToken,
+                                'Verificación Rechazada',
+                                'Tu verificación de identidad ha sido rechazada. Ingresa a la app para intentarlo de nuevo.',
+                                ['type' => 'identity_verification_rejected']
+                            );
+                        }
+                    } catch (\Exception $e) {
+                        \Log::error('Error al enviar FCM de rechazo: ' . $e->getMessage());
+                    }
                 }
                 if ($params['type'] == 'rejected') {
                     $userIdentityVerification->address()->delete();
@@ -201,6 +216,22 @@ class IdentityVerification extends Component
             $this->notifyStudentsAboutTutorVerification($userIdentityVerification->user);
         } else {
             dispatch(new SendNotificationJob('identityVerificationRejected', $userIdentityVerification->user, ['name' => $userIdentityVerification?->name]));
+
+            try {
+                $fcmToken = $userIdentityVerification->user->latestFcmToken();
+                if ($fcmToken) {
+                    $fcmService = app(FcmService::class);
+                    $fcmService->sendNotification(
+                        $fcmToken,
+                        'Verificación Rechazada',
+                        'Tu verificación de identidad ha sido rechazada. Ingresa a la app para intentarlo de nuevo.',
+                        ['type' => 'identity_verification_rejected']
+                    );
+                }
+            } catch (\Exception $e) {
+                \Log::error('Error al enviar FCM de rechazo: ' . $e->getMessage());
+            }
+
             $userIdentityVerification->address()->delete();
             $userIdentityVerification->delete();
         }

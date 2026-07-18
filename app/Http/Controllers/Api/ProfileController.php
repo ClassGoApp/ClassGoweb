@@ -102,7 +102,7 @@ class ProfileController extends Controller
         }
         
         $rutaBD = $user->profile->image ?? null;
-        $url = $rutaBD ? url('public/storage/' . $rutaBD) : null;
+        $url = $rutaBD ? url('storage/' . $rutaBD) : null;
         
         // Verificar si el usuario tiene Google Calendar conectado
         $googleAccessToken = $user->accountSetting()->where('meta_key', 'google_access_token')->first();
@@ -145,7 +145,7 @@ class ProfileController extends Controller
         $user->profile->image = $relativePath;
         $user->profile->save();
 
-        $url = url('public/storage/' . $relativePath);
+        $url = url('storage/' . $relativePath);
 
         return response()->json([
             'id' => $user->id,
