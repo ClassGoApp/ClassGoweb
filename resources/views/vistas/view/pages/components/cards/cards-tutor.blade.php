@@ -1,5 +1,11 @@
 <div class="carousel-wrapper" data-carousel="new-tutor-carousel">
-    <button class="carousel-btn prev" type="button" aria-label="Anterior" disabled>‹</button>
+    <button class="carousel-btn prev" 
+        type="button" 
+        aria-label="Anterior"
+        data-aria-label-key="tutor_carousel_prev"
+        disabled>
+        ‹
+    </button>
 
     <div class="carousel-viewport">
         <div class="carousel-track">
@@ -8,7 +14,9 @@
                     {{-- FOTO (Fondo con efecto Zoom) --}}
                     <div class="tutor-image-wrapper">
                         <img src="{{ $tutor->profile->image ? asset('storage/' . $tutor->profile->image) : asset('images/tutors/default.png') }}" 
-                            alt="Foto de {{ $tutor->profile->first_name }}" 
+                            alt="Foto de {{ $tutor->profile->first_name }}"
+                            data-alt-prefix-key="tutor_carousel_photo_of"
+                            data-tutor-name="{{ $tutor->profile->first_name }}" 
                             class="tutor-foto"
                             onerror="this.src='{{ asset('images/tutors/default.png') }}'">
                     </div>
@@ -28,7 +36,13 @@
                                 </span>
                             </h3>
                             <p class="tutor-cargo">
-                                {{ Str::limit($tutor->profile->tagline ?? 'Tutor Profesional', 50) }}
+                                @if(!empty($tutor->profile->tagline))
+                                    {{ Str::limit($tutor->profile->tagline, 50) }}
+                                @else
+                                    <span data-translate="tutor_carousel_professional_tutor">
+                                        Tutor Profesional
+                                    </span>
+                                @endif
                             </p>
                         </div>
 
@@ -43,9 +57,9 @@
 
                             <div class="stat-item">
                                 <div class="stat-value">
-                                    <span class="stat-icon-emoji">📖</span>{{ $tutor->subjects_count }}4
+                                    <span class="stat-icon-emoji">📖</span>{{ $tutor->subjects_count }}
                                 </div>
-                                <div class="stat-label">Materias</div>
+                                <div class="stat-label" data-translate="subjects">Materias</div>
                             </div>
 
                             <div class="stat-item">
@@ -59,7 +73,7 @@
                         {{-- BOTONES --}}
                         <div class="tutor-actions">
                             <button class="btn-perfil" onclick="window.location.href='{{ route('tutor', ['slug' => $tutor->profile['slug']]) }}'">
-                                Ver perfil
+                                <span data-translate="view_profile">Ver perfil</span>
                             </button> 
                             <button class="btn-bookmark">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
@@ -76,6 +90,7 @@
                 <div class="tutor-image-wrapper">
                     <img src="{{ asset('images/home/models/img4.webp') }}"
                         alt="Ver más tutores"
+                        data-alt-key="see_more_tutors"
                         class="tutor-foto"
                         onerror="this.src='{{ asset('images/tutors/default.png') }}'">
                 </div>
@@ -88,17 +103,19 @@
                             <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                         </svg>
                     </div>
-                    <h3 style="color: white; font-size: 1.3rem; margin: 0 0 5px 0; font-weight: 700;">
+                    <h3 style="color: white; font-size: 1.3rem; margin: 0 0 5px 0; font-weight: 700;"
+                        data-translate="see_more_tutors">
                         Ver más tutores
                     </h3>
-                    <p style="color: #ccc; font-size: 0.85rem; margin: 0 0 15px 0;">
-                        Buscas tutores de acuerdo a lo que deseas aprender.
-                    </p>
+                    <p style="color: #ccc; font-size: 0.85rem; margin: 0 0 15px 0;"
+                        data-translate="find_tutors_description">
+                         Busca tutores de acuerdo a lo que deseas aprender.
+                        </p>
 
                     <a href="{{ route('buscar') }}">
                         <button class="btn-perfil" style="width: auto; padding: 0 25px; gap: 8px;">
                             
-                            <span>Explorar</span>
+                            <span data-translate="explore_tutors">Explorar</span>
                             
                             {{-- ICONO SVG ELEGANTE (Lupa) --}}
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" style="width: 18px; height: 18px;">
@@ -113,7 +130,13 @@
 
         </div>
     </div>
-    <button class="carousel-btn next" type="button" aria-label="Siguiente" disabled>›</button>
+    <button class="carousel-btn next" 
+        type="button" 
+        aria-label="Siguiente"
+        data-aria-label-key="tutor_carousel_next"
+        disabled>
+        ›
+    </button>
 </div>
 
 <style>
@@ -368,6 +391,53 @@
         const track = wrapper.querySelector('.carousel-track');
         const btnPrev = wrapper.querySelector('.carousel-btn.prev');
         const btnNext = wrapper.querySelector('.carousel-btn.next');
+
+        function tutorCarouselText(key, fallback = '') {
+            const lang = localStorage.getItem('selectedLanguage') || 'es';
+
+            if (typeof translations === 'undefined') {
+                return fallback;
+            }
+
+            const t = translations[lang] || translations.es;
+
+            return t[key] || fallback;
+        }
+
+        function applyTutorCarouselAttributeTranslations() {
+            const lang = localStorage.getItem('selectedLanguage') || 'es';
+
+            if (typeof translations === 'undefined') {
+                return;
+            }
+
+            const t = translations[lang] || translations.es;
+
+            document.querySelectorAll('[data-aria-label-key]').forEach((element) => {
+                const key = element.getAttribute('data-aria-label-key');
+
+                if (t[key]) {
+                    element.setAttribute('aria-label', t[key]);
+                }
+            });
+
+            document.querySelectorAll('[data-alt-prefix-key]').forEach((element) => {
+                const key = element.getAttribute('data-alt-prefix-key');
+                const tutorName = element.getAttribute('data-tutor-name') || '';
+
+                if (t[key]) {
+                    element.setAttribute('alt', `${t[key]} ${tutorName}`);
+                }
+            });
+
+            document.querySelectorAll('[data-alt-key]').forEach((element) => {
+                const key = element.getAttribute('data-alt-key');
+
+                if (t[key]) {
+                    element.setAttribute('alt', t[key]);
+                }
+            });
+        }
         
         if (!track) return;
 
@@ -448,10 +518,16 @@
         
         animateCards();
         updateButtons();
-        
+        applyTutorCarouselAttributeTranslations();
+
         window.addEventListener('load', () => {
             animateCards();
             updateButtons();
+            applyTutorCarouselAttributeTranslations();
+        });
+
+        document.addEventListener('languageChanged', function() {
+            applyTutorCarouselAttributeTranslations();
         });
     });
 </script>

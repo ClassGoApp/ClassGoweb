@@ -776,3 +776,11 @@
     .modern-dropdown-menu:focus {
         outline: none;
     }
+
+    .am-title_wrap .am-title h2 {
+        color: #1a2a36 !important;
+    }
+
+    .am-title_wrap .am-title p {
+        color: #6b7a87 !important;
+    }

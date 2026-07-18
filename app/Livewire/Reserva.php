@@ -6,6 +6,7 @@ use App\Models\PaymentSlotBooking;
 use App\Models\SlotBooking;
 use App\Models\User;
 use App\Models\UserSubject;
+use App\Services\AttachmentsService;
 use App\Services\ImagenesService;
 use App\Services\interfaces\ICuponesService;
 use App\Services\MailService;
@@ -15,11 +16,13 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
 class Reserva extends Component
 {
+
     use WithFileUploads;
 
     public Carbon $currentDate;
@@ -79,7 +82,10 @@ class Reserva extends Component
 
     public float $descuento = 0.0;
 
-    // ============== End Variables Cupones ===============//
+    public $material_apoyo=[];
+    public ?string $descripcion_material_apoyo=null;
+
+    //============== End Variables Cupones ===============//
 
     public bool $isAugustPromotion = false;
 
@@ -531,6 +537,16 @@ class Reserva extends Component
     /**
      * Finaliza la reserva. Se llama desde el formulario del modal.
      */
+    
+
+    #[On("archivo-agregado")]
+    public function agregarMaterialApoyo($archivo_temporal, $description= null){
+        // dd($archivo_temporal);
+        $this->material_apoyo = $archivo_temporal;
+        $this->descripcion_material_apoyo = $description;
+    }
+
+    #[On("ReservacionConfirmada")]
     public function makeReservation()
     {
         $sessionFee = $this->montoFinal;
@@ -630,15 +646,22 @@ class Reserva extends Component
                 'path' => $path,
             ]);
 
+            //----Guardamos el matarial de apoyo adjuntado por el estudiante ----//
+            
+            
             $slotBookingService = app(SlotBookingService::class);
             $reserva = $slotBookingService->crearReservaContinua(
                 $estudianteId,
                 $this->tutorId,
                 $this->selectedSubject,
                 $fechasParaReservar,
-                $sessionFee
+                $sessionFee,
+                $this->material_apoyo,
+                $this->descripcion_material_apoyo,
             );
-
+            if($this->material_apoyo){
+                app(AttachmentsService::class)->createAttachment($reserva, $this->material_apoyo, $this->descripcion_material_apoyo);
+            }
             Log::info('DEBUG makeReservation - reserva creada', [
                 'booking_id' => $reserva->id,
                 'start_time' => $reserva->start_time,

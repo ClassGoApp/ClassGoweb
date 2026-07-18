@@ -93,7 +93,9 @@
                 <h3 class="question-text"><span data-translate="encuesta_txt5"></span></h3>
 
                 <div class="rating-feedback-wrapper">
-                    <span id="rating-feedback-text"><span data-translate="encuesta_txt6"></span></span>
+                    <span id="rating-feedback-text" data-translate="encuesta_txt6">
+                        Selecciona las estrellas
+                    </span>
                 </div>
 
                 <div class="stars-container" id="rating-container-js">
@@ -125,7 +127,9 @@
                 </div>
 
                 <div class="action-footer">
-                    <button class="btn-next" onclick="EncuestaManager.next(3)"><span data-translate="encuesta_btn2"> ➜</button>
+                    <button class="btn-next" onclick="EncuestaManager.next(3)">
+                        <span data-translate="encuesta_btn2"></span> ➜
+                    </button>
                 </div>
             </div>
             <!-- si el usuario no esta logueado -->
@@ -135,19 +139,39 @@
                 <h3 class="question-text"><span data-translate="encuesta_txt7"></span></h3>
 
                 <div class="quick-tags-container">
-                    <button class="tag-bubble" data-text="Excelente servicio">🔥 <span data-translate="encuesta_op3"></span></button>
-                    <button class="tag-bubble" data-text="Muy rápido">🚀 <span data-translate="encuesta_op4"></span></button>
-                    <button class="tag-bubble" data-text="Precios justos">💲 <span data-translate="encuesta_op5"></span></button>
-                    <button class="tag-bubble" data-text="Falta variedad">📉 <span data-translate="encuesta_op6"></span></button>
-                    <button class="tag-bubble" data-text="Regular">😐 <span data-translate="encuesta_op7"></span></button>
+                    <button class="tag-bubble" data-text-key="encuesta_op3" data-fallback="Excelente servicio">
+                        🔥 <span data-translate="encuesta_op3"></span>
+                    </button>
+
+                    <button class="tag-bubble" data-text-key="encuesta_op4" data-fallback="Muy rápido">
+                        🚀 <span data-translate="encuesta_op4"></span>
+                    </button>
+
+                    <button class="tag-bubble" data-text-key="encuesta_op5" data-fallback="Precios justos">
+                        💲 <span data-translate="encuesta_op5"></span>
+                    </button>
+
+                    <button class="tag-bubble" data-text-key="encuesta_op6" data-fallback="Falta variedad">
+                        📉 <span data-translate="encuesta_op6"></span>
+                    </button>
+
+                    <button class="tag-bubble" data-text-key="encuesta_op7" data-fallback="Regular">
+                        😐 <span data-translate="encuesta_op7"></span>
+                    </button>
                 </div>
 
                 <div class="textarea-wrapper">
-                    <textarea id="comment-box" placeholder="O escribe aquí..." class="premium-input"></textarea>
+                    <textarea 
+                        id="comment-box" 
+                        placeholder="O escribe aquí..." 
+                        data-placeholder-key="encuesta_comment_placeholder"
+                        class="premium-input"></textarea>
                 </div>
 
                 <div class="action-footer">
-                    <button class="btn-next btn-finish" onclick="EncuestaManager.next('final')"><span data-translate="encuesta_btn2"></button>
+                    <button class="btn-next btn-finish" onclick="EncuestaManager.next('final')">
+                        <span data-translate="encuesta_btn2"></span>
+                    </button>
                 </div>
             </div>
 
@@ -183,22 +207,46 @@
             @auth
             <div class="step-content" data-step="3">
                 <div class="icon-header">💬</div>
-                <h3 class="question-text">Queremos saber tu opinión: <br>cuéntanos tu experiencia o deja tu comentario.</h3>
+                <h3 class="question-text">
+                    <span data-translate="encuesta_txt7">
+                        Queremos saber tu opinión: <br>cuéntanos tu experiencia o deja tu comentario.
+                    </span>
+                </h3>
 
                 <div class="quick-tags-container">
-                    <button class="tag-bubble" data-text="Excelente servicio">🔥 Excelente servicio</button>
-                    <button class="tag-bubble" data-text="Muy rápido">🚀 Muy rápido</button>
-                    <button class="tag-bubble" data-text="Precios justos">💲 Precios justos</button>
-                    <button class="tag-bubble" data-text="Falta variedad">📉 Falta variedad</button>
-                    <button class="tag-bubble" data-text="Regular">😐 Regular</button>
+                    <button class="tag-bubble" data-text-key="encuesta_op3" data-fallback="Excelente servicio">
+                        🔥 <span data-translate="encuesta_op3"></span>
+                    </button>
+
+                    <button class="tag-bubble" data-text-key="encuesta_op4" data-fallback="Muy rápido">
+                        🚀 <span data-translate="encuesta_op4"></span>
+                    </button>
+
+                    <button class="tag-bubble" data-text-key="encuesta_op5" data-fallback="Precios justos">
+                        💲 <span data-translate="encuesta_op5"></span>
+                    </button>
+
+                    <button class="tag-bubble" data-text-key="encuesta_op6" data-fallback="Falta variedad">
+                        📉 <span data-translate="encuesta_op6"></span>
+                    </button>
+
+                    <button class="tag-bubble" data-text-key="encuesta_op7" data-fallback="Regular">
+                        😐 <span data-translate="encuesta_op7"></span>
+                    </button>
                 </div>
 
                 <div class="textarea-wrapper">
-                    <textarea id="comment-box" placeholder="O escribe aquí..." class="premium-input"></textarea>
+                    <textarea 
+                        id="comment-box" 
+                        placeholder="O escribe aquí..." 
+                        data-placeholder-key="encuesta_comment_placeholder"
+                        class="premium-input"></textarea>
                 </div>
 
                 <div class="action-footer">
-                    <button class="btn-next btn-finish" onclick="EncuestaManager.submitAuth(this)">Finalizar Encuesta</button>
+                    <button class="btn-next btn-finish" onclick="EncuestaManager.submitAuth(this)">
+                        <span data-translate="encuesta_btn_finish">Finalizar Encuesta</span>
+                    </button>
                 </div>
             </div>
 
@@ -207,16 +255,18 @@
                     <div class="tugo-circle">
                         <img src="{{ asset('images/tugo-encuesta/tugo-pulgar-arriba.png') }}" alt="Success">
                     </div>
-                    <h2 class="final-title">¡Encuesta Completada!</h2>
+                    <h2 class="final-title" data-translate="encuesta_auth_completed_title">
+                        ¡Encuesta Completada!
+                    </h2>
 
-                    <p class="final-desc">
+                    <p class="final-desc" data-translate="encuesta_auth_completed_desc">
                         Tu opinión es muy valiosa para nosotros. Como agradecimiento, te enviaremos un cupón del 50% descuento al número que está asociado a tu cuenta.
                     </p>
                     <div class="btn-static-wrapper" id="trigger-encuesta-final">
                         <button class="btn-naranja-original" 
                                 onclick="window.location.reload()" 
                                 style="margin-top:20px; padding: 10px 30px; font-size:1rem; pointer-events: auto; cursor: pointer;">
-                            Cerrar
+                            <span data-translate="encuesta_close">Cerrar</span>
                         </button>
                     </div>
                 </div>
@@ -869,12 +919,39 @@
 
         let currentRating = 0;
 
+        function encuestaText(key, fallback = '') {
+            const lang = localStorage.getItem('selectedLanguage') || 'es';
+
+            if (typeof translations === 'undefined') {
+                return fallback;
+            }
+
+            const t = translations[lang] || translations.es;
+
+            return t[key] || fallback;
+        }
+
+        function applyEncuestaPlaceholders() {
+            document.querySelectorAll('[data-placeholder-key]').forEach((element) => {
+                const key = element.getAttribute('data-placeholder-key');
+                const fallback = element.getAttribute('placeholder') || '';
+
+                element.setAttribute('placeholder', encuestaText(key, fallback));
+            });
+        }
+
+        document.addEventListener('languageChanged', function() {
+            applyEncuestaPlaceholders();
+        });
+
         // --- Inicialización (DOM Ready) ---
         document.addEventListener('DOMContentLoaded', () => {
             const modal = document.getElementById('modal-encuesta-overlay');
             const toast = document.getElementById('toast-wrapper-fixed');
             if (modal) document.body.appendChild(modal);
             if (toast) document.body.appendChild(toast);
+
+             applyEncuestaPlaceholders();
 
             // LISTENERS
             const trigger = document.getElementById('trigger-encuesta-final');
@@ -899,7 +976,10 @@
                 tag.addEventListener('click', () => {
                     tags.forEach(t => t.classList.remove('selected'));
                     tag.classList.add('selected');
-                    textarea.value = tag.getAttribute('data-text');
+                    const key = tag.getAttribute('data-text-key');
+                    const fallback = tag.getAttribute('data-fallback') || '';
+
+                    textarea.value = encuestaText(key, fallback);
                 });
             });
 
@@ -920,7 +1000,10 @@
                     const feedbackText = document.getElementById('rating-feedback-text');
                     if (currentRating > 0) updateStars(currentRating, true);
                     else {
-                        feedbackText.textContent = "Selecciona las estrellas";
+                        feedbackText.textContent = encuestaText(
+                            'encuesta_txt6',
+                            'Selecciona las estrellas'
+                        );
                         feedbackText.style.color = "#ccc";
                         starBtns.forEach(b => b.classList.remove('filled', 'active-scale'));
                     }
@@ -941,18 +1024,18 @@
             if (stepToCheck === 1) {
                 const p1 = document.querySelector('input[name="p1"]:checked');
                 if (!p1) {
-                    showToast('ℹ', 'Selecciona una opción', '#3498db');
+                    showToast('ℹ', encuestaText('encuesta_select_option', 'Selecciona una opción'), '#3498db');
                     return false;
                 }
             } else if (stepToCheck === 2) {
                 if (currentRating === 0) {
-                    showToast('ℹ', 'Selecciona una calificación', '#3498db');
+                    showToast('ℹ', encuestaText('encuesta_select_rating', 'Selecciona una calificación'), '#3498db');
                     return false;
                 }
             } else if (stepToCheck === 3) {
                 const comment = document.getElementById('comment-box').value.trim();
                 if (comment === '') {
-                    showToast('ℹ', 'Escribe un comentario', '#3498db');
+                    showToast('ℹ', encuestaText('encuesta_write_comment', 'Escribe un comentario'), '#3498db');
                     document.getElementById('comment-box').style.borderColor = 'red';
                     return false;
                 } else {
@@ -977,7 +1060,10 @@
             // Resetear texto feedback estrellas
             const feedbackText = document.getElementById('rating-feedback-text');
             if (feedbackText) {
-                feedbackText.textContent = "Selecciona las estrellas";
+                feedbackText.textContent = encuestaText(
+                    'encuesta_txt6',
+                    'Selecciona las estrellas'
+                );
                 feedbackText.style.color = "#ccc";
             }
             
@@ -1067,7 +1153,7 @@
 
             if (btnToDisable) {
                 btnToDisable.disabled = true;
-                btnToDisable.innerText = "Enviando...";
+                btnToDisable.innerText = encuestaText('encuesta_sending', 'Enviando...');
             }
 
             try {
@@ -1094,19 +1180,19 @@
                 } else {
                     return {
                         success: false,
-                        message: data.message || 'Error desconocido'
+                        message: data.message || encuestaText('encuesta_unknown_error', 'Error desconocido')
                     };
                 }
             } catch (error) {
                 console.error(error);
                 return {
                     success: false,
-                    message: 'Error de conexión'
+                    message: encuestaText('encuesta_connection_error', 'Error de conexión')
                 };
             } finally {
                 if (btnToDisable) {
                     btnToDisable.disabled = false;
-                    btnToDisable.innerText = "Finalizar";
+                    btnToDisable.innerText = encuestaText('encuesta_finish', 'Finalizar');
                 }
             }
         }
@@ -1123,7 +1209,7 @@
                 return;
             }
             if (input.value.length < 8) {
-                showToast('⚠', 'Mínimo 8 dígitos', '#e74c3c');
+                showToast('⚠', encuestaText('encuesta_min_digits', 'Mínimo 8 dígitos'), '#e74c3c');
                 return;
             }
 
@@ -1135,7 +1221,7 @@
                 input.value = '';
             } else {
 
-                showToast('✖', "El número ya fue usado. Ingresa otro.", '#e74c3c');
+                showToast('✖', encuestaText('encuesta_number_used', 'El número ya fue usado. Ingresa otro.'), '#e74c3c');
                 input.style.borderColor = 'red';
             }
         }
@@ -1150,7 +1236,7 @@
 
             if (result.success) {
                 next('final-auth');
-                showToast('✔', 'Datos guardados correctamente', '#2ecc71');
+                showToast('✔', encuestaText('encuesta_saved_success', 'Datos guardados correctamente'), '#2ecc71');
             } else {
                 // ERROR AUTH:
                 const errorMsg = result.message.toLowerCase();
@@ -1158,13 +1244,13 @@
 
                 if (esDuplicado) {
                     Swal.fire({
-                        title: '¡Atención!',
-                        html: "El número asociado a esta cuenta ya fue usado. Actualiza tu número; si no fuiste tú, contáctanos.",
+                        title: encuestaText('encuesta_attention_title', '¡Atención!'),
+                        html: encuestaText('encuesta_duplicate_phone_message', 'El número asociado a esta cuenta ya fue usado. Actualiza tu número; si no fuiste tú, contáctanos.'),
                         icon: 'warning',
                         iconColor: '#FB8500',
                         showCancelButton: true,
                         confirmButtonText: '<i class="fa-brands fa-whatsapp"></i> 77573997',
-                        cancelButtonText: 'Cerrar',
+                        cancelButtonText: encuestaText('encuesta_close', 'Cerrar'),
                         confirmButtonColor: '#25D366',
                         cancelButtonColor: '#185875',
                         reverseButtons: true,
@@ -1176,7 +1262,7 @@
                         if (res.isConfirmed) window.location.href = "https://wa.link/yiegi5";
                     });
                 } else {
-                    showToast('✖', "Ocurrió un error al guardar.", '#e74c3c');
+                    showToast('✖', encuestaText('encuesta_save_error', 'Ocurrió un error al guardar.'), '#e74c3c');
                 }
             }
         }
@@ -1191,15 +1277,15 @@
 
             if (isAuth && !hasPhone) {
                 Swal.fire({
-                    title: '¡Falta un pequeño paso!',
-                    text: "Necesitamos tu número de teléfono en tu perfil para poder enviarte el cupón de descuento.",
+                    title: encuestaText('encuesta_missing_phone_title', '¡Falta un pequeño paso!'),
+                    text: encuestaText('encuesta_missing_phone_desc', 'Necesitamos tu número de teléfono en tu perfil para poder enviarte el cupón de descuento.'),
                     icon: 'warning',
                     iconColor: '#FB8500',
                     showCancelButton: true,
                     confirmButtonColor: '#FB8500',
                     cancelButtonColor: '#185875',
-                    confirmButtonText: 'Ir a mi perfil',
-                    cancelButtonText: 'Cancelar',
+                    confirmButtonText: encuestaText('encuesta_go_profile', 'Ir a mi perfil'),
+                    cancelButtonText: encuestaText('encuesta_cancel', 'Cancelar'),
                     background: '#fff',
                     customClass: {
                         popup: 'encuesta-swal-popup',
@@ -1223,31 +1309,42 @@
         function updateStars(val, select = false) {
             const feedbackText = document.getElementById('rating-feedback-text');
             const starBtns = document.querySelectorAll('.star-btn');
+
             const getStarInfo = (v) => {
                 if (v <= 2) return {
-                    t: "Nada probable 😞",
+                    t: encuestaText('encuesta_rating_low', 'Nada probable 😞'),
                     c: "#e74c3c"
                 };
+
                 if (v === 3) return {
-                    t: "Tal vez 🤔",
+                    t: encuestaText('encuesta_rating_medium', 'Tal vez 🤔'),
                     c: "#f1c40f"
                 };
+
                 return {
-                    t: "¡Sin duda! 🤩",
+                    t: encuestaText('encuesta_rating_high', '¡Sin duda! 🤩'),
                     c: "#2ecc71"
                 };
             };
+
             const info = getStarInfo(val);
+
             if (feedbackText) {
                 feedbackText.textContent = info.t;
                 feedbackText.style.color = info.c;
             }
+
             starBtns.forEach(b => {
                 const bVal = parseInt(b.dataset.val);
+
                 if (bVal <= val) {
                     b.classList.add('filled');
-                    if (bVal === val) b.classList.add('active-scale');
-                    else b.classList.remove('active-scale');
+
+                    if (bVal === val) {
+                        b.classList.add('active-scale');
+                    } else {
+                        b.classList.remove('active-scale');
+                    }
                 } else {
                     b.classList.remove('filled', 'active-scale');
                 }

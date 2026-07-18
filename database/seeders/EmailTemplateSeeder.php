@@ -33,7 +33,7 @@ class EmailTemplateSeeder extends Seeder
                     'type' => $type,
                     'title' => $template['title'],
                     'role' => $role,
-                    'content' => ['info' => $data['fields']['info']['desc'],'subject' => $data['fields']['subject']['default'], 'greeting' => $data['fields']['greeting']['default'], 'content' => $data['fields']['content']['default']]
+                    'content' => ['info' => $data['fields']['info']['desc'],'subject' => $data['fields']['subject']['default'], 'greeting' => $data['fields']['greeting']['default'], 'content' => $data['fields']['content']['default'], 'button_text' => __('email_template.reset_password_txt')]
                 ]);
             }
         }

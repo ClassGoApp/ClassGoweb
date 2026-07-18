@@ -560,7 +560,7 @@ class TutorVerificationNotificationService
             : '';
         
         $profileImageUrl = $tutorInfo['profile_image'] 
-            ? \url('public/storage/' . $tutorInfo['profile_image'])
+            ? \url('storage/' . $tutorInfo['profile_image'])
             : \url('public/images/default-avatar.png');
 
         return '

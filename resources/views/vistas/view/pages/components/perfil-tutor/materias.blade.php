@@ -1,4 +1,6 @@
-<h2 class="subjects-card__title">Mis Tutorías</h2>
+<h2 class="subjects-card__title" data-translate="tutor_profile_my_tutoring">
+    Mis Tutorías
+</h2>
     <div class="subjects-list">
         @php
             // Agrupar materias por grupo (asumiendo que $tutor->userSubjects está disponible)
@@ -34,11 +36,22 @@
         @foreach($materiasPorGrupo as $grupo => $materiasGrupo)
             <div class="subject-item">
                 <div class="subject-item__header">
-                    {{-- <span class="subject-item__icon subject-item__icon--math">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="subject-item__svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v11.494m-9-5.747h18" /></svg>
-                    </span> --}}
                     {!! $icons[$loop->index % count($icons)] !!}
-                    <h3 class="subject-item__name">{{ $grupo }}</h3>
+
+                    @php
+                        $grupoTranslateKey = match($grupo) {
+                            'Otros' => 'subject_group_others',
+                            'Secundaria' => 'subject_group_secondary',
+                            'Primaria' => 'subject_group_primary',
+                            'Básico' => 'subject_group_basic',
+                            default => null
+                        };
+                    @endphp
+
+                    <h3 class="subject-item__name"
+                        @if($grupoTranslateKey) data-translate="{{ $grupoTranslateKey }}" @endif>
+                        {{ $grupo }}
+                    </h3>
                 </div>
                 
                 <div class="subject-item__topics">

@@ -95,7 +95,7 @@ class NotificationService
         $emailTemplate = $content;
         if (Str::contains($emailTemplate['content'], '{verificationLink}')) {
             // Enlace web universal para verificación (sirve para web y app)
-            $verifyUrl = 'https://classgoapp.com/verify?id=' . $data['key'] . '&hash=' . sha1($data['userEmail']);
+            $verifyUrl = url('/verify?id=' . $data['key'] . '&hash=' . sha1($data['userEmail']));
             $btnHtml = view('components.email.button', ['btnText' => 'Verificar cuenta', 'btnUrl' => $verifyUrl])->render();
             $emailTemplate['content'] = Str::replace('{verificationLink}', $btnHtml, $emailTemplate['content']);
         }
@@ -177,7 +177,7 @@ class NotificationService
         $emailTemplate = $content;
         if (Str::contains($emailTemplate['content'], '{verificationLink}')) {
             // Enlace web universal para verificación (sirve para web y app)
-            $verifyUrl = 'https://classgoapp.com/verify?id=' . $data['key'] . '&hash=' . sha1($data['userEmail']);
+            $verifyUrl = url('/verify?id=' . $data['key'] . '&hash=' . sha1($data['userEmail']));
             $btnHtml = view('components.email.button', ['btnText' => 'Verificar cuenta', 'btnUrl' => $verifyUrl])->render();
             $emailTemplate['content'] = Str::replace('{verificationLink}', $btnHtml, $emailTemplate['content']);
         }
@@ -196,7 +196,7 @@ class NotificationService
                 'token' => $data['token'],
                 'email' => $data['userEmail'],
             ], false));
-            $btnHtml = view('components.email.button', ['btnText' => trans('email_template.reset_password_txt'), 'btnUrl' => $btnUrl]);
+            $btnHtml = view('components.email.button', ['btnText' => $emailTemplate['button_text'] ?? 'Restablecer contraseña', 'btnUrl' => $btnUrl]);
             $emailTemplate['content']    = Str::replace("{resetLink}", $btnHtml, $emailTemplate['content']);
         }
         return $emailTemplate;

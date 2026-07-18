@@ -10,6 +10,7 @@ use App\Models\Scopes\ActiveScope;
 use App\Models\User;
 use App\Models\UserIdentityVerification;
 use App\Notifications\EmailNotification;
+use App\Services\FcmService;
 use App\Services\IdentityService;
 use App\Services\NotificationService;
 use App\Services\TutorVerificationNotificationService;
@@ -119,11 +120,41 @@ class IdentityVerification extends Component
 
                 if ($params['type'] == 'accepted') {
                     dispatch(new SendNotificationJob('identityVerificationApproved', $userIdentityVerification->user, ['name' => $userIdentityVerification?->name]));
-                    
+
+                    try {
+                        $fcmToken = $userIdentityVerification->user->latestFcmToken();
+                        if ($fcmToken) {
+                            $fcmService = app(FcmService::class);
+                            $fcmService->sendNotification(
+                                $fcmToken,
+                                '🎉 ¡Identidad Verificada!',
+                                'Felicidades, tu identidad ha sido verificada exitosamente. Ya puedes recibir estudiantes.',
+                                ['type' => 'identity_verification_approved']
+                            );
+                        }
+                    } catch (\Exception $e) {
+                        \Log::error('Error al enviar FCM al tutor: ' . $e->getMessage());
+                    }
+
                     // Notificar a todos los estudiantes sobre el nuevo tutor verificado
                     $this->notifyStudentsAboutTutorVerification($userIdentityVerification->user);
                 } else {
                     dispatch(new SendNotificationJob('identityVerificationRejected', $userIdentityVerification->user, ['name' => $userIdentityVerification?->name]));
+
+                    try {
+                        $fcmToken = $userIdentityVerification->user->latestFcmToken();
+                        if ($fcmToken) {
+                            $fcmService = app(FcmService::class);
+                            $fcmService->sendNotification(
+                                $fcmToken,
+                                'Verificación Rechazada',
+                                'Tu verificación de identidad ha sido rechazada. Ingresa a la app para intentarlo de nuevo.',
+                                ['type' => 'identity_verification_rejected']
+                            );
+                        }
+                    } catch (\Exception $e) {
+                        \Log::error('Error al enviar FCM de rechazo: ' . $e->getMessage());
+                    }
                 }
                 if ($params['type'] == 'rejected') {
                     $userIdentityVerification->address()->delete();
@@ -165,11 +196,42 @@ class IdentityVerification extends Component
 
         if ($newStatus == 'accepted') {
             dispatch(new SendNotificationJob('identityVerificationApproved', $userIdentityVerification->user, ['name' => $userIdentityVerification?->name]));
-            
+
+            try {
+                $fcmToken = $userIdentityVerification->user->latestFcmToken();
+                if ($fcmToken) {
+                    $fcmService = app(FcmService::class);
+                    $fcmService->sendNotification(
+                        $fcmToken,
+                        '🎉 ¡Identidad Verificada!',
+                        'Felicidades, tu identidad ha sido verificada exitosamente. Ya puedes recibir estudiantes.',
+                        ['type' => 'identity_verification_approved']
+                    );
+                }
+            } catch (\Exception $e) {
+                \Log::error('Error al enviar FCM al tutor: ' . $e->getMessage());
+            }
+
             // Notificar a todos los estudiantes sobre el nuevo tutor verificado
             $this->notifyStudentsAboutTutorVerification($userIdentityVerification->user);
         } else {
             dispatch(new SendNotificationJob('identityVerificationRejected', $userIdentityVerification->user, ['name' => $userIdentityVerification?->name]));
+
+            try {
+                $fcmToken = $userIdentityVerification->user->latestFcmToken();
+                if ($fcmToken) {
+                    $fcmService = app(FcmService::class);
+                    $fcmService->sendNotification(
+                        $fcmToken,
+                        'Verificación Rechazada',
+                        'Tu verificación de identidad ha sido rechazada. Ingresa a la app para intentarlo de nuevo.',
+                        ['type' => 'identity_verification_rejected']
+                    );
+                }
+            } catch (\Exception $e) {
+                \Log::error('Error al enviar FCM de rechazo: ' . $e->getMessage());
+            }
+
             $userIdentityVerification->address()->delete();
             $userIdentityVerification->delete();
         }

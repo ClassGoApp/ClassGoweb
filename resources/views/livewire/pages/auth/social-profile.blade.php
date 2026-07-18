@@ -125,9 +125,14 @@ new #[Layout('layouts.guest')] class extends Component
                         @endif
                         
                         <div class="form-group @error('codigo') am-invalid @enderror">
-                            <x-input-label for="codigo" :value="__('Código de referido (opcional)')" />
+                            <label for="codigo" data-translate="auth_referral_code_label">
+                                Código de referido (opcional)
+                            </label>
                             <div class="form-control_wrap">
-                                <x-text-input wire:model="codigo" id="codigo" placeholder="{{ __('Ingresa el código de referido') }}" name="codigo" type="text" class="block w-full mt-1" />
+                                <x-text-input wire:model="codigo" id="codigo"
+                                    placeholder="Ingresa el código de referido"
+                                    data-placeholder-key="auth_referral_code_placeholder"
+                                    name="codigo" type="text" class="block w-full mt-1" />
                                 <x-input-error field_name="codigo" />
                             </div>
                         </div>
@@ -148,7 +153,13 @@ new #[Layout('layouts.guest')] class extends Component
                         <div class="form-group @error('terms') am-invalid @enderror am-terms-check">
                             <div class="am-checkbox am-signup-check">
                                 <input wire:model="terms" type="checkbox" id="terms" name="terms">
-                                <label for="terms"><span>{!! __('auth.register_terms') !!}</label>
+                                <div class="form-group @error('terms') am-invalid @enderror am-terms-check">
+                                    <div class="am-checkbox am-signup-check">
+                                        <input wire:model="terms" type="checkbox" id="terms" name="terms">
+                                        <label for="terms"><span>{!! __('auth.register_terms') !!}</label>
+                                    </div>
+                                    <x-input-error :field_name="'terms'"></x-input-error>
+                                </div>
                             </div>
                             <x-input-error :field_name="'terms'"></x-input-error>
                         </div>

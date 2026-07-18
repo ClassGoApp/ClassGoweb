@@ -55,4 +55,5 @@ return [
     'login_as' => 'Entrar como',
     'admin' => 'Administração',
     'sign_in_with_google' => 'Entrar com Google',
+    'auth_register_google_title' => 'Cadastrar-se com Google',
 ];
