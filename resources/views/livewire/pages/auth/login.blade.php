@@ -19,13 +19,29 @@ new #[Layout('layouts.guest')] class extends Component {
     // --- 1. LÓGICA LOGIN ---
     public LoginForm $form;
 
+    public string $selected_language = 'es';
 
     public function login(): void
     {
+        $lang = $this->selected_language ?: request()->cookie('selectedLanguage', 'es');
+
+        if (! in_array($lang, ['es', 'en', 'pt'], true)) {
+            $lang = 'es';
+        }
+
+        app()->setLocale($lang);
+
         $this->validate();
         $this->form->authenticate();
         Session::regenerate();
-        $this->dispatch('showAlertMessage', type: 'success', title: __('general.success_title'), message: __('general.login_success'));
+
+        $this->dispatch(
+            'showAlertMessage',
+            type: 'success',
+            title: __('general.success_title'),
+            message: __('general.login_success')
+        );
+
         usleep(500);
         $this->redirect(session()->pull('url.intended', auth()->user()->redirect_after_login));
     }
@@ -92,6 +108,14 @@ new #[Layout('layouts.guest')] class extends Component {
             return;
         }
 
+        $lang = $this->selected_language ?: request()->cookie('selectedLanguage', 'es');
+
+        if (! in_array($lang, ['es', 'en', 'pt'], true)) {
+            $lang = 'es';
+        }
+
+        app()->setLocale($lang);
+
         $this->validate([
             'reg_first_name' => ['required', 'string', 'max:255'],
             'reg_last_name' => ['required', 'string', 'max:255'],
@@ -101,7 +125,15 @@ new #[Layout('layouts.guest')] class extends Component {
             'terms' => ['accepted'],
             'phone_number' => $this->isProfilePhoneMendatory ? ['required'] : ['nullable'],
         ], [
-            'reg_password.confirmed' => __('Las contraseñas no coinciden'),
+            'reg_password.confirmed' => __('auth.passwords_do_not_match'),
+        ], [
+            'reg_first_name' => __('auth.first_name'),
+            'reg_last_name' => __('auth.last_name'),
+            'reg_email' => __('auth.email'),
+            'reg_password' => __('auth.password'),
+            'reg_password_confirmation' => __('auth.confirm_password'),
+            'phone_number' => __('auth.phone'),
+            'terms' => __('auth.terms_and_conditions'),
         ]);
 
         $data = [
@@ -1040,6 +1072,7 @@ new #[Layout('layouts.guest')] class extends Component {
             {{-- REGISTER FORM --}}
             <div class="cg-form-panel cg-register">
                 <form class="cg-form" wire:submit.prevent="register">
+                    <input type="hidden" wire:model="selected_language" data-auth-selected-language>
 
                     <x-application-logo class="cg-mobile-logo" />
 
@@ -1055,7 +1088,11 @@ new #[Layout('layouts.guest')] class extends Component {
                                 </svg>
                                 <input type="text" wire:model="reg_first_name" placeholder="Nombre" data-placeholder-key="auth_first_name" />
                             </div>
-                            @error('reg_first_name') <span class="cg-error-text">{{ $message }}</span> @enderror
+                            @error('reg_first_name')
+                                <span class="cg-error-text" data-translate="auth_first_name_required">
+                                    El campo nombre es obligatorio.
+                                </span>
+                            @enderror
                         </div>
                         <div class="cg-input-group">
                             <div class="cg-input-box {{ $errors->has('reg_last_name') ? 'error' : '' }}">
@@ -1065,7 +1102,11 @@ new #[Layout('layouts.guest')] class extends Component {
                                 </svg>
                                 <input type="text" wire:model="reg_last_name" placeholder="Apellido" data-placeholder-key="auth_last_name" />
                             </div>
-                            @error('reg_last_name') <span class="cg-error-text">{{ $message }}</span> @enderror
+                            @error('reg_last_name')
+                                <span class="cg-error-text" data-translate="auth_last_name_required">
+                                    El campo apellido es obligatorio.
+                                </span>
+                            @enderror
                         </div>
                     </div>
 
@@ -1093,7 +1134,11 @@ new #[Layout('layouts.guest')] class extends Component {
                                 </svg>
                                 <input type="text" wire:model="phone_number" placeholder="Teléfono" data-placeholder-key="auth_phone" />
                             </div>
-                            @error('phone_number') <span class="cg-error-text">{{ $message }}</span> @enderror
+                            @error('phone_number')
+                                <span class="cg-error-text" data-translate="auth_phone_required">
+                                    El campo teléfono es obligatorio.
+                                </span>
+                            @enderror
                         </div>
                     @endif
 
@@ -1109,7 +1154,11 @@ new #[Layout('layouts.guest')] class extends Component {
                                     d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />
                             </svg>
                         </div>
-                        @error('reg_password') <span class="cg-error-text">{{ $message }}</span> @enderror
+                        @error('reg_password')
+                            <span class="cg-error-text" data-translate="auth_password_error">
+                                La contraseña es obligatoria o no coincide.
+                            </span>
+                        @enderror
                     </div>
 
                     <div class="cg-input-group">
@@ -1166,11 +1215,11 @@ new #[Layout('layouts.guest')] class extends Component {
                                 Acepto los <a href="https://www.classgoapp.com/terminos" target="_blank">Términos de servicio</a> y la <a href="https://www.classgoapp.com/terminos" target="_blank">Política de privacidad</a>
                             </span>
                         </label>
-                        @error('terms') <span class="cg-error-text" style="top: 100%;"><svg class="cg-icon-error"
-                            viewBox="0 0 24 24">
-                            <path
-                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
-                        </svg> {{ $message }}</span> @enderror
+                        @error('terms')
+                            <span class="cg-error-text" style="top: 100%;" data-translate="auth_terms_required">
+                                Se debe aceptar los términos y condiciones.
+                            </span>
+                        @enderror
                     </div>
 
                     <button type="submit" class="cg-btn-primary" wire:loading.attr="disabled" wire:target="register">
@@ -1226,6 +1275,7 @@ new #[Layout('layouts.guest')] class extends Component {
                     x-transition:enter-end="opacity-100 transform scale-100">
 
                     <form class="cg-form" wire:submit.prevent="login" x-data="{ form: @entangle('form') }">
+                        <input type="hidden" wire:model="selected_language" data-auth-selected-language>
 
                         <x-application-logo class="cg-mobile-logo" />
 
@@ -1241,8 +1291,13 @@ new #[Layout('layouts.guest')] class extends Component {
                                 <input x-model="form.email" wire:model="form.email" type="email"
                                 placeholder="Correo electrónico" data-placeholder-key="auth_email" />
                             </div>
-                            <x-input-error field_name="form.email" class="cg-error-text"
-                                style="position:absolute; top:100%; left:0;" />
+                            @error('form.email')
+                                <span class="am-error-msg cg-error-text"
+                                    style="position:absolute; top:100%; left:0;"
+                                    data-translate="auth_login_email_required">
+                                    El campo correo electrónico es obligatorio.
+                                </span>
+                            @enderror
                         </div>
 
                         <div class="cg-input-group">
@@ -1258,8 +1313,13 @@ new #[Layout('layouts.guest')] class extends Component {
                                         d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />
                                 </svg>
                             </div>
-                            <x-input-error field_name="form.password" class="cg-error-text"
-                                style="position:absolute; top:100%; left:0;" />
+                            @error('form.password')
+                                <span class="am-error-msg cg-error-text"
+                                    style="position:absolute; top:100%; left:0;"
+                                    data-translate="auth_login_password_required">
+                                    El campo contraseña es obligatorio.
+                                </span>
+                            @enderror
                         </div>
 
                         <a href="#" @click.prevent="showForgot = true" class="cg-forgot" data-translate="auth_forgot_password">
@@ -1467,7 +1527,7 @@ new #[Layout('layouts.guest')] class extends Component {
 
 @push('scripts')
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+        (function () {
             function authText(key, fallback = '') {
                 const lang = localStorage.getItem('selectedLanguage') || 'es';
 
@@ -1478,6 +1538,30 @@ new #[Layout('layouts.guest')] class extends Component {
                 const t = translations[lang] || translations.es;
 
                 return t[key] || fallback;
+            }
+
+            let lastSyncedAuthLanguage = null;
+
+            function syncAuthLanguageCookie() {
+                const lang = localStorage.getItem('selectedLanguage') || 'es';
+
+                document.cookie = `selectedLanguage=${lang}; path=/; max-age=31536000; SameSite=Lax`;
+
+                if (lastSyncedAuthLanguage === lang) {
+                    return lang;
+                }
+
+                lastSyncedAuthLanguage = lang;
+
+                document.querySelectorAll('[data-auth-selected-language]').forEach((input) => {
+                    if (input.value !== lang) {
+                        input.value = lang;
+                        input.dispatchEvent(new Event('input', { bubbles: true }));
+                        input.dispatchEvent(new Event('change', { bubbles: true }));
+                    }
+                });
+
+                return lang;
             }
 
             function applyAuthPlaceholders() {
@@ -1492,6 +1576,7 @@ new #[Layout('layouts.guest')] class extends Component {
             function applyAuthTranslationsAfterLoad() {
                 const lang = localStorage.getItem('selectedLanguage') || 'es';
 
+                syncAuthLanguageCookie();
                 applyAuthPlaceholders();
 
                 if (typeof selectLanguage === 'function') {
@@ -1501,34 +1586,65 @@ new #[Layout('layouts.guest')] class extends Component {
 
             window.applyAuthTranslationsAfterLoad = applyAuthTranslationsAfterLoad;
 
-            applyAuthTranslationsAfterLoad();
+            let authLivewireHooksRegistered = false;
 
-            document.addEventListener('languageChanged', function() {
+            function registerAuthLivewireHooks() {
+                if (authLivewireHooksRegistered) {
+                    return;
+                }
+
+                if (typeof Livewire === 'undefined' || typeof Livewire.hook !== 'function') {
+                    return;
+                }
+
+                authLivewireHooksRegistered = true;
+
+                const reapplyTranslations = () => {
+                    setTimeout(applyAuthTranslationsAfterLoad, 80);
+                };
+
+                Livewire.hook('morphed', reapplyTranslations);
+                Livewire.hook('morph.updated', reapplyTranslations);
+            }
+
+            document.addEventListener('DOMContentLoaded', () => {
+                applyAuthTranslationsAfterLoad();
+                registerAuthLivewireHooks();
+
+                const toggleInput = (btnId, inputId) => {
+                    const btn = document.getElementById(btnId);
+                    const inp = document.getElementById(inputId);
+
+                    if (btn && inp) {
+                        btn.addEventListener('click', () => {
+                            const type = inp.getAttribute('type') === 'password' ? 'text' : 'password';
+                            inp.setAttribute('type', type);
+                            btn.style.opacity = type === 'text' ? '1' : '0.5';
+                        });
+                    }
+                };
+
+                toggleInput('toggleLoginPass', 'login-password');
+                toggleInput('toggleRegPass', 'reg-pass');
+                toggleInput('toggleRegConfirm', 'reg-pass-confirm');
+            });
+
+            document.addEventListener('livewire:init', registerAuthLivewireHooks);
+
+            document.addEventListener('livewire:navigated', function () {
+                registerAuthLivewireHooks();
+                setTimeout(applyAuthTranslationsAfterLoad, 80);
+            });
+
+            document.addEventListener('languageChanged', function () {
+                syncAuthLanguageCookie();
                 applyAuthPlaceholders();
             });
 
-            document.addEventListener('livewire:init', function() {
-                Livewire.hook('morph.updated', function() {
-                    setTimeout(applyAuthTranslationsAfterLoad, 50);
-                });
-            });
-
-            const toggleInput = (btnId, inputId) => {
-                const btn = document.getElementById(btnId);
-                const inp = document.getElementById(inputId);
-
-                if (btn && inp) {
-                    btn.addEventListener('click', () => {
-                        const type = inp.getAttribute('type') === 'password' ? 'text' : 'password';
-                        inp.setAttribute('type', type);
-                        btn.style.opacity = type === 'text' ? '1' : '0.5';
-                    });
-                }
-            }
-
-            toggleInput('toggleLoginPass', 'login-password');
-            toggleInput('toggleRegPass', 'reg-pass');
-            toggleInput('toggleRegConfirm', 'reg-pass-confirm');
-        });
+            setTimeout(function () {
+                registerAuthLivewireHooks();
+                applyAuthTranslationsAfterLoad();
+            }, 300);
+        })();
     </script>
 @endpush

@@ -62,7 +62,8 @@
                                 @if ($disablePrevious) disabled @else wire:click="previousBookings" @endif>
                                 <i class="am-icon-chevron-left"></i>
                             </a>
-                            <span @if ($isCurrent) disabled @else wire:click="jumpToDate()" @endif>
+                            <span @if ($isCurrent) disabled @else wire:click="jumpToDate()" @endif
+                                data-translate="student_bookings_current_{{ $showBy }}">
                                 {{ __('calendar.current_' . $showBy) }}
                             </span>
                             <a href="#" wire:click="nextBookings">
@@ -76,7 +77,9 @@
                     <div class="am-booking-filters-wrapper">
                         <div class="am-inputicon">
                             <input type="text" wire:model.live.debounce.250ms="filter.keyword"
-                                placeholder="{{ __('taxonomy.search_here') }}" class="form-control" />
+                                placeholder="{{ __('taxonomy.search_here') }}"
+                                data-placeholder-key="student_bookings_search_here"
+                                class="form-control" />
                             <a href="#">
                                 <i class="am-icon-search-02"></i>
                             </a>
@@ -176,26 +179,40 @@
                                 <button @class(['active' => $showBy == 'daily'])
                                     @if ($showBy != 'daily') wire:click="switchShow('daily')" @endif
                                     aria-selected="true"
-                                    wire:loading.class="am-btn_disable">{{ __('calendar.daily') }}</button>
+                                    wire:loading.class="am-btn_disable">
+                                    <span data-translate="student_bookings_daily">
+                                        {{ __('calendar.daily') }}
+                                    </span>
+                                </button>
                             </li>
                             <li>
                                 <button @class(['active' => $showBy == 'weekly'])
                                     @if ($showBy != 'weekly') wire:click="switchShow('weekly')" @endif
                                     aria-selected="false"
-                                    wire:loading.class="am-btn_disable">{{ __('calendar.weekly') }}</button>
+                                    wire:loading.class="am-btn_disable">
+                                    <span data-translate="student_bookings_weekly">
+                                        {{ __('calendar.weekly') }}
+                                    </span>
+                                </button>
                             </li>
                             <li>
                                 <button @class(['active' => $showBy == 'monthly'])
                                     @if ($showBy != 'monthly') wire:click="switchShow('monthly')" @endif
                                     aria-selected="false"
-                                    wire:loading.class="am-btn_disable">{{ __('calendar.monthly') }}</button>
+                                    wire:loading.class="am-btn_disable">
+                                    <span data-translate="student_bookings_monthly">
+                                        {{ __('calendar.monthly') }}
+                                    </span>
+                                </button>
                             </li>
                         </ul>
                     </div>
                 </div>
                 <div class="am-section-load" wire:loading.flex
                     wire:target="switchShow,jumpToDate,nextBookings,previousBookings,filter">
-                    <p>{{ __('general.loading') }}</p>
+                    <p data-translate="student_bookings_loading">
+                        {{ __('general.loading') }}
+                    </p>
                 </div>
                 <div wire:loading.class="d-none" class="am-booking-calander_body"
                     wire:target="switchShow,jumpToDate,nextBookings,previousBookings,filter">
@@ -305,8 +322,17 @@
                                                 @while($d->lte($weekEnd))
                                                     <th style="min-width:120px;">
                                                         <div class="    -title">
-                                                            <strong>{{ $d->format('j F') }}</strong>
-                                                            <span>{{ $d->format('D') }}</span>
+                                                            <strong data-student-booking-date
+                                                                data-date="{{ $d->toDateString() }}"
+                                                                data-format="day-month">
+                                                                {{ $d->format('j F') }}
+                                                            </strong>
+
+                                                            <span data-student-booking-date
+                                                                data-date="{{ $d->toDateString() }}"
+                                                                data-format="weekday-short">
+                                                                {{ $d->format('D') }}
+                                                            </span>
                                                         </div>
                                                     </th>
                                                     @php $d->addDay(); @endphp
@@ -340,8 +366,9 @@
                                                                         </div>
                                                                     @endforeach
                                                                 @else
-                                                                    <span
-                                                                        class="am-emptyslot">{{ __('calendar.no_sessions') }}</span>
+                                                                    <span class="am-emptyslot" data-translate="student_bookings_no_sessions">
+                                                                        {{ __('calendar.no_sessions') }}
+                                                                    </span>
                                                                 @endif
                                                             </div>
                                                         </div>
@@ -567,6 +594,53 @@
 @script
     <script>
         let flatpickrInstance = null;
+
+        function translateStudentBookingsDateText(text) {
+            const lang = localStorage.getItem('selectedLanguage') || 'es';
+
+            if (!text || lang === 'en') {
+                return text;
+            }
+
+            const months = {
+                es: {
+                    January: 'enero',
+                    February: 'febrero',
+                    March: 'marzo',
+                    April: 'abril',
+                    May: 'mayo',
+                    June: 'junio',
+                    July: 'julio',
+                    August: 'agosto',
+                    September: 'septiembre',
+                    October: 'octubre',
+                    November: 'noviembre',
+                    December: 'diciembre'
+                },
+                pt: {
+                    January: 'janeiro',
+                    February: 'fevereiro',
+                    March: 'março',
+                    April: 'abril',
+                    May: 'maio',
+                    June: 'junho',
+                    July: 'julho',
+                    August: 'agosto',
+                    September: 'setembro',
+                    October: 'outubro',
+                    November: 'novembro',
+                    December: 'dezembro'
+                }
+            };
+
+            const selectedMonths = months[lang] || months.es;
+
+            return text.replace(
+                /\b(January|February|March|April|May|June|July|August|September|October|November|December)\b/g,
+                (month) => selectedMonths[month] || month
+            );
+        }
+
         initFlatPicker('daily', 'today');
 
         $wire.dispatch('initSelect2', {
@@ -630,7 +704,7 @@
                     ],
                     dateFormat: 'Y-m-d',
                     onReady: function(selectedDates, dateStr, instance) {
-                        instance.input.value = currentDate
+                        instance.input.value = translateStudentBookingsDateText(currentDate)
                     }
                 };
             } else {
@@ -652,7 +726,7 @@
             const [startStr, endStr] = range.split('-');
 
             const monthMap = {
-                Januarys: 0,
+                January: 0,
                 February: 1,
                 March: 2,
                 April: 3,
@@ -688,8 +762,91 @@
             }
         }
 
+        function studentBookingsText(key, fallback = '') {
+            const lang = localStorage.getItem('selectedLanguage') || 'es';
+
+            if (typeof translations === 'undefined') {
+                return fallback;
+            }
+
+            const t = translations[lang] || translations.es;
+
+            return t[key] || fallback;
+        }
+
+        function applyStudentBookingsPlaceholders() {
+            document.querySelectorAll('[data-placeholder-key]').forEach((element) => {
+                const key = element.getAttribute('data-placeholder-key');
+                const fallback = element.getAttribute('placeholder') || '';
+
+                element.setAttribute('placeholder', studentBookingsText(key, fallback));
+            });
+        }
+
+        function getStudentBookingsLocale() {
+            const lang = localStorage.getItem('selectedLanguage') || 'es';
+
+            const locales = {
+                es: 'es-BO',
+                en: 'en-US',
+                pt: 'pt-BR'
+            };
+
+            return locales[lang] || 'es-BO';
+        }
+
+        function capitalizeStudentBookingText(text) {
+            if (!text) {
+                return text;
+            }
+
+            return text.charAt(0).toUpperCase() + text.slice(1);
+        }
+
+        function applyStudentBookingsDates() {
+            const locale = getStudentBookingsLocale();
+
+            document.querySelectorAll('[data-student-booking-date]').forEach((element) => {
+                const dateValue = element.getAttribute('data-date');
+                const format = element.getAttribute('data-format');
+
+                if (!dateValue) {
+                    return;
+                }
+
+                const date = new Date(`${dateValue}T12:00:00`);
+
+                if (Number.isNaN(date.getTime())) {
+                    return;
+                }
+
+                if (format === 'day-month') {
+                    const day = new Intl.DateTimeFormat(locale, {
+                        day: 'numeric'
+                    }).format(date);
+
+                    const month = new Intl.DateTimeFormat(locale, {
+                        month: 'long'
+                    }).format(date);
+
+                    element.textContent = `${day} ${capitalizeStudentBookingText(month)}`;
+                }
+
+                if (format === 'weekday-short') {
+                    const weekday = new Intl.DateTimeFormat(locale, {
+                        weekday: 'short'
+                    }).format(date).replace('.', '');
+
+                    element.textContent = capitalizeStudentBookingText(weekday);
+                }
+            });
+        }
+
             function applyStudentBookingsTranslations() {
                 const lang = localStorage.getItem('selectedLanguage') || 'es';
+
+                applyStudentBookingsPlaceholders();
+                applyStudentBookingsDates();
 
                 if (typeof selectLanguage === 'function') {
                     selectLanguage(lang, false);
@@ -701,8 +858,15 @@
             document.addEventListener('studentBookingModalOpened', applyStudentBookingsTranslations);
 
             document.addEventListener('languageChanged', () => {
+                applyStudentBookingsPlaceholders();
+                applyStudentBookingsDates();
+
                 if (typeof initFlatPicker === 'function') {
                     initFlatPicker(@js($showBy), @js($currentDate));
+
+                    setTimeout(() => {
+                        applyStudentBookingsDates();
+                    }, 100);
                 }
             });
     </script>

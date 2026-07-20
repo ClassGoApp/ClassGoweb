@@ -1172,15 +1172,20 @@
                     })
                 });
                 const data = await response.json();
+
+                const message = data.message_key
+                    ? encuestaText(data.message_key, data.message || '')
+                    : data.message;
+
                 if (response.ok && data.success) {
                     return {
                         success: true,
-                        message: data.message
+                        message: message
                     };
                 } else {
                     return {
                         success: false,
-                        message: data.message || encuestaText('encuesta_unknown_error', 'Error desconocido')
+                        message: message || encuestaText('encuesta_unknown_error', 'Error desconocido')
                     };
                 }
             } catch (error) {

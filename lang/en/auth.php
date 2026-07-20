@@ -56,4 +56,6 @@ return [
     'admin' => 'Admin',
     'sign_in_with_google' => 'Sign in with Google',
     'auth_register_google_title' => 'Sign up with Google',
+    'passwords_do_not_match' => 'Passwords do not match.',
+    'terms_and_conditions' => 'terms and conditions',
 ];
