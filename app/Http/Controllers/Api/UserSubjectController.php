@@ -98,6 +98,19 @@ class UserSubjectController extends Controller
             $query->where('user_id', $request->user_id);
         }
 
+        $query->join('subjects', 'user_subject.subject_id', '=', 'subjects.id')
+            ->leftJoin('subject_groups as sg', 'subjects.subject_group_id', '=', 'sg.id')
+            ->leftJoin('subject_groups as parent', 'sg.id_padre', '=', 'parent.id')
+            ->orderByRaw("
+                CASE
+                    WHEN sg.id = 3000 OR sg.id_padre = 3000 OR parent.id_padre = 3000 THEN 0
+                    WHEN sg.id = 2000 OR sg.id_padre = 2000 OR parent.id_padre = 2000 THEN 1
+                    WHEN sg.id = 1000 OR sg.id_padre = 1000 OR parent.id_padre = 1000 THEN 2
+                    ELSE 3
+                END
+            ")
+            ->orderBy('subjects.name');
+
         // Agregar logs para depuración
         Log::info('UserSubject Query:', [
             'user_id' => $request->get('user_id'),
@@ -105,7 +118,7 @@ class UserSubjectController extends Controller
             'bindings' => $query->getBindings()
         ]);
 
-        $userSubjects = $query->get();
+        $userSubjects = $query->select('user_subject.*')->get();
 
         // Log del resultado
         Log::info('UserSubjects Result:', [
@@ -365,6 +378,14 @@ class UserSubjectController extends Controller
     {
         $subjectGroups = SubjectGroup::select('id', 'name')
             ->where('status', 'active')
+            ->orderByRaw("
+                CASE
+                    WHEN id = 3000 OR id_padre = 3000 THEN 0
+                    WHEN id = 2000 OR id_padre = 2000 THEN 1
+                    WHEN id = 1000 OR id_padre = 1000 THEN 2
+                    ELSE 3
+                END
+            ")
             ->orderBy('name')
             ->get();
 
@@ -429,11 +450,21 @@ class UserSubjectController extends Controller
             }
         }
 
-        $subjects = $query->select('id', 'name', 'subject_group_id')
+        $subjects = $query->select('subjects.id', 'subjects.name', 'subjects.subject_group_id')
+            ->leftJoin('subject_groups as sg', 'subjects.subject_group_id', '=', 'sg.id')
+            ->leftJoin('subject_groups as parent', 'sg.id_padre', '=', 'parent.id')
             ->with(['group' => function($query) {
                 $query->select('id', 'name');
             }])
-            ->orderBy('name')
+            ->orderByRaw("
+                CASE
+                    WHEN sg.id = 3000 OR sg.id_padre = 3000 OR parent.id_padre = 3000 THEN 0
+                    WHEN sg.id = 2000 OR sg.id_padre = 2000 OR parent.id_padre = 2000 THEN 1
+                    WHEN sg.id = 1000 OR sg.id_padre = 1000 OR parent.id_padre = 1000 THEN 2
+                    ELSE 3
+                END
+            ")
+            ->orderBy('subjects.name')
             ->paginate($request->get('per_page', 20));
 
         return $this->success(

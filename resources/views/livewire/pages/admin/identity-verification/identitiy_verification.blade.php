@@ -115,58 +115,90 @@
                                         </td> -->
 
 
-                                <td data-label="{{ __('identity.identity_document' )}}">
+                                <td data-label="{{ __('identity.identity_document') }}">
                                     <strong class="tb-adminhead__img">
-                                        <div x-data="{ showModal: false }">
-                                            @if (!empty($single?->attachments) && file_exists(public_path('storage/' .
-                                            $single?->attachments)))
-                                            <img src="{{ asset('storage/' . $single?->attachments) }}" width="34"
-                                                height="34" alt="{{$single?->attachments}}" style="cursor:pointer;"
-                                                @click="showModal = true" />
-                                            <template x-if="showModal">
-                                                <div
-                                                    style="position:fixed; inset:0; z-index:1050; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.7);">
-                                                    <div class="position-relative w-100 d-flex justify-content-center align-items-center"
-                                                        style="max-width:1000px;">
-                                                        <img src="{{ asset('storage/' . $single?->attachments) }}"
-                                                            class="img-fluid"
-                                                            style="min-height:60vh; max-height:90vh; width:auto; max-width:90vw; object-fit:contain; border-radius:10px; box-shadow:0 0 20px #000; background:#fff;" />
-                                                        <button @click="showModal = false" type="button"
-                                                            class="btn-close position-absolute top-0 end-0 m-3 bg-white rounded-circle p-2"
-                                                            aria-label="Close"></button>
-                                                    </div>
-                                                    <div @click="showModal = false" style="position:fixed; inset:0;">
-                                                    </div>
+                                        @php
+                                            $attachmentsRaw = $single?->attachments;
+                                            $attachmentsFront = null;
+                                            $attachmentsBack  = null;
+
+                                            if (!empty($attachmentsRaw)) {
+                                                $decoded = json_decode($attachmentsRaw, true);
+                                                if (is_array($decoded)) {
+                                                    // Nuevo formato JSON: {"front": "...", "back": "..."}
+                                                    $attachmentsFront = $decoded['front'] ?? null;
+                                                    $attachmentsBack  = $decoded['back']  ?? null;
+                                                } else {
+                                                    // Formato antiguo: ruta directa como string
+                                                    $attachmentsFront = $attachmentsRaw;
+                                                }
+                                            }
+
+                                            // Fallback a transcript si no hay attachments
+                                            if (empty($attachmentsFront) && !empty($single?->transcript)) {
+                                                $attachmentsFront = $single->transcript;
+                                            }
+                                        @endphp
+
+                                        <div x-data="{ showFrontModal: false, showBackModal: false }" class="d-flex align-items-center gap-2">
+
+                                            {{-- Foto Frontal --}}
+                                            @if (!empty($attachmentsFront) && file_exists(public_path('storage/' . $attachmentsFront)))
+                                                <div class="d-flex flex-column align-items-center" style="gap:2px;">
+                                                    <span style="font-size:0.6rem; color:#888; font-weight:600; text-transform:uppercase; letter-spacing:0.4px;">Frente</span>
+                                                    <img src="{{ asset('storage/' . $attachmentsFront) }}"
+                                                        width="34" height="34"
+                                                        style="cursor:pointer; border-radius:6px; object-fit:cover; border:2px solid #e2e8f0;"
+                                                        title="Ver cara frontal"
+                                                        @click="showFrontModal = true" />
                                                 </div>
-                                            </template>
-                                            @elseif (!empty($single?->transcript) && file_exists(public_path('storage/'
-                                            . $single?->transcript)))
-                                            <img src="{{ asset('storage/' . $single?->transcript) }}" width="34"
-                                                height="34" alt="{{$single?->transcript}}" style="cursor:pointer;"
-                                                @click="showModal = true" />
-                                            <template x-if="showModal">
-                                                <div
-                                                    style="position:fixed; inset:0; z-index:1050; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.7);">
-                                                    <div class="position-relative w-100 d-flex justify-content-center align-items-center"
-                                                        style="max-width:1000px;">
-                                                        <img src="{{ asset('storage/' . $single?->transcript) }}"
-                                                            class="img-fluid"
-                                                            style="min-height:60vh; max-height:90vh; width:auto; max-width:90vw; object-fit:contain; border-radius:10px; box-shadow:0 0 20px #000; background:#fff;" />
-                                                        <button @click="showModal = false" type="button"
-                                                            class="btn-close position-absolute top-0 end-0 m-3 bg-white rounded-circle p-2"
-                                                            aria-label="Close"></button>
+                                                <template x-if="showFrontModal">
+                                                    <div style="position:fixed; inset:0; z-index:1050; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.85);">
+                                                        <div class="position-relative d-flex flex-column justify-content-center align-items-center" style="width:90vw; max-width:900px; gap:10px;">
+                                                            <span style="color:#fff; font-size:0.8rem; font-weight:700; text-transform:uppercase; letter-spacing:1px; opacity:0.7;"><i class="fas fa-id-card me-1"></i> Cara Frontal</span>
+                                                            <img src="{{ asset('storage/' . $attachmentsFront) }}"
+                                                                style="width:100%; height:auto; max-height:80vh; object-fit:contain; border-radius:12px; box-shadow:0 0 40px rgba(0,0,0,0.8); background:#fff;" />
+                                                            <button @click="showFrontModal = false" type="button"
+                                                                class="btn-close position-absolute top-0 end-0 m-2 bg-white rounded-circle p-2"
+                                                                aria-label="Close"></button>
+                                                        </div>
+                                                        <div @click="showFrontModal = false" style="position:fixed; inset:0; z-index:-1;"></div>
                                                     </div>
-                                                    <div @click="showModal = false" style="position:fixed; inset:0;">
-                                                    </div>
-                                                </div>
-                                            </template>
+                                                </template>
                                             @else
-                                            <img src="{{ setting('_general.default_avatar_for_user') ? url(Storage::url(setting('_general.default_avatar_for_user')[0]['path'])) : asset('placeholder.png') }}"
-                                                width="34" height="34" alt="{{ $single?->attachments }}" />
+                                                <img src="{{ setting('_general.default_avatar_for_user') ? url(Storage::url(setting('_general.default_avatar_for_user')[0]['path'])) : asset('placeholder.png') }}"
+                                                    width="34" height="34" style="border-radius:6px; opacity:0.4;" title="Sin foto frontal" />
                                             @endif
+
+                                            {{-- Foto Reverso (solo si existe) --}}
+                                            @if (!empty($attachmentsBack) && file_exists(public_path('storage/' . $attachmentsBack)))
+                                                <div class="d-flex flex-column align-items-center" style="gap:2px;">
+                                                    <span style="font-size:0.6rem; color:#888; font-weight:600; text-transform:uppercase; letter-spacing:0.4px;">Reverso</span>
+                                                    <img src="{{ asset('storage/' . $attachmentsBack) }}"
+                                                        width="34" height="34"
+                                                        style="cursor:pointer; border-radius:6px; object-fit:cover; border:2px solid #e2e8f0;"
+                                                        title="Ver cara reverso"
+                                                        @click="showBackModal = true" />
+                                                </div>
+                                                <template x-if="showBackModal">
+                                                    <div style="position:fixed; inset:0; z-index:1050; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.85);">
+                                                        <div class="position-relative d-flex flex-column justify-content-center align-items-center" style="width:90vw; max-width:900px; gap:10px;">
+                                                            <span style="color:#fff; font-size:0.8rem; font-weight:700; text-transform:uppercase; letter-spacing:1px; opacity:0.7;"><i class="fas fa-id-card me-1"></i> Cara Reverso</span>
+                                                            <img src="{{ asset('storage/' . $attachmentsBack) }}"
+                                                                style="width:100%; height:auto; max-height:80vh; object-fit:contain; border-radius:12px; box-shadow:0 0 40px rgba(0,0,0,0.8); background:#fff;" />
+                                                            <button @click="showBackModal = false" type="button"
+                                                                class="btn-close position-absolute top-0 end-0 m-2 bg-white rounded-circle p-2"
+                                                                aria-label="Close"></button>
+                                                        </div>
+                                                        <div @click="showBackModal = false" style="position:fixed; inset:0; z-index:-1;"></div>
+                                                    </div>
+                                                </template>
+                                            @endif
+
                                         </div>
                                     </strong>
                                 </td>
+
                                 <td>
                                     <span class="tb-varification_userinfo">
                                         <strong class="tb-adminhead__img">

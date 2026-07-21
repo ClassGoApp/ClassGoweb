@@ -158,12 +158,13 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // 3. Reserva (Elegir al tutor)
     Route::post('/batches/{batch}/reserve', [SubjectPickerController::class, 'reserveTutor']);
+    Route::post('/batches/{batch}/cancel', [SubjectPickerController::class, 'cancelBatch']);
 
     // 4. Pago, Estado y Reunión (Bookings)
     Route::post('/bookings/{booking}/receipt', [SubjectPickerController::class, 'studentUploadReceipt']);
     Route::get('/bookings/{booking}/status', [SubjectPickerController::class, 'studentBookingStatus']);
     Route::get('/bookings/{booking}/meet', [SubjectPickerController::class, 'studentMeet']);
-    
+    Route::post('solicitar-tutor', [BookingController::class, 'solicitarTutor']);
 });
 // Ruta para cambiar el estado de una tutoría a "Cursando"
 Route::post('booking/change-to-cursando', [BookingStatusController::class, 'changeToCursando']);
@@ -297,6 +298,13 @@ Route::prefix('google-calendar')->middleware('auth:sanctum')->group(function () 
     Route::delete('events/{eventId}', [GoogleCalendarController::class, 'deleteEvent']);
     Route::post('disconnect', [GoogleCalendarController::class, 'disconnect']);
 });
+
+// Rutas de negociación de horario personalizado (Ping-Pong) para Móvil
+Route::get('solicitud-clase/{token}', [BookingController::class, 'showNegotiation']);
+Route::post('solicitud-clase/{token}/rechazar', [BookingController::class, 'rejectNegotiation']);
+Route::post('solicitud-clase/{token}/contraofertar', [BookingController::class, 'counterNegotiation']);
+Route::post('solicitud-clase/{token}/aceptar', [BookingController::class, 'acceptNegotiation']);
+Route::get('get-counter/{token}', [BookingController::class, 'getCounterDetails']);
 
 Route::fallback(function () {
     return response()->json([
