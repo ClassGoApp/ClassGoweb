@@ -161,6 +161,15 @@
                             </p>
                         @endif
                     </div>
+                    @auth
+                        @role('student')
+                            <div style="margin-top: 16px; text-align: center; width: 100%; box-sizing: border-box; display: block !important;">
+                                <button type="button" onclick="openRequestScheduleModal()" style="border: 2px solid #219EBC; color: #219EBC; font-size: 14px; padding: 10px 20px; border-radius: 12px; font-weight: 700; cursor: pointer; background: transparent; transition: all 0.15s ease; width: 100%; box-sizing: border-box;">
+                                    Solicitar otro horario
+                                </button>
+                            </div>
+                        @endrole
+                    @endauth
                 </div>
             @endif
         </div>
@@ -728,6 +737,343 @@
 
     @endif
 
+    @auth
+        @role('student')
+            <!-- ESTILOS Y ANIMACIONES PERSONALIZADAS DEL MODAL -->
+            <style>
+                @keyframes reqModalFadeIn {
+                    from { opacity: 0; transform: scale(0.95); }
+                    to { opacity: 1; transform: scale(1); }
+                }
+                .dur-chip-profile {
+                    flex: 1;
+                    min-width: 70px;
+                    padding: 8px;
+                    border: 1px solid #cbd5e1;
+                    background: white;
+                    color: #475569;
+                    border-radius: 8px;
+                    font-weight: 600;
+                    font-size: 13px;
+                    cursor: pointer;
+                    transition: all 0.15s ease;
+                    text-align: center;
+                }
+                .dur-chip-profile.active {
+                    border: 1px solid #219EBC;
+                    background: #e0f2fe;
+                    color: #023047;
+                }
+            </style>
+
+            <!-- MODAL DE SOLICITUD DE HORARIO PERSONALIZADO -->
+            <div id="request-schedule-modal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(4px); z-index: 1000; align-items: center; justify-content: center; padding: 20px;">
+                <div style="background: white; border-radius: 16px; padding: 24px; max-width: 500px; width: 100%; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.1); position: relative; max-height: 90vh; overflow-y: auto; box-sizing: border-box; display: block; animation: reqModalFadeIn 0.25s ease;">
+                    
+                    <!-- Botón Cerrar -->
+                    <button type="button" onclick="closeRequestScheduleModal()" style="position: absolute; top: 16px; right: 16px; border: none; background: transparent; cursor: pointer; color: #64748b; outline: none; padding: 0;">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width: 24px; height: 24px;">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+
+                    <h3 style="color: #023047; font-size: 20px; font-weight: 700; margin-bottom: 8px; text-align: center; font-family: 'Outfit', sans-serif; margin-top: 0;">
+                        Solicitar otro horario
+                    </h3>
+                    <p style="color: #6b7280; font-size: 14px; margin-bottom: 20px; text-align: center; font-family: 'Outfit', sans-serif;">
+                        Envía una propuesta de fecha y hora personalizada al tutor.
+                    </p>
+
+                    <!-- Formulario -->
+                    <div style="display: flex; flex-direction: column; gap: 16px; font-family: 'Outfit', sans-serif;">
+                        <!-- Materia -->
+                        <div>
+                            <label style="display: block; font-weight: 600; font-size: 14px; margin-bottom: 6px; color: #023047; text-align: left;">Materia Solicitada</label>
+                            <select id="req-custom-subject" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; color: #334155; outline: none; background-color: #f8fafc; box-sizing: border-box;">
+                                @foreach($materiasTutor as $m)
+                                    @if($m->subject)
+                                        <option value="{{ $m->subject->id }}">{{ $m->subject->name }}</option>
+                                    @endif
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <!-- Fecha -->
+                        <div>
+                            <label style="display: block; font-weight: 600; font-size: 14px; margin-bottom: 6px; color: #023047; text-align: left;">Fecha Sugerida</label>
+                            <input type="text" id="req-custom-date" placeholder="Selecciona una fecha" readonly style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; color: #334155; outline: none; background-color: #f8fafc; box-sizing: border-box; cursor: pointer;">
+                        </div>
+
+                        <!-- Hora y AM/PM -->
+                        <div>
+                            <label style="display: block; font-weight: 600; font-size: 14px; margin-bottom: 6px; color: #023047; text-align: left;">Hora de inicio</label>
+                            <div style="display: flex; gap: 8px; align-items: center;">
+                                <select id="req-custom-hour" onchange="updateCalculatedEndTime()" style="flex: 1; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; outline: none; box-sizing: border-box; background: white;">
+                                    @for($i=1; $i<=12; $i++)
+                                        <option value="{{ $i }}" {{ $i === 10 ? 'selected' : '' }}>{{ sprintf('%02d', $i) }}</option>
+                                    @endfor
+                                </select>
+                                <span style="font-weight: bold; color: #023047;">:</span>
+                                <select id="req-custom-minute" onchange="updateCalculatedEndTime()" style="flex: 1; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; outline: none; box-sizing: border-box; background: white;">
+                                    @for($i=0; $i<60; $i+=5)
+                                        <option value="{{ $i }}">{{ sprintf('%02d', $i) }}</option>
+                                    @endfor
+                                </select>
+                                <select id="req-custom-ampm" onchange="updateCalculatedEndTime()" style="flex: 1; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; outline: none; box-sizing: border-box; background: white;">
+                                    <option value="AM" selected>AM</option>
+                                    <option value="PM">PM</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Duración -->
+                        <div>
+                            <label style="display: block; font-weight: 600; font-size: 14px; margin-bottom: 6px; color: #023047; text-align: left;">Duración de la Sesión</label>
+                            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                <button type="button" class="dur-chip-profile active" onclick="selectReqDurationProfile('20 min', this)">20 min</button>
+                                <button type="button" class="dur-chip-profile" onclick="selectReqDurationProfile('40 min', this)">40 min</button>
+                                <button type="button" class="dur-chip-profile" onclick="selectReqDurationProfile('1 hora', this)">1 hora</button>
+                                <button type="button" class="dur-chip-profile" onclick="selectReqDurationProfile('1h 20m', this)">1h 20m</button>
+                                <button type="button" class="dur-chip-profile" onclick="selectReqDurationProfile('1h 40m', this)">1h 40m</button>
+                                <button type="button" class="dur-chip-profile" onclick="selectReqDurationProfile('2 horas', this)">2 horas</button>
+                            </div>
+                        </div>
+
+                        <!-- Previsualización del Horario Calculado -->
+                        <div style="background-color: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 8px; padding: 12px; margin-top: 8px; text-align: center; font-family: 'Outfit', sans-serif;">
+                            <span style="font-size: 13px; color: #64748b; display: block; font-weight: 500; margin-bottom: 2px;">Horario sugerido calculado:</span>
+                            <strong id="req-custom-preview-time" style="font-size: 15px; color: #023047;">10:00 AM - 10:20 AM (20 min)</strong>
+                        </div>
+
+                        <!-- Mensaje -->
+                        <div>
+                            <label style="display: block; font-weight: 600; font-size: 14px; margin-bottom: 6px; color: #023047; text-align: left;">Mensaje / Nota explicativa</label>
+                            <textarea id="req-custom-note" rows="3" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; color: #334155; outline: none; resize: none; box-sizing: border-box;" placeholder="Ej. Tengo libre esta hora porque se canceló otra clase..."></textarea>
+                        </div>
+
+                        <!-- Botón de Envío -->
+                        <button type="button" onclick="submitCustomScheduleRequest()" style="background-color: #219EBC; color: white; border: none; border-radius: 12px; padding: 12px; font-size: 16px; font-weight: 700; cursor: pointer; transition: opacity 0.15s ease; margin-top: 8px; box-sizing: border-box; width: 100%;">
+                            🚀 Enviar Propuesta
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                let selectedReqDurationValProfile = '20 min';
+
+                // Función auxiliar para calcular y mostrar la hora final en tiempo real
+                function updateCalculatedEndTime() {
+                    const hourEl = document.getElementById('req-custom-hour');
+                    const minuteEl = document.getElementById('req-custom-minute');
+                    const ampmEl = document.getElementById('req-custom-ampm');
+                    const previewEl = document.getElementById('req-custom-preview-time');
+                    
+                    if (!hourEl || !minuteEl || !ampmEl || !previewEl) return;
+
+                    const hour = parseInt(hourEl.value);
+                    const minute = parseInt(minuteEl.value);
+                    const ampm = ampmEl.value;
+
+                    // 1. Convertir hora de inicio a 24h para cálculos
+                    let startHour24 = hour;
+                    if (ampm === 'PM' && hour !== 12) {
+                        startHour24 += 12;
+                    } else if (ampm === 'AM' && hour === 12) {
+                        startHour24 = 0;
+                    }
+
+                    // 2. Determinar minutos de duración según chip seleccionado
+                    let durationMins = 20;
+                    const dur = selectedReqDurationValProfile.toLowerCase();
+                    if (dur.includes('20')) durationMins = 20;
+                    else if (dur.includes('40')) durationMins = 40;
+                    else if (dur.includes('1 hora') || dur.includes('1h')) {
+                        if (dur.includes('20')) durationMins = 80;
+                        else if (dur.includes('40')) durationMins = 100;
+                        else durationMins = 60;
+                    } else if (dur.includes('2 horas') || dur.includes('2h')) {
+                        durationMins = 120;
+                    }
+
+                    // 3. Formatear hora de inicio
+                    const startTimeStr = `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')} ${ampm}`;
+
+                    // 4. Calcular hora de fin
+                    const totalMins = startHour24 * 60 + minute + durationMins;
+                    const endHour24 = Math.floor(totalMins / 60) % 24;
+                    const endMinute = totalMins % 60;
+
+                    const endAmPm = endHour24 >= 12 ? 'PM' : 'AM';
+                    let endHour12 = endHour24 % 12;
+                    if (endHour12 === 0) endHour12 = 12;
+
+                    const endTimeStr = `${String(endHour12).padStart(2, '0')}:${String(endMinute).padStart(2, '0')} ${endAmPm}`;
+
+                    // 5. Mostrar en el DOM
+                    previewEl.textContent = `${startTimeStr} - ${endTimeStr} (${selectedReqDurationValProfile})`;
+                }
+
+                // Función auxiliar para cargar dependencias dinámicamente
+                async function loadFlatpickrAssets() {
+                    if (window.flatpickr) return;
+                    
+                    // 1. Cargar CSS
+                    if (!document.querySelector('link[href*="flatpickr.min.css"]')) {
+                        const link = document.createElement('link');
+                        link.rel = 'stylesheet';
+                        link.href = 'https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css';
+                        document.head.appendChild(link);
+                    }
+                    
+                    // 2. Cargar Script
+                    await new Promise((resolve) => {
+                        const script = document.createElement('script');
+                        script.src = 'https://cdn.jsdelivr.net/npm/flatpickr';
+                        script.onload = resolve;
+                        document.head.appendChild(script);
+                    });
+
+                    // 3. Cargar Locale Español
+                    await new Promise((resolve) => {
+                        const script = document.createElement('script');
+                        script.src = 'https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js';
+                        script.onload = resolve;
+                        document.head.appendChild(script);
+                    });
+                }
+
+                async function openRequestScheduleModal() {
+                    const modal = document.getElementById('request-schedule-modal');
+                    modal.style.display = 'flex';
+                    
+                    // Actualizar previsualización al abrir
+                    updateCalculatedEndTime();
+
+                    // Asegurar carga de Flatpickr
+                    await loadFlatpickrAssets();
+
+                    // Inicializar flatpickr para la fecha sugerida si aún no se inicializó
+                    if (!window.reqCustomDateFlatpickr && window.flatpickr) {
+                        window.reqCustomDateFlatpickr = flatpickr("#req-custom-date", {
+                            minDate: "today",
+                            dateFormat: "Y-m-d",
+                            locale: "es",
+                            disableMobile: "true"
+                        });
+                    }
+                }
+
+                function closeRequestScheduleModal() {
+                    const modal = document.getElementById('request-schedule-modal');
+                    modal.style.display = 'none';
+                }
+
+                function selectReqDurationProfile(val, btn) {
+                    selectedReqDurationValProfile = val;
+                    // Desmarcar otros chips
+                    const chips = document.querySelectorAll('.dur-chip-profile');
+                    chips.forEach(c => c.classList.remove('active'));
+                    // Marcar el actual
+                    btn.classList.add('active');
+                    // Actualizar previsualización al cambiar duración
+                    updateCalculatedEndTime();
+                }
+
+                async function submitCustomScheduleRequest() {
+                    const subjectId = document.getElementById('req-custom-subject').value;
+                    const preferredDate = document.getElementById('req-custom-date').value;
+                    const hour = parseInt(document.getElementById('req-custom-hour').value);
+                    const minute = parseInt(document.getElementById('req-custom-minute').value);
+                    const ampm = document.getElementById('req-custom-ampm').value;
+                    const note = document.getElementById('req-custom-note').value;
+                    
+                    if (!preferredDate) {
+                        Swal.fire('Campos requeridos', 'Por favor selecciona una fecha sugerida.', 'warning');
+                        return;
+                    }
+
+                    // 1. Convertir hora de inicio a formato 24h para cálculos
+                    let startHour24 = hour;
+                    if (ampm === 'PM' && hour !== 12) {
+                        startHour24 += 12;
+                    } else if (ampm === 'AM' && hour === 12) {
+                        startHour24 = 0;
+                    }
+
+                    // 2. Determinar minutos de duración según chip seleccionado
+                    let durationMins = 20;
+                    const dur = selectedReqDurationValProfile.toLowerCase();
+                    if (dur.includes('20')) durationMins = 20;
+                    else if (dur.includes('40')) durationMins = 40;
+                    else if (dur.includes('1 hora') || dur.includes('1h')) {
+                        if (dur.includes('20')) durationMins = 80;
+                        else if (dur.includes('40')) durationMins = 100;
+                        else durationMins = 60;
+                    } else if (dur.includes('2 horas') || dur.includes('2h')) {
+                        durationMins = 120;
+                    }
+
+                    // 3. Formatear hora de inicio
+                    const startTimeStr = `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')} ${ampm}`;
+
+                    // 4. Calcular hora de fin
+                    const totalMins = startHour24 * 60 + minute + durationMins;
+                    const endHour24 = Math.floor(totalMins / 60) % 24;
+                    const endMinute = totalMins % 60;
+
+                    const endAmPm = endHour24 >= 12 ? 'PM' : 'AM';
+                    let endHour12 = endHour24 % 12;
+                    if (endHour12 === 0) endHour12 = 12;
+
+                    const endTimeStr = `${String(endHour12).padStart(2, '0')}:${String(endMinute).padStart(2, '0')} ${endAmPm}`;
+
+                    // 5. Unir como rango
+                    const preferredTime = `${startTimeStr} - ${endTimeStr}`;
+
+                    Swal.fire({
+                        title: 'Enviando...',
+                        text: 'Por favor espera mientras enviamos tu solicitud al tutor.',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+
+                    try {
+                        const response = await fetch('/student/booking/solicitar-tutor', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                                'Accept': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                subject_id: subjectId,
+                                preferred_date: preferredDate,
+                                preferred_time: preferredTime,
+                                note: note,
+                                tutor_id: "{{ $tutorId }}"
+                            })
+                        });
+
+                        const data = await response.json();
+                        Swal.close();
+
+                        if (data.success) {
+                            closeRequestScheduleModal();
+                            Swal.fire('¡Propuesta Enviada!', 'Tu propuesta de horario ha sido enviada al tutor exitosamente.', 'success');
+                        } else {
+                            Swal.fire('Error', data.message || 'No se pudo enviar la propuesta.', 'error');
+                        }
+                    } catch (error) {
+                        Swal.close();
+                        Swal.fire('Error', 'Ocurrió un error al enviar la propuesta.', 'error');
+                    }
+                }
+            </script>
+        @endrole
+    @endauth
     <script>
     function reservationText(key, fallback = '') {
         const lang = localStorage.getItem('selectedLanguage') || 'es';
