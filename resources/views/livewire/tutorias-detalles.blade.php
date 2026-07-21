@@ -85,7 +85,7 @@
                         <p
                             style="color: #666; font-weight: 500; font-size: 0.9rem; margin-top: 10px; margin-bottom: 5px;">
                             Estado: <span
-                                style="margin-left: 4px; color: #0284c7; font-weight: 600">{{ $bookingStatuses[$selectedBooking->status] ?? 'Estado desconocido' }}</span>
+                                style="margin-left: 4px; color: #0284c7; font-weight: 600">{{ is_numeric($selectedBooking->status) ? ($bookingStatuses[(int)$selectedBooking->status] ?? $selectedBooking->status) : ucfirst($selectedBooking->status) }}</span>
                         </p>
                     </div>
 
