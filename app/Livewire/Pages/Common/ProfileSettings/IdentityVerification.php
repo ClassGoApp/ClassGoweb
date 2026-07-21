@@ -10,8 +10,8 @@ use App\Models\Subject;
 use App\Models\User;
 use App\Models\UserCoupon;
 use App\Models\UserSubject;
-use App\services\IdentityService;
-use App\services\ProfileService;
+use App\Services\IdentityService;
+use App\Services\ProfileService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
@@ -19,6 +19,19 @@ use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use Exception;
+use Illuminate\Support\Facades\Session;
+
+use App\Models\Code;
+use App\Models\Coupon;
+
+use App\Models\UserPayoutMethod;
+use Illuminate\Support\Str;
+
+//use Google\Service\Analytics\Profiles;
+use App\Models\profiles;
+
+
 
 /**
  * Componente Livewire para la verificación de identidad del usuario con flujo diferido.
