@@ -27,6 +27,21 @@ class SlotBookingService implements interfaces\ISlotBookingService
         }
     }
 
+    public function getSlotBookingsTutor(){
+        $user = Auth::user();
+        if ($user->hasRole('tutor')) {
+            return SlotBooking::with(["attachments"])->where('tutor_id', $user->id) //retornar las actuales y futuras tutorias del tutor 
+                ->whereNotIn('status', [3,4]) // Excluir las reservas con estado 3,4 (No completado),(Rechazado)
+                ->where("start_time", ">=", now())
+                ->orWhere(function ($query) {
+                    $query->where("start_time", "<=", now())
+                        ->where("end_time", ">=", now());
+                })
+                ->orderBy('start_time', 'asc')
+                ->limit(10)
+                ->get();
+        }
+    }
     public function bookSlot($slotId, $userId, $additionalData = [])
     {
         // Implementación de la lógica para reservar un slot
@@ -70,7 +85,7 @@ class SlotBookingService implements interfaces\ISlotBookingService
         return $booking;
     }
 
-    public function crearReservaContinua($studentId, $tutorId, $subjectId, array $fechas, $session_fee)
+    public function crearReservaContinua($studentId, $tutorId, $subjectId, array $fechas, $session_fee, $materialProcesado, $description)
     {
         Log::info('DEBUG crearReservaContinua - entrada', [
             'student_id' => $studentId,
@@ -120,7 +135,8 @@ class SlotBookingService implements interfaces\ISlotBookingService
             'end_time' => $endTime->format('Y-m-d H:i:s'),
             'bloques' => count($fechas),
         ]);
-
+        // dd($materialProcesado, $materialProcesado["originName"], ["explode"=> explode(".", $materialProcesado["originName"] )[0] ]);
+        // $materialProcesado["originName"]= explode(".", $materialProcesado["originName"] )[0];
         $booking = new SlotBooking();
         $booking->student_id = $studentId;
         $booking->tutor_id = $tutorId;
@@ -131,6 +147,8 @@ class SlotBookingService implements interfaces\ISlotBookingService
         $booking->booked_at = now();
         $booking->user_subject_slot_id = null;
         $booking->status = 1;
+
+    
 
         Log::info('DEBUG crearReservaContinua - antes de generar link', [
             'start_time' => $booking->start_time,
@@ -259,7 +277,7 @@ class SlotBookingService implements interfaces\ISlotBookingService
             return collect();
         }
 
-        return SlotBooking::where('student_id', $user->id)
+        return SlotBooking::with(["attachments"])->where('student_id', $user->id)
             ->where('status', '!=', 3)
             ->where(function ($query) {
                 $query->where('start_time', '>=', now())

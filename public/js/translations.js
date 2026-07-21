@@ -31,7 +31,7 @@ const translations = {
     todos_derechos: "Todos los derechos reservados.",
     desarrolladores: "Desarrolladores",
     // Home
-    learn: "Aprende y Progresa con",
+    learn: "Aclara tus dudas al instante con",
     tutoring: "Tutorías en Línea",
     reach_goals:
       "Alcanza tus metas con tutorías personalizadas de los mejores expertos.<br> Conéctate con tutores dedicados para asegurar tu éxito.",
@@ -1125,10 +1125,16 @@ const translations = {
     auth_register_adventure: "Regístrate y comienza tu aventura",
     auth_create_account_button: "CREAR CUENTA",
 
+    auth_or: "o",
     auth_register_google_title: "Registrarse con Google",
+    auth_sign_in_with_google: "Iniciar sesión con Google",
     auth_google_select_role: "Selecciona cómo deseas registrarte en ClassGo",
     auth_continue_google: "Continuar con Google",
     auth_loading: "Cargando...",
+    auth_register_terms:
+      'Acepto los <a href="https://www.classgoapp.com/terminos" target="_blank">Términos de servicio</a> y la <a href="https://www.classgoapp.com/terminos" target="_blank">Política de privacidad</a>',
+    auth_referral_code_label: "Código de referido (opcional)",
+    auth_referral_code_placeholder: "Ingresa el código de referido",
   },
   en: {
     // Navbar
@@ -1156,9 +1162,9 @@ const translations = {
     edu_world: "Take your education everywhere!",
     todos_derechos: "All rights reserved.",
     desarrolladores: "Developers",
-    todos_derechos: "All rights reserved.",
+
     // Home
-    learn: "Learn and Progress with",
+    learn: "Clear up your doubts instantly with",
     tutoring: "Online Tutoring",
     reach_goals:
       "Achieve your goals with personalized tutoring from top experts.<br> Connect with dedicated tutors to ensure your success.",
@@ -2229,10 +2235,16 @@ const translations = {
     auth_register_adventure: "Sign up and start your adventure",
     auth_create_account_button: "CREATE ACCOUNT",
 
+    auth_or: "or",
     auth_register_google_title: "Sign up with Google",
+    auth_sign_in_with_google: "Sign in with Google",
     auth_google_select_role: "Select how you want to register on ClassGo",
     auth_continue_google: "Continue with Google",
     auth_loading: "Loading...",
+    auth_register_terms:
+      'I accept the <a href="https://www.classgoapp.com/terminos" target="_blank">Terms of Service</a> and <a href="https://www.classgoapp.com/terminos" target="_blank">Privacy Policy</a>',
+    auth_referral_code_label: "Referral code (optional)",
+    auth_referral_code_placeholder: "Enter the referral code",
   },
   pt: {
     // Navbar
@@ -2260,9 +2272,9 @@ const translations = {
     edu_world: "Leve sua educação para todos os lugares!",
     todos_derechos: "Todos os direitos reservados.",
     desarrolladores: "Desenvolvedores",
-    todos_derechos: "Todos os direitos reservados.",
+
     // Home
-    learn: "Aprenda e Progrida com",
+    learn: "Esclareça suas dúvidas na hora com",
     tutoring: "Aulas Online",
     reach_goals:
       "Alcance seus objetivos com aulas personalizadas dos melhores especialistas.<br> Conecte-se com tutores dedicados para garantir seu sucesso.",
@@ -3355,10 +3367,16 @@ const translations = {
     auth_register_adventure: "Cadastre-se e comece sua aventura",
     auth_create_account_button: "CRIAR CONTA",
 
+    auth_or: "ou",
     auth_register_google_title: "Cadastrar-se com Google",
+    auth_sign_in_with_google: "Iniciar sessão com Google",
     auth_google_select_role: "Selecione como deseja se cadastrar na ClassGo",
     auth_continue_google: "Continuar com Google",
     auth_loading: "Carregando...",
+    auth_register_terms:
+      'Aceito os <a href="https://www.classgoapp.com/terminos" target="_blank">Termos de Serviço</a> e a <a href="https://www.classgoapp.com/terminos" target="_blank">Política de Privacidade</a>',
+    auth_referral_code_label: "Código de indicação (opcional)",
+    auth_referral_code_placeholder: "Digite o código de indicação",
   },
 };
 

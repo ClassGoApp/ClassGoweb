@@ -54,5 +54,6 @@ return [
     'dont_account_join' => 'Don’t have an Account?',
     'login_as' => 'Login as',
     'admin' => 'Admin',
-    'sign_in_with_google' => 'Iniciar Sesion con Google',
+    'sign_in_with_google' => 'Sign in with Google',
+    'auth_register_google_title' => 'Sign up with Google',
 ];

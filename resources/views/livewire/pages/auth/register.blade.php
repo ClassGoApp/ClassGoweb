@@ -171,8 +171,14 @@ new #[Layout('layouts.guest')] class extends Component
                         <div class="form-group @error('terms') am-invalid @enderror am-terms-check">
                             <div class="am-checkbox am-signup-check">
                                 <input wire:model="terms" type="checkbox" id="terms" name="terms">
-                                <label for="terms"><span>{!! __('auth.register_terms') !!}</label>
+                                <label for="terms">
+                                    <span data-translate="auth_register_terms">
+                                        Acepto los <a href="https://www.classgoapp.com/terminos" target="_blank">Términos de servicio</a> y la <a href="https://www.classgoapp.com/terminos" target="_blank">Política de privacidad</a>
+                                    </span>
+                                </label>
                             </div>
+                            <x-input-error :field_name="'terms'"></x-input-error>
+                        </div>
                             <x-input-error :field_name="'terms'"></x-input-error>
                         </div>
                         <div class="form-group">
@@ -191,7 +197,7 @@ new #[Layout('layouts.guest')] class extends Component
         @if (!empty(setting('_api.enable_social_login')) && ((!empty(setting('_api.social_google_client_id')) &&
         !empty(setting('_api.social_google_client_secret')))))
         <div class="am-signinoption">
-            <span class="am-signinoption_br"><em>{{ __('auth.or') }}</em></span>
+            <span class="am-signinoption_br"><em data-translate="auth_or">o</em></span>
             <a href="#" wire:click.prevent="redirectGoogle" wire:target="redirectGoogle"
                 wire:loading.class="am-btn_disable" class="am-signinoption_btn">
                 <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21" fill="none">
@@ -208,7 +214,7 @@ new #[Layout('layouts.guest')] class extends Component
                         d="M10.5003 4.97884C11.8461 4.97884 13.0544 5.44134 14.0044 6.34967L16.6336 3.72051C15.0461 2.24134 12.9711 1.33301 10.5003 1.33301C6.91693 1.33301 3.81693 3.38717 2.30859 6.38301L5.37109 8.75801C6.09193 6.59134 8.11276 4.97884 10.5003 4.97884Z"
                         fill="#EA4335" />
                 </svg>
-                {{ __('auth.sign_in_with_google') }}
+                <span data-translate="auth_register_google_title">Registrarse con Google</span>
             </a>
         </div>
         @endif

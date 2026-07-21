@@ -158,6 +158,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // 3. Reserva (Elegir al tutor)
     Route::post('/batches/{batch}/reserve', [SubjectPickerController::class, 'reserveTutor']);
+    Route::post('/batches/{batch}/cancel', [SubjectPickerController::class, 'cancelBatch']);
 
     // 4. Pago, Estado y Reunión (Bookings)
     Route::post('/bookings/{booking}/receipt', [SubjectPickerController::class, 'studentUploadReceipt']);
@@ -246,6 +247,9 @@ Route::put('user/{id}/tutoring-availability', [TutorController::class, 'updateTu
 
 // Ruta para obtener solo tutores disponibles (available_for_tutoring = 1)
 Route::get('available-tutors', [TutorController::class, 'getAvailableTutors']);
+
+// Estadísticas públicas para el home de la app móvil
+Route::get('stats', [HomeController::class, 'stats']);
 
 // Ruta para obtener un tutor disponible para una materia específica
 Route::get('tutor-for-subject/{subject_id}', [TutorController::class, 'getTutorForSubject']);

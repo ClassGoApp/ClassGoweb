@@ -196,7 +196,7 @@ class NotificationService
                 'token' => $data['token'],
                 'email' => $data['userEmail'],
             ], false));
-            $btnHtml = view('components.email.button', ['btnText' => trans('email_template.reset_password_txt'), 'btnUrl' => $btnUrl]);
+            $btnHtml = view('components.email.button', ['btnText' => $emailTemplate['button_text'] ?? 'Restablecer contraseña', 'btnUrl' => $btnUrl]);
             $emailTemplate['content']    = Str::replace("{resetLink}", $btnHtml, $emailTemplate['content']);
         }
         return $emailTemplate;

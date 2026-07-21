@@ -21,22 +21,32 @@ class SubjectController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Subject::select('id', 'name');
+        $query = Subject::select('subjects.id', 'subjects.name')
+            ->leftJoin('subject_groups as sg', 'subjects.subject_group_id', '=', 'sg.id')
+            ->leftJoin('subject_groups as parent', 'sg.id_padre', '=', 'parent.id')
+            ->orderByRaw("
+                CASE
+                    WHEN sg.id = 3000 OR sg.id_padre = 3000 OR parent.id_padre = 3000 THEN 0
+                    WHEN sg.id = 2000 OR sg.id_padre = 2000 OR parent.id_padre = 2000 THEN 1
+                    WHEN sg.id = 1000 OR sg.id_padre = 1000 OR parent.id_padre = 1000 THEN 2
+                    ELSE 3
+                END
+            ")
+            ->orderBy('subjects.name');
 
         if ($request->has('keyword') && !empty($request->keyword)) {
             $keyword = trim($request->keyword);
             
-            // Validar que la longitud del keyword sea razonable
             if (strlen($keyword) > 0 && strlen($keyword) <= 100) {
                 $keyword = Str::lower($this->removeAccents($keyword));
                 $query->where(function($q) use ($keyword) {
-                    $q->whereRaw('LOWER(name) LIKE ?', ['%' . $keyword . '%'])
-                      ->orWhereRaw('LOWER(name) LIKE ?', ['%' . $this->removeAccents($keyword) . '%']);
+                    $q->whereRaw('LOWER(subjects.name) LIKE ?', ['%' . $keyword . '%'])
+                      ->orWhereRaw('LOWER(subjects.name) LIKE ?', ['%' . $this->removeAccents($keyword) . '%']);
                 });
             }
         }
 
-        $perPage = $request->get('per_page', 20); // Por defecto 20 por página
+        $perPage = $request->get('per_page', 20);
         $subjects = $query->paginate($perPage);
         return $this->success($subjects, 'Materias obtenidas exitosamente');
     }
