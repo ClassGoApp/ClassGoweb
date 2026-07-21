@@ -560,6 +560,30 @@
             display: none !important;
         }
 
+        .am-booking-calander-date input,
+        .am-booking-calander-date .flatpickr-input,
+        .am-booking-calander-date .input {
+            color: #023047 !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+            background-color: #ffffff !important;
+        }
+
+        .am-booking-calander-date input[type="hidden"] {
+            display: none !important;
+        }
+
+        .am-booking-calander-date,
+        .am-booking-calander-date input,
+        .am-booking-calander-date .flatpickr-input,
+        .am-booking-calander-date .input {
+            cursor: pointer !important;
+        }
+
+        .am-booking-calander-date input[readonly] {
+            cursor: pointer !important;
+        }
+
         .am-modal-overlay {
             background: rgba(0, 0, 0, 0.5);
             position: fixed;
@@ -650,6 +674,10 @@
         document.addEventListener('initCalendarJs', (event) => {
             setTimeout(() => {
                 initFlatPicker(event.detail.showBy, event.detail.currentDate, event.detail.range);
+
+                setTimeout(() => {
+                    applyStudentBookingsTranslations();
+                }, 120);
             }, 100);
         });
 
@@ -667,65 +695,16 @@
             return 'default';
         }
 
-        function initFlatPicker(showBy, currentDate, range = []) {
-            if (flatpickrInstance) {
-                flatpickrInstance.destroy();
+        function normalizeMonthlyDateForFlatpickr(currentDate) {
+            if (!currentDate || currentDate === 'today') {
+                return new Date();
             }
-            let config = {
-                defaultDate: currentDate,
-                disableMobile: true,
-                locale: getFlatpickrLocale(),
-                onChange: function(selectedDates, dateStr, instance) {
-                    @this.call('jumpToDate', dateStr);
-                }
-            };
-            if (showBy == 'daily') {
-                config = {
-                    ...config,
-                    altInput: true,
-                    altFormat: "F j, Y",
-                    dateFormat: "Y-m-d"
-                };
-                @role('tutor')
-                    config = {
-                        ...config,
-                        minDate: @js(\Carbon\Carbon::now(getUserTimezone())->toDateString())
-                    }
-                @endrole ()
-            } else if (showBy == 'weekly') {
-                config = {
-                    ...config,
-                    defaultDate: parseDateRange(currentDate),
-                    minDate: @js(\Carbon\Carbon::now(getUserTimezone())->toDateString()),
-                    plugins: [
-                        new weekSelect({
-                            weekStart: @js($startOfWeek)
-                        })
-                    ],
-                    dateFormat: 'Y-m-d',
-                    onReady: function(selectedDates, dateStr, instance) {
-                        instance.input.value = translateStudentBookingsDateText(currentDate)
-                    }
-                };
-            } else {
-                config = {
-                    ...config,
-                    plugins: [
-                        new monthSelectPlugin({
-                            shorthand: true,
-                            dateFormat: "F, Y",
-                        })
-                    ],
-                };
+
+            if (/^\d{4}-\d{2}-\d{2}$/.test(currentDate)) {
+                return currentDate;
             }
-            flatpickrInstance = flatpickr($(`#flat-picker`), config);
-        }
 
-        function parseDateRange(dateRangeStr) {
-            const [range, year] = dateRangeStr.split(' ');
-            const [startStr, endStr] = range.split('-');
-
-            const monthMap = {
+            const months = {
                 January: 0,
                 February: 1,
                 March: 2,
@@ -737,29 +716,247 @@
                 September: 8,
                 October: 9,
                 November: 10,
-                December: 11
+                December: 11,
+
+                enero: 0,
+                febrero: 1,
+                marzo: 2,
+                abril: 3,
+                mayo: 4,
+                junio: 5,
+                julio: 6,
+                agosto: 7,
+                septiembre: 8,
+                octubre: 9,
+                noviembre: 10,
+                diciembre: 11,
+
+                janeiro: 0,
+                fevereiro: 1,
+                março: 2,
+                abril: 3,
+                maio: 4,
+                junho: 5,
+                julho: 6,
+                agosto: 7,
+                setembro: 8,
+                outubro: 9,
+                novembro: 10,
+                dezembro: 11
             };
 
-            const parseDate = (str) => {
-                const parts = str.trim().split(' ');
-                return new Date(year, monthMap[parts[0]], parts[1]);
-            };
+            const cleanDate = currentDate.toString().replace(',', '').trim();
+            const parts = cleanDate.split(/\s+/);
 
-            try {
-                const startDate = parseDate(startStr);
-                const endDate = parseDate(endStr);
+            const monthName = parts[0];
+            const year = parseInt(parts[1], 10);
 
-                if (isNaN(startDate) || isNaN(endDate)) {
-                    throw new Error('Invalid date');
-                }
-
-                return {
-                    start: startDate.toISOString().split('T')[0],
-                    end: endDate.toISOString().split('T')[0]
-                };
-            } catch {
-                return null;
+            if (months[monthName] === undefined || Number.isNaN(year)) {
+                return new Date();
             }
+
+            return new Date(year, months[monthName], 1);
+        }
+
+        function getFlatpickrVisibleInput(instance) {
+            return instance?.altInput || instance?.input || null;
+        }
+
+        function setFlatpickrVisibleValue(instance, value) {
+            const visibleInput = getFlatpickrVisibleInput(instance);
+
+            if (visibleInput && value) {
+                visibleInput.value = value;
+            }
+        }
+
+        function formatMonthForBackend(date) {
+            const months = [
+                'January',
+                'February',
+                'March',
+                'April',
+                'May',
+                'June',
+                'July',
+                'August',
+                'September',
+                'October',
+                'November',
+                'December'
+            ];
+
+            return `${months[date.getMonth()]}, ${date.getFullYear()}`;
+        }
+
+        function initFlatPicker(showBy, currentDate, range = []) {
+            if (flatpickrInstance) {
+                flatpickrInstance.destroy();
+            }
+
+            let config = {
+                defaultDate: currentDate,
+                disableMobile: true,
+                locale: getFlatpickrLocale(),
+                onChange: function(selectedDates, dateStr, instance) {
+                    @this.call('jumpToDate', dateStr);
+                }
+            };
+
+            if (showBy == 'daily') {
+                config = {
+                    ...config,
+                    altInput: true,
+                    altFormat: "F j, Y",
+                    dateFormat: "Y-m-d",
+                };
+
+                @role('tutor')
+                    config = {
+                        ...config,
+                        minDate: @js(\Carbon\Carbon::now(getUserTimezone())->toDateString())
+                    };
+                @endrole
+
+            } else if (showBy == 'weekly') {
+                config = {
+                    ...config,
+                    defaultDate: parseDateRange(currentDate),
+                    minDate: @js(\Carbon\Carbon::now(getUserTimezone())->toDateString()),
+                    plugins: [
+                        new weekSelect({
+                            weekStart: @js($startOfWeek)
+                        })
+                    ],
+                    dateFormat: 'Y-m-d',
+                    onChange: function(selectedDates, dateStr, instance) {
+                        if (!selectedDates.length) {
+                            return;
+                        }
+
+                        const selectedDate = instance.formatDate(selectedDates[0], 'Y-m-d');
+
+                        @this.call('jumpToDate', selectedDate);
+                    },
+                    onReady: function(selectedDates, dateStr, instance) {
+                        setFlatpickrVisibleValue(
+                            instance,
+                            translateStudentBookingsDateText(currentDate)
+                        );
+                    }
+                };
+
+            } else {
+                config = {
+                    ...config,
+                    defaultDate: normalizeMonthlyDateForFlatpickr(currentDate),
+                    plugins: [
+                        new monthSelectPlugin({
+                            shorthand: true,
+                            dateFormat: "F, Y",
+                            altFormat: "F, Y",
+                        })
+                    ],
+                    onReady: function(selectedDates, dateStr, instance) {
+                        if (selectedDates.length > 0) {
+                            const monthText = instance.formatDate(selectedDates[0], "F, Y");
+
+                            setFlatpickrVisibleValue(
+                                instance,
+                                translateStudentBookingsDateText(monthText)
+                            );
+                        }
+                    },
+                    onChange: function(selectedDates, dateStr, instance) {
+                        if (!selectedDates.length) {
+                            return;
+                        }
+
+                        const selectedMonth = formatMonthForBackend(selectedDates[0]);
+
+                        @this.call('jumpToDate', selectedMonth);
+                    }
+                };
+            }
+
+            const flatPickerElement = document.querySelector('#flat-picker');
+
+            if (!flatPickerElement) {
+                return;
+            }
+
+            flatpickrInstance = flatpickr(flatPickerElement, config);
+        }
+
+        function parseDateRange(dateRangeStr) {
+            if (!dateRangeStr || dateRangeStr === 'today') {
+                return new Date();
+            }
+
+            if (/^\d{4}-\d{2}-\d{2}$/.test(dateRangeStr)) {
+                return dateRangeStr;
+            }
+
+            const months = {
+                January: 0,
+                February: 1,
+                March: 2,
+                April: 3,
+                May: 4,
+                June: 5,
+                July: 6,
+                August: 7,
+                September: 8,
+                October: 9,
+                November: 10,
+                December: 11,
+
+                enero: 0,
+                febrero: 1,
+                marzo: 2,
+                abril: 3,
+                mayo: 4,
+                junio: 5,
+                julio: 6,
+                agosto: 7,
+                septiembre: 8,
+                octubre: 9,
+                noviembre: 10,
+                diciembre: 11,
+
+                janeiro: 0,
+                fevereiro: 1,
+                março: 2,
+                abril: 3,
+                maio: 4,
+                junho: 5,
+                julho: 6,
+                agosto: 7,
+                setembro: 8,
+                outubro: 9,
+                novembro: 10,
+                dezembro: 11
+            };
+
+            const cleanText = dateRangeStr.toString().replace(',', '').trim();
+
+            const match = cleanText.match(
+                /([A-Za-zÁÉÍÓÚáéíóúñÑçÇ]+)\s+(\d{1,2})\s*-\s*([A-Za-zÁÉÍÓÚáéíóúñÑçÇ]+)\s+(\d{1,2})\s+(\d{4})/
+            );
+
+            if (!match) {
+                return new Date();
+            }
+
+            const startMonth = match[1];
+            const startDay = parseInt(match[2], 10);
+            const year = parseInt(match[5], 10);
+
+            if (months[startMonth] === undefined || Number.isNaN(startDay) || Number.isNaN(year)) {
+                return new Date();
+            }
+
+            return new Date(year, months[startMonth], startDay);
         }
 
         function studentBookingsText(key, fallback = '') {
@@ -861,13 +1058,28 @@
                 applyStudentBookingsPlaceholders();
                 applyStudentBookingsDates();
 
-                if (typeof initFlatPicker === 'function') {
-                    initFlatPicker(@js($showBy), @js($currentDate));
+                if (flatpickrInstance) {
+                    flatpickrInstance.set('locale', getFlatpickrLocale());
 
-                    setTimeout(() => {
-                        applyStudentBookingsDates();
-                    }, 100);
+                    if (flatpickrInstance.selectedDates.length > 0) {
+                        flatpickrInstance.setDate(flatpickrInstance.selectedDates[0], false);
+                    }
                 }
             });
+
+            document.addEventListener('livewire:init', function () {
+                Livewire.hook('morph.updated', function () {
+                    setTimeout(() => {
+                        applyStudentBookingsTranslations();
+                    }, 120);
+                });
+
+                Livewire.hook('morphed', function () {
+                    setTimeout(() => {
+                        applyStudentBookingsTranslations();
+                    }, 120);
+                });
+            });
+
     </script>
 @endscript

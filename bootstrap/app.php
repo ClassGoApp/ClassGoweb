@@ -45,6 +45,11 @@ return Application::configure(basePath: dirname(__DIR__))
             'maintenance' => \App\Http\Middleware\CheckMaintenanceMode::class,
             'enabled' => \App\Http\Middleware\CheckModuleEnabled::class,
         ]);
+
+        $middleware->validateCsrfTokens(except: [
+            'solicitud-clase/*',
+            'solicitud-clase',
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->render(function (AuthenticationException $e, Request $request) {

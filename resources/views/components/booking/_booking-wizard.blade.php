@@ -163,6 +163,11 @@
                                     
 
                                     <div id="js-slots-container"></div>
+                                    <div style="margin-top: 16px; text-align: center;">
+                                        <button type="button" id="js-req-custom-schedule-btn" style="border: 2px solid #219EBC; color: #219EBC; font-size: 13px; padding: 8px 16px; border-radius: 12px; font-weight: 600; cursor: pointer; background: transparent; transition: all 0.15s ease;">
+                                            Solicitar otro horario
+                                        </button>
+                                    </div>
                                     <button type="button" id="js-scroll-calendar" class="btn-scroll-calendar" aria-label="Subir al calendario">
                                         <span class="chev-up" aria-hidden="true"></span>
                                     </button>
@@ -347,6 +352,114 @@
                             </div>
                         </div>
 
+                        <!-- Panel de Solicitud de Tutores -->
+                        <div id="content-step-request_tutor" class="step-panel">
+                            <div style="max-width: 950px; margin: 0 auto; padding: 0px 20px;">
+                                <h3 style="color:#023047; font-size: 18px; font-weight: 700; margin-bottom: 8px; text-align: center;">
+                                    Solicitud de Tutores
+                                </h3>
+                                <p id="js-req-desc-text" style="color: #6b7280; font-size: 13px; margin-bottom: 16px; text-align: center;">
+                                    No encontramos tutores disponibles. Envía una solicitud a todos los tutores calificados completando lo siguiente:
+                                </p>
+
+                                <div class="slots-layout">
+                                    <!-- Columna Izquierda: Calendario -->
+                                    <div style="justify-items: center; align-self: start;">
+                                        <div id="js-req-mini-calendar"></div>
+                                        <div style="margin-top: 8px; font-size: 13px; color: #023047; font-weight: 700; text-align: center;">
+                                            Fecha sugerida: <span id="js-req-selected-date-label" style="color: #219EBC;">Ninguna</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Columna Derecha: Campos -->
+                                    <div>
+                                        <!-- Campo Materia -->
+                                        <div class="float-field" style="margin-top: 0;">
+                                            <span class="float-label">Materia Solicitada</span>
+                                            <span class="float-value" id="js-req-subject-name">Materia</span>
+                                        </div>
+
+                                        <!-- Sub-grid para Horario y Duración en paralelo -->
+                                        <div class="req-details-grid">
+                                            
+                                            <!-- Horario Sugerido -->
+                                            <div>
+                                                <label style="display: block; font-weight: 600; font-size: 13px; margin-bottom: 4px; color: #023047;">
+                                                    Hora de inicio
+                                                </label>
+                                                <div class="digital-time-picker" style="padding: 8px; margin-top: 0; width: 100%; box-sizing: border-box; justify-content: space-between;">
+                                                    <select id="js-clock-hour" class="time-select" style="text-align: center; font-size: 15px; padding: 4px 6px; width: 55px;">
+                                                        <option value="1">01</option>
+                                                        <option value="2">02</option>
+                                                        <option value="3">03</option>
+                                                        <option value="4">04</option>
+                                                        <option value="5">05</option>
+                                                        <option value="6">06</option>
+                                                        <option value="7">07</option>
+                                                        <option value="8">08</option>
+                                                        <option value="9">09</option>
+                                                        <option value="10" selected>10</option>
+                                                        <option value="11">11</option>
+                                                        <option value="12">12</option>
+                                                    </select>
+                                                    <span class="time-separator" style="font-size: 18px; margin: 0 4px;">:</span>
+                                                    <select id="js-clock-minute" class="time-select" style="text-align: center; font-size: 15px; padding: 4px 6px; width: 55px;">
+                                                        <option value="0" selected>00</option>
+                                                        <option value="5">05</option>
+                                                        <option value="10">10</option>
+                                                        <option value="15">15</option>
+                                                        <option value="20">20</option>
+                                                        <option value="25">25</option>
+                                                        <option value="30">30</option>
+                                                        <option value="35">35</option>
+                                                        <option value="40">40</option>
+                                                        <option value="45">45</option>
+                                                        <option value="50">50</option>
+                                                        <option value="55">55</option>
+                                                    </select>
+
+                                                    <div class="ampm-btn-group" style="margin-left: 6px; display: flex; flex-direction: column; gap: 2px;">
+                                                        <button type="button" class="ampm-btn active" id="js-clock-ampm-am" style="padding: 2px 6px; font-size: 10px;">AM</button>
+                                                        <button type="button" class="ampm-btn" id="js-clock-ampm-pm" style="padding: 2px 6px; font-size: 10px;">PM</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Duración de la sesión -->
+                                            <div>
+                                                <label style="display: block; font-weight: 600; font-size: 13px; margin-bottom: 4px; color: #023047;">
+                                                    Duración de la sesión
+                                                </label>
+                                                <div class="duration-grid" style="margin-top: 0; gap: 4px; grid-template-columns: repeat(3, 1fr);">
+                                                    <div class="duration-chip active" data-mins="20" style="padding: 6px 4px; font-size: 11px;">20 min</div>
+                                                    <div class="duration-chip" data-mins="40" style="padding: 6px 4px; font-size: 11px;">40 min</div>
+                                                    <div class="duration-chip" data-mins="60" style="padding: 6px 4px; font-size: 11px;">1 hora</div>
+                                                    <div class="duration-chip" data-mins="80" style="padding: 6px 4px; font-size: 11px;">1h 20m</div>
+                                                    <div class="duration-chip" data-mins="100" style="padding: 6px 4px; font-size: 11px;">1h 40m</div>
+                                                    <div class="duration-chip" data-mins="120" style="padding: 6px 4px; font-size: 11px;">2 horas</div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Vista Previa de Propuesta y Notas -->
+                                        <div style="display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 12px;">
+                                            <div class="proposal-preview" style="margin: 0; padding: 6px 12px; font-size: 13px; border-radius: 8px;">
+                                                Horario propuesto: <span id="js-proposal-time-range">10:00 AM - 10:20 AM</span>
+                                            </div>
+
+                                            <!-- Detalles adicionales -->
+                                            <div class="float-field" style="margin: 0;">
+                                                <span class="float-label" style="font-size: 11px;">Detalles adicionales / Notas</span>
+                                                <textarea id="js-req-note" placeholder="¿Qué temas específicos necesitas repasar?..." style="width: 100%; border: none; resize: none; outline: none; font-size: 14px; padding-top: 2px; min-height: 48px; background: transparent;" maxlength="300"></textarea>
+                                            </div>
+                                        </div>
+                                        
+                                        <div id="js-req-message" class="form-msg" style="display: none; margin-top: 8px; padding: 6px 10px; font-size: 12px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
 
 
@@ -382,6 +495,7 @@
         </div>
  
         <script src="{{ asset('js/translations.js') }}"></script>
+<link rel="stylesheet" href="{{ asset('css/estilos/variables.css') }}">
 
 <link rel="stylesheet" href="{{ asset('css/estilos/variables.css') }}">
 <style>
@@ -865,6 +979,160 @@
         margin: 6px 0 12px;
         font-size: 12px;
         color: #6b7280;
+    }
+
+    .slots-layout {
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        gap: 20px;
+        align-items: start;
+    }
+
+    .req-details-grid {
+        display: grid;
+        grid-template-columns: 1.1fr 1.2fr;
+        gap: 16px;
+        margin-top: 12px;
+    }
+
+    @media (max-width: 768px) {
+        .slots-layout {
+            grid-template-columns: 1fr;
+            gap: 16px;
+            justify-items: center;
+        }
+        .slots-layout > div {
+            width: 100%;
+        }
+        .req-details-grid {
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+    }
+
+    #js-req-custom-schedule-btn:hover {
+        background: #219EBC !important;
+        color: #fff !important;
+    }
+
+    /* Estilos del Reloj Digital */
+    .digital-time-picker {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f8f9fa;
+        border-radius: 14px;
+        padding: 16px;
+        border: 1px solid #e5e7eb;
+        margin-top: 16px;
+        width: 100%;
+        max-width: 280px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .time-select {
+        border: 2px solid #cbd5e1;
+        background: #ffffff;
+        border-radius: 10px;
+        padding: 8px 12px;
+        font-size: 18px;
+        font-weight: 700;
+        color: #023047;
+        outline: none;
+        cursor: pointer;
+        transition: border-color 0.15s ease;
+        text-align: center;
+        width: 75px;
+    }
+
+    .time-select:focus {
+        border-color: #219ebc;
+    }
+
+    .time-separator {
+        font-size: 24px;
+        font-weight: 800;
+        color: #023047;
+        margin: 0 8px;
+    }
+
+    .ampm-btn-group {
+        display: flex;
+        gap: 6px;
+    }
+
+    .ampm-btn {
+        border: 1px solid #cbd5e1;
+        background: #ffffff;
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 600;
+        color: #475569;
+        cursor: pointer;
+        transition: all 0.15s ease;
+    }
+
+    .ampm-btn.active {
+        background: #023047;
+        color: #ffffff;
+        border-color: #023047;
+    }
+
+    /* Estilos del selector de duración */
+    .duration-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        margin-top: 10px;
+    }
+
+    .duration-chip {
+        border: 1px solid #cbd5e1;
+        background: #ffffff;
+        color: #334155;
+        border-radius: 10px;
+        padding: 8px;
+        font-size: 12px;
+        font-weight: 600;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.15s ease;
+        user-select: none;
+    }
+
+    .duration-chip:hover {
+        border-color: #219ebc;
+        color: #219ebc;
+    }
+
+    .duration-chip.active {
+        background: #219ebc;
+        color: #ffffff;
+        border-color: #219ebc;
+    }
+
+    .proposal-preview {
+        background: #ecfdf5;
+        border: 1px dashed #10b981;
+        color: #065f46;
+        border-radius: 12px;
+        padding: 12px;
+        margin-top: 16px;
+        text-align: center;
+        font-size: 14px;
+        font-weight: 700;
+    }
+
+    /* Clase dinámica para el botón de solicitud */
+    #js-next-btn.btn-request {
+        background: #f97316; /* Naranja (Tailwind orange-500) */
+        box-shadow: 0 10px 22px rgba(249, 115, 22, 0.25);
+    }
+    
+    #js-next-btn.btn-request:hover {
+        box-shadow: 0 12px 26px rgba(249, 115, 22, 0.35);
     }
 
     .legend-item {
@@ -1508,12 +1776,13 @@
 
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    (function() {
         console.log('🚀 WIZARD CARGADO - 3 instituciones');
 
 
 
         let currentStep = 1;
+        let hasNoTutors = false;
 
 
         let selectedInstitution = null;
@@ -1524,6 +1793,9 @@
 
         let selectedTutor = null;
         let selectedTutorName = null;
+        let targetTutorId = null;
+        let targetTutorName = null;
+        let tutorRequestToken = null;
         let selectedTutorPrice = 0;
 
 
@@ -1543,6 +1815,17 @@
         let calendarYear = null;
         let calendarMonth = null;
         let selectedDate = null;
+
+        let reqCalendarYear = null;
+        let reqCalendarMonth = null;
+        let reqSelectedDate = null;
+
+        let clockHour = 10;
+        let clockMinute = 0;
+        let clockAmPm = 'AM';
+        let clockMode = 'hour';
+        let selectedDurationMins = 20;
+        let reqSelectedTimeRange = '';
 
 
 
@@ -1648,15 +1931,16 @@
 
 
 
-        document.addEventListener('keydown', (e) => {
+        if (window._bookingWizardEscapeListener) {
+            document.removeEventListener('keydown', window._bookingWizardEscapeListener);
+        }
+        window._bookingWizardEscapeListener = (e) => {
             if (e.key !== 'Escape') return;
             if (!modal || modal.style.display !== 'block') return;
-
-
             if (loader && loader.style.display === 'flex') return;
-
             closeModal();
-        });
+        };
+        document.addEventListener('keydown', window._bookingWizardEscapeListener);
 
 
         const institutionSelect = document.getElementById('js-institution-select');
@@ -1842,19 +2126,31 @@
         });
 
 
-        document.addEventListener('click', (e) => {
+        if (window._bookingWizardCloseDDClickListener) {
+            document.removeEventListener('click', window._bookingWizardCloseDDClickListener);
+        }
+        window._bookingWizardCloseDDClickListener = (e) => {
             if (!dd) return;
             if (!dd.contains(e.target)) closeDD();
-        });
+        };
+        document.addEventListener('click', window._bookingWizardCloseDDClickListener);
 
 
-        document.addEventListener('keydown', (e) => {
+        if (window._bookingWizardCloseDDEscapeListener) {
+            document.removeEventListener('keydown', window._bookingWizardCloseDDEscapeListener);
+        }
+        window._bookingWizardCloseDDEscapeListener = (e) => {
             if (e.key === 'Escape') closeDD();
-        });
+        };
+        document.addEventListener('keydown', window._bookingWizardCloseDDEscapeListener);
 
 
         function resetModalState() {
             currentStep = 1;
+            hasNoTutors = false;
+            targetTutorId = null;
+            targetTutorName = null;
+            tutorRequestToken = null;
 
 
             selectedInstitution = null;
@@ -1896,6 +2192,21 @@
             calendarYear = null;
             calendarMonth = null;
             selectedDate = null;
+
+            reqCalendarYear = null;
+            reqCalendarMonth = null;
+            reqSelectedDate = null;
+            const reqLabel = document.getElementById('js-req-selected-date-label');
+            if (reqLabel) reqLabel.textContent = 'Ninguna';
+            const reqCalendarEl = document.getElementById('js-req-mini-calendar');
+            if (reqCalendarEl) reqCalendarEl.innerHTML = '';
+
+            clockHour = 10;
+            clockMinute = 0;
+            clockAmPm = 'AM';
+            clockMode = 'hour';
+            selectedDurationMins = 20;
+            reqSelectedTimeRange = '';
 
             appliedDiscountDecimal = 0;
             appliedDiscountPct = 0;
@@ -2009,7 +2320,11 @@
         });
 
 
-        window.addEventListener('resize', toggleScrollCalendarBtn);
+        if (window._bookingWizardResizeListener) {
+            window.removeEventListener('resize', window._bookingWizardResizeListener);
+        }
+        window._bookingWizardResizeListener = toggleScrollCalendarBtn;
+        window.addEventListener('resize', window._bookingWizardResizeListener);
 
 
         toggleScrollCalendarBtn();
@@ -2358,12 +2673,16 @@
         }
 
 
-        document.addEventListener('click', function(e) {
+        if (window._bookingWizardOpenClickListener) {
+            document.removeEventListener('click', window._bookingWizardOpenClickListener);
+        }
+        window._bookingWizardOpenClickListener = function(e) {
             if (e.target.closest('.js-open-booking')) {
                 e.preventDefault();
                 openModal();
             }
-        });
+        };
+        document.addEventListener('click', window._bookingWizardOpenClickListener);
         closeBtn.addEventListener('click', closeModal);
 
         let antiCloseArmed = false;
@@ -2402,6 +2721,46 @@
 
         nextBtn.addEventListener('click', async () => {
             if (currentStep === 1) {
+                if (hasNoTutors) {
+                    currentStep = 'request_tutor';
+                    document.getElementById('js-req-subject-name').textContent = selectedSubjectName;
+                    
+                    reqSelectedDate = todayStr();
+                    const reqLabel = document.getElementById('js-req-selected-date-label');
+                    if (reqLabel) reqLabel.textContent = 'Hoy';
+                    
+                    const now = new Date();
+                    renderReqMiniCalendar(now.getFullYear(), now.getMonth());
+
+                    clockHour = 10;
+                    clockMinute = 0;
+                    clockAmPm = 'AM';
+                    selectedDurationMins = 20;
+
+                    const hourSel = document.getElementById('js-clock-hour');
+                    if (hourSel) hourSel.value = '10';
+                    const minSel = document.getElementById('js-clock-minute');
+                    if (minSel) minSel.value = '0';
+
+                    document.getElementById('js-clock-ampm-am')?.classList.add('active');
+                    document.getElementById('js-clock-ampm-pm')?.classList.remove('active');
+
+                    document.querySelectorAll('.duration-chip').forEach(c => {
+                        if (parseInt(c.dataset.mins) === 20) c.classList.add('active');
+                        else c.classList.remove('active');
+                    });
+
+                    updateProposalTime();
+
+                    document.getElementById('js-req-note').value = '';
+                    document.getElementById('js-req-message').style.display = 'none';
+
+                    updateStepUI();
+                    updateContent();
+                    updateNavButtons();
+                    scrollTopStep();
+                    return;
+                }
                 if (!selectedSubject || !selectedTutor) {
                     alert(bookingText('booking_select_subject_tutor_alert', 'Por favor selecciona una materia y un tutor'));
                     return;
@@ -2429,6 +2788,9 @@
             } else if (currentStep === 3) {
                 await submitBooking();
                 return;
+            } else if (currentStep === 'request_tutor') {
+                await submitTutorRequest();
+                return;
             }
 
             if (currentStep < 3) {
@@ -2449,6 +2811,14 @@
                 closeModal();
                 return;
             }
+            if (currentStep === 'request_tutor') {
+                currentStep = targetTutorId ? 2 : 1;
+                updateStepUI();
+                updateContent();
+                updateNavButtons();
+                scrollTopStep();
+                return;
+            }
             if (currentStep === 3) {
                 releaseHolds(); // Libera al retroceder
             }
@@ -2462,6 +2832,55 @@
             });
 
 
+        });
+
+        const reqCustomScheduleBtn = document.getElementById('js-req-custom-schedule-btn');
+        reqCustomScheduleBtn?.addEventListener('click', () => {
+            targetTutorId = selectedTutor;
+            targetTutorName = selectedTutorName;
+            
+            currentStep = 'request_tutor';
+            document.getElementById('js-req-subject-name').textContent = selectedSubjectName;
+            
+            const descText = document.getElementById('js-req-desc-text');
+            if (descText) {
+                descText.textContent = `Envía una propuesta de horario directamente a ${targetTutorName} completando lo siguiente:`;
+            }
+
+            reqSelectedDate = todayStr();
+            const reqLabel = document.getElementById('js-req-selected-date-label');
+            if (reqLabel) reqLabel.textContent = 'Hoy';
+            
+            const now = new Date();
+            renderReqMiniCalendar(now.getFullYear(), now.getMonth());
+
+            clockHour = 10;
+            clockMinute = 0;
+            clockAmPm = 'AM';
+            selectedDurationMins = 20;
+
+            const hourSel = document.getElementById('js-clock-hour');
+            if (hourSel) hourSel.value = '10';
+            const minSel = document.getElementById('js-clock-minute');
+            if (minSel) minSel.value = '0';
+
+            document.getElementById('js-clock-ampm-am')?.classList.add('active');
+            document.getElementById('js-clock-ampm-pm')?.classList.remove('active');
+
+            document.querySelectorAll('.duration-chip').forEach(c => {
+                if (parseInt(c.dataset.mins) === 20) c.classList.add('active');
+                else c.classList.remove('active');
+            });
+
+            updateProposalTime();
+
+            document.getElementById('js-req-note').value = '';
+            document.getElementById('js-req-message').style.display = 'none';
+
+            updateStepUI();
+            updateContent();
+            updateNavButtons();
+            scrollTopStep();
         });
 
         // ====== EVENTOS PASO 1 ======
@@ -2478,6 +2897,8 @@
             selectedTutor = null;
             basePrice = 0;
             currentPrice = 0;
+            hasNoTutors = false;
+            updateNavButtons();
 
 
             subjectSearch.value = '';
@@ -2564,6 +2985,40 @@
             }
         });
 
+        // Reloj digital y Duración
+        document.querySelectorAll('.duration-chip').forEach(chip => {
+            chip.addEventListener('click', () => {
+                document.querySelectorAll('.duration-chip').forEach(c => c.classList.remove('active'));
+                chip.classList.add('active');
+                selectedDurationMins = parseInt(chip.dataset.mins || '20');
+                updateProposalTime();
+            });
+        });
+
+        document.getElementById('js-clock-hour')?.addEventListener('change', (e) => {
+            clockHour = parseInt(e.target.value);
+            updateProposalTime();
+        });
+
+        document.getElementById('js-clock-minute')?.addEventListener('change', (e) => {
+            clockMinute = parseInt(e.target.value);
+            updateProposalTime();
+        });
+
+        document.getElementById('js-clock-ampm-am')?.addEventListener('click', () => {
+            clockAmPm = 'AM';
+            document.getElementById('js-clock-ampm-am').classList.add('active');
+            document.getElementById('js-clock-ampm-pm').classList.remove('active');
+            updateProposalTime();
+        });
+
+        document.getElementById('js-clock-ampm-pm')?.addEventListener('click', () => {
+            clockAmPm = 'PM';
+            document.getElementById('js-clock-ampm-pm').classList.add('active');
+            document.getElementById('js-clock-ampm-am').classList.remove('active');
+            updateProposalTime();
+        });
+
 
         function updateStepUI() {
             const ACTIVE_BG = '#219EBC';
@@ -2623,7 +3078,7 @@
         }
 
         function updateContent() {
-            [1, 2, 3].forEach(i => {
+            [1, 2, 3, 'request_tutor'].forEach(i => {
                 const el = document.getElementById(`content-step-${i}`);
                 if (!el) return;
 
@@ -2639,23 +3094,34 @@
 
 
         function updateNavButtons() {
-    const lang = localStorage.getItem('selectedLanguage') || 'es';
-    const t = typeof translations !== 'undefined'
-        ? (translations[lang] || translations.es)
-        : null;
+            const lang = localStorage.getItem('selectedLanguage') || 'es';
+            const t = typeof translations !== 'undefined'
+                ? (translations[lang] || translations.es)
+                : null;
 
-    backBtn.disabled = false;
+            backBtn.disabled = false;
 
-    if (currentStep === 1) {
-        backBtn.textContent = t?.booking_cancel || 'Cancelar';
-    } else {
-        backBtn.textContent = t?.booking_back || 'Atrás';
-    }
-
-    nextBtn.textContent = currentStep === 3
-        ? (t?.booking_finish || 'Finalizar Reserva')
-        : (t?.booking_next || 'Siguiente');
-}
+            if (currentStep === 1) {
+                backBtn.textContent = t?.booking_cancel || 'Cancelar';
+                if (hasNoTutors) {
+                    nextBtn.textContent = t?.booking_request_tutors || 'Solicitar Tutores';
+                    nextBtn.classList.add('btn-request'); // Cambia a naranja
+                } else {
+                    nextBtn.textContent = t?.booking_next || 'Siguiente';
+                    nextBtn.classList.remove('btn-request');
+                }
+            } else if (currentStep === 'request_tutor') {
+                backBtn.textContent = t?.booking_back || 'Atrás';
+                nextBtn.textContent = t?.booking_send_request || 'Enviar Solicitud';
+                nextBtn.classList.add('btn-request'); // Mantiene el naranja
+            } else {
+                backBtn.textContent = t?.booking_back || 'Atrás';
+                nextBtn.textContent = currentStep === 3
+                    ? (t?.booking_finish || 'Finalizar Reserva')
+                    : (t?.booking_next || 'Siguiente');
+                nextBtn.classList.remove('btn-request');
+            }
+        }
 
         // ====== CARGA DE MATERIAS SEGÚN INSTITUCIÓN ======
         async function loadSubjectsByInstitution(institution) {
@@ -2753,6 +3219,8 @@
             selectedTutorPrice = 0;
             basePrice = 0;
             currentPrice = 0;
+            hasNoTutors = false;
+            updateNavButtons();
 
 
             scrollToTutors();
@@ -2771,6 +3239,8 @@
                 if (!Array.isArray(data.tutors) || data.tutors.length === 0) {
                     tutorHelper.textContent = bookingText('booking_no_tutors', 'No hay tutores disponibles para esta materia.');
                     tutorList.innerHTML = '';
+                    hasNoTutors = true;
+                    updateNavButtons();
                     return;
                 }
 
@@ -2992,6 +3462,222 @@
             toggleReceiptUI();
         }
 
+        function renderReqMiniCalendar(y, m) {
+            reqCalendarYear = y;
+            reqCalendarMonth = m;
+
+            const first = new Date(y, m, 1);
+            const startDay = first.getDay();
+            const daysInMonth = new Date(y, m + 1, 0).getDate();
+
+            const week = ['D', 'L', 'M', 'M', 'J', 'V', 'S'];
+
+            const calendarEl = document.getElementById('js-req-mini-calendar');
+            if (!calendarEl) return;
+
+            calendarEl.innerHTML = `
+    <div class="mini-cal">
+      <div class="mini-cal-header">
+        <div class="mini-cal-title">${monthName(m)}</div>
+        <div class="mini-cal-nav">
+          <button class="mini-btn" type="button" id="req-cal-prev">‹</button>
+          <button class="mini-btn" type="button" id="req-cal-next">›</button>
+        </div>
+      </div>
+
+      <div class="mini-cal-week">
+        ${week.map(w => `<div>${w}</div>`).join('')}
+      </div>
+
+      <div class="mini-cal-grid" id="req-cal-grid"></div>
+    </div>
+  `;
+
+            const grid = calendarEl.querySelector('#req-cal-grid');
+
+            const blanks = startDay;
+            for (let i = 0; i < blanks; i++) {
+                const b = document.createElement('button');
+                b.type = 'button';
+                b.className = 'day-btn muted';
+                b.textContent = '';
+                grid.appendChild(b);
+            }
+
+            const today = todayStr();
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dd = String(day).padStart(2, '0');
+                const mm = String(m + 1).padStart(2, '0');
+                const dateStr = `${y}-${mm}-${dd}`;
+
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'day-btn';
+                if (dateStr === today) btn.classList.add('today');
+                if (dateStr === reqSelectedDate) btn.classList.add('selected');
+
+                const isPast = dateStr < today;
+                if (isPast) {
+                    btn.classList.add('muted');
+                    btn.style.pointerEvents = 'none';
+                    btn.style.opacity = '0.25';
+                }
+
+                btn.textContent = day;
+                if (!isPast) {
+                    btn.addEventListener('click', () => selectReqDate(dateStr));
+                }
+
+                grid.appendChild(btn);
+            }
+
+            calendarEl.querySelector('#req-cal-prev').addEventListener('click', () => {
+                const prev = new Date(y, m - 1, 1);
+                renderReqMiniCalendar(prev.getFullYear(), prev.getMonth());
+            });
+
+            calendarEl.querySelector('#req-cal-next').addEventListener('click', () => {
+                const next = new Date(y, m + 1, 1);
+                renderReqMiniCalendar(next.getFullYear(), next.getMonth());
+            });
+        }
+
+        function selectReqDate(dateStr) {
+            reqSelectedDate = dateStr;
+            const label = document.getElementById('js-req-selected-date-label');
+            if (label) {
+                label.textContent = dateStr === todayStr() ? 'Hoy' : dateStr;
+            }
+
+            renderReqMiniCalendar(reqCalendarYear, reqCalendarMonth);
+        }
+
+
+
+        function updateProposalTime() {
+            let startHour24 = clockHour;
+            if (clockAmPm === 'PM' && clockHour !== 12) {
+                startHour24 += 12;
+            } else if (clockAmPm === 'AM' && clockHour === 12) {
+                startHour24 = 0;
+            }
+
+            const startTimeStr = `${String(clockHour).padStart(2, '0')}:${String(clockMinute).padStart(2, '0')} ${clockAmPm}`;
+
+            const totalMins = startHour24 * 60 + clockMinute + selectedDurationMins;
+            const endHour24 = Math.floor(totalMins / 60) % 24;
+            const endMinute = totalMins % 60;
+
+            const endAmPm = endHour24 >= 12 ? 'PM' : 'AM';
+            let endHour12 = endHour24 % 12;
+            if (endHour12 === 0) endHour12 = 12;
+
+            const endTimeStr = `${String(endHour12).padStart(2, '0')}:${String(endMinute).padStart(2, '0')} ${endAmPm}`;
+
+            reqSelectedTimeRange = `${startTimeStr} - ${endTimeStr}`;
+
+            const previewEl = document.getElementById('js-proposal-time-range');
+            if (previewEl) {
+                previewEl.textContent = reqSelectedTimeRange;
+            }
+        }
+
+        async function submitTutorRequest() {
+            const reqDate = reqSelectedDate;
+            const reqTime = reqSelectedTimeRange;
+            const reqNote = document.getElementById('js-req-note').value.trim();
+            const reqMsg = document.getElementById('js-req-message');
+
+            if (!reqDate || !reqTime) {
+                reqMsg.className = 'form-msg error';
+                reqMsg.textContent = 'Por favor selecciona la fecha sugerida e introduce el horario sugerido.';
+                reqMsg.style.display = 'block';
+                return;
+            }
+
+            nextBtn.disabled = true;
+            backBtn.disabled = true;
+            loader.style.display = 'flex';
+            navigationButtons.style.display = 'none';
+            document.getElementById('content-step-request_tutor').style.display = 'none';
+
+            try {
+                const payload = {
+                    subject_id: selectedSubject,
+                    preferred_date: reqDate,
+                    preferred_time: reqTime,
+                    note: reqNote
+                };
+                if (targetTutorId) {
+                    payload.tutor_id = targetTutorId;
+                }
+
+                const response = await fetch('/student/booking/solicitar-tutor', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        // ESTA LÍNEA ES VITAL: Obliga a Laravel a devolver JSON incluso si hay errores
+                        'Accept': 'application/json' 
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                // Si la respuesta HTTP indica un error (ej. 422 de validación o 500 del servidor)
+                if (!response.ok) {
+                    const errorData = await response.json(); // Ahora sí podremos leer el JSON
+                    let errorText = errorData.message || 'Error del servidor al procesar la solicitud.';
+                    
+                    // Si es un error de validación de Laravel (422)
+                    if (response.status === 422 && errorData.errors) {
+                        errorText = 'Revisa los campos:\n';
+                        for (const field in errorData.errors) {
+                            errorText += `- ${errorData.errors[field][0]}\n`;
+                        }
+                    }
+                    // Forzamos el catch de abajo pasándole el mensaje
+                    throw new Error(errorText); 
+                }
+
+                const data = await response.json();
+
+                loader.style.display = 'none';
+
+                if (data.success) {
+                    const originalTitle = confirmation.querySelector('h3').textContent;
+                    confirmation.querySelector('h3').textContent = '¡Solicitud enviada con éxito!';
+                    confirmation.style.display = 'flex';
+                    navigationButtons.style.display = 'none';
+                    setTimeout(() => {
+                        closeModal();
+                        setTimeout(() => {
+                            confirmation.querySelector('h3').textContent = originalTitle;
+                        }, 1000);
+                    }, 2000);
+                } else {
+                    document.getElementById('content-step-request_tutor').style.display = 'block';
+                    navigationButtons.style.display = 'flex';
+                    nextBtn.disabled = false;
+                    backBtn.disabled = false;
+                    reqMsg.className = 'form-msg error';
+                    reqMsg.textContent = data.message || 'Error al enviar la solicitud.';
+                    reqMsg.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Error al solicitar tutor:', error);
+                document.getElementById('content-step-request_tutor').style.display = 'block';
+                loader.style.display = 'none';
+                navigationButtons.style.display = 'flex';
+                nextBtn.disabled = false;
+                backBtn.disabled = false;
+                reqMsg.className = 'form-msg error';
+                // Mostramos el error real en pantalla
+                reqMsg.innerText = error.message || 'Ocurrió un error al procesar tu solicitud.';
+                reqMsg.style.display = 'block';
+            }
+        }
+
         async function submitBooking() {
             //  Si NO es gratis, exige comprobante
             if (!isFreeBooking && !comprobanteFile) {
@@ -3031,6 +3717,10 @@
                 // Solo adjuntar comprobante si NO es gratis
                 if (!isFreeBooking && comprobanteFile) {
                     formData.append('comprobante', comprobanteFile);
+                }
+
+                if (tutorRequestToken) {
+                    formData.append('tutor_request_token', tutorRequestToken);
                 }
 
                 const response = await fetch('/student/booking/reservar-multi', {
@@ -3136,26 +3826,150 @@
                 return false;
             }
         }
-                document.addEventListener('languageChanged', () => {
-                 translateBookingModal();
-
-                 if (calendarYear !== null && calendarMonth !== null && miniCalendarEl) {
-                     renderMiniCalendar(calendarYear, calendarMonth);
+                if (window._bookingWizardLanguageChangedListener) {
+                    document.removeEventListener('languageChanged', window._bookingWizardLanguageChangedListener);
                 }
+                window._bookingWizardLanguageChangedListener = () => {
+                    translateBookingModal();
 
-                if (selectedDateLabel && selectedDate) {
-                    selectedDateLabel.textContent = selectedDate === todayStr()
-                        ? bookingText('booking_today', 'Hoy')
-                        : selectedDate;
-                }
-            });
+                    if (calendarYear !== null && calendarMonth !== null && miniCalendarEl) {
+                        renderMiniCalendar(calendarYear, calendarMonth);
+                    }
+
+                    if (selectedDateLabel && selectedDate) {
+                        selectedDateLabel.textContent = selectedDate === todayStr()
+                            ? bookingText('booking_today', 'Hoy')
+                            : selectedDate;
+                    }
+                };
+                document.addEventListener('languageChanged', window._bookingWizardLanguageChangedListener);
 
                if (typeof selectLanguage === 'function') {
                 const savedLang = localStorage.getItem('selectedLanguage') || 'es';
                 selectLanguage(savedLang, false);
             }
 
-    });
+        async function checkUrlForCounterOffer() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const acceptCounterToken = urlParams.get('accept_counter');
+            if (!acceptCounterToken) return;
+
+            // Mostrar cargando
+            loader.style.display = 'flex';
+            openModal();
+
+            try {
+                const response = await fetch(`/student/booking/get-counter/${acceptCounterToken}`);
+                const data = await response.json();
+                
+                if (!data.success) {
+                    alert(data.message || 'La contrapropuesta ya no está activa o no fue encontrada.');
+                    closeModal();
+                    loader.style.display = 'none';
+                    return;
+                }
+
+                // Cargar datos
+                tutorRequestToken = acceptCounterToken;
+                selectedSubject = data.subject_id;
+                selectedSubjectName = data.subject_name;
+                selectedTutor = data.tutor_id;
+                selectedTutorName = data.tutor_name;
+                selectedTutorPrice = data.price;
+                selectedDate = data.counter_date;
+
+                // Crear los slots de 20 minutos correspondientes basándonos en la duración
+                // data.counter_time ej: "10:30 AM" o "02:30 PM"
+                
+                let timeStr = data.counter_time.trim();
+                if (timeStr.includes(' - ')) {
+                    timeStr = timeStr.split(' - ')[0].trim();
+                }
+                const match = timeStr.match(/^(\d+):(\d+)(?:\s*(AM|PM))?$/i);
+                if (match) {
+                    let hours = parseInt(match[1]);
+                    const minutes = parseInt(match[2]);
+                    const ampm = match[3] ? match[3].toUpperCase() : null;
+                    if (ampm) {
+                        if (ampm === 'PM' && hours !== 12) hours += 12;
+                        if (ampm === 'AM' && hours === 12) hours = 0;
+                    }
+
+                    let startMins = hours * 60 + minutes;
+
+                    // Mapeo de duración a minutos totales
+                    let totalDurationMins = 20;
+                    const dur = data.counter_duration.toLowerCase();
+                    if (dur.includes('20')) totalDurationMins = 20;
+                    else if (dur.includes('40')) totalDurationMins = 40;
+                    else if (dur.includes('1 hora') || dur === '1h') totalDurationMins = 60;
+                    else if (dur.includes('1h 20') || dur.includes('1h 20m')) totalDurationMins = 80;
+                    else if (dur.includes('1h 40') || dur.includes('1h 40m')) totalDurationMins = 100;
+                    else if (dur.includes('2 hora') || dur === '2h') totalDurationMins = 120;
+
+                    const blocksCount = totalDurationMins / 20;
+                    selectedSlots = [];
+
+                    for (let i = 0; i < blocksCount; i++) {
+                        const blockStart = startMins + i * 20;
+                        const blockEnd = startMins + (i + 1) * 20;
+
+                        const sh = Math.floor(blockStart / 60);
+                        const sm = blockStart % 60;
+                        const startFormatted = String(sh).padStart(2, '0') + ':' + String(sm).padStart(2, '0');
+
+                        const eh = Math.floor(blockEnd / 60);
+                        const em = blockEnd % 60;
+                        const endFormatted = String(eh).padStart(2, '0') + ':' + String(em).padStart(2, '0');
+
+                        // Mismo formato: "slot_id|start_time|end_time"
+                        const slotId = `0|${startFormatted}|${endFormatted}`;
+                        const displayTime = `${startFormatted} - ${endFormatted}`;
+
+                        selectedSlots.push({
+                            id: slotId,
+                            date: data.counter_date,
+                            time: displayTime,
+                            start: startFormatted,
+                            end: endFormatted
+                        });
+                    }
+                } else {
+                    console.error('No se pudo parsear el formato de hora de la contrapropuesta:', data.counter_time);
+                }
+
+                // Cargar UI
+                const pMateria = document.getElementById('js-summary-materia');
+                if (pMateria) pMateria.textContent = selectedSubjectName;
+                const pTutor = document.getElementById('js-summary-tutor');
+                if (pTutor) pTutor.textContent = selectedTutorName;
+
+                // Renderizar resumen del paso 3
+                updateSummary();
+
+                // Cambiar a Paso 3
+                currentStep = 3;
+                updateStepUI();
+                updateContent();
+                updateNavButtons();
+                scrollTopStep();
+
+                // Calcular totales
+                recalcTotals();
+
+            } catch (error) {
+                console.error('Error pre-cargando contrapropuesta:', error);
+                alert('Ocurrió un error al cargar la contrapropuesta.');
+                closeModal();
+            } finally {
+                loader.style.display = 'none';
+            }
+        }
+
+        // Ejecutar chequeo de URL
+        checkUrlForCounterOffer();
+
+    })();
 </script>
 
 </div>
