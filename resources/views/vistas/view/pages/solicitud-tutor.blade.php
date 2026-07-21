@@ -1377,6 +1377,25 @@
                 data = { success: false, message: `Error en el servidor (${response.status})` };
             }
 
+            if (response.status === 401 || data.message === 'Unauthenticated.') {
+                confirmBtn.disabled = false;
+                confirmBtn.textContent = 'Confirmar Reserva';
+                Swal.fire({
+                    title: 'Sesión no iniciada',
+                    text: 'Debes iniciar sesión en tu cuenta de estudiante para confirmar la reserva y realizar el pago.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#219EBC',
+                    confirmButtonText: 'Iniciar Sesión',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = '/login?redirect=' + encodeURIComponent(window.location.href);
+                    }
+                });
+                return;
+            }
+
             if (data.success) {
                 closePayModal();
                 Swal.fire({
