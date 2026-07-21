@@ -117,5 +117,6 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     Route::get('encuesta', Encuestas::class)->name('encuesta');
     Route::get('recruitment', \App\Livewire\Pages\Admin\Recruitment\RecruitmentListing::class)->name('recruitment-listing');
     Route::get('notificaciones-push', \App\Livewire\Pages\Admin\Notificaciones\NotificacionesPush::class)->name('notificaciones-push');
+    Route::get('notificaciones-email', \App\Livewire\Pages\Admin\Notificaciones\NotificacionesEmail::class)->name('notificaciones-email');
 });
 
