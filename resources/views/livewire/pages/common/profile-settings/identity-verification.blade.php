@@ -2495,13 +2495,16 @@
 
                                         <div
                                             class="d-flex align-items-center w-100-mobile justify-content-end action-buttons-wrapper">
-                                            <button type="button" onclick="openGoogleCalendarAuthPopup()"
+                                            <button type="button" wire:click="connectCalendarFromPrerequisites"
+                                                wire:loading.attr="disabled"
+                                                wire:target="connectCalendarFromPrerequisites"
                                                 class="btn btn-light btn-sm rounded-pill px-4 d-inline-flex align-items-center justify-content-center gap-2 shadow-sm fw-bold text-dark"
                                                 style="border: none !important; font-size: 0.85rem; transition: transform 0.15s ease;"
                                                 onmousedown="this.style.transform='scale(0.96)'"
                                                 onmouseup="this.style.transform='scale(1)'">
                                                 <i class="fab fa-google text-danger"></i>
-                                                Conectar Calendar
+                                                <span wire:loading.remove wire:target="connectCalendarFromPrerequisites">Conectar Calendar</span>
+                                                <span wire:loading wire:target="connectCalendarFromPrerequisites">Conectando...</span>
                                             </button>
                                         </div>
 
@@ -3055,15 +3058,16 @@
             }
         @endif
 
-        // 4. Google Calendar — Método de ventana flotante + Respaldo de foco para móviles
-        function openGoogleCalendarAuthPopup() {
+        // 4. Google Calendar — Escucha el evento Livewire con la URL real del servicio
+        //    y la abre en un popup sin perder el estado del formulario.
+        function openGoogleCalendarPopupWithUrl(authUrl) {
             const width = 600;
             const height = 650;
             const left = Math.round((window.screen.width - width) / 2);
             const top = Math.round((window.screen.height - height) / 2);
 
             const popup = window.open(
-                '/google/authenticate',
+                authUrl,
                 'GoogleCalendarAuth',
                 `width=${width},height=${height},left=${left},top=${top},resizable=yes,scrollbars=yes,status=yes`
             );
@@ -3088,6 +3092,16 @@
                 }
             }
             window.addEventListener('focus', onFocusCheck);
+        }
+
+        // Listener del evento despachado por Livewire con la URL de OAuth generada por GoogleCalender service
+        window.addEventListener('openGoogleCalendarPopup', (e) => {
+            openGoogleCalendarPopupWithUrl(e.detail.url);
+        });
+
+        // Alias para compatibilidad con cualquier llamada directa que pudiera quedar en el DOM
+        function openGoogleCalendarAuthPopup() {
+            openGoogleCalendarPopupWithUrl('/google/authenticate');
         }
     </script>
 @endpush

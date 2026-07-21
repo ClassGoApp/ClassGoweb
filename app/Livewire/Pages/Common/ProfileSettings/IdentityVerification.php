@@ -10,6 +10,7 @@ use App\Models\Subject;
 use App\Models\User;
 use App\Models\UserCoupon;
 use App\Models\UserSubject;
+use App\Services\GoogleCalender;
 use App\Services\IdentityService;
 use App\Services\ProfileService;
 use Illuminate\Support\Facades\Auth;
@@ -130,9 +131,9 @@ class IdentityVerification extends Component
 
     public function boot()
     {
-        $this->userIdentity = new IdentityService(Auth::user());
+        $this->userIdentity   = new IdentityService(Auth::user());
         $this->profileService = new ProfileService(Auth::user()->id);
-        $this->user = Auth::user();
+        $this->user           = Auth::user();
     }
 
     public function loadData()
@@ -469,6 +470,24 @@ class IdentityVerification extends Component
     public function recheckPrerequisites()
     {
         $this->manualCheckPrerequisites();
+    }
+
+    /**
+     * Conecta Google Calendar desde el modal de prerrequisitos.
+     * Usa el servicio GoogleCalender (lee de config/env) para no depender de credential.json.
+     * Despacha la URL vía evento JS para abrirla en un popup y no perder el estado del formulario.
+     */
+    public function connectCalendarFromPrerequisites()
+    {
+        $googleService = new GoogleCalender(Auth::user());
+        $authUrlResponse = $googleService->getAuthUrl();
+
+        if ($authUrlResponse['status'] === \Symfony\Component\HttpFoundation\Response::HTTP_OK) {
+            // Enviamos la URL al JS del blade via evento, el popup lo gestiona el cliente
+            $this->dispatch('openGoogleCalendarPopup', url: $authUrlResponse['url']);
+        } else {
+            $this->dispatch('showAlertMessage', type: 'error', message: $authUrlResponse['message'] ?? 'No se pudo obtener la URL de Google Calendar.');
+        }
     }
 
     public function savePrerequisites()
