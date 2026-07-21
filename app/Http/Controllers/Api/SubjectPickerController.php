@@ -31,6 +31,7 @@ use App\Services\SlotBookingService;
 
 
 
+
 class SubjectPickerController extends Controller
 {
 
@@ -581,7 +582,62 @@ class SubjectPickerController extends Controller
         });
     }
 
+    public function cancelBatch(Request $request, EmailBatch $batch)
+{
+    $studentId = (int) Auth::id();
 
+    if ((int) $batch->created_by !== $studentId) {
+        return response()->json([
+            'success' => false,
+            'message' => 'No tienes permiso para cancelar esta solicitud.',
+        ], 403);
+    }
+
+    if (in_array($batch->status, ['done', 'failed'], true)) {
+        session()->forget([
+            'active_batch_id',
+            'active_subject_id',
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'La solicitud ya estaba cerrada.',
+            'redirect_to' => route('tutorias-instantaneas'),
+        ]);
+    }
+
+    DB::transaction(function () use ($batch) {
+        EmailBatchItem::query()
+            ->where('batch_id', $batch->id)
+            ->whereIn('status', ['pending', 'sending', 'sent', 'accepted', 'chosen'])
+            ->update([
+                'status' => 'expired',
+                'last_error' => 'cancelled_by_student',
+                'updated_at' => now(),
+            ]);
+
+        EmailBatch::query()
+            ->where('id', $batch->id)
+            ->update([
+                'status' => 'done',
+                'last_error' => 'cancelled_by_student',
+                'expires_at' => now(),
+                'updated_at' => now(),
+            ]);
+    });
+
+    session()->forget([
+        'active_batch_id',
+        'active_subject_id',
+    ]);
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Solicitud cancelada correctamente.',
+        'batch_id' => $batch->id,
+        'redirect_to' => route('tutorias-instantaneas'),
+    ]);
+}
 
     public function status(EmailBatch $batch)
     {
