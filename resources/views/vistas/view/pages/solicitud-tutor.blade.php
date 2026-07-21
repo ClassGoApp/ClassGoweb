@@ -674,11 +674,34 @@
                 </svg>
                 <span><strong>Horario propuesto:</strong> {{ $request->current_time }}</span>
             </div>
+            @php
+                $calculatedDuration = $request->current_duration;
+                if (!empty($request->current_time) && str_contains($request->current_time, '-')) {
+                    try {
+                        $parts = explode('-', $request->current_time);
+                        $dDate = $request->current_date ?? now()->toDateString();
+                        $sC = \Carbon\Carbon::parse($dDate . ' ' . trim($parts[0]));
+                        $eC = \Carbon\Carbon::parse($dDate . ' ' . trim($parts[1]));
+                        if ($eC->lt($sC)) $eC->addDay();
+                        $diffM = (int) abs($sC->diffInMinutes($eC));
+                        if ($diffM > 0) {
+                            if ($diffM == 60) $calculatedDuration = '1 hora';
+                            elseif ($diffM == 120) $calculatedDuration = '2 horas';
+                            elseif ($diffM < 60) $calculatedDuration = "{$diffM} min";
+                            else {
+                                $hrs = (int) floor($diffM / 60);
+                                $mins = $diffM % 60;
+                                $calculatedDuration = "{$hrs}h" . ($mins > 0 ? " {$mins}m" : "");
+                            }
+                        }
+                    } catch (\Throwable $e) {}
+                }
+            @endphp
             <div class="proposal-row">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 6M12 12M12 18" />
                 </svg>
-                <span><strong>Duración:</strong> {{ $request->current_duration }}</span>
+                <span><strong>Duración:</strong> {{ $calculatedDuration }}</span>
             </div>
             @if($request->note)
                 <div class="note-box">
@@ -1082,19 +1105,39 @@
 
     // === PAYMENT MODAL SCRIPT LOGIC ===
     let baseTutorPrice = parseFloat("{{ $tutor->price ?? 0 }}");
-    let durationTxt = "{{ $request->current_duration ?? '20 min' }}";
+    let durationTxt = "{{ $calculatedDuration ?? ($request->current_duration ?? '20 min') }}";
     
     // Calculate blocks count
     let durationMins = 20;
-    const dur = durationTxt.toLowerCase();
-    if (dur.includes('20')) durationMins = 20;
-    else if (dur.includes('40')) durationMins = 40;
-    else if (dur.includes('1 hora') || dur === '1h' || dur.includes('60')) durationMins = 60;
-    else if (dur.includes('1h 20') || dur.includes('1h 20m') || dur.includes('80')) durationMins = 80;
-    else if (dur.includes('1h 40') || dur.includes('1h 40m') || dur.includes('100')) durationMins = 100;
-    else if (dur.includes('2 hora') || dur === '2h' || dur.includes('120')) durationMins = 120;
+    const timeStr = "{{ $request->current_time }}";
+    if (timeStr.includes('-')) {
+        const parts = timeStr.split('-');
+        const parseTimeMins = (str) => {
+            const m = str.trim().match(/(\d+):(\d+)(?:\s*(AM|PM))?/i);
+            if (!m) return null;
+            let h = parseInt(m[1]), min = parseInt(m[2]), ampm = m[3] ? m[3].toUpperCase() : null;
+            if (ampm === 'PM' && h !== 12) h += 12;
+            if (ampm === 'AM' && h === 12) h = 0;
+            return h * 60 + min;
+        };
+        const startM = parseTimeMins(parts[0]);
+        const endM = parseTimeMins(parts[1]);
+        if (startM !== null && endM !== null) {
+            let diff = endM - startM;
+            if (diff < 0) diff += 24 * 60;
+            if (diff > 0) durationMins = diff;
+        }
+    } else {
+        const dur = durationTxt.toLowerCase().trim();
+        if (dur.includes('2 hora') || dur === '2h' || dur.includes('120')) durationMins = 120;
+        else if (dur.includes('1 hora') || dur === '1h' || dur.includes('60')) durationMins = 60;
+        else {
+            const numMatch = dur.match(/\d+/);
+            if (numMatch) durationMins = parseInt(numMatch[0]);
+        }
+    }
     
-    const blocksCount = durationMins / 20;
+    const blocksCount = Math.max(1, Math.round(durationMins / 20));
     let baseTotal = baseTutorPrice * blocksCount;
     
     let appliedDiscountDecimal = 0;
@@ -1236,11 +1279,11 @@
     function getSlotsArray() {
         const timeStr = "{{ $request->current_time }}";
         let startPart = timeStr.trim();
-        if (startPart.includes(' - ')) {
-            startPart = startPart.split(' - ')[0].trim();
+        if (startPart.includes('-')) {
+            startPart = startPart.split('-')[0].trim();
         }
         
-        const match = startPart.match(/^(\d+):(\d+)(?:\s*(AM|PM))?$/i);
+        const match = startPart.match(/(\d+):(\d+)(?:\s*(AM|PM))?/i);
         if (!match) return [];
         
         let hours = parseInt(match[1]);
@@ -1293,6 +1336,13 @@
         });
         
         const slots = getSlotsArray();
+        if (!slots || slots.length === 0) {
+            confirmBtn.disabled = false;
+            confirmBtn.textContent = 'Confirmar Reserva';
+            Swal.fire('Error', 'No se pudo identificar los bloques de la clase. Por favor recarga la página e intenta de nuevo.', 'error');
+            return;
+        }
+
         const formData = new FormData();
         formData.append('subject_id', "{{ $request->subject_id }}");
         formData.append('tutor_id', "{{ $request->tutor_id }}");
@@ -1312,11 +1362,21 @@
             const response = await fetch('/student/booking/reservar-multi', {
                 method: 'POST',
                 headers: {
+                    'Accept': 'application/json',
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
                 },
                 body: formData
             });
-            const data = await response.json();
+
+            const raw = await response.text();
+            let data;
+            try {
+                data = JSON.parse(raw);
+            } catch (jsonErr) {
+                console.error("Respuesta no JSON:", raw);
+                data = { success: false, message: `Error en el servidor (${response.status})` };
+            }
+
             if (data.success) {
                 closePayModal();
                 Swal.fire({
@@ -1330,12 +1390,17 @@
             } else {
                 confirmBtn.disabled = false;
                 confirmBtn.textContent = 'Confirmar Reserva';
-                Swal.fire('Error', data.message || 'No se pudo completar la reserva.', 'error');
+                let errorMsg = data.message || 'No se pudo completar la reserva.';
+                if (data.errors) {
+                    errorMsg += '\n' + Object.values(data.errors).flat().join('\n');
+                }
+                Swal.fire('Error', errorMsg, 'error');
             }
         } catch (e) {
+            console.error("Error en submitPayment:", e);
             confirmBtn.disabled = false;
             confirmBtn.textContent = 'Confirmar Reserva';
-            Swal.fire('Error', 'Error de conexión con el servidor.', 'error');
+            Swal.fire('Error', 'Error de conexión con el servidor: ' + e.message, 'error');
         }
     }
 

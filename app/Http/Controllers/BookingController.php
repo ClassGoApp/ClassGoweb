@@ -1277,20 +1277,30 @@ class BookingController extends Controller
 
                 // Calcular duración de forma dinámica a partir del rango
                 $durationStr = '20 min';
-                if (strpos($preferredTime, ' - ') !== false) {
+                if (strpos($preferredTime, '-') !== false) {
                     try {
-                        list($startStr, $endStr) = explode(' - ', $preferredTime);
-                        $startC = Carbon::parse($startStr);
-                        $endC = Carbon::parse($endStr);
-                        $diffMins = $endC->diffInMinutes($startC);
-                        if ($diffMins == 20) $durationStr = '20 min';
-                        elseif ($diffMins == 40) $durationStr = '40 min';
-                        elseif ($diffMins == 60) $durationStr = '1 hora';
-                        elseif ($diffMins == 80) $durationStr = '1h 20m';
-                        elseif ($diffMins == 100) $durationStr = '1h 40m';
-                        elseif ($diffMins == 120) $durationStr = '2 horas';
+                        $parts = explode('-', $preferredTime);
+                        $startC = Carbon::parse($preferredDate . ' ' . trim($parts[0]));
+                        $endC   = Carbon::parse($preferredDate . ' ' . trim($parts[1]));
+                        if ($endC->lt($startC)) {
+                            $endC->addDay();
+                        }
+                        $diffMins = (int) abs($startC->diffInMinutes($endC));
+                        if ($diffMins > 0) {
+                            if ($diffMins == 60) {
+                                $durationStr = '1 hora';
+                            } elseif ($diffMins == 120) {
+                                $durationStr = '2 horas';
+                            } elseif ($diffMins < 60) {
+                                $durationStr = "{$diffMins} min";
+                            } else {
+                                $hrs = (int) floor($diffMins / 60);
+                                $mins = $diffMins % 60;
+                                $durationStr = "{$hrs}h" . ($mins > 0 ? " {$mins}m" : "");
+                            }
+                        }
                     } catch (\Throwable $e) {
-                        // fallback
+                        Log::warning('solicitarTutor parse duration error: ' . $e->getMessage());
                     }
                 }
 
