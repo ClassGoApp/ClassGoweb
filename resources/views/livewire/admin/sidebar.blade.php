@@ -175,6 +175,7 @@ new class extends Component {
                 'icon' => 'icon-bell',
                 'routes' => [
                     'admin.notificaciones-push' => 'Notificaciones Push',
+                    'admin.notificaciones-email' => 'Notificaciones Email',
                 ]
             ]
 
