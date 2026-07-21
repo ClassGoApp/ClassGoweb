@@ -41,3 +41,5 @@ storage/app/purifier/
 
 *.png
 *.jpg
+*.webp
+*.pdf
