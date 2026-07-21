@@ -85,7 +85,6 @@ class NotificacionesEmail extends Component
             ]);
 
             $this->successMessage = "¡Emails enviados correctamente! Éxito: {$successCount} | Errores: {$failureCount}";
-            session()->flash('success', $this->successMessage);
 
         } catch (\Exception $e) {
             Log::error('Admin Email Notification Error', [
@@ -139,7 +138,6 @@ class NotificacionesEmail extends Component
             $failureCount = $result['failure_count'];
 
             $this->successMessage = "¡Emails enviados correctamente! Éxito: {$successCount} | Errores: {$failureCount}";
-            session()->flash('success', $this->successMessage);
 
         } catch (\Exception $e) {
             Log::error('Admin Specific Email Notification Error', [

@@ -19,20 +19,35 @@
 
                 <!-- Alertas -->
                 @if (session()->has('success'))
-                    <div class="alert alert-success" style="border-radius: 12px; padding: 15px 20px; border: none; background-color: #e8f5e9; color: #2e7d32; margin-bottom: 25px;">
+                    <div class="alert alert-success" style="border-radius: 12px; padding: 15px 20px; border: none; background-color: #e8f5e9; color: #2e7d32; margin-bottom: 25px;" id="successAlert">
                         <i class="fas fa-check-circle"></i> {{ session('success') }}
                     </div>
                 @endif
                 @if ($errorMessage)
-                    <div class="alert alert-danger" style="border-radius: 12px; padding: 15px 20px; border: none; background-color: #ffebee; color: #c62828; margin-bottom: 25px;">
+                    <div class="alert alert-danger" style="border-radius: 12px; padding: 15px 20px; border: none; background-color: #ffebee; color: #c62828; margin-bottom: 25px;" id="errorAlert">
                         <i class="fas fa-exclamation-circle"></i> {{ $errorMessage }}
                     </div>
                 @endif
                 @if ($successMessage)
-                    <div class="alert alert-success" style="border-radius: 12px; padding: 15px 20px; border: none; background-color: #e8f5e9; color: #2e7d32; margin-bottom: 25px;">
+                    <div class="alert alert-success" style="border-radius: 12px; padding: 15px 20px; border: none; background-color: #e8f5e9; color: #2e7d32; margin-bottom: 25px;" id="successMessageAlert">
                         <i class="fas fa-check-circle"></i> {{ $successMessage }}
                     </div>
                 @endif
+
+                @push('scripts')
+                <script>
+                    document.addEventListener('livewire:initialized', () => {
+                        Livewire.hook('morph.updated', () => {
+                            const successAlert = document.getElementById('successMessageAlert');
+                            if (successAlert) {
+                                setTimeout(() => {
+                                    successAlert.remove();
+                                }, 10000);
+                            }
+                        });
+                    });
+                </script>
+                @endpush
 
                 <!-- Estadísticas -->
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 30px;">
