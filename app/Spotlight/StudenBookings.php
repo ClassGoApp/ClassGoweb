@@ -15,7 +15,7 @@ class StudenBookings extends SpotlightCommand
     /**
      * This is the name of the command that will be shown in the Spotlight component.
      */
-    protected string $name = 'Resevas';
+    protected string $name = 'Reservas';
 
     /**
      * This is the description of your command which will be shown besides the command name.

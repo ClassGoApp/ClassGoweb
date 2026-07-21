@@ -90,7 +90,7 @@ class HomeController extends Controller
 
         $tutor = $this->siteService->getTutorDetail($slug);
         if (!$tutor) {
-            abort(404, 'Tutor no encontrado');
+            abort(404, __('home.tutor_not_found'));
         }
         // Extraer materias y grupos
         $materias = [];
@@ -148,7 +148,7 @@ class HomeController extends Controller
         ]);
 
         if (!$this->tutorRepository->canUserReviewTutor(auth()->id(), $tutorId)) {
-            return back()->with('error', 'No puedes reseñar a este tutor nuevamente.');
+            return back()->with('error', __('home.review_already_submitted'));
         }
 
         $result = $this->tutorRepository->createReview([
@@ -215,13 +215,13 @@ class HomeController extends Controller
             // Opcional: Verificar que el usuario no haya contestado ya (por ID)
             $yaContesto = \App\Models\Encuesta::where('IdUser', $user->id)->exists();
             if ($yaContesto) {
-                return response()->json(['success' => false, 'message' => 'Ya has realizado esta encuesta anteriormente.'], 422);
+                return response()->json(['success' => false, 'message' => __('home.survey_already_completed')], 422);
             }
         }
 
         $request->validate($rules, [
-            'Contact.unique' => 'Este número ya tiene un cupón activo.',
-            'Contact.required' => 'El contacto es obligatorio.',
+            'Contact.unique' => __('home.contact_coupon_active'),
+            'Contact.required' => __('home.contact_required'),
         ]);
 
         // 3. Guardar
@@ -234,7 +234,11 @@ class HomeController extends Controller
                 'IdUser'     => $user ? $user->id : null,
             ]);
 
-            return response()->json(['success' => true, 'message' => '¡Encuesta guardada con éxito!'], 200);
+            return response()->json([
+                'success' => true,
+                'message_key' => 'encuesta_saved_success',
+                'message' => __('home.survey_saved_success'),
+            ], 200);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => 'Error: ' . $e->getMessage()], 500);
         }
@@ -252,12 +256,12 @@ class HomeController extends Controller
         $role = $request->input('role');
 
         if (!in_array($role, ['student', 'tutor'], true)) {
-            return response()->json(['success' => false, 'message' => 'Rol inválido'], 422);
+            return response()->json(['success' => false, 'message' => __('home.invalid_role')], 422);
         }
 
         $hasRole = $user->roles()->where('name', $role)->exists();
         if (!$hasRole) {
-            return response()->json(['success' => false, 'message' => 'No autorizado para este rol'], 403);
+            return response()->json(['success' => false, 'message' => __('home.unauthorized_role')], 403);
         }
 
         $user->terms_accepted_at = now();

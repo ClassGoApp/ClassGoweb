@@ -31,8 +31,8 @@ const translations = {
     todos_derechos: "Todos los derechos reservados.",
     desarrolladores: "Desarrolladores",
     // Home
-    learn: "Aclara tus dudas al instante con",
-    tutoring: "Tutorías en Línea",
+    learn: "Tutorías en Línea",
+    tutoring: "Cuando más lo necesitas",
     reach_goals:
       "Alcanza tus metas con tutorías personalizadas de los mejores expertos.<br> Conéctate con tutores dedicados para asegurar tu éxito.",
     reach_goals_short:
@@ -1135,6 +1135,60 @@ const translations = {
       'Acepto los <a href="https://www.classgoapp.com/terminos" target="_blank">Términos de servicio</a> y la <a href="https://www.classgoapp.com/terminos" target="_blank">Política de privacidad</a>',
     auth_referral_code_label: "Código de referido (opcional)",
     auth_referral_code_placeholder: "Ingresa el código de referido",
+    general_no_record_added_yet: "¡Aún no se ha añadido ningún registro!",
+    general_no_records_available:
+      "No hay registros disponibles para mostrar en este momento.",
+    general_no_reviews_yet: "¡Aún no hay reseñas!",
+    general_no_records:
+      "Parece que no hay registros para mostrar en este momento.",
+    // =====================================
+    // AUTH - Registro - Mensajes de validación
+    // =====================================
+    auth_first_name_required: "El campo nombre es obligatorio.",
+    auth_last_name_required: "El campo apellido es obligatorio.",
+    auth_password_error: "La contraseña es obligatoria o no coincide.",
+    auth_phone_required: "El campo teléfono es obligatorio.",
+    auth_terms_required: "Se debe aceptar los términos y condiciones.",
+    // =====================================
+    // AUTH - Login - Mensajes de validación
+    // =====================================
+    auth_login_email_required: "El campo correo electrónico es obligatorio.",
+    auth_login_password_required: "El campo contraseña es obligatorio.",
+    // =====================================
+    // SPOTLIGHT - Buscador rápido
+    // =====================================
+    spotlight_placeholder: "¿Qué quieres hacer?",
+    spotlight_logout_name: "Cerrar sesión",
+    spotlight_logout_desc:
+      "Redirigir al usuario a la pantalla de inicio de sesión borrando la sesión del usuario",
+    spotlight_search_tutor_name: "Buscar por nombre del tutor",
+    spotlight_search_tutor_desc:
+      "Esto te redireccionará a la página de búsqueda de tutores.",
+    spotlight_profile_details_name: "Detalles del Perfil",
+    spotlight_profile_details_desc:
+      "Redirigir a la página de detalles del perfil",
+    spotlight_bookings_name: "Reservas",
+    spotlight_bookings_desc: "Redirecciona a las reservas del estudiante",
+    spotlight_favorites_name: "Favoritos",
+    spotlight_favorites_desc: "Redirecciona a los tutores favoritos",
+    // =====================================
+    // TUTOR - Ganancias / Calendario
+    // =====================================
+    tutor_earning_details: "Detalles de ganancias",
+    tutor_filter_by: "Filtrar por",
+    tutor_select_month: "Seleccionar mes",
+    // =====================================
+    // STUDENT BOOKINGS - Calendario
+    // =====================================
+    student_bookings_search_here: "Buscar aquí",
+    student_bookings_current_daily: "Hoy",
+    student_bookings_current_weekly: "Esta semana",
+    student_bookings_current_monthly: "Este mes",
+    student_bookings_daily: "Diario",
+    student_bookings_weekly: "Semanal",
+    student_bookings_monthly: "Mensual",
+    student_bookings_loading: "Cargando...",
+    student_bookings_no_sessions: "No hay sesiones",
   },
   en: {
     // Navbar
@@ -1164,8 +1218,8 @@ const translations = {
     desarrolladores: "Developers",
 
     // Home
-    learn: "Clear up your doubts instantly with",
-    tutoring: "Online Tutoring",
+    learn: "Online Tutoring",
+    tutoring: "When you need it most",
     reach_goals:
       "Achieve your goals with personalized tutoring from top experts.<br> Connect with dedicated tutors to ensure your success.",
     reach_goals_short:
@@ -2245,6 +2299,58 @@ const translations = {
       'I accept the <a href="https://www.classgoapp.com/terminos" target="_blank">Terms of Service</a> and <a href="https://www.classgoapp.com/terminos" target="_blank">Privacy Policy</a>',
     auth_referral_code_label: "Referral code (optional)",
     auth_referral_code_placeholder: "Enter the referral code",
+    general_no_record_added_yet: "No records have been added yet!",
+    general_no_records_available:
+      "There are no records available to show at this moment.",
+    general_no_reviews_yet: "No reviews yet!",
+    general_no_records: "There are no records to show at this moment.",
+    // =====================================
+    // AUTH - Register - Validation messages
+    // =====================================
+    auth_first_name_required: "The first name field is required.",
+    auth_last_name_required: "The last name field is required.",
+    auth_password_error: "The password is required or does not match.",
+    auth_phone_required: "The phone field is required.",
+    auth_terms_required: "You must accept the terms and conditions.",
+    // =====================================
+    // AUTH - Login - Validation messages
+    // =====================================
+    auth_login_email_required: "The email address field is required.",
+    auth_login_password_required: "The password field is required.",
+    // =====================================
+    // SPOTLIGHT - Quick search
+    // =====================================
+    spotlight_placeholder: "What do you want to do?",
+    spotlight_logout_name: "Sign out",
+    spotlight_logout_desc:
+      "Redirects the user to the login screen and clears the user session",
+    spotlight_search_tutor_name: "Search by tutor name",
+    spotlight_search_tutor_desc:
+      "This will redirect you to the tutor search page.",
+    spotlight_profile_details_name: "Profile details",
+    spotlight_profile_details_desc: "Redirects to the profile details page",
+    spotlight_bookings_name: "Bookings",
+    spotlight_bookings_desc: "Redirects to the student's bookings",
+    spotlight_favorites_name: "Favorites",
+    spotlight_favorites_desc: "Redirects to favorite tutors",
+    // =====================================
+    // TUTOR - Earnings / Calendar
+    // =====================================
+    tutor_earning_details: "Earning details",
+    tutor_filter_by: "Filter by",
+    tutor_select_month: "Select month",
+    // =====================================
+    // STUDENT BOOKINGS - Calendar
+    // =====================================
+    student_bookings_search_here: "Search here",
+    student_bookings_current_daily: "Today",
+    student_bookings_current_weekly: "This week",
+    student_bookings_current_monthly: "This month",
+    student_bookings_daily: "Daily",
+    student_bookings_weekly: "Weekly",
+    student_bookings_monthly: "Monthly",
+    student_bookings_loading: "Loading...",
+    student_bookings_no_sessions: "No sessions",
   },
   pt: {
     // Navbar
@@ -2274,8 +2380,8 @@ const translations = {
     desarrolladores: "Desenvolvedores",
 
     // Home
-    learn: "Esclareça suas dúvidas na hora com",
-    tutoring: "Aulas Online",
+    learn: "Tutorias Online",
+    tutoring: "Quando você mais precisa",
     reach_goals:
       "Alcance seus objetivos com aulas personalizadas dos melhores especialistas.<br> Conecte-se com tutores dedicados para garantir seu sucesso.",
     reach_goals_short:
@@ -3377,6 +3483,59 @@ const translations = {
       'Aceito os <a href="https://www.classgoapp.com/terminos" target="_blank">Termos de Serviço</a> e a <a href="https://www.classgoapp.com/terminos" target="_blank">Política de Privacidade</a>',
     auth_referral_code_label: "Código de indicação (opcional)",
     auth_referral_code_placeholder: "Digite o código de indicação",
+    general_no_record_added_yet: "Ainda nenhum registro foi adicionado!",
+    general_no_records_available:
+      "Não há registros disponíveis para mostrar no momento.",
+    general_no_reviews_yet: "Ainda não há avaliações!",
+    general_no_records: "Parece que não há registros para mostrar no momento.",
+    // =====================================
+    // AUTH - Cadastro - Mensagens de validação
+    // =====================================
+    auth_first_name_required: "O campo nome é obrigatório.",
+    auth_last_name_required: "O campo sobrenome é obrigatório.",
+    auth_password_error: "A senha é obrigatória ou não coincide.",
+    auth_phone_required: "O campo telefone é obrigatório.",
+    auth_terms_required: "Você deve aceitar os termos e condições.",
+    // =====================================
+    // AUTH - Login - Mensagens de validação
+    // =====================================
+    auth_login_email_required: "O campo e-mail é obrigatório.",
+    auth_login_password_required: "O campo senha é obrigatório.",
+    // =====================================
+    // SPOTLIGHT - Pesquisa rápida
+    // =====================================
+    spotlight_placeholder: "O que você quer fazer?",
+    spotlight_logout_name: "Encerrar sessão",
+    spotlight_logout_desc:
+      "Redireciona o usuário para a tela de login e encerra a sessão do usuário",
+    spotlight_search_tutor_name: "Buscar pelo nome do tutor",
+    spotlight_search_tutor_desc:
+      "Isso irá redirecionar você para a página de busca de tutores.",
+    spotlight_profile_details_name: "Detalhes do perfil",
+    spotlight_profile_details_desc:
+      "Redireciona para a página de detalhes do perfil",
+    spotlight_bookings_name: "Reservas",
+    spotlight_bookings_desc: "Redireciona para as reservas do estudante",
+    spotlight_favorites_name: "Favoritos",
+    spotlight_favorites_desc: "Redireciona para os tutores favoritos",
+    // =====================================
+    // TUTOR - Ganhos / Calendário
+    // =====================================
+    tutor_earning_details: "Detalhes dos ganhos",
+    tutor_filter_by: "Filtrar por",
+    tutor_select_month: "Selecionar mês",
+    // =====================================
+    // STUDENT BOOKINGS - Calendário
+    // =====================================
+    student_bookings_search_here: "Buscar aqui",
+    student_bookings_current_daily: "Hoje",
+    student_bookings_current_weekly: "Esta semana",
+    student_bookings_current_monthly: "Este mês",
+    student_bookings_daily: "Diário",
+    student_bookings_weekly: "Semanal",
+    student_bookings_monthly: "Mensal",
+    student_bookings_loading: "Carregando...",
+    student_bookings_no_sessions: "Não há sessões",
   },
 };
 

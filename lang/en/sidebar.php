@@ -77,5 +77,6 @@ return [
     'promociones' => 'Promotions',
     'manage_tutors' => 'Manage Tutors',
     'tutors' => 'Tutors',
-    'manage_cupones'=> 'Manage Cupons'
+    'manage_cupones'=> 'Manage Cupons',
+    'courses' => 'Courses',
 ];

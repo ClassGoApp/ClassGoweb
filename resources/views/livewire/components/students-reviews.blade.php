@@ -132,9 +132,17 @@
                             @else
                                 <div class="am-norecord">
                                     <div class="am-norecord_content">
-                                        <figure><img src="{{ asset('images/no-review.png') }}" alt="no record"></figure>
-                                        <h5>{{ __('general.no_reviews_yet') }}</h5>
-                                        <span>{{ __('general.no_records') }}</span>
+                                        <figure>
+                                            <img src="{{ asset('images/no-review.png') }}" alt="no review">
+                                        </figure>
+
+                                        <h5 data-translate="general_no_reviews_yet">
+                                            ¡Aún no hay reseñas!
+                                        </h5>
+
+                                        <span data-translate="general_no_records">
+                                            Parece que no hay registros para mostrar en este momento.
+                                        </span>
                                     </div>
                                 </div>
                             @endif

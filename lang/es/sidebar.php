@@ -78,4 +78,5 @@ return [
     'manage_tutors' => 'Gestionar tutores',
     'tutors' => 'Tutores',
     'manage_cupones' => 'Gestionar cupones',
+    'courses' => 'Cursos',
 ];
