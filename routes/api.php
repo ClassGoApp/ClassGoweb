@@ -158,6 +158,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // 3. Reserva (Elegir al tutor)
     Route::post('/batches/{batch}/reserve', [SubjectPickerController::class, 'reserveTutor']);
+    Route::post('/batches/{batch}/cancel', [SubjectPickerController::class, 'cancelBatch']);
 
     // 4. Pago, Estado y Reunión (Bookings)
     Route::post('/bookings/{booking}/receipt', [SubjectPickerController::class, 'studentUploadReceipt']);

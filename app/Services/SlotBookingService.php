@@ -12,6 +12,7 @@ use App\Services\GoogleMeetService;
 use App\Services\BookingNotificationService;
 use Illuminate\Support\Facades\Log;
 
+use Illuminate\Support\Collection;
 class SlotBookingService implements interfaces\ISlotBookingService
 {
 
@@ -27,21 +28,31 @@ class SlotBookingService implements interfaces\ISlotBookingService
         }
     }
 
-    public function getSlotBookingsTutor(){
-        $user = Auth::user();
-        if ($user->hasRole('tutor')) {
-            return SlotBooking::with(["attachments"])->where('tutor_id', $user->id) //retornar las actuales y futuras tutorias del tutor 
-                ->whereNotIn('status', [3,4]) // Excluir las reservas con estado 3,4 (No completado),(Rechazado)
-                ->where("start_time", ">=", now())
-                ->orWhere(function ($query) {
-                    $query->where("start_time", "<=", now())
-                        ->where("end_time", ">=", now());
-                })
-                ->orderBy('start_time', 'asc')
-                ->limit(10)
-                ->get();
-        }
+   
+
+public function getSlotBookingsTutor(): Collection
+{
+    $user = Auth::user();
+
+    if (!$user || !$user->hasRole('tutor')) {
+        return collect();
     }
+
+    return SlotBooking::query()
+        ->where('tutor_id', $user->id)
+        ->whereIn('status', [
+            1, // Aceptado
+            2, // Pendiente
+            4, // Observado
+        ])
+        ->where('end_time', '>=', now())
+        ->with([
+            'subject',
+            'attachments',
+        ])
+        ->orderBy('start_time', 'asc')
+        ->get();
+}
     public function bookSlot($slotId, $userId, $additionalData = [])
     {
         // Implementación de la lógica para reservar un slot
@@ -269,27 +280,51 @@ class SlotBookingService implements interfaces\ISlotBookingService
     /**
      *  Para extraer las proximas tutorías del estudiante
      */
-    public function getStudentUpcomingTutorias()
-    {
-        $user = Auth::user();
 
-        if (!$user || !$user->hasRole('student')) {
-            return collect();
-        }
+    public function getStudentUpcomingTutorias(): Collection
+{
+    $user = Auth::user();
 
-        return SlotBooking::with(["attachments"])->where('student_id', $user->id)
-            ->where('status', '!=', 3)
-            ->where(function ($query) {
-                $query->where('start_time', '>=', now())
-                    ->orWhere(function ($q) {
-                        $q->where('start_time', '<=', now())
-                            ->where('end_time', '>=', now());
-                    });
-            })
-            ->orderBy('start_time', 'asc')
-            ->limit(5)
-            ->get();
+    if (!$user || !$user->hasRole('student')) {
+        return collect();
     }
+
+    return SlotBooking::query()
+        ->where('student_id', $user->id)
+        ->whereIn('status', [
+            1, // Aceptado
+            2, // Pendiente
+            4, // Observado
+        ])
+        ->where('end_time', '>=', now())
+        ->with([
+            'subject',
+            'attachments',
+        ])
+        ->orderBy('start_time', 'asc')
+        ->get();
+}
+    // public function getStudentUpcomingTutorias()
+    // {
+    //     $user = Auth::user();
+
+    //     if (!$user || !$user->hasRole('student')) {
+    //         return collect();
+    //     }
+
+    //     return SlotBooking::with(["attachments"])->where('student_id', $user->id)
+    //         ->where('status', '!=', 3)
+    //         ->where(function ($query) {
+    //             $query->where('start_time', '>=', now())
+    //                 ->orWhere(function ($q) {
+    //                     $q->where('start_time', '<=', now())
+    //                         ->where('end_time', '>=', now());
+    //                 });
+    //         })
+    //         ->orderBy('start_time', 'asc')
+    //         ->limit(5)
+    //         ->get();
+    // }
 
     public function getTotalCommission()
     {

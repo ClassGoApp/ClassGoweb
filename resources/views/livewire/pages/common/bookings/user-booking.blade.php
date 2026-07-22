@@ -62,7 +62,8 @@
                                 @if ($disablePrevious) disabled @else wire:click="previousBookings" @endif>
                                 <i class="am-icon-chevron-left"></i>
                             </a>
-                            <span @if ($isCurrent) disabled @else wire:click="jumpToDate()" @endif>
+                            <span @if ($isCurrent) disabled @else wire:click="jumpToDate()" @endif
+                                data-translate="student_bookings_current_{{ $showBy }}">
                                 {{ __('calendar.current_' . $showBy) }}
                             </span>
                             <a href="#" wire:click="nextBookings">
@@ -76,7 +77,9 @@
                     <div class="am-booking-filters-wrapper">
                         <div class="am-inputicon">
                             <input type="text" wire:model.live.debounce.250ms="filter.keyword"
-                                placeholder="{{ __('taxonomy.search_here') }}" class="form-control" />
+                                placeholder="{{ __('taxonomy.search_here') }}"
+                                data-placeholder-key="student_bookings_search_here"
+                                class="form-control" />
                             <a href="#">
                                 <i class="am-icon-search-02"></i>
                             </a>
@@ -176,26 +179,40 @@
                                 <button @class(['active' => $showBy == 'daily'])
                                     @if ($showBy != 'daily') wire:click="switchShow('daily')" @endif
                                     aria-selected="true"
-                                    wire:loading.class="am-btn_disable">{{ __('calendar.daily') }}</button>
+                                    wire:loading.class="am-btn_disable">
+                                    <span data-translate="student_bookings_daily">
+                                        {{ __('calendar.daily') }}
+                                    </span>
+                                </button>
                             </li>
                             <li>
                                 <button @class(['active' => $showBy == 'weekly'])
                                     @if ($showBy != 'weekly') wire:click="switchShow('weekly')" @endif
                                     aria-selected="false"
-                                    wire:loading.class="am-btn_disable">{{ __('calendar.weekly') }}</button>
+                                    wire:loading.class="am-btn_disable">
+                                    <span data-translate="student_bookings_weekly">
+                                        {{ __('calendar.weekly') }}
+                                    </span>
+                                </button>
                             </li>
                             <li>
                                 <button @class(['active' => $showBy == 'monthly'])
                                     @if ($showBy != 'monthly') wire:click="switchShow('monthly')" @endif
                                     aria-selected="false"
-                                    wire:loading.class="am-btn_disable">{{ __('calendar.monthly') }}</button>
+                                    wire:loading.class="am-btn_disable">
+                                    <span data-translate="student_bookings_monthly">
+                                        {{ __('calendar.monthly') }}
+                                    </span>
+                                </button>
                             </li>
                         </ul>
                     </div>
                 </div>
                 <div class="am-section-load" wire:loading.flex
                     wire:target="switchShow,jumpToDate,nextBookings,previousBookings,filter">
-                    <p>{{ __('general.loading') }}</p>
+                    <p data-translate="student_bookings_loading">
+                        {{ __('general.loading') }}
+                    </p>
                 </div>
                 <div wire:loading.class="d-none" class="am-booking-calander_body"
                     wire:target="switchShow,jumpToDate,nextBookings,previousBookings,filter">
@@ -305,8 +322,17 @@
                                                 @while($d->lte($weekEnd))
                                                     <th style="min-width:120px;">
                                                         <div class="    -title">
-                                                            <strong>{{ $d->format('j F') }}</strong>
-                                                            <span>{{ $d->format('D') }}</span>
+                                                            <strong data-student-booking-date
+                                                                data-date="{{ $d->toDateString() }}"
+                                                                data-format="day-month">
+                                                                {{ $d->format('j F') }}
+                                                            </strong>
+
+                                                            <span data-student-booking-date
+                                                                data-date="{{ $d->toDateString() }}"
+                                                                data-format="weekday-short">
+                                                                {{ $d->format('D') }}
+                                                            </span>
                                                         </div>
                                                     </th>
                                                     @php $d->addDay(); @endphp
@@ -340,8 +366,9 @@
                                                                         </div>
                                                                     @endforeach
                                                                 @else
-                                                                    <span
-                                                                        class="am-emptyslot">{{ __('calendar.no_sessions') }}</span>
+                                                                    <span class="am-emptyslot" data-translate="student_bookings_no_sessions">
+                                                                        {{ __('calendar.no_sessions') }}
+                                                                    </span>
                                                                 @endif
                                                             </div>
                                                         </div>
@@ -533,6 +560,30 @@
             display: none !important;
         }
 
+        .am-booking-calander-date input,
+        .am-booking-calander-date .flatpickr-input,
+        .am-booking-calander-date .input {
+            color: #023047 !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+            background-color: #ffffff !important;
+        }
+
+        .am-booking-calander-date input[type="hidden"] {
+            display: none !important;
+        }
+
+        .am-booking-calander-date,
+        .am-booking-calander-date input,
+        .am-booking-calander-date .flatpickr-input,
+        .am-booking-calander-date .input {
+            cursor: pointer !important;
+        }
+
+        .am-booking-calander-date input[readonly] {
+            cursor: pointer !important;
+        }
+
         .am-modal-overlay {
             background: rgba(0, 0, 0, 0.5);
             position: fixed;
@@ -567,6 +618,53 @@
 @script
     <script>
         let flatpickrInstance = null;
+
+        function translateStudentBookingsDateText(text) {
+            const lang = localStorage.getItem('selectedLanguage') || 'es';
+
+            if (!text || lang === 'en') {
+                return text;
+            }
+
+            const months = {
+                es: {
+                    January: 'enero',
+                    February: 'febrero',
+                    March: 'marzo',
+                    April: 'abril',
+                    May: 'mayo',
+                    June: 'junio',
+                    July: 'julio',
+                    August: 'agosto',
+                    September: 'septiembre',
+                    October: 'octubre',
+                    November: 'noviembre',
+                    December: 'diciembre'
+                },
+                pt: {
+                    January: 'janeiro',
+                    February: 'fevereiro',
+                    March: 'março',
+                    April: 'abril',
+                    May: 'maio',
+                    June: 'junho',
+                    July: 'julho',
+                    August: 'agosto',
+                    September: 'setembro',
+                    October: 'outubro',
+                    November: 'novembro',
+                    December: 'dezembro'
+                }
+            };
+
+            const selectedMonths = months[lang] || months.es;
+
+            return text.replace(
+                /\b(January|February|March|April|May|June|July|August|September|October|November|December)\b/g,
+                (month) => selectedMonths[month] || month
+            );
+        }
+
         initFlatPicker('daily', 'today');
 
         $wire.dispatch('initSelect2', {
@@ -576,6 +674,10 @@
         document.addEventListener('initCalendarJs', (event) => {
             setTimeout(() => {
                 initFlatPicker(event.detail.showBy, event.detail.currentDate, event.detail.range);
+
+                setTimeout(() => {
+                    applyStudentBookingsTranslations();
+                }, 120);
             }, 100);
         });
 
@@ -593,10 +695,105 @@
             return 'default';
         }
 
+        function normalizeMonthlyDateForFlatpickr(currentDate) {
+            if (!currentDate || currentDate === 'today') {
+                return new Date();
+            }
+
+            if (/^\d{4}-\d{2}-\d{2}$/.test(currentDate)) {
+                return currentDate;
+            }
+
+            const months = {
+                January: 0,
+                February: 1,
+                March: 2,
+                April: 3,
+                May: 4,
+                June: 5,
+                July: 6,
+                August: 7,
+                September: 8,
+                October: 9,
+                November: 10,
+                December: 11,
+
+                enero: 0,
+                febrero: 1,
+                marzo: 2,
+                abril: 3,
+                mayo: 4,
+                junio: 5,
+                julio: 6,
+                agosto: 7,
+                septiembre: 8,
+                octubre: 9,
+                noviembre: 10,
+                diciembre: 11,
+
+                janeiro: 0,
+                fevereiro: 1,
+                março: 2,
+                abril: 3,
+                maio: 4,
+                junho: 5,
+                julho: 6,
+                agosto: 7,
+                setembro: 8,
+                outubro: 9,
+                novembro: 10,
+                dezembro: 11
+            };
+
+            const cleanDate = currentDate.toString().replace(',', '').trim();
+            const parts = cleanDate.split(/\s+/);
+
+            const monthName = parts[0];
+            const year = parseInt(parts[1], 10);
+
+            if (months[monthName] === undefined || Number.isNaN(year)) {
+                return new Date();
+            }
+
+            return new Date(year, months[monthName], 1);
+        }
+
+        function getFlatpickrVisibleInput(instance) {
+            return instance?.altInput || instance?.input || null;
+        }
+
+        function setFlatpickrVisibleValue(instance, value) {
+            const visibleInput = getFlatpickrVisibleInput(instance);
+
+            if (visibleInput && value) {
+                visibleInput.value = value;
+            }
+        }
+
+        function formatMonthForBackend(date) {
+            const months = [
+                'January',
+                'February',
+                'March',
+                'April',
+                'May',
+                'June',
+                'July',
+                'August',
+                'September',
+                'October',
+                'November',
+                'December'
+            ];
+
+            return `${months[date.getMonth()]}, ${date.getFullYear()}`;
+        }
+
         function initFlatPicker(showBy, currentDate, range = []) {
             if (flatpickrInstance) {
                 flatpickrInstance.destroy();
             }
+
             let config = {
                 defaultDate: currentDate,
                 disableMobile: true,
@@ -605,19 +802,22 @@
                     @this.call('jumpToDate', dateStr);
                 }
             };
+
             if (showBy == 'daily') {
                 config = {
                     ...config,
                     altInput: true,
                     altFormat: "F j, Y",
-                    dateFormat: "Y-m-d"
+                    dateFormat: "Y-m-d",
                 };
+
                 @role('tutor')
                     config = {
                         ...config,
                         minDate: @js(\Carbon\Carbon::now(getUserTimezone())->toDateString())
-                    }
-                @endrole ()
+                    };
+                @endrole
+
             } else if (showBy == 'weekly') {
                 config = {
                     ...config,
@@ -629,30 +829,76 @@
                         })
                     ],
                     dateFormat: 'Y-m-d',
+                    onChange: function(selectedDates, dateStr, instance) {
+                        if (!selectedDates.length) {
+                            return;
+                        }
+
+                        const selectedDate = instance.formatDate(selectedDates[0], 'Y-m-d');
+
+                        @this.call('jumpToDate', selectedDate);
+                    },
                     onReady: function(selectedDates, dateStr, instance) {
-                        instance.input.value = currentDate
+                        setFlatpickrVisibleValue(
+                            instance,
+                            translateStudentBookingsDateText(currentDate)
+                        );
                     }
                 };
+
             } else {
                 config = {
                     ...config,
+                    defaultDate: normalizeMonthlyDateForFlatpickr(currentDate),
                     plugins: [
                         new monthSelectPlugin({
                             shorthand: true,
                             dateFormat: "F, Y",
+                            altFormat: "F, Y",
                         })
                     ],
+                    onReady: function(selectedDates, dateStr, instance) {
+                        if (selectedDates.length > 0) {
+                            const monthText = instance.formatDate(selectedDates[0], "F, Y");
+
+                            setFlatpickrVisibleValue(
+                                instance,
+                                translateStudentBookingsDateText(monthText)
+                            );
+                        }
+                    },
+                    onChange: function(selectedDates, dateStr, instance) {
+                        if (!selectedDates.length) {
+                            return;
+                        }
+
+                        const selectedMonth = formatMonthForBackend(selectedDates[0]);
+
+                        @this.call('jumpToDate', selectedMonth);
+                    }
                 };
             }
-            flatpickrInstance = flatpickr($(`#flat-picker`), config);
+
+            const flatPickerElement = document.querySelector('#flat-picker');
+
+            if (!flatPickerElement) {
+                return;
+            }
+
+            flatpickrInstance = flatpickr(flatPickerElement, config);
         }
 
         function parseDateRange(dateRangeStr) {
-            const [range, year] = dateRangeStr.split(' ');
-            const [startStr, endStr] = range.split('-');
+            if (!dateRangeStr || dateRangeStr === 'today') {
+                return new Date();
+            }
 
-            const monthMap = {
-                Januarys: 0,
+            if (/^\d{4}-\d{2}-\d{2}$/.test(dateRangeStr)) {
+                return dateRangeStr;
+            }
+
+            const months = {
+                January: 0,
                 February: 1,
                 March: 2,
                 April: 3,
@@ -663,33 +909,141 @@
                 September: 8,
                 October: 9,
                 November: 10,
-                December: 11
+                December: 11,
+
+                enero: 0,
+                febrero: 1,
+                marzo: 2,
+                abril: 3,
+                mayo: 4,
+                junio: 5,
+                julio: 6,
+                agosto: 7,
+                septiembre: 8,
+                octubre: 9,
+                noviembre: 10,
+                diciembre: 11,
+
+                janeiro: 0,
+                fevereiro: 1,
+                março: 2,
+                abril: 3,
+                maio: 4,
+                junho: 5,
+                julho: 6,
+                agosto: 7,
+                setembro: 8,
+                outubro: 9,
+                novembro: 10,
+                dezembro: 11
             };
 
-            const parseDate = (str) => {
-                const parts = str.trim().split(' ');
-                return new Date(year, monthMap[parts[0]], parts[1]);
+            const cleanText = dateRangeStr.toString().replace(',', '').trim();
+
+            const match = cleanText.match(
+                /([A-Za-zÁÉÍÓÚáéíóúñÑçÇ]+)\s+(\d{1,2})\s*-\s*([A-Za-zÁÉÍÓÚáéíóúñÑçÇ]+)\s+(\d{1,2})\s+(\d{4})/
+            );
+
+            if (!match) {
+                return new Date();
+            }
+
+            const startMonth = match[1];
+            const startDay = parseInt(match[2], 10);
+            const year = parseInt(match[5], 10);
+
+            if (months[startMonth] === undefined || Number.isNaN(startDay) || Number.isNaN(year)) {
+                return new Date();
+            }
+
+            return new Date(year, months[startMonth], startDay);
+        }
+
+        function studentBookingsText(key, fallback = '') {
+            const lang = localStorage.getItem('selectedLanguage') || 'es';
+
+            if (typeof translations === 'undefined') {
+                return fallback;
+            }
+
+            const t = translations[lang] || translations.es;
+
+            return t[key] || fallback;
+        }
+
+        function applyStudentBookingsPlaceholders() {
+            document.querySelectorAll('[data-placeholder-key]').forEach((element) => {
+                const key = element.getAttribute('data-placeholder-key');
+                const fallback = element.getAttribute('placeholder') || '';
+
+                element.setAttribute('placeholder', studentBookingsText(key, fallback));
+            });
+        }
+
+        function getStudentBookingsLocale() {
+            const lang = localStorage.getItem('selectedLanguage') || 'es';
+
+            const locales = {
+                es: 'es-BO',
+                en: 'en-US',
+                pt: 'pt-BR'
             };
 
-            try {
-                const startDate = parseDate(startStr);
-                const endDate = parseDate(endStr);
+            return locales[lang] || 'es-BO';
+        }
 
-                if (isNaN(startDate) || isNaN(endDate)) {
-                    throw new Error('Invalid date');
+        function capitalizeStudentBookingText(text) {
+            if (!text) {
+                return text;
+            }
+
+            return text.charAt(0).toUpperCase() + text.slice(1);
+        }
+
+        function applyStudentBookingsDates() {
+            const locale = getStudentBookingsLocale();
+
+            document.querySelectorAll('[data-student-booking-date]').forEach((element) => {
+                const dateValue = element.getAttribute('data-date');
+                const format = element.getAttribute('data-format');
+
+                if (!dateValue) {
+                    return;
                 }
 
-                return {
-                    start: startDate.toISOString().split('T')[0],
-                    end: endDate.toISOString().split('T')[0]
-                };
-            } catch {
-                return null;
-            }
+                const date = new Date(`${dateValue}T12:00:00`);
+
+                if (Number.isNaN(date.getTime())) {
+                    return;
+                }
+
+                if (format === 'day-month') {
+                    const day = new Intl.DateTimeFormat(locale, {
+                        day: 'numeric'
+                    }).format(date);
+
+                    const month = new Intl.DateTimeFormat(locale, {
+                        month: 'long'
+                    }).format(date);
+
+                    element.textContent = `${day} ${capitalizeStudentBookingText(month)}`;
+                }
+
+                if (format === 'weekday-short') {
+                    const weekday = new Intl.DateTimeFormat(locale, {
+                        weekday: 'short'
+                    }).format(date).replace('.', '');
+
+                    element.textContent = capitalizeStudentBookingText(weekday);
+                }
+            });
         }
 
             function applyStudentBookingsTranslations() {
                 const lang = localStorage.getItem('selectedLanguage') || 'es';
+
+                applyStudentBookingsPlaceholders();
+                applyStudentBookingsDates();
 
                 if (typeof selectLanguage === 'function') {
                     selectLanguage(lang, false);
@@ -701,9 +1055,31 @@
             document.addEventListener('studentBookingModalOpened', applyStudentBookingsTranslations);
 
             document.addEventListener('languageChanged', () => {
-                if (typeof initFlatPicker === 'function') {
-                    initFlatPicker(@js($showBy), @js($currentDate));
+                applyStudentBookingsPlaceholders();
+                applyStudentBookingsDates();
+
+                if (flatpickrInstance) {
+                    flatpickrInstance.set('locale', getFlatpickrLocale());
+
+                    if (flatpickrInstance.selectedDates.length > 0) {
+                        flatpickrInstance.setDate(flatpickrInstance.selectedDates[0], false);
+                    }
                 }
             });
+
+            document.addEventListener('livewire:init', function () {
+                Livewire.hook('morph.updated', function () {
+                    setTimeout(() => {
+                        applyStudentBookingsTranslations();
+                    }, 120);
+                });
+
+                Livewire.hook('morphed', function () {
+                    setTimeout(() => {
+                        applyStudentBookingsTranslations();
+                    }, 120);
+                });
+            });
+
     </script>
 @endscript

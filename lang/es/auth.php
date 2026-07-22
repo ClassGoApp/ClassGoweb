@@ -61,5 +61,7 @@ return [
     'your_email_placeholder' => 'Tu correo',
     'setup_account' => 'completar registro',
     'codigo_placeholder' => 'Código de cupón (opcional)',
+    'passwords_do_not_match' => 'Las contraseñas no coinciden.',
+    'terms_and_conditions' => 'términos y condiciones',
 
 ];

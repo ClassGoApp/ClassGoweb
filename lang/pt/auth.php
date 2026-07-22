@@ -56,4 +56,6 @@ return [
     'admin' => 'Administração',
     'sign_in_with_google' => 'Entrar com Google',
     'auth_register_google_title' => 'Cadastrar-se com Google',
+    'passwords_do_not_match' => 'As senhas não coincidem.',
+    'terms_and_conditions' => 'termos e condições',
 ];
