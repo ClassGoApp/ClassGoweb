@@ -62,7 +62,7 @@ class Navigation extends Component
                 'studentSortOrder' => 2,
                 'route' => '#', // Como ahora es un menú padre, no necesita llevar a una ruta directa
                 'onActiveRoute' => ['student.bookings', 'student.reschedule-session','student.tutorias', 'student.material-apoyo'],
-                'title' => 'Mis Tutorías', // Cambiamos el nombre general
+                'title' => __('sidebar.my_tutoring'), // Cambiamos el nombre general
                 'icon'  => '<i class="am-icon-calender-day"></i>',
                 'accessibility' => ['student'],
                 // Agregamos el submenú con los dos enlaces
@@ -70,12 +70,12 @@ class Navigation extends Component
                     [
                         'route' => 'student.bookings',
                         'onActiveRoute' => ['student.bookings', 'student.reschedule-session'],
-                        'title' => 'Calendario',
+                        'title' => __('sidebar.calendar'),
                     ],
                     [
                         'route' => 'student.tutorias', // Asegúrate de que este sea el nombre exacto de tu ruta en web.php
                         'onActiveRoute' => ['student.tutorias', 'student.material-apoyo'],
-                        'title' => 'Archivos Adjuntos',
+                        'title' => __('sidebar.attachments'),
                     ]
                 ]
             ],
@@ -112,7 +112,7 @@ class Navigation extends Component
                 'tutorSortOrder' => 4, // Puedes cambiar este número para subirlo o bajarlo en la lista
                 'route' => 'tutor.finances', // Asegúrate de crear esta ruta en tu archivo web.php
                 'onActiveRoute' => ['tutor.finances'], 
-                'title' => 'Finanzas',
+                'title' => __('sidebar.finances'),
                 'icon'  => '<i class="am-icon-dollar"></i>', // Reutilicé el icono de dólar que tenías antes
                 'accessibility' => ['tutor'], // Esto garantiza que SOLO el tutor lo vea
             ],
@@ -307,8 +307,12 @@ class Navigation extends Component
         ];
 
         $messages = [
-            'amount.min' => 'The amount must be at least ' . formatAmount($min_withdraw_amount) . '.',
-            'amount.max' => 'The amount may not be greater than ' . formatAmount($this->balance) . '.',
+            'amount.min' => __('general.withdraw_min_amount', [
+                'amount' => formatAmount($min_withdraw_amount)
+            ]),
+            'amount.max' => __('general.withdraw_max_amount', [
+                'amount' => formatAmount($this->balance)
+            ]),
         ];
 
         $this->validate($rules, $messages);

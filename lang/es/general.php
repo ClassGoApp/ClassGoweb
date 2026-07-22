@@ -628,4 +628,10 @@ return [
 
     // Expiración
     'leave_empty_no_expiration'  => 'Deje vacío si no desea fecha de vencimiento.',
+    'be_a_tutor' => 'Ser tutor',
+    'withdraw_min_amount' => 'El monto debe ser al menos :amount.',
+    'withdraw_max_amount' => 'El monto no puede ser mayor que :amount.',
+    'student_error_message' => 'Los estudiantes no pueden solicitar retiros.',
+    'empty_balance_message' => 'No tienes saldo disponible para retirar.',
+    'payment_error_message' => 'Debes configurar un método de pago antes de solicitar un retiro.',
 ];

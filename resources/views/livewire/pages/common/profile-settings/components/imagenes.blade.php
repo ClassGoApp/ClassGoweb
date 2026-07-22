@@ -1,12 +1,20 @@
 @if(!$attemptedSave && !$image)
-    <h1  style="font-size: 14px; font-weight: 600; color: #f02f04; text-align: left; margin-bottom: 8px;">
-        perfil obligatorio!. Por favor sube una imagen de perfil.
+    <h1 style="font-size: 14px; font-weight: 600; color: #f02f04; text-align: left; margin-bottom: 8px;"
+        data-translate="profile_required_photo">
+        {{ __('profile.profile_required_photo') }}
     </h1>
 @endif
+
 <div class="profile-photo-card">
     <div class="profile-photo-content">
-        <h3 class="profile-photo-title"> {{__('profile.upload_image')}} </h3>
-        <p class="profile-photo-sub">{{ __('profile.profile_picture')}} </p>
+        <h3 class="profile-photo-title" data-translate="profile_upload_image">
+            {{ __('profile.upload_image') }}
+        </h3>
+
+        <p class="profile-photo-sub" data-translate="profile_picture">
+            {{ __('profile.profile_picture') }}
+        </p>
+
         <div class="profile-photo-img-row">
             @if($image && !$image instanceof \Livewire\Features\SupportFileUploads\TemporaryUploadedFile)
                 <img src="{{ asset('storage/' . $image) }}" alt="Profile" class="profile-photo-img">
@@ -18,22 +26,23 @@
                 </div>
             @endif
         </div>
+
         <div class="profile-photo-btn-row">
-            <label for="image-upload" class="profile-photo-btn profile-photo-btn-main">
-                {{__('profile.change_photo') }}
-                <input id="image-upload" type="file" class="d-none" wire:model="image" wire:loading.attr="disabled">
-            </label>
-            @if($image)
-          {{--   <button type="button" class="profile-photo-btn profile-photo-btn-remove" style="background-color: red !important;color:white;" wire:click="removeMedia('image')">
-               {{ __('profile.remove') }}
-                <i class="bi bi-trash"></i>
-            </button> --}}
-            @endif
+            <div class="profile-photo-btn-row">
+                <label for="image-upload" class="profile-photo-btn profile-photo-btn-main">
+                    <span data-translate="profile_change_photo">
+                        {{ __('profile.change_photo') }}
+                    </span>
+
+                    <input id="image-upload" type="file" class="d-none" wire:model="image" wire:loading.attr="disabled">
+                </label>
+            </div>
         </div>
+
         @error('image')
-        <div class="profile-photo-error">
-            {{ $message }}
-        </div>
+            <div class="profile-photo-error">
+                {{ $message }}
+            </div>
         @enderror
     </div>
 </div>

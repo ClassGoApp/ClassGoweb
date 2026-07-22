@@ -67,16 +67,16 @@
 					<span>Español</span>
 				</div>
 				<ul class="options-dropdown" id="languageDropdown">
-					<li onclick="selectLanguage('es')">
+					<li onclick="changeNavbarLanguage('es')">
 						<img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f1ea-1f1f8.svg" alt="Español">
 						Español
 					</li>
-					<li onclick="selectLanguage('en')">
+					<li onclick="changeNavbarLanguage('en')">
 						<img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f1ec-1f1e7.svg" alt="English">
 						English
 					</li>
-					<li onclick="selectLanguage('pt')">
-						<img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f1f5-1f1f9.svg" alt="English">
+					<li onclick="changeNavbarLanguage('pt')">
+						<img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f1f5-1f1f9.svg" alt="Português">
 						Português
 					</li>
 				</ul>
@@ -298,15 +298,46 @@
 <script>
 	function toggleDropdown() {
 		const dropdown = document.getElementById("languageDropdown");
+
+		if (!dropdown) {
+			return;
+		}
+
 		dropdown.style.display = dropdown.style.display === "flex" ? "none" : "flex";
 	}
 
-	function selectLanguage(lang, isInitialLoad = false) {
+	function getNavbarCookieLanguage() {
+		const match = document.cookie.match(new RegExp("(^| )selectedLanguage=([^;]+)"));
+		return match ? decodeURIComponent(match[2]) : null;
+	}
+
+	function getNavbarCurrentLanguage() {
+		const cookieLang = getNavbarCookieLanguage();
+		const localLang = localStorage.getItem("selectedLanguage");
+
+		let lang = cookieLang || localLang || "es";
+
+		if (!["es", "en", "pt"].includes(lang)) {
+			lang = "es";
+		}
+
+		localStorage.setItem("selectedLanguage", lang);
+		document.cookie = `selectedLanguage=${lang}; path=/; max-age=31536000; SameSite=Lax`;
+
+		return lang;
+	}
+
+	function updateNavbarLanguageUI(lang, isInitialLoad = false) {
 		const selectedOption = document.querySelector(".selected-option");
+
+		if (!selectedOption) {
+			return;
+		}
+
 		const flagImg = selectedOption.querySelector("img");
 		const langText = selectedOption.querySelector("span");
 
-		// Diccionario para mostrar bandera y nombre
+		
 		const languages = {
 			es: {
 				text: "Esp",
@@ -322,97 +353,147 @@
 			}
 		};
 
-		// Cambia visualmente el idioma seleccionado
-		flagImg.src = languages[lang].flag;
-		langText.textContent = languages[lang].text;
+		if (!languages[lang]) {
+			lang = "es";
+		}
 
-		// Guardar selección en localStorage (para recordar en otras páginas)
+		if (flagImg) {
+			flagImg.src = languages[lang].flag;
+		}
+
+		if (langText) {
+			langText.textContent = languages[lang].text;
+		}
+
 		localStorage.setItem("selectedLanguage", lang);
+		document.cookie = `selectedLanguage=${lang}; path=/; max-age=31536000; SameSite=Lax`;
 
 		if (!isInitialLoad) {
 			toggleDropdown();
 		}
 	}
 
-	// Cierra el dropdown si se hace clic fuera
-	document.addEventListener('click', function(e) {
-		const select = document.querySelector('.language-select');
-		if (!select.contains(e.target)) {
-			document.getElementById("languageDropdown").style.display = "none";
+	window.changeNavbarLanguage = function (lang) {
+		if (!["es", "en", "pt"].includes(lang)) {
+			lang = "es";
+		}
+
+		localStorage.setItem("selectedLanguage", lang);
+		document.cookie = `selectedLanguage=${lang}; path=/; max-age=31536000; SameSite=Lax`;
+
+		updateNavbarLanguageUI(lang, false);
+
+		if (typeof window.selectLanguage === "function") {
+			window.selectLanguage(lang, false);
+		}
+
+		document.dispatchEvent(new CustomEvent("languageChanged", {
+			detail: { lang: lang }
+		}));
+	};
+
+	document.addEventListener("DOMContentLoaded", function () {
+		const savedLang = getNavbarCurrentLanguage();
+
+		updateNavbarLanguageUI(savedLang, true);
+
+		if (typeof window.selectLanguage === "function") {
+			window.selectLanguage(savedLang, false);
+		}
+
+		const dropdown = document.getElementById("languageDropdown");
+
+		if (dropdown) {
+			dropdown.style.display = "none";
 		}
 	});
 
-	// Restaurar selección al cargar la página
-	document.addEventListener("DOMContentLoaded", function() {
-		const savedLang = localStorage.getItem("selectedLanguage") || "es";
-		selectLanguage(savedLang, true); // Aplica el idioma guardado
-		document.getElementById("languageDropdown").style.display = "none";
+	document.addEventListener("click", function (e) {
+		const select = document.querySelector(".language-select");
+		const dropdown = document.getElementById("languageDropdown");
 
+		if (!select || !dropdown) {
+			return;
+		}
+
+		if (!select.contains(e.target)) {
+			dropdown.style.display = "none";
+		}
 	});
 
-	// Funcionalidad del menú hamburguesa
-	document.addEventListener('DOMContentLoaded', function() {
-		const hamburgerMenu = document.getElementById('hamburger-menu');
-		const mobileMenu = document.getElementById('navbar-mobile');
+	document.addEventListener("DOMContentLoaded", function () {
+		const hamburgerMenu = document.getElementById("hamburger-menu");
+		const mobileMenu = document.getElementById("navbar-mobile");
 
-		hamburgerMenu.addEventListener('click', function() {
-			hamburgerMenu.classList.toggle('active');
-			mobileMenu.classList.toggle('active');
+		if (!hamburgerMenu || !mobileMenu) {
+			return;
+		}
+
+		hamburgerMenu.addEventListener("click", function () {
+			hamburgerMenu.classList.toggle("active");
+			mobileMenu.classList.toggle("active");
 		});
 
-		// Cerrar menú al hacer clic en un enlace
-		const mobileLinks = mobileMenu.querySelectorAll('a');
+		const mobileLinks = mobileMenu.querySelectorAll("a");
+
 		mobileLinks.forEach(link => {
-			link.addEventListener('click', function() {
-				hamburgerMenu.classList.remove('active');
-				mobileMenu.classList.remove('active');
+			link.addEventListener("click", function () {
+				hamburgerMenu.classList.remove("active");
+				mobileMenu.classList.remove("active");
 			});
 		});
 
-		// Cerrar menú al hacer clic fuera
-		document.addEventListener('click', function(e) {
+		document.addEventListener("click", function (e) {
 			if (!hamburgerMenu.contains(e.target) && !mobileMenu.contains(e.target)) {
-				hamburgerMenu.classList.remove('active');
-				mobileMenu.classList.remove('active');
+				hamburgerMenu.classList.remove("active");
+				mobileMenu.classList.remove("active");
 			}
 		});
 	});
 
-	// Menú usuario
-	document.addEventListener('DOMContentLoaded', function() {
-		const userMenu = document.querySelector('.user-menu');
+	document.addEventListener("DOMContentLoaded", function () {
+		const userMenu = document.querySelector(".user-menu");
 
-		if (!userMenu) return;
+		if (!userMenu) {
+			return;
+		}
 
-		const trigger = userMenu.querySelector('.user-menu__trigger');
+		const trigger = userMenu.querySelector(".user-menu__trigger");
 
-		trigger.addEventListener('click', function(event) {
+		if (!trigger) {
+			return;
+		}
+
+		trigger.addEventListener("click", function (event) {
 			event.stopPropagation();
-			userMenu.classList.toggle('is-open');
+			userMenu.classList.toggle("is-open");
 		});
 
-		document.addEventListener('click', function(event) {
-			if (userMenu.classList.contains('is-open') && !userMenu.contains(event.target)) {
-				userMenu.classList.remove('is-open');
+		document.addEventListener("click", function (event) {
+			if (userMenu.classList.contains("is-open") && !userMenu.contains(event.target)) {
+				userMenu.classList.remove("is-open");
 			}
 		});
 	});
-	
-	document.addEventListener('DOMContentLoaded', function() {
-	const ul = document.querySelector('.navbar-links ul'); // <-- el UL
-	const links = ul.querySelectorAll('a');
 
-	// Hover permanente: solo un enlace a la vez
-	links.forEach(link => {
-		link.addEventListener('mouseenter', () => {
-			links.forEach(a => a.classList.remove('hovered'));
-			link.classList.add('hovered');
+	document.addEventListener("DOMContentLoaded", function () {
+		const ul = document.querySelector(".navbar-links ul");
+
+		if (!ul) {
+			return;
+		}
+
+		const links = ul.querySelectorAll("a");
+
+		links.forEach(link => {
+			link.addEventListener("mouseenter", () => {
+				links.forEach(a => a.classList.remove("hovered"));
+				link.classList.add("hovered");
+			});
+		});
+
+		ul.addEventListener("mouseleave", () => {
+			links.forEach(a => a.classList.remove("hovered"));
 		});
 	});
-
-	// Salir del UL: reset total
-	ul.addEventListener('mouseleave', () => {
-		links.forEach(a => a.classList.remove('hovered'));
-	});
-});
 </script>
