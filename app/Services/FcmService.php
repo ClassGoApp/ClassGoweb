@@ -5,6 +5,9 @@ namespace App\Services;
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\Messaging\CloudMessage;
 use Kreait\Firebase\Messaging\Notification;
+use Kreait\Firebase\Exception\Messaging\NotFound;
+use Kreait\Firebase\Exception\Messaging\InvalidArgument;
+use App\Models\FcmToken;
 use Illuminate\Support\Facades\Log;
 
 class FcmService
@@ -106,6 +109,19 @@ class FcmService
                     'remove_token' => $removeToken,
                 ]);
 
+                if ($removeToken) {
+                    try {
+                        FcmToken::where('token', $fcmToken)->delete();
+                        Log::info('FcmService: Token FCM caducado/inválido eliminado de la base de datos', [
+                            'fcm_token_preview' => substr($fcmToken, 0, 20) . '...'
+                        ]);
+                    } catch (\Throwable $ex) {
+                        Log::error('FcmService: Error al eliminar token caducado de DB', [
+                            'error' => $ex->getMessage()
+                        ]);
+                    }
+                }
+
                 $results[] = [
                     'token' => $fcmToken,
                     'success' => false,
@@ -121,9 +137,16 @@ class FcmService
 
     private function shouldRemoveTokenFromException(\Throwable $e): bool
     {
-        $message = strtolower($e->getMessage());
+        if ($e instanceof NotFound || $e instanceof InvalidArgument) {
+            return true;
+        }
 
-        if (str_contains($message, 'invalid registration token') ||
+        $message = strtolower($e->getMessage());
+        $class = strtolower(get_class($e));
+
+        if (str_contains($class, 'notfound') ||
+            str_contains($message, 'invalid registration token') ||
+            str_contains($message, 'notregistered') ||
             str_contains($message, 'not registered') ||
             str_contains($message, 'requested entity was not found') ||
             str_contains($message, 'unregistered') ||
