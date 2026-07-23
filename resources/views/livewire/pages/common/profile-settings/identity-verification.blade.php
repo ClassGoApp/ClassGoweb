@@ -1220,7 +1220,8 @@
                                                     class="id-upload-container d-flex justify-content-center gap-4 flex-wrap mb-4 w-100">
 
                                                     {{-- File Box Frente --}}
-                                                    <div class="id-upload-card d-flex flex-column align-items-center w-100-mobile">
+                                                    <div
+                                                        class="id-upload-card d-flex flex-column align-items-center w-100-mobile">
                                                         <span class="small fw-bold mb-1 text-muted">Cara Frontal</span>
                                                         <div
                                                             class="id-preview-box-centered bg-light border d-flex flex-column justify-content-center position-relative">
@@ -1279,7 +1280,8 @@
                                                     </div>
 
                                                     {{-- File Box Reverso --}}
-                                                    <div class=" id-upload-card d-flex flex-column align-items-center w-100-mobile">
+                                                    <div
+                                                        class=" id-upload-card d-flex flex-column align-items-center w-100-mobile">
                                                         <span class="small fw-bold mb-1 text-muted">Cara Reverso</span>
                                                         <div
                                                             class="id-preview-box-centered bg-light border d-flex flex-column justify-content-center position-relative">
@@ -1384,137 +1386,161 @@
                                     </div>
                                 </div>
                                 <style>
-    /* ======================================================
+                                    /* ======================================================
        🖥️ ESTILOS BASE Y DESKTOP (PC): LADO A LADO PERFECTO
        ====================================================== */
-    
-    /* Modal con ancho suficiente para 2 fotos en horizontal */
-    .custom-modal-card {
-        background: #ffffff;
-        border-radius: 16px;
-        width: 100%;
-        max-width: 560px !important; /* 👈 Garantiza espacio para las 2 fotos en PC */
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        border: 1px solid rgba(0, 0, 0, 0.05);
-        animation: modal-fade-in 0.25s ease-out;
-    }
 
-    /* Columnas simétricas iguales */
-    .id-upload-card {
-        flex: 1 1 0px !important; /* 👈 Fuerza a ambas columnas a medir exactamente lo mismo */
-        width: 100%;
-        max-width: 230px !important; /* 👈 Medida idéntica para ambas cajas en PC */
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
+                                    /* Modal con ancho suficiente para 2 fotos en horizontal */
+                                    .custom-modal-card {
+                                        background: #ffffff;
+                                        border-radius: 16px;
+                                        width: 100%;
+                                        max-width: 560px !important;
+                                        /* 👈 Garantiza espacio para las 2 fotos en PC */
+                                        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+                                        border: 1px solid rgba(0, 0, 0, 0.05);
+                                        animation: modal-fade-in 0.25s ease-out;
+                                    }
 
-    /* Caja de Vista Previa y Carga en 4:3 */
-    .id-preview-box-centered {
-        position: relative;
-        width: 100%;
-        aspect-ratio: 4 / 3 !important; /* 👈 Garantiza proporción 4:3 unificada */
-        cursor: pointer;
-        overflow: hidden;
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: #f9fafb;
-    }
+                                    /* Columnas simétricas iguales */
+                                    .id-upload-card {
+                                        flex: 1 1 0px !important;
+                                        /* 👈 Fuerza a ambas columnas a medir exactamente lo mismo */
+                                        width: 100%;
+                                        max-width: 230px !important;
+                                        /* 👈 Medida idéntica para ambas cajas en PC */
+                                        display: flex;
+                                        flex-direction: column;
+                                        align-items: center;
+                                    }
 
-    .id-hover-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.65);
-        backdrop-filter: blur(2px);
-        color: #fff;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 0.75rem;
-        font-weight: 700;
-        opacity: 0;
-        transition: opacity 0.2s ease-in-out;
-        border-radius: 12px;
-    }
+                                    /* Caja de Vista Previa y Carga en 4:3 */
+                                    .id-preview-box-centered {
+                                        position: relative;
+                                        width: 100%;
+                                        aspect-ratio: 4 / 3 !important;
+                                        /* 👈 Garantiza proporción 4:3 unificada */
+                                        cursor: pointer;
+                                        overflow: hidden;
+                                        border-radius: 12px;
+                                        display: flex;
+                                        align-items: center;
+                                        justify-content: center;
+                                        background-color: #f9fafb;
+                                    }
 
-    .id-preview-box-centered:hover .id-hover-overlay {
-        opacity: 1;
-    }
+                                    .id-hover-overlay {
+                                        position: absolute;
+                                        top: 0;
+                                        left: 0;
+                                        width: 100%;
+                                        height: 100%;
+                                        background: rgba(0, 0, 0, 0.65);
+                                        backdrop-filter: blur(2px);
+                                        color: #fff;
+                                        display: flex;
+                                        align-items: center;
+                                        justify-content: center;
+                                        font-size: 0.75rem;
+                                        font-weight: 700;
+                                        opacity: 0;
+                                        transition: opacity 0.2s ease-in-out;
+                                        border-radius: 12px;
+                                    }
 
-    /* Modal Backdrop */
-    .custom-modal-backdrop {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background: rgba(0, 0, 0, 0.6);
-        backdrop-filter: blur(4px);
-        z-index: 9999;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 20px 6px;
-    }
+                                    .id-preview-box-centered:hover .id-hover-overlay {
+                                        opacity: 1;
+                                    }
 
-    @keyframes modal-fade-in {
-        from { opacity: 0; transform: scale(0.95); }
-        to { opacity: 1; transform: scale(1); }
-    }
+                                    /* Modal Backdrop */
+                                    .custom-modal-backdrop {
+                                        position: fixed;
+                                        top: 0;
+                                        left: 0;
+                                        width: 100vw;
+                                        height: 100vh;
+                                        background: rgba(0, 0, 0, 0.6);
+                                        backdrop-filter: blur(4px);
+                                        z-index: 9999;
+                                        display: flex;
+                                        align-items: center;
+                                        justify-content: center;
+                                        padding: 20px 6px;
+                                    }
 
-    .x-small { font-size: 0.75rem !important; }
+                                    @keyframes modal-fade-in {
+                                        from {
+                                            opacity: 0;
+                                            transform: scale(0.95);
+                                        }
 
-    .btn-new { background: #ff0000; color: black; }
-    .btn-new:hover { color: #ff0000; background-color: #ffffff; }
+                                        to {
+                                            opacity: 1;
+                                            transform: scale(1);
+                                        }
+                                    }
 
-    .subir-ci { color: rgba(191, 25, 25, 0.7); }
+                                    .x-small {
+                                        font-size: 0.75rem !important;
+                                    }
 
-    /* ======================================================
+                                    .btn-new {
+                                        background: #ff0000;
+                                        color: black;
+                                    }
+
+                                    .btn-new:hover {
+                                        color: #ff0000;
+                                        background-color: #ffffff;
+                                    }
+
+                                    .subir-ci {
+                                        color: rgba(191, 25, 25, 0.7);
+                                    }
+
+                                    /* ======================================================
        📱 MEDIA QUERIES RESPONSIVAS PARA MÓVILES (< 576px)
        ====================================================== */
-    @media (max-width: 576px) {
-        .custom-modal-card {
-            max-width: 100% !important;
-            max-height: 88vh !important;
-            overflow-y: auto !important;
-            padding: 1.25rem 1rem !important;
-            margin: 0 10px !important;
-        }
+                                    @media (max-width: 576px) {
+                                        .custom-modal-card {
+                                            max-width: 100% !important;
+                                            max-height: 88vh !important;
+                                            overflow-y: auto !important;
+                                            padding: 1.25rem 1rem !important;
+                                            margin: 0 10px !important;
+                                        }
 
-        .id-upload-container {
-            flex-direction: column !important; /* 👈 En móvil se apilan verticalmente */
-            align-items: center !important;
-            gap: 1.25rem !important;
-        }
+                                        .id-upload-container {
+                                            flex-direction: column !important;
+                                            /* 👈 En móvil se apilan verticalmente */
+                                            align-items: center !important;
+                                            gap: 1.25rem !important;
+                                        }
 
-        .id-upload-card {
-            max-width: 280px !important; /* En móvil crecen hasta 280px centrado */
-        }
+                                        .id-upload-card {
+                                            max-width: 280px !important;
+                                            /* En móvil crecen hasta 280px centrado */
+                                        }
 
-        .w-100-mobile {
-            width: 100% !important;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+                                        .w-100-mobile {
+                                            width: 100% !important;
+                                            display: flex;
+                                            flex-direction: column;
+                                            align-items: center;
+                                        }
 
-        .action-buttons-wrapper {
-            flex-direction: column-reverse !important;
-            width: 100% !important;
-            gap: 0.6rem !important;
-        }
+                                        .action-buttons-wrapper {
+                                            flex-direction: column-reverse !important;
+                                            width: 100% !important;
+                                            gap: 0.6rem !important;
+                                        }
 
-        .action-buttons-wrapper button {
-            width: 100% !important;
-            padding: 0.6rem !important;
-        }
-    }
-</style>
+                                        .action-buttons-wrapper button {
+                                            width: 100% !important;
+                                            padding: 0.6rem !important;
+                                        }
+                                    }
+                                </style>
                             @endif
                             @if ($user->hasRole('student'))
 
@@ -1927,9 +1953,7 @@
 
                         <!-- Requisito: Número de Teléfono -->
                         @if (isset($prerequisite_errors['phone_number']))
-                            <div x-data="{ accepted: false }"
-                                x-show="true"
-                                x-transition:leave="prereq-fade-leave"
+                            <div x-data="{ accepted: false }" x-show="true" x-transition:leave="prereq-fade-leave"
                                 x-transition:leave-start="opacity: 1; transform: scale(1)"
                                 x-transition:leave-end="opacity: 0; transform: scale(0.95)"
                                 class="prereq-card-premium prereq-card-transition"
@@ -1974,8 +1998,7 @@
 
                         <!-- Requisito: Género de Perfil -->
                         @if (isset($prerequisite_errors['gender']))
-                            <div x-data="{ accepted: false, selectedGender: @entangle('prerequisite_gender') }"
-                                x-show="true"
+                            <div x-data="{ accepted: false, selectedGender: @entangle('prerequisite_gender') }" x-show="true"
                                 class="prereq-card-premium prereq-card-transition"
                                 :class="{
                                     'prereq-card-pending': !accepted,
@@ -2036,8 +2059,7 @@
                         @if (Auth::user()->hasRole('tutor'))
                             <!-- Requisito: Precio de Sesión -->
                             @if (isset($prerequisite_errors['price']))
-                                <div x-data="{ accepted: false }"
-                                    x-show="true"
+                                <div x-data="{ accepted: false }" x-show="true"
                                     class="prereq-card-premium prereq-card-transition"
                                     :class="{
                                         'prereq-card-pending': !accepted,
@@ -2055,7 +2077,8 @@
                                             </span>
                                             <strong class="prereq-title">Precio de tutoría (Bs)</strong>
                                         </div>
-                                        <span class="prereq-badge" x-text="accepted ? 'Aceptado ✓' : 'Pendiente'"></span>
+                                        <span class="prereq-badge"
+                                            x-text="accepted ? 'Aceptado ✓' : 'Pendiente'"></span>
                                     </div>
 
                                     {{-- Fila Inferior: Formulario de Entrada --}}
@@ -2133,8 +2156,7 @@
 
                             <!-- Requisito: Materias de Enseñanza -->
                             @if (isset($prerequisite_errors['subjects']))
-                                <div x-data="{ accepted: false }"
-                                    x-show="true"
+                                <div x-data="{ accepted: false }" x-show="true"
                                     class="prereq-card-premium prereq-card-transition"
                                     :class="{
                                         'prereq-card-pending': !accepted,
@@ -2152,7 +2174,8 @@
                                             </span>
                                             <strong class="prereq-title">Materias de enseñanza</strong>
                                         </div>
-                                        <span class="prereq-badge" x-text="accepted ? 'Aceptado ✓' : 'Pendiente'"></span>
+                                        <span class="prereq-badge"
+                                            x-text="accepted ? 'Aceptado ✓' : 'Pendiente'"></span>
                                     </div>
 
                                     {{-- Fila Inferior: Panel de Gestión de Materias --}}
@@ -2388,8 +2411,7 @@
 
                             <!-- Requisito: Términos y Condiciones -->
                             @if (isset($prerequisite_errors['terms']))
-                                <div x-data="{ accepted: false }"
-                                    x-show="true"
+                                <div x-data="{ accepted: false }" x-show="true"
                                     class="prereq-card-premium prereq-card-transition"
                                     :class="{
                                         'prereq-card-pending': !accepted,
@@ -2408,7 +2430,8 @@
                                             <strong class="prereq-title">Términos y condiciones (Tutorías al
                                                 instante)</strong>
                                         </div>
-                                        <span class="prereq-badge" x-text="accepted ? 'Aceptado ✓' : 'Pendiente'"></span>
+                                        <span class="prereq-badge"
+                                            x-text="accepted ? 'Aceptado ✓' : 'Pendiente'"></span>
                                     </div>
 
                                     {{-- Fila Inferior: Checkbox y Confirmación --}}
@@ -2503,8 +2526,11 @@
                                                 onmousedown="this.style.transform='scale(0.96)'"
                                                 onmouseup="this.style.transform='scale(1)'">
                                                 <i class="fab fa-google text-danger"></i>
-                                                <span wire:loading.remove wire:target="connectCalendarFromPrerequisites">Conectar Calendar</span>
-                                                <span wire:loading wire:target="connectCalendarFromPrerequisites">Conectando...</span>
+                                                <span wire:loading.remove
+                                                    wire:target="connectCalendarFromPrerequisites">Conectar
+                                                    Calendar</span>
+                                                <span wire:loading
+                                                    wire:target="connectCalendarFromPrerequisites">Conectando...</span>
                                             </button>
                                         </div>
 
@@ -2520,7 +2546,8 @@
                                         style="font-size: 1.25rem; color: #10b981;"></i>
                                     <strong>¡Todos los requisitos obligatorios han sido completados!</strong>
                                     <p class="mb-0 mt-1 small" style="color: #047857;">Haz clic en
-                                        <strong>Guardar</strong> para continuar con la verificación.</p>
+                                        <strong>Guardar</strong> para continuar con la verificación.
+                                    </p>
                                 </div>
                             @endif
 
@@ -3058,50 +3085,136 @@
             }
         @endif
 
-        // 4. Google Calendar — Escucha el evento Livewire con la URL real del servicio
-        //    y la abre en un popup sin perder el estado del formulario.
+        // 4. Google Calendar
+        let googleCalendarPopup = null;
+        let googleCalendarPoller = null;
+        let googleCalendarResultReceived = false;
+
         function openGoogleCalendarPopupWithUrl(authUrl) {
             const width = 600;
             const height = 650;
-            const left = Math.round((window.screen.width - width) / 2);
-            const top = Math.round((window.screen.height - height) / 2);
 
-            const popup = window.open(
-                authUrl,
-                'GoogleCalendarAuth',
-                `width=${width},height=${height},left=${left},top=${top},resizable=yes,scrollbars=yes,status=yes`
+            const left = Math.max(
+                0,
+                Math.round(
+                    window.screenX + (window.outerWidth - width) / 2
+                )
             );
 
-            let checkCount = 0;
-            const poller = setInterval(function() {
-                checkCount++;
-                // Si la ventana se cerró o pasa más de 3 minutos, consulta el estado
-                if (!popup || popup.closed || checkCount > 225) {
-                    clearInterval(poller);
-                    window.removeEventListener('focus', onFocusCheck);
-                    @this.recheckPrerequisites();
-                }
-            }, 800);
+            const top = Math.max(
+                0,
+                Math.round(
+                    window.screenY + (window.outerHeight - height) / 2
+                )
+            );
 
-            // Respaldo para móviles: Si el usuario vuelve a la pestaña principal del navegador
-            function onFocusCheck() {
-                if (popup && popup.closed) {
-                    clearInterval(poller);
-                    window.removeEventListener('focus', onFocusCheck);
-                    @this.recheckPrerequisites();
-                }
+            googleCalendarResultReceived = false;
+
+            googleCalendarPopup = window.open(
+                authUrl,
+                'GoogleCalendarPrerequisitesAuth',
+                [
+                    `width=${width}`,
+                    `height=${height}`,
+                    `left=${left}`,
+                    `top=${top}`,
+                    'resizable=yes',
+                    'scrollbars=yes',
+                    'status=yes'
+                ].join(',')
+            );
+
+            if (!googleCalendarPopup) {
+                alert(
+                    'El navegador bloqueó la ventana de Google. ' +
+                    'Habilita las ventanas emergentes e intenta nuevamente.'
+                );
+
+                return;
             }
-            window.addEventListener('focus', onFocusCheck);
+
+            googleCalendarPopup.focus();
+
+            if (googleCalendarPoller) {
+                clearInterval(googleCalendarPoller);
+            }
+
+            googleCalendarPoller = setInterval(function() {
+                if (
+                    !googleCalendarPopup ||
+                    googleCalendarPopup.closed
+                ) {
+                    clearInterval(googleCalendarPoller);
+                    googleCalendarPoller = null;
+
+                    if (!googleCalendarResultReceived) {
+                        @this.recheckPrerequisites();
+                    }
+                }
+            }, 700);
         }
 
-        // Listener del evento despachado por Livewire con la URL de OAuth generada por GoogleCalender service
-        window.addEventListener('openGoogleCalendarPopup', (e) => {
-            openGoogleCalendarPopupWithUrl(e.detail.url);
-        });
+        window.addEventListener(
+            'openGoogleCalendarPopup',
+            function(event) {
+                const authUrl =
+                    event.detail?.url ??
+                    event.detail?.[0]?.url ??
+                    null;
 
-        // Alias para compatibilidad con cualquier llamada directa que pudiera quedar en el DOM
+                if (!authUrl) {
+                    console.error(
+                        'No se recibió la URL de Google Calendar.'
+                    );
+
+                    return;
+                }
+
+                openGoogleCalendarPopupWithUrl(authUrl);
+            }
+        );
+
+        window.addEventListener(
+            'message',
+            function(event) {
+                if (event.origin !== window.location.origin) {
+                    return;
+                }
+
+                if (
+                    event.data?.type !==
+                    'google-calendar-prerequisites-result'
+                ) {
+                    return;
+                }
+
+                googleCalendarResultReceived = true;
+
+                if (googleCalendarPoller) {
+                    clearInterval(googleCalendarPoller);
+                    googleCalendarPoller = null;
+                }
+
+                @this.recheckPrerequisites();
+
+                if (event.data.success) {
+                    console.log(
+                        event.data.message ??
+                        'Google Calendar conectado correctamente.'
+                    );
+                } else {
+                    console.error(
+                        event.data.message ??
+                        'No se pudo conectar Google Calendar.'
+                    );
+                }
+            }
+        );
+
         function openGoogleCalendarAuthPopup() {
-            openGoogleCalendarPopupWithUrl('/google/authenticate');
+            console.warn(
+                'Usa connectCalendarFromPrerequisites() para generar la URL OAuth.'
+            );
         }
     </script>
 @endpush

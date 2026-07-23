@@ -20,19 +20,8 @@ use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithFileUploads;
-use Exception;
-use Illuminate\Support\Facades\Session;
 
-use App\Models\Code;
-use App\Models\Coupon;
-
-use App\Models\UserPayoutMethod;
-use Illuminate\Support\Str;
-
-//use Google\Service\Analytics\Profiles;
-use App\Models\profiles;
-
-
+// use Google\Service\Analytics\Profiles;
 
 /**
  * Componente Livewire para la verificación de identidad del usuario con flujo diferido.
@@ -131,9 +120,9 @@ class IdentityVerification extends Component
 
     public function boot()
     {
-        $this->userIdentity   = new IdentityService(Auth::user());
+        $this->userIdentity = new IdentityService(Auth::user());
         $this->profileService = new ProfileService(Auth::user()->id);
-        $this->user           = Auth::user();
+        $this->user = Auth::user();
     }
 
     public function loadData()
@@ -480,14 +469,28 @@ class IdentityVerification extends Component
     public function connectCalendarFromPrerequisites()
     {
         $googleService = new GoogleCalender(Auth::user());
-        $authUrlResponse = $googleService->getAuthUrl();
 
-        if ($authUrlResponse['status'] === \Symfony\Component\HttpFoundation\Response::HTTP_OK) {
-            // Enviamos la URL al JS del blade via evento, el popup lo gestiona el cliente
-            $this->dispatch('openGoogleCalendarPopup', url: $authUrlResponse['url']);
-        } else {
-            $this->dispatch('showAlertMessage', type: 'error', message: $authUrlResponse['message'] ?? 'No se pudo obtener la URL de Google Calendar.');
+        $authUrlResponse = $googleService
+            ->getPrerequisitesAuthUrl();
+
+        if (
+            ($authUrlResponse['status'] ?? null)
+            === \Symfony\Component\HttpFoundation\Response::HTTP_OK
+        ) {
+            $this->dispatch(
+                'openGoogleCalendarPopup',
+                url: $authUrlResponse['url']
+            );
+
+            return;
         }
+
+        $this->dispatch(
+            'showAlertMessage',
+            type: 'error',
+            message: $authUrlResponse['message']
+                ?? 'No se pudo obtener la URL de Google Calendar.'
+        );
     }
 
     public function savePrerequisites()

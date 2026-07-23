@@ -192,7 +192,7 @@ Route::get('/pay-qr/{orderId}', [PaymentController::class, 'showQR'])->name('pay
 
 Route::get('/google/authenticate', [GoogleController::class, 'authenticate'])->name('google.authenticate');
 Route::get('/auth/api/google/callback', [GoogleController::class, 'googlecallback'])->name('google.callback');
-
+Route::get('/auth/api/google/prerequisites/callback',[GoogleController::class, 'googlePrerequisitesCallback'])->name('google.prerequisites.callback');
 
 
 

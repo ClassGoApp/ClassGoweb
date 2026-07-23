@@ -85,6 +85,43 @@ class GoogleCalender
         }
     }
 
+    public function getPrerequisitesAuthUrl()
+{
+    try {
+        $credentials = $this->clientCredentials;
+
+        /*
+         * Cambiamos solamente la ruta de retorno para el modal.
+         * No modifica el callback anterior.
+         */
+        $credentials['redirect_uri'] = route(
+            'google.prerequisites.callback'
+        );
+
+        $client = new Client($credentials);
+
+        $client->setAccessType('offline');
+        $client->setPrompt('consent');
+
+        return [
+            'status' => Response::HTTP_OK,
+            'url' => $client->createAuthUrl(),
+        ];
+    } catch (Exception $ex) {
+        Log::error(
+            'Error al generar URL de Google Calendar para prerrequisitos',
+            [
+                'message' => $ex->getMessage(),
+            ]
+        );
+
+        return [
+            'status' => Response::HTTP_INTERNAL_SERVER_ERROR,
+            'message' => $ex->getMessage(),
+        ];
+    }
+}
+
     public function getAccessTokenInfo($code)
     {
         // Validar ANTES de intentar usar el código
@@ -135,6 +172,53 @@ class GoogleCalender
             ];
         }
     }
+
+    public function getPrerequisitesAccessTokenInfo($code)
+{
+    if (empty($code) || !is_string($code)) {
+        return [
+            'status' => Response::HTTP_BAD_REQUEST,
+            'message' => 'Código de autorización inválido o vacío',
+        ];
+    }
+
+    try {
+        $credentials = $this->clientCredentials;
+
+        $credentials['redirect_uri'] = route(
+            'google.prerequisites.callback'
+        );
+
+        $client = new Client($credentials);
+
+        $tokenInfo = $client->fetchAccessTokenWithAuthCode($code);
+
+        if (isset($tokenInfo['error'])) {
+            return [
+                'status' => Response::HTTP_BAD_REQUEST,
+                'message' => $tokenInfo['error_description']
+                    ?? $tokenInfo['error'],
+            ];
+        }
+
+        return [
+            'status' => Response::HTTP_OK,
+            'data' => $tokenInfo,
+        ];
+    } catch (\Exception $e) {
+        Log::error(
+            'Error al obtener token para prerrequisitos',
+            [
+                'message' => $e->getMessage(),
+            ]
+        );
+
+        return [
+            'status' => Response::HTTP_INTERNAL_SERVER_ERROR,
+            'message' => $e->getMessage(),
+        ];
+    }
+}
 
     protected function verifyToken()
     {
