@@ -555,4 +555,68 @@ return [
     'yes_easy' => 'Sim, foi fácil',
     'was_difficult' => 'Foi difícil',
     'no_comment' => 'Sem comentário',
+    'general_error' => 'Ocorreu um erro ao salvar a verificação de identidade. Tente novamente ou entre em contato com o suporte.',
+'deleted_alianza' => 'Aliança excluída',
+'be_a_tutor' => 'Ser tutor',
+
+// Cupons
+'add_new_cupon' => 'Adicionar novo cupom',
+'save_cupon' => 'Salvar cupom',
+'save_changes' => 'Salvar alterações',
+'cancelar' => 'Cancelar',
+
+'All' => 'Todos',
+'Active' => 'Ativos',
+'Inactive' => 'Inativos',
+
+'search_cupon' => 'Pesquisar cupom...',
+'Name' => 'Nome',
+'nombre_placeholder' => 'Digite o nome do cupom',
+
+'Code' => 'Código',
+'codigo' => 'Código',
+'codigo_placeholder' => 'Digite o código do cupom',
+
+'Expiration_date' => 'Data de validade',
+'fecha_caducidad' => 'Data de validade',
+'fecha_caducidad_placeholder' => 'Selecione a data de validade',
+
+'Status' => 'Status',
+'estado' => 'Status',
+'activo' => 'Ativo',
+'inactivo' => 'Inativo',
+'select_option' => 'Selecione uma opção',
+
+'Discount' => 'Desconto',
+'descuento' => 'Desconto',
+'descuento_placeholder' => 'Digite o desconto em %',
+
+'Amount' => 'Quantidade',
+'cantidad' => 'Quantidade',
+'cantidad_placeholder' => 'Digite a quantidade disponível',
+
+'References' => 'Referência',
+'referencia' => 'Referência',
+'referencia_placeholder' => 'Digite a referência',
+'sin_referencia' => 'Sem referência',
+
+'Actions' => 'Ações',
+'activate' => 'Ativar',
+'deactivate' => 'Desativar',
+'change_expiration' => 'Alterar data de validade',
+
+'confirm_title' => 'Confirmar!',
+'confirm_delete_coupon' => 'Tem certeza de que deseja excluir este cupom? Esta ação não pode ser desfeita.',
+'confirm_toggle_coupon' => 'Deseja alterar o status deste cupom?',
+
+'saved_ok' => 'Cupom salvo corretamente.',
+'updated_ok' => 'Cupom atualizado corretamente.',
+'deleted_ok' => 'Cupom excluído corretamente.',
+
+'leave_empty_no_expiration' => 'Deixe vazio se não desejar uma data de vencimento.',
+'withdraw_min_amount' => 'O valor deve ser de pelo menos :amount.',
+'withdraw_max_amount' => 'O valor não pode ser maior que :amount.',
+'student_error_message' => 'Estudantes não podem solicitar retiradas.',
+'empty_balance_message' => 'Você não tem saldo disponível para retirar.',
+'payment_error_message' => 'Você deve configurar um método de pagamento antes de solicitar uma retirada.',
 ];

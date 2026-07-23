@@ -90,4 +90,5 @@ return [
     'missing_google_calendar' => 'Google Calendar connection (Go to Account Settings)',
     'missing_payout_method' => 'Payout method configured (Go to Panel > Preferences > QR)',
     'complete_now' => 'Complete now',
+    'profile_required_photo' => 'Profile required. Please upload a profile picture.',
 ];

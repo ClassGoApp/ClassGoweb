@@ -38,4 +38,11 @@ return [
     'keys_missing' => 'Google client credentials (client_id or client_secret) are missing.',
     'no_calendar' => 'No Calendar Found',
     'event_deleted' => 'Event Deleted',
+    'google_calendar_cancelled' => 'Google Calendar connection cancelled.',
+    'google_calendar_no_code' => 'No authorization code was received.',
+    'google_calendar_token_error' => 'Error getting Google Calendar token.',
+    'google_calendar_connected' => 'Google Calendar connected successfully.',
+    'google_calendar_processing_error' => 'Error processing Google Calendar connection.',
+    'google_calendar_code_received' => 'Code received, please complete the setup.',
+    'google_calendar_server_error' => 'Server error while connecting Google Calendar.',
 ];

@@ -177,13 +177,32 @@ class SiteController extends Controller
      * @param \Illuminate\Http\Request.
      */
 
-    public function switchLang(Request $request){
-        $locale = $request->get('am-locale');
+    public function switchLang(Request $request)
+    {
+        $locale = $request->get('am-locale', $request->cookie('selectedLanguage', 'es'));
+
         $translatedLangs = array_keys(getTranslatedLanguages());
-        if (in_array($locale, $translatedLangs)) {
-            session()->put('locale', $locale);
+
+        if (! in_array($locale, $translatedLangs, true)) {
+            $locale = 'es';
         }
-        return redirect()->back();
+
+        session()->put('locale', $locale);
+        app()->setLocale($locale);
+
+        return redirect()
+            ->back()
+            ->withCookie(cookie(
+                'selectedLanguage',
+                $locale,
+                60 * 24 * 365,
+                null,
+                null,
+                false,
+                false,
+                false,
+                'Lax'
+            ));
     }
 
     /**

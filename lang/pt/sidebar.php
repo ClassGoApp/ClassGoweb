@@ -79,4 +79,8 @@ return [
     'tutors' => 'Tutores',
     'manage_cupones' => 'Gerenciar cupons',
     'courses' => 'Cursos',
+    'my_tutoring' => 'Minhas Tutorias',
+    'calendar' => 'Calendário',
+    'attachments' => 'Arquivos Anexos',
+    'finances' => 'Finanças',
 ];

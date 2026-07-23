@@ -1189,6 +1189,53 @@ const translations = {
     student_bookings_monthly: "Mensual",
     student_bookings_loading: "Cargando...",
     student_bookings_no_sessions: "No hay sesiones",
+    // =====================================
+    // PROFILE PHOTO - Foto de perfil
+    // =====================================
+    profile_required_photo:
+      "Perfil obligatorio. Por favor, sube una imagen de perfil.",
+    profile_upload_image: "Cargar Imagen",
+    profile_picture: "Una imagen vale más que mil palabras.",
+    profile_change_photo: "Cambiar foto",
+    // =====================================
+    // PROFILE DETAILS - Datos personales
+    // =====================================
+    profile_personal_details: "Detalles personales",
+    profile_basic_info:
+      "Proporciona información básica para completar tu perfil.",
+    profile_first_name: "Nombre",
+    profile_last_name: "Apellido",
+    profile_email: "Email",
+    profile_phone_number: "Número de teléfono",
+    general_save_changes: "Guardar cambios",
+    // =====================================
+    // MATERIAL SUPPORT - Archivos Adjuntos
+    // =====================================
+    material_support_my_tutoring: "Mis Tutorías",
+    material_support_tutoring: "Tutorías",
+    material_support_subtitle:
+      "Selecciona una tutoría para gestionar sus archivos adjuntos.",
+    material_support_next_tutoring: "Tu próxima tutoría.",
+    material_support_schedule: "Horarios:",
+    material_support_no_future_tutoring:
+      "No tienes tutorías futuras programadas.",
+    material_support_day: "Día:",
+    material_support_time: "Horario:",
+    material_support_status: "Estado:",
+    material_support_add_material: "Agregar material",
+    material_support_attach_file: "Adjuntar archivo para esta tutoría",
+    material_support_attached_file_title: "Archivo adjunto para esta clase",
+    material_support_saved: "Guardado",
+    material_support_download: "Descargar",
+    material_support_context: "Contexto:",
+    material_support_no_description: "Sin descripción",
+    material_support_no_material: "Sin material",
+    material_support_no_attached_material: "Sin Material Adjuntado.",
+    material_support_select_tutoring:
+      "👈 Selecciona una tutoría de la lista para gestionar su material de apoyo.",
+    profile_account_settings: "Configuraciones de la cuenta",
+    profile_resume_highlights: "Aspectos destacados",
+    profile_identity_verification: "Verificación de identidad",
   },
   en: {
     // Navbar
@@ -2351,6 +2398,53 @@ const translations = {
     student_bookings_monthly: "Monthly",
     student_bookings_loading: "Loading...",
     student_bookings_no_sessions: "No sessions",
+    // =====================================
+    // PROFILE PHOTO - Profile picture
+    // =====================================
+
+    profile_required_photo:
+      "Profile required. Please upload a profile picture.",
+    profile_upload_image: "Upload Image",
+    profile_picture: "A picture is worth a thousand words.",
+    profile_change_photo: "Change Photo",
+    // =====================================
+    // PROFILE DETAILS - Datos personales
+    // =====================================
+    profile_personal_details: "Personal Details",
+    profile_basic_info: "Provide basic information to complete your profile.",
+    profile_first_name: "First Name",
+    profile_last_name: "Last Name",
+    profile_email: "Email",
+    profile_phone_number: "Phone Number",
+    general_save_changes: "Save Changes",
+    // =====================================
+    // MATERIAL SUPPORT - Attachments
+    // =====================================
+    material_support_my_tutoring: "My Tutoring",
+    material_support_tutoring: "Tutoring",
+    material_support_subtitle:
+      "Select a tutoring session to manage its attachments.",
+    material_support_next_tutoring: "Your next tutoring session.",
+    material_support_schedule: "Schedule:",
+    material_support_no_future_tutoring:
+      "You have no upcoming tutoring sessions scheduled.",
+    material_support_day: "Day:",
+    material_support_time: "Time:",
+    material_support_status: "Status:",
+    material_support_add_material: "Add material",
+    material_support_attach_file: "Attach file for this tutoring session",
+    material_support_attached_file_title: "Attached file for this session",
+    material_support_saved: "Saved",
+    material_support_download: "Download",
+    material_support_context: "Context:",
+    material_support_no_description: "No description",
+    material_support_no_material: "No material",
+    material_support_no_attached_material: "No material attached.",
+    material_support_select_tutoring:
+      "👈 Select a tutoring session from the list to manage its support material.",
+    profile_account_settings: "Account Settings",
+    profile_resume_highlights: "Resume Highlights",
+    profile_identity_verification: "Identity Verification",
   },
   pt: {
     // Navbar
@@ -3536,6 +3630,54 @@ const translations = {
     student_bookings_monthly: "Mensal",
     student_bookings_loading: "Carregando...",
     student_bookings_no_sessions: "Não há sessões",
+    // =====================================
+    // PROFILE PHOTO - Foto de perfil
+    // =====================================
+
+    profile_required_photo:
+      "Perfil obrigatório. Por favor, envie uma imagem de perfil.",
+    profile_upload_image: "Enviar imagem",
+    profile_picture: "Uma imagem vale mais que mil palavras.",
+    profile_change_photo: "Alterar foto",
+    // =====================================
+    // PROFILE DETAILS - Datos personales
+    // =====================================
+    profile_personal_details: "Detalhes pessoais",
+    profile_basic_info:
+      "Forneça informações básicas para completar seu perfil.",
+    profile_first_name: "Nome",
+    profile_last_name: "Sobrenome",
+    profile_email: "E-mail",
+    profile_phone_number: "Número de telefone",
+    general_save_changes: "Salvar alterações",
+    // =====================================
+    // MATERIAL SUPPORT - Arquivos Anexos
+    // =====================================
+    material_support_my_tutoring: "Minhas Tutorias",
+    material_support_tutoring: "Tutorias",
+    material_support_subtitle:
+      "Selecione uma tutoria para gerenciar seus arquivos anexos.",
+    material_support_next_tutoring: "Sua próxima tutoria.",
+    material_support_schedule: "Horários:",
+    material_support_no_future_tutoring:
+      "Você não tem tutorias futuras programadas.",
+    material_support_day: "Dia:",
+    material_support_time: "Horário:",
+    material_support_status: "Estado:",
+    material_support_add_material: "Adicionar material",
+    material_support_attach_file: "Anexar arquivo para esta tutoria",
+    material_support_attached_file_title: "Arquivo anexo para esta tutoria",
+    material_support_saved: "Salvo",
+    material_support_download: "Baixar",
+    material_support_context: "Contexto:",
+    material_support_no_description: "Sem descrição",
+    material_support_no_material: "Sem material",
+    material_support_no_attached_material: "Sem material anexado.",
+    material_support_select_tutoring:
+      "👈 Selecione uma tutoria da lista para gerenciar seu material de apoio.",
+    profile_account_settings: "Configurações da conta",
+    profile_resume_highlights: "Destaques do currículo",
+    profile_identity_verification: "Verificação de identidade",
   },
 };
 
@@ -3545,11 +3687,59 @@ const translations = {
 
 function toggleDropdown() {
   const dropdown = document.getElementById("languageDropdown");
+
+  if (!dropdown) {
+    return;
+  }
+
   dropdown.style.display = dropdown.style.display === "flex" ? "none" : "flex";
+}
+
+function getCookieLanguage() {
+  const match = document.cookie.match(
+    new RegExp("(^| )selectedLanguage=([^;]+)"),
+  );
+  return match ? decodeURIComponent(match[2]) : null;
+}
+
+function getActiveLanguageFromPanel() {
+  const activeItem = document.querySelector(
+    ".locale-menu li.active[data-lang]",
+  );
+
+  if (activeItem && ["es", "en", "pt"].includes(activeItem.dataset.lang)) {
+    return activeItem.dataset.lang;
+  }
+
+  const panelFlag = document.querySelector(".am-lang-anchor img");
+
+  if (panelFlag && ["es", "en", "pt"].includes(panelFlag.getAttribute("alt"))) {
+    return panelFlag.getAttribute("alt");
+  }
+
+  return null;
+}
+
+function getCurrentLanguage() {
+  let lang =
+    getActiveLanguageFromPanel() ||
+    localStorage.getItem("selectedLanguage") ||
+    getCookieLanguage() ||
+    "es";
+
+  if (!["es", "en", "pt"].includes(lang)) {
+    lang = "es";
+  }
+
+  localStorage.setItem("selectedLanguage", lang);
+  document.cookie = `selectedLanguage=${lang}; path=/; max-age=31536000; SameSite=Lax`;
+
+  return lang;
 }
 
 function selectLanguage(lang, closeDropdown = true) {
   localStorage.setItem("selectedLanguage", lang);
+  document.cookie = `selectedLanguage=${lang}; path=/; max-age=31536000; SameSite=Lax`;
 
   const selectedOption = document.querySelector(
     ".language-select .selected-option span",
@@ -3579,8 +3769,10 @@ function selectLanguage(lang, closeDropdown = true) {
   // Traducir todos los elementos con data-translate
   document.querySelectorAll("[data-translate]").forEach((el) => {
     const key = el.getAttribute("data-translate");
-    if (translations[lang][key]) {
-      el.innerHTML = translations[lang][key]; // innerHTML respeta <br>
+    const currentTranslations = translations[lang] || translations.es;
+
+    if (currentTranslations && currentTranslations[key]) {
+      el.innerHTML = currentTranslations[key];
     }
   });
 
@@ -3594,19 +3786,52 @@ function selectLanguage(lang, closeDropdown = true) {
 }
 
 // ===========================
-// Inicialización al cargar la página
+// Inicialización al cargar la página y después de Livewire
 // ===========================
-document.addEventListener("DOMContentLoaded", function () {
-  const savedLang = localStorage.getItem("selectedLanguage") || "es";
-  selectLanguage(savedLang, false);
-});
 
-document.addEventListener("livewire:load", function () {
-  const savedLang = localStorage.getItem("selectedLanguage") || "es";
-  selectLanguage(savedLang, false);
-});
+let translationApplyTimer = null;
 
-document.addEventListener("livewire:update", function () {
-  const savedLang = localStorage.getItem("selectedLanguage") || "es";
-  selectLanguage(savedLang, false);
+function applySavedLanguageAfterDomUpdate() {
+  clearTimeout(translationApplyTimer);
+
+  translationApplyTimer = setTimeout(function () {
+    const lang =
+      typeof getCurrentLanguage === "function"
+        ? getCurrentLanguage()
+        : localStorage.getItem("selectedLanguage") || "es";
+
+    if (typeof selectLanguage === "function") {
+      selectLanguage(lang, false);
+    }
+
+    if (typeof applyMaterialSupportDateTranslations === "function") {
+      applyMaterialSupportDateTranslations();
+    }
+  }, 80);
+}
+
+document.addEventListener("DOMContentLoaded", applySavedLanguageAfterDomUpdate);
+document.addEventListener("livewire:load", applySavedLanguageAfterDomUpdate);
+document.addEventListener("livewire:update", applySavedLanguageAfterDomUpdate);
+document.addEventListener(
+  "livewire:navigated",
+  applySavedLanguageAfterDomUpdate,
+);
+document.addEventListener(
+  "livewire:morph.updated",
+  applySavedLanguageAfterDomUpdate,
+);
+
+document.addEventListener("livewire:init", function () {
+  if (!window.Livewire || typeof window.Livewire.hook !== "function") {
+    return;
+  }
+
+  Livewire.hook("morph.updated", function () {
+    applySavedLanguageAfterDomUpdate();
+  });
+
+  Livewire.hook("morph.added", function () {
+    applySavedLanguageAfterDomUpdate();
+  });
 });

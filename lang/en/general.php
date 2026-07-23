@@ -526,66 +526,66 @@ return [
     'previous' => 'Previous',
     'next' => 'Next',
      'reset_filters' => 'Reset Filters',
-     'add_new_cupon' => 'Add New Cupon',
-     'All' => 'All',
-     'Active'=>'Active',
-     'Inactive' => 'Inactive',
-     'search_cupon' => 'Search Cupon',
-     'Name' => 'Name',
+    // Coupons
+    'add_new_cupon' => 'Add new coupon',
+    'save_cupon' => 'Save coupon',
+    'save_changes' => 'Save changes',
+    'cancelar' => 'Cancel',
 
-     'save_cupon'                 => 'Guardar cupón',
-    'save_changes'               => 'Guardar cambios',
-    'nombre_placeholder'         => 'Ingrese el nombre del cupón',
+    'All' => 'All',
+    'Active' => 'Active',
+    'Inactive' => 'Inactive',
 
-    'Code'                       => 'Código',
-    'codigo'                     => 'Código',
-    'codigo_placeholder'         => 'Ingrese el código del cupón',
+    'search_cupon' => 'Search coupon...',
+    'Name' => 'Name',
+    'name' => 'Name',
+    'nombre_placeholder' => 'Enter coupon name',
 
-    'Expiration_date'            => 'Fecha de caducidad',
-    'fecha_caducidad'            => 'Fecha de caducidad',
-    'fecha_caducidad_placeholder'=> 'Seleccione la fecha de caducidad',
+    'Code' => 'Code',
+    'codigo' => 'Code',
+    'codigo_placeholder' => 'Enter coupon code',
 
-    'Status'                     => 'Estado',
-    'estado'                     => 'Estado',
-    'activo'                     => 'Activo',
-    'inactivo'                   => 'Inactivo',
-    'select_option'              => 'Seleccione una opción',
+    'Expiration_date' => 'Expiration date',
+    'fecha_caducidad' => 'Expiration date',
+    'fecha_caducidad_placeholder' => 'Select expiration date',
 
-    'Discount'                   => 'Descuento',
-    'descuento'                  => 'Descuento',
-    'descuento_placeholder'      => 'Ingrese el descuento en %',
+    'Status' => 'Status',
+    'estado' => 'Status',
+    'activo' => 'Active',
+    'inactivo' => 'Inactive',
+    'select_option' => 'Select an option',
 
-    'Amount'                     => 'Cantidad',
-    'cantidad'                   => 'Cantidad',
-    'cantidad_placeholder'       => 'Ingrese la cantidad disponible',
+    'Discount' => 'Discount',
+    'descuento' => 'Discount',
+    'descuento_placeholder' => 'Enter discount percentage',
 
-    'References'                 => 'Referencia',
-    'referencia'                 => 'Referencia',
-    'referencia_placeholder'     => 'Ingrese la referencia',
+    'Amount' => 'Amount',
+    'cantidad' => 'Amount',
+    'cantidad_placeholder' => 'Enter available quantity',
 
-    'sin_referencia'             => 'Sin referencia',
+    'References' => 'Reference',
+    'referencia' => 'Reference',
+    'referencia_placeholder' => 'Enter reference',
+    'sin_referencia' => 'No reference',
 
-    // Acciones
-    'Actions'                    => 'Acciones',
-    'activate'                   => 'Activar',
-    'deactivate'                 => 'Desactivar',
-    'change_expiration'          => 'Cambiar fecha de caducidad',
+    'Actions' => 'Actions',
+    'activate' => 'Activate',
+    'deactivate' => 'Deactivate',
+    'change_expiration' => 'Change expiration date',
 
-    // Confirmaciones
-    'confirm_title'              => '¡Confirmar!',
-    'confirm_delete_coupon'      => '¿Estás seguro de que deseas eliminar este cupón? Esta acción no se puede deshacer.',
-    'confirm_toggle_coupon'      => '¿Quieres cambiar el estado de este cupón?',
+    'confirm_title' => 'Confirm!',
+    'confirm_delete_coupon' => 'Are you sure you want to delete this coupon? This action cannot be undone.',
+    'confirm_toggle_coupon' => 'Do you want to change the status of this coupon?',
 
-    // Mensajes de resultado
-    'saved_ok'                   => 'Cupón guardado correctamente.',
-    'updated_ok'                 => 'Cupón actualizado correctamente.',
-    'deleted_ok'                 => 'Cupón eliminado correctamente.',
+    'saved_ok' => 'Coupon saved successfully.',
+    'updated_ok' => 'Coupon updated successfully.',
+    'deleted_ok' => 'Coupon deleted successfully.',
 
-
-
-   
-
-    // Expiración
-    'leave_empty_no_expiration'  => 'Deje vacío si no desea fecha de vencimiento.'
-
+    'leave_empty_no_expiration' => 'Leave empty if you do not want an expiration date.',
+    'cancelar' => 'Cancel',
+    'withdraw_min_amount' => 'The amount must be at least :amount.',
+    'withdraw_max_amount' => 'The amount may not be greater than :amount.',
+    'student_error_message' => 'Students cannot request withdrawals.',
+    'empty_balance_message' => 'You do not have available balance to withdraw.',
+    'payment_error_message' => 'You must set up a payment method before requesting a withdrawal.',
 ];

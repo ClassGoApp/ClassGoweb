@@ -97,5 +97,6 @@ return [
     'missing_payout_method' => 'Método de pago configurado (Ve a Panel > Preferencias > QR)',
     'missing_subjects' => 'Materias agregadas al perfil',
     'complete_now' => 'Completar ahora',
+    'profile_required_photo' => 'Perfil obligatorio. Por favor, sube una imagen de perfil.',
    
 ];

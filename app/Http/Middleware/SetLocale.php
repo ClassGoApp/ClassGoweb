@@ -7,14 +7,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Symfony\Component\HttpFoundation\Response;
 
-class CheckLocale
+class SetLocale
 {
-
     public function handle(Request $request, Closure $next): Response
     {
         $locale = $request->cookie('selectedLanguage')
             ?? session('locale')
-            ?? config('app.locale', 'es');
+            ?? 'es';
 
         if (! in_array($locale, ['es', 'en', 'pt'], true)) {
             $locale = 'es';

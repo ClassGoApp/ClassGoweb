@@ -73,7 +73,7 @@ return [
     'basic_info' => 'Forneça suas informações pessoais abaixo para completar seu perfil',
     'email' => 'E-mail',
     'phone_number' => 'Número de telefone',
-    'profile_picture' => 'Foto de perfil',
+    'profile_picture' => 'Uma imagem vale mais que mil palavras.',
     'upload_image' => 'Enviar imagem',
     'upload_video' => 'Enviar vídeo',
     'upload_resume' => 'Enviar currículo',
@@ -92,4 +92,6 @@ return [
     'missing_google_calendar' => 'Conexão com Google Calendar (Vá para Configurações da Conta)',
     'missing_payout_method' => 'Método de pagamento configurado (Vá para Painel > Preferências > QR)',
     'complete_now' => 'Completar agora',
+    'profile_required_photo' => 'Perfil obrigatório. Por favor, envie uma imagem de perfil.',
+    'change_photo' => 'Alterar foto',
 ];

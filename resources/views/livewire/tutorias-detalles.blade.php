@@ -1,9 +1,19 @@
 <div class="cg-ma-container">
     <div class="cg-ma-header">
-        <h1 class="cg-ma-title">{{ auth()->user()->hasRole('tutor') ? 'Mis Tutorías' : 'Tutorías' }}</h1>
-        {!! auth()->user()->hasRole('student')
-            ? '<p class="cg-ma-subtitle">Selecciona una tutoría para gestionar sus archivos adjuntos.</p>'
-            : '' !!}
+        @if(auth()->user()->hasRole('tutor'))
+            <h1 class="cg-ma-title" data-translate="material_support_my_tutoring">
+                {{ __('material-support.my_tutoring') }}
+            </h1>
+        @else
+            <h1 class="cg-ma-title" data-translate="material_support_tutoring">
+                {{ __('material-support.tutoring') }}
+            </h1>
+        @endif
+        @if(auth()->user()->hasRole('student'))
+            <p class="cg-ma-subtitle" data-translate="material_support_subtitle">
+                {{ __('material-support.subtitle') }}
+            </p>
+        @endif
     </div>
 
     <div class="cg-ma-layout">
@@ -21,13 +31,19 @@
                         <div
                             style="position: relative; margin-bottom: 4px; display: flex; align-items: center; min-height: 20px;">
                             <span
-                                class="cg-ma-date">{{ \Carbon\Carbon::parse($booking->start_time)->format('d M Y') }}</span>
+                                class="cg-ma-date"
+                                data-material-date="{{ \Carbon\Carbon::parse($booking->start_time)->toDateString() }}"
+                                data-format="short">
+                                {{ \Carbon\Carbon::parse($booking->start_time)->translatedFormat('d M Y') }}
+                            </span>
 
                             {{-- PUNTO VERDE Y TEXTO DINÁMICO --}}
                             @if ($firstBooking == $booking->id)
                                 <div class="cg-ma-next-badge">
                                     <span class="cg-ma-dot"></span>
-                                    <p>Tú próxima tutoría.</p>
+                                    <p data-translate="material_support_next_tutoring">
+                                        {{ __('material-support.next_tutoring') }}
+                                    </p>
                                 </div>
                             @endif
                         </div>
@@ -40,19 +56,33 @@
                             $student = $this->UserData($booking->student_id);
                         @endphp
 
-                        <span
-                            class="cg-ma-subject">{{ $booking->subject->name ?? ($booking->description ?? 'Sesión #' . $booking->id) }}</span>
+                        <span class="cg-ma-subject">
+                            {{ $booking->subject->name ?? ($booking->description ?? __('material-support.session', ['id' => $booking->id])) }}
+                        </span>
                         <h4 class="cg-ma-tutor">
-                            {{ auth()->user()->hasRole('student') ? 'Tutor: ' . ($tutor->first_name . ' ' . $tutor->last_name) ?? 'ID ' . $booking->tutor_id : 'Estudiante: ' . $student->first_name . ' ' . $student->last_name ?? 'ID ' . $booking->student_id }}
+                            {{ auth()->user()->hasRole('student')
+                                ? __('material-support.tutor', ['name' => trim($tutor->first_name . ' ' . $tutor->last_name)])
+                                : __('material-support.student', ['name' => trim($student->first_name . ' ' . $student->last_name)])
+                            }}
                         </h4>
                         <p class="cg-ma-info">
-                            Horarios: {{ \Carbon\Carbon::parse($booking->start_time)->format('H:i') }} -
+                            <span data-translate="material_support_schedule">
+                                {{ __('material-support.schedule') }}
+                            </span>
+                            {{ \Carbon\Carbon::parse($booking->start_time)->format('H:i') }} -
                             {{ \Carbon\Carbon::parse($booking->end_time)->format('H:i') }}
-                            • {{ $quantityFiles ? " {$quantityFiles} archivo/s" : 'Sin material' }}
+                            •
+                            @if($quantityFiles)
+                                {{ __('material-support.files_count', ['count' => $quantityFiles]) }}
+                            @else
+                                <span data-translate="material_support_no_material">
+                                    {{ __('material-support.no_material') }}
+                                </span>
+                            @endif
                         </p>
                     </div>
                 @empty
-                    <div class="cg-ma-empty">No tienes tutorías futuras programadas.</div>
+                    <div class="cg-ma-empty">{{ __('material-support.no_future_tutoring') }}</div>
                 @endforelse
             </div>
         </aside>
@@ -64,28 +94,46 @@
                     $quantityFiles = $files->count();
 
                     $bookingStatuses = [
-                        1 => 'Aceptado',
-                        2 => 'Pendiente',
-                        3 => 'No completado',
-                        4 => 'Observado',
-                        5 => 'Completado',
+                        1 => __('material-support.accepted'),
+                        2 => __('material-support.pending'),
+                        3 => __('material-support.not_completed'),
+                        4 => __('material-support.observed'),
+                        5 => __('material-support.completed'),
                     ];
                 @endphp
                 <div class="cg-ma-workspace-content">
                     <div class="cg-ma-detail-header">
-                        <span
-                            class="cg-ma-badge">{{ $selectedBooking->subject->name ?? 'Materia ID: ' . $selectedBooking->subject_id }}</span>
+                        <span class="cg-ma-badge">
+                            {{ $selectedBooking->subject->name ?? __('material-support.subject_id', ['id' => $selectedBooking->subject_id]) }}
+                        </span>
                         <p class="cg-ma-detail-meta">
-                            Día:
-                            {{ \Carbon\Carbon::parse($selectedBooking->start_time)->translatedFormat('l, d \d\e F, Y') }}
+                            <span data-translate="material_support_day">
+                                {{ __('material-support.day') }}
+                            </span>
+
+                            <span
+                                data-material-date="{{ \Carbon\Carbon::parse($selectedBooking->start_time)->toDateString() }}"
+                                data-format="full">
+                                {{ \Carbon\Carbon::parse($selectedBooking->start_time)->translatedFormat('l, d \d\e F, Y') }}
+                            </span>
+
                             |
-                            Horario: {{ \Carbon\Carbon::parse($selectedBooking->start_time)->format('H:i') }} a
+
+                            <span data-translate="material_support_time">
+                                {{ __('material-support.time') }}
+                            </span>
+
+                            {{ \Carbon\Carbon::parse($selectedBooking->start_time)->format('H:i') }} a
                             {{ \Carbon\Carbon::parse($selectedBooking->end_time)->format('H:i') }} hrs
                         </p>
                         <p
                             style="color: #666; font-weight: 500; font-size: 0.9rem; margin-top: 10px; margin-bottom: 5px;">
-                            Estado: <span
-                                style="margin-left: 4px; color: #0284c7; font-weight: 600">{{ is_numeric($selectedBooking->status) ? ($bookingStatuses[(int)$selectedBooking->status] ?? $selectedBooking->status) : ucfirst($selectedBooking->status) }}</span>
+                            <span data-translate="material_support_status">
+                                {{ __('material-support.status') }}
+                            </span>
+                            <span style="margin-left: 4px; color: #0284c7; font-weight: 600">
+                                {{ is_numeric($selectedBooking->status) ? ($bookingStatuses[(int)$selectedBooking->status] ?? $selectedBooking->status) : ucfirst($selectedBooking->status) }}
+                            </span>
                         </p>
                     </div>
 
@@ -98,7 +146,9 @@
                             <button type="button" wire:click="$set('mostrarBotonSubida', true)"
                                 class="cg-ma-btn-trigger"
                                 style="background-color: #0f172a; color: white; padding: 10px 18px; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px;">
-                                ➕ Agregar material
+                                ➕ <span data-translate="material_support_add_material">
+                                        {{ __('material-support.add_material') }}
+                                    </span>
                             </button>
 
                             <!-- TAG GENERADO DINÁMICAMENTE (Solo aparece al pulsar el anterior) -->
@@ -107,7 +157,9 @@
                                     wire:click="$dispatch('openModalMaterialApoyo', { modalUpdat: true})"
                                     class="cg-ma-btn-dynamic-upload"
                                     style="background-color: #10b981; color: white; padding: 10px 18px; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; animation: fadeIn 0.3s ease-in-out;">
-                                    📎 Adjuntar archivo para esta tutoría
+                                    📎 <span data-translate="material_support_attach_file">
+                                            {{ __('material-support.attach_file') }}
+                                        </span>
                                 </button>
                             @endif
 
@@ -117,7 +169,9 @@
                     @endif
 
                     <div class="cg-ma-files-section">
-                        <h3 class="cg-ma-section-title">Archivo adjunto para esta clase</h3>
+                        <h3 class="cg-ma-section-title" data-translate="material_support_attached_file_title">
+                            {{ __('material-support.attached_file_title') }}
+                        </h3>
                         @forelse ($files as $file)
                             <!-- CONTENEDOR UNIFICADO (Agrupa archivo + contexto con el mismo fondo) -->
                             <div class="cg-ma-unified-card-wrapper"
@@ -133,19 +187,24 @@
                                             <div class="cg-ma-file-details">
                                                 <p class="cg-ma-file-name" title="{{ $file->original_name }}">
                                                     {{ $file->original_name }}</p>
-                                                <p class="cg-ma-file-size">Guardado</p>
+                                                <p class="cg-ma-file-size" data-translate="material_support_saved">
+                                                    {{ __('material-support.saved') }}
+                                                </p>
                                             </div>
                                         </div>
                                         <div class="cg-ma-file-actions">
-                                            <button wire:click="downloadMaterial({{ $file->id }})"
-                                                class="cg-ma-btn-view">Descargar</button>
+                                            <button wire:click="downloadMaterial({{ $file->id }})" class="cg-ma-btn-view">
+                                                <span data-translate="material_support_download">
+                                                    {{ __('material-support.download') }}
+                                                </span>
+                                            </button>
                                             @if (auth()->user()->hasRole('student'))
                                                 <!-- Botón Eliminar con SVG -->
                                                 <button wire:click="deleteMaterial({{ $file->id }})"
-                                                    wire:confirm="¿Estás seguro de eliminar este material de apoyo?"
+                                                    wire:confirm="{{ __('material-support.delete_confirm') }}"
                                                     class="cg-ma-btn-delete"
                                                     style="display: inline-flex; align-items: center; justify-content: center; padding: 6px; width: 36px; height: 36px;"
-                                                    title="Eliminar">
+                                                    title="{{ __('material-support.delete') }}">
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                         viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
                                                         style="width: 18px; height: 18px;">
@@ -159,7 +218,7 @@
                                                     wire:click="$dispatch('openModalMaterialApoyo', { modalUpdat: true, idfile: {{ $file->id }} })"
                                                     class="cg-ma-btn-delete"
                                                     style="background-color: #f59e0b; display: inline-flex; align-items: center; justify-content: center; padding: 6px; width: 36px; height: 36px;"
-                                                    title="Editar">
+                                                    title="{{ __('material-support.edit') }}">
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                         viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
                                                         style="width: 18px; height: 18px; color: white;">
@@ -176,23 +235,81 @@
                                 <div class="cg-ma-description-box"
                                     style="margin-bottom: 0; height: auto; min-height: auto; max-height: 110px; overflow-y: auto; background-color: transparent; border: none; padding: 2px 6px;">
                                     {!! $file->description
-                                        ? '<strong style="display:block; margin-bottom: 6px; color: #334155;">Contexto:</strong>' . $file->description
-                                        : '<em>Sin descripción</em>' !!}
+                                        ? '<strong style="display:block; margin-bottom: 6px; color: #334155;">' . __('material-support.context') . '</strong>' . $file->description
+                                        : '<em>' . __('material-support.no_description') . '</em>' !!}
                                 </div>
 
                             </div>
                         @empty
-                            <p class="cg-ma-empty">Sin Material Adjuntado.</p>
+                            <p class="cg-ma-empty" data-translate="material_support_no_attached_material">
+                                {{ __('material-support.no_attached_material') }}
+                            </p>
                         @endforelse
                     </div>
                 </div>
             @else
                 <div class="cg-ma-no-selection">
-                    <p>👈 Selecciona una tutoría de la lista para gestionar su material de apoyo.</p>
+                    <p data-translate="material_support_select_tutoring">
+                        {{ __('material-support.select_tutoring') }}
+                    </p>
                 </div>
             @endif
         </main>
     </div>
+
+    <script>
+        function getMaterialSupportLocale(lang) {
+            const locales = {
+                es: 'es-ES',
+                en: 'en-US',
+                pt: 'pt-BR',
+            };
+
+            return locales[lang] || 'es-ES';
+        }
+
+        function formatMaterialSupportDate(dateValue, formatType, lang) {
+            const date = new Date(dateValue + 'T00:00:00');
+            const locale = getMaterialSupportLocale(lang);
+
+            if (formatType === 'full') {
+                return new Intl.DateTimeFormat(locale, {
+                    weekday: 'long',
+                    day: '2-digit',
+                    month: 'long',
+                    year: 'numeric',
+                }).format(date);
+            }
+
+            return new Intl.DateTimeFormat(locale, {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric',
+            }).format(date);
+        }
+
+        function applyMaterialSupportDateTranslations() {
+            const lang = typeof getCurrentLanguage === 'function'
+                ? getCurrentLanguage()
+                : (localStorage.getItem('selectedLanguage') || 'es');
+
+            document.querySelectorAll('[data-material-date]').forEach(function (element) {
+                const dateValue = element.getAttribute('data-material-date');
+                const formatType = element.getAttribute('data-format') || 'short';
+
+                if (!dateValue) {
+                    return;
+                }
+
+                element.textContent = formatMaterialSupportDate(dateValue, formatType, lang);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', applyMaterialSupportDateTranslations);
+        document.addEventListener('languageChanged', applyMaterialSupportDateTranslations);
+        document.addEventListener('livewire:navigated', applyMaterialSupportDateTranslations);
+        document.addEventListener('livewire:morph.updated', applyMaterialSupportDateTranslations);
+    </script>
 
     <style>
         /* ==========================================================================
