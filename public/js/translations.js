@@ -1236,6 +1236,127 @@ const translations = {
     profile_account_settings: "Configuraciones de la cuenta",
     profile_resume_highlights: "Aspectos destacados",
     profile_identity_verification: "Verificación de identidad",
+    material_support_status_accepted: "Aceptado",
+    material_support_status_pending: "Pendiente",
+    material_support_status_not_completed: "No completado",
+    material_support_status_observed: "Observado",
+    material_support_status_completed: "Completado",
+    breadcrumb_tutoring: "Tutorías",
+    breadcrumb_profile_settings: "Configuración de perfil",
+    breadcrumb_bookings: "Reservas",
+    // =====================================
+    // INVOICES - Reclamos y estados de tutorías
+    // =====================================
+    invoices_claims: "Reclamos",
+    invoices_claim_action: "Reclamar",
+    invoices_claim_sent: "Reclamo enviado",
+    invoices_claim_expired: "Fuera de tiempo para hacer reclamo",
+    invoices_status_rejected: "Rechazado",
+    // =====================================
+    // INVOICES - Modal de reclamo
+    // =====================================
+    invoices_claim_modal_title: "Enviar Reclamo",
+    invoices_claim_modal_close: "Cerrar modal",
+    invoices_claim_description_label: "Describe detalladamente tu reclamo",
+    invoices_claim_placeholder:
+      "Por favor, describe los detalles de tu reclamo. Incluye fechas, horarios y cualquier información relevante que nos ayude a resolver tu situación.",
+    invoices_claim_minimum_hint: "Mínimo 20 caracteres requeridos",
+    invoices_claim_cancel: "Cancelar",
+    invoices_claim_modal_submit: "Enviar Reclamo",
+    // =====================================
+    // PROMOTIONS - Cupones e invitación
+    // =====================================
+    promotions_invitation_code: "Tu código de invitación",
+    promotions_my_coupons: "Mis cupones",
+    promotions_no_active_coupons: "No tienes cupones activos en este momento.",
+    promotions_discount_prefix: "Tienes",
+    promotions_discount_suffix: "de descuento en tu próxima tutoría",
+    promotions_valid_until: "Válido hasta el",
+    promotions_no_expiration_date: "Sin fecha de vencimiento",
+    promotions_expired: "Vencido",
+    promotions_available: "Disponible",
+    promotions_quantity: "Cantidad:",
+    promotions_redeem_coupon: "Canjear Cupón",
+    promotions_invite: "Invitar",
+    promotions_have_code: "¿Tienes Código?",
+    promotions_enter_code_discount: "¡Ingrésalo y obtén descuentos!",
+    promotions_redeem: "Canjear",
+    promotions_your_invitation_code: "Tu Código de Invitación",
+    promotions_share_get_discounts: "¡Comparte y obtén descuentos!",
+    promotions_no_code: "Sin código",
+    promotions_copy: "Copiar",
+    promotions_share: "Compartir",
+    promotions_copied: "¡Copiado!",
+    // =====================================
+    // PROMOTIONS - Modal compartir invitación
+    // =====================================
+    promotions_share_modal_description:
+      "Selecciona una red social para compartir tu código de invitación.",
+    promotions_share_modal_close: "Cerrar",
+    // =====================================
+    // MATERIAL SUPPORT - Modal adjuntar archivo
+    // =====================================
+    material_support_edit_material: "Editar Material",
+    material_support_attach_file_modal: "Adjuntar Archivo",
+    material_support_close: "Cerrar",
+    material_support_modal_note_short:
+      "<strong>Nota:</strong> Es opcional adjuntar material de apoyo.",
+    material_support_modal_note_full:
+      '<strong>Nota:</strong> Es opcional adjuntar material de apoyo. Si no lo tienes ahora, puedes avanzar y adjuntarlo luego usando el botón <strong>"Archivos Adjuntos"</strong>.',
+    material_support_drag_file_here: "Arrastra tu archivo aquí o",
+    material_support_click_to_search: "haz clic para buscar",
+    material_support_uploading_file: "Subiendo archivo...",
+    material_support_remove_file: "Eliminar archivo",
+    material_support_material_description_label:
+      "¿De qué trata este material? (Opcional)",
+    material_support_material_description_placeholder:
+      "Ej: Le adjunto los ejercicios prácticos que me cuestan resolver o el temario de mi examen...",
+    material_support_cancel: "Cancelar",
+    material_support_save: "Guardar",
+    material_support_save_and_book: "Guardar y Reservar",
+    material_support_book_without_material: "Reservar sin Material",
+    // =====================================
+    // NAVBAR - Menú público y usuario
+    // =====================================
+    navbar_blog: "Blog",
+    navbar_my_tutoring: "Mis Tutorías",
+    navbar_hello: "Hola",
+    navbar_dashboard: "Panel",
+    navbar_profile_settings: "Configuración de perfil",
+    navbar_bookings: "Reservas",
+    navbar_my_bookings: "Mis Reservas",
+    navbar_tutoring_history: "Historial de Tutorías",
+    navbar_favorites: "Favoritos",
+    navbar_search_tutors: "Buscar Tutores",
+    navbar_my_panel: "Mi panel",
+    navbar_logout: "Desconectar",
+    navbar_settings: "Configuración",
+    navbar_close_session: "Cerrar Sesión",
+    navbar_register: "Regístrate",
+    navbar_login: "Ingresar",
+    // =====================================
+    // RECRUITMENT - Botón flotante
+    // =====================================
+    recruitment_join_team: "¡Únete a nuestro equipo!",
+    recruitment_apply_here: "¡Postúlate aquí!",
+    // =====================================
+    // RECRUITMENT - Formulario de postulación
+    // =====================================
+    recruitment_success_profile_sent:
+      "Tu perfil ha sido enviado a nuestro equipo de ClassGo.",
+    recruitment_understood: "Entendido",
+    recruitment_full_name: "Nombre Completo",
+    recruitment_full_name_placeholder: "Ej. Juan Pérez",
+    recruitment_email: "Email Corporativo/Personal",
+    recruitment_email_placeholder: "ejemplo@correo.com",
+    recruitment_whatsapp: "WhatsApp",
+    recruitment_phone_placeholder: "+591 ...",
+    recruitment_cv_label: "Tu Curriculum Vitae (PDF)",
+    recruitment_upload_cv: "Haz clic aquí para subir tu CV",
+    recruitment_uploading_file: "Subiendo archivo...",
+    recruitment_apply_now: "POSTULARME AHORA",
+    recruitment_processing: "PROCESANDO...",
+    recruitment_close_never_show: "Cerrar y no volver a mostrar",
   },
   en: {
     // Navbar
@@ -2445,6 +2566,128 @@ const translations = {
     profile_account_settings: "Account Settings",
     profile_resume_highlights: "Resume Highlights",
     profile_identity_verification: "Identity Verification",
+    material_support_status_accepted: "Accepted",
+    material_support_status_pending: "Pending",
+    material_support_status_not_completed: "Not completed",
+    material_support_status_observed: "Observed",
+    material_support_status_completed: "Completed",
+    breadcrumb_tutoring: "Tutoring",
+    breadcrumb_profile_settings: "Profile Settings",
+    breadcrumb_bookings: "Bookings",
+    // =====================================
+    // INVOICES - Reclamos y estados de tutorías
+    // =====================================
+    invoices_claims: "Claims",
+    invoices_claim_action: "Submit claim",
+    invoices_claim_sent: "Claim submitted",
+    invoices_claim_expired: "Claim time expired",
+    invoices_status_rejected: "Rejected",
+    // =====================================
+    // INVOICES - Claim modal
+    // =====================================
+    invoices_claim_modal_title: "Submit Claim",
+    invoices_claim_modal_close: "Close modal",
+    invoices_claim_description_label: "Describe your claim in detail",
+    invoices_claim_placeholder:
+      "Please describe the details of your claim. Include dates, times, and any relevant information that helps us resolve your situation.",
+    invoices_claim_minimum_hint: "Minimum 20 characters required",
+    invoices_claim_cancel: "Cancel",
+    invoices_claim_modal_submit: "Submit Claim",
+    // =====================================
+    // PROMOTIONS - Coupons and invitation
+    // =====================================
+    promotions_invitation_code: "Your invitation code",
+    promotions_my_coupons: "My coupons",
+    promotions_no_active_coupons:
+      "You do not have active coupons at the moment.",
+    promotions_discount_prefix: "You have",
+    promotions_discount_suffix: "discount on your next tutoring session",
+    promotions_valid_until: "Valid until",
+    promotions_no_expiration_date: "No expiration date",
+    promotions_expired: "Expired",
+    promotions_available: "Available",
+    promotions_quantity: "Quantity:",
+    promotions_redeem_coupon: "Redeem Coupon",
+    promotions_invite: "Invite",
+    promotions_have_code: "Do you have a code?",
+    promotions_enter_code_discount: "Enter it and get discounts!",
+    promotions_redeem: "Redeem",
+    promotions_your_invitation_code: "Your Invitation Code",
+    promotions_share_get_discounts: "Share and get discounts!",
+    promotions_no_code: "No code",
+    promotions_copy: "Copy",
+    promotions_share: "Share",
+    promotions_copied: "Copied!",
+    // =====================================
+    // PROMOTIONS - Share invitation modal
+    // =====================================
+    promotions_share_modal_description:
+      "Select a social network to share your invitation code.",
+    promotions_share_modal_close: "Close",
+    // =====================================
+    // MATERIAL SUPPORT - Attach file modal
+    // =====================================
+    material_support_edit_material: "Edit Material",
+    material_support_attach_file_modal: "Attach File",
+    material_support_close: "Close",
+    material_support_modal_note_short:
+      "<strong>Note:</strong> Attaching support material is optional.",
+    material_support_modal_note_full:
+      '<strong>Note:</strong> Attaching support material is optional. If you do not have it now, you can continue and attach it later using the <strong>"Attachments"</strong> button.',
+    material_support_drag_file_here: "Drag your file here or",
+    material_support_click_to_search: "click to browse",
+    material_support_uploading_file: "Uploading file...",
+    material_support_remove_file: "Remove file",
+    material_support_material_description_label:
+      "What is this material about? (Optional)",
+    material_support_material_description_placeholder:
+      "Example: I am attaching the practice exercises I have trouble solving or the topics for my exam...",
+    material_support_cancel: "Cancel",
+    material_support_save: "Save",
+    material_support_save_and_book: "Save and Book",
+    material_support_book_without_material: "Book without Material",
+    // =====================================
+    // NAVBAR - Public and user menu
+    // =====================================
+    navbar_blog: "Blog",
+    navbar_my_tutoring: "My Tutoring",
+    navbar_hello: "Hello",
+    navbar_dashboard: "Dashboard",
+    navbar_profile_settings: "Profile Settings",
+    navbar_bookings: "Bookings",
+    navbar_my_bookings: "My Bookings",
+    navbar_tutoring_history: "Tutoring History",
+    navbar_favorites: "Favorites",
+    navbar_search_tutors: "Find Tutors",
+    navbar_my_panel: "My Dashboard",
+    navbar_logout: "Logout",
+    navbar_settings: "Settings",
+    navbar_close_session: "Log out",
+    navbar_register: "Sign up",
+    navbar_login: "Log in",
+    // =====================================
+    // RECRUITMENT - Floating button
+    // =====================================
+    recruitment_join_team: "Join our team!",
+    recruitment_apply_here: "Apply here!",
+    // =====================================
+    // RECRUITMENT - Application form
+    // =====================================
+    recruitment_success_profile_sent:
+      "Your profile has been sent to the ClassGo team.",
+    recruitment_understood: "Got it",
+    recruitment_full_name: "Full Name",
+    recruitment_full_name_placeholder: "Ex. John Smith",
+    recruitment_email: "Corporate/Personal Email",
+    recruitment_email_placeholder: "example@email.com",
+    recruitment_whatsapp: "WhatsApp",
+    recruitment_phone_placeholder: "+591 ...",
+    recruitment_cv_label: "Your Curriculum Vitae (PDF)",
+    recruitment_upload_cv: "Click here to upload your CV",
+    recruitment_uploading_file: "Uploading file...",
+    recruitment_apply_now: "APPLY NOW",
+    recruitment_processing: "PROCESSING...",
+    recruitment_close_never_show: "Close and never show again",
   },
   pt: {
     // Navbar
@@ -3678,6 +3921,127 @@ const translations = {
     profile_account_settings: "Configurações da conta",
     profile_resume_highlights: "Destaques do currículo",
     profile_identity_verification: "Verificação de identidade",
+    material_support_status_accepted: "Aceito",
+    material_support_status_pending: "Pendente",
+    material_support_status_not_completed: "Não concluído",
+    material_support_status_observed: "Observado",
+    material_support_status_completed: "Concluído",
+    breadcrumb_tutoring: "Tutorias",
+    breadcrumb_profile_settings: "Configurações de perfil",
+    breadcrumb_bookings: "Reservas",
+    // =====================================
+    // INVOICES - Reclamos y estados de tutorías
+    // =====================================
+    invoices_claims: "Reclamações",
+    invoices_claim_action: "Reclamar",
+    invoices_claim_sent: "Reclamação enviada",
+    invoices_claim_expired: "Prazo para reclamação expirado",
+    invoices_status_rejected: "Rejeitado",
+    // =====================================
+    // INVOICES - Modal de reclamação
+    // =====================================
+    invoices_claim_modal_title: "Enviar Reclamação",
+    invoices_claim_modal_close: "Fechar modal",
+    invoices_claim_description_label: "Descreva detalhadamente sua reclamação",
+    invoices_claim_placeholder:
+      "Por favor, descreva os detalhes da sua reclamação. Inclua datas, horários e qualquer informação relevante que nos ajude a resolver sua situação.",
+    invoices_claim_minimum_hint: "Mínimo de 20 caracteres obrigatórios",
+    invoices_claim_cancel: "Cancelar",
+    invoices_claim_modal_submit: "Enviar Reclamação",
+    // =====================================
+    // PROMOTIONS - Cupons e convite
+    // =====================================
+    promotions_invitation_code: "Seu código de convite",
+    promotions_my_coupons: "Meus cupons",
+    promotions_no_active_coupons: "Você não tem cupons ativos no momento.",
+    promotions_discount_prefix: "Você tem",
+    promotions_discount_suffix: "de desconto na sua próxima tutoria",
+    promotions_valid_until: "Válido até",
+    promotions_no_expiration_date: "Sem data de vencimento",
+    promotions_expired: "Vencido",
+    promotions_available: "Disponível",
+    promotions_quantity: "Quantidade:",
+    promotions_redeem_coupon: "Resgatar Cupom",
+    promotions_invite: "Convidar",
+    promotions_have_code: "Você tem um código?",
+    promotions_enter_code_discount: "Insira-o e obtenha descontos!",
+    promotions_redeem: "Resgatar",
+    promotions_your_invitation_code: "Seu Código de Convite",
+    promotions_share_get_discounts: "Compartilhe e obtenha descontos!",
+    promotions_no_code: "Sem código",
+    promotions_copy: "Copiar",
+    promotions_share: "Compartilhar",
+    promotions_copied: "Copiado!",
+    // =====================================
+    // PROMOTIONS - Modal compartilhar convite
+    // =====================================
+    promotions_share_modal_description:
+      "Selecione uma rede social para compartilhar seu código de convite.",
+    promotions_share_modal_close: "Fechar",
+    // =====================================
+    // MATERIAL SUPPORT - Modal anexar arquivo
+    // =====================================
+    material_support_edit_material: "Editar Material",
+    material_support_attach_file_modal: "Anexar Arquivo",
+    material_support_close: "Fechar",
+    material_support_modal_note_short:
+      "<strong>Nota:</strong> Anexar material de apoio é opcional.",
+    material_support_modal_note_full:
+      '<strong>Nota:</strong> Anexar material de apoio é opcional. Se você não tiver agora, pode continuar e anexá-lo depois usando o botão <strong>"Arquivos Anexos"</strong>.',
+    material_support_drag_file_here: "Arraste seu arquivo aqui ou",
+    material_support_click_to_search: "clique para procurar",
+    material_support_uploading_file: "Enviando arquivo...",
+    material_support_remove_file: "Remover arquivo",
+    material_support_material_description_label:
+      "Do que trata este material? (Opcional)",
+    material_support_material_description_placeholder:
+      "Exemplo: Estou anexando os exercícios práticos que tenho dificuldade para resolver ou o conteúdo do meu exame...",
+    material_support_cancel: "Cancelar",
+    material_support_save: "Salvar",
+    material_support_save_and_book: "Salvar e Reservar",
+    material_support_book_without_material: "Reservar sem Material",
+    // =====================================
+    // NAVBAR - Menu público e usuário
+    // =====================================
+    navbar_blog: "Blog",
+    navbar_my_tutoring: "Minhas Tutorias",
+    navbar_hello: "Olá",
+    navbar_dashboard: "Painel",
+    navbar_profile_settings: "Configurações de perfil",
+    navbar_bookings: "Reservas",
+    navbar_my_bookings: "Minhas Reservas",
+    navbar_tutoring_history: "Histórico de Tutorias",
+    navbar_favorites: "Favoritos",
+    navbar_search_tutors: "Buscar Tutores",
+    navbar_my_panel: "Meu painel",
+    navbar_logout: "Sair",
+    navbar_settings: "Configurações",
+    navbar_close_session: "Encerrar sessão",
+    navbar_register: "Cadastre-se",
+    navbar_login: "Entrar",
+    // =====================================
+    // RECRUITMENT - Botão flutuante
+    // =====================================
+    recruitment_join_team: "Junte-se à nossa equipe!",
+    recruitment_apply_here: "Candidate-se aqui!",
+    // =====================================
+    // RECRUITMENT - Formulário de candidatura
+    // =====================================
+    recruitment_success_profile_sent:
+      "Seu perfil foi enviado para a equipe da ClassGo.",
+    recruitment_understood: "Entendido",
+    recruitment_full_name: "Nome Completo",
+    recruitment_full_name_placeholder: "Ex. João Pereira",
+    recruitment_email: "E-mail Corporativo/Pessoal",
+    recruitment_email_placeholder: "exemplo@email.com",
+    recruitment_whatsapp: "WhatsApp",
+    recruitment_phone_placeholder: "+591 ...",
+    recruitment_cv_label: "Seu Curriculum Vitae (PDF)",
+    recruitment_upload_cv: "Clique aqui para enviar seu CV",
+    recruitment_uploading_file: "Enviando arquivo...",
+    recruitment_apply_now: "CANDIDATAR-ME AGORA",
+    recruitment_processing: "PROCESSANDO...",
+    recruitment_close_never_show: "Fechar e não mostrar novamente",
   },
 };
 
@@ -3773,6 +4137,33 @@ function selectLanguage(lang, closeDropdown = true) {
 
     if (currentTranslations && currentTranslations[key]) {
       el.innerHTML = currentTranslations[key];
+    }
+  });
+
+  document.querySelectorAll("[data-translate-placeholder]").forEach((el) => {
+    const key = el.getAttribute("data-translate-placeholder");
+    const currentTranslations = translations[lang] || translations.es;
+
+    if (currentTranslations && currentTranslations[key]) {
+      el.setAttribute("placeholder", currentTranslations[key]);
+    }
+  });
+
+  document.querySelectorAll("[data-translate-aria-label]").forEach((el) => {
+    const key = el.getAttribute("data-translate-aria-label");
+    const currentTranslations = translations[lang] || translations.es;
+
+    if (currentTranslations && currentTranslations[key]) {
+      el.setAttribute("aria-label", currentTranslations[key]);
+    }
+  });
+
+  document.querySelectorAll("[data-translate-title]").forEach((el) => {
+    const key = el.getAttribute("data-translate-title");
+    const currentTranslations = translations[lang] || translations.es;
+
+    if (currentTranslations && currentTranslations[key]) {
+      el.setAttribute("title", currentTranslations[key]);
     }
   });
 

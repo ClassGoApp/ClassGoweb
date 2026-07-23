@@ -8,7 +8,13 @@
     @php
         $siteTitle = setting('_general.site_name');
     @endphp
-    <title>{{ $siteTitle }} {!! request()->is('messenger') ? ' | Messages' : (!empty($title) ? ' | ' . $title : '') !!}</title>
+    @php
+        $pageTitle = request()->is('messenger')
+            ? __('general.messages')
+            : (!empty($title) ? $title : '');
+    @endphp
+
+    <title>{{ $siteTitle }}{{ !empty($pageTitle) ? ' | ' . $pageTitle : '' }}</title>
     <x-favicon />
     @vite([
         /*  'resources/css/app.css', */
@@ -162,10 +168,16 @@
     @endphp
     
     @if(!$hasApplied)
-        <button class="am-recruitment-fab" onclick="showRecruitmentModal()" title="¡Únete a nuestro equipo!">
+        <button
+            class="am-recruitment-fab"
+            onclick="showRecruitmentModal()"
+            title="{{ __('recruitment.join_team') }}"
+            data-translate-title="recruitment_join_team">
             <i class="fas fa-user-plus"></i>
             <span class="am-recruitment-badge"></span>
-            <span class="am-recruitment-tooltip">¡Postúlate aquí!</span>
+            <span class="am-recruitment-tooltip" data-translate="recruitment_apply_here">
+                {{ __('recruitment.apply_here') }}
+            </span>
         </button>
     
         <x-recruitment-popup />

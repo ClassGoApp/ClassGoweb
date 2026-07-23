@@ -38,17 +38,17 @@ class PromocionesController extends Controller
         $cuponservice = new \App\Services\CuponesService();
         $user = Auth::user();
         $codigo = trim($request->input('codigo'));
-       
 
-
-        if ( !$cuponservice->existeCupon($codigo) || $cuponservice->verificaUsoCupon($codigo, $user) ) {
-            return redirect()->route('promociones')->with('error', 'Cupón no válido o en uso.');
-        } else {
-            
-            $cuponservice->canjeaCupon($codigo, $user);
+        if (!$cuponservice->existeCupon($codigo) || $cuponservice->verificaUsoCupon($codigo, $user)) {
+            return redirect()
+                ->route('promociones')
+                ->with('error', __('promotions.invalid_or_used_coupon'));
         }
 
+        $cuponservice->canjeaCupon($codigo, $user);
 
-        return redirect()->route('promociones')->with('exito', 'Cupón Cajeado con exito.');
+        return redirect()
+            ->route('promociones')
+            ->with('success', __('promotions.coupon_redeemed_success'));
     }
 }

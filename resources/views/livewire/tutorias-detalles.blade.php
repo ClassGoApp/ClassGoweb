@@ -93,12 +93,99 @@
                     $files = $selectedBooking?->attachments;
                     $quantityFiles = $files->count();
 
+                    $statusValue = trim((string) $selectedBooking->status);
+$statusKey = mb_strtolower($statusValue);
+
                     $bookingStatuses = [
-                        1 => __('material-support.accepted'),
-                        2 => __('material-support.pending'),
-                        3 => __('material-support.not_completed'),
-                        4 => __('material-support.observed'),
-                        5 => __('material-support.completed'),
+                        '1' => [
+                            'text' => __('material-support.accepted'),
+                            'translate' => 'material_support_status_accepted',
+                        ],
+                        'accepted' => [
+                            'text' => __('material-support.accepted'),
+                            'translate' => 'material_support_status_accepted',
+                        ],
+                        'aceptado' => [
+                            'text' => __('material-support.accepted'),
+                            'translate' => 'material_support_status_accepted',
+                        ],
+                        'aceito' => [
+                            'text' => __('material-support.accepted'),
+                            'translate' => 'material_support_status_accepted',
+                        ],
+
+                        '2' => [
+                            'text' => __('material-support.pending'),
+                            'translate' => 'material_support_status_pending',
+                        ],
+                        'pending' => [
+                            'text' => __('material-support.pending'),
+                            'translate' => 'material_support_status_pending',
+                        ],
+                        'pendiente' => [
+                            'text' => __('material-support.pending'),
+                            'translate' => 'material_support_status_pending',
+                        ],
+                        'pendente' => [
+                            'text' => __('material-support.pending'),
+                            'translate' => 'material_support_status_pending',
+                        ],
+
+                        '3' => [
+                            'text' => __('material-support.not_completed'),
+                            'translate' => 'material_support_status_not_completed',
+                        ],
+                        'not_completed' => [
+                            'text' => __('material-support.not_completed'),
+                            'translate' => 'material_support_status_not_completed',
+                        ],
+                        'not completed' => [
+                            'text' => __('material-support.not_completed'),
+                            'translate' => 'material_support_status_not_completed',
+                        ],
+                        'no completado' => [
+                            'text' => __('material-support.not_completed'),
+                            'translate' => 'material_support_status_not_completed',
+                        ],
+                        'não concluído' => [
+                            'text' => __('material-support.not_completed'),
+                            'translate' => 'material_support_status_not_completed',
+                        ],
+
+                        '4' => [
+                            'text' => __('material-support.observed'),
+                            'translate' => 'material_support_status_observed',
+                        ],
+                        'observed' => [
+                            'text' => __('material-support.observed'),
+                            'translate' => 'material_support_status_observed',
+                        ],
+                        'observado' => [
+                            'text' => __('material-support.observed'),
+                            'translate' => 'material_support_status_observed',
+                        ],
+
+                        '5' => [
+                            'text' => __('material-support.completed'),
+                            'translate' => 'material_support_status_completed',
+                        ],
+                        'completed' => [
+                            'text' => __('material-support.completed'),
+                            'translate' => 'material_support_status_completed',
+                        ],
+                        'completado' => [
+                            'text' => __('material-support.completed'),
+                            'translate' => 'material_support_status_completed',
+                        ],
+                        'concluído' => [
+                            'text' => __('material-support.completed'),
+                            'translate' => 'material_support_status_completed',
+                        ],
+                    ];
+
+                    $currentBookingStatus = $bookingStatuses[$statusKey] ?? [
+                        'text' => ucfirst($statusValue),
+                        'translate' => null,
                     ];
                 @endphp
                 <div class="cg-ma-workspace-content">
@@ -131,8 +218,10 @@
                             <span data-translate="material_support_status">
                                 {{ __('material-support.status') }}
                             </span>
-                            <span style="margin-left: 4px; color: #0284c7; font-weight: 600">
-                                {{ is_numeric($selectedBooking->status) ? ($bookingStatuses[(int)$selectedBooking->status] ?? $selectedBooking->status) : ucfirst($selectedBooking->status) }}
+                            <span
+                                style="margin-left: 4px; color: #0284c7; font-weight: 600"
+                                @if($currentBookingStatus['translate']) data-translate="{{ $currentBookingStatus['translate'] }}" @endif>
+                                {{ $currentBookingStatus['text'] }}
                             </span>
                         </p>
                     </div>
@@ -305,10 +394,61 @@
             });
         }
 
-        document.addEventListener('DOMContentLoaded', applyMaterialSupportDateTranslations);
-        document.addEventListener('languageChanged', applyMaterialSupportDateTranslations);
-        document.addEventListener('livewire:navigated', applyMaterialSupportDateTranslations);
-        document.addEventListener('livewire:morph.updated', applyMaterialSupportDateTranslations);
+        function applyMaterialSupportTextTranslations() {
+            const lang = typeof getCurrentLanguage === 'function'
+                ? getCurrentLanguage()
+                : (localStorage.getItem('selectedLanguage') || 'es');
+
+            const currentTranslations = typeof translations !== 'undefined'
+                ? (translations[lang] || translations.es)
+                : null;
+
+            if (!currentTranslations) {
+                return;
+            }
+
+            document.querySelectorAll('.cg-ma-container [data-translate]').forEach(function (element) {
+                const key = element.getAttribute('data-translate');
+
+                if (currentTranslations[key]) {
+                    element.innerHTML = currentTranslations[key];
+                }
+            });
+        }
+
+        function applyMaterialSupportTranslations() {
+            applyMaterialSupportTextTranslations();
+            applyMaterialSupportDateTranslations();
+        }
+
+        function applyMaterialSupportTranslationsDelayed() {
+            applyMaterialSupportTranslations();
+
+            setTimeout(applyMaterialSupportTranslations, 100);
+            setTimeout(applyMaterialSupportTranslations, 300);
+        }
+
+        document.addEventListener('DOMContentLoaded', applyMaterialSupportTranslationsDelayed);
+        document.addEventListener('languageChanged', applyMaterialSupportTranslationsDelayed);
+        document.addEventListener('livewire:navigated', applyMaterialSupportTranslationsDelayed);
+        document.addEventListener('livewire:morph.updated', applyMaterialSupportTranslationsDelayed);
+        document.addEventListener('livewire:update', applyMaterialSupportTranslationsDelayed);
+
+        document.addEventListener('livewire:init', function () {
+            if (!window.Livewire || typeof window.Livewire.hook !== 'function') {
+                return;
+            }
+
+            Livewire.hook('morph.updated', function () {
+                applyMaterialSupportTranslationsDelayed();
+            });
+
+            Livewire.hook('morph.added', function () {
+                applyMaterialSupportTranslationsDelayed();
+            });
+        });
+
+        applyMaterialSupportTranslationsDelayed();
     </script>
 
     <style>

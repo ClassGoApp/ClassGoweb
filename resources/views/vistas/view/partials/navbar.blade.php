@@ -41,7 +41,7 @@
 					</li>
 					
 					<li>
-						<a href="{{  route('blogs.index') }}" class="{{ request()->is('blog*') ? 'active' : '' }}">
+						<a href="{{  route('blogs.index') }}" class="{{ request()->is('blog*') ? 'active' : '' }}" data-translate="navbar_blog">
 							Blog
 						</a>
 					</li>
@@ -49,7 +49,7 @@
 					@auth
 						@role('student')
 						<li class="popover-parent">
-							<a>Mis Tutorías</a>
+							<a data-translate="navbar_my_tutoring">Mis Tutorías</a>
 							@include('vistas.view.partials.popover')
 						</li>
 						@endrole
@@ -109,7 +109,10 @@
 						<div class="user-menu__header">
 							{{-- <img class="user-menu__avatar" src="{{ asset('storage/'.Auth::user()->profile->image) ?? asset('images/default.png') }}" > --}}
 							<div class="user-menu__details">
-								<span class="user-menu__name">Hola {{ Auth::user()->profile->first_name}}!</span>
+								<span class="user-menu__name">
+									<span data-translate="navbar_hello">Hola</span>
+									{{ Auth::user()->profile->first_name }}!
+								</span>
 								<span class="user-menu__email">{{ Auth::user()->email }}</span>
 							</div>
 						</div>
@@ -123,7 +126,7 @@
 										<path d="M2 17l10 5 10-5" />
 										<path d="M2 12l10 5 10-5" />
 									</svg></i>
-								Panel
+								<span data-translate="navbar_dashboard">Panel</span>
 							</a>
 						</li>
 						<li>
@@ -132,7 +135,7 @@
 										<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
 										<circle cx="12" cy="7" r="4" />
 									</svg></i>
-								Configuración de perfil
+								<span data-translate="navbar_profile_settings">Configuración de perfil</span>
 							</a>
 						</li>
 						<li>
@@ -143,7 +146,7 @@
 										<line x1="8" y1="2" x2="8" y2="6" />
 										<line x1="3" y1="10" x2="21" y2="10" />
 									</svg></i>
-								Reservas
+								<span data-translate="navbar_bookings">Reservas</span>
 							</a>
 						</li>
 						<li>
@@ -154,7 +157,7 @@
 										<line x1="12" y1="18" x2="12" y2="12" />
 										<path d="M14.5 15.5h-5c-.83 0-1.5-.67-1.5-1.5v0c0-.83.67-1.5 1.5-1.5h5" />
 									</svg></i>
-								Historial de Tutorías
+								<span data-translate="navbar_tutoring_history">Historial de Tutorías</span>
 							</a>
 						</li>
 						{{-- <li>
@@ -176,7 +179,7 @@
 											<path d="M2 17l10 5 10-5" />
 											<path d="M2 12l10 5 10-5" />
 										</svg></i>
-									Configuración de perfil
+									<span data-translate="navbar_profile_settings">Configuración de perfil</span>
 								</a>
 							</li>
 							<li>
@@ -187,7 +190,7 @@
 											<line x1="8" y1="2" x2="8" y2="6" />
 											<line x1="3" y1="10" x2="21" y2="10" />
 										</svg></i>
-									Mis Reservas
+									<span data-translate="navbar_my_bookings">Mis Reservas</span>
 								</a>
 							</li>
 							<li>
@@ -198,7 +201,7 @@
 											<line x1="12" y1="18" x2="12" y2="12" />
 											<path d="M14.5 15.5h-5c-.83 0-1.5-.67-1.5-1.5v0c0-.83.67-1.5 1.5-1.5h5" />
 										</svg></i>
-									Historial de tutorias
+									<span data-translate="navbar_tutoring_history">Historial de Tutorías</span>
 								</a>
 							</li>
 							<li>
@@ -208,7 +211,7 @@
 											<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
 										</svg>
 									</i>
-									Favoritos
+									<span data-translate="navbar_favorites">Favoritos</span>
 								</a>
 							</li>
 							<li>
@@ -219,7 +222,7 @@
 											<path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
 											<path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
 										</svg></i>
-									Buscar Tutores
+									<span data-translate="navbar_search_tutors">Buscar Tutores</span>
 								</a>
 							</li>
 
@@ -233,7 +236,7 @@
 											<path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
 											<path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
 										</svg></i>
-									Mi panel
+									<span data-translate="navbar_my_panel">Mi panel</span>
 								</a>
 
 								@endrole
@@ -244,7 +247,7 @@
 												<polyline points="16 17 21 12 16 7" />
 												<line x1="21" y1="12" x2="9" y2="12" />
 											</svg></i>
-										Desconectar
+										<span data-translate="navbar_logout">Desconectar</span>
 									</a>
 								</li>
 							</ul>
@@ -269,24 +272,79 @@
 		<!-- Menú Móvil -->
 		<nav class="navbar-mobile" id="navbar-mobile">
 			<ul>
-				<li><a href="{{ route('buscar')}}" class="{{ (request()->is('tutores*') || request()->is('tutors*') || request()->routeIs('buscar')) ? 'active' : '' }}">Buscar Tutores</a></li>
-				<li><a href="{{ route('nosotros')}}" class="{{ request()->is('nosotros*') ? 'active' : '' }}">Nosotros</a></li>
-				<li><a href="{{ route('como-trabajamos')}}" class="{{ request()->is('como-trabajamos*') ? 'active' : '' }}">Cómo trabajamos</a></li>
-				<li><a href="{{ route('preguntas')}}" class="{{ request()->is('preguntas*') ? 'active' : '' }}">Preguntas</a></li>
-				<li><a href="{{ route('blogs.index')}}" class="{{ request()->is('blog*') ? 'active' : '' }}">Blog</a></li>
+				<li>
+					<a href="{{ route('buscar')}}" class="{{ (request()->is('tutores*') || request()->is('tutors*') || request()->routeIs('buscar')) ? 'active' : '' }}" data-translate="tutors">
+						Buscar Tutores
+					</a>
+				</li>
+
+				<li>
+					<a href="{{ route('nosotros')}}" class="{{ request()->is('nosotros*') ? 'active' : '' }}" data-translate="about">
+						Nosotros
+					</a>
+				</li>
+
+				<li>
+					<a href="{{ route('como-trabajamos')}}" class="{{ request()->is('como-trabajamos*') ? 'active' : '' }}" data-translate="howWeWork">
+						Cómo trabajamos
+					</a>
+				</li>
+
+				<li>
+					<a href="{{ route('preguntas')}}" class="{{ request()->is('preguntas*') ? 'active' : '' }}" data-translate="faq">
+						Preguntas
+					</a>
+				</li>
+
+				<li>
+					<a href="{{ route('blogs.index')}}" class="{{ request()->is('blog*') ? 'active' : '' }}" data-translate="navbar_blog">
+						Blog
+					</a>
+				</li>
 				@auth
 				@role('tutor')
-				<li><a href="{{ route('tutor.dashboard')}}" class="{{ request()->is('tutor-dashboard*') ? 'active' : '' }}">Panel</a></li>
-				<li><a href="{{ route('tutor.profile.personal-details') }}" class="{{ request()->is('tutor.profile.personal-details*') ? 'active' : '' }}">Configuración</a></li>
+				<li>
+					<a href="{{ route('tutor.dashboard')}}" class="{{ request()->is('tutor-dashboard*') ? 'active' : '' }}" data-translate="navbar_dashboard">
+						Panel
+					</a>
+				</li>
+
+				<li>
+					<a href="{{ route('tutor.profile.personal-details') }}" class="{{ request()->is('tutor.profile.personal-details*') ? 'active' : '' }}" data-translate="navbar_settings">
+						Configuración
+					</a>
+				</li>
 
 				@elserole('student')
-				<li><a href="{{ route('student.bookings') }}" class="{{ request()->is('student.bookings*') ? 'active' : '' }}">Reservas</a></li>
-				<li><a href="{{ route('student.profile.personal-details') }}" class="{{ request()->is('student.profile.personal-details*') ? 'active' : '' }}">Configuración</a></li>
+				<li>
+					<a href="{{ route('student.bookings') }}" class="{{ request()->is('student.bookings*') ? 'active' : '' }}" data-translate="navbar_bookings">
+						Reservas
+					</a>
+				</li>
+
+				<li>
+					<a href="{{ route('student.profile.personal-details') }}" class="{{ request()->is('student.profile.personal-details*') ? 'active' : '' }}" data-translate="navbar_settings">
+						Configuración
+					</a>
+				</li>
 				@endrole
-				<li><a href="{{ route('logout')}}">Cerrar Sesión</a></li>
+				<li>
+					<a href="{{ route('logout')}}" data-translate="navbar_close_session">
+						Cerrar Sesión
+					</a>
+				</li>
 				@else
-				<li><a href="{{ route('login', ['mode' => 'register'])}}">Regístrate</a></li>
-				<li><a href="{{ route('login')}}">Ingresar</a></li>
+				<li>
+					<a href="{{ route('login', ['mode' => 'register'])}}" data-translate="navbar_register">
+						Regístrate
+					</a>
+				</li>
+
+				<li>
+					<a href="{{ route('login')}}" data-translate="navbar_login">
+						Ingresar
+					</a>
+				</li>
 				@endauth
 
 
