@@ -3,7 +3,7 @@
 // ===========================
 //REGLAS DE USO DE LA TRADUCCION: hola me presento soy un pasante,para usar esto es tan simple como apretar ctrl + F buscar la linea de texto que buscas y cambiarla, recuerda que tambien tiene que cambiar su version en ingles y Portugues
 // Diccionario de traducciones
-const translations = {
+var translations = {
   es: {
     // Navbar
     tutors: "Tutores",
@@ -830,6 +830,7 @@ const translations = {
     booking_coupon_invalid: "Cupón inválido o vencido.",
     booking_scroll_calendar: "Subir al calendario",
     booking_qr_alt: "QR de pago",
+    booking_request_tutors: "Solicitar Tutores",
     //Principal Tutor Al Instante
     instant_badge_text: "tutores ya son parte de tutorías al instante",
     instant_title: "Tutorías al instante",
@@ -1357,6 +1358,39 @@ const translations = {
     recruitment_apply_now: "POSTULARME AHORA",
     recruitment_processing: "PROCESANDO...",
     recruitment_close_never_show: "Cerrar y no volver a mostrar",
+    // =====================================
+    // BOOKING - Solicitud de tutores
+    // =====================================
+    booking_request_custom_schedule: "Solicitar otro horario",
+    booking_tutor_request_title: "Solicitud de Tutores",
+    booking_tutor_request_description:
+      "No encontramos tutores disponibles. Envía una solicitud a todos los tutores calificados completando lo siguiente:",
+    booking_tutor_request_direct_description:
+      "Envía una propuesta de horario directamente a :name completando lo siguiente:",
+    booking_suggested_date: "Fecha sugerida:",
+    booking_none: "Ninguna",
+    booking_requested_subject: "Materia Solicitada",
+    booking_start_time: "Hora de inicio",
+    booking_session_duration: "Duración de la sesión",
+    booking_duration_1_hour: "1 hora",
+    booking_duration_2_hours: "2 horas",
+    booking_proposed_schedule: "Horario propuesto:",
+    booking_additional_details: "Detalles adicionales / Notas",
+    booking_additional_details_placeholder:
+      "¿Qué temas específicos necesitas repasar?...",
+    booking_send_request: "Enviar Solicitud",
+    booking_request_required_fields:
+      "Por favor selecciona la fecha sugerida e introduce el horario sugerido.",
+    booking_request_server_error:
+      "Error del servidor al procesar la solicitud.",
+    booking_request_check_fields: "Revisa los campos:",
+    booking_request_success: "¡Solicitud enviada con éxito!",
+    booking_request_send_error: "Error al enviar la solicitud.",
+    booking_request_process_error: "Ocurrió un error al procesar tu solicitud.",
+    booking_counter_not_found:
+      "La contrapropuesta ya no está activa o no fue encontrada.",
+    booking_counter_load_error:
+      "Ocurrió un error al cargar la contrapropuesta.",
   },
   en: {
     // Navbar
@@ -2164,6 +2198,7 @@ const translations = {
     booking_coupon_invalid: "Invalid or expired coupon.",
     booking_scroll_calendar: "Scroll up to calendar",
     booking_qr_alt: "Payment QR",
+    booking_request_tutors: "Request Tutors",
 
     //Principal Tutor Al Instante
     instant_badge_text: "tutors are already part of instant tutoring",
@@ -2688,6 +2723,39 @@ const translations = {
     recruitment_apply_now: "APPLY NOW",
     recruitment_processing: "PROCESSING...",
     recruitment_close_never_show: "Close and never show again",
+    // =====================================
+    // BOOKING - Tutor request
+    // =====================================
+    booking_request_custom_schedule: "Request another schedule",
+    booking_tutor_request_title: "Tutor Request",
+    booking_tutor_request_description:
+      "We could not find available tutors. Send a request to all qualified tutors by completing the following:",
+    booking_tutor_request_direct_description:
+      "Send a schedule proposal directly to :name by completing the following:",
+    booking_suggested_date: "Suggested date:",
+    booking_none: "None",
+    booking_requested_subject: "Requested Subject",
+    booking_start_time: "Start time",
+    booking_session_duration: "Session duration",
+    booking_duration_1_hour: "1 hour",
+    booking_duration_2_hours: "2 hours",
+    booking_proposed_schedule: "Proposed schedule:",
+    booking_additional_details: "Additional details / Notes",
+    booking_additional_details_placeholder:
+      "What specific topics do you need to review?...",
+    booking_send_request: "Send Request",
+    booking_request_required_fields:
+      "Please select the suggested date and enter the suggested time.",
+    booking_request_server_error: "Server error while processing the request.",
+    booking_request_check_fields: "Check the fields:",
+    booking_request_success: "Request sent successfully!",
+    booking_request_send_error: "Error sending the request.",
+    booking_request_process_error:
+      "An error occurred while processing your request.",
+    booking_counter_not_found:
+      "The counterproposal is no longer active or was not found.",
+    booking_counter_load_error:
+      "An error occurred while loading the counterproposal.",
   },
   pt: {
     // Navbar
@@ -3515,6 +3583,7 @@ const translations = {
     booking_coupon_invalid: "Cupom inválido ou vencido.",
     booking_scroll_calendar: "Subir ao calendário",
     booking_qr_alt: "QR de pagamento",
+    booking_request_tutors: "Solicitar Tutores",
 
     //Principal Tutor Al Instante
     instant_badge_text: "tutores já fazem parte das tutorias instantâneas",
@@ -3864,7 +3933,7 @@ const translations = {
     // =====================================
     // STUDENT BOOKINGS - Calendário
     // =====================================
-    student_bookings_search_here: "Buscar aqui",
+    student_bookings_search_here: "Pesquisar aqui",
     student_bookings_current_daily: "Hoje",
     student_bookings_current_weekly: "Esta semana",
     student_bookings_current_monthly: "Este mês",
@@ -4042,6 +4111,39 @@ const translations = {
     recruitment_apply_now: "CANDIDATAR-ME AGORA",
     recruitment_processing: "PROCESSANDO...",
     recruitment_close_never_show: "Fechar e não mostrar novamente",
+    // =====================================
+    // BOOKING - Solicitação de tutores
+    // =====================================
+    booking_request_custom_schedule: "Solicitar outro horário",
+    booking_tutor_request_title: "Solicitação de Tutores",
+    booking_tutor_request_description:
+      "Não encontramos tutores disponíveis. Envie uma solicitação para todos os tutores qualificados preenchendo o seguinte:",
+    booking_tutor_request_direct_description:
+      "Envie uma proposta de horário diretamente para :name preenchendo o seguinte:",
+    booking_suggested_date: "Data sugerida:",
+    booking_none: "Nenhuma",
+    booking_requested_subject: "Matéria Solicitada",
+    booking_start_time: "Hora de início",
+    booking_session_duration: "Duração da sessão",
+    booking_duration_1_hour: "1 hora",
+    booking_duration_2_hours: "2 horas",
+    booking_proposed_schedule: "Horário proposto:",
+    booking_additional_details: "Detalhes adicionais / Notas",
+    booking_additional_details_placeholder:
+      "Quais temas específicos você precisa revisar?...",
+    booking_send_request: "Enviar Solicitação",
+    booking_request_required_fields:
+      "Por favor, selecione a data sugerida e informe o horário sugerido.",
+    booking_request_server_error:
+      "Erro do servidor ao processar a solicitação.",
+    booking_request_check_fields: "Revise os campos:",
+    booking_request_success: "Solicitação enviada com sucesso!",
+    booking_request_send_error: "Erro ao enviar a solicitação.",
+    booking_request_process_error:
+      "Ocorreu um erro ao processar sua solicitação.",
+    booking_counter_not_found:
+      "A contraproposta não está mais ativa ou não foi encontrada.",
+    booking_counter_load_error: "Ocorreu um erro ao carregar a contraproposta.",
   },
 };
 
@@ -4180,12 +4282,12 @@ function selectLanguage(lang, closeDropdown = true) {
 // Inicialización al cargar la página y después de Livewire
 // ===========================
 
-let translationApplyTimer = null;
+window.translationApplyTimer = window.translationApplyTimer || null;
 
 function applySavedLanguageAfterDomUpdate() {
-  clearTimeout(translationApplyTimer);
+  clearTimeout(window.translationApplyTimer);
 
-  translationApplyTimer = setTimeout(function () {
+  window.translationApplyTimer = setTimeout(function () {
     const lang =
       typeof getCurrentLanguage === "function"
         ? getCurrentLanguage()

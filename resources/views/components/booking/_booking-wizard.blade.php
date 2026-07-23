@@ -164,7 +164,7 @@
 
                                     <div id="js-slots-container"></div>
                                     <div style="margin-top: 16px; text-align: center;">
-                                        <button type="button" id="js-req-custom-schedule-btn" style="border: 2px solid #219EBC; color: #219EBC; font-size: 13px; padding: 8px 16px; border-radius: 12px; font-weight: 600; cursor: pointer; background: transparent; transition: all 0.15s ease;">
+                                        <button type="button" id="js-req-custom-schedule-btn" style="border: 2px solid #219EBC; color: #219EBC; font-size: 13px; padding: 8px 16px; border-radius: 12px; font-weight: 600; cursor: pointer; background: transparent; transition: all 0.15s ease;" data-translate="booking_request_custom_schedule">
                                             Solicitar otro horario
                                         </button>
                                     </div>
@@ -355,10 +355,10 @@
                         <!-- Panel de Solicitud de Tutores -->
                         <div id="content-step-request_tutor" class="step-panel">
                             <div style="max-width: 950px; margin: 0 auto; padding: 0px 20px;">
-                                <h3 style="color:#023047; font-size: 18px; font-weight: 700; margin-bottom: 8px; text-align: center;">
+                                <h3 style="color:#023047; font-size: 18px; font-weight: 700; margin-bottom: 8px; text-align: center;" data-translate="booking_tutor_request_title">
                                     Solicitud de Tutores
                                 </h3>
-                                <p id="js-req-desc-text" style="color: #6b7280; font-size: 13px; margin-bottom: 16px; text-align: center;">
+                                <p id="js-req-desc-text" style="color: #6b7280; font-size: 13px; margin-bottom: 16px; text-align: center;" data-translate="booking_tutor_request_description">
                                     No encontramos tutores disponibles. Envía una solicitud a todos los tutores calificados completando lo siguiente:
                                 </p>
 
@@ -367,7 +367,10 @@
                                     <div style="justify-items: center; align-self: start;">
                                         <div id="js-req-mini-calendar"></div>
                                         <div style="margin-top: 8px; font-size: 13px; color: #023047; font-weight: 700; text-align: center;">
-                                            Fecha sugerida: <span id="js-req-selected-date-label" style="color: #219EBC;">Ninguna</span>
+                                            <span data-translate="booking_suggested_date">Fecha sugerida:</span>
+                                            <span id="js-req-selected-date-label" style="color: #219EBC;">
+                                                Ninguna
+                                            </span>
                                         </div>
                                     </div>
 
@@ -375,7 +378,7 @@
                                     <div>
                                         <!-- Campo Materia -->
                                         <div class="float-field" style="margin-top: 0;">
-                                            <span class="float-label">Materia Solicitada</span>
+                                            <span class="float-label" data-translate="booking_requested_subject">Materia Solicitada</span>
                                             <span class="float-value" id="js-req-subject-name">Materia</span>
                                         </div>
 
@@ -384,7 +387,7 @@
                                             
                                             <!-- Horario Sugerido -->
                                             <div>
-                                                <label style="display: block; font-weight: 600; font-size: 13px; margin-bottom: 4px; color: #023047;">
+                                                <label style="display: block; font-weight: 600; font-size: 13px; margin-bottom: 4px; color: #023047;" data-translate="booking_start_time">
                                                     Hora de inicio
                                                 </label>
                                                 <div class="digital-time-picker" style="padding: 8px; margin-top: 0; width: 100%; box-sizing: border-box; justify-content: space-between;">
@@ -427,16 +430,16 @@
 
                                             <!-- Duración de la sesión -->
                                             <div>
-                                                <label style="display: block; font-weight: 600; font-size: 13px; margin-bottom: 4px; color: #023047;">
+                                                <label style="display: block; font-weight: 600; font-size: 13px; margin-bottom: 4px; color: #023047;" data-translate="booking_session_duration">
                                                     Duración de la sesión
                                                 </label>
                                                 <div class="duration-grid" style="margin-top: 0; gap: 4px; grid-template-columns: repeat(3, 1fr);">
                                                     <div class="duration-chip active" data-mins="20" style="padding: 6px 4px; font-size: 11px;">20 min</div>
                                                     <div class="duration-chip" data-mins="40" style="padding: 6px 4px; font-size: 11px;">40 min</div>
-                                                    <div class="duration-chip" data-mins="60" style="padding: 6px 4px; font-size: 11px;">1 hora</div>
+                                                    <div class="duration-chip" data-mins="60" style="padding: 6px 4px; font-size: 11px;" data-translate="booking_duration_1_hour">1 hora</div>
                                                     <div class="duration-chip" data-mins="80" style="padding: 6px 4px; font-size: 11px;">1h 20m</div>
                                                     <div class="duration-chip" data-mins="100" style="padding: 6px 4px; font-size: 11px;">1h 40m</div>
-                                                    <div class="duration-chip" data-mins="120" style="padding: 6px 4px; font-size: 11px;">2 horas</div>
+                                                    <div class="duration-chip" data-mins="120" style="padding: 6px 4px; font-size: 11px;" data-translate="booking_duration_2_hours">2 horas</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -444,13 +447,14 @@
                                         <!-- Vista Previa de Propuesta y Notas -->
                                         <div style="display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 12px;">
                                             <div class="proposal-preview" style="margin: 0; padding: 6px 12px; font-size: 13px; border-radius: 8px;">
-                                                Horario propuesto: <span id="js-proposal-time-range">10:00 AM - 10:20 AM</span>
+                                                <span data-translate="booking_proposed_schedule">Horario propuesto:</span>
+                                                <span id="js-proposal-time-range">10:00 AM - 10:20 AM</span>
                                             </div>
 
                                             <!-- Detalles adicionales -->
                                             <div class="float-field" style="margin: 0;">
-                                                <span class="float-label" style="font-size: 11px;">Detalles adicionales / Notas</span>
-                                                <textarea id="js-req-note" placeholder="¿Qué temas específicos necesitas repasar?..." style="width: 100%; border: none; resize: none; outline: none; font-size: 14px; padding-top: 2px; min-height: 48px; background: transparent;" maxlength="300"></textarea>
+                                                <span class="float-label" style="font-size: 11px;" data-translate="booking_additional_details">Detalles adicionales / Notas</span>
+                                                <textarea id="js-req-note" placeholder="¿Qué temas específicos necesitas repasar?..." data-translate-placeholder="booking_additional_details_placeholder" style="width: 100%; border: none; resize: none; outline: none; font-size: 14px; padding-top: 2px; min-height: 48px; background: transparent;" maxlength="300"></textarea>
                                             </div>
                                         </div>
                                         
@@ -494,10 +498,9 @@
             </div>
         </div>
  
-        <script src="{{ asset('js/translations.js') }}"></script>
+        
 <link rel="stylesheet" href="{{ asset('css/estilos/variables.css') }}">
 
-<link rel="stylesheet" href="{{ asset('css/estilos/variables.css') }}">
 <style>
     @keyframes spin {
         to {
@@ -1882,6 +1885,14 @@
         }
     });
 
+    document.querySelectorAll('#js-booking-modal [data-translate-placeholder]').forEach((element) => {
+        const key = element.getAttribute('data-translate-placeholder');
+
+        if (t[key]) {
+            element.setAttribute('placeholder', t[key]);
+        }
+    });
+
     if (subjectSearch && t.booking_search_subject) {
         subjectSearch.placeholder = t.booking_search_subject;
     }
@@ -2197,7 +2208,7 @@
             reqCalendarMonth = null;
             reqSelectedDate = null;
             const reqLabel = document.getElementById('js-req-selected-date-label');
-            if (reqLabel) reqLabel.textContent = 'Ninguna';
+            if (reqLabel) reqLabel.textContent = bookingText('booking_none', 'Ninguna');
             const reqCalendarEl = document.getElementById('js-req-mini-calendar');
             if (reqCalendarEl) reqCalendarEl.innerHTML = '';
 
@@ -2727,7 +2738,7 @@
                     
                     reqSelectedDate = todayStr();
                     const reqLabel = document.getElementById('js-req-selected-date-label');
-                    if (reqLabel) reqLabel.textContent = 'Hoy';
+                    if (reqLabel) reqLabel.textContent = bookingText('booking_today', 'Hoy');
                     
                     const now = new Date();
                     renderReqMiniCalendar(now.getFullYear(), now.getMonth());
@@ -2844,12 +2855,15 @@
             
             const descText = document.getElementById('js-req-desc-text');
             if (descText) {
-                descText.textContent = `Envía una propuesta de horario directamente a ${targetTutorName} completando lo siguiente:`;
+                descText.textContent = bookingText(
+                'booking_tutor_request_direct_description',
+                'Envía una propuesta de horario directamente a :name completando lo siguiente:'
+            ).replace(':name', targetTutorName);
             }
 
             reqSelectedDate = todayStr();
             const reqLabel = document.getElementById('js-req-selected-date-label');
-            if (reqLabel) reqLabel.textContent = 'Hoy';
+            if (reqLabel) reqLabel.textContent = bookingText('booking_today', 'Hoy');
             
             const now = new Date();
             renderReqMiniCalendar(now.getFullYear(), now.getMonth());
@@ -3470,7 +3484,7 @@
             const startDay = first.getDay();
             const daysInMonth = new Date(y, m + 1, 0).getDate();
 
-            const week = ['D', 'L', 'M', 'M', 'J', 'V', 'S'];
+            const week = bookingArray('booking_week_days_short', ['D', 'L', 'M', 'M', 'J', 'V', 'S']);
 
             const calendarEl = document.getElementById('js-req-mini-calendar');
             if (!calendarEl) return;
@@ -3547,7 +3561,9 @@
             reqSelectedDate = dateStr;
             const label = document.getElementById('js-req-selected-date-label');
             if (label) {
-                label.textContent = dateStr === todayStr() ? 'Hoy' : dateStr;
+                label.textContent = dateStr === todayStr()
+                    ? bookingText('booking_today', 'Hoy')
+                    : dateStr;
             }
 
             renderReqMiniCalendar(reqCalendarYear, reqCalendarMonth);
@@ -3591,7 +3607,10 @@
 
             if (!reqDate || !reqTime) {
                 reqMsg.className = 'form-msg error';
-                reqMsg.textContent = 'Por favor selecciona la fecha sugerida e introduce el horario sugerido.';
+                reqMsg.textContent = bookingText(
+                'booking_request_required_fields',
+                'Por favor selecciona la fecha sugerida e introduce el horario sugerido.'
+            );
                 reqMsg.style.display = 'block';
                 return;
             }
@@ -3627,11 +3646,14 @@
                 // Si la respuesta HTTP indica un error (ej. 422 de validación o 500 del servidor)
                 if (!response.ok) {
                     const errorData = await response.json(); // Ahora sí podremos leer el JSON
-                    let errorText = errorData.message || 'Error del servidor al procesar la solicitud.';
+                    let errorText = errorData.message || bookingText(
+                    'booking_request_server_error',
+                    'Error del servidor al procesar la solicitud.'
+                );
                     
                     // Si es un error de validación de Laravel (422)
                     if (response.status === 422 && errorData.errors) {
-                        errorText = 'Revisa los campos:\n';
+                        errorText = bookingText('booking_request_check_fields', 'Revisa los campos:') + '\n';
                         for (const field in errorData.errors) {
                             errorText += `- ${errorData.errors[field][0]}\n`;
                         }
@@ -3646,7 +3668,10 @@
 
                 if (data.success) {
                     const originalTitle = confirmation.querySelector('h3').textContent;
-                    confirmation.querySelector('h3').textContent = '¡Solicitud enviada con éxito!';
+                    confirmation.querySelector('h3').textContent = bookingText(
+                        'booking_request_success',
+                        '¡Solicitud enviada con éxito!'
+                    );
                     confirmation.style.display = 'flex';
                     navigationButtons.style.display = 'none';
                     setTimeout(() => {
@@ -3661,7 +3686,10 @@
                     nextBtn.disabled = false;
                     backBtn.disabled = false;
                     reqMsg.className = 'form-msg error';
-                    reqMsg.textContent = data.message || 'Error al enviar la solicitud.';
+                    reqMsg.textContent = data.message || bookingText(
+                        'booking_request_send_error',
+                        'Error al enviar la solicitud.'
+                    );
                     reqMsg.style.display = 'block';
                 }
             } catch (error) {
@@ -3673,7 +3701,10 @@
                 backBtn.disabled = false;
                 reqMsg.className = 'form-msg error';
                 // Mostramos el error real en pantalla
-                reqMsg.innerText = error.message || 'Ocurrió un error al procesar tu solicitud.';
+                reqMsg.innerText = error.message || bookingText(
+                    'booking_request_process_error',
+                    'Ocurrió un error al procesar tu solicitud.'
+                );
                 reqMsg.style.display = 'block';
             }
         }
@@ -3863,7 +3894,10 @@
                 const data = await response.json();
                 
                 if (!data.success) {
-                    alert(data.message || 'La contrapropuesta ya no está activa o no fue encontrada.');
+                    alert(data.message || bookingText(
+                    'booking_counter_not_found',
+                    'La contrapropuesta ya no está activa o no fue encontrada.'
+                ));
                     closeModal();
                     loader.style.display = 'none';
                     return;
@@ -3959,7 +3993,10 @@
 
             } catch (error) {
                 console.error('Error pre-cargando contrapropuesta:', error);
-                alert('Ocurrió un error al cargar la contrapropuesta.');
+                alert(bookingText(
+                    'booking_counter_load_error',
+                    'Ocurrió un error al cargar la contrapropuesta.'
+                ));
                 closeModal();
             } finally {
                 loader.style.display = 'none';
