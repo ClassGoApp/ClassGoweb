@@ -1,18 +1,18 @@
 <?php
 
-
 namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Services\GoogleCalender;
 use App\Services\UserService;
+use Carbon\Carbon;
 use DB;
-use Illuminate\Http\Request;
 use Google_Client;
 use Google_Service_Calendar;
 use Google_Service_Calendar_Event;
-use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
 
 class GoogleController extends Controller
 {
@@ -20,7 +20,7 @@ class GoogleController extends Controller
 
     public function authenticate()
     {
-        $client = new Google_Client();
+        $client = new Google_Client;
         $client->setAuthConfig(base_path('app/credentials/credential.json'));
         $client->setScopes([
             'https://www.googleapis.com/auth/calendar',
@@ -30,23 +30,18 @@ class GoogleController extends Controller
         $client->setAccessType('offline');
         $client->setPrompt('consent');
         $authUrl = $client->createAuthUrl();
+
         return redirect($authUrl);
     }
-
-
-
-
-
-
-
 
     public function googlecallback(Request $request)
     {
         \Log::info('Google callback iniciado.');
 
         $user = Auth::user();
-        if (!$user) {
+        if (! $user) {
             \Log::error('Usuario no autenticado en el callback.');
+
             return redirect()->route('login')->with('error', 'Debes iniciar sesión para conectar Google Calendar.');
         }
 
@@ -58,13 +53,81 @@ class GoogleController extends Controller
             $userService->setAccountSetting('google_access_token', $tokenInfo);
             \Log::info('Token guardado en accountSetting.');
         } catch (\Exception $e) {
-            \Log::error('Error al guardar el token en accountSetting: ' . $e->getMessage());
+            \Log::error('Error al guardar el token en accountSetting: '.$e->getMessage());
         }
 
         return redirect()->route('tutor.profile.personal-details')->with('success', 'Google Calendar conectado correctamente');
     }
 
+    public function googlePrerequisitesCallback(Request $request)
+    {
+        $user = Auth::user();
 
+        if (! $user) {
+            return response()->view(
+                'google-calendar.prerequisites-callback',
+                [
+                    'success' => false,
+                    'message' => 'Debes iniciar sesión.',
+                ]
+            );
+        }
+
+        if ($request->filled('error')) {
+            return response()->view(
+                'google-calendar.prerequisites-callback',
+                [
+                    'success' => false,
+                    'message' => 'La conexión con Google Calendar fue cancelada.',
+                ]
+            );
+        }
+
+        try {
+            $googleService = new GoogleCalender($user);
+
+            $tokenResponse = $googleService
+                ->getPrerequisitesAccessTokenInfo(
+                    $request->input('code')
+                );
+
+            if (
+                ($tokenResponse['status'] ?? null)
+                !== Response::HTTP_OK
+            ) {
+                throw new \Exception(
+                    $tokenResponse['message']
+                        ?? 'No se pudo obtener el token.'
+                );
+            }
+
+            (new UserService($user))->setAccountSetting(
+                'google_access_token',
+                $tokenResponse['data']
+            );
+
+            return response()->view(
+                'google-calendar.prerequisites-callback',
+                [
+                    'success' => true,
+                    'message' => 'Google Calendar conectado correctamente.',
+                ]
+            );
+        } catch (\Exception $e) {
+            \Log::error(
+                'Error Google Calendar prerrequisitos: '
+                .$e->getMessage()
+            );
+
+            return response()->view(
+                'google-calendar.prerequisites-callback',
+                [
+                    'success' => false,
+                    'message' => 'No se pudo conectar Google Calendar.',
+                ]
+            );
+        }
+    }
 
     /* public function callback(Request $request)
     {
@@ -81,23 +144,9 @@ class GoogleController extends Controller
 
     } */
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public function callback(Request $request)
     {
-        $client = new Google_Client();
+        $client = new Google_Client;
         $client->setAuthConfig(base_path('app/credentials/credential.json'));
 
         // Es importante que el redirect URI aquí sea el mismo que usaste en la función redirect()
@@ -113,11 +162,11 @@ class GoogleController extends Controller
 
             // Aquí puedes guardar el refresh token donde lo necesites.
             // Por ejemplo, en el archivo .env o en la base de datos de un usuario.
-            // CUIDADO: La siguiente línea agrega el token al final del .env cada vez. 
+            // CUIDADO: La siguiente línea agrega el token al final del .env cada vez.
             // Es mejor para una configuración de una sola vez, no para cada login.
             file_put_contents(base_path('.env'), "\nGOOGLE_ADMIN_REFRESH_TOKEN={$refreshToken}", FILE_APPEND);
 
-            //dd("¡Éxito! Tu nuevo refresh token es:", $refreshToken);
+            // dd("¡Éxito! Tu nuevo refresh token es:", $refreshToken);
 
             return redirect()->route('admin.tutorias.index')->with('success', 'Autenticación completada. Refresh token obtenido.');
 
@@ -131,9 +180,6 @@ class GoogleController extends Controller
         }
     }
 
-
-
-
     public function createMeeting(Request $request)
     {
         $validated = $request->validate([
@@ -143,7 +189,7 @@ class GoogleController extends Controller
             'end_date_time' => 'required|date|after:start_date_time',
         ]);
 
-        $client = new Google_Client();
+        $client = new Google_Client;
         $client->setAuthConfig(base_path('app/credentials/credential.json'));
         $client->setAccessToken([
             'access_token' => env('GOOGLE_ADMIN_ACCESS_TOKEN'),
