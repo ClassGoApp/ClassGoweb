@@ -2269,6 +2269,8 @@
 
             updateStepUI();
             updateContent();
+            nextBtn.disabled = false;
+            backBtn.disabled = false;
             updateNavButtons();
 
             requestAnimationFrame(() => {
@@ -3114,6 +3116,7 @@
                 : null;
 
             backBtn.disabled = false;
+            nextBtn.disabled = false;
 
             if (currentStep === 1) {
                 backBtn.textContent = t?.booking_cancel || 'Cancelar';
@@ -3667,6 +3670,8 @@
                 loader.style.display = 'none';
 
                 if (data.success) {
+                    nextBtn.disabled = false;
+                    backBtn.disabled = false;
                     const originalTitle = confirmation.querySelector('h3').textContent;
                     confirmation.querySelector('h3').textContent = bookingText(
                         'booking_request_success',
