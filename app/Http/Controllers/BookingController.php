@@ -1234,6 +1234,21 @@ class BookingController extends Controller
             return response()->json(['success' => false, 'message' => __('booking.subject_not_found')], 404);
         }
 
+        $sent         = 0;
+        $errors       = 0;
+        $dashboardUrl = url('/tutor/bookings');
+        $requestDate  = now()->format('d/m/Y H:i');
+        $subjectName  = $subject->name;
+        $studentProfile = DB::table('profiles')->where('user_id', $student->id)->first();
+        $studentName = ($studentProfile ? trim(($studentProfile->first_name ?? '') . ' ' . ($studentProfile->last_name ?? '')) : '') ?: ($student->name ?? 'Un estudiante');
+
+        // Formatear fecha para mostrar
+        try {
+            $formattedDate = Carbon::parse($preferredDate)->translatedFormat('l d \d\e F \d\e Y');
+        } catch (\Throwable $e) {
+            $formattedDate = $preferredDate;
+        }
+
         if ($request->filled('tutor_id')) {
             $tutors = User::where('id', (int) $request->tutor_id)->get();
             if ($tutors->isEmpty()) {
@@ -1251,6 +1266,32 @@ class BookingController extends Controller
                 ->values();
 
             if ($tutorIds->isEmpty()) {
+                // Notificar al correo empresarial (MAIL_ADMIN) que un estudiante solicitó una materia sin tutores registrados
+                $adminEmail = env('MAIL_ADMIN') ?: config('mail.from.admin');
+                if ($adminEmail) {
+                    try {
+                        Mail::send(
+                            'emails.admin-solicitud-horario',
+                            [
+                                'studentName'   => $studentName,
+                                'studentEmail'  => $student->email ?? '',
+                                'subjectName'   => $subjectName,
+                                'preferredDate' => $formattedDate,
+                                'preferredTime' => $preferredTime,
+                                'note'          => $note,
+                                'requestDate'   => $requestDate,
+                            ],
+                            function ($message) use ($adminEmail, $subjectName) {
+                                $message->to($adminEmail)
+                                        ->subject("🗓️ Nueva solicitud de materia sin tutores: {$subjectName}");
+                            }
+                        );
+                        Log::info("solicitarTutor: Correo enviado a admin ({$adminEmail}) por materia sin tutores: {$subjectName}");
+                    } catch (\Throwable $e) {
+                        Log::error('solicitarTutor: error al notificar al correo empresarial por materia sin tutores: ' . $e->getMessage());
+                    }
+                }
+
                 return response()->json([
                     'success' => false,
                     'message' => __('booking.no_tutors_registered_subject'),
@@ -1258,21 +1299,6 @@ class BookingController extends Controller
             }
 
             $tutors = User::whereIn('id', $tutorIds)->get();
-        }
-
-        $sent         = 0;
-        $errors       = 0;
-        $dashboardUrl = url('/tutor/bookings');
-        $requestDate  = now()->format('d/m/Y H:i');
-        $subjectName  = $subject->name;
-        $studentProfile = DB::table('profiles')->where('user_id', $student->id)->first();
-        $studentName = ($studentProfile ? trim(($studentProfile->first_name ?? '') . ' ' . ($studentProfile->last_name ?? '')) : '') ?: ($student->name ?? 'Un estudiante');
-
-        // Formatear fecha para mostrar
-        try {
-            $formattedDate = Carbon::parse($preferredDate)->translatedFormat('l d \d\e F \d\e Y');
-        } catch (\Throwable $e) {
-            $formattedDate = $preferredDate;
         }
 
         foreach ($tutors as $tutor) {

@@ -43,19 +43,28 @@ class Tutors extends Component
             ]);
 
         if (!empty($this->search)) {
-            $tutors = $tutors->where(function ($query) {
-                $query->where('id', 'like', '%' . $this->search . '%')
-                    ->orWhere('email', 'like', '%' . $this->search . '%')
-                    ->orWhereHas('profile', function ($sub_query) {
-                        $sub_query->where('first_name', 'like', '%' . $this->search . '%')
-                            ->orWhere('last_name', 'like', '%' . $this->search . '%')
-                            ->orWhereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ['%' . $this->search . '%']);
+            $search = trim($this->search);
+            $tutors = $tutors->where(function ($query) use ($search) {
+                if (is_numeric($search)) {
+                    $query->orWhere('id', (int) $search);
+                }
+                $query->orWhere('email', 'like', $search . '%')
+                    ->orWhereHas('profile', function ($sub_query) use ($search) {
+                        $terms = array_filter(explode(' ', $search));
+                        $sub_query->where(function ($subQ) use ($terms) {
+                            foreach ($terms as $term) {
+                                $subQ->where(function ($wordQ) use ($term) {
+                                    $wordQ->where('first_name', 'like', $term . '%')
+                                          ->orWhere('last_name', 'like', $term . '%');
+                                });
+                            }
+                        });
                     });
             });
         }
 
         if (!empty($this->filterUser)) {
-            $tutors = $this->filterUser === 'active' ? $tutors->where('status', 'active') : $tutors->where('status', 'inactive');
+            $tutors = $this->filterUser === 'active' ? $tutors->active() : $tutors->inactive();
         }
 
         if (!empty($this->verification)) {

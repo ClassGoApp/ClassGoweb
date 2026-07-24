@@ -72,9 +72,9 @@ class Users extends Component
                 });
             })
             ->when($this->filterUser, function ($query) {
-                return $this->filterUser === 'active' 
-                    ? $query->where('status', 'active') 
-                    : $query->where('status', 'inactive');
+                return $this->filterUser === 'active'
+                    ? $query->active()
+                    : $query->inactive();
             })
             ->when($this->verification === 'verified', function ($query) {
                 return $query->whereNotNull('email_verified_at');

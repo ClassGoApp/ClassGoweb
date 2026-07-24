@@ -315,38 +315,52 @@
 @push('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        /*
+        Código antiguo que causaba el bucle/cascada de peticiones AJAX:
+        function initFilterSelects() {
+            $('.filter-select2').each(function() {
+                const $select = $(this);
+                if ($select.data('select2')) {
+                    $select.select2('destroy');
+                }
+                $select.select2({ minimumResultsForSearch: -1, width: '100%' });
+                $select.off('change').on('change', function() {
+                    const wireModel = $(this).data('wiremodel');
+                    const value = $(this).val();
+                    @this.set(wireModel, value);
+                });
+            });
+        }
+        initFilterSelects();
+        Livewire.hook('morph.updated', () => {
+            initFilterSelects(); // <--- CAUSA DEL PROBLEMA: destruía select2 en cada update y disparaba @this.set() en bucle
+        });
+        */
+
         function initFilterSelects() {
             $('.filter-select2').each(function() {
                 const $select = $(this);
                 
-                // Destruir si ya existe
-                if ($select.data('select2')) {
-                    $select.select2('destroy');
+                // Evitar reinstalar select2 si ya fue inicializado (los elementos están dentro de wire:ignore)
+                if ($select.hasClass("select2-hidden-accessible")) {
+                    return;
                 }
                 
-                // Inicializar SIN limpiar opciones
                 $select.select2({
                     minimumResultsForSearch: -1,
                     width: '100%'
                 });
                 
-                // Manejar cambios
-                $select.off('change').on('change', function() {
+                // Escuchar eventos de Select2 al seleccionar o limpiar una opción
+                $select.off('select2:select select2:clear').on('select2:select select2:clear', function(e) {
                     const wireModel = $(this).data('wiremodel');
                     const value = $(this).val();
-                    
-                    // Actualizar el valor
                     @this.set(wireModel, value);
                 });
             });
         }
         
         initFilterSelects();
-        
-        // Cuando Livewire termina de actualizar
-        Livewire.hook('morph.updated', () => {
-            initFilterSelects();
-        });
     });
 </script>
 @endpush
