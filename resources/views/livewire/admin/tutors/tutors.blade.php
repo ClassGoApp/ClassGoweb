@@ -236,34 +236,26 @@
             $('.filter-select2').each(function() {
                 const $select = $(this);
                 
-                // Destruir si ya existe
-                if ($select.data('select2')) {
-                    $select.select2('destroy');
+                // Evitar reinstalar si ya tiene select2 (los elementos tienen wire:ignore)
+                if ($select.hasClass("select2-hidden-accessible")) {
+                    return;
                 }
                 
-                // Inicializar SIN limpiar opciones
                 $select.select2({
                     minimumResultsForSearch: -1,
                     width: '100%'
                 });
                 
-                // Manejar cambios
-                $select.off('change').on('change', function() {
+                // Escuchar eventos de Select2 al seleccionar o limpiar una opción
+                $select.off('select2:select select2:clear').on('select2:select select2:clear', function(e) {
                     const wireModel = $(this).data('wiremodel');
                     const value = $(this).val();
-                    
-                    // Actualizar el valor
                     @this.set(wireModel, value);
                 });
             });
         }
         
         initFilterSelects();
-        
-        // Cuando Livewire termina de actualizar
-        Livewire.hook('morph.updated', () => {
-            initFilterSelects();
-        });
     });
 </script>
 @endpush
