@@ -45,4 +45,6 @@ return [
     'google_calendar_processing_error' => 'Error al procesar la conexión con Google Calendar.',
     'google_calendar_code_received' => 'Código recibido, por favor complete la configuración.',
     'google_calendar_server_error' => 'Error del servidor al conectar Google Calendar.',
+    'failed_google_calendar' => 'Error de Google Calendar',
+    'failed_google_token' => 'No se pudo obtener el token de Google. Inténtalo nuevamente.',
 ];

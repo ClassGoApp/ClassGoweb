@@ -24,19 +24,22 @@ class Resume extends Component
         $this->routes = [
             [
                 'icon' => '<i class="am-icon-user-01"></i>',
-                'title' => 'Educacion',
+                'title' => __('profile.resume_education'),
+                'translate_key' => 'profile_resume_education',
                 'route' => 'tutor.profile.resume.education',
             ],
             [
                 'icon' => '<i class="am-icon-shopping-basket-04"></i>',
-                'title' => 'Experiencia',
+                'title' => __('profile.resume_experience'),
+                'translate_key' => 'profile_resume_experience',
                 'route' => 'tutor.profile.resume.experience',
             ],
             [
                 'icon' => '<i class="am-icon-atm-card-02"></i>',
-                'title' => 'Certificados y Premios',
+                'title' => __('profile.resume_certificates_awards'),
+                'translate_key' => 'profile_resume_certificates_awards',
                 'route' => 'tutor.profile.resume.certificate',
-            ]
+            ],
         ];
     }
 }
