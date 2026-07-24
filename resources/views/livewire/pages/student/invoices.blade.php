@@ -19,7 +19,9 @@
                             @elserole('student')
                             <th>{{ __('booking.tutor_name') }}</th>
                             <th>{{__('booking.status') }} </th>
-                            <th>Reclamos</th>
+                            <th data-translate="invoices_claims">
+                                Reclamos
+                            </th>
                             @endrole
                         </tr>
                     </thead>
@@ -56,19 +58,82 @@
                                         @endrole
                                         <td>
                                             @php
-                                                $status = $order['status'] ?? $order->status ?? '';
-                                                $status = ucfirst(strtolower($status));
-                                                $statusClass = match ($status) {
-                                                    'Aceptado' => 'status-accepted',
-                                                    'Pendiente' => 'status-pending',
-                                                    'No completado' => 'status-incomplete',
-                                                    'Rechazado' => 'status-rejected',
-                                                    'Completado' => 'status-completed',
-                                                    default => 'status-default',
-                                                };
+                                                $statusValue = trim((string) ($order['status'] ?? $order->status ?? ''));
+                                                $statusKey = mb_strtolower($statusValue, 'UTF-8');
+
+                                                $statusMap = [
+                                                    'aceptado' => [
+                                                        'text' => __('material-support.accepted'),
+                                                        'class' => 'status-accepted',
+                                                        'translate' => 'material_support_status_accepted',
+                                                    ],
+                                                    'accepted' => [
+                                                        'text' => __('material-support.accepted'),
+                                                        'class' => 'status-accepted',
+                                                        'translate' => 'material_support_status_accepted',
+                                                    ],
+
+                                                    'pendiente' => [
+                                                        'text' => __('material-support.pending'),
+                                                        'class' => 'status-pending',
+                                                        'translate' => 'material_support_status_pending',
+                                                    ],
+                                                    'pending' => [
+                                                        'text' => __('material-support.pending'),
+                                                        'class' => 'status-pending',
+                                                        'translate' => 'material_support_status_pending',
+                                                    ],
+
+                                                    'no completado' => [
+                                                        'text' => __('material-support.not_completed'),
+                                                        'class' => 'status-incomplete',
+                                                        'translate' => 'material_support_status_not_completed',
+                                                    ],
+                                                    'not completed' => [
+                                                        'text' => __('material-support.not_completed'),
+                                                        'class' => 'status-incomplete',
+                                                        'translate' => 'material_support_status_not_completed',
+                                                    ],
+                                                    'not_completed' => [
+                                                        'text' => __('material-support.not_completed'),
+                                                        'class' => 'status-incomplete',
+                                                        'translate' => 'material_support_status_not_completed',
+                                                    ],
+
+                                                    'rechazado' => [
+                                                        'text' => __('invoices.status_rejected'),
+                                                        'class' => 'status-rejected',
+                                                        'translate' => 'invoices_status_rejected',
+                                                    ],
+                                                    'rejected' => [
+                                                        'text' => __('invoices.status_rejected'),
+                                                        'class' => 'status-rejected',
+                                                        'translate' => 'invoices_status_rejected',
+                                                    ],
+
+                                                    'completado' => [
+                                                        'text' => __('material-support.completed'),
+                                                        'class' => 'status-completed',
+                                                        'translate' => 'material_support_status_completed',
+                                                    ],
+                                                    'completed' => [
+                                                        'text' => __('material-support.completed'),
+                                                        'class' => 'status-completed',
+                                                        'translate' => 'material_support_status_completed',
+                                                    ],
+                                                ];
+
+                                                $currentStatus = $statusMap[$statusKey] ?? [
+                                                    'text' => ucfirst($statusValue),
+                                                    'class' => 'status-default',
+                                                    'translate' => null,
+                                                ];
                                             @endphp
-                                            <span class="status-badge {{ $statusClass }}">
-                                                {{ $status }}
+
+                                            <span
+                                                class="status-badge {{ $currentStatus['class'] }}"
+                                                @if($currentStatus['translate']) data-translate="{{ $currentStatus['translate'] }}" @endif>
+                                                {{ $currentStatus['text'] }}
                                             </span>
                                         </td>
                                         @role('student')
@@ -79,11 +144,19 @@
                                             @endphp
                                             @if($order->status == "Aceptado" && !$pasada_hora && !$yaReclamo)
                                                 <button class="claim-btn-action btn-warning"
-                                                    wire:click="openClaimModal({{ $order->id }})">Reclamar</button>
+                                                    wire:click="openClaimModal({{ $order->id }})">
+                                                    <span data-translate="invoices_claim_action">
+                                                        Reclamar
+                                                    </span>
+                                                </button>
                                             @elseif($yaReclamo)
-                                                <span class="claim-status-sent">Reclamo enviado</span>
+                                                <span class="claim-status-sent" data-translate="invoices_claim_sent">
+                                                    Reclamo enviado
+                                                </span>
                                             @else
-                                                <span class="claim-status-expired">Fuera de Tiempo Para hacer Reclamo</span>
+                                                <span class="claim-status-expired" data-translate="invoices_claim_expired">
+                                                    Fuera de Tiempo Para hacer Reclamo
+                                                </span>
                                             @endif
                                         </td>
                                         @endrole

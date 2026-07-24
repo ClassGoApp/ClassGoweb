@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Tu código de invitación')
+@section('title', __('promotions.invitation_code'))
 
 @section('content')
 
@@ -26,7 +26,9 @@
             
 
             <div class="coupons-section">
-                <h3 class="coupons-title">Mis cupones</h3>
+                <h3 class="coupons-title" data-translate="promotions_my_coupons">
+                    {{ __('promotions.my_coupons') }}
+                </h3>
                 <div class="coupons-list-container">
 
                     @if ($cupones->isEmpty())
@@ -34,7 +36,9 @@
                             <svg class="empty-state-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 010 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 010-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375z" />
                             </svg>
-                            <p class="empty-state-text">No tienes cupones activos en este momento.</p>
+                            <p class="empty-state-text" data-translate="promotions_no_active_coupons">
+                                {{ __('promotions.no_active_coupons') }}
+                            </p>
                         </div>
                     @else
                         <div class="coupons-list-scroll">
@@ -54,21 +58,45 @@
                                     <div class="info-text">
                                         {{-- <h2 class="coupon-value">{{ round($cupon->descuento) }}%</h2> --}}
                                         <h2 class="coupon-title">{{ $cupon->nombre }}</h2>
-                                        <p class="coupon-description">Tienes <strong>{{ round($cupon->descuento )}}% de descuento</strong> en tu próxima tutoría</p>
+                                        <p class="coupon-description">
+                                            <span data-translate="promotions_discount_prefix">
+                                                {{ __('promotions.discount_prefix') }}
+                                            </span>
+                                            <strong>{{ round($cupon->descuento) }}%</strong>
+                                            <span data-translate="promotions_discount_suffix">
+                                                {{ __('promotions.discount_suffix') }}
+                                            </span>
+                                        </p>
                                         <p class="coupon-validity">
-                                            @if($cupon->fecha_caducidad )
-                                                Válido hasta el {{ \Carbon\Carbon::parse($cupon->fecha_caducidad)->format('d/m/Y')  }}
+                                            @if($cupon->fecha_caducidad)
+                                                <span data-translate="promotions_valid_until">
+                                                    {{ __('promotions.valid_until') }}
+                                                </span>
+                                                {{ \Carbon\Carbon::parse($cupon->fecha_caducidad)->format('d/m/Y') }}
                                             @else
-                                                Sin fecha de vencimiento
+                                                <span data-translate="promotions_no_expiration_date">
+                                                    {{ __('promotions.no_expiration_date') }}
+                                                </span>
                                             @endif                                            
                                         </p>
                                         
                                     </div>
                                     <div class="info-disponibilidad">
-                                        @if ($vencido) <span class="coupon-status-red">Vencido</span> 
-                                        @else <span class="coupon-status">Disponible</span>
+                                        @if ($vencido)
+                                            <span class="coupon-status-red" data-translate="promotions_expired">
+                                                {{ __('promotions.expired') }}
+                                            </span>
+                                        @else
+                                            <span class="coupon-status" data-translate="promotions_available">
+                                                {{ __('promotions.available') }}
+                                            </span>
                                         @endif
-                                        <p class="coupon-amount">Cantidad:{{ $cupon->pivot->cantidad }} </p>
+                                        <p class="coupon-amount">
+                                            <span data-translate="promotions_quantity">
+                                                {{ __('promotions.quantity') }}
+                                            </span>
+                                            {{ $cupon->pivot->cantidad }}
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -82,21 +110,33 @@
 
             <div class="redeem-invite-card">
                 <div class="tab-buttons-container">
-                    <button id="tabRedeem" class="tab-button ">Canjear Cupón</button>
-                    <button id="tabInvite" class="tab-button">Invitar</button>
+                    <button id="tabRedeem" class="tab-button" data-translate="promotions_redeem_coupon">
+                        {{ __('promotions.redeem_coupon') }}
+                    </button>
+
+                    <button id="tabInvite" class="tab-button" data-translate="promotions_invite">
+                        {{ __('promotions.invite') }}
+                    </button>
                 </div>
 
                 <div id="redeemView" class="view-content view-content-redeem">
                     <form action="{{ route('coupons.canjear') }}" class="formulario" method="POST">
                         @csrf
-                        <h3 class="view-title">¿Tienes Código?</h3>
-                        <p class="view-subtitle">¡Ingrésalo y obtén descuentos!</p>
+                        <h3 class="view-title" data-translate="promotions_have_code">
+                            {{ __('promotions.have_code') }}
+                        </h3>
+
+                        <p class="view-subtitle" data-translate="promotions_enter_code_discount">
+                            {{ __('promotions.enter_code_discount') }}
+                        </p>
                         <div class="input-wrapper">
                             <input id="codigo" name="codigo" type="text" required placeholder="ABC12345" autocomplete="off" maxlength="8" spellcheck="false">  
 
                         </div>
                         <div class="action-buttons-wrapper">
-                            <button type="submit" id="btnCanjear" class="redeem-button">Canjear</button>
+                            <button type="submit" id="btnCanjear" class="redeem-button" data-translate="promotions_redeem">
+                                {{ __('promotions.redeem') }}
+                            </button>
                         </div>
                         @if (session('error'))
                             <p class="message-error" style="display: block; opacity: 1;">{{ session('error') }}</p>
@@ -110,24 +150,35 @@
                 
 
                 <div id="inviteView" class="view-content view-content-invite hidden">
-                    <h3 class="view-title">Tu Código de Invitación</h3>
-                    <p class="view-subtitle">¡Comparte y obtén descuentos!</p>
+                    <h3 class="view-title" data-translate="promotions_your_invitation_code">
+                        {{ __('promotions.your_invitation_code') }}
+                    </h3>
+
+                    <p class="view-subtitle" data-translate="promotions_share_get_discounts">
+                        {{ __('promotions.share_get_discounts') }}
+                    </p>
                     <div class="code-wrapper">
                         <div id="inv-code" class="invitation-code">
-                            {{ $codigo ?? 'No Code' }}
+                            {{ $codigo ?? __('promotions.no_code') }}
                         </div>
                     </div>
                     <div class="action-buttons-wrapper action-buttons-invite">
                         <button id="btnCopiar" type="button" class="copy-button">
-                            Copiar
+                            <span data-translate="promotions_copy">
+                                {{ __('promotions.copy') }}
+                            </span>
                         </button>
                         <button id="compartir-button" type="button" class="share-button">
-                            Compartir
+                            <span data-translate="promotions_share">
+                                {{ __('promotions.share') }}
+                            </span>
                         </button>
                         <x-modal-compartir />
 
                     </div>
-                    <div id="copy-feedback" class="copy-feedback-message">¡Copiado!</div>
+                    <div id="copy-feedback" class="copy-feedback-message" data-translate="promotions_copied">
+                        {{ __('promotions.copied') }}
+                    </div>
                 </div>
             </div>
         </div>

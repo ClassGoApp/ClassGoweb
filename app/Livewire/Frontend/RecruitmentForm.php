@@ -73,7 +73,7 @@ class RecruitmentForm extends Component
         // Recordar en la sesión actual que ya se postuló (especialmente útil para visitantes)
         session()->put('has_applied_recruitment', true);
 
-        $this->successMessage = '¡Gracias! Tu postulación ha sido enviada con éxito.';
+        $this->successMessage = __('recruitment.application_sent_success');
         $this->reset(['description', 'cv']);
 
         $this->dispatch('recruitment-sent');
@@ -82,7 +82,11 @@ class RecruitmentForm extends Component
     protected function notifyWhatsApp($recruitment)
     {
         $adminPhone = '77573997';
-        $message = "¡Hola! Tienes un nuevo postulante en ClassGo.\n\nNombre: {$recruitment->full_name}\nEmail: {$recruitment->email}\nÁrea: " . ($recruitment->description ?? 'N/A') . "\n\nRevisa el Panel Admin para ver el CV.";
+        $message = __('recruitment.whatsapp_new_applicant_message', [
+            'name' => $recruitment->full_name,
+            'email' => $recruitment->email,
+            'area' => $recruitment->description ?? __('recruitment.not_available'),
+        ]);
 
         // Aquí se usaría el servicio configurado. 
         // Ejemplo con un Webhook genérico o CallMeBot (ajustar según servicio real)
@@ -104,7 +108,7 @@ class RecruitmentForm extends Component
         if (Auth::check()) {
             Recruitment::create([
                 'user_id' => Auth::id(),
-                'full_name' => $this->full_name ?? Auth::user()->name ?? 'Desconocido',
+                'full_name' => $this->full_name ?? Auth::user()->name ?? __('recruitment.unknown'),
                 'email' => Auth::user()->email,
                 'cv_path' => 'dismissed',
                 'status' => 'dismissed',

@@ -41,7 +41,8 @@ class BookingController extends Controller
             if ($institution === '') {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Se requiere institution'
+                    'message' => __('booking.institution_required'),
+
                 ], 400);
             }
 
@@ -109,7 +110,7 @@ class BookingController extends Controller
             Log::error('getSubjects error: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
-                'message' => 'Error al cargar materias'
+                'message' => __('booking.error_loading_subjects')
             ], 500);
         }
     }
@@ -128,7 +129,7 @@ class BookingController extends Controller
             if (!$subjectId) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Se requiere el ID de la materia'
+                    'message' => __('booking.subject_id_required'),
                 ], 400);
             }
 
@@ -190,7 +191,7 @@ class BookingController extends Controller
 
             return response()->json([
                 'success' => false,
-                'message' => 'Error al cargar tutores'
+                'message' => __('booking.error_loading_tutors'),
             ], 500);
         }
     }
@@ -302,7 +303,7 @@ class BookingController extends Controller
             Log::error('getSlots error: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
-                'message' => 'Error al cargar los horarios'
+                'message' => __('booking.error_loading_schedules'),
             ], 500);
         }
     }
@@ -317,14 +318,14 @@ class BookingController extends Controller
             if ($codigo === '') {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Ingresa un cupón',
+                    'message' => __('booking.enter_coupon'),
                 ], 422);
             }
 
             if (!$user) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'No autenticado',
+                    'message' => __('booking.not_authenticated'),
                 ], 401);
             }
 
@@ -333,7 +334,7 @@ class BookingController extends Controller
             if (!$cupon) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Cupón inválido',
+                    'message' => __('booking.invalid_coupon'),
                 ], 404);
             }
 
@@ -341,7 +342,7 @@ class BookingController extends Controller
             if (($cupon->estado ?? null) !== 'activo') {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Cupón inactivo',
+                    'message' => __('booking.inactive_coupon'),
                 ], 422);
             }
 
@@ -349,7 +350,7 @@ class BookingController extends Controller
             if (!empty($cupon->fecha_caducidad) && $cupon->fecha_caducidad < now()->toDateString()) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Cupón vencido',
+                    'message' => __('booking.expired_coupon'),
                 ], 422);
             }
 
@@ -357,7 +358,7 @@ class BookingController extends Controller
             if ($cuponesService->verificaUsoCupon($codigo, $user)) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'No puedes usar este cupón',
+                    'message' => __('booking.coupon_not_allowed'),
                 ], 422);
             }
 
@@ -369,14 +370,16 @@ class BookingController extends Controller
                 'success' => true,
                 'coupon_id' => $cupon->id,
                 'descuento' => $descuentoDecimal,
-                'message' => "Cupón aplicado: {$descuentoPct}% de descuento",
+                'message' => __('booking.coupon_applied_discount', [
+                    'percent' => $descuentoPct,
+                ]),
             ]);
         } catch (\Throwable $e) {
             Log::error('validateCoupon error: ' . $e->getMessage());
 
             return response()->json([
                 'success' => false,
-                'message' => 'Error al validar cupón',
+                'message' => __('booking.error_validating_coupon'),
                 'debug' => app()->environment('local') ? $e->getMessage() : null,
             ], 500);
         }
@@ -410,14 +413,14 @@ class BookingController extends Controller
                 'success' => true,
                 'payment' => [
                     'bank'   => $bank,
-                    'qr_url' => `/storage/qr/Qr-pagos.png`, // Ruta genérica para el QR de pagos (debe existir en public/storage/qr/Qr-pagos.png)
+                    'qr_url' => '/storage/qr/Qr-pagos.png', // Ruta genérica para el QR de pagos (debe existir en public/storage/qr/Qr-pagos.png)
                 ],
             ]);
         } catch (\Throwable $e) {
             Log::error('getTutorPayment error: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
-                'message' => 'Error al cargar los métodos de pago.'
+                'message' => __('booking.error_loading_payment_methods')
             ], 500);
         }
     }
@@ -481,7 +484,7 @@ class BookingController extends Controller
             $parts = explode('|', (string) $request->slot_id);
             if (count($parts) !== 3) {
                 DB::rollBack();
-                return response()->json(['success' => false, 'message' => 'slot_id inválido'], 400);
+                return response()->json(['success' => false, 'message' => __('booking.invalid_slot_id')], 400);
             }
 
             [$baseSlotId, $reqStart, $reqEnd] = $parts;
@@ -489,13 +492,13 @@ class BookingController extends Controller
 
             if (!$baseSlotId || !$reqStart || !$reqEnd) {
                 DB::rollBack();
-                return response()->json(['success' => false, 'message' => 'slot_id inválido'], 400);
+                return response()->json(['success' => false, 'message' => __('booking.invalid_slot_id')], 400);
             }
 
             $baseSlot = DB::table('user_subject_slots')->where('id', $baseSlotId)->first();
             if (!$baseSlot) {
                 DB::rollBack();
-                return response()->json(['success' => false, 'message' => 'Horario base no encontrado'], 404);
+                return response()->json(['success' => false, 'message' => __('booking.base_schedule_not_found')], 404);
             }
 
             $dateStr = Carbon::parse($baseSlot->date)->format('Y-m-d');
@@ -504,12 +507,12 @@ class BookingController extends Controller
 
             if ($endAt->lte($startAt)) {
                 DB::rollBack();
-                return response()->json(['success' => false, 'message' => 'Rango horario inválido'], 400);
+                return response()->json(['success' => false, 'message' => __('booking.invalid_time_range')], 400);
             }
 
             if ($endAt->lte(now())) {
                 DB::rollBack();
-                return response()->json(['success' => false, 'message' => 'Ese horario ya pasó'], 400);
+                return response()->json(['success' => false, 'message' => __('booking.time_already_passed')], 400);
             }
 
             // Evitar doble reserva (status 0/1)
@@ -525,7 +528,7 @@ class BookingController extends Controller
                 DB::rollBack();
                 return response()->json([
                     'success' => false,
-                    'message' => 'Este horario ya ha sido reservado por otro estudiante'
+                    'message' => __('booking.schedule_already_booked')
                 ], 400);
             }
 
@@ -540,7 +543,7 @@ class BookingController extends Controller
                 DB::rollBack();
                 return response()->json([
                     'success' => false,
-                    'message' => 'El tutor no tiene esta materia activa'
+                    'message' => __('booking.tutor_subject_not_active')
                 ], 422);
             }
 
@@ -553,7 +556,7 @@ class BookingController extends Controller
                 DB::rollBack();
                 return response()->json([
                     'success' => false,
-                    'message' => 'El tutor no tiene precio configurado'
+                    'message' => __('booking.tutor_price_not_configured')
                 ], 422);
             }
 
@@ -569,17 +572,17 @@ class BookingController extends Controller
 
                 if (!$cupon) {
                     DB::rollBack();
-                    return response()->json(['success' => false, 'message' => 'Cupón inválido'], 422);
+                    return response()->json(['success' => false, 'message' => __('booking.invalid_coupon')], 422);
                 }
 
                 if (($cupon->estado ?? null) !== 'activo') {
                     DB::rollBack();
-                    return response()->json(['success' => false, 'message' => 'Cupón inactivo'], 422);
+                    return response()->json(['success' => false, 'message' => __('booking.inactive_coupon')], 422);
                 }
 
                 if (!empty($cupon->fecha_caducidad) && $cupon->fecha_caducidad < now()->toDateString()) {
                     DB::rollBack();
-                    return response()->json(['success' => false, 'message' => 'Cupón vencido'], 422);
+                    return response()->json(['success' => false, 'message' => __('booking.expired_coupon')], 422);
                 }
 
                 $couponCodigo = (string) $cupon->codigo;
@@ -587,7 +590,7 @@ class BookingController extends Controller
 
                 if ($cuponesService->verificaUsoCupon($couponCodigo, $user)) {
                     DB::rollBack();
-                    return response()->json(['success' => false, 'message' => 'No puedes usar este cupón'], 422);
+                    return response()->json(['success' => false, 'message' => __('booking.coupon_not_allowed')], 422);
                 }
 
                 $descuentoPct = (float) ($cupon->descuento ?? 0);
@@ -605,8 +608,8 @@ class BookingController extends Controller
             $paymentStatus  = $isFreeComputed ? 2 : 1;
             $paymentMethod  = $isFreeComputed ? 'free' : 'transfer';
             $paymentMessage = $isFreeComputed
-                ? 'Clase gratuita (cupón 100%) - confirmada automáticamente'
-                : 'Pago pendiente de verificación';
+                ? __('booking.free_class_auto_confirmed')
+                : __('booking.payment_pending_verification');
 
 
             $image_url = null;
@@ -618,7 +621,7 @@ class BookingController extends Controller
                 $file = $request->file('comprobante');
                 if (!$file) {
                     DB::rollBack();
-                    return response()->json(['success' => false, 'message' => 'Falta comprobante'], 422);
+                    return response()->json(['success' => false, 'message' => __('booking.missing_receipt')], 422);
                 }
 
                 $original = preg_replace('/\s+/', '_', $file->getClientOriginalName());
@@ -713,7 +716,7 @@ class BookingController extends Controller
                     DB::rollBack();
                     return response()->json([
                         'success' => false,
-                        'message' => 'No puedes usar este cupón (ya fue usado).'
+                        'message' => __('booking.coupon_already_used')
                     ], 422);
                 }
 
@@ -723,16 +726,15 @@ class BookingController extends Controller
             DB::commit();
             return response()->json([
                 'success'    => true,
-                'message'    => 'Reserva creada exitosamente',
+                'message' => __('booking.booking_created_success'),
                 'booking_id' => $bookingId
             ]);
 
-            DB::commit();
         } catch (\Illuminate\Validation\ValidationException $e) {
             DB::rollBack();
             return response()->json([
                 'success' => false,
-                'message' => 'Validación fallida',
+                'message' => __('booking.validation_failed'),
                 'errors'  => $e->errors()
             ], 422);
         } catch (\Throwable $e) {
@@ -741,7 +743,7 @@ class BookingController extends Controller
 
             return response()->json([
                 'success' => false,
-                'message' => 'Error al procesar la reserva',
+                'message' => __('booking.error_processing_booking'),
                 'debug'   => app()->environment('local') ? $e->getMessage() : null,
             ], 500);
         }
@@ -848,7 +850,7 @@ class BookingController extends Controller
             Log::error('getSlotsMulti error: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
-                'message' => 'Error al cargar los horarios'
+                'message' => __('booking.error_loading_schedules')
             ], 500);
         }
     }
@@ -897,7 +899,10 @@ class BookingController extends Controller
                         }
                         return response()->json([
                             'success' => false,
-                            'message' => "El horario de {$startFormatted} a {$endFormatted} acaba de ser seleccionado por otro estudiante."
+                            'message' => __('booking.schedule_selected_by_other_student', [
+                                'start' => $startFormatted,
+                                'end' => $endFormatted,
+                            ])
                         ]);
                     }
                 } else {
@@ -907,7 +912,7 @@ class BookingController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Horarios reservados temporalmente'
+                'message' => __('booking.schedules_temporarily_reserved')   
             ]);
 
         } catch (\Exception $e) {
@@ -916,7 +921,7 @@ class BookingController extends Controller
             }
             return response()->json([
                 'success' => false,
-                'message' => 'Error bloqueando el horario.'
+                'message' => __('booking.error_locking_schedule')
             ], 500);
         }
     }
@@ -983,7 +988,7 @@ class BookingController extends Controller
             if (count($slots) === 0 || count($slots) > 6) {
                 DB::rollBack();
                 Log::warning('reservar-multi check: count($slots) = ' . count($slots));
-                return response()->json(['success' => false, 'message' => 'Cantidad de bloques inválida.'], 400);
+                return response()->json(['success' => false, 'message' => __('booking.invalid_blocks_quantity')], 400);
             }
 
             // Extraemos info de los slots
@@ -1001,7 +1006,7 @@ class BookingController extends Controller
             if ($endAt->lte($startAt) || $endAt->lte(now())) {
                 DB::rollBack();
                 Log::warning('reservar-multi check: Rango horario inválido o en el pasado. startAt: ' . $startAt->toDateTimeString() . ', endAt: ' . $endAt->toDateTimeString() . ', now: ' . now()->toDateTimeString());
-                return response()->json(['success' => false, 'message' => 'Rango horario inválido o en el pasado'], 400);
+                return response()->json(['success' => false, 'message' => __('booking.invalid_or_past_schedule')], 400);
             }
 
             // Evitar doble reserva (status 0/1) revisando intersecciones
@@ -1018,7 +1023,7 @@ class BookingController extends Controller
                 Log::warning('reservar-multi check: Horario ya reservado para tutor: ' . $tutorId);
                 return response()->json([
                     'success' => false,
-                    'message' => 'Parte de este horario ya ha sido reservado por otro estudiante o no está disponible.'
+                    'message' => __('booking.schedule_part_already_booked')
                 ], 400);
             }
 
@@ -1030,7 +1035,7 @@ class BookingController extends Controller
 
             if (!$userSubject) {
                 DB::rollBack();
-                return response()->json(['success' => false, 'message' => 'El tutor no tiene esta materia activa'], 422);
+                return response()->json(['success' => false, 'message' => __('booking.tutor_subject_not_active')], 422);
             }
 
             // Precio base (por hora = 3 bloques, o por fracción?).
@@ -1042,7 +1047,7 @@ class BookingController extends Controller
 
             if ($precioBaseHr <= 0) {
                 DB::rollBack();
-                return response()->json(['success' => false, 'message' => 'El tutor no tiene precio configurado'], 422);
+                return response()->json(['success' => false, 'message' => __('booking.tutor_price_not_configured')], 422);
             }
 
             // Cálculo precioBase por totalBlocks: Asumiendo que 1 bloque = el precio devuelto por getTutors (que en _booking-wizard suma el basePrice * bloqueos? Wait, el frontend en el paso 3 recalcTotals solo multiplicaba appliedDiscountPct? 
@@ -1061,12 +1066,12 @@ class BookingController extends Controller
 
                 if (!$cupon || ($cupon->estado ?? null) !== 'activo' || (!empty($cupon->fecha_caducidad) && $cupon->fecha_caducidad < now()->toDateString())) {
                     DB::rollBack();
-                    return response()->json(['success' => false, 'message' => 'Cupón inválido o vencido'], 422);
+                    return response()->json(['success' => false, 'message' => __('booking.invalid_or_expired_coupon')], 422);
                 }
                 $couponCodigo = (string) $cupon->codigo;
                 if ($cuponesService->verificaUsoCupon($couponCodigo, $user)) {
                     DB::rollBack();
-                    return response()->json(['success' => false, 'message' => 'No puedes usar este cupón'], 422);
+                    return response()->json(['success' => false, 'message' => __('booking.coupon_not_allowed')], 422);
                 }
                 $descuentoPct = max(0, min(100, (float) ($cupon->descuento ?? 0)));
             }
@@ -1079,8 +1084,8 @@ class BookingController extends Controller
             $paymentStatus  = $isFreeComputed ? 2 : 1;
             $paymentMethod  = $isFreeComputed ? 'free' : 'transfer';
             $paymentMessage = $isFreeComputed
-                ? 'Clase gratuita (cupón 100%) - confirmada automáticamente'
-                : 'Pago pendiente de verificación';
+                ? __('booking.free_class_auto_confirmed')
+                : __('booking.payment_pending_verification');
 
             $image_url = null;
             if ($isFreeComputed) {
@@ -1089,7 +1094,7 @@ class BookingController extends Controller
                 $file = $request->file('comprobante');
                 if (!$file) {
                     DB::rollBack();
-                    return response()->json(['success' => false, 'message' => 'Falta comprobante'], 422);
+                    return response()->json(['success' => false, 'message' => __('booking.missing_receipt')], 422);
                 }
                 $filename = uniqid() . '_' . preg_replace('/\s+/', '_', $file->getClientOriginalName());
                 $dest = public_path('storage/qr');
@@ -1157,7 +1162,7 @@ class BookingController extends Controller
                 }
                 if (!$pivot || ($pivot->estado ?? null) !== 'activo' || (int) $pivot->cantidad <= 0) {
                     DB::rollBack();
-                    return response()->json(['success' => false, 'message' => 'No puedes usar este cupón (ya fue usado).'], 422);
+                    return response()->json(['success' => false, 'message' => __('booking.coupon_already_used')], 422);
                 }
                 $cuponesService->cuponCanjeado($couponCodigo, $user);
             }
@@ -1182,7 +1187,7 @@ class BookingController extends Controller
             
             return response()->json([
                 'success'    => true,
-                'message'    => 'Reserva múltiple creada exitosamente',
+                'message' => __('booking.multi_booking_created_success'),
                 'booking_id' => $bookingId
             ]);
 
@@ -1190,7 +1195,7 @@ class BookingController extends Controller
             DB::rollBack();
             return response()->json([
                 'success' => false,
-                'message' => 'Validación fallida',
+                'message' => __('booking.validation_failed'),
                 'errors'  => $e->errors()
             ], 422);
         } catch (\Throwable $e) {
@@ -1198,7 +1203,7 @@ class BookingController extends Controller
             Log::error('storeMultiBooking error: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
-                'message' => 'Error al procesar la reserva múltiple',
+                'message' => __('booking.error_processing_multi_booking'),
                 'debug'   => app()->environment('local') ? $e->getMessage() : null,
             ], 500);
         }
@@ -1226,7 +1231,7 @@ class BookingController extends Controller
         // Nombre de la materia
         $subject = DB::table('subjects')->where('id', $subjectId)->first();
         if (!$subject) {
-            return response()->json(['success' => false, 'message' => 'Materia no encontrada.'], 404);
+            return response()->json(['success' => false, 'message' => __('booking.subject_not_found')], 404);
         }
 
         $sent         = 0;
@@ -1249,7 +1254,7 @@ class BookingController extends Controller
             if ($tutors->isEmpty()) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Tutor no encontrado.',
+                    'message' => __('booking.tutor_not_found'),
                 ], 404);
             }
         } else {
@@ -1289,7 +1294,7 @@ class BookingController extends Controller
 
                 return response()->json([
                     'success' => false,
-                    'message' => 'No hay tutores registrados para esta materia.',
+                    'message' => __('booking.no_tutors_registered_subject'),
                 ]);
             }
 
@@ -1367,7 +1372,9 @@ class BookingController extends Controller
                     ],
                     function ($message) use ($tutor, $subjectName) {
                         $message->to($tutor->email)
-                                ->subject("📚 Solicitud de tutoría: {$subjectName}");
+                                ->subject(__('booking.tutor_request_mail_subject', [
+                                    'subject' => $subjectName,
+                                ]));
                     }
                 );
 
@@ -1384,8 +1391,11 @@ class BookingController extends Controller
                     $fcmService = new \App\Services\FcmService();
                     $fcmService->sendNotificationToTokens(
                         $tutorTokens,
-                        'Nueva solicitud de tutoría',
-                        "El estudiante {$studentName} te ha solicitado una tutoría de {$subjectName}.",
+                        __('booking.tutor_request_push_title'),
+                        __('booking.tutor_request_push_body', [
+                            'student' => $studentName,
+                            'subject' => $subjectName,
+                        ]),
                         [
                             'type' => 'solicitud_tutor_personalizada',
                             'screen' => 'solicitud_detalle',
@@ -1425,7 +1435,9 @@ class BookingController extends Controller
                     ],
                     function ($message) use ($adminEmail, $subjectName) {
                         $message->to($adminEmail)
-                                ->subject("🗓️ Nueva solicitud de horario: {$subjectName}");
+                                ->subject(__('booking.admin_schedule_request_subject', [
+                                    'subject' => $subjectName,
+                                ]));
                     }
                 );
             } catch (\Throwable $e) {
@@ -1435,7 +1447,10 @@ class BookingController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => "Solicitud enviada a {$sent} tutor(es) de {$subjectName}.",
+            'message' => __('booking.tutor_request_sent', [
+                'count' => $sent,
+                'subject' => $subjectName,
+            ]),
             'sent'    => $sent,
             'errors'  => $errors,
         ]);
@@ -1449,7 +1464,7 @@ class BookingController extends Controller
             ->first();
 
         if (!$request) {
-            abort(404, 'Solicitud no encontrada.');
+            abort(404, __('booking.request_not_found'));
         }
 
         $role = ($request->tutor_token === $token) ? 'tutor' : 'student';
@@ -1544,7 +1559,7 @@ class BookingController extends Controller
             ->first();
 
         if (!$tRequest || in_array($tRequest->status, ['rejected', 'accepted'])) {
-            return response()->json(['success' => false, 'message' => 'Solicitud no válida o ya finalizada.'], 422);
+            return response()->json(['success' => false, 'message' => __('booking.invalid_or_finished_request')], 422);
         }
 
         $role = ($tRequest->tutor_token === $token) ? 'tutor' : 'student';
@@ -1582,7 +1597,9 @@ class BookingController extends Controller
                 ],
                 function ($message) use ($recipient, $subjectName) {
                     $message->to($recipient->email)
-                            ->subject("❌ Solicitud de tutoría rechazada: {$subjectName}");
+                            ->subject(__('booking.rejected_request_mail_subject', [
+                                'subject' => $subjectName,
+                            ]));
                 }
             );
         } catch (\Throwable $e) {
@@ -1604,8 +1621,11 @@ class BookingController extends Controller
                 $fcmService = new \App\Services\FcmService();
                 $fcmService->sendNotificationToTokens(
                     $recipientTokens,
-                    'Solicitud de tutoría rechazada',
-                    "La solicitud de tutoría de {$subjectName} fue rechazada por {$senderName}.",
+                    __('booking.rejected_request_push_title'),
+                    __('booking.rejected_request_push_body', [
+                        'subject' => $subjectName,
+                        'sender' => $senderName,
+                    ]),
                     [
                         'type' => 'solicitud_tutor_personalizada',
                         'screen' => 'solicitud_detalle',
@@ -1621,7 +1641,7 @@ class BookingController extends Controller
             Log::error("rejectNegotiation FCM error: " . $e->getMessage());
         }
 
-        return response()->json(['success' => true, 'message' => 'Solicitud rechazada con éxito.']);
+        return response()->json(['success' => true, 'message' => __('booking.request_rejected_success')]);
     }
 
     public function acceptNegotiation($token)
@@ -1632,7 +1652,7 @@ class BookingController extends Controller
             ->first();
 
         if (!$tRequest || in_array($tRequest->status, ['rejected', 'accepted'])) {
-            return response()->json(['success' => false, 'message' => 'Solicitud no válida o ya finalizada.'], 422);
+            return response()->json(['success' => false, 'message' => __('booking.invalid_or_finished_request')], 422);
         }
 
         $role = ($tRequest->tutor_token === $token) ? 'tutor' : 'student';
@@ -1673,7 +1693,9 @@ class BookingController extends Controller
                     ],
                     function ($message) use ($student, $subjectName) {
                         $message->to($student->email)
-                                ->subject("✅ ¡Propuesta de tutoría aceptada!: {$subjectName}");
+                                ->subject(__('booking.accepted_request_mail_subject', [
+                                    'subject' => $subjectName,
+                                ]));
                     }
                 );
             } catch (\Throwable $e) {
@@ -1686,9 +1708,15 @@ class BookingController extends Controller
             $recipient = ($role === 'tutor') ? $student : $tutor;
             $recipientToken = ($role === 'tutor') ? $tRequest->student_token : $tRequest->tutor_token;
             $senderName = ($role === 'tutor') ? ($tutor->full_name ?: ($tutor->name ?? 'Tutor')) : ($student->full_name ?: ($student->name ?? 'Estudiante'));
-            $body = ($role === 'tutor') 
-                ? "El tutor {$senderName} ha aceptado tu solicitud de tutoría de {$subjectName}."
-                : "El estudiante {$senderName} ha aceptado tu propuesta de tutoría de {$subjectName}.";
+            $body = ($role === 'tutor')
+                ? __('booking.tutor_accepted_request_push_body', [
+                    'sender' => $senderName,
+                    'subject' => $subjectName,
+                ])
+                : __('booking.student_accepted_request_push_body', [
+                    'sender' => $senderName,
+                    'subject' => $subjectName,
+                ]);
 
             $recipientTokens = DB::table('fcm_tokens')
                 ->where('user_id', $recipient->id)
@@ -1702,7 +1730,7 @@ class BookingController extends Controller
                 $fcmService = new \App\Services\FcmService();
                 $fcmService->sendNotificationToTokens(
                     $recipientTokens,
-                    'Propuesta de tutoría aceptada',
+                    __('booking.accepted_request_push_title'),
                     $body,
                     [
                         'type' => 'solicitud_tutor_personalizada',
@@ -1719,7 +1747,7 @@ class BookingController extends Controller
             Log::error("acceptNegotiation FCM error: " . $e->getMessage());
         }
 
-        return response()->json(['success' => true, 'message' => 'Solicitud aceptada con éxito.']);
+        return response()->json(['success' => true, 'message' => __('booking.request_accepted_success')]);
     }
 
     public function counterNegotiation(Request $request, $token)
@@ -1737,7 +1765,7 @@ class BookingController extends Controller
             ->first();
 
         if (!$tRequest || in_array($tRequest->status, ['rejected', 'accepted'])) {
-            return response()->json(['success' => false, 'message' => 'Solicitud no válida o ya finalizada.'], 422);
+            return response()->json(['success' => false, 'message' => __('booking.invalid_or_finished_request')], 422);
         }
 
         $role = ($tRequest->tutor_token === $token) ? 'tutor' : 'student';
@@ -1788,7 +1816,9 @@ class BookingController extends Controller
                 ],
                 function ($message) use ($recipient, $subjectName) {
                     $message->to($recipient->email)
-                            ->subject("🔄 Nueva contrapropuesta de tutoría: {$subjectName}");
+                            ->subject(__('booking.counter_request_mail_subject', [
+                                'subject' => $subjectName,
+                            ]));
                 }
             );
         } catch (\Throwable $e) {
@@ -1809,8 +1839,11 @@ class BookingController extends Controller
                 $fcmService = new \App\Services\FcmService();
                 $fcmService->sendNotificationToTokens(
                     $recipientTokens,
-                    'Nueva contrapropuesta de tutoría',
-                    "{$senderName} ha enviado una contrapropuesta para la tutoría de {$subjectName}.",
+                    __('booking.counter_request_push_title'),
+                    __('booking.counter_request_push_body', [
+                        'sender' => $senderName,
+                        'subject' => $subjectName,
+                    ]),
                     [
                         'type' => 'solicitud_tutor_personalizada',
                         'screen' => 'solicitud_detalle',
@@ -1830,7 +1863,7 @@ class BookingController extends Controller
             Log::error("counterNegotiation FCM error: " . $e->getMessage());
         }
 
-        return response()->json(['success' => true, 'message' => 'Contrapropuesta enviada con éxito.']);
+        return response()->json(['success' => true, 'message' => __('booking.counter_request_success')]);
     }
 
     public function getCounterDetails($token)
@@ -1838,11 +1871,11 @@ class BookingController extends Controller
         $tRequest = DB::table('tutor_requests')->where('student_token', $token)->first();
 
         if (!$tRequest) {
-            return response()->json(['success' => false, 'message' => 'Propuesta no encontrada.'], 404);
+            return response()->json(['success' => false, 'message' => __('booking.proposal_not_found')], 404);
         }
 
         if (in_array($tRequest->status, ['rejected'])) {
-            return response()->json(['success' => false, 'message' => 'Esta propuesta ya fue rechazada.'], 422);
+            return response()->json(['success' => false, 'message' => __('booking.proposal_already_rejected')], 422);
         }
 
         $tutor = DB::table('users')->where('id', $tRequest->tutor_id)->first();

@@ -4,18 +4,30 @@
         <div class="modal-ma-container">
             
             <div class="modal-ma-header">
-                <h2 class="modal-ma-title">{{ $idFile?  "Editar Material": "Adjuntar Archivo"}}</h2>
-                <button type="button" wire:click="$set('isOpen', false)" class="modal-ma-close-btn" aria-label="Cerrar">
+                <h2
+                    class="modal-ma-title"
+                    data-translate="{{ $idFile ? 'material_support_edit_material' : 'material_support_attach_file_modal' }}">
+                    {{ $idFile ? __('material-support.edit_material') : __('material-support.attach_file_modal') }}
+                </h2>
+                <button
+                    type="button"
+                    wire:click="$set('isOpen', false)"
+                    class="modal-ma-close-btn"
+                    aria-label="{{ __('material-support.close') }}"
+                    data-translate-aria-label="material_support_close">
                     &times;
                 </button>
             </div>
 
             <div class="modal-ma-body">
                 
-                <div class="modal-ma-info-box">
-                    {!!$modalUpdArchivo ? '<strong> Nota:</strong> Es opcional adjuntar material de apoyo.
-                    ' : '<strong>Nota:</strong> Es opcional adjuntar material de apoyo. Si no lo tienes ahora, puedes avanzar y adjuntarlo luego usando el botón <strong>"Archivos Adjuntos"</strong>.' !!}
-                    
+                <div
+                    class="modal-ma-info-box"
+                    data-translate="{{ $modalUpdArchivo ? 'material_support_modal_note_short' : 'material_support_modal_note_full' }}">
+                    {!! $modalUpdArchivo
+                        ? __('material-support.modal_note_short')
+                        : __('material-support.modal_note_full')
+                    !!}
                 </div>
 
                 <div 
@@ -39,7 +51,12 @@
                     </svg>
                     
                     <p class="modal-ma-dropzone-text">
-                        Arrastra tu archivo aquí o <span class="modal-ma-dropzone-link">haz clic para buscar</span>
+                        <span data-translate="material_support_drag_file_here">
+                            {{ __('material-support.drag_file_here') }}
+                        </span>
+                        <span class="modal-ma-dropzone-link" data-translate="material_support_click_to_search">
+                            {{ __('material-support.click_to_search') }}
+                        </span>
                     </p>
                     <p class="modal-ma-dropzone-subtext">
                         DOCX, EXCEL, PDF, JPG, PNG (Max. 5MB)
@@ -47,7 +64,9 @@
                 </div>
 
                 <div wire:loading wire:target="archivo" class="modal-ma-upload-loading">
-                    Subiendo archivo...
+                    <span data-translate="material_support_uploading_file">
+                        {{ __('material-support.uploading_file') }}
+                    </span>
                 </div>
 
                 @error('archivo') 
@@ -57,19 +76,26 @@
                 @if($archivo && !$errors->has('archivo'))
                 <div class="modal-ma-file-success-box">
                     <span class="modal-ma-file-name">📎 {{ $archivo->getClientOriginalName() }}</span>
-                    <button type="button" wire:click="$set('archivo', null)" class="modal-ma-file-remove-btn" title="Eliminar archivo">
+                    <button type="button" wire:click="$set('archivo', null)" class="modal-ma-file-remove-btn" title="{{ __('material-support.remove_file') }}"
+                                                                                                              data-translate-title="material_support_remove_file">
                         &times;
                     </button>
                 </div>
                 @endif
 
                 <div class="modal-ma-form-group">
-                    <label for="descripcion-material" class="modal-ma-form-label">¿De qué trata este material? (Opcional)</label>
+                    <label
+                        for="descripcion-material"
+                        class="modal-ma-form-label"
+                        data-translate="material_support_material_description_label">
+                        {{ __('material-support.material_description_label') }}
+                    </label>
                     <textarea 
                         id="descripcion-material" 
                         wire:model="descripcion" 
                         class="modal-ma-textarea" 
-                        placeholder="Ej: Le adjunto los ejercicios prácticos que me cuestan resolver o el temario de mi examen..."
+                        placeholder="{{ __('material-support.material_description_placeholder') }}"
+                        data-translate-placeholder="material_support_material_description_placeholder"
                     ></textarea>
                     @error('descripcion')
                         <p class="modal-ma-upload-error" style="text-align: left;">{{ $message }}</p>
@@ -80,16 +106,28 @@
 
             <div class="modal-ma-footer">
                 <button type="button" wire:click="$set('isOpen', false)" class="modal-ma-btn-secondary">
-                    Cancelar
+                    <span data-translate="material_support_cancel">
+                        {{ __('material-support.cancel') }}
+                    </span>
                 </button>
+
                 @if($modalUpdArchivo)
                     <button type="button" wire:click="confirmarReserva" class="modal-ma-btn-primary btn_save_fill">
-                        Guardar
+                        <span data-translate="material_support_save">
+                            {{ __('material-support.save') }}
+                        </span>
                     </button>
-                
                 @else
                     <button type="button" wire:click="confirmarReserva" class="modal-ma-btn-primary">
-                        {{ $archivo ? 'Guardar y Reservar' : 'Reservar sin Material' }}
+                        @if($archivo)
+                            <span data-translate="material_support_save_and_book">
+                                {{ __('material-support.save_and_book') }}
+                            </span>
+                        @else
+                            <span data-translate="material_support_book_without_material">
+                                {{ __('material-support.book_without_material') }}
+                            </span>
+                        @endif
                     </button>
                 @endif
             </div>

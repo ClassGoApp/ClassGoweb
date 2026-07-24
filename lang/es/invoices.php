@@ -20,4 +20,22 @@ return [
     'invoice_discount_code' => 'Código de descuento',
     'invoice_discount_amount' => 'Cantidad de descuento',
     'tutorials' => 'Tutorías',
+    // Reclamos y estados de tutorías
+    'claims' => 'Reclamos',
+    'claim_action' => 'Reclamar',
+    'claim_sent' => 'Reclamo enviado',
+    'claim_expired' => 'Fuera de tiempo para hacer reclamo',
+    'status_accepted' => 'Aceptado',
+    'status_pending' => 'Pendiente',
+    'status_not_completed' => 'No completado',
+    'status_rejected' => 'Rechazado',
+    'status_completed' => 'Completado',
+    // Modal de reclamo
+    'claim_modal_title' => 'Enviar Reclamo',
+    'claim_modal_close' => 'Cerrar modal',
+    'claim_description_label' => 'Describe detalladamente tu reclamo',
+    'claim_placeholder' => 'Por favor, describe los detalles de tu reclamo. Incluye fechas, horarios y cualquier información relevante que nos ayude a resolver tu situación.',
+    'claim_minimum_hint' => 'Mínimo 20 caracteres requeridos',
+    'claim_cancel' => 'Cancelar',
+    'claim_modal_submit' => 'Enviar Reclamo',
 ];

@@ -26,6 +26,81 @@ return [
     'courses_count' => ':count cursos',
     'start_date' => 'Fecha de inicio',
     'end_date' => 'Fecha de finalización',
-    
-    
+    // Booking Controller - respuestas, errores y notificaciones
+    'institution_required' => 'Se requiere institution',
+    'error_loading_subjects' => 'Error al cargar materias',
+    'subject_id_required' => 'Se requiere el ID de la materia',
+    'error_loading_tutors' => 'Error al cargar tutores',
+    'error_loading_schedules' => 'Error al cargar los horarios',
+
+    'enter_coupon' => 'Ingresa un cupón',
+    'not_authenticated' => 'No autenticado',
+    'invalid_coupon' => 'Cupón inválido',
+    'inactive_coupon' => 'Cupón inactivo',
+    'expired_coupon' => 'Cupón vencido',
+    'coupon_not_allowed' => 'No puedes usar este cupón',
+    'coupon_already_used' => 'No puedes usar este cupón (ya fue usado).',
+    'coupon_applied_discount' => 'Cupón aplicado: :percent% de descuento',
+    'error_validating_coupon' => 'Error al validar cupón',
+
+    'error_loading_payment_methods' => 'Error al cargar los métodos de pago.',
+    'invalid_slot_id' => 'slot_id inválido',
+    'base_schedule_not_found' => 'Horario base no encontrado',
+    'invalid_time_range' => 'Rango horario inválido',
+    'time_already_passed' => 'Ese horario ya pasó',
+    'schedule_already_booked' => 'Este horario ya ha sido reservado por otro estudiante',
+    'tutor_subject_not_active' => 'El tutor no tiene esta materia activa',
+    'tutor_price_not_configured' => 'El tutor no tiene precio configurado',
+    'missing_receipt' => 'Falta comprobante',
+    'free_class_auto_confirmed' => 'Clase gratuita (cupón 100%) - confirmada automáticamente',
+    'payment_pending_verification' => 'Pago pendiente de verificación',
+    'booking_created_success' => 'Reserva creada exitosamente',
+    'validation_failed' => 'Validación fallida',
+    'error_processing_booking' => 'Error al procesar la reserva',
+
+    'invalid_blocks_quantity' => 'Cantidad de bloques inválida.',
+    'invalid_or_past_schedule' => 'Rango horario inválido o en el pasado',
+    'schedule_part_already_booked' => 'Parte de este horario ya ha sido reservado por otro estudiante o no está disponible.',
+    'multi_booking_created_success' => 'Reserva múltiple creada exitosamente',
+    'error_processing_multi_booking' => 'Error al procesar la reserva múltiple',
+
+    'schedule_selected_by_other_student' => 'El horario de :start a :end acaba de ser seleccionado por otro estudiante.',
+    'schedules_temporarily_reserved' => 'Horarios reservados temporalmente',
+    'error_locking_schedule' => 'Error bloqueando el horario.',
+
+    'subject_not_found' => 'Materia no encontrada.',
+    'tutor_not_found' => 'Tutor no encontrado.',
+    'no_tutors_registered_subject' => 'No hay tutores registrados para esta materia.',
+    'default_student_name' => 'Un estudiante',
+    'default_tutor_name' => 'Tutor',
+    'default_user_name' => 'Usuario',
+
+    'tutor_request_mail_subject' => '📚 Solicitud de tutoría: :subject',
+    'tutor_request_push_title' => 'Nueva solicitud de tutoría',
+    'tutor_request_push_body' => 'El estudiante :student te ha solicitado una tutoría de :subject.',
+    'tutor_request_sent' => 'Solicitud enviada a :count tutor(es) de :subject.',
+
+    'admin_schedule_request_subject' => '🗓️ Nueva solicitud de horario: :subject',
+
+    'invalid_or_finished_request' => 'Solicitud no válida o ya finalizada.',
+    'rejected_request_mail_subject' => '❌ Solicitud de tutoría rechazada: :subject',
+    'rejected_request_push_title' => 'Solicitud de tutoría rechazada',
+    'rejected_request_push_body' => 'La solicitud de tutoría de :subject fue rechazada por :sender.',
+    'request_rejected_success' => 'Solicitud rechazada con éxito.',
+
+    'accepted_request_mail_subject' => '✅ ¡Propuesta de tutoría aceptada!: :subject',
+    'accepted_request_push_title' => 'Propuesta de tutoría aceptada',
+    'tutor_accepted_request_push_body' => 'El tutor :sender ha aceptado tu solicitud de tutoría de :subject.',
+    'student_accepted_request_push_body' => 'El estudiante :sender ha aceptado tu propuesta de tutoría de :subject.',
+    'request_accepted_success' => 'Solicitud aceptada con éxito.',
+
+    'counter_request_mail_subject' => '🔄 Nueva contrapropuesta de tutoría: :subject',
+    'counter_request_push_title' => 'Nueva contrapropuesta de tutoría',
+    'counter_request_push_body' => ':sender ha enviado una contrapropuesta para la tutoría de :subject.',
+    'counter_request_success' => 'Contrapropuesta enviada con éxito.',
+
+    'proposal_not_found' => 'Propuesta no encontrada.',
+    'proposal_already_rejected' => 'Esta propuesta ya fue rechazada.',
+    'request_not_found' => 'Solicitud no encontrada.',
+    'invalid_or_expired_coupon' => 'Cupón inválido o vencido',
 ];

@@ -588,4 +588,5 @@ return [
     'student_error_message' => 'Students cannot request withdrawals.',
     'empty_balance_message' => 'You do not have available balance to withdraw.',
     'payment_error_message' => 'You must set up a payment method before requesting a withdrawal.',
+    'messages' => 'Messages',
 ];

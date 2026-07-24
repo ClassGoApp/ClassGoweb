@@ -619,4 +619,5 @@ return [
 'student_error_message' => 'Estudantes não podem solicitar retiradas.',
 'empty_balance_message' => 'Você não tem saldo disponível para retirar.',
 'payment_error_message' => 'Você deve configurar um método de pagamento antes de solicitar uma retirada.',
+'messages' => 'Mensagens',
 ];
