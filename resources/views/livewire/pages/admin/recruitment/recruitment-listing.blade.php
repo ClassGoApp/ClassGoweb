@@ -95,19 +95,7 @@
     </style>
 
     <div class="tb-db-dashboard_box_wrap_inner">
-        <div class="tb-menumanagement_wrap">
-            <div class="tb-dbholder">
-                <div class="tb-dbholder__title">
-                    <h3>Gestión de Reclutamiento</h3>
-                    <div class="tb-dbholder__right">
-                        <div class="tb-inputicon">
-                            <input type="text" wire:model.live="search" class="form-control"
-                                placeholder="Buscar postulante...">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Barra de Carga de Descarga (100% de ancho, sin texto) -->
+         <!-- Barra de Carga de Descarga (100% de ancho, sin texto) -->
                 <div wire:loading wire:target="downloadCV"
                      x-transition:enter="alert-grow-enter"
                      x-transition:enter-start="alert-grow-start"
@@ -153,6 +141,21 @@
                         <button type="button" class="btn-close" @click="show = false" aria-label="Close"></button>
                     </div>
                 @endif
+        <div class="tb-menumanagement_wrap">
+            
+            <div class="tb-dbholder">
+                
+                <div class="tb-dbholder__title">
+                    <h3>Gestión de Reclutamiento</h3>
+                    <div class="tb-dbholder__right">
+                        <div class="tb-inputicon">
+                            <input type="text" wire:model.live="search" class="form-control"
+                                placeholder="Buscar postulante...">
+                        </div>
+                    </div>
+                </div>
+
+               
 
                 <div class="tb-admin-table-area">
                     <table class="table tb-table">
@@ -244,11 +247,10 @@
                     </table>
                 </div>
 
-                <div class="mt-4">
-                    {{ $recruitments->links() }}
-                </div>
             </div>
         </div>
     </div>
-</div>
 
+    {{ $recruitments->links('pagination.custom') }}
+
+</div>
