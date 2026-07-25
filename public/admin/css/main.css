@@ -3963,7 +3963,7 @@ address {
 
 .tk-pagination {
   width: 100%;
-  margin-top: 30px;
+  margin: 0.5rem;
   justify-content: center;
 }
 .tk-pagination ul {
@@ -4809,7 +4809,7 @@ address {
   /* padding: 20px; */
   border-radius: 20px;
   background-color: #fff;
-  min-height: calc(100vh - 124px);
+  min-height: calc(100vh - 185px);
 }
 .tb-menumanagement_wrap .tb-table > tbody > tr:first-child td {
   border-top: 0;
