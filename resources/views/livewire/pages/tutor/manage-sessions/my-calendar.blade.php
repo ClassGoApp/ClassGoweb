@@ -5,12 +5,12 @@
         @endslot
         @include('livewire.pages.tutor.manage-sessions.tabs')
         <div class="am-section-load" wire:loading.flex wire:target="updatedCurrentMonth,jumpToDate,updatedCurrentYear,previousMonthCalendar,nextMonthCalendar">
-            <p>{{ __('general.loading') }}</p>
+            <p data-translate="general_loading">{{ __('general.loading') }}</p>
         </div>
         <div class="am-booking-wrapper">
             <div class="am-booking-calander">
                 <div class="am-booking-calander_header">
-                    <h1>{{ __('calendar.title') }} </h1>
+                    <h1 data-translate="calendar_title">{{ __('calendar.title') }}</h1>
                     <div>
                         <div class="am-booking-filters-wrapper">
                             <div class="am-booking-calander-day">
@@ -29,7 +29,9 @@
                             
 
                             <button class="am-btn" wire:click="addSessionForm">
-                                {{ __('calendar.add_new_session') }}
+                                <span data-translate="calendar_add_new_session">
+                                    {{ __('calendar.add_new_session') }}
+                                </span>
                                 <i class="am-icon-plus-02"></i>
                             </button>
                         </div>
@@ -102,8 +104,11 @@
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="newBookingModalLabel">{{ __('calendar.add_session') }}</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <h5 class="modal-title" id="newBookingModalLabel" data-translate="calendar_add_session">
+                                {{ __('calendar.add_session') }}
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                 aria-label="Cerrar" data-translate-aria-label="general_close"></button>
                         </div>
                         <div class="modal-body">
                             <form wire:submit.prevent="addSession" autocomplete="off">
@@ -112,22 +117,41 @@
 
                                     <!-- Campo de Fechas con calendario emergente -->
                                     <div class="col-md-6 mb-3">
-                                        <label for="date_range_new" class="form-label">{{ __('calendar.start_end_date') }}</label>
-                                        <input type="text" id="date_range_new" class="form-control flatpickr-date" wire:model="form.date_range" placeholder="Selecciona fecha" data-min-date="today">
+                                        <label for="date_range_new" class="form-label" data-translate="calendar_start_end_date">
+                                            {{ __('calendar.start_end_date') }}
+                                        </label>
+
+                                        <input type="text" id="date_range_new" class="form-control flatpickr-date"
+                                            wire:model="form.date_range"
+                                            placeholder="Selecciona fecha"
+                                            data-translate-placeholder="calendar_select_date"
+                                            data-min-date="today">
                                         <x-input-error field_name="form.date_range" />
                                     </div>
 
                                     <!-- Campo de Hora de Inicio -->
                                     <div class="col-md-6 mb-3">
-                                        <label for="start_time_new" class="form-label">Hora Inicio</label>
-                                        <input type="text" id="start_time_new" class="form-control flatpickr-time" wire:model="form.start_time" placeholder="Selecciona hora de inicio">
+                                        <label for="start_time_new" class="form-label" data-translate="calendar_start_time">
+                                            Hora Inicio
+                                        </label>
+
+                                        <input type="text" id="start_time_new" class="form-control flatpickr-time"
+                                            wire:model="form.start_time"
+                                            placeholder="Selecciona hora de inicio"
+                                            data-translate-placeholder="calendar_select_start_time">
                                         <x-input-error field_name="form.start_time" />
                                     </div>
 
                                     <!-- Campo de Hora de Fin -->
                                     <div class="col-md-6 mb-3">
-                                        <label for="end_time_new" class="form-label">Hora Fin</label>
-                                        <input type="text" id="end_time_new" class="form-control flatpickr-time" wire:model="form.end_time" placeholder="Selecciona hora de fin">
+                                        <label for="end_time_new" class="form-label" data-translate="calendar_end_time">
+                                            Hora Fin
+                                        </label>
+
+                                        <input type="text" id="end_time_new" class="form-control flatpickr-time"
+                                            wire:model="form.end_time"
+                                            placeholder="Selecciona hora de fin"
+                                            data-translate-placeholder="calendar_select_end_time">
                                         <x-input-error field_name="form.end_time" />
                                         @if($errors->has('form.end_time'))
                                             <div class="alert alert-danger text-center mt-2">
@@ -137,22 +161,34 @@
                                     </div>
 
                                     <div class="col-md-12 mb-3 mt-3">
-                                        <label class="form-label fw-bold text-center w-100">Seleccione los días que esta disponible</label>
+                                        <label class="form-label fw-bold text-center w-100" data-translate="calendar_select_available_days">
+                                            Seleccione los días que está disponible
+                                        </label>
                                         
                                         <div class="d-flex justify-content-center gap-3 mt-2 custom-day-selector">
-                                            @php
-                                                $daysOfWeek = [
-                                                    0 => 'D', 1 => 'L', 2 => 'M', 3 => 'X', 
-                                                    4 => 'J', 5 => 'V', 6 => 'S'
-                                                ];
-                                            @endphp
-                                            
-                                            @foreach($daysOfWeek as $index => $day)
-                                                <div class="day-item">
-                                                    <input type="checkbox" id="day_{{ $index }}" value="{{ $index }}" wire:model="form.selected_days" class="d-none day-checkbox">
-                                                    <label for="day_{{ $index }}" class="day-circle">{{ $day }}</label>
-                                                </div>
-                                            @endforeach
+                                                @php
+                                                    $daysOfWeek = [
+                                                        0 => ['key' => 'calendar_day_sunday_short', 'label' => 'Dom'],
+                                                        1 => ['key' => 'calendar_day_monday_short', 'label' => 'Lun'],
+                                                        2 => ['key' => 'calendar_day_tuesday_short', 'label' => 'Mar'],
+                                                        3 => ['key' => 'calendar_day_wednesday_short', 'label' => 'Mié'],
+                                                        4 => ['key' => 'calendar_day_thursday_short', 'label' => 'Jue'],
+                                                        5 => ['key' => 'calendar_day_friday_short', 'label' => 'Vie'],
+                                                        6 => ['key' => 'calendar_day_saturday_short', 'label' => 'Sáb'],
+                                                    ];
+                                                @endphp
+
+                                                @foreach($daysOfWeek as $index => $day)
+                                                    <div class="day-item">
+                                                        <input type="checkbox" id="day_{{ $index }}" value="{{ $index }}"
+                                                            wire:model="form.selected_days" class="d-none day-checkbox">
+
+                                                        <label for="day_{{ $index }}" class="day-circle"
+                                                            data-translate="{{ $day['key'] }}">
+                                                            {{ $day['label'] }}
+                                                        </label>
+                                                    </div>
+                                                @endforeach
                                         </div>
                                         
                                         <div class="text-center mt-2">
@@ -165,7 +201,7 @@
                                 <!-- Botones de Acción -->
                                 <div class="modal-footer">
                                     <button type="submit" class="btn btn-primary" wire:loading.class="btn-loading">
-                                        {{ __('general.save_update') }}
+                                        <span data-translate="general_save_update">{{ __('general.save_update') }}</span>
                                     </button>
                                 </div>
                             </form>
@@ -179,43 +215,62 @@
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="newBookingModalLabel">{{ __('calendar.add_session') }}</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <h5 class="modal-title" id="slotDetailModalLabel" data-translate="calendar_edit_session">
+                                Editar sesión
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Cerrar" data-translate-aria-label="general_close"></button>
                         </div>
                         <div class="modal-body">
                             @if($slotHasBookings)
                                 <div class="alert alert-warning text-center mb-3">
-                                    Este horario ya tiene tutorías reservadas y no puede ser editado ni eliminado.
+                                    <span data-translate="calendar_slot_has_bookings_warning">
+                                        Este horario ya tiene tutorías reservadas y no puede ser editado ni eliminado.
+                                    </span>
                                 </div>
                             @endif
                             <form wire:submit.prevent="editSession" autocomplete="off">
                                 <div class="row">
                                     <!-- Mostrar la fecha de la reserva seleccionada como texto -->
                                     <div class="col-md-6 mb-3">
-                                        <label class="form-label">Fecha de la reserva</label>
+                                        <label class="form-label" data-translate="calendar_booking_date">
+                                            Fecha de la reserva
+                                        </label>
                                         <input type="text" class="form-control text-center" wire:model="form.form_date" readonly>
                                         <x-input-error field_name="form.form_date" />
                                     </div>
                                     <!-- Campo de Hora de Inicio -->
                                     <div class="col-md-6 mb-3">
-                                        <label for="start_time_new" class="form-label">Hora Inicio</label>
-                                        <input type="text" id="start_time_new" class="form-control flatpickr-time" wire:model="form.start_time" placeholder="Selecciona hora de inicio" @if($slotHasBookings) disabled @endif>
+                                        <label for="start_time_new" class="form-label" data-translate="calendar_start_time">
+                                            Hora Inicio
+                                        </label>
+
+                                        <input type="text" id="start_time_new" class="form-control flatpickr-time"
+                                            wire:model="form.start_time"
+                                            placeholder="Selecciona hora de inicio"
+                                            data-translate-placeholder="calendar_select_start_time">
                                         <x-input-error field_name="form.start_time" />
                                     </div>
                                     <!-- Campo de Hora de Fin -->
                                     <div class="col-md-6 mb-3">
-                                        <label for="end_time_new" class="form-label">Hora Fin</label>
-                                        <input type="text" id="end_time_new" class="form-control flatpickr-time" wire:model="form.end_time" placeholder="Selecciona hora de fin" @if($slotHasBookings) disabled @endif>
+                                        <label for="end_time_new" class="form-label" data-translate="calendar_end_time">
+                                            Hora Fin
+                                        </label>
+
+                                        <input type="text" id="end_time_new" class="form-control flatpickr-time"
+                                            wire:model="form.end_time"
+                                            placeholder="Selecciona hora de fin"
+                                            data-translate-placeholder="calendar_select_end_time">
                                         <x-input-error field_name="form.end_time" />
                                     </div>
                                 </div>
                                 <!-- Botones de Acción -->
                                 <div class="modal-footer">
                                     <button type="submit" class="btn btn-primary" wire:loading.class="btn-loading" @if($slotHasBookings) disabled @endif>
-                                        {{ __('general.save_update') }}
+                                        <span data-translate="general_save_update">{{ __('general.save_update') }}</span>
                                     </button>
                                     <button type="button" class="btn btn-danger" wire:click="deleteSession" @if($slotHasBookings) disabled @endif>
-                                        Eliminar reserva
+                                        <span data-translate="calendar_delete_booking">Eliminar reserva</span>
                                     </button>
                                 </div>
                             </form>
@@ -236,6 +291,8 @@
 
 @push('scripts')
     <script defer src="{{ asset('js/flatpicker.js') }}"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js"></script>
     <script>
         // Función compatible para emitir eventos Livewire
         function emitLivewireEvent(event, ...params) {
@@ -247,11 +304,20 @@
         }
 
         document.addEventListener('shown.bs.modal', function (event) {
+
+            const selectedLang = localStorage.getItem('selectedLanguage') || 'es';
+
+            const flatpickrLocale =
+                selectedLang === 'pt' ? 'pt' :
+                selectedLang === 'es' ? 'es' :
+                'default';
+
             if (event.target.id === 'new-booking-modal') {
                 flatpickr('#date_range_new', {
                     mode: "range",
                     dateFormat: "Y-m-d",
                     minDate: "today",
+                    locale: flatpickrLocale,
                 });
                 flatpickr('#start_time_new', {
                     enableTime: true,
@@ -259,6 +325,7 @@
                     dateFormat: "H:i",
                     time_24hr: true,
                     minuteIncrement: 1,
+                    locale: flatpickrLocale,
                 });
                 flatpickr('#end_time_new', {
                     enableTime: true,
@@ -266,6 +333,7 @@
                     dateFormat: "H:i",
                     time_24hr: true,
                     minuteIncrement: 1,
+                    locale: flatpickrLocale,
                 });
             }
             // Inicializar Select2 en el modal de edición
@@ -274,6 +342,7 @@
                     mode: "range",
                     dateFormat: "Y-m-d",
                     minDate: "today",
+                    locale: flatpickrLocale,
                 });
                 flatpickr('#start_time_new', {
                     enableTime: true,
@@ -281,6 +350,7 @@
                     dateFormat: "H:i",
                     time_24hr: true,
                     minuteIncrement: 1,
+                    locale: flatpickrLocale,
                 });
                 flatpickr('#end_time_new', {
                     enableTime: true,
@@ -288,6 +358,7 @@
                     dateFormat: "H:i",
                     time_24hr: true,
                     minuteIncrement: 1,
+                    locale: flatpickrLocale,
                 });
             }
         });

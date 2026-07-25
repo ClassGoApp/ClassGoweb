@@ -132,7 +132,7 @@ class ManageAccount extends Component
                 $extension = strtolower($this->qrImage->getClientOriginalExtension());
 
                 if (!in_array($extension, $allowedExtensions)) {
-                    $this->qrImageTypeError = 'Solo se permiten archivos de imagen (jpeg, jpg, png, gif, svg).';
+                    $this->qrImageTypeError = __('manage_account.only_image_files_allowed');
                     $this->qrImage = null;
                 } else {
                     $this->qrImageTypeError = '';
@@ -159,12 +159,12 @@ class ManageAccount extends Component
                 'bankName' => 'required|string|min:2|max:100',
                 'bankRoutingNumber' => 'nullable|string|max:50',
             ], [
-                'bankTitle.required' => 'El título de la cuenta es obligatorio',
-                'bankTitle.min' => 'El título debe tener al menos 3 caracteres',
-                'bankAccountNumber.required' => 'El número de cuenta es obligatorio',
-                'bankAccountNumber.min' => 'El número de cuenta debe tener al menos 5 caracteres',
-                'bankName.required' => 'El nombre del banco es obligatorio',
-                'bankName.min' => 'El nombre del banco debe tener al menos 2 caracteres',
+                'bankTitle.required' => __('manage_account.bank_title_required'),
+                'bankTitle.min' => __('manage_account.bank_title_min'),
+                'bankAccountNumber.required' => __('manage_account.bank_account_number_required'),
+                'bankAccountNumber.min' => __('manage_account.bank_account_number_min'),
+                'bankName.required' => __('manage_account.bank_name_required'),
+                'bankName.min' => __('manage_account.bank_name_min'),
             ]);
 
             try {
@@ -191,7 +191,7 @@ class ManageAccount extends Component
                 }
             } catch (\Exception $e) {
                 \Log::error('Error adding payout detail: ' . $e->getMessage(), );
-                $this->showErrorMessage('Error al guardar la cuenta bancaria. Inténtalo de nuevo.');
+                $this->showErrorMessage(__('manage_account.bank_save_error'));
             }
         }
 
@@ -204,8 +204,8 @@ class ManageAccount extends Component
         $this->validate([
             'price' => 'nullable|numeric|min:0',
         ], [
-            'price.numeric' => 'El precio debe ser un número válido.',
-            'price.min' => 'El precio no puede ser negativo.',
+            'price.numeric' => __('manage_account.price_numeric'),
+            'price.min' => __('manage_account.price_min'),
         ]);
 
         try {
@@ -214,12 +214,12 @@ class ManageAccount extends Component
                 ['price' => $this->price]
             );
 
-            $this->showSuccessMessage('Precio guardado correctamente.');
+            $this->showSuccessMessage(__('manage_account.price_saved_successfully'));
             // recargar data por si hace falta
             $this->loadData();
         } catch (\Exception $e) {
             \Log::error('Error saving profile price: ' . $e->getMessage());
-            $this->showErrorMessage('Ocurrió un error al guardar el precio. Inténtalo de nuevo.');
+            $this->showErrorMessage(__('manage_account.price_save_error'));
         }
     }
 
@@ -466,7 +466,7 @@ class ManageAccount extends Component
             $extension = strtolower($this->qrImage->getClientOriginalExtension());
 
             if (!in_array($extension, $allowedExtensions)) {
-                $this->qrImageTypeError = 'Solo se permiten archivos de imagen (jpeg, jpg, png, gif, svg).';
+                $this->qrImageTypeError = __('manage_account.only_image_files_allowed');
                 $this->qrImage = null; // Limpia el archivo para evitar preview y error
             } else {
                 $this->qrImageTypeError = '';

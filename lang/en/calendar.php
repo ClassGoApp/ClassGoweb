@@ -186,5 +186,8 @@ return [
     'status_observed' => 'Observed',
     'status_completed' => 'Completed',
     'status_rejected' => 'Rejected',
-
+    'end_time_after_start' => 'The end time must be later than the start time.',
+    'slot_overlap_for_date' => 'A booking already exists within that time range for :date.',
+    'validation_error' => 'Validation error.',
+    'session_deleted_successfully' => 'Booking deleted successfully.',
 ];

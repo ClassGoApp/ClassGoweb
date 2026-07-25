@@ -11,6 +11,24 @@
             const text = (value || '').trim();
             const lang = selectedLang || localStorage.getItem('selectedLanguage') || 'es';
 
+            // 1. Primero busca directamente en translations.js
+            if (
+                window.translations &&
+                window.translations[lang] &&
+                window.translations[lang][text]
+            ) {
+                return window.translations[lang][text];
+            }
+
+            if (
+                typeof translations !== "undefined" &&
+                translations[lang] &&
+                translations[lang][text]
+            ) {
+                return translations[lang][text];
+            }
+
+            // 2. Si recibe textos antiguos, los convierte a keys
             const keys = {
                 'What do you want to do?': 'spotlight_placeholder',
                 '¿Qué quieres hacer?': 'spotlight_placeholder',
@@ -55,52 +73,26 @@
                 'Redireciona para os tutores favoritos': 'spotlight_favorites_desc',
             };
 
-            const spotlightTranslations = {
-                es: {
-                    spotlight_placeholder: "¿Qué quieres hacer?",
-                    spotlight_logout_name: "Cerrar sesión",
-                    spotlight_logout_desc: "Redirigir al usuario a la pantalla de inicio de sesión borrando la sesión del usuario",
-                    spotlight_search_tutor_name: "Buscar por nombre del tutor",
-                    spotlight_search_tutor_desc: "Esto te redireccionará a la página de búsqueda de tutores.",
-                    spotlight_profile_details_name: "Detalles del Perfil",
-                    spotlight_profile_details_desc: "Redirigir a la página de detalles del perfil",
-                    spotlight_bookings_name: "Reservas",
-                    spotlight_bookings_desc: "Redirecciona a las reservas del estudiante",
-                    spotlight_favorites_name: "Favoritos",
-                    spotlight_favorites_desc: "Redirecciona a los tutores Favoritos",
-                },
-                en: {
-                    spotlight_placeholder: "What do you want to do?",
-                    spotlight_logout_name: "Sign out",
-                    spotlight_logout_desc: "Redirect the user to the login screen by clearing the user session",
-                    spotlight_search_tutor_name: "Search by tutor name",
-                    spotlight_search_tutor_desc: "This will redirect you to the tutor search page.",
-                    spotlight_profile_details_name: "Profile Details",
-                    spotlight_profile_details_desc: "Redirect to the profile details page",
-                    spotlight_bookings_name: "Bookings",
-                    spotlight_bookings_desc: "Redirects to student bookings",
-                    spotlight_favorites_name: "Favorites",
-                    spotlight_favorites_desc: "Redirects to favorite tutors",
-                },
-                pt: {
-                    spotlight_placeholder: "O que você quer fazer?",
-                    spotlight_logout_name: "Sair",
-                    spotlight_logout_desc: "Redireciona o usuário para a tela de login limpando a sessão do usuário",
-                    spotlight_search_tutor_name: "Pesquisar por nome do tutor",
-                    spotlight_search_tutor_desc: "Isso redirecionará você para a página de busca de tutores.",
-                    spotlight_profile_details_name: "Detalhes do Perfil",
-                    spotlight_profile_details_desc: "Redirecionar para a página de detalhes do perfil",
-                    spotlight_bookings_name: "Reservas",
-                    spotlight_bookings_desc: "Redireciona para as reservas do estudante",
-                    spotlight_favorites_name: "Favoritos",
-                    spotlight_favorites_desc: "Redireciona para os tutores favoritos",
-                }
-            };
+            const key = keys[text] || text;
 
-            const key = keys[text];
-            const t = spotlightTranslations[lang] || spotlightTranslations.es;
+            // 3. Busca la key final en translations.js
+            if (
+                window.translations &&
+                window.translations[lang] &&
+                window.translations[lang][key]
+            ) {
+                return window.translations[lang][key];
+            }
 
-            return key && t[key] ? t[key] : value;
+            if (
+                typeof translations !== "undefined" &&
+                translations[lang] &&
+                translations[lang][key]
+            ) {
+                return translations[lang][key];
+            }
+
+            return value;
         };
     </script>
 

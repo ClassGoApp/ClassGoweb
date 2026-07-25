@@ -187,4 +187,8 @@ return [
     'status_observed' => 'Observado',
     'status_completed' => 'Completado',
     'status_rejected' => 'Rechazado',
+    'end_time_after_start' => 'La hora de fin debe ser mayor que la hora de inicio.',
+    'slot_overlap_for_date' => 'Ya existe una reserva en ese rango de horas para el día :date.',
+    'validation_error' => 'Error de validación.',
+    'session_deleted_successfully' => 'Reserva eliminada correctamente.',
 ];

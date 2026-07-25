@@ -7,8 +7,13 @@
 
         <div class="am-titulo-card">
             <div class="am-titulo">
-                <h2 class="titulo_primario">{{ __('subject.subject_title') }}</h2>
-                <p class="titulo_secundario">{{ __('subject.subject_title_desc') }}</p>
+                <h2 class="titulo_primario" data-translate="subject_title">
+                    {{ __('subject.subject_title') }}
+                </h2>
+
+                <p class="titulo_secundario" data-translate="subject_title_desc">
+                    {{ __('subject.subject_title_desc') }}
+                </p>
             </div>
         </div>
         <!-- Filtros - Siempre visibles -->
@@ -23,11 +28,17 @@
             @if($subjectGroups->isEmpty())
             <div class="am-no-records"
                 style="text-align: center; padding: 30px; background: #f8f9fa; border-radius: 8px; margin: 20px auto; max-width: 500px;">
-                <img src="{{ asset('images/subjects.png') }}" alt="No records"
+                <img src="{{ asset('images/subjects.png') }}" alt="{{ __('general.no_record_title') }}"
                     style="max-width: 120px; margin-bottom: 15px;">
-                <h3 style="color: #004558; margin-bottom: 10px; font-size: 18px;">{{ __('general.no_record_title') }}
+                <h3 style="color: #004558; margin-bottom: 10px; font-size: 18px;"
+                    data-translate="general_no_record_title">
+                    {{ __('general.no_record_title') }}
                 </h3>
-                <p style="color: #666; margin-bottom: 20px; font-size: 14px;">{{ __('general.no_record_desc') }}</p>
+
+                <p style="color: #666; margin-bottom: 20px; font-size: 14px;"
+                    data-translate="general_no_record_desc">
+                    {{ __('general.no_record_desc') }}
+                </p>
             </div>
             @else
             @foreach ($filteredGroups as $index => $group)
@@ -50,12 +61,14 @@
                             </div>
                             <div class="am-subject-actions">
                                 <a href="javascript:void(0);" @click="$wire.editUserSubject({{ $userSubject['id'] }})"
-                                    class="am-btn-icon am-btn-edit" title="Editar">
+                                    class="am-btn-icon am-btn-edit" title="{{ __('subject.edit_subject') }}"
+                                    data-translate-title="subject_edit" data-translate-title="subject_edit">
                                     <i class="am-icon-pencil-02"></i>
                                 </a>
                                 <a href="javascript:void(0);"
                                     @click="$wire.dispatch('showConfirm', { subjectId: {{ $userSubject['id'] }}, action : 'delete-user-subject' })"
-                                    class="am-btn-icon am-btn-delete" title="Eliminar">
+                                    class="am-btn-icon am-btn-delete" title="{{ __('general.delete') }}"
+                                    data-translate-title="subject_delete" data-translate-title="subject_delete">
                                     <i class="am-icon-trash-02"></i>
                                 </a>
                             </div>
@@ -73,7 +86,7 @@
                                 $('.am-select2').prop('disabled', false);
                                 clearFormErrors('#subject_modal form');
                             })">
-                                + Agregar nuevo materia
+                                <span data-translate="subject_add_new_subject">+ Agregar nueva materia</span>
                             </button>
                         </div>
                     </div>
