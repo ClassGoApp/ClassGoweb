@@ -185,7 +185,7 @@ Route::delete('tutor/slots', [\App\Http\Controllers\Api\SubjectSlotController::c
 Route::get('user/bookings', [\App\Http\Controllers\Api\BookingController::class, 'getUpComingBooking']);
 
 Route::get('country-states',                                    [TutorController::class,'getStates']);
-Route::get('subject-groups',                                   [BookingController::class,'getSubjectGroups']);
+// Route::get('subject-groups',                                   [BookingController::class,'getSubjectGroups']);
 Route::get('subjects',                                         [BookingController::class,'getSubjects']);
 
 Route::get('settings',                                         [OptionBuilderController::class, 'getOpSettings']);

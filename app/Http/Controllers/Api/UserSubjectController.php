@@ -378,6 +378,7 @@ class UserSubjectController extends Controller
     {
         $subjectGroups = SubjectGroup::select('id', 'name')
             ->where('status', 'active')
+            ->whereHas('subjects', fn($q) => $q->where('status', 'active'))
             ->orderByRaw("
                 CASE
                     WHEN id = 3000 OR id_padre = 3000 THEN 0
@@ -425,9 +426,9 @@ class UserSubjectController extends Controller
     {
         $groupId = $request->get('group_id');
         $keyword = $request->get('keyword');
-        $userId = $request->get('user_id'); // Nuevo parámetro para especificar usuario
+        $userId = $request->get('user_id');
 
-        $query = Subject::where('status', 'active');
+        $query = Subject::where('subjects.status', 'active');
 
         // Filtrar por grupo si se especifica
         if ($groupId) {
@@ -436,7 +437,7 @@ class UserSubjectController extends Controller
 
         // Filtrar por palabra clave si se especifica
         if ($keyword) {
-            $query->where('name', 'LIKE', "%{$keyword}%");
+            $query->where('subjects.name', 'LIKE', "%{$keyword}%");
         }
 
         // Excluir materias que ya tiene el usuario (si se especifica user_id)
