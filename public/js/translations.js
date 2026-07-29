@@ -1679,6 +1679,24 @@ var translations = {
     manage_account_change_image: "Cambiar imagen",
     manage_account_save_qr: "Guardar QR",
     manage_account_processing: "Procesando...",
+
+    tutor_profile_photo_alt: "Foto de perfil",
+    tutor_profile_photo_expanded_alt: "Foto de perfil ampliada",
+    tutor_profile_review: "reseña",
+    tutor_profile_reviews: "reseñas",
+    tutor_profile_verified_quote: "Tutor verificado y aprobado por ClassGo!",
+
+    favourites_view_profile: "Ver perfil",
+    favourites_view_profile_title: "Ver perfil",
+    favourites_remove_title: "Eliminar de favoritos",
+
+    language_spanish: "Español",
+    language_english: "Inglés",
+    language_portuguese: "Portugués",
+
+    favorite_add_aria: "Agregar a favoritos",
+    favorite_in_your_favorites: "En tus Favoritos",
+    favorite_favorites: "Favoritos",
   },
   en: {
     // Navbar
@@ -3327,6 +3345,24 @@ var translations = {
     manage_account_change_image: "Change image",
     manage_account_save_qr: "Save QR",
     manage_account_processing: "Processing...",
+
+    tutor_profile_photo_alt: "Profile photo",
+    tutor_profile_photo_expanded_alt: "Expanded profile photo",
+    tutor_profile_review: "review",
+    tutor_profile_reviews: "reviews",
+    tutor_profile_verified_quote: "Verified tutor approved by ClassGo!",
+
+    favourites_view_profile: "View profile",
+    favourites_view_profile_title: "View profile",
+    favourites_remove_title: "Remove from favorites",
+
+    language_spanish: "Spanish",
+    language_english: "English",
+    language_portuguese: "Portuguese",
+
+    favorite_add_aria: "Add to favorites",
+    favorite_in_your_favorites: "In your favorites",
+    favorite_favorites: "Favorites",
   },
   pt: {
     // Navbar
@@ -5002,6 +5038,24 @@ var translations = {
     manage_account_change_image: "Alterar imagem",
     manage_account_save_qr: "Salvar QR",
     manage_account_processing: "Processando...",
+
+    tutor_profile_photo_alt: "Foto de perfil",
+    tutor_profile_photo_expanded_alt: "Foto de perfil ampliada",
+    tutor_profile_review: "avaliação",
+    tutor_profile_reviews: "avaliações",
+    tutor_profile_verified_quote: "Tutor verificado e aprovado pela ClassGo!",
+
+    favourites_view_profile: "Ver perfil",
+    favourites_view_profile_title: "Ver perfil",
+    favourites_remove_title: "Remover dos favoritos",
+
+    language_spanish: "Espanhol",
+    language_english: "Inglês",
+    language_portuguese: "Português",
+
+    favorite_add_aria: "Adicionar aos favoritos",
+    favorite_in_your_favorites: "Nos seus favoritos",
+    favorite_favorites: "Favoritos",
   },
 };
 
