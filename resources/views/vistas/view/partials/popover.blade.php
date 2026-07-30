@@ -1,16 +1,16 @@
 <div class="tutorias-popover">
     <div class="tutorias-popover__inner">
-        <h3 class="tutorias-popover__title">Mis Próximas Tutorías</h3>
+        <h3 class="tutorias-popover__title" data-translate="upcoming_tutoring_title" >Mis Próximas Tutorías</h3>
         
         <div class="tutorias-popover__table-wrapper">
             <table class="tutorias-table">
                 <thead class="tutorias-table__head">
                     <tr>
-                        <th class="tutorias-table__header">Tutor</th>
-                        <th class="tutorias-table__header">Materia</th>
-                        <th class="tutorias-table__header">Fecha y Hora</th>
-                        <th class="tutorias-table__header">Estado</th>
-                        <th class="tutorias-table__header">Link</th>
+                        <th class="tutorias-table__header" data-translate="upcoming_tutoring_tutor">Tutor</th>
+                        <th class="tutorias-table__header" data-translate="upcoming_tutoring_subject">Materia</th>
+                        <th class="tutorias-table__header" data-translate="upcoming_tutoring_date_time">Fecha y Hora</th>
+                        <th class="tutorias-table__header" data-translate="upcoming_tutoring_status">Estado</th>
+                        <th class="tutorias-table__header" data-translate="upcoming_tutoring_link">Link</th>
                     </tr>
                 </thead>
                 <tbody class="tutorias-table__body">
@@ -31,15 +31,24 @@
                                 {{ $tutoria->subject->name ?? 'N/A' }}
                             </td>
                             <td class="tutorias-table__data">
-                                {{ \Carbon\Carbon::parse($tutoria->start_time)->format('d M, H:i') }}
+                                <span class="translated-date"
+                                    data-date="{{ \Carbon\Carbon::parse($tutoria->start_time)->format('Y-m-d H:i:s') }}">
+                                    {{ \Carbon\Carbon::parse($tutoria->start_time)->format('d M, H:i') }}
+                                </span>
                             </td>
                             <td class="tutorias-table__data">
                                 @if($tutoria->status == "Aceptado")
-                                    <span class="tutorias-status-badge tutorias-status-badge--confirmed">{{ $tutoria->status }}</span>
+                                    <span class="tutorias-status-badge tutorias-status-badge--confirmed" data-translate="upcoming_tutoring_status_accepted">
+                                        Aceptado
+                                    </span>
                                 @elseif($tutoria->status == "Pendiente")
-                                    <span class="tutorias-status-badge tutorias-status-badge--pending">{{ $tutoria->status }}</span>
+                                    <span class="tutorias-status-badge tutorias-status-badge--pending" data-translate="upcoming_tutoring_status_pending">
+                                        Pendiente
+                                    </span>
                                 @else
-                                    <span class="tutorias-status-badge tutorias-status-badge--cancelled">{{ $tutoria->status }}</span>
+                                    <span class="tutorias-status-badge tutorias-status-badge--cancelled">
+                                        {{ $tutoria->status }}
+                                    </span>
                                 @endif
                             </td>
 
@@ -47,12 +56,13 @@
 
                                 <td class="tutorias-table__data">
                                     <a href="{{ $tutoria->meeting_link }}" target="_blank">
-                                        <button class="tutorias-popover__button">
-                                        Ir Tutoría</button>
+                                        <button class="tutorias-popover__button" data-translate="upcoming_tutoring_go">
+                                            Ir Tutoría
+                                        </button>
                                     </a>
                                 </td>
                             @else
-                                <td class="tutorias-table__data">
+                                <td class="tutorias-table__data" data-translate="upcoming_tutoring_not_available">
                                     No disponible
                                 </td>
                             @endif
@@ -60,7 +70,8 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" style="text-align: center; padding: 1rem; color: #6B7280;">
+                            <td colspan="5" style="text-align: center; padding: 1rem; color: #6B7280;"
+                                data-translate="upcoming_tutoring_empty">
                                 No tienes tutorías próximas
                             </td>
                         </tr>
@@ -70,9 +81,9 @@
         </div>
 
         <div class="tutorias-popover__footer">
-            <a href="{{ route('student.bookings') }}" class="tutorias-popover__link">
-                Ver todas mis reservas &rarr;
-            </a>
+            <span data-translate="upcoming_tutoring_view_all">
+                    Ver todas mis reservas
+            </span>
         </div>
     </div>
 </div>
@@ -270,3 +281,44 @@
         background-color: #0056b3;
     }
 </style>
+<script>
+    function translateUpcomingTutoringDates() {
+        const lang = localStorage.getItem("selectedLanguage") || "es";
+
+        const locales = {
+            es: "es-ES",
+            en: "en-US",
+            pt: "pt-BR",
+        };
+
+        document.querySelectorAll(".translated-date").forEach(function (element) {
+            const dateValue = element.dataset.date;
+
+            if (!dateValue) {
+                return;
+            }
+
+            const date = new Date(dateValue.replace(" ", "T"));
+
+            if (isNaN(date.getTime())) {
+                return;
+            }
+
+            const day = String(date.getDate()).padStart(2, "0");
+
+            const month = date.toLocaleDateString(locales[lang] || "es-ES", {
+                month: "short",
+            });
+
+            const hours = String(date.getHours()).padStart(2, "0");
+            const minutes = String(date.getMinutes()).padStart(2, "0");
+
+            element.textContent = `${day} ${month}, ${hours}:${minutes}`;
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", translateUpcomingTutoringDates);
+    document.addEventListener("languageChanged", translateUpcomingTutoringDates);
+    document.addEventListener("livewire:navigated", translateUpcomingTutoringDates);
+    document.addEventListener("livewire:update", translateUpcomingTutoringDates);
+</script>

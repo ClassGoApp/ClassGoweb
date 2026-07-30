@@ -1,51 +1,68 @@
 <div class="tutoring-panel">
     <!-- Card de Próxima Sesión -->
-    @foreach ( $reservas as $reserva)
+    @foreach ($reservas as $reserva)
         @php
             $now = now();
             $startTime = \Carbon\Carbon::parse($reserva->start_time);
             $endTime = \Carbon\Carbon::parse($reserva->end_time);
             $isInProgress = $now->between($startTime, $endTime);
         @endphp
-        <div class="{{ $isInProgress ? 'upcoming-sesion-start' : 'upcoming-session-card'}}">
+
+        <div class="{{ $isInProgress ? 'upcoming-sesion-start' : 'upcoming-session-card' }}">
             <div class="upcoming-session-header">
                 <h3 class="upcoming-session-title">
                     <i class="fas fa-calendar-alt"></i>
-                    ¿Listo para tu próxima tutoría?
+                    <span data-translate="next_tutoring_ready">
+                        ¿Listo para tu próxima tutoría?
+                    </span>
                 </h3>
+
                 <span class="status-badge {{ $isInProgress ? 'status-in-progress' : '' }}">
-                    {{ $isInProgress ? 'En curso' : 'Confirmada' }}
+                    @if($isInProgress)
+                        <span data-translate="next_tutoring_in_progress">En curso</span>
+                    @else
+                        <span data-translate="next_tutoring_confirmed">Confirmada</span>
+                    @endif
                 </span>
             </div>
-            
+
             <div class="upcoming-session-body">
                 <div class="session-info">
                     <div class="session-icon {{ $isInProgress ? 'icon-active' : '' }}">
                         <i class="fas fa-clock"></i>
                     </div>
+
                     <div class="session-details">
                         <h3>{{ $reserva->subject->name }}</h3>
-                        <p>{{ \Carbon\Carbon::parse($reserva->start_time)->locale('es')->diffForHumans()}}, • 
+
+                        <p>
+                            <span class="translated-relative-date"
+                                data-date="{{ \Carbon\Carbon::parse($reserva->start_time)->format('Y-m-d H:i:s') }}">
+                                {{ \Carbon\Carbon::parse($reserva->start_time)->locale('es')->diffForHumans() }}
+                            </span>
+                            •
                             <span class="session-time">
-                            {{ \Carbon\Carbon::parse($reserva->start_time)->format('H:i') }}
+                                {{ \Carbon\Carbon::parse($reserva->start_time)->format('H:i') }}
                             </span>
                         </p>
                     </div>
                 </div>
 
                 <a href="{{ $reserva->meeting_link }}" target="_blank">
-                    <button class=" {{ $isInProgress ? 'tutoria-btn tutoria-btn-secundary btn-pulse' : 'tutoria-btn tutoria-btn-primary' }}">
+                    <button class="{{ $isInProgress ? 'tutoria-btn tutoria-btn-secundary btn-pulse' : 'tutoria-btn tutoria-btn-primary' }}">
                         <i class="fas fa-video"></i>
-                        Ir al Aula Virtual
+                        <span data-translate="next_tutoring_go_class">
+                            Ir al Aula Virtual
+                        </span>
                     </button>
                 </a>
-                
-                <a href="{{  route('student.bookings') }}">
-                    <button class="tutoria-text-link">
-                    Ver detalles 
-                </button>
+
+                <a href="{{ route('student.bookings') }}">
+                    <button class="tutoria-text-link" data-translate="next_tutoring_view_details">
+                        Ver detalles
+                    </button>
                 </a>
-                
+
             </div>
         </div>
     @endforeach
@@ -249,3 +266,52 @@
     }
 
 </style>
+
+<script>
+    function translateRelativeTutoringDates() {
+        const lang = localStorage.getItem("selectedLanguage") || "es";
+
+        const locales = {
+            es: "es-ES",
+            en: "en-US",
+            pt: "pt-BR",
+        };
+
+        document.querySelectorAll(".translated-relative-date").forEach(function (element) {
+            const dateValue = element.dataset.date;
+
+            if (!dateValue) {
+                return;
+            }
+
+            const targetDate = new Date(dateValue.replace(" ", "T"));
+            const now = new Date();
+
+            if (isNaN(targetDate.getTime())) {
+                return;
+            }
+
+            const diffMs = targetDate.getTime() - now.getTime();
+            const diffMinutes = Math.round(diffMs / 60000);
+            const diffHours = Math.round(diffMinutes / 60);
+            const diffDays = Math.round(diffHours / 24);
+
+            const formatter = new Intl.RelativeTimeFormat(locales[lang] || "es-ES", {
+                numeric: "auto",
+            });
+
+            if (Math.abs(diffMinutes) < 60) {
+                element.textContent = formatter.format(diffMinutes, "minute");
+            } else if (Math.abs(diffHours) < 24) {
+                element.textContent = formatter.format(diffHours, "hour");
+            } else {
+                element.textContent = formatter.format(diffDays, "day");
+            }
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", translateRelativeTutoringDates);
+    document.addEventListener("languageChanged", translateRelativeTutoringDates);
+    document.addEventListener("livewire:navigated", translateRelativeTutoringDates);
+    document.addEventListener("livewire:update", translateRelativeTutoringDates);
+</script>

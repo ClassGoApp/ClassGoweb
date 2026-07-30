@@ -105,4 +105,10 @@ return [
     'resume_education' => 'Education',
     'resume_experience' => 'Experience',
     'resume_certificates_awards' => 'Certificates and awards',
+
+    'intro_video_valid_file' => 'The file must be a valid video.',
+    'intro_video_allowed_types' => 'The video must be of type: :types.',
+    'image_valid_file' => 'The file must be a valid image.',
+    'image_max_size' => 'The image must not exceed :size MB.',
+    'image_allowed_types' => 'The image must be of type: :types.',
 ];

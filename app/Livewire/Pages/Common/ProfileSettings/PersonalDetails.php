@@ -312,7 +312,7 @@ class PersonalDetails extends Component
                 'last_name' => __('profile.last_name'),
                 'phone_number' => __('profile.phone_number'),
                 'description' => __('profile.description'),
-                'image' => 'Foto de perfil',
+                'image' => __('profile.profile_photo'),
             ]);
 
             // El valor de género ya es int desde el front
@@ -435,8 +435,10 @@ class PersonalDetails extends Component
             $this->validate([
                 'intro_video' => 'file|max:' . ($this->maxVideoSize * 1024) . '|mimes:' . implode(',', $this->allowVideoFileExt)
             ], [
-                'intro_video.file' => 'El archivo debe ser un video válido.',
-                'intro_video.mimes' => 'El video debe ser de tipo: ' . implode(', ', $this->allowVideoFileExt)
+                'intro_video.file' => __('profile.intro_video_valid_file'),
+                'intro_video.mimes' => __('profile.intro_video_allowed_types', [
+                    'types' => implode(', ', $this->allowVideoFileExt)
+                ]),
             ]);
             $this->videoName = $value->getClientOriginalName();
         } catch (\Illuminate\Validation\ValidationException $e) {
@@ -455,9 +457,13 @@ class PersonalDetails extends Component
             $this->validate([
                 'image' => 'image|max:' . ($this->maxImageSize * 1024) . '|mimes:' . implode(',', $this->allowImgFileExt)
             ], [
-                'image.image' => 'El archivo debe ser una imagen válida.',
-                'image.max' => 'La imagen no debe superar ' . $this->maxImageSize . 'MB.',
-                'image.mimes' => 'La imagen debe ser de tipo: ' . implode(', ', $this->allowImgFileExt)
+                'image.image' => __('profile.image_valid_file'),
+                'image.max' => __('profile.image_max_size', [
+                    'size' => $this->maxImageSize
+                ]),
+                'image.mimes' => __('profile.image_allowed_types', [
+                    'types' => implode(', ', $this->allowImgFileExt)
+                ]),
             ]);
             $this->imageName = $value->getClientOriginalName();
         } catch (\Illuminate\Validation\ValidationException $e) {

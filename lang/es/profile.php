@@ -64,7 +64,7 @@ return [
     'search_your_address' => 'Busca tu dirección',
     'native_language' => 'Lengua materna',
     'select_a_native_language' => 'Seleccione un idioma nativo',
-    'profile_photo' => 'Fzoto de perfil',
+    'profile_photo' => 'Foto de perfil',
     'date_of_birth' => 'Fecha de nacimiento',
     'congratulations' => 'Felicidades',
     'description_text' => 'Proporcione su formación académica para ayudarnos a evaluar sus calificaciones.',
@@ -112,4 +112,10 @@ return [
     'resume_education' => 'Educación',
     'resume_experience' => 'Experiencia',
     'resume_certificates_awards' => 'Certificados y premios',
+
+    'intro_video_valid_file' => 'El archivo debe ser un video válido.',
+    'intro_video_allowed_types' => 'El video debe ser de tipo: :types.',
+    'image_valid_file' => 'El archivo debe ser una imagen válida.',
+    'image_max_size' => 'La imagen no debe superar :size MB.',
+    'image_allowed_types' => 'La imagen debe ser de tipo: :types.',
 ];

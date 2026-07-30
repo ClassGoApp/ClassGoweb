@@ -1697,6 +1697,46 @@ var translations = {
     favorite_add_aria: "Agregar a favoritos",
     favorite_in_your_favorites: "En tus Favoritos",
     favorite_favorites: "Favoritos",
+
+    upcoming_tutoring_title: "Mis Próximas Tutorías",
+    upcoming_tutoring_tutor: "Tutor",
+    upcoming_tutoring_subject: "Materia",
+    upcoming_tutoring_date_time: "Fecha y Hora",
+    upcoming_tutoring_status: "Estado",
+    upcoming_tutoring_link: "Link",
+    upcoming_tutoring_status_accepted: "Aceptado",
+    upcoming_tutoring_status_pending: "Pendiente",
+    upcoming_tutoring_go: "Ir Tutoría",
+    upcoming_tutoring_not_available: "No disponible",
+    upcoming_tutoring_empty: "No tienes tutorías próximas",
+    upcoming_tutoring_view_all: "Ver todas mis reservas",
+
+    next_tutoring_ready: "¿Listo para tu próxima tutoría?",
+    next_tutoring_in_progress: "En curso",
+    next_tutoring_confirmed: "Confirmada",
+    next_tutoring_go_class: "Ir al Aula Virtual",
+    next_tutoring_view_details: "Ver detalles",
+
+    custom_schedule_modal_desc:
+      "Envía una propuesta de fecha y hora personalizada al tutor.",
+    custom_schedule_suggested_date: "Fecha sugerida",
+    custom_schedule_select_date: "Selecciona una fecha",
+    custom_schedule_calculated_schedule: "Horario sugerido calculado:",
+    custom_schedule_note_label: "Mensaje / Nota explicativa",
+    custom_schedule_note_placeholder:
+      "Ej. Tengo libre esta hora porque se canceló otra clase...",
+    custom_schedule_send_proposal: "Enviar Propuesta",
+    custom_schedule_required_title: "Campos requeridos",
+    custom_schedule_required_date: "Por favor selecciona una fecha sugerida.",
+    custom_schedule_sending_title: "Enviando...",
+    custom_schedule_sending_text:
+      "Por favor espera mientras enviamos tu solicitud al tutor.",
+    custom_schedule_success_title: "¡Propuesta enviada!",
+    custom_schedule_success_text:
+      "Tu propuesta de horario ha sido enviada al tutor exitosamente.",
+    custom_schedule_error_title: "Error",
+    custom_schedule_error_send: "No se pudo enviar la propuesta.",
+    custom_schedule_error_process: "Ocurrió un error al enviar la propuesta.",
   },
   en: {
     // Navbar
@@ -3363,6 +3403,47 @@ var translations = {
     favorite_add_aria: "Add to favorites",
     favorite_in_your_favorites: "In your favorites",
     favorite_favorites: "Favorites",
+
+    upcoming_tutoring_title: "My Upcoming Tutoring Sessions",
+    upcoming_tutoring_tutor: "Tutor",
+    upcoming_tutoring_subject: "Subject",
+    upcoming_tutoring_date_time: "Date and Time",
+    upcoming_tutoring_status: "Status",
+    upcoming_tutoring_link: "Link",
+    upcoming_tutoring_status_accepted: "Accepted",
+    upcoming_tutoring_status_pending: "Pending",
+    upcoming_tutoring_go: "Go to Tutoring",
+    upcoming_tutoring_not_available: "Not available",
+    upcoming_tutoring_empty: "You have no upcoming tutoring sessions",
+    upcoming_tutoring_view_all: "View all my bookings",
+
+    next_tutoring_ready: "Ready for your next tutoring session?",
+    next_tutoring_in_progress: "In progress",
+    next_tutoring_confirmed: "Confirmed",
+    next_tutoring_go_class: "Go to Virtual Classroom",
+    next_tutoring_view_details: "View details",
+
+    custom_schedule_modal_desc:
+      "Send a personalized date and time proposal to the tutor.",
+    custom_schedule_suggested_date: "Suggested date",
+    custom_schedule_select_date: "Select a date",
+    custom_schedule_calculated_schedule: "Calculated suggested schedule:",
+    custom_schedule_note_label: "Message / Explanatory note",
+    custom_schedule_note_placeholder:
+      "Ex. I am free at this time because another class was canceled...",
+    custom_schedule_send_proposal: "Send Proposal",
+    custom_schedule_required_title: "Required fields",
+    custom_schedule_required_date: "Please select a suggested date.",
+    custom_schedule_sending_title: "Sending...",
+    custom_schedule_sending_text:
+      "Please wait while we send your request to the tutor.",
+    custom_schedule_success_title: "Proposal sent!",
+    custom_schedule_success_text:
+      "Your schedule proposal has been successfully sent to the tutor.",
+    custom_schedule_error_title: "Error",
+    custom_schedule_error_send: "The proposal could not be sent.",
+    custom_schedule_error_process:
+      "An error occurred while sending the proposal.",
   },
   pt: {
     // Navbar
@@ -5056,6 +5137,46 @@ var translations = {
     favorite_add_aria: "Adicionar aos favoritos",
     favorite_in_your_favorites: "Nos seus favoritos",
     favorite_favorites: "Favoritos",
+
+    upcoming_tutoring_title: "Minhas próximas tutorias",
+    upcoming_tutoring_tutor: "Tutor",
+    upcoming_tutoring_subject: "Matéria",
+    upcoming_tutoring_date_time: "Data e hora",
+    upcoming_tutoring_status: "Estado",
+    upcoming_tutoring_link: "Link",
+    upcoming_tutoring_status_accepted: "Aceito",
+    upcoming_tutoring_status_pending: "Pendente",
+    upcoming_tutoring_go: "Ir para tutoria",
+    upcoming_tutoring_not_available: "Não disponível",
+    upcoming_tutoring_empty: "Você não tem tutorias próximas",
+    upcoming_tutoring_view_all: "Ver todas as minhas reservas",
+
+    next_tutoring_ready: "Pronto para sua próxima tutoria?",
+    next_tutoring_in_progress: "Em andamento",
+    next_tutoring_confirmed: "Confirmada",
+    next_tutoring_go_class: "Ir para a sala virtual",
+    next_tutoring_view_details: "Ver detalhes",
+
+    custom_schedule_modal_desc:
+      "Envie uma proposta personalizada de data e hora ao tutor.",
+    custom_schedule_suggested_date: "Data sugerida",
+    custom_schedule_select_date: "Selecione uma data",
+    custom_schedule_calculated_schedule: "Horário sugerido calculado:",
+    custom_schedule_note_label: "Mensagem / Nota explicativa",
+    custom_schedule_note_placeholder:
+      "Ex. Estou livre nesse horário porque outra aula foi cancelada...",
+    custom_schedule_send_proposal: "Enviar proposta",
+    custom_schedule_required_title: "Campos obrigatórios",
+    custom_schedule_required_date: "Por favor, selecione uma data sugerida.",
+    custom_schedule_sending_title: "Enviando...",
+    custom_schedule_sending_text:
+      "Por favor, aguarde enquanto enviamos sua solicitação ao tutor.",
+    custom_schedule_success_title: "Proposta enviada!",
+    custom_schedule_success_text:
+      "Sua proposta de horário foi enviada ao tutor com sucesso.",
+    custom_schedule_error_title: "Erro",
+    custom_schedule_error_send: "Não foi possível enviar a proposta.",
+    custom_schedule_error_process: "Ocorreu um erro ao enviar a proposta.",
   },
 };
 
