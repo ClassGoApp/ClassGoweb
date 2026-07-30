@@ -41,7 +41,6 @@ class Profile extends Model {
     ];
 
     protected $casts = [
-        'price' => 'decimal:2',
     ];
 
     protected $table = 'profiles';
@@ -105,6 +104,16 @@ class Profile extends Model {
     public function isVerified(): Attribute {
         return Attribute::make(
             get: fn () => $this->verified_at ?? false,
+        );
+    }
+
+    /**
+     * Getter for price with default 15 Bs
+     */
+    protected function price(): Attribute {
+        return Attribute::make(
+            get: fn ($value) => $value ? (float) $value : 15.00,
+            set: fn ($value) => round((float) $value, 2),
         );
     }
 
