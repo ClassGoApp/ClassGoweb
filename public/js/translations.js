@@ -1737,6 +1737,18 @@ var translations = {
     custom_schedule_error_title: "Error",
     custom_schedule_error_send: "No se pudo enviar la propuesta.",
     custom_schedule_error_process: "Ocurrió un error al enviar la propuesta.",
+
+    company_course_instructor: "Instructor:",
+    company_course_video_unavailable:
+      "No hay video disponible para este curso.",
+    company_course_go_to_exam: "Ir al examen",
+    company_course_no_pending_courses:
+      "No tienes cursos pendientes o en progreso.",
+
+    company_exam_close: "Cerrar",
+    company_exam_submit_answers: "Enviar respuestas",
+    company_exam_sending: "Enviando...",
+    company_exam_no_questions: "No hay preguntas para este examen.",
   },
   en: {
     // Navbar
@@ -3444,6 +3456,18 @@ var translations = {
     custom_schedule_error_send: "The proposal could not be sent.",
     custom_schedule_error_process:
       "An error occurred while sending the proposal.",
+
+    company_course_instructor: "Instructor:",
+    company_course_video_unavailable:
+      "There is no video available for this course.",
+    company_course_go_to_exam: "Go to exam",
+    company_course_no_pending_courses:
+      "You have no pending or ongoing courses.",
+
+    company_exam_close: "Close",
+    company_exam_submit_answers: "Submit answers",
+    company_exam_sending: "Sending...",
+    company_exam_no_questions: "There are no questions for this exam.",
   },
   pt: {
     // Navbar
@@ -5177,6 +5201,18 @@ var translations = {
     custom_schedule_error_title: "Erro",
     custom_schedule_error_send: "Não foi possível enviar a proposta.",
     custom_schedule_error_process: "Ocorreu um erro ao enviar a proposta.",
+
+    company_course_instructor: "Instrutor:",
+    company_course_video_unavailable:
+      "Não há vídeo disponível para este curso.",
+    company_course_go_to_exam: "Ir para a prova",
+    company_course_no_pending_courses:
+      "Você não possui cursos pendentes ou em andamento.",
+
+    company_exam_close: "Fechar",
+    company_exam_submit_answers: "Enviar respostas",
+    company_exam_sending: "Enviando...",
+    company_exam_no_questions: "Não há perguntas para esta prova.",
   },
 };
 
