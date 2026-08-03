@@ -50,8 +50,8 @@ class BookingController extends Controller
 
             $map = [
                 'colegio'     => 1000,
-                'universidad' => 3000,
-                'instituto'   => 2000,
+                'universidad' => 2000,
+                'instituto'   => 3000,
             ];
 
             if (!isset($map[$institution])) {
