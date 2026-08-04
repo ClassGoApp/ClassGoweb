@@ -53,21 +53,24 @@
                         <div class="modern-dropdown-toggle" onclick="toggleModernDropdown(this)"
                             id="nativeDropdownLabel">
                             <span class="{{ $native_language ? '' : 'modern-dropdown-placeholder' }}">
-                                {{ $native_language ? __('lenguajes.' . $native_language) : __('Selecciona un idioma') }}
+                                {{ $native_language ? __('lenguajes.' . $native_language) : __('profile.select_language') }}
                             </span>
                             <span class="modern-dropdown-arrow"></span>
                         </div>
                         <div class="modern-dropdown-menu">
                             <div class="modern-dropdown-search">
-                                <input type="text" placeholder="Buscar idioma..."
+                                <input type="text"
+                                    placeholder="{{ __('profile.search_language') }}"
+                                    data-translate-placeholder="profile_search_language"
                                     onkeyup="filterModernLanguage(this)">
                             </div>
                             <div class="modern-dropdown-options" id="native-languages-list">
                                 <div class="modern-dropdown-option" onclick="document.getElementById('lang0').click()">
                                     <input type="radio" name="native_language" wire:model="native_language"
                                         value="" id="lang0" onchange="selectModernOption(this)">
-                                    <label for="lang0" style="width:100%;cursor:pointer;">Seleccione un
-                                        idioma</label>
+                                    <label for="lang0" style="width:100%;cursor:pointer;" data-translate="profile_select_language">
+                                        {{ __('profile.select_language') }}
+                                    </label>
                                 </div>
                                 @foreach ($languages as $id => $name)
                                     <div class="modern-dropdown-option {{ $native_language === $name ? 'selected' : '' }}"
@@ -99,12 +102,16 @@
 
                 <div class="tutor-profile-field" style="margin-bottom: 0rem;">
                     <label for="languages" class="form-label m-2 text-black" style="margin-bottom: 0.5rem;">
-                        Elija un Lema<span class="text-danger"></span>
+                        <span data-translate="profile_choose_motto">
+                            {{ __('profile.choose_motto') }}
+                        </span><span class="text-danger"></span>
                     </label>
 
                     <div class="modern-dropdown" tabindex="0">
                         <div class="modern-dropdown-toggle" onclick="toggleModernDropdown(this)">
-                            <span class="modern-dropdown-placeholder">Selecciona un Lema</span>
+                            <span class="modern-dropdown-placeholder" data-translate="profile_select_motto">
+                                {{ __('profile.select_motto') }}
+                            </span>
                             <span class="modern-dropdown-arrow"></span>
                         </div>
 
@@ -127,7 +134,10 @@
 
                         <div class="modern-dropdown-menu">
                             <div class="modern-dropdown-search">
-                                <input type="text" placeholder="Buscar Lema..." onkeyup="filterModernLanguage(this)">
+                                <input type="text"
+                                    placeholder="{{ __('profile.search_motto') }}"
+                                    data-translate-placeholder="profile_search_motto"
+                                    onkeyup="filterModernLanguage(this)">
                             </div>
 
                             <div class="modern-dropdown-options">
@@ -167,12 +177,16 @@
 
                     <div class="modern-dropdown" tabindex="0">
                         <div class="modern-dropdown-toggle" onclick="toggleModernDropdown(this)">
-                            <span class="modern-dropdown-placeholder">{{ __('Selecciona los idiomas') }}</span>
+                            <span class="modern-dropdown-placeholder" data-translate="profile_select_languages">
+                                {{ __('profile.select_languages') }}
+                            </span>
                             <span class="modern-dropdown-arrow"></span>
                         </div>
                         <div class="modern-dropdown-menu">
                             <div class="modern-dropdown-search">
-                                <input type="text" placeholder="Buscar idiomas....."
+                                <input type="text"
+                                    placeholder="{{ __('profile.search_languages') }}"
+                                    data-translate-placeholder="profile_search_languages"
                                     onkeyup="filterModernLanguage(this, 'languages-list')">
                             </div>
                             <div class="modern-dropdown-options" id="languages-list">
@@ -216,7 +230,9 @@
                         @endforeach
                     @else
                         <div class="text-white-50">
-                            {{ __('lenguajes Selecionados') }}
+                            <span data-translate="profile_selected_languages">
+                                {{ __('profile.selected_languages') }}
+                            </span>
                         </div>
                     @endif
                 </div>
@@ -285,8 +301,8 @@
                 document.addEventListener('DOMContentLoaded', function () {
                     Livewire.dispatch('showAlertMessage', {
                         type: 'error',
-                        title: 'Failed Google Calendar',
-                        message: "Failed to retrieve Google token. Please try again."
+                        title: @json(__('passwords.failed_google_calendar')),
+                        message: @json(__('passwords.failed_google_token'))
                     });
                 });
             </script>
@@ -296,8 +312,8 @@
                 document.addEventListener('DOMContentLoaded', function () {
                     Livewire.dispatch('showAlertMessage', {
                         type: 'success',
-                        title: 'Connect Google Calendar',
-                        message: "{{ __('passwords.connect_calender') }}"
+                        title: @json(__('passwords.connect_google_calendar')),
+                        message: @json(__('passwords.connect_calender'))
                     });
                 });
             </script>

@@ -10,11 +10,11 @@
         <!-- @include('skeletons.education') -->
             <div class="am-title_wrap">
                 <div class="am-title">
-                    <h2>{{ __('education.education_details') }}</h2>
-                    <p>{{ __('education.education_message') }}</p>
+                    <h2 data-translate="education_details">{{ __('education.education_details') }}</h2>
+                    <p data-translate="education_message">{{ __('education.education_message') }}</p>
                 </div>
                 <button class="am-btn am-btnsmall" wire:click="addEducation" wire:loading.class="am-btn_disable">
-                    {{ __('general.add_new') }}
+                    <span data-translate="general_add_new">{{ __('general.add_new') }}</span>
                     <i class="am-icon-plus-02"></i>
                 </button>
             </div>
@@ -24,12 +24,12 @@
                     <div class="am-resume_item_title">
                         <h3>{{ $education->course_title }}</h3>
                        <div class="am-itemactions">
-    <button type="button" class="am-btn am-btn-icon" wire:click="editEducation({{ $education }})" title="{{ __('general.edit') }}">
+    <button type="button" class="am-btn am-btn-icon" wire:click="editEducation({{ $education }})" title="{{ __('general.edit') }}" data-translate-title="general_edit">
         <i class="am-icon-pencil-02"></i>
     </button>
     <button type="button" class="am-btn am-btn-icon"
         @click="$wire.dispatch('showConfirm', { id : {{ $education->id }}, action : 'delete-education' })"
-        title="{{ __('general.delete') }}">
+        title="{{ __('general.delete') }}" data-translate-title="general_delete">
         <i class="am-icon-trash-02"></i>
     </button>
 </div>
@@ -38,7 +38,9 @@
                             <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
                                     <div class="am-modal-header">
-                                        {{ __('education.education_description') }}
+                                        <span data-translate="education_description">
+                                            {{ __('education.education_description') }}
+                                        </span>
                                         <span data-bs-dismiss="modal" class="am-closepopup">
                                             <i class="am-icon-multiply-01"></i>
                                         </span>
@@ -48,8 +50,11 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="am-btn"
-                                            x-on:click="$('#education-model-{{ $education->id }}').modal('hide')">{{
-                                            __('general.close_btn') }}</button>
+                                            x-on:click="$('#education-model-{{ $education->id }}').modal('hide')">
+                                            <span data-translate="general_close_btn">
+                                                {{ __('general.close_btn') }}
+                                            </span>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -71,8 +76,12 @@
                         <li>
                             <span>
                                 <i class="am-icon-calender"></i>
-                                {{ date('F Y', strtotime($education->start_date)) }} - {{ $education->ongoing ?
-                                __('general.current') : date('F Y', strtotime($education->end_date)) }}
+                                {{ \Carbon\Carbon::parse($education->start_date)->translatedFormat('F Y') }} -
+                                @if($education->ongoing)
+                                    <span data-translate="general_current">{{ __('general.current') }}</span>
+                                @else
+                                    {{ \Carbon\Carbon::parse($education->end_date)->translatedFormat('F Y') }}
+                                @endif
                             </span>
                         </li>
                     </ul>

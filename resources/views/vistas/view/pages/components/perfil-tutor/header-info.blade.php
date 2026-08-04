@@ -24,13 +24,15 @@
     @if($tutor->profile->image)
     <img id="profileImage"
         src="{{ asset('storage/' . $tutor->profile->image) }}"
-        alt="Foto de {{ $tutor->profile->first_name ?? '' }}"
+        alt="Foto de perfil"
+        data-translate-alt="tutor_profile_photo_alt"
         class="tutor-profile-img"
         style="background-color: white">
     @else
     <img id="profileImage"
         src="{{ asset('images/tutors/default.png') }}"
-        alt="Foto de {{ $tutor->profile->first_name ?? '' }}"
+        alt="Foto de perfil"
+        data-translate-alt="tutor_profile_photo_alt"
         class="tutor-profile-img"
         style="background-color: white">
     @endif
@@ -39,7 +41,9 @@
     <!-----------------Modal Imagen------------------->
     <div id="imageModal" class="image-modal">
         <div class="image-modal-inner">
-            <img class="image-modal-content" id="modalImage">
+            <img class="image-modal-content" id="modalImage"
+                alt="Foto de perfil ampliada"
+                data-translate-alt="tutor_profile_photo_expanded_alt">
         </div>
     </div>
 
@@ -52,8 +56,15 @@
                     <path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
                 </svg>
                 <span>{{ number_format($tutor->avg_rating ?? 0, 1) }}</span>
-                <span class="rating-count">({{ $tutor->total_reviews }}
-                    {{ $tutor->total_reviews == 1 ? 'reseña' : 'reseñas' }})</span>
+                <span class="rating-count">
+                    ({{ $tutor->total_reviews }}
+                    @if($tutor->total_reviews == 1)
+                        <span data-translate="tutor_profile_review">reseña</span>
+                    @else
+                        <span data-translate="tutor_profile_reviews">reseñas</span>
+                    @endif
+                    )
+                </span>
             </div>
             <div class="tutor-profile-students">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -69,7 +80,13 @@
 
     </div>
     {{-- <p class="tutor-profile-quote">{{ $tutor->profile->description ?? '" Tutor verificado y aprobado por ClassGo!"' }}</p> --}}
-    <p class="tutor-profile-quote">"{{ $tutor->profile->tagline ?? ' Tutor verificado y aprobado por ClassGo! '}}"</p> <!--Frase de BD-->
+    @if($tutor->profile->tagline)
+        <p class="tutor-profile-quote">"{{ $tutor->profile->tagline }}"</p>
+    @else
+        <p class="tutor-profile-quote">
+            "<span data-translate="tutor_profile_verified_quote">Tutor verificado y aprobado por ClassGo!</span>"
+        </p>
+    @endif <!--Frase de BD-->
 </div>
 <style>
     .tutor-profile-img {

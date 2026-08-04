@@ -86,9 +86,9 @@ class MyCalendar extends Component
 
             // Validación: la hora de fin no puede ser menor o igual que la de inicio
             if (strtotime($validatedData['end_time']) <= strtotime($validatedData['start_time'])) {
-                $this->addError('form.end_time', 'La hora de fin debe ser mayor que la hora de inicio.');
+                $this->addError('form.end_time', __('calendar.end_time_after_start'));
                 $this->dispatch('toggleModel', id: 'new-booking-modal', action: 'hide');
-                $this->dispatch('showAlertMessage', type: 'error', title: __('general.error_title'), message: 'La hora de fin debe ser mayor que la hora de inicio.');
+                $this->dispatch('showAlertMessage', type: 'error', title: __('general.error_title'), message: __('calendar.end_time_after_start'));
                 return;
             }
 
@@ -124,7 +124,7 @@ class MyCalendar extends Component
 
                 if ($overlap) {
                     $this->dispatch('toggleModel', id: 'new-booking-modal', action: 'hide');
-                    $this->dispatch('showAlertMessage', type: 'error', title: __('general.error_title'), message: 'Ya existe una reserva en ese rango de horas para el día ' . $date->format('Y-m-d'));
+                    $this->dispatch('showAlertMessage', type: 'error', title: __('general.error_title'), message: __('calendar.slot_overlap_for_date', ['date' => $date->format('Y-m-d')]));
                     return;
                 }
 
@@ -148,7 +148,7 @@ class MyCalendar extends Component
             if ($e instanceof \Illuminate\Validation\ValidationException) {
                 $errors = $e->validator->errors()->toArray();
                 $firstField = array_key_first($errors);
-                $firstMsg = $errors[$firstField][0] ?? 'Error de validación.';
+                $firstMsg = $errors[$firstField][0] ?? __('calendar.validation_error');
                 $this->dispatch('showAlertMessage', type: 'error', title: __('general.error_title'), message: ucfirst(str_replace('form.', '', $firstField)) . ': ' . $firstMsg);
             } else {
                 $this->dispatch('showAlertMessage', type: 'error', title: __('general.error_title'), message: $e->getMessage());
@@ -235,7 +235,7 @@ class MyCalendar extends Component
             if ($e instanceof \Illuminate\Validation\ValidationException) {
                 $errors = $e->validator->errors()->toArray();
                 $firstField = array_key_first($errors);
-                $firstMsg = $errors[$firstField][0] ?? 'Error de validación.';
+                $firstMsg = $errors[$firstField][0] ?? __('calendar.validation_error');
                 $this->dispatch('showAlertMessage', type: 'error', title: __('general.error_title'), message: ucfirst(str_replace('form.', '', $firstField)) . ': ' . $firstMsg);
             } else {
                 $this->dispatch('showAlertMessage', type: 'error', title: __('general.error_title'), message: $e->getMessage());
@@ -249,7 +249,7 @@ class MyCalendar extends Component
             $slot = UserSubjectSlot::findOrFail($this->editableSlotId);
             $slot->delete();
             $this->dispatch('toggleModel', id: 'edit-session', action: 'hide');
-            $this->dispatch('showAlertMessage', type: 'success', title: __('general.success_title'), message: 'Reserva eliminada correctamente.');
+            $this->dispatch('showAlertMessage', type: 'success', title: __('general.success_title'), message: __('calendar.session_deleted_successfully'));
         } catch (\Exception $e) {
             $this->dispatch('toggleModel', id: 'edit-session', action: 'hide');
             $this->dispatch('showAlertMessage', type: 'error', title: __('general.error_title'), message: $e->getMessage());

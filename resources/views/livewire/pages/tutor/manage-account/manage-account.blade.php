@@ -28,11 +28,18 @@
 
         <!-- Price section: nuevo input para el campo price en profiles -->
         <div class="price-section" style="margin: 1.25rem 0; display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-            <label for="price" style="min-width:180px; font-weight:600;">¿Cuánto deseas cobrar por tutoría?</label>
+            <label for="price" style="min-width:180px; font-weight:600;" data-translate="manage_account_price_question">
+                ¿Cuánto deseas cobrar por tutoría?
+            </label>
+
             <input id="price" type="number" step="0.01" min="0" class="form-control"
-                style="max-width:240px;" wire:model.defer="price" placeholder="Ej. 120.00">
+                style="max-width:240px;" wire:model.defer="price"
+                placeholder="Ej. 120.00" data-translate-placeholder="manage_account_price_placeholder">
+
             <div>
-                <button class="btn btn-primary" wire:click="savePrice">Guardar precio</button>
+                <button class="btn btn-primary" wire:click="savePrice" data-translate="manage_account_save_price">
+                    Guardar precio
+                </button>
             </div>
             @error('price')
                 <div style="width:100%; color: #dc2626; margin-top:6px;">{{ $message }}</div>
@@ -41,7 +48,7 @@
 
         <!-- Payment Methods Section -->
         <div class="payment-methods-section">
-            <div class="section-header">
+            <div class="section-header" data-translate="manage_account_payment_methods">
                 Métodos de pago
             </div>
 
@@ -64,9 +71,13 @@
                                     </svg>
                                 </div>
                                 <div>
-                                    <h3 style="margin: 0; font-size: 16px; font-weight: 600; color: #1e293b;">
-                                        Transferencia bancaria</h3>
-                                    <span class="method-status active" style="margin-top: 2px;">Activo</span>
+                                    <h3 style="margin: 0; font-size: 16px; font-weight: 600; color: #1e293b;"
+                                        data-translate="manage_account_bank_transfer">
+                                        Transferencia bancaria
+                                    </h3>
+                                    <span class="method-status active" style="margin-top: 2px;" data-translate="manage_account_active">
+                                        Activo
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -75,25 +86,28 @@
                             <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
                                 <tbody>
                                     <tr>
-                                        <td class="titulo-metodo-banco">Banco:</td>
+                                        <td class="titulo-metodo-banco" data-translate="manage_account_bank">Banco:</td>
                                         <td class="info-metodo-banco">
                                             {{ $bank->payout_details['bankName'] ?? 'N/A' }}</td>
                                     </tr>
                                     <tr>
-                                        <td class="titulo-metodo-banco">Tipo de cuenta:
+                                        <td class="titulo-metodo-banco" data-translate="manage_account_account_type">
+                                            Tipo de cuenta:
                                         </td>
                                         <td class="info-metodo-banco">
                                             {{ $bank->payout_details['title'] ?? 'N/A' }}</td>
                                     </tr>
                                     <tr>
-                                        <td class="titulo-metodo-banco">Número de cuenta:
+                                        <td class="titulo-metodo-banco" data-translate="manage_account_account_number">
+                                            Número de cuenta:
                                         </td>
                                         <td class="info-metodo-banco">
                                             {{ $bank->payout_details['accountNumber'] ?? 'N/A' }}</td>
                                     </tr>
                                     @if (!empty($bank->payout_details['bankRoutingNumber']))
                                         <tr>
-                                            <td class="titulo-metodo-banco">CCI / Ruta:
+                                            <td class="titulo-metodo-banco" data-translate="manage_account_cci_route">
+                                                CCI / Ruta:
                                             </td>
                                             <td class="info-metodo-banco">
                                                 {{ $bank->payout_details['bankRoutingNumber'] }}</td>
@@ -107,11 +121,13 @@
                         <div style="display: flex; gap: 8px; justify-content: flex-end; width: 100%; margin-top: auto;">
                             <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 13px;"
                                 wire:click="openPayout('cuentabancaria', 'setupaccountpopup')">
-                                <i class="fas fa-edit me-1"></i> Editar
+                                <i class="fas fa-edit me-1"></i>
+                                <span data-translate="general_edit">Editar</span>
                             </button>
                             <button class="btn btn-danger" style="padding: 6px 12px; font-size: 13px;"
                                 wire:click="openPayout('cuentabancaria', 'deletepopup')">
-                                <i class="fas fa-trash-alt me-1"></i> Eliminar
+                                <i class="fas fa-trash-alt me-1"></i>
+                                <span data-translate="general_delete">Eliminar</span>
                             </button>
                         </div>
                     </div>
@@ -133,16 +149,17 @@
                             <div class="method-header"
                                 style="display: flex; justify-content: center; margin-bottom: 8px;">
                                 <div class="method-info" style="text-align: center;">
-                                    <h3>Transferencia bancaria</h3>
-                                    <div class="no-account-message" style="font-size: 13px;">Aún no se ha agregado
-                                        ninguna cuenta.</div>
+                                    <h3 data-translate="manage_account_bank_transfer">Transferencia bancaria</h3>
+                                    <div class="no-account-message" style="font-size: 13px;" data-translate="manage_account_no_bank_account">
+                                        Aún no se ha agregado ninguna cuenta.
+                                    </div>
                                 </div>
                             </div>
                             <div class="method-actions" class="method-controls"
                                 style="display: flex; justify-content: center; margin-top: 10px;">
                                 <button class="btn btn-primary"
                                     wire:click="openPayout('cuentabancaria', 'setupaccountpopup')">
-                                    Configurar cuenta
+                                    <span data-translate="manage_account_setup_account">Configurar cuenta</span>
                                 </button>
                             </div>
                         </div>
@@ -176,9 +193,13 @@
                                     </svg>
                                 </div>
                                 <div>
-                                    <h3 style="margin: 0; font-size: 16px; font-weight: 600; color: #1e293b;">Pago con
-                                        QR</h3>
-                                    <span class="method-status active" style="margin-top: 2px;">Activo</span>
+                                    <h3 style="margin: 0; font-size: 16px; font-weight: 600; color: #1e293b;"
+                                        data-translate="manage_account_qr_payment">
+                                        Pago con QR
+                                    </h3>
+                                    <span class="method-status active" style="margin-top: 2px;" data-translate="manage_account_active">
+                                        Activo
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -187,13 +208,13 @@
                             {{-- <div class="qr-container"
                                 style="position: relative; cursor: pointer; text-align: center; width:20rem;height:20rem;"
                                 onclick="openQrFullScreen(this)">
-                                <img src="{{ asset('storage/' . $currentQRPath) }}" alt="Código QR de Pago"
+                                <img src="{{ asset('storage/' . $currentQRPath) }}" alt="Código QR de Pago" data-translate-alt="manage_account_payment_qr_alt"
                                     style="height: 20rem;width: 20rem; object-fit: contain; border: 1px solid #f1f5f9; padding: 4px; border-radius: 6px; background: white;">
                             </div> --}}
 
                             <div class="qr-container" onclick="openQrFullScreen(this)">
 
-                                <img src="{{ asset('storage/' . $currentQRPath) }}" alt="Código QR de Pago"
+                                <img src="{{ asset('storage/' . $currentQRPath) }}" alt="Código QR de Pago" data-translate-alt="manage_account_payment_qr_alt"
                                     class="qr-preview-image">
                             </div>
                         </div>
@@ -201,11 +222,13 @@
                             style="display: flex; gap: 8px; justify-content: flex-end; width: 100%; margin-top: auto;">
                             <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 13px;"
                                 wire:click="openPayout('QR', 'modalQR')">
-                                <i class="fas fa-sync-alt me-1"></i> Gestionar QR
+                                <i class="fas fa-sync-alt me-1"></i>
+                                <span data-translate="manage_account_manage_qr">Gestionar QR</span>
                             </button>
                             <button class="btn btn-danger" style="padding: 6px 12px; font-size: 13px;"
                                 wire:click="openPayout('QR', 'deletepopup')">
-                                <i class="fas fa-trash-alt me-1"></i> Eliminar
+                                <i class="fas fa-trash-alt me-1"></i>
+                                <span data-translate="general_delete">Eliminar</span>
                             </button>
                         </div>
                     </div>
@@ -235,15 +258,16 @@
                             <div class="method-header"
                                 style="display: flex; justify-content: center; margin-bottom: 8px;">
                                 <div class="method-info" style="text-align: center;">
-                                    <h3>Pago con QR</h3>
-                                    <div class="no-account-message" style="font-size: 13px;">Aún no se ha subido
-                                        ningún código QR.</div>
+                                    <h3 data-translate="manage_account_qr_payment">Pago con QR</h3>
+                                    <div class="no-account-message" style="font-size: 13px;" data-translate="manage_account_no_qr_uploaded">
+                                        Aún no se ha subido ningún código QR.
+                                    </div>
                                 </div>
                             </div>
                             <div class="method-actions"
                                 style="display: flex; flex-wrap: wrap; justify-content: center; margin-top: 10px;">
                                 <button class="btn btn-primary" wire:click="openPayout('QR', 'modalQR')">
-                                    Configurar QR
+                                    <span data-translate="manage_account_setup_qr">Configurar QR</span>
                                 </button>
                             </div>
                         </div>
@@ -486,8 +510,8 @@
             <img src="${img.src}" alt="Código QR ampliado" class="qr-floating-image">
         </div>
 
-        <div class="qr-floating-text">
-            Código QR de pago
+        <div class="qr-floating-text" data-translate="manage_account_payment_qr_text">
+            ${window.translateText ? window.translateText('manage_account_payment_qr_text', 'Código QR de pago') : 'Código QR de pago'}
         </div>
     </div>
 `;

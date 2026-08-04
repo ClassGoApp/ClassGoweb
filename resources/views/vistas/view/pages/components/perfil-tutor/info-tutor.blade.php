@@ -36,8 +36,22 @@
     <div class="tutor-tabs-content">
         <div id="introduccion" class="tutor-tab-content">
             <div>
-                <h3 class="tutor-section-title" data-translate="perfil_saludo">Hola👋 Soy {{ $tutor->profile->first_name ?? '' }}</h3>
-                <p class="tutor-section-text" data-translate="perfil_descripcion_predeterminada">{{ $tutor->profile->description ?? '" Soy un Tutor verificado y aprobado por ClassGo! Listo para responder tus dudas."' }}</p>
+                <h3 class="tutor-section-title">
+                    <span data-translate="perfil_saludo">Hola👋 Soy</span>
+                    {{ $tutor->profile->first_name ?? '' }}
+                </h3>
+
+                @if($tutor->profile->description)
+                    <p class="tutor-section-text">
+                        {{ $tutor->profile->description }}
+                    </p>
+                @else
+                    <p class="tutor-section-text">
+                        "<span data-translate="perfil_descripcion_predeterminada">
+                            Soy un Tutor verificado y aprobado por ClassGo! Listo para responder tus dudas.
+                        </span>"
+                    </p>
+                @endif
             </div>
 
             <hr class="tutor-section-divider">

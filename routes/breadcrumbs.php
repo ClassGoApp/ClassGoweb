@@ -16,16 +16,16 @@ $disputeId = request()->route('id') ?? null;
 
 Breadcrumbs::for('tutor.dashboard', function (BreadcrumbTrail $trail) {
     $trail->push(__('general.dashboard'), route('tutor.dashboard'));
-    $trail->push(__('Tutorias'), route('tutor.dashboard'));
+    $trail->push(__('breadcrumb.tutoring'), route('tutor.dashboard'));
 });
 
 
 Breadcrumbs::for('tutor.finances', function (BreadcrumbTrail $trail) {
-    $trail->push( __("Finanzas"), route('tutor.finances'));
+    $trail->push(__('breadcrumb.finances'), route('tutor.finances'));
 });
 
 Breadcrumbs::for('student.tutorias', function (BreadcrumbTrail $trail) {
-    $trail->push( __("Tutorias"), route('student.tutorias'));    
+    $trail->push(__('breadcrumb.tutoring'), route('student.tutorias'));
 });
 
 if($role != 'admin'){

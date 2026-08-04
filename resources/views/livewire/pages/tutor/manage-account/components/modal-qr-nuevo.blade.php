@@ -6,9 +6,12 @@
             <div class="modal-header qr-modal-header">
                 <h5 class="modal-title qr-modal-title" id="modalQRLabel">
                     <i class="fas fa-qrcode me-2"></i>
-                    Configurar Código QR de Pago
+                    <span data-translate="manage_account_qr_modal_title">
+                        Configurar Código QR de Pago
+                    </span>
                 </h5>
-                <button type="button" class="btn-close qr-close-btn" data-bs-dismiss="modal" aria-label="Close">
+                <button type="button" class="btn-close qr-close-btn" data-bs-dismiss="modal"
+                    aria-label="Close" data-translate-aria-label="general_close">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
@@ -16,19 +19,23 @@
             <!-- Body -->
             <div class="modal-body qr-modal-body">
                 <form wire:submit.prevent="updatePayout" enctype="multipart/form-data">
-                    <!-- QR Actual (si existe) -->
+                    <!-- QR Actual -->
                     @if($currentQRPath)
                         <div class="current-qr-section">
-                            <h6 class="section-title">Código QR Actual</h6>
+                            <h6 class="section-title" data-translate="manage_account_current_qr">
+                                Código QR Actual
+                            </h6>
                             <div class="current-qr-container">
                                 <div class="qr-image-wrapper">
-                                    <img src="{{ asset('storage/' . $currentQRPath) }}" alt="QR Actual"
+                                    <img src="{{ asset('storage/' . $currentQRPath) }}"
+                                        alt="QR Actual"
+                                        data-translate-alt="manage_account_current_qr_alt"
                                         class="current-qr-image">
                                     <div class="qr-image-overlay">
                                         <i class="fas fa-eye"></i>
                                     </div>
                                 </div>
-                               
+                                
                             </div>
                         </div>
                     @endif
@@ -37,9 +44,13 @@
                     <div class="upload-section">
                         <h6 class="section-title">
                             @if($currentQRPath)
-                                Cambiar Código QR
+                                <span data-translate="manage_account_change_qr">
+                                    Cambiar Código QR
+                                </span>
                             @else
-                                Subir Código QR
+                                <span data-translate="manage_account_upload_qr">
+                                    Subir Código QR
+                                </span>
                             @endif
                         </h6>
 
@@ -49,16 +60,18 @@
                             @if($qrImage)
                                 <!-- Preview de nueva imagen -->
                                 <div class="new-image-preview">
-                                    <img src="{{ $qrImage->temporaryUrl() }}" alt="Nueva imagen QR" class="preview-image">
+                                    <img src="{{ $qrImage->temporaryUrl() }}"
+                                        alt="Nueva imagen QR"
+                                        data-translate-alt="manage_account_new_qr_image_alt"
+                                        class="preview-image">
                                     <div class="preview-overlay">
                                         <div class="preview-info">
                                             <i class="fas fa-image"></i>
                                             <span class="preview-filename">{{ $qrImage->getClientOriginalName() }}</span>
-                                            <span class="preview-size">{{ number_format($qrImage->getSize() / 1024, 2) }}
-                                                KB</span>
+                                            <span class="preview-size">{{ number_format($qrImage->getSize() / 1024, 2) }} KB</span>
                                         </div>
                                         <button type="button" class="remove-preview-btn" wire:click="$set('qrImage', null)">
-                                            {{-- <i class="fas fa-trash"></i> --}}
+
                                             🗑️
                                         </button>
                                     </div>
@@ -70,11 +83,20 @@
                                         <i class="fas fa-cloud-upload-alt"></i>
                                     </div>
                                     <div class="upload-text">
-                                        <h6>Arrastra tu imagen aquí</h6>
-                                        <p>o <span class="upload-link">haz clic para seleccionar</span></p>
+                                        <h6 data-translate="manage_account_drag_image_here">
+                                            Arrastra tu imagen aquí
+                                        </h6>
+                                        <p>
+                                            <span data-translate="manage_account_or">o</span>
+                                            <span class="upload-link" data-translate="manage_account_click_to_select">
+                                                haz clic para seleccionar
+                                            </span>
+                                        </p>
                                     </div>
                                     <div class="upload-requirements">
-                                        <small>PNG, JPG, GIF • Máximo 5MB</small>
+                                        <small data-translate="manage_account_qr_requirements">
+                                            PNG, JPG, GIF • Máximo 5MB
+                                        </small>
                                     </div>
                                 </div>
                             @endif
@@ -91,7 +113,7 @@
                             </div>
                         @endif
                     </div>
-                    <!-- Información adicional -->
+
                 </form>
             </div>
 
@@ -99,30 +121,38 @@
             <div class="modal-footer qr-modal-footer">
                 <button type="button" class="btn btn-secondary qr-cancel-btn" data-bs-dismiss="modal">
                     <i class="fas fa-times me-2"></i>
-                    Cancelar
+                    <span data-translate="general_cancel">Cancelar</span>
                 </button>
 
                 <button type="button" wire:click="updatePayout" wire:loading.attr="disabled" wire:target="updatePayout"
                     class="btn btn-primary qr-save-btn" {{ !$qrImage && !$currentQRPath ? 'disabled' : '' }}>
 
                     <!-- Icono y texto normal -->
-                    <span wire:loading.remove wire:target="updatePayout">
+                    <span wire:loading.remove.delay wire:target="updatePayout">
                         @if($currentQRPath && $qrImage)
                             <i class="fas fa-sync-alt me-2"></i>
-                            Cambiar imagen
+                            <span data-translate="manage_account_change_image">
+                                Cambiar imagen
+                            </span>
                         @elseif($currentQRPath)
                             <i class="fas fa-check me-2"></i>
-                            Guardar QR
+                            <span data-translate="manage_account_save_qr">
+                                Guardar QR
+                            </span>
                         @else
                             <i class="fas fa-save me-2"></i>
-                            Guardar QR
+                            <span data-translate="manage_account_save_qr">
+                                Guardar QR
+                            </span>
                         @endif
                     </span>
 
                     <!-- Estado de carga -->
-                    <span wire:loading wire:target="updatePayout">
+                    <span wire:loading.delay wire:target="updatePayout">
                         <i class="fas fa-spinner fa-spin me-2"></i>
-                        Procesando...
+                        <span data-translate="manage_account_processing">
+                            Procesando...
+                        </span>
                     </span>
                 </button>
             </div>

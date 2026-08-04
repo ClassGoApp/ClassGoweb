@@ -17,21 +17,31 @@
                 @foreach($favourites as $favourite)
                     <div class="am-resume_item am-resume_wrap">
                             @if (!empty($favourite->profile->image) && Storage::disk(getStorageDisk())->exists($favourite->profile->image))
-                                <img src="{{ resizedImage($favourite->profile->image,50,50) }}" alt="{{$favourite->profile->image}}" />
+                                <img src="{{ resizedImage($favourite->profile->image,50,50) }}" alt="Foto de perfil"
+                                    data-translate-alt="tutor_profile_photo_alt" />
                             @else
-                                <img src="{{ setting('_general.default_avatar_for_user') ? url(Storage::url(setting('_general.default_avatar_for_user')[0]['path'])) : resizedImage('placeholder.png', 50, 50) }}" alt="{{ $favourite->profile->image }}" />
+                                <img src="{{ setting('_general.default_avatar_for_user') ? url(Storage::url(setting('_general.default_avatar_for_user')[0]['path'])) : resizedImage('placeholder.png', 50, 50) }}" alt="Foto de perfil"
+                                    data-translate-alt="tutor_profile_photo_alt" />
                             @endif
                         <div class="am-resume_content">
                                 <div class="am-resume_item_title">
                                     <h3>{{$favourite->profile->full_name}}</h3>
                                     <div class="am-favourite-actions">
-                                        <a href="{{ url('/tutores/' . $favourite->profile->slug) }}" class="btn btn-sm btn-outline-primary" title="Ver perfil">
+                                        <a href="{{ url('/tutores/' . $favourite->profile->slug) }}"
+                                            class="btn btn-sm btn-outline-primary"
+                                            title="Ver perfil"
+                                            data-translate-title="favourites_view_profile_title">
                                             <i class="am-icon-eye-open-01"></i>
-                                            Ver perfil
+                                            <span data-translate="favourites_view_profile">Ver perfil</span>
                                         </a>
-                                        <button type="button" class="btn btn-sm btn-outline-danger" @click="$wire.dispatch('showConfirm', { id : {{ $favourite->id }}, action : 'remove-favourite-user' })" title="Eliminar de favoritos">
+
+                                        <button type="button"
+                                            class="btn btn-sm btn-outline-danger"
+                                            @click="$wire.dispatch('showConfirm', { id : {{ $favourite->id }}, action : 'remove-favourite-user' })"
+                                            title="Eliminar de favoritos"
+                                            data-translate-title="favourites_remove_title">
                                             <i class="am-icon-trash-02"></i>
-                                            Eliminar
+                                            <span data-translate="general_delete">Eliminar</span>
                                         </button>
                                     </div>
                                 </div>
@@ -39,7 +49,9 @@
                                 <li>
                                     <span>
                                         <i class="am-icon-book-1"></i>
-                                        {{ $favourite->profile->native_language }}
+                                        <span data-translate="language_{{ strtolower($favourite->profile->native_language) }}">
+                                            {{ $favourite->profile->native_language }}
+                                        </span>
                                     </span>
                                 </li>
                                 @if ($favourite?->address?->country?->short_code)

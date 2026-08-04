@@ -9,11 +9,11 @@
             @if(!$experiences->isEmpty())
                 <div class="am-title_wrap">
                     <div class="am-title">
-                        <h2>{{ __('experience.experience_details') }}</h2>
-                        <p>{{ __('experience.experience_message') }}</p>
+                        <h2 data-translate="experience_details">{{ __('experience.experience_details') }}</h2>
+                        <p data-translate="experience_message">{{ __('experience.experience_message') }}</p>
                     </div>
                     <button class="am-btn am-btnsmall" wire:click="addExperience" wire:loading.class="am-btn_disable">
-                        {{ __('general.add_new') }}
+                        <span data-translate="general_add_new">{{ __('general.add_new') }}</span>
                         <i class="am-icon-plus-02"></i>
                     </button>
                 </div>
@@ -32,12 +32,12 @@
                         <div class="am-resume_item_title">
                             <h3>{{ $experience->title }}</h3>
                         <div class="am-itemactions">
-    <button type="button" class="am-btn am-btn-icon" wire:click="editExperience({{ $experience }})" title="{{ __('general.edit') }}">
+    <button type="button" class="am-btn am-btn-icon" wire:click="editExperience({{ $experience }})" title="{{ __('general.edit') }}" data-translate-title="general_edit">
         <i class="am-icon-pencil-02"></i>
     </button>
     <button type="button" class="am-btn am-btn-icon"
         @click="$wire.dispatch('showConfirm', { id : {{ $experience->id }}, action : 'delete-experience' })"
-        title="{{ __('general.delete') }}">
+        title="{{ __('general.delete') }}" data-translate-title="general_delete">
         <i class="am-icon-trash-02"></i>
     </button>
 </div>
@@ -46,7 +46,9 @@
                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                     <div class="modal-content">
                                         <div class="am-modal-header">
-                                            {{ __('experience.experience_description') }}
+                                            <span data-translate="experience_description_modal">
+                                                {{ __('experience.experience_description') }}
+                                            </span>
                                             <span data-bs-dismiss="modal" class="am-closepopup">
                                                 <i class="am-icon-multiply-01"></i>
                                             </span>
@@ -56,8 +58,10 @@
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="am-btn"
-                                                x-on:click="$('#experience-model-{{ $experience->id }}').modal('hide')">{{
-                                                __('general.close_btn') }}</button>
+                                                x-on:click="$('#experience-model-{{ $experience->id }}').modal('hide')"><span data-translate="general_close_btn">
+                                                {{ __('general.close_btn') }}
+                                            </span>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -74,14 +78,18 @@
                             <li>
                                 <span>
                                     <i class="am-icon-briefcase-02"></i>
-                                    {{ $types[$experience->employment_type] }}
+                                    <span data-translate="experience_{{ $experience->employment_type }}">
+                                        {{ __('experience.' . $experience->employment_type) }}
+                                    </span>
                                 </span>
                             </li>
                             @endif
                             <li>
                                 <span>
                                     <i class="am-icon-location"></i>
-                                    {{ ucfirst($experience->location) }}
+                                    <span data-translate="experience_{{ $experience->location }}">
+                                        {{ __('experience.' . $experience->location) }}
+                                    </span>
                                 </span>
                             </li>
                             @if($experience->location == 'onsite')
@@ -95,8 +103,13 @@
                             <li>
                                 <span>
                                     <i class="am-icon-calender-day"></i>
-                                    {{ date('F Y', strtotime($experience->start_date)) }} - {{ $experience->is_current ?
-                                    __('general.current') : date('F Y', strtotime($experience->end_date)) }}
+                                    {{ \Carbon\Carbon::parse($experience->start_date)->locale(app()->getLocale())->translatedFormat('F Y') }} -
+
+                                    @if($experience->is_current)
+                                        <span data-translate="general_current">{{ __('general.current') }}</span>
+                                    @else
+                                        {{ \Carbon\Carbon::parse($experience->end_date)->locale(app()->getLocale())->translatedFormat('F Y') }}
+                                    @endif
                                 </span>
                             </li>
                         </ul>
@@ -115,9 +128,13 @@
                     <div class="am-modal-header">
                         <h2 style="color:black !important;">
                             @if ($updateMode)
-                                {{ __('experience.update_new_experience') }}
+                                <span data-translate="experience_update_new_experience">
+                                    {{ __('experience.update_new_experience') }}
+                                </span>
                             @else
-                                {{ __('experience.add_new_experience') }}
+                                <span data-translate="experience_add_new_experience">
+                                    {{ __('experience.add_new_experience') }}
+                                </span>
                             @endif
                         </h2>    
                         <span data-bs-dismiss="modal" class="am-closepopup">
@@ -129,14 +146,18 @@
                             <fieldset>
                                 <div class="form-group @error('form.title') am-invalid @enderror">
                                     <x-input-label style="color:black !important;" for="title" class="am-important"
+                                        data-translate="experience_job_title"
                                         :value="__('experience.job_title')" />
+
                                     <x-text-input wire:model="form.title" id="title" name="title"
-                                        placeholder="{{ __('experience.job_title_placeholder') }}" type="text" autofocus
-                                        autocomplete="name" />
+                                        placeholder="{{ __('experience.job_title_placeholder') }}"
+                                        data-translate-placeholder="experience_job_title_placeholder"
+                                        type="text" autofocus autocomplete="name" />
                                     <x-input-error field_name="form.title" />
                                 </div>
                                 <div class="form-group @error('form.employment_type') am-invalid @enderror">
                                     <x-input-label style="color:black !important;" for="employment_type" class="am-important"
+                                        data-translate="experience_employment_type"
                                         :value="__('experience.employment_type')" />
                                     <span class="am-select" wire:ignore>
                                         <select wire:key="{{ time().'-types' }}" id="types"
@@ -145,14 +166,19 @@
                                     <x-input-error field_name="form.employment_type" />
                                 </div>
                                 <div class="form-group @error('form.company') am-invalid @enderror">
-                                    <x-input-label style="color:black !important;" for="name" class="am-important" :value="__('experience.company')" />
+                                    <x-input-label style="color:black !important;" for="name" class="am-important"
+                                        data-translate="experience_company"
+                                        :value="__('experience.company')" />
+
                                     <x-text-input wire:model="form.company" id="company" name="company"
-                                        placeholder="{{ __('experience.company_placeholder') }}" type="text" autofocus
-                                        autocomplete="name" />
+                                        placeholder="{{ __('experience.company_placeholder') }}"
+                                        data-translate-placeholder="experience_company_placeholder"
+                                        type="text" autofocus autocomplete="name" />
                                     <x-input-error field_name="form.company" />
                                 </div>
                                 <div class="form-group @error('form.location') am-invalid @enderror">
                                     <x-input-label style="color:black !important;" for="location" class="am-important"
+                                        data-translate="experience_location"
                                         :value="__('experience.location')" />
                                     <span class="am-select" wire:ignore>
                                         <select wire:key="{{ time().'-location' }}" id="locations"
@@ -163,6 +189,7 @@
                                 <div class="form-group form-group-two-wrap">
                                     <div class="@error('form.country') am-invalid @enderror">
                                         <x-input-label style="color:black !important;" class="am-important" for="country"
+                                            data-translate="experience_country"
                                             :value="__('experience.country')" />
                                         <span class="am-select" wire:ignore>
                                             <select wire:key="{{ time().'-country' }}" id="countries"
@@ -172,30 +199,35 @@
                                     </div>
                                     <div class="@error('form.city') am-invalid @enderror">
                                         <x-input-label style="color:black !important;" class="am-important" for="country"
+                                            data-translate="experience_city"
                                             :value="__('experience.city')" />
+
                                         <x-text-input wire:model="form.city" id="city" name="city"
-                                            placeholder="{{ __('experience.city_placeholder') }}" autofocus
-                                            autocomplete="name" />
+                                            placeholder="{{ __('experience.city_placeholder') }}"
+                                            data-translate-placeholder="experience_city_placeholder"
+                                            autofocus autocomplete="name" />
                                         <x-input-error field_name="form.city" />
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <x-input-label  style="color:black !important;" for="date" class="am-important" :value="__('experience.date')" />
+                                    <x-input-label style="color:black !important;" for="date" class="am-important"
+                                        data-translate="experience_date"
+                                        :value="__('experience.date')" />
                                     <div class="form-group-two-wrap">
                                         <div class="@error('form.start_date') am-invalid @enderror">
                                             <x-text-input wire:model="form.start_date" class="flat-date" id="startdate"
                                                 name="startdate"
                                                 placeholder="{{ __('experience.start_date_placeholder') }}"
-                                                data-format="Y-m-d" type="text" id="datepicker" autofocus
-                                                autocomplete="name" />
+                                                data-translate-placeholder="experience_start_date_placeholder"
+                                                data-format="Y-m-d" type="text" autofocus autocomplete="name" />
                                             <x-input-error field_name="form.start_date" />
                                         </div>
                                         <div class="@error('form.end_date') am-invalid @enderror">
                                             <x-text-input wire:model="form.end_date" class="flat-date" id="end_date"
                                                 name="end_date"
                                                 placeholder="{{ __('experience.end_date_placeholder') }}"
-                                                data-format="Y-m-d" type="text" id="datepicker" autofocus
-                                                autocomplete="name" />
+                                                data-translate-placeholder="experience_end_date_placeholder"
+                                                data-format="Y-m-d" type="text" autofocus autocomplete="name" />
                                             <x-input-error field_name="form.end_date" />
                                         </div>
                                     </div>
@@ -203,27 +235,33 @@
                                 <div class="form-group">
                                     <div class="am-checkbox">
                                         <input wire:model="form.is_current" type="checkbox" id="is_current">
-                                        <label style="color:black !important;" for="is_current">{{__('experience.checkbox_title')}}</label>
+                                        <label style="color:black !important;" for="is_current" data-translate="experience_checkbox_title">
+                                            {{ __('experience.checkbox_title') }}
+                                        </label>
                                         <x-input-error field_name="form.is_current" />
                                     </div>
                                 </div>
                                 <div class="form-group @error('form.description') am-invalid @enderror">
                                     <div class="am-label-wrap">
                                         <x-input-label style="color:black !important;" class="am-important" for="description"
+                                            data-translate="experience_form_description"
                                             :value="__('experience.description')" />
                                         @if(setting('_ai_writer_settings.enable_on_experience_settings') == '1')
                                             <button type="button" class="am-ai-btn" data-bs-toggle="modal" data-bs-target="#aiModal"  data-prompt-type="experience" data-parent-model-id="experience-popup" data-target-selector="#description" data-target-summernote="true">
                                                 <img src="{{ asset('images/ai-icon.svg') }}" alt="AI">
-                                                {{ __('general.write_with_ai') }}
+                                                <span data-translate="general_write_with_ai">
+                                                    {{ __('general.write_with_ai') }}
+                                                </span>
                                             </button>
                                         @endif
                                     </div>
                                     <div class="am-custom-editor" wire:ignore>
                                         <textarea id="description" class="form-control"
-                                            placeholder="{{ __('experience.description_placeholder') }}">{!! $form->description !!}</textarea>
+                                            placeholder="{{ __('experience.description_placeholder') }}"
+                                            data-translate-placeholder="experience_description_placeholder">{!! $form->description !!}</textarea>
                                         <span class="total-characters">
                                             <div class='tu-input-counter'>
-                                                <span>{{ __('general.char_left') }}:</span>
+                                                <span data-translate="general_char_left">{{ __('general.char_left') }}</span>:
                                                 <b>
                                                     {!! $MAX_PROFILE_CHAR - Str::length($form->description) !!}
                                                 </b> <em>/ {{ $MAX_PROFILE_CHAR }}</em>
@@ -234,7 +272,9 @@
                                 </div>
                                 <div class="form-group am-form-btns">
                                     <button type="submit" class="am-btn" wire:target="storeExperience" wire:loading.class="am-btn_disable">
-                                        {{__('general.save_update')}}
+                                        <span data-translate="general_save_update">
+                                            {{ __('general.save_update') }}
+                                        </span>
                                     </button>
                                 </div>
                             </fieldset>

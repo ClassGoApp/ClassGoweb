@@ -9,11 +9,11 @@
         @if(!$certificates->isEmpty())
             <div style="color:black !important;" class="am-title_wrap">
                 <div style="color:black !important;" class="am-title">
-                    <h2>{{ __('certificate.certificate_details') }}</h2>
-                    <p>{{ __('certificate.certificate_message') }}</p>
+                    <h2 data-translate="certificate_details">{{ __('certificate.certificate_details') }}</h2>
+                    <p data-translate="certificate_message">{{ __('certificate.certificate_message') }}</p>
                 </div>
                 <button class="am-btn am-btnsmall" wire:click="addCertificate" wire:loading.class="am-btn_disable">
-                    {{ __('general.add_new') }}
+                    <span data-translate="general_add_new">{{ __('general.add_new') }}</span>
                     <i class="am-icon-plus-02"></i>
                 </button>
             </div>
@@ -27,12 +27,12 @@
                         <div class="am-resume_item_title">
                             <h3>{{ $certificate->title }}</h3>
                             <div class="am-itemactions">
-    <button type="button" class="am-btn am-btn-icon" wire:click="editCertificate({{ $certificate }})" title="{{ __('general.edit') }}">
+    <button type="button" class="am-btn am-btn-icon" wire:click="editCertificate({{ $certificate }})" title="{{ __('general.edit') }}" data-translate-title="general_edit">
         <i class="am-icon-pencil-02"></i>
     </button>
     <button type="button" class="am-btn am-btn-icon"
         @click="$wire.dispatch('showConfirm', { id : {{ $certificate->id }}, action : 'delete-certificate' })"
-        title="{{ __('general.delete') }}">
+        title="{{ __('general.delete') }}" data-translate-title="general_delete">
         <i class="am-icon-trash-02"></i>
     </button>
 </div>
@@ -41,7 +41,9 @@
                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                     <div class="modal-content">
                                         <div class="am-modal-header">
-                                            {{ __('certificate.certificate_description') }}
+                                            <span data-translate="certificate_description">
+                                                {{ __('certificate.certificate_description') }}
+                                            </span>
                                             <span data-bs-dismiss="modal" class="am-closepopup">
                                                 <i class="am-icon-multiply-01"></i>
                                             </span>
@@ -51,8 +53,9 @@
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="am-btn"
-                                                x-on:click="$('#certificate-model-{{ $certificate->id }}').modal('hide')">{{
-                                                __('general.close_btn') }}</button>
+                                                x-on:click="$('#certificate-model-{{ $certificate->id }}').modal('hide')"><span data-translate="general_close_btn">
+                                                {{ __('general.close_btn') }}
+                                            </span></button>
                                         </div>
                                     </div>
                                 </div>
@@ -68,14 +71,15 @@
                             <li>
                                 <span>
                                     <i class="am-icon-calender-minus"></i>
-                                    {{ __('certificate.issued') }} {{ date('M d, Y', strtotime($certificate->issue_date)) }}
+                                    <span data-translate="certificate_issued">{{ __('certificate.issued') }}</span>
+                                    {{ \Carbon\Carbon::parse($certificate->issue_date)->locale(app()->getLocale())->translatedFormat('d M, Y') }}
                                 </span>
                             </li>
                             <li>
                                 <span>
                                     <i class="am-icon-calender-xmark"></i>
-                                    {{ __('certificate.expiry') }} {{ date('M d, Y', strtotime($certificate->expiry_date))
-                                    }}
+                                    <span data-translate="certificate_expiry">{{ __('certificate.expiry') }}</span>
+                                    {{ \Carbon\Carbon::parse($certificate->expiry_date)->locale(app()->getLocale())->translatedFormat('d M, Y') }}
                                 </span>
                             </li>
                         </ul>
@@ -95,9 +99,13 @@
                     <div class="am-modal-header">
                         <h2 style="color:black !important;">
                             @if ($updateMode)
-                            {{ __('certificate.update_new_certificate') }}
+                            <span data-translate="certificate_update_new_certificate">
+                                {{ __('certificate.update_new_certificate') }}
+                            </span>
                             @else
-                            {{ __('certificate.add_new_certificate') }}
+                            <span data-translate="certificate_add_new_certificate">
+                                {{ __('certificate.add_new_certificate') }}
+                            </span>
                             @endif
                         </h2>
                         <span data-bs-dismiss="modal" class="am-closepopup">
@@ -159,59 +167,81 @@
                                 </div> --}}
                                 <div class="form-group @error('form.title') am-invalid @enderror">
                                     <x-input-label style="color:black !important;" for="title" class="am-important"
+                                        data-translate="certificate_title"
                                         :value="__('certificate.certificate_title')" />
+
                                     <x-text-input wire:model="form.title" id="title" name="title"
-                                        placeholder="{{ __('certificate.title_placeholder') }}" type="text" autofocus
-                                        autocomplete="name" />
+                                        placeholder="{{ __('certificate.title_placeholder') }}"
+                                        data-translate-placeholder="certificate_title_placeholder"
+                                        type="text" autofocus autocomplete="name" />
+
                                     <x-input-error field_name="form.title" />
                                 </div>
+
                                 <div class="form-group @error('form.institute_name') am-invalid @enderror">
                                     <x-input-label style="color:black !important;" for="institute_name" class="am-important"
+                                        data-translate="certificate_university"
                                         :value="__('certificate.university')" />
+
                                     <x-text-input wire:model="form.institute_name" id="institute_name"
                                         name="institute_name"
-                                        placeholder="{{ __('certificate.university_placeholder') }}" type="text"
-                                        autofocus autocomplete="name" />
+                                        placeholder="{{ __('certificate.university_placeholder') }}"
+                                        data-translate-placeholder="certificate_university_placeholder"
+                                        type="text" autofocus autocomplete="name" />
+
                                     <x-input-error field_name="form.institute_name" />
                                 </div>
+
                                 <div class="form-group form-group-two-wrap">
                                     <div class="@error('form.issue_date') am-invalid @enderror">
                                         <x-input-label style="color:black !important;" for="issue_date" class="am-important"
+                                            data-translate="certificate_issue_date"
                                             :value="__('certificate.issue_date')" />
+
                                         <x-text-input wire:model="form.issue_date" class="flat-date" id="issue_date"
                                             name="issue_date"
                                             placeholder="{{ __('certificate.issue_date_placeholder') }}"
-                                            data-format="Y-m-d" type="text" id="datepicker" autofocus
-                                            autocomplete="name" />
+                                            data-translate-placeholder="certificate_issue_date_placeholder"
+                                            data-format="Y-m-d" type="text" autofocus autocomplete="name" />
+
                                         <x-input-error field_name="form.issue_date" />
                                     </div>
+
                                     <div class="@error('form.expiry_date') am-invalid @enderror">
                                         <x-input-label style="color:black !important;" for="expiry_date" class="am-important"
+                                            data-translate="certificate_expiry_date"
                                             :value="__('certificate.expiry_date')" />
+
                                         <x-text-input wire:model="form.expiry_date" class="flat-date" id="expiry_date"
                                             name="expiry_date"
                                             placeholder="{{ __('certificate.expiry_date_placeholder') }}"
-                                            data-format="Y-m-d" type="text" id="datepicker" autofocus
-                                            autocomplete="name" />
+                                            data-translate-placeholder="certificate_expiry_date_placeholder"
+                                            data-format="Y-m-d" type="text" autofocus autocomplete="name" />
+
                                         <x-input-error field_name="form.expiry_date" />
                                     </div>
                                 </div>
                                 <div class="form-group @error('form.description') am-invalid @enderror">
                                     <div class="am-label-wrap">
-                                        <x-input-label style="color:black !important;" for="description" :value="__('certificate.description')" />
+                                        <x-input-label style="color:black !important;" for="description"
+                                            data-translate="certificate_form_description"
+                                            :value="__('certificate.description')" />
                                         @if(setting('_ai_writer_settings.enable_on_awards_settings') == '1')
                                             <button type="button" class="am-ai-btn" data-bs-toggle="modal" data-bs-target="#aiModal"  data-prompt-type="awards" data-parent-model-id="certificate-popup" data-target-selector="#description" data-target-summernote="true">
                                                 <img src="{{ asset('images/ai-icon.svg') }}" alt="AI">
-                                                {{ __('general.write_with_ai') }}
+                                                <span data-translate="general_write_with_ai">
+                                                    {{ __('general.write_with_ai') }}
+                                                </span>
                                             </button>
                                         @endif
                                     </div>
                                     <div class="am-custom-editor" wire:ignore>
                                         <textarea id="description" class="form-control"
-                                            placeholder="{{ __('certificate.description_placeholder') }}"></textarea>
+                                            placeholder="{{ __('certificate.description_placeholder') }}"
+                                            data-translate-placeholder="certificate_description_placeholder"></textarea>
                                         <span class="total-characters">
                                             <div class='tu-input-counter'>
-                                                <span>{{ __('general.char_left') }}:</span>
+                                                <span data-translate="general_char_left">{{ __('general.char_left') }}</span>:
                                                 <b>
                                                     {!! $MAX_PROFILE_CHAR - Str::length($form->description) !!}
                                                 </b> <em>/ {{ $MAX_PROFILE_CHAR }}</em>
@@ -221,7 +251,10 @@
                                     <x-input-error field_name="form.description" />
                                 </div>
                                 <div class="form-group am-form-btns">
-                                    <button type="submit" class="am-btn" wire:loading.class="am-btn_disable">{{__('general.save_update')}}</button>
+                                    <button type="submit" class="am-btn" wire:loading.class="am-btn_disable"><span data-translate="general_save_update">
+                                        {{ __('general.save_update') }}
+                                    </span>
+                                    </button>
                                 </div>
                             </fieldset>
                         </form>

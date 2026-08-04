@@ -164,7 +164,8 @@
                     @auth
                         @role('student')
                             <div style="margin-top: 16px; text-align: center; width: 100%; box-sizing: border-box; display: block !important;">
-                                <button type="button" onclick="openRequestScheduleModal()" style="border: 2px solid #219EBC; color: #219EBC; font-size: 14px; padding: 10px 20px; border-radius: 12px; font-weight: 700; cursor: pointer; background: transparent; transition: all 0.15s ease; width: 100%; box-sizing: border-box;">
+                                <button type="button" onclick="openRequestScheduleModal()" style="border: 2px solid #219EBC; color: #219EBC; font-size: 14px; padding: 10px 20px; border-radius: 12px; font-weight: 700; cursor: pointer; background: transparent; transition: all 0.15s ease; width: 100%; box-sizing: border-box;"
+                                    data-translate="booking_request_custom_schedule">
                                     Solicitar otro horario
                                 </button>
                             </div>
@@ -644,8 +645,9 @@
 
                                     <p class="info-box-p" style="display:block !important">
                                         <strong data-translate="reservation_date_label">Fecha:</strong>
-                                        <span>
-                                            {{ $currentDate->copy()->setDay($selectedDay)->translatedFormat('j \de F \de Y') }}
+                                        <span class="reservation-selected-date"
+                                            data-date="{{ $currentDate->copy()->setDay($selectedDay)->format('Y-m-d') }}">
+                                            {{ $currentDate->copy()->setDay($selectedDay)->format('d/m/Y') }}
                                         </span>
                                     </p>
 
@@ -705,7 +707,8 @@
 
                                 <button wire:loading.attr="disabled" type="button" style="background-color: #FB8500; color: white;" 
                                     wire:click='$dispatch("openModalMaterialApoyo")'
-                                    class="btn btn-primary">
+                                    class="btn btn-primary"
+                                    data-translate="booking_next">
                                     Siguiente
                                 </button>
                             </div>
@@ -777,10 +780,13 @@
                         </svg>
                     </button>
 
-                    <h3 style="color: #023047; font-size: 20px; font-weight: 700; margin-bottom: 8px; text-align: center; font-family: 'Outfit', sans-serif; margin-top: 0;">
+                    <h3 style="color: #023047; font-size: 20px; font-weight: 700; margin-bottom: 8px; text-align: center; font-family: 'Outfit', sans-serif; margin-top: 0;"
+                        data-translate="booking_request_custom_schedule">
                         Solicitar otro horario
                     </h3>
-                    <p style="color: #6b7280; font-size: 14px; margin-bottom: 20px; text-align: center; font-family: 'Outfit', sans-serif;">
+
+                    <p style="color: #6b7280; font-size: 14px; margin-bottom: 20px; text-align: center; font-family: 'Outfit', sans-serif;"
+                        data-translate="custom_schedule_modal_desc">
                         Envía una propuesta de fecha y hora personalizada al tutor.
                     </p>
 
@@ -788,7 +794,10 @@
                     <div style="display: flex; flex-direction: column; gap: 16px; font-family: 'Outfit', sans-serif;">
                         <!-- Materia -->
                         <div>
-                            <label style="display: block; font-weight: 600; font-size: 14px; margin-bottom: 6px; color: #023047; text-align: left;">Materia Solicitada</label>
+                            <label style="display: block; font-weight: 600; font-size: 14px; margin-bottom: 6px; color: #023047; text-align: left;"
+                                data-translate="booking_requested_subject">
+                                Materia Solicitada
+                            </label>
                             <select id="req-custom-subject" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; color: #334155; outline: none; background-color: #f8fafc; box-sizing: border-box;">
                                 @foreach($materiasTutor as $m)
                                     @if($m->subject)
@@ -800,13 +809,23 @@
 
                         <!-- Fecha -->
                         <div>
-                            <label style="display: block; font-weight: 600; font-size: 14px; margin-bottom: 6px; color: #023047; text-align: left;">Fecha Sugerida</label>
-                            <input type="text" id="req-custom-date" placeholder="Selecciona una fecha" readonly style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; color: #334155; outline: none; background-color: #f8fafc; box-sizing: border-box; cursor: pointer;">
+                            <label style="display: block; font-weight: 600; font-size: 14px; margin-bottom: 6px; color: #023047; text-align: left;"
+                                data-translate="custom_schedule_suggested_date">
+                                Fecha Sugerida
+                            </label>
+                            <input type="text" id="req-custom-date"
+                                placeholder="Selecciona una fecha"
+                                data-placeholder-key="custom_schedule_select_date"
+                                readonly
+                                style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; color: #334155; outline: none; background-color: #f8fafc; box-sizing: border-box; cursor: pointer;">
                         </div>
 
                         <!-- Hora y AM/PM -->
                         <div>
-                            <label style="display: block; font-weight: 600; font-size: 14px; margin-bottom: 6px; color: #023047; text-align: left;">Hora de inicio</label>
+                            <label style="display: block; font-weight: 600; font-size: 14px; margin-bottom: 6px; color: #023047; text-align: left;"
+                                data-translate="booking_start_time">
+                                Hora de inicio
+                            </label>
                             <div style="display: flex; gap: 8px; align-items: center;">
                                 <select id="req-custom-hour" onchange="updateCalculatedEndTime()" style="flex: 1; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; outline: none; box-sizing: border-box; background: white;">
                                     @for($i=1; $i<=12; $i++)
@@ -828,7 +847,10 @@
 
                         <!-- Duración -->
                         <div>
-                            <label style="display: block; font-weight: 600; font-size: 14px; margin-bottom: 6px; color: #023047; text-align: left;">Duración de la Sesión</label>
+                            <label style="display: block; font-weight: 600; font-size: 14px; margin-bottom: 6px; color: #023047; text-align: left;"
+                                data-translate="booking_session_duration">
+                                Duración de la Sesión
+                            </label>
                             <div style="display: flex; gap: 8px; flex-wrap: wrap;">
                                 <button type="button" class="dur-chip-profile active" onclick="selectReqDurationProfile('20 min', this)">20 min</button>
                                 <button type="button" class="dur-chip-profile" onclick="selectReqDurationProfile('40 min', this)">40 min</button>
@@ -841,19 +863,30 @@
 
                         <!-- Previsualización del Horario Calculado -->
                         <div style="background-color: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 8px; padding: 12px; margin-top: 8px; text-align: center; font-family: 'Outfit', sans-serif;">
-                            <span style="font-size: 13px; color: #64748b; display: block; font-weight: 500; margin-bottom: 2px;">Horario sugerido calculado:</span>
+                            <span style="font-size: 13px; color: #64748b; display: block; font-weight: 500; margin-bottom: 2px;"
+                                data-translate="custom_schedule_calculated_schedule">
+                                Horario sugerido calculado:
+                            </span>
                             <strong id="req-custom-preview-time" style="font-size: 15px; color: #023047;">10:00 AM - 10:20 AM (20 min)</strong>
                         </div>
 
                         <!-- Mensaje -->
                         <div>
-                            <label style="display: block; font-weight: 600; font-size: 14px; margin-bottom: 6px; color: #023047; text-align: left;">Mensaje / Nota explicativa</label>
-                            <textarea id="req-custom-note" rows="3" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; color: #334155; outline: none; resize: none; box-sizing: border-box;" placeholder="Ej. Tengo libre esta hora porque se canceló otra clase..."></textarea>
+                            <label style="display: block; font-weight: 600; font-size: 14px; margin-bottom: 6px; color: #023047; text-align: left;"
+                                data-translate="custom_schedule_note_label">
+                                Mensaje / Nota explicativa
+                            </label>
+
+                            <textarea id="req-custom-note" rows="3"
+                                style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; color: #334155; outline: none; resize: none; box-sizing: border-box;"
+                                placeholder="Ej. Tengo libre esta hora porque se canceló otra clase..."
+                                data-placeholder-key="custom_schedule_note_placeholder"></textarea> 
                         </div>
 
                         <!-- Botón de Envío -->
-                        <button type="button" onclick="submitCustomScheduleRequest()" style="background-color: #219EBC; color: white; border: none; border-radius: 12px; padding: 12px; font-size: 16px; font-weight: 700; cursor: pointer; transition: opacity 0.15s ease; margin-top: 8px; box-sizing: border-box; width: 100%;">
-                            🚀 Enviar Propuesta
+                        <button type="button" onclick="submitCustomScheduleRequest()"
+                            style="background-color: #219EBC; color: white; border: none; border-radius: 12px; padding: 12px; font-size: 16px; font-weight: 700; cursor: pointer; transition: opacity 0.15s ease; margin-top: 8px; box-sizing: border-box; width: 100%;">
+                            🚀 <span data-translate="custom_schedule_send_proposal">Enviar Propuesta</span>
                         </button>
                     </div>
                 </div>
@@ -916,8 +949,8 @@
 
                 // Función auxiliar para cargar dependencias dinámicamente
                 async function loadFlatpickrAssets() {
-                    if (window.flatpickr) return;
-                    
+
+
                     // 1. Cargar CSS
                     if (!document.querySelector('link[href*="flatpickr.min.css"]')) {
                         const link = document.createElement('link');
@@ -925,22 +958,36 @@
                         link.href = 'https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css';
                         document.head.appendChild(link);
                     }
-                    
-                    // 2. Cargar Script
-                    await new Promise((resolve) => {
-                        const script = document.createElement('script');
-                        script.src = 'https://cdn.jsdelivr.net/npm/flatpickr';
-                        script.onload = resolve;
-                        document.head.appendChild(script);
-                    });
 
-                    // 3. Cargar Locale Español
-                    await new Promise((resolve) => {
-                        const script = document.createElement('script');
-                        script.src = 'https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js';
-                        script.onload = resolve;
-                        document.head.appendChild(script);
-                    });
+                    // 2. Cargar Flatpickr principal
+                    if (!window.flatpickr) {
+                        await new Promise((resolve) => {
+                            const script = document.createElement('script');
+                            script.src = 'https://cdn.jsdelivr.net/npm/flatpickr';
+                            script.onload = resolve;
+                            document.head.appendChild(script);
+                        });
+                    }
+
+                    // 3. Cargar locale Español
+                    if (!window.flatpickr.l10ns.es) {
+                        await new Promise((resolve) => {
+                            const script = document.createElement('script');
+                            script.src = 'https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js';
+                            script.onload = resolve;
+                            document.head.appendChild(script);
+                        });
+                    }
+
+                    // 4. Cargar locale Portugués
+                    if (!window.flatpickr.l10ns.pt) {
+                        await new Promise((resolve) => {
+                            const script = document.createElement('script');
+                            script.src = 'https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js';
+                            script.onload = resolve;
+                            document.head.appendChild(script);
+                        });
+                    }
                 }
 
                 async function openRequestScheduleModal() {
@@ -954,12 +1001,24 @@
                     await loadFlatpickrAssets();
 
                     // Inicializar flatpickr para la fecha sugerida si aún no se inicializó
-                    if (!window.reqCustomDateFlatpickr && window.flatpickr) {
+                    if (window.flatpickr) {
+                        const lang = localStorage.getItem('selectedLanguage') || 'es';
+
+                        const flatpickrLocale = lang === 'pt'
+                            ? 'pt'
+                            : lang === 'en'
+                                ? 'default'
+                                : 'es';
+
+                        if (window.reqCustomDateFlatpickr) {
+                            window.reqCustomDateFlatpickr.destroy();
+                        }
+
                         window.reqCustomDateFlatpickr = flatpickr("#req-custom-date", {
                             minDate: "today",
                             dateFormat: "Y-m-d",
-                            locale: "es",
-                            disableMobile: "true"
+                            locale: flatpickrLocale,
+                            disableMobile: true
                         });
                     }
                 }
@@ -989,7 +1048,11 @@
                     const note = document.getElementById('req-custom-note').value;
                     
                     if (!preferredDate) {
-                        Swal.fire('Campos requeridos', 'Por favor selecciona una fecha sugerida.', 'warning');
+                        Swal.fire(
+                            reservationText('custom_schedule_required_title', 'Campos requeridos'),
+                            reservationText('custom_schedule_required_date', 'Por favor selecciona una fecha sugerida.'),
+                            'warning'
+                        );
                         return;
                     }
 
@@ -1032,8 +1095,8 @@
                     const preferredTime = `${startTimeStr} - ${endTimeStr}`;
 
                     Swal.fire({
-                        title: 'Enviando...',
-                        text: 'Por favor espera mientras enviamos tu solicitud al tutor.',
+                        title: reservationText('custom_schedule_sending_title', 'Enviando...'),
+                        text: reservationText('custom_schedule_sending_text', 'Por favor espera mientras enviamos tu solicitud al tutor.'),
                         allowOutsideClick: false,
                         didOpen: () => {
                             Swal.showLoading();
@@ -1062,13 +1125,25 @@
 
                         if (data.success) {
                             closeRequestScheduleModal();
-                            Swal.fire('¡Propuesta Enviada!', 'Tu propuesta de horario ha sido enviada al tutor exitosamente.', 'success');
+                            Swal.fire(
+                                reservationText('custom_schedule_success_title', '¡Propuesta enviada!'),
+                                reservationText('custom_schedule_success_text', 'Tu propuesta de horario ha sido enviada al tutor exitosamente.'),
+                                'success'
+                            );
                         } else {
-                            Swal.fire('Error', data.message || 'No se pudo enviar la propuesta.', 'error');
+                            Swal.fire(
+                                reservationText('custom_schedule_error_title', 'Error'),
+                                data.message || reservationText('custom_schedule_error_send', 'No se pudo enviar la propuesta.'),
+                                'error'
+                            );
                         }
                     } catch (error) {
                         Swal.close();
-                        Swal.fire('Error', 'Ocurrió un error al enviar la propuesta.', 'error');
+                        Swal.fire(
+                            reservationText('custom_schedule_error_title', 'Error'),
+                            reservationText('custom_schedule_error_process', 'Ocurrió un error al enviar la propuesta.'),
+                            'error'
+                        );
                     }
                 }
             </script>
@@ -1135,11 +1210,40 @@
         });
     }
 
+    function applyReservationSelectedDate() {
+        const lang = localStorage.getItem('selectedLanguage') || 'es';
+
+        const localeMap = {
+            es: 'es-BO',
+            en: 'en-US',
+            pt: 'pt-BR'
+        };
+
+        const locale = localeMap[lang] || 'es-BO';
+
+        document.querySelectorAll('.reservation-selected-date').forEach((element) => {
+            const dateValue = element.getAttribute('data-date');
+
+            if (!dateValue) return;
+
+            const date = new Date(dateValue + 'T00:00:00');
+
+            let text = new Intl.DateTimeFormat(locale, {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            }).format(date);
+
+            element.textContent = text;
+        });
+    }
+
     function applyReservationTranslationsAfterLivewire() {
         const lang = localStorage.getItem('selectedLanguage') || 'es';
 
         applyReservationPlaceholders();
         applyReservationCalendarMonth();
+        applyReservationSelectedDate();
 
         if (typeof selectLanguage === 'function') {
             selectLanguage(lang, false);
@@ -1152,6 +1256,7 @@
     document.addEventListener('languageChanged', function() {
         applyReservationPlaceholders();
         applyReservationCalendarMonth();
+        applyReservationSelectedDate();
     });
 
     document.addEventListener('livewire:init', function() {

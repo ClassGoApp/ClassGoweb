@@ -23,8 +23,13 @@
             <div class="am-userid">
                 <div class="am-title_wrap">
                     <div class="am-title">
-                        <h2 style="color: black">{{ __('profile.identity_verification') }}</h2> {{-- Título principal --}}
-                        <p style="color: black">{{ __('profile.identity_detail_desc') }}</p> {{-- Descripción --}}
+                        <h2 style="color: black" data-translate="profile_identity_verification">
+                            {{ __('profile.identity_verification') }}
+                        </h2>
+
+                        <p style="color: black" data-translate="profile_identity_detail_desc">
+                            {{ __('profile.identity_detail_desc') }}
+                        </p>
                     </div>
                 </div>
                 <form wire:submit.prevent="updateInfo" class="am-themeform am-themeform_personalinfo">
@@ -57,11 +62,7 @@
                                     <div class="form-group-two-wrap" x-data="{
                                         fp: null,
                                         init() {
-                                            if (window.flatpickr) {
-                                                this.initFlatpickr();
-                                            } else {
-                                                this.loadAssets().then(() => this.initFlatpickr());
-                                            }
+                                            this.loadAssets().then(() => this.initFlatpickr());
                                         },
                                         async loadAssets() {
                                             if (!document.getElementById('fp-css')) {
@@ -70,12 +71,13 @@
                                                 link.rel = 'stylesheet';
                                                 link.href = 'https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css';
                                                 document.head.appendChild(link);
-                                    
+
                                                 let theme = document.createElement('link');
                                                 theme.rel = 'stylesheet';
                                                 theme.href = 'https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/airbnb.css';
                                                 document.head.appendChild(theme);
                                             }
+
                                             if (!window.flatpickr) {
                                                 await new Promise((resolve) => {
                                                     let script = document.createElement('script');
@@ -83,19 +85,36 @@
                                                     script.onload = resolve;
                                                     document.head.appendChild(script);
                                                 });
-                                                await new Promise((resolve) => {
-                                                    let script = document.createElement('script');
-                                                    script.src = 'https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js';
-                                                    script.onload = resolve;
-                                                    document.head.appendChild(script);
-                                                });
                                             }
+
+                                            await new Promise((resolve) => {
+                                                if (document.getElementById('fp-locale-es')) return resolve();
+
+                                                let script = document.createElement('script');
+                                                script.id = 'fp-locale-es';
+                                                script.src = 'https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js';
+                                                script.onload = resolve;
+                                                document.head.appendChild(script);
+                                            });
+
+                                            await new Promise((resolve) => {
+                                                if (document.getElementById('fp-locale-pt')) return resolve();
+
+                                                let script = document.createElement('script');
+                                                script.id = 'fp-locale-pt';
+                                                script.src = 'https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js';
+                                                script.onload = resolve;
+                                                document.head.appendChild(script);
+                                            });
                                         },
+
                                         initFlatpickr() {
+                                            const selectedLang = localStorage.getItem('selectedLanguage') || 'es';
+
                                             this.fp = flatpickr(this.$refs.dobInput, {
                                                 dateFormat: 'd/m/Y',
                                                 allowInput: true,
-                                                locale: 'es',
+                                                locale: selectedLang === 'pt' ? 'pt' : selectedLang === 'es' ? 'es' : 'default',
                                                 disableMobile: true,
                                                 onChange: (selectedDates, dateStr) => {
                                                     @this.set('form.dateOfBirth', dateStr);
@@ -110,7 +129,8 @@
                                         ]) style="position: relative;">
 
                                             <x-text-input id="dob_mask" x-ref="dobInput" x-mask="99/99/9999"
-                                                wire:model.blur="form.dateOfBirth" placeholder="DD/MM/AAAA"
+                                                wire:model.blur="form.dateOfBirth" placeholder="{{ __('profile.date_placeholder') }}"
+                                                data-translate-placeholder="profile_date_placeholder"
                                                 type="text" class="form-control" autocomplete="bday"
                                                 style="padding-right: 42px; font-weight: 600; color: var(--primary-color) !important;" />
 
@@ -187,7 +207,7 @@
                                                     this.isUploading = false;
                                                     this.isProcessingPhoto = false;
                                                     if (this.$refs.video) this.$refs.video.play();
-                                                    alert('Error al subir la imagen. Intenta nuevamente.');
+                                                    alert(translateText('identity_image_upload_error', 'Error al subir la imagen. Intenta nuevamente.'));
                                                 }
                                             );
                                         },
@@ -229,7 +249,7 @@
                                             } catch (err) {
                                                 console.error(err);
                                                 this.showCamera = false;
-                                                alert('No se pudo acceder a la cámara.');
+                                                alert(translateText('identity_camera_access_error', 'No se pudo acceder a la cámara.'));
                                             } finally {
                                                 this.isCameraLoading = false;
                                             }
@@ -342,7 +362,7 @@
                                                                     <circle cx="12" cy="13" r="4">
                                                                     </circle>
                                                                 </svg>
-                                                                Usar cámara web
+                                                                <span data-translate="identity_use_webcam">Usar cámara web</span>
                                                             </button>
                                                         </template>
                                                     </div>
@@ -384,7 +404,8 @@
                                                             style="left: 15px; top: 50%; transform: translateY(-50%); background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); width: 38px; height: 38px; border-radius: 50%; color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s;"
                                                             onmouseover="this.style.background='rgba(255,255,255,0.2)'"
                                                             onmouseout="this.style.background='rgba(255,255,255,0.1)'"
-                                                            title="Voltear cámara">
+                                                            title="Voltear cámara"
+                                                            data-translate-title="identity_flip_camera">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="18"
                                                                 height="18" viewBox="0 0 24 24" fill="none"
                                                                 stroke="currentColor" stroke-width="2.5"
@@ -478,7 +499,7 @@
                                                 <div class="spinner-border text-primary mb-2" role="status"
                                                     style="width: 2.2rem; height: 2.2rem; border-width: 0.22em;"></div>
                                                 <span class="text-primary fw-bold small"
-                                                    style="letter-spacing: 0.5px;">Subiendo...</span>
+                                                    style="letter-spacing: 0.5px;"><span data-translate="identity_uploading">Subiendo...</span></span>
                                             </div>
                                         </div>
 
@@ -502,7 +523,7 @@
                                                                 class="w-100 h-100 object-fit-cover rounded" />
                                                         @endif
 
-                                                        <div class="photo-hover-overlay">Click para ver</div>
+                                                        <div class="photo-hover-overlay"><span data-translate="identity_click_to_view">Click para ver</span></div>
                                                     </div>
 
                                                     {{-- 🔄 NUEVO BOTÓN: Elimina servidor + Oculta vista + Abre cámara directo --}}
@@ -512,7 +533,7 @@
                                                         style="width: 38px; height: 38px; background: #fff; transition: all 0.2s ease;"
                                                         onmouseover="this.style.background='#fff5f5'; this.style.transform='scale(1.08)';"
                                                         onmouseout="this.style.background='#fff'; this.style.transform='scale(1)';"
-                                                        title="Reemplazar foto">
+                                                        title="{{ __('identity.replace_photo') }}" data-translate-title="identity_replace_photo">
                                                         <i class="am-icon-trash-02" style="font-size: 1.15rem;"></i>
                                                     </a>
                                                 </div>
@@ -788,7 +809,7 @@
                                     
                                             } catch (err) {
                                                 console.error(err);
-                                                alert('No se pudo acceder a la cámara seleccionada.');
+                                                alert(translateText('identity_selected_camera_access_error', 'No se pudo acceder a la cámara seleccionada.'));
                                                 this.openCameraModal = false;
                                             } finally {
                                                 this.isCameraLoading = false;
@@ -925,13 +946,14 @@
                                         <div :class="{ 'd-block': step === 'init', 'd-none': step !== 'init' }"
                                             style="display: none;" x-transition>
                                             <p class="small mb-3" style="color: rgba(255, 255, 255, 0.9) !important;">
-                                                Para completar tu verificación es necesario capturar o subir ambas caras
-                                                de tu documento.</p>
+                                                <span data-translate="identity_upload_both_sides">
+                                                    Para completar tu verificación es necesario capturar o subir ambas caras de tu documento.
+                                                </span></p>
                                             <div class="d-flex justify-content-center gap-3 flex-wrap">
                                                 <button type="button"
                                                     @click="uploadMethod = 'gallery'; openUploadModal = true;"
                                                     class="btn btn-outline-light btn-sm rounded-pill px-4 shadow-sm fw-bold">
-                                                    Subir desde Galería
+                                                    <span data-translate="identity_upload_from_gallery">Subir desde Galería</span>
                                                 </button>
                                                 <template x-if="isCameraSupported">
                                                     <button type="button"
@@ -947,7 +969,7 @@
                                                             </path>
                                                             <circle cx="12" cy="13" r="4"></circle>
                                                         </svg>
-                                                        Usar Cámara Web
+                                                        <span data-translate="identity_use_webcam">Usar cámara web</span>
                                                     </button>
                                                 </template>
 
@@ -964,7 +986,7 @@
                                                     stroke-width="3">
                                                     <polyline points="20 6 9 17 4 12"></polyline>
                                                 </svg>
-                                                Documento de Identidad Cargado
+                                                <span data-translate="identity_document_uploaded">Documento de Identidad Cargado</span>
                                             </h6>
 
                                             <div class="d-flex justify-content-center flex-wrap gap-4 w-100">
@@ -972,14 +994,16 @@
                                                 <div class="d-flex flex-column align-items-center w-100-mobile flex-fill"
                                                     style="max-width: 280px;">
                                                     <span class="small fw-bold mb-1"
-                                                        style="color: rgba(255,255,255,0.85) !important;">Cara
-                                                        Frontal</span>
+                                                        style="color: rgba(255,255,255,0.85) !important;"
+                                                        data-translate="identity_front_side">
+                                                        Cara Frontal
+                                                    </span>
                                                     <div class="id-preview-box-centered border border-white border-opacity-25 shadow-sm w-100"
                                                         @click="lightboxUrl = $refs.finalImgFront.src">
                                                         <img x-ref="finalImgFront"
                                                             src="{{ $form->identificationCardFront ? (method_exists($form->identificationCardFront, 'temporaryUrl') ? $form->identificationCardFront->temporaryUrl() : url(Storage::url($form->identificationCardFront))) : '' }}"
                                                             class="w-100 h-100 object-fit-cover rounded">
-                                                        <div class="id-hover-overlay">Click para ver</div>
+                                                        <div class="id-hover-overlay"><span data-translate="identity_click_to_view">Click para ver</span></div>
                                                     </div>
                                                 </div>
 
@@ -987,14 +1011,16 @@
                                                 <div class="d-flex flex-column align-items-center w-100-mobile flex-fill"
                                                     style="max-width: 280px;">
                                                     <span class="small fw-bold mb-1"
-                                                        style="color: rgba(255,255,255,0.85) !important;">Cara
-                                                        Reverso</span>
+                                                        style="color: rgba(255,255,255,0.85) !important;"
+                                                        data-translate="identity_back_side">
+                                                        Cara Reverso
+                                                    </span>
                                                     <div class="id-preview-box-centered border border-white border-opacity-25 shadow-sm w-100"
                                                         @click="lightboxUrl = $refs.finalImgBack.src">
                                                         <img x-ref="finalImgBack"
                                                             src="{{ $form->identificationCardBack ? (method_exists($form->identificationCardBack, 'temporaryUrl') ? $form->identificationCardBack->temporaryUrl() : url(Storage::url($form->identificationCardBack))) : '' }}"
                                                             class="w-100 h-100 object-fit-cover rounded">
-                                                        <div class="id-hover-overlay">Click para ver</div>
+                                                        <div class="id-hover-overlay"><span data-translate="identity_click_to_view">Click para ver</span></div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1003,12 +1029,12 @@
                                             <div class="d-flex justify-content-center gap-3 mt-4 w-100">
                                                 <button type="button" @click="resetAll()"
                                                     class="btn-new btn-sm btn-outline-danger px-4 rounded-pill shadow-sm fw-bold">
-                                                    Empezar de nuevo
+                                                    <span data-translate="identity_start_again">Empezar de nuevo</span>
                                                 </button>
                                                 <button type="button" @click="triggerChangePhotos()"
                                                     class="btn btn-sm btn-light  px-4 rounded-pill fw-bold shadow-sm"
                                                     style="border: none !important;">
-                                                    Cambiar fotos
+                                                    <span data-translate="identity_change_photos">Cambiar fotos</span>
                                                 </button>
                                             </div>
                                         </div>
@@ -1034,14 +1060,20 @@
                                                 </button>
 
                                                 <div x-show="cameraStep === 'front_capture'">
-                                                    <span class="badge bg-primary mb-2">Paso 1: Frente</span>
-                                                    <h5 class="fw-bold mb-3 text-dark">Encuadra el FRENTE de tu Cédula
+                                                    <span class="badge bg-primary mb-2" data-translate="identity_step_1_front">
+                                                        Paso 1: Frente
+                                                    </span>
+                                                    <h5 class="fw-bold mb-3 text-dark" data-translate="identity_frame_front_card">
+                                                        Encuadra el FRENTE de tu Cédula
                                                     </h5>
                                                 </div>
 
                                                 <div x-show="cameraStep === 'front_confirm'">
-                                                    <h5 class="fw-bold text-success mb-1">Foto del frente guardada</h5>
-                                                    <p class="text-muted small mb-3">¿Los datos se leen de forma clara?
+                                                    <h5 class="fw-bold text-success mb-1" data-translate="identity_front_photo_saved">
+                                                        Foto del frente guardada
+                                                    </h5>
+                                                    <p class="text-muted small mb-3" data-translate="identity_front_data_clear">
+                                                        ¿Los datos se leen de forma clara?
                                                     </p>
                                                     <div class="id-preview-box-centered mx-auto mb-3">
                                                         <img src="{{ $form->identificationCardFront ? (method_exists($form->identificationCardFront, 'temporaryUrl') ? $form->identificationCardFront->temporaryUrl() : url(Storage::url($form->identificationCardFront))) : '' }}"
@@ -1050,25 +1082,31 @@
                                                     <div class="d-flex p-1 justify-content-center gap-2">
                                                         <button type="button"
                                                             @click="cameraStep = 'back_capture'; startCamera('back');"
-                                                            class="btn-photo text-black btn-sm rounded-pill px-3 fw-bold">Siguiente,
-                                                            reverso</button>
+                                                            class="btn-photo text-black btn-sm rounded-pill px-3 fw-bold"><span data-translate="identity_next_back">Siguiente, reverso</span></button>
                                                         <button type="button"
                                                             @click="resetSide('front'); cameraStep = 'front_capture'; startCamera('front');"
-                                                            class="btn btn-sm btn-outline-danger rounded-pill px-3">Tomar
-                                                            otra vez</button>
+                                                            class="btn btn-sm btn-outline-danger rounded-pill px-3"><span data-translate="identity_take_again">Tomar otra vez</span></button>
                                                     </div>
                                                 </div>
 
                                                 <div x-show="cameraStep === 'back_capture'">
-                                                    <span class="badge bg-primary mb-2">Paso 2: Reverso</span>
-                                                    <h5 class="fw-bold mb-3 text-dark">Encuadra el REVERSO de tu Cédula
+                                                    <span class="badge bg-primary mb-2" data-translate="identity_step_2_back">
+                                                        Paso 2: Reverso
+                                                    </span>
+
+                                                    <h5 class="fw-bold mb-3 text-dark" data-translate="identity_frame_back_card">
+                                                        Encuadra el REVERSO de tu Cédula
                                                     </h5>
                                                 </div>
 
                                                 <div x-show="cameraStep === 'back_confirm'">
-                                                    <h5 class="fw-bold text-success mb-1">Foto del reverso guardada
+                                                    <h5 class="fw-bold text-success mb-1" data-translate="identity_back_photo_saved">
+                                                        Foto del reverso guardada
                                                     </h5>
-                                                    <p class="text-muted small mb-3">¿El reverso se ve nítido?</p>
+
+                                                    <p class="text-muted small mb-3" data-translate="identity_back_clear">
+                                                        ¿El reverso se ve nítido?
+                                                    </p>
                                                     <div class="id-preview-box-centered mx-auto mb-3">
                                                         <img src="{{ $form->identificationCardBack ? (method_exists($form->identificationCardBack, 'temporaryUrl') ? $form->identificationCardBack->temporaryUrl() : url(Storage::url($form->identificationCardBack))) : '' }}"
                                                             class="w-100 h-100 object-fit-cover rounded">
@@ -1076,12 +1114,12 @@
                                                     <div class="d-flex pb-1 justify-content-center gap-2">
                                                         <button type="button"
                                                             @click="openCameraModal = false; step = 'completed';"
-                                                            class="btn btn-sm btn-success rounded-pill px-4 fw-bold">Finalizar
-                                                            y Guardar</button>
+                                                            class="btn btn-sm btn-success rounded-pill px-4 fw-bold"><span data-translate="identity_finish_and_save">Finalizar y Guardar</span></button>
                                                         <button type="button"
                                                             @click="resetSide('back'); cameraStep = 'back_capture'; startCamera('back');"
-                                                            class="btn btn-sm btn-outline-danger rounded-pill px-3">Tomar
-                                                            otra vez</button>
+                                                            class="btn btn-sm btn-outline-danger rounded-pill px-3">
+                                                            <span data-translate="identity_take_again">Tomar otra vez</span>
+                                                        </button>
                                                     </div>
                                                 </div>
 
@@ -1125,7 +1163,8 @@
                                                                 style="left: 20px; top: 50%; transform: translateY(-50%); background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); width: 38px; height: 38px; border-radius: 50%; color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s;"
                                                                 onmouseover="this.style.background='rgba(255,255,255,0.2)'"
                                                                 onmouseout="this.style.background='rgba(255,255,255,0.1)'"
-                                                                title="Cambiar de cámara">
+                                                                title="Cambiar de cámara"
+                                                                data-translate-title="identity_change_camera">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="18"
                                                                     height="18" viewBox="0 0 24 24" fill="none"
                                                                     stroke="currentColor" stroke-width="2.5"
@@ -1153,8 +1192,9 @@
                                                                     style="right: 20px; top: 50%; transform: translateY(-50%); background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); width: 38px; height: 38px; border-radius: 50%; color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s;"
                                                                     onmouseover="this.style.background='rgba(255,255,255,0.2)'"
                                                                     onmouseout="this.style.background='rgba(255,255,255,0.1)'"
-                                                                    :title="flashMode === 'on' ? 'Apagar linterna' :
-                                                                        'Encender linterna'">
+                                                                    :title="flashMode === 'on'
+                                                                    ? translateText('identity_turn_off_flashlight', 'Apagar linterna')
+                                                                    : translateText('identity_turn_on_flashlight', 'Encender linterna')">
 
                                                                     {{-- Icono Linterna APAGADA --}}
                                                                     <svg x-show="flashMode === 'off'"
@@ -1213,7 +1253,9 @@
                                             style="display: none;">
                                             <div class="custom-modal-card p-4 text-center text-dark"
                                                 style="max-width: 460px;" @click.stop>
-                                                <h5 class="fw-bold subir-ci">Subir Cédula desde Archivos</h5>
+                                                <h5 class="fw-bold subir-ci" data-translate="identity_upload_id_from_files">
+                                                    Subir Cédula desde Archivos
+                                                </h5>
 
                                                 {{-- Contenedor de Cajas (Responsivo: 1 columna en móvil, flex centrado en desktop) --}}
                                                 <div
@@ -1222,7 +1264,7 @@
                                                     {{-- File Box Frente --}}
                                                     <div
                                                         class="id-upload-card d-flex flex-column align-items-center w-100-mobile">
-                                                        <span class="small fw-bold mb-1 text-muted">Cara Frontal</span>
+                                                        <span class="small fw-bold mb-1 text-muted"><span data-translate="identity_front_side">Cara Frontal</span></span>
                                                         <div
                                                             class="id-preview-box-centered bg-light border d-flex flex-column justify-content-center position-relative">
 
@@ -1233,8 +1275,9 @@
                                                                 style="z-index: 10; display: none;">
                                                                 <div class="spinner-border spinner-border-sm text-primary mb-1"
                                                                     role="status"></div>
-                                                                <span
-                                                                    class="x-small text-muted fw-semibold">Cargando...</span>
+                                                                <span class="x-small text-muted fw-semibold" data-translate="identity_loading">
+                                                                    Cargando...
+                                                                </span>
                                                             </div>
 
                                                             {{-- Vista previa de la foto --}}
@@ -1244,7 +1287,7 @@
                                                                     class="w-100 h-100 object-fit-cover rounded"
                                                                     @click="lightboxUrl = frontPreview">
                                                                 <div class="id-hover-overlay"
-                                                                    @click="lightboxUrl = frontPreview">Click para ver
+                                                                    @click="lightboxUrl = frontPreview"><span data-translate="identity_click_to_view">Click para ver</span>
                                                                 </div>
                                                             </div>
 
@@ -1267,22 +1310,23 @@
                                                                         <line x1="12" y1="3"
                                                                             x2="12" y2="15" />
                                                                     </svg>
-                                                                    <span class="text-primary small fw-bold">Subir
-                                                                        Frente</span>
+                                                                    <span class="text-primary small fw-bold" data-translate="identity_upload_front">
+                                                                        Subir Frente
+                                                                    </span>
                                                                 </label>
                                                             </div>
 
                                                         </div>
                                                         <template x-if="hasFront && !isUploadingFront">
                                                             <button type="button" @click="resetSide('front')"
-                                                                class="btn btn-link text-danger text-decoration-none x-small p-0 mt-1">Borrar</button>
+                                                                class="btn btn-link text-danger text-decoration-none x-small p-0 mt-1"><span data-translate="general_delete">Borrar</span></button>
                                                         </template>
                                                     </div>
 
                                                     {{-- File Box Reverso --}}
                                                     <div
                                                         class=" id-upload-card d-flex flex-column align-items-center w-100-mobile">
-                                                        <span class="small fw-bold mb-1 text-muted">Cara Reverso</span>
+                                                        <span class="small fw-bold mb-1 text-muted"><span data-translate="identity_back_side">Cara Reverso</span></span>
                                                         <div
                                                             class="id-preview-box-centered bg-light border d-flex flex-column justify-content-center position-relative">
 
@@ -1293,8 +1337,9 @@
                                                                 style="z-index: 10; display: none;">
                                                                 <div class="spinner-border spinner-border-sm text-primary mb-1"
                                                                     role="status"></div>
-                                                                <span
-                                                                    class="x-small text-muted fw-semibold">Cargando...</span>
+                                                                <span class="x-small text-muted fw-semibold" data-translate="identity_loading">
+                                                                    Cargando...
+                                                                </span>
                                                             </div>
 
                                                             {{-- Vista previa de la foto --}}
@@ -1304,7 +1349,7 @@
                                                                     class="w-100 h-100 object-fit-cover rounded"
                                                                     @click="lightboxUrl = backPreview">
                                                                 <div class="id-hover-overlay"
-                                                                    @click="lightboxUrl = backPreview">Click para ver
+                                                                    @click="lightboxUrl = backPreview"><span data-translate="identity_click_to_view">Click para ver</span>
                                                                 </div>
                                                             </div>
 
@@ -1327,15 +1372,16 @@
                                                                         <line x1="12" y1="3"
                                                                             x2="12" y2="15" />
                                                                     </svg>
-                                                                    <span class="text-primary small fw-bold">Subir
-                                                                        Reverso</span>
+                                                                    <span class="text-primary small fw-bold" data-translate="identity_upload_back">
+                                                                        Subir Reverso
+                                                                    </span>
                                                                 </label>
                                                             </div>
 
                                                         </div>
                                                         <template x-if="hasBack && !isUploadingBack">
                                                             <button type="button" @click="resetSide('back')"
-                                                                class="btn btn-link text-danger text-decoration-none x-small p-0 mt-1">Borrar</button>
+                                                                class="btn btn-link text-danger text-decoration-none x-small p-0 mt-1"><span data-translate="general_delete">Borrar</span></button>
                                                         </template>
                                                     </div>
 
@@ -1347,10 +1393,10 @@
                                                     <button type="button"
                                                         @click="openUploadModal = false; evaluateGlobalStep();"
                                                         :disabled="!hasFront || !hasBack || isUploadingFront || isUploadingBack"
-                                                        class="btn btn-success rounded-pill px-4 btn-sm fw-bold">Finalizar</button>
+                                                        class="btn btn-success rounded-pill px-4 btn-sm fw-bold"><span data-translate="identity_finish">Finalizar</span></button>
                                                     <button type="button"
                                                         @click="openUploadModal = false; evaluateGlobalStep();"
-                                                        class="btn btn-outline-secondary rounded-pill px-3 btn-sm">Cancelar</button>
+                                                        class="btn btn-outline-secondary rounded-pill px-3 btn-sm"><span data-translate="general_cancel">Cancelar</span></button>
                                                 </div>
                                             </div>
 
@@ -1679,13 +1725,15 @@
                                                         style="display: none;">
                                                         <div class="p-2 border-bottom">
                                                             <input type="text" x-model="search"
-                                                                placeholder="Buscar país..."
+                                                                placeholder="{{ __('identity.search_country') }}"
+                                                                data-translate-placeholder="identity_search_country"
                                                                 class="custom-select-search-input">
                                                         </div>
                                                         <div class="custom-select-options-list">
                                                             @foreach ($countries as $country)
                                                                 <div class="custom-select-item"
-                                                                    x-show="'{{ strtolower($country->name) }}'.includes(search.toLowerCase())"
+                                                                    data-search="{{ e(strtolower($country->name)) }}"
+                                                                    x-show="$el.dataset.search.includes(search.toLowerCase())"
                                                                     @click="$wire.set('form.country', '{{ $country->id }}', true); open = false; search = '';">
                                                                     {{ $country->name }}
                                                                 </div>
@@ -1733,13 +1781,15 @@
                                                         style="display: none;">
                                                         <div class="p-2 border-bottom">
                                                             <input type="text" x-model="search"
-                                                                placeholder="Buscar estado..."
+                                                                placeholder="{{ __('identity.search_state') }}"
+                                                                data-translate-placeholder="identity_search_state"
                                                                 class="custom-select-search-input">
                                                         </div>
                                                         <div class="custom-select-options-list">
                                                             @foreach ($states as $state)
                                                                 <div class="custom-select-item"
-                                                                    x-show="'{{ strtolower(addslashes($state->name)) }}'.includes(search.toLowerCase())"
+                                                                    data-search="{{ e(strtolower($state->name)) }}"
+                                                                    x-show="$el.dataset.search.includes(search.toLowerCase())"
                                                                     @click="$wire.set('form.state', '{{ $state->id }}'); open = false; search = '';">
                                                                     {{ $state->name }}
                                                                 </div>
@@ -1868,7 +1918,9 @@
 
                             {{-- Botón para guardar cambios --}}
                             <div class="form-group am-form-btns" style="padding:1rem 0 !important">
-                                <div style="color: black">{{ __('profile.latest_changes_the_live') }}</div>
+                                <div style="color: black" data-translate="profile_latest_changes_the_live">
+                                    {{ __('profile.latest_changes_the_live') }}
+                                </div>
                                 <x-primary-button type="submit" wire:target="updateInfo"
                                     wire:loading.class="am-btn_disable" wire:loading.attr="disabled">
 
@@ -1878,7 +1930,7 @@
                                         aria-hidden="true"></span>
 
                                     {{-- Texto del botón --}}
-                                    <span>{{ __('profile.save_update') }}</span>
+                                    <span data-translate="profile_save_update">{{ __('profile.save_update') }}</span>
                                 </x-primary-button>
                             </div>
                         </fieldset>
@@ -1935,7 +1987,9 @@
                     <h5 class="modal-title d-flex align-items-center gap-2" id="prerequisitesModalLabel"
                         style="font-weight: 700; font-size: 1.15rem; margin: 0; color: #ffffff;">
                         <i class="fas fa-exclamation-circle text-warning" style="font-size: 1.25rem;"></i>
-                        Completar requisitos obligatorios
+                        <span data-translate="identity_complete_required_requirements">
+                            Completar requisitos obligatorios
+                        </span>
                     </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                         aria-label="Cerrar"
@@ -1944,7 +1998,8 @@
                 </div>
 
                 <div class="modal-body" style="padding: 10px; background-color: #f8fafc;">
-                    <p style="font-size: 0.95rem; color: #475569; margin-bottom: 20px; line-height: 1.5;">
+                    <p style="font-size: 0.95rem; color: #475569; margin-bottom: 20px; line-height: 1.5;"
+                        data-translate="identity_requirements_message">
                         Para poder continuar con la verificación de tu identidad, necesitas completar la
                         configuración de los siguientes requisitos en tu perfil de tutor:
                     </p>
@@ -1969,15 +2024,19 @@
                                         <span class="prereq-icon-box">
                                             <i class="fas" :class="accepted ? 'fa-check' : 'fa-times'"></i>
                                         </span>
-                                        <strong class="prereq-title">Número de teléfono</strong>
+                                        <strong class="prereq-title" data-translate="identity_phone_number">
+                                            Número de teléfono
+                                        </strong>
                                     </div>
-                                    <span class="prereq-badge" x-text="accepted ? 'Aceptado ✓' : 'Pendiente'"></span>
+                                    <span class="prereq-badge" x-text="accepted ? translateText('identity_accepted_check', 'Aceptado ✓') : translateText('identity_pending', 'Pendiente')"></span>
                                 </div>
 
                                 {{-- Fila Inferior: Formulario de Entrada --}}
                                 <div class="prereq-form-divider" x-show="!accepted" x-transition>
-                                    <label for="pre_phone" class="prereq-label-premium mb-2 d-block">Ingresa tu número
-                                        de teléfono:</label>
+                                    <label for="pre_phone" class="prereq-label-premium mb-2 d-block"
+                                        data-translate="identity_enter_phone_number">
+                                        Ingresa tu número de teléfono:
+                                    </label>
 
                                     <div class="position-relative d-flex align-items-center w-100">
                                         <input type="text" id="pre_phone" wire:model="prerequisite_phone_number"
@@ -1989,7 +2048,8 @@
                                         <button type="button"
                                             @click="accepted = true; setTimeout(() => $wire.savePrerequisiteOption('phone_number'), 700)"
                                             class="btn-prereq-section-accept">
-                                            <i class="fas fa-check-circle me-1"></i> Aceptar
+                                            <i class="fas fa-check-circle me-1"></i>
+                                            <span data-translate="identity_accept">Aceptar</span>
                                         </button>
                                     </div>
                                 </div>
@@ -2014,33 +2074,37 @@
                                         <span class="prereq-icon-box">
                                             <i class="fas" :class="accepted ? 'fa-check' : 'fa-times'"></i>
                                         </span>
-                                        <strong class="prereq-title">Género de perfil</strong>
+                                        <strong class="prereq-title" data-translate="identity_profile_gender">
+                                            Género de perfil
+                                        </strong>
                                     </div>
-                                    <span class="prereq-badge" x-text="accepted ? 'Aceptado ✓' : 'Pendiente'"></span>
+                                    <span class="prereq-badge" x-text="accepted ? translateText('identity_accepted_check', 'Aceptado ✓') : translateText('identity_pending', 'Pendiente')"></span>
                                 </div>
 
                                 {{-- Fila Inferior: Formulario por Chips --}}
                                 <div class="prereq-form-divider mt-3 pt-3" x-show="!accepted" x-transition>
-                                    <label class="prereq-label-premium mb-2 d-block">Selecciona tu género:</label>
+                                    <label class="prereq-label-premium mb-2 d-block" data-translate="identity_select_gender">
+                                        Selecciona tu género:
+                                    </label>
 
                                     {{-- Grid de Chips Remasterizado --}}
                                     <div class="gender-chips-grid mb-3">
                                         <button type="button" @click="selectedGender = 'male'"
                                             class="gender-chip-button"
                                             :class="{ 'is-active': selectedGender === 'male' }">
-                                            <i class="fas fa-mars"></i> <span>Masculino</span>
+                                            <i class="fas fa-mars"></i> <span data-translate="identity_gender_male">Masculino</span>
                                         </button>
 
                                         <button type="button" @click="selectedGender = 'female'"
                                             class="gender-chip-button"
                                             :class="{ 'is-active': selectedGender === 'female' }">
-                                            <i class="fas fa-venus"></i> <span>Femenino</span>
+                                            <i class="fas fa-venus"></i> <span data-translate="identity_gender_female">Femenino</span>
                                         </button>
 
                                         <button type="button" @click="selectedGender = 'not_specified'"
                                             class="gender-chip-button"
                                             :class="{ 'is-active': selectedGender === 'not_specified' }">
-                                            <i class="fas fa-genderless"></i> <span>Otro</span>
+                                            <i class="fas fa-genderless"></i> <span data-translate="identity_gender_other">Otro</span>
                                         </button>
                                     </div>
 
@@ -2049,7 +2113,8 @@
                                         <button type="button"
                                             @click="accepted = true; setTimeout(() => $wire.savePrerequisiteOption('gender'), 700)"
                                             class="btn-prereq-section-accept">
-                                            <i class="fas fa-check-circle me-1"></i> Aceptar
+                                            <i class="fas fa-check-circle me-1"></i>
+                                            <span data-translate="identity_accept">Aceptar</span>
                                         </button>
                                     </div>
                                 </div>
@@ -2075,16 +2140,20 @@
                                             <span class="prereq-icon-box">
                                                 <i class="fas" :class="accepted ? 'fa-check' : 'fa-times'"></i>
                                             </span>
-                                            <strong class="prereq-title">Precio de tutoría (Bs)</strong>
+                                            <strong class="prereq-title" data-translate="identity_tutoring_price">
+                                                Precio de tutoría (Bs)
+                                            </strong>
                                         </div>
                                         <span class="prereq-badge"
-                                            x-text="accepted ? 'Aceptado ✓' : 'Pendiente'"></span>
+                                            x-text="accepted ? translateText('identity_accepted_check', 'Aceptado ✓') : translateText('identity_pending', 'Pendiente')"></span>
                                     </div>
 
                                     {{-- Fila Inferior: Formulario de Entrada --}}
                                     <div class="prereq-form-divider mt-3 pt-3" x-show="!accepted" x-transition>
-                                        <label for="pre_price" class="prereq-label-premium mb-2 d-block">Ingresa tu
-                                            precio por hora:</label>
+                                        <label for="pre_price" class="prereq-label-premium mb-2 d-block"
+                                            data-translate="identity_enter_price">
+                                            Ingresa tu precio por hora:
+                                        </label>
 
                                         {{-- Caja de Texto Premium con Sufijo Integrado --}}
                                         <div class="position-relative d-flex align-items-center mb-3 w-100">
@@ -2099,7 +2168,8 @@
                                             <button type="button"
                                                 @click="accepted = true; setTimeout(() => $wire.savePrerequisiteOption('price'), 700)"
                                                 class="btn-prereq-section-accept">
-                                                <i class="fas fa-check-circle me-1"></i> Aceptar
+                                                <i class="fas fa-check-circle me-1"></i>
+                                                <span data-translate="identity_accept">Aceptar</span>
                                             </button>
                                         </div>
                                     </div>
@@ -2172,16 +2242,19 @@
                                             <span class="prereq-icon-box">
                                                 <i class="fas" :class="accepted ? 'fa-check' : 'fa-times'"></i>
                                             </span>
-                                            <strong class="prereq-title">Materias de enseñanza</strong>
+                                            <strong class="prereq-title" data-translate="identity_teaching_subjects">
+                                                Materias de enseñanza
+                                            </strong>
                                         </div>
                                         <span class="prereq-badge"
-                                            x-text="accepted ? 'Aceptado ✓' : 'Pendiente'"></span>
+                                            x-text="accepted ? translateText('identity_accepted_check', 'Aceptado ✓') : translateText('identity_pending', 'Pendiente')"></span>
                                     </div>
 
                                     {{-- Fila Inferior: Panel de Gestión de Materias --}}
                                     <div class="prereq-form-divider mt-3 pt-3" x-show="!accepted" x-transition>
-                                        <label class="prereq-label-premium d-block">Tus materias
-                                            seleccionadas:</label>
+                                        <label class="prereq-label-premium d-block" data-translate="identity_selected_subjects">
+                                            Tus materias seleccionadas:
+                                        </label>
 
                                         {{-- Contenedor de Chips de Materias ya Asignadas --}}
                                         <div class="d-flex flex-wrap gap-2 mb-3 min-h-chips-container">
@@ -2191,14 +2264,15 @@
                                                         {{ $sub['name'] }}
                                                         <button type="button"
                                                             wire:click="removeSubjectFromModal({{ $sub['subject_id'] }})"
-                                                            class="prereq-subject-chip-remove" title="Quitar materia">
+                                                            class="prereq-subject-chip-remove" title="{{ __('identity.remove_subject') }}" data-translate-title="identity_remove_subject">
                                                             <i class="fas fa-times"></i>
                                                         </button>
                                                     </span>
                                                 @endforeach
                                             @else
-                                                <p class="prereq-placeholder-text">Aún no tienes materias asignadas
-                                                    para enseñar.</p>
+                                                <p class="prereq-placeholder-text" data-translate="identity_no_subjects_assigned">
+                                                    Aún no tienes materias asignadas para enseñar.
+                                                </p>
                                             @endif
                                         </div>
 
@@ -2207,7 +2281,8 @@
                                             <div class="prereq-search-container-premium">
                                                 <i class="fas fa-search prereq-search-icon"></i>
                                                 <input type="text" wire:model.live.debounce.300ms="subjectSearch"
-                                                    placeholder="Buscar y agregar materia..."
+                                                    placeholder="{{ __('identity.search_add_subject') }}"
+                                                    data-translate-placeholder="identity_search_add_subject"
                                                     class="prereq-search-input-premium" autocomplete="off" />
                                             </div>
 
@@ -2226,7 +2301,10 @@
                                             @elseif(strlen(trim($subjectSearch)) >= 1)
                                                 <div
                                                     class="prereq-search-dropdown-premium p-3 text-center text-muted small shadow-sm">
-                                                    No se encontraron materias con "{{ $subjectSearch }}"
+                                                    <span data-translate="identity_no_subjects_found_with">
+                                                        No se encontraron materias con
+                                                    </span>
+                                                    "{{ $subjectSearch }}"
                                                 </div>
                                             @endif
                                         </div>
@@ -2236,7 +2314,8 @@
                                             <button type="button"
                                                 @click="accepted = true; setTimeout(() => $wire.savePrerequisiteOption('subjects'), 700)"
                                                 class="btn-prereq-section-accept">
-                                                <i class="fas fa-check-circle me-1"></i> Aceptar
+                                                <i class="fas fa-check-circle me-1"></i>
+                                                <span data-translate="identity_accept">Aceptar</span>
                                             </button>
                                         </div>
                                     </div>
@@ -2427,11 +2506,12 @@
                                             <span class="prereq-icon-box">
                                                 <i class="fas" :class="accepted ? 'fa-check' : 'fa-times'"></i>
                                             </span>
-                                            <strong class="prereq-title">Términos y condiciones (Tutorías al
-                                                instante)</strong>
+                                            <strong class="prereq-title" data-translate="identity_terms_instant_tutoring">
+                                                Términos y condiciones (Tutorías al instante)
+                                            </strong>
                                         </div>
                                         <span class="prereq-badge"
-                                            x-text="accepted ? 'Aceptado ✓' : 'Pendiente'"></span>
+                                            x-text="accepted ? translateText('identity_accepted_check', 'Aceptado ✓') : translateText('identity_pending', 'Pendiente')"></span>
                                     </div>
 
                                     {{-- Fila Inferior: Checkbox y Confirmación --}}
@@ -2442,10 +2522,16 @@
                                                 style="width: 18px; height: 18px; cursor: pointer; flex-shrink: 0;" />
                                             <label for="pre_terms" class="prereq-label-premium mb-0 cursor-pointer"
                                                 style="font-size: 0.88rem; line-height: 1.4; font-weight: 500;">
-                                                Acepto los <a href="https://www.classgoapp.com/terminos"
+                                                <span data-translate="identity_accept_terms_prefix">Acepto los</span>
+                                                <a href="https://www.classgoapp.com/terminos"
                                                     target="_blank" class="text-decoration-underline fw-bold"
-                                                    style="color: #ffffff !important;">términos y condiciones</a> para
-                                                impartir tutorías al instante.
+                                                    style="color: #ffffff !important;"
+                                                    data-translate="identity_terms_conditions">
+                                                    términos y condiciones
+                                                </a>
+                                                <span data-translate="identity_accept_terms_suffix">
+                                                    para impartir tutorías al instante.
+                                                </span>
                                             </label>
                                         </div>
 
@@ -2454,7 +2540,8 @@
                                             <button type="button"
                                                 @click="accepted = true; setTimeout(() => $wire.savePrerequisiteOption('terms'), 700)"
                                                 class="btn-prereq-section-accept">
-                                                <i class="fas fa-check-circle me-1"></i> Aceptar
+                                                <i class="fas fa-check-circle me-1"></i>
+                                                <span data-translate="identity_accept">Aceptar</span>
                                             </button>
                                         </div>
                                     </div>
@@ -2477,13 +2564,14 @@
                                                 style="width: 28px; height: 28px; border-radius: 50%; background-color: #fef2f2; color: #ef4444; font-size: 0.9rem; background-color: rgba(255, 255, 255, 0.2); color: var(--white);">
                                                 <i class="fas fa-times"></i>
                                             </span>
-                                            <strong style="color: #ffffff; font-size: 0.95rem;">
+                                            <strong style="color: #ffffff; font-size: 0.95rem;"
+                                                data-translate="identity_google_calendar_linked">
                                                 Google Calendar vinculado
                                             </strong>
                                         </div>
                                         <span class="badge rounded-pill px-3 py-1.5 fw-bold"
                                             style="font-size: 0.8rem; background-color: rgba(239, 68, 68, 0.2); color: #ffffff;">
-                                            Pendiente
+                                            <span data-translate="identity_pending">Pendiente</span>
                                         </span>
                                     </div>
 
@@ -2511,7 +2599,9 @@
                                             <div>
                                                 <span class="small d-block"
                                                     style="color: rgba(255, 255, 255, 0.9); font-size: 0.85rem;">
-                                                    Vincula tu calendario para sincronizar citas de forma automática.
+                                                    <span data-translate="identity_google_calendar_message">
+                                                        Vincula tu calendario para sincronizar citas de forma automática.
+                                                    </span>
                                                 </span>
                                             </div>
                                         </div>
@@ -2527,10 +2617,9 @@
                                                 onmouseup="this.style.transform='scale(1)'">
                                                 <i class="fab fa-google text-danger"></i>
                                                 <span wire:loading.remove
-                                                    wire:target="connectCalendarFromPrerequisites">Conectar
-                                                    Calendar</span>
+                                                    wire:target="connectCalendarFromPrerequisites"><span data-translate="identity_connect_calendar">Conectar Calendar</span></span>
                                                 <span wire:loading
-                                                    wire:target="connectCalendarFromPrerequisites">Conectando...</span>
+                                                    wire:target="connectCalendarFromPrerequisites"><span data-translate="identity_connecting">Conectando...</span></span>
                                             </button>
                                         </div>
 
@@ -2544,9 +2633,15 @@
                                     style="background-color: #ecfdf5; color: #065f46;">
                                     <i class="fas fa-check-circle me-2"
                                         style="font-size: 1.25rem; color: #10b981;"></i>
-                                    <strong>¡Todos los requisitos obligatorios han sido completados!</strong>
-                                    <p class="mb-0 mt-1 small" style="color: #047857;">Haz clic en
-                                        <strong>Guardar</strong> para continuar con la verificación.
+                                    <strong data-translate="identity_all_requirements_completed">
+                                        ¡Todos los requisitos obligatorios han sido completados!
+                                    </strong>
+                                    <p class="mb-0 mt-1 small" style="color: #047857;">
+                                        <span data-translate="identity_click_save_continue_prefix">Haz clic en</span>
+                                        <strong><span data-translate="general_save">Guardar</span></strong>
+                                        <span data-translate="identity_click_save_continue_suffix">
+                                            para continuar con la verificación.
+                                        </span>
                                     </p>
                                 </div>
                             @endif
@@ -2619,12 +2714,13 @@
                         @click="isSpinning = true; $wire.recheckPrerequisites().then(() => isSpinning = false)"
                         class="btn btn-link text-secondary text-decoration-none small d-flex align-items-center gap-1 p-0"
                         style="font-size: 0.85rem; font-weight: 600;">
-                        <i class="fas fa-sync-alt" :class="{ 'icon-spin-active': isSpinning }"></i> Actualizar estado
+                        <i class="fas fa-sync-alt" :class="{ 'icon-spin-active': isSpinning }"></i>
+                        <span data-translate="identity_update_status">Actualizar estado</span>
                     </button>
 
                     <div class="d-flex gap-2">
                         <button type="button" class="btn btn-light" data-bs-dismiss="modal"
-                            style="border-radius: 8px; font-weight: 600; font-size: 0.9rem; padding: 8px 16px; border: 1px solid #cbd5e1; color: #475569;">Cancelar</button>
+                            style="border-radius: 8px; font-weight: 600; font-size: 0.9rem; padding: 8px 16px; border: 1px solid #cbd5e1; color: #475569;"><span data-translate="general_cancel">Cancelar</span></button>
 
                         {{-- Botón Guardar: Protegido con clases CSS para que no pierda su forma redondeada --}}
                         <button type="button"
@@ -2638,7 +2734,7 @@
                                 }"
                             class="btn btn-guardar-premium"
                             :class="{ 'is-disabled': !$wire.prerequisites_validated }">
-                            Guardar
+                            <span data-translate="general_save">Guardar</span>
                         </button>
                     </div>
                 </div>
@@ -3040,7 +3136,7 @@
 
         document.addEventListener('showConfirmAndRedirect', function(event) {
             const data = event.detail[0];
-            if (confirm(data.message + '\n\n¿Desea completar su perfil ahora?')) {
+            if (confirm(data.message + '\n\n' + translateText('identity_complete_profile_now', '¿Desea completar su perfil ahora?'))) {
                 window.location.href = data.url;
             }
         });

@@ -46,7 +46,7 @@ return [
     'school_info' => 'School Info',
     'identity_document' => 'Identity Document',
     'action_warning' => 'This action is permanent and cannot be reversed or undone.',
-    'hurray' => 'Hurray',
+    'hurray' => 'Live',
     'complete_verification' => 'We have successfully completed your identity verification. you’re now ready to use site features',
     'accept' => 'Accept',
     'reject' => 'Reject',
