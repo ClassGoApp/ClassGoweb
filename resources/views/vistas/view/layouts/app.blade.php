@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
     <meta charset="UTF-8">
@@ -74,7 +74,9 @@
         <x-recruitment-popup />
     @endif
 
-    <script src="{{ asset('js/translations.js') }}?v=1"></script>
+    <script src="{{ asset('js/translations.js') }}?v={{ filemtime(public_path('js/translations.js')) }}"></script>
+
+    <script src="{{ asset('js/subject-translations.js') }}?v={{ filemtime(public_path('js/subject-translations.js')) }}"></script>
 
 </body>
 

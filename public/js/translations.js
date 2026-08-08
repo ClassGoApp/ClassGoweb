@@ -1749,6 +1749,10 @@ var translations = {
     company_exam_submit_answers: "Enviar respuestas",
     company_exam_sending: "Enviando...",
     company_exam_no_questions: "No hay preguntas para este examen.",
+
+    language_spanish: "Español",
+    language_english: "Inglés",
+    language_portuguese: "Portugués",
   },
   en: {
     // Navbar
@@ -3468,6 +3472,10 @@ var translations = {
     company_exam_submit_answers: "Submit answers",
     company_exam_sending: "Sending...",
     company_exam_no_questions: "There are no questions for this exam.",
+
+    language_spanish: "Spanish",
+    language_english: "English",
+    language_portuguese: "Portuguese",
   },
   pt: {
     // Navbar
@@ -5213,6 +5221,10 @@ var translations = {
     company_exam_submit_answers: "Enviar respostas",
     company_exam_sending: "Enviando...",
     company_exam_no_questions: "Não há perguntas para esta prova.",
+
+    language_spanish: "Espanhol",
+    language_english: "Inglês",
+    language_portuguese: "Português",
   },
 };
 

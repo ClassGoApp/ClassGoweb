@@ -114,6 +114,7 @@
                                         Materias disponibles
                                     </label>
                                     <input id="js-subject-search" type="text" class="form-control"
+                                        data-translate-placeholder="booking_search_subject"
                                         placeholder="Escribe para filtrar tu materia..."
                                         style="margin-bottom: 8px; font-size: 14px;" disabled>
 
@@ -193,7 +194,14 @@
                                         
                                         <div class="float-field">
                                             <span class="float-label" data-translate="booking_subject">Materia</span>
-                                            <span class="float-value" id="js-summary-subject"></span>
+                                            <span class="float-value">
+                                                <span 
+                                                    id="js-summary-subject"
+                                                    class="subject-translatable"
+                                                    data-subject-id=""
+                                                    data-subject-fallback=""
+                                                ></span>
+                                            </span>
                                         </div>
 
                                         <div class="float-field">
@@ -379,7 +387,14 @@
                                         <!-- Campo Materia -->
                                         <div class="float-field" style="margin-top: 0;">
                                             <span class="float-label" data-translate="booking_requested_subject">Materia Solicitada</span>
-                                            <span class="float-value" id="js-req-subject-name">Materia</span>
+                                            <span class="float-value">
+                                                <span 
+                                                    id="js-req-subject-name"
+                                                    class="subject-translatable"
+                                                    data-subject-id=""
+                                                    data-subject-fallback=""
+                                                >Materia</span>
+                                            </span>
                                         </div>
 
                                         <!-- Sub-grid para Horario y Duración en paralelo -->
@@ -2736,7 +2751,20 @@
             if (currentStep === 1) {
                 if (hasNoTutors) {
                     currentStep = 'request_tutor';
-                    document.getElementById('js-req-subject-name').textContent = selectedSubjectName;
+                    
+                    const reqSubjectEl = document.getElementById('js-req-subject-name');
+                    if (reqSubjectEl && selectedSubject) {
+                        const subject = allSubjects.find(s => String(s.id) === String(selectedSubject));
+                        if (subject) {
+                            reqSubjectEl.textContent = subject.name;
+                            reqSubjectEl.dataset.subjectId = subject.id;
+                            reqSubjectEl.dataset.subjectFallback = subject.name;
+                            
+                            if (typeof window.applySubjectTranslations === 'function') {
+                                window.applySubjectTranslations();
+                            }
+                        }
+                    }
                     
                     reqSelectedDate = todayStr();
                     const reqLabel = document.getElementById('js-req-selected-date-label');
@@ -2853,7 +2881,20 @@
             targetTutorName = selectedTutorName;
             
             currentStep = 'request_tutor';
-            document.getElementById('js-req-subject-name').textContent = selectedSubjectName;
+            
+            const reqSubjectEl = document.getElementById('js-req-subject-name');
+            if (reqSubjectEl && selectedSubject) {
+                const subject = allSubjects.find(s => String(s.id) === String(selectedSubject));
+                if (subject) {
+                    reqSubjectEl.textContent = subject.name;
+                    reqSubjectEl.dataset.subjectId = subject.id;
+                    reqSubjectEl.dataset.subjectFallback = subject.name;
+                    
+                    if (typeof window.applySubjectTranslations === 'function') {
+                        window.applySubjectTranslations();
+                    }
+                }
+            }
             
             const descText = document.getElementById('js-req-desc-text');
             if (descText) {
@@ -3177,14 +3218,22 @@
             subjects.forEach(subject => {
                 const item = document.createElement('div');
 
-
                 item.style.cssText =
-                    'padding:12px; margin:1px; background:#219EBC;  cursor:pointer; border:2px solid transparent; transition:all .2s;';
+                    'padding:12px; margin:1px; background:#219EBC; cursor:pointer; border:2px solid transparent; transition:all .2s;';
 
-                item.innerHTML = `
-      <strong style="font-size:14px; color:white;">${subject.name}</strong>
-    `;
+                // Crear <strong> con DOM para seguridad
+                const strong = document.createElement('strong');
+                strong.className = 'subject-translatable';
+                strong.style.cssText = 'font-size:14px; color:white;';
+                strong.textContent = subject.name;
+                
+                // Usar dataset para asignar atributos de forma segura
+                strong.dataset.subjectId = subject.id;
+                strong.dataset.subjectFallback = subject.name;
 
+                item.appendChild(strong);
+
+                // Conservar dataset en item para lógica existente
                 item.dataset.subjectId = subject.id;
                 item.dataset.subjectName = subject.name;
 
@@ -3193,8 +3242,8 @@
                     subjectsList.querySelectorAll('div').forEach(d => {
                         d.style.border = '2px solid transparent';
                         d.style.backgroundColor = '#219EBC';
-                        const strong = d.querySelector('strong');
-                        if (strong) strong.style.color = '#fff';
+                        const s = d.querySelector('strong');
+                        if (s) s.style.color = '#fff';
                     });
 
 
@@ -3204,23 +3253,43 @@
                     if (myStrong) myStrong.style.color = 'white';
 
                     selectedSubject = subject.id;
-                    selectedSubjectName = subject.name;
+                    selectedSubjectName = subject.name; // Mantener por compatibilidad
 
                     await loadTutors(subject.id);
                 });
 
                 subjectsList.appendChild(item);
             });
+
+            // Aplicar traducciones después de renderizar
+            if (typeof window.applySubjectTranslations === 'function') {
+                window.applySubjectTranslations();
+            }
         }
 
 
 
         function filterSubjects(searchTerm) {
             const term = searchTerm.toLowerCase();
-            const filtered = allSubjects.filter(subj =>
-                subj.name.toLowerCase().includes(term)
-            );
-            renderSubjects(filtered);
+            
+            // Filtrar por el texto visual ya traducido
+            const allItems = Array.from(subjectsList.querySelectorAll('div'));
+            
+            allItems.forEach(item => {
+                const strong = item.querySelector('strong.subject-translatable');
+                if (!strong) {
+                    item.style.display = 'none';
+                    return;
+                }
+                
+                const translatedName = strong.textContent.toLowerCase();
+                
+                if (translatedName.includes(term)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
         }
 
         // ====== CARGA DE TUTORES ======
@@ -3408,7 +3477,6 @@
 
         // ====== RESUMEN + SUBMIT ======
         function updateSummary() {
-            const subjectName = selectedSubjectName || 'N/A';
             const tutorName = selectedTutorName || 'N/A';
 
             selectedSlots.sort((a, b) => a.start.localeCompare(b.start));
@@ -3422,7 +3490,23 @@
                 : `${Math.floor(durationMins / 60)} ${bookingText('booking_duration_hour_short', 'h')} ${durationMins % 60} ${bookingText('booking_duration_min_short', 'min')}`)
                 : `${durationMins} ${bookingText('booking_duration_minutes', 'minutos')}`;
 
-            document.getElementById('js-summary-subject').textContent = subjectName;
+            // Actualizar materia usando ID
+            const summarySubjectEl = document.getElementById('js-summary-subject');
+            if (summarySubjectEl && selectedSubject) {
+                const subject = allSubjects.find(s => String(s.id) === String(selectedSubject));
+                if (subject) {
+                    summarySubjectEl.textContent = subject.name;
+                    summarySubjectEl.dataset.subjectId = subject.id;
+                    summarySubjectEl.dataset.subjectFallback = subject.name;
+                    
+                    if (typeof window.applySubjectTranslations === 'function') {
+                        window.applySubjectTranslations();
+                    }
+                } else {
+                    summarySubjectEl.textContent = 'N/A';
+                }
+            }
+
             document.getElementById('js-summary-tutor').textContent = tutorName;
             document.getElementById('js-summary-date').textContent = first.date;
             document.getElementById('js-summary-time').textContent =
@@ -3865,8 +3949,18 @@
                 if (window._bookingWizardLanguageChangedListener) {
                     document.removeEventListener('languageChanged', window._bookingWizardLanguageChangedListener);
                 }
-                window._bookingWizardLanguageChangedListener = () => {
+                window._bookingWizardLanguageChangedListener = async () => {
                     translateBookingModal();
+
+                    // Re-traducir materias en resumen y solicitud
+                    if (typeof window.applySubjectTranslations === 'function') {
+                        await window.applySubjectTranslations();
+                    }
+
+                    // Re-aplicar filtro si el buscador tiene texto
+                    if (subjectSearch && subjectSearch.value.trim() !== '') {
+                        filterSubjects(subjectSearch.value);
+                    }
 
                     if (calendarYear !== null && calendarMonth !== null && miniCalendarEl) {
                         renderMiniCalendar(calendarYear, calendarMonth);

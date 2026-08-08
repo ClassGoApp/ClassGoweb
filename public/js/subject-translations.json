@@ -1,0 +1,4551 @@
+{
+  "2": {
+    "es": "Matemáticas para Primaria",
+    "en": "Mathematics for Primary School",
+    "pt": "Matemática para o Ensino Primário"
+  },
+  "3": {
+    "es": "Lenguaje y Literatura para Primaria",
+    "en": "Language and Literature for Primary School",
+    "pt": "Língua e Literatura para o Ensino Primário"
+  },
+  "4": {
+    "es": "Ciencias Naturales para Primaria",
+    "en": "Natural Sciences for Primary School",
+    "pt": "Ciências Naturais para o Ensino Primário"
+  },
+  "5": {
+    "es": "Estudios Sociales para Primaria",
+    "en": "Social Studies for Primary School",
+    "pt": "Estudos Sociais para o Ensino Primário"
+  },
+  "6": {
+    "es": "Educación Cívica",
+    "en": "Civic Education",
+    "pt": "Educação Cívica"
+  },
+  "7": {
+    "es": "Música - Instrumentos",
+    "en": "Music - Instruments",
+    "pt": "Música - Instrumentos"
+  },
+  "8": {
+    "es": "Psicología",
+    "en": "Psychology",
+    "pt": "Psicologia"
+  },
+  "9": {
+    "es": "Matemáticas para Secundaria",
+    "en": "Mathematics for Secondary School",
+    "pt": "Matemática para o Ensino Secundário"
+  },
+  "10": {
+    "es": "Lenguaje y Literatura para Secundaria",
+    "en": "Language and Literature for Secondary School",
+    "pt": "Língua e Literatura para o Ensino Secundário"
+  },
+  "11": {
+    "es": "Ciencias Naturales para Secundaria",
+    "en": "Natural Sciences for Secondary School",
+    "pt": "Ciências Naturais para o Ensino Secundário"
+  },
+  "12": {
+    "es": "Estudios Sociales para Secundaria",
+    "en": "Social Studies for Secondary School",
+    "pt": "Estudos Sociais para o Ensino Secundário"
+  },
+  "13": {
+    "es": "Física para Secundaria",
+    "en": "Physics for Secondary School",
+    "pt": "Física para o Ensino Secundário"
+  },
+  "14": {
+    "es": "Química para Secundaria",
+    "en": "Chemistry for Secondary School",
+    "pt": "Química para o Ensino Secundário"
+  },
+  "15": {
+    "es": "Historia Universal para Secundaria",
+    "en": "World History for Secondary School",
+    "pt": "História Universal para o Ensino Secundário"
+  },
+  "16": {
+    "es": "Historia de Bolivia para Secundaria",
+    "en": "History of Bolivia for Secondary School",
+    "pt": "História da Bolívia para o Ensino Secundário"
+  },
+  "17": {
+    "es": "Geografía para Secundaria",
+    "en": "Geography for Secondary School",
+    "pt": "Geografia para o Ensino Secundário"
+  },
+  "18": {
+    "es": "Preparación para el Bachillerato",
+    "en": "High School Graduation Preparation",
+    "pt": "Preparação para a Conclusão do Ensino Médio"
+  },
+  "19": {
+    "es": "Educación Cívica",
+    "en": "Civic Education",
+    "pt": "Educação Cívica"
+  },
+  "20": {
+    "es": "Música - Instrumentos",
+    "en": "Music - Instruments",
+    "pt": "Música - Instrumentos"
+  },
+  "21": {
+    "es": "Filosofía",
+    "en": "Philosophy",
+    "pt": "Filosofia"
+  },
+  "22": {
+    "es": "Física Aplicada",
+    "en": "Applied Physics",
+    "pt": "Física Aplicada"
+  },
+  "23": {
+    "es": "Mecánica Aplicada",
+    "en": "Applied Mechanics",
+    "pt": "Mecânica Aplicada"
+  },
+  "24": {
+    "es": "Termodinámica Aplicada",
+    "en": "Applied Thermodynamics",
+    "pt": "Termodinâmica Aplicada"
+  },
+  "25": {
+    "es": "Electromagnetismo Aplicado",
+    "en": "Applied Electromagnetism",
+    "pt": "Eletromagnetismo Aplicado"
+  },
+  "26": {
+    "es": "Física de Materiales",
+    "en": "Materials Physics",
+    "pt": "Física dos Materiais"
+  },
+  "27": {
+    "es": "Física de Semiconductores",
+    "en": "Semiconductor Physics",
+    "pt": "Física dos Semicondutores"
+  },
+  "28": {
+    "es": "Física Óptica Aplicada",
+    "en": "Applied Optical Physics",
+    "pt": "Física Óptica Aplicada"
+  },
+  "29": {
+    "es": "Vibraciones y Ondas Aplicadas",
+    "en": "Applied Vibrations and Waves",
+    "pt": "Vibrações e Ondas Aplicadas"
+  },
+  "30": {
+    "es": "Física Cuántica Aplicada",
+    "en": "Applied Quantum Physics",
+    "pt": "Física Quântica Aplicada"
+  },
+  "31": {
+    "es": "Acústica y Ultrasonido",
+    "en": "Acoustics and Ultrasound",
+    "pt": "Acústica e Ultrassom"
+  },
+  "32": {
+    "es": "Física Nuclear y de Radiaciones",
+    "en": "Nuclear and Radiation Physics",
+    "pt": "Física Nuclear e das Radiações"
+  },
+  "33": {
+    "es": "Energías Renovables y Física",
+    "en": "Renewable Energy and Physics",
+    "pt": "Energias Renováveis e Física"
+  },
+  "34": {
+    "es": "Física de Fluidos",
+    "en": "Fluid Physics",
+    "pt": "Física dos Fluidos"
+  },
+  "35": {
+    "es": "Instrumentación y Medición Física",
+    "en": "Instrumentation and Physical Measurement",
+    "pt": "Instrumentação e Medição Física"
+  },
+  "36": {
+    "es": "Física de Sistemas Complejos",
+    "en": "Physics of Complex Systems",
+    "pt": "Física de Sistemas Complexos"
+  },
+  "37": {
+    "es": "Aplicaciones Industriales de la Física",
+    "en": "Industrial Applications of Physics",
+    "pt": "Aplicações Industriais da Física"
+  },
+  "38": {
+    "es": "Fenómenos de Transferencia",
+    "en": "Transfer Phenomena",
+    "pt": "Fenômenos de Transferência"
+  },
+  "39": {
+    "es": "Fenómenos de Transporte",
+    "en": "Transport Phenomena",
+    "pt": "Fenômenos de Transporte"
+  },
+  "40": {
+    "es": "Física Básica",
+    "en": "Basic Physics",
+    "pt": "Física Básica"
+  },
+  "41": {
+    "es": "Cinemática",
+    "en": "Kinematics",
+    "pt": "Cinemática"
+  },
+  "42": {
+    "es": "Dinámica",
+    "en": "Dynamics",
+    "pt": "Dinâmica"
+  },
+  "43": {
+    "es": "Estática",
+    "en": "Statics",
+    "pt": "Estática"
+  },
+  "44": {
+    "es": "Fluidos",
+    "en": "Fluids",
+    "pt": "Fluidos"
+  },
+  "45": {
+    "es": "Ondas y Vibraciones",
+    "en": "Waves and Vibrations",
+    "pt": "Ondas e Vibrações"
+  },
+  "46": {
+    "es": "Óptica Básica",
+    "en": "Basic Optics",
+    "pt": "Óptica Básica"
+  },
+  "47": {
+    "es": "Óptica Geométrica y Física",
+    "en": "Geometrical and Physical Optics",
+    "pt": "Óptica Geométrica e Física"
+  },
+  "48": {
+    "es": "Electrostática",
+    "en": "Electrostatics",
+    "pt": "Eletrostática"
+  },
+  "49": {
+    "es": "Corriente Eléctrica y Circuitos",
+    "en": "Electric Current and Circuits",
+    "pt": "Corrente Elétrica e Circuitos"
+  },
+  "50": {
+    "es": "Magnetismo",
+    "en": "Magnetism",
+    "pt": "Magnetismo"
+  },
+  "51": {
+    "es": "Termodinámica",
+    "en": "Thermodynamics",
+    "pt": "Termodinâmica"
+  },
+  "52": {
+    "es": "Electricidad y Magnetismo Básicos",
+    "en": "Basic Electricity and Magnetism",
+    "pt": "Eletricidade e Magnetismo Básicos"
+  },
+  "53": {
+    "es": "Gravitación",
+    "en": "Gravitation",
+    "pt": "Gravitação"
+  },
+  "54": {
+    "es": "Medición y Análisis de Datos",
+    "en": "Measurement and Data Analysis",
+    "pt": "Medição e Análise de Dados"
+  },
+  "55": {
+    "es": "Electromagnetismo",
+    "en": "Electromagnetism",
+    "pt": "Eletromagnetismo"
+  },
+  "56": {
+    "es": "Mecánica Racional",
+    "en": "Analytical Mechanics",
+    "pt": "Mecânica Racional"
+  },
+  "57": {
+    "es": "Física General",
+    "en": "General Physics",
+    "pt": "Física Geral"
+  },
+  "58": {
+    "es": "Leyes de Newton",
+    "en": "Newton's Laws",
+    "pt": "Leis de Newton"
+  },
+  "59": {
+    "es": "Trabajo, Energía y Potencia",
+    "en": "Work, Energy and Power",
+    "pt": "Trabalho, Energia e Potência"
+  },
+  "60": {
+    "es": "Momento Lineal y Colisiones",
+    "en": "Linear Momentum and Collisions",
+    "pt": "Momento Linear e Colisões"
+  },
+  "61": {
+    "es": "Movimiento Rotacional",
+    "en": "Rotational Motion",
+    "pt": "Movimento Rotacional"
+  },
+  "62": {
+    "es": "Gravitación Universal",
+    "en": "Universal Gravitation",
+    "pt": "Gravitação Universal"
+  },
+  "63": {
+    "es": "Física Moderna (Relatividad y Física Cuántica)",
+    "en": "Modern Physics (Relativity and Quantum Physics)",
+    "pt": "Física Moderna (Relatividade e Física Quântica)"
+  },
+  "64": {
+    "es": "Teoría de Ondas y Propagación",
+    "en": "Wave and Propagation Theory",
+    "pt": "Teoria de Ondas e Propagação"
+  },
+  "65": {
+    "es": "Teoría de Circuitos",
+    "en": "Circuit Theory",
+    "pt": "Teoria de Circuitos"
+  },
+  "66": {
+    "es": "Elasticidad y Plasticidad",
+    "en": "Elasticity and Plasticity",
+    "pt": "Elasticidade e Plasticidade"
+  },
+  "67": {
+    "es": "Hidráulica",
+    "en": "Hydraulics",
+    "pt": "Hidráulica"
+  },
+  "68": {
+    "es": "Energías Alternativas",
+    "en": "Alternative Energy",
+    "pt": "Energias Alternativas"
+  },
+  "69": {
+    "es": "Turbomáquinas Térmicas",
+    "en": "Thermal Turbomachinery",
+    "pt": "Turbomáquinas Térmicas"
+  },
+  "70": {
+    "es": "Física Técnica",
+    "en": "Engineering Physics",
+    "pt": "Física Técnica"
+  },
+  "71": {
+    "es": "Mecánica de Fluidos",
+    "en": "Fluid Mechanics",
+    "pt": "Mecânica dos Fluidos"
+  },
+  "72": {
+    "es": "Mecánica de los Materiales",
+    "en": "Mechanics of Materials",
+    "pt": "Mecânica dos Materiais"
+  },
+  "73": {
+    "es": "Mecánica de Suelos",
+    "en": "Soil Mechanics",
+    "pt": "Mecânica dos Solos"
+  },
+  "74": {
+    "es": "Mecánica del Sólido",
+    "en": "Solid Mechanics",
+    "pt": "Mecânica dos Sólidos"
+  },
+  "75": {
+    "es": "Introducción a la Química Analítica",
+    "en": "Introduction to Analytical Chemistry",
+    "pt": "Introdução à Química Analítica"
+  },
+  "76": {
+    "es": "Análisis Gravimétrico",
+    "en": "Gravimetric Analysis",
+    "pt": "Análise Gravimétrica"
+  },
+  "77": {
+    "es": "Análisis Volumétrico",
+    "en": "Volumetric Analysis",
+    "pt": "Análise Volumétrica"
+  },
+  "78": {
+    "es": "Química de Soluciones",
+    "en": "Solution Chemistry",
+    "pt": "Química das Soluções"
+  },
+  "79": {
+    "es": "Métodos Instrumentales de Análisis",
+    "en": "Instrumental Methods of Analysis",
+    "pt": "Métodos Instrumentais de Análise"
+  },
+  "80": {
+    "es": "Cromatografía",
+    "en": "Chromatography",
+    "pt": "Cromatografia"
+  },
+  "81": {
+    "es": "Espectrofotometría",
+    "en": "Spectrophotometry",
+    "pt": "Espectrofotometria"
+  },
+  "82": {
+    "es": "Electroquímica Analítica",
+    "en": "Analytical Electrochemistry",
+    "pt": "Eletroquímica Analítica"
+  },
+  "83": {
+    "es": "Análisis Cualitativo",
+    "en": "Qualitative Analysis",
+    "pt": "Análise Qualitativa"
+  },
+  "84": {
+    "es": "Análisis Cuantitativo",
+    "en": "Quantitative Analysis",
+    "pt": "Análise Quantitativa"
+  },
+  "85": {
+    "es": "Validación de Métodos Analíticos",
+    "en": "Validation of Analytical Methods",
+    "pt": "Validação de Métodos Analíticos"
+  },
+  "86": {
+    "es": "Control de Calidad en Análisis Químico",
+    "en": "Quality Control in Chemical Analysis",
+    "pt": "Controle de Qualidade em Análise Química"
+  },
+  "87": {
+    "es": "Preparación y Manejo de Muestras",
+    "en": "Sample Preparation and Handling",
+    "pt": "Preparação e Manuseio de Amostras"
+  },
+  "88": {
+    "es": "Estadística Aplicada a la Química Analítica",
+    "en": "Statistics Applied to Analytical Chemistry",
+    "pt": "Estatística Aplicada à Química Analítica"
+  },
+  "89": {
+    "es": "Química Analítica Instrumental",
+    "en": "Instrumental Analytical Chemistry",
+    "pt": "Química Analítica Instrumental"
+  },
+  "90": {
+    "es": "Química Analítica Orgánica e Instrumental",
+    "en": "Organic and Instrumental Analytical Chemistry",
+    "pt": "Química Analítica Orgânica e Instrumental"
+  },
+  "91": {
+    "es": "Química de Alimentos",
+    "en": "Food Chemistry",
+    "pt": "Química de Alimentos"
+  },
+  "92": {
+    "es": "Composición de Alimentos",
+    "en": "Food Composition",
+    "pt": "Composição dos Alimentos"
+  },
+  "93": {
+    "es": "Proteínas en Alimentos",
+    "en": "Proteins in Food",
+    "pt": "Proteínas nos Alimentos"
+  },
+  "94": {
+    "es": "Carbohidratos en Alimentos",
+    "en": "Carbohydrates in Food",
+    "pt": "Carboidratos nos Alimentos"
+  },
+  "95": {
+    "es": "Lípidos en Alimentos",
+    "en": "Lipids in Food",
+    "pt": "Lipídios nos Alimentos"
+  },
+  "96": {
+    "es": "Vitaminas y Minerales",
+    "en": "Vitamins and Minerals",
+    "pt": "Vitaminas e Minerais"
+  },
+  "97": {
+    "es": "Aditivos Alimentarios",
+    "en": "Food Additives",
+    "pt": "Aditivos Alimentares"
+  },
+  "98": {
+    "es": "Reacciones Químicas en Alimentos",
+    "en": "Chemical Reactions in Food",
+    "pt": "Reações Químicas nos Alimentos"
+  },
+  "99": {
+    "es": "Química de Pigmentos y Colorantes Naturales",
+    "en": "Chemistry of Pigments and Natural Colorants",
+    "pt": "Química de Pigmentos e Corantes Naturais"
+  },
+  "100": {
+    "es": "Análisis Químico de Alimentos",
+    "en": "Chemical Analysis of Food",
+    "pt": "Análise Química de Alimentos"
+  },
+  "101": {
+    "es": "Conservación y Estabilización de Alimentos",
+    "en": "Food Preservation and Stabilization",
+    "pt": "Conservação e Estabilização de Alimentos"
+  },
+  "102": {
+    "es": "Propiedades Funcionales de los Alimentos",
+    "en": "Functional Properties of Food",
+    "pt": "Propriedades Funcionais dos Alimentos"
+  },
+  "103": {
+    "es": "Química de Sabores y Aromas",
+    "en": "Flavor and Aroma Chemistry",
+    "pt": "Química de Sabores e Aromas"
+  },
+  "104": {
+    "es": "Química de Procesos de Cocción",
+    "en": "Chemistry of Cooking Processes",
+    "pt": "Química dos Processos de Cocção"
+  },
+  "105": {
+    "es": "Seguridad Química en Alimentos",
+    "en": "Chemical Safety in Food",
+    "pt": "Segurança Química em Alimentos"
+  },
+  "106": {
+    "es": "Tecnología de Envasado y Química de Materiales",
+    "en": "Packaging Technology and Materials Chemistry",
+    "pt": "Tecnologia de Embalagens e Química dos Materiais"
+  },
+  "107": {
+    "es": "Regulaciones Químicas en Alimentos",
+    "en": "Chemical Regulations in Food",
+    "pt": "Regulamentações Químicas em Alimentos"
+  },
+  "108": {
+    "es": "Fisicoquímica de Alimentos",
+    "en": "Food Physical Chemistry",
+    "pt": "Físico-Química de Alimentos"
+  },
+  "109": {
+    "es": "Toxicología de Alimentos",
+    "en": "Food Toxicology",
+    "pt": "Toxicologia de Alimentos"
+  },
+  "110": {
+    "es": "Microbiología de Alimentos",
+    "en": "Food Microbiology",
+    "pt": "Microbiologia de Alimentos"
+  },
+  "111": {
+    "es": "Química General",
+    "en": "General Chemistry",
+    "pt": "Química Geral"
+  },
+  "112": {
+    "es": "Introducción a la Química",
+    "en": "Introduction to Chemistry",
+    "pt": "Introdução à Química"
+  },
+  "113": {
+    "es": "Estructura Atómica",
+    "en": "Atomic Structure",
+    "pt": "Estrutura Atômica"
+  },
+  "114": {
+    "es": "Tabla Periódica y Propiedades Periódicas",
+    "en": "Periodic Table and Periodic Properties",
+    "pt": "Tabela Periódica e Propriedades Periódicas"
+  },
+  "115": {
+    "es": "Enlace Químico",
+    "en": "Chemical Bonding",
+    "pt": "Ligação Química"
+  },
+  "116": {
+    "es": "Estequiometría",
+    "en": "Stoichiometry",
+    "pt": "Estequiometria"
+  },
+  "117": {
+    "es": "Reacciones Químicas",
+    "en": "Chemical Reactions",
+    "pt": "Reações Químicas"
+  },
+  "118": {
+    "es": "Gases y Leyes de los Gases",
+    "en": "Gases and Gas Laws",
+    "pt": "Gases e Leis dos Gases"
+  },
+  "119": {
+    "es": "Líquidos y Sólidos",
+    "en": "Liquids and Solids",
+    "pt": "Líquidos e Sólidos"
+  },
+  "120": {
+    "es": "Soluciones y Concentración",
+    "en": "Solutions and Concentration",
+    "pt": "Soluções e Concentração"
+  },
+  "121": {
+    "es": "Termoquímica",
+    "en": "Thermochemistry",
+    "pt": "Termoquímica"
+  },
+  "122": {
+    "es": "Equilibrio Químico",
+    "en": "Chemical Equilibrium",
+    "pt": "Equilíbrio Químico"
+  },
+  "123": {
+    "es": "Ácidos y Bases",
+    "en": "Acids and Bases",
+    "pt": "Ácidos e Bases"
+  },
+  "124": {
+    "es": "Química Redox",
+    "en": "Redox Chemistry",
+    "pt": "Química Redox"
+  },
+  "125": {
+    "es": "Cinética Química",
+    "en": "Chemical Kinetics",
+    "pt": "Cinética Química"
+  },
+  "126": {
+    "es": "Química Nuclear",
+    "en": "Nuclear Chemistry",
+    "pt": "Química Nuclear"
+  },
+  "127": {
+    "es": "Métodos de Medición y Análisis Químico Básico",
+    "en": "Basic Chemical Measurement and Analysis Methods",
+    "pt": "Métodos Básicos de Medição e Análise Química"
+  },
+  "128": {
+    "es": "Química Inorgánica",
+    "en": "Inorganic Chemistry",
+    "pt": "Química Inorgânica"
+  },
+  "129": {
+    "es": "Fisicoquímica",
+    "en": "Physical Chemistry",
+    "pt": "Físico-Química"
+  },
+  "130": {
+    "es": "Química Industrial",
+    "en": "Industrial Chemistry",
+    "pt": "Química Industrial"
+  },
+  "131": {
+    "es": "Procesos Químicos de Fabricación",
+    "en": "Chemical Manufacturing Processes",
+    "pt": "Processos Químicos de Fabricação"
+  },
+  "132": {
+    "es": "Reactores Químicos",
+    "en": "Chemical Reactors",
+    "pt": "Reatores Químicos"
+  },
+  "133": {
+    "es": "Procesos de Hidrocarburos",
+    "en": "Hydrocarbon Processes",
+    "pt": "Processos de Hidrocarbonetos"
+  },
+  "134": {
+    "es": "Procesos de Cerámica, Cemento y Vidrio",
+    "en": "Ceramic, Cement and Glass Processes",
+    "pt": "Processos de Cerâmica, Cimento e Vidro"
+  },
+  "135": {
+    "es": "Procesos Siderúrgicos",
+    "en": "Steelmaking Processes",
+    "pt": "Processos Siderúrgicos"
+  },
+  "136": {
+    "es": "Química Aplicada",
+    "en": "Applied Chemistry",
+    "pt": "Química Aplicada"
+  },
+  "137": {
+    "es": "Fundamentos de Química General",
+    "en": "Fundamentals of General Chemistry",
+    "pt": "Fundamentos de Química Geral"
+  },
+  "138": {
+    "es": "Estructura Atómica y Enlace Químico",
+    "en": "Atomic Structure and Chemical Bonding",
+    "pt": "Estrutura Atômica e Ligação Química"
+  },
+  "139": {
+    "es": "Termodinámica Química",
+    "en": "Chemical Thermodynamics",
+    "pt": "Termodinâmica Química"
+  },
+  "140": {
+    "es": "Cinética Química",
+    "en": "Chemical Kinetics",
+    "pt": "Cinética Química"
+  },
+  "141": {
+    "es": "Equilibrio Químico",
+    "en": "Chemical Equilibrium",
+    "pt": "Equilíbrio Químico"
+  },
+  "142": {
+    "es": "Química Orgánica",
+    "en": "Organic Chemistry",
+    "pt": "Química Orgânica"
+  },
+  "143": {
+    "es": "Química Inorgánica",
+    "en": "Inorganic Chemistry",
+    "pt": "Química Inorgânica"
+  },
+  "144": {
+    "es": "Análisis Químico Cualitativo y Cuantitativo",
+    "en": "Qualitative and Quantitative Chemical Analysis",
+    "pt": "Análise Química Qualitativa e Quantitativa"
+  },
+  "145": {
+    "es": "Electroquímica",
+    "en": "Electrochemistry",
+    "pt": "Eletroquímica"
+  },
+  "146": {
+    "es": "Química de Materiales",
+    "en": "Materials Chemistry",
+    "pt": "Química dos Materiais"
+  },
+  "147": {
+    "es": "Química Ambiental",
+    "en": "Environmental Chemistry",
+    "pt": "Química Ambiental"
+  },
+  "148": {
+    "es": "Química Industrial",
+    "en": "Industrial Chemistry",
+    "pt": "Química Industrial"
+  },
+  "149": {
+    "es": "Polímeros y Materiales Compuestos",
+    "en": "Polymers and Composite Materials",
+    "pt": "Polímeros e Materiais Compósitos"
+  },
+  "150": {
+    "es": "Química de Soluciones",
+    "en": "Solution Chemistry",
+    "pt": "Química das Soluções"
+  },
+  "151": {
+    "es": "Aplicaciones de la Química en la Industria y la Tecnología",
+    "en": "Applications of Chemistry in Industry and Technology",
+    "pt": "Aplicações da Química na Indústria e na Tecnologia"
+  },
+  "152": {
+    "es": "Química Agrícola",
+    "en": "Agricultural Chemistry",
+    "pt": "Química Agrícola"
+  },
+  "153": {
+    "es": "Toxicología General",
+    "en": "General Toxicology",
+    "pt": "Toxicologia Geral"
+  },
+  "154": {
+    "es": "Introducción a la Econometría",
+    "en": "Introduction to Econometrics",
+    "pt": "Introdução à Econometria"
+  },
+  "155": {
+    "es": "Modelos de Regresión Lineal",
+    "en": "Linear Regression Models",
+    "pt": "Modelos de Regressão Linear"
+  },
+  "156": {
+    "es": "Supuestos del Modelo Clásico",
+    "en": "Classical Model Assumptions",
+    "pt": "Pressupostos do Modelo Clássico"
+  },
+  "157": {
+    "es": "Estimación por Mínimos Cuadrados Ordinarios (MCO)",
+    "en": "Ordinary Least Squares Estimation (OLS)",
+    "pt": "Estimação por Mínimos Quadrados Ordinários (MQO)"
+  },
+  "158": {
+    "es": "Multicolinealidad",
+    "en": "Multicollinearity",
+    "pt": "Multicolinearidade"
+  },
+  "159": {
+    "es": "Heterocedasticidad",
+    "en": "Heteroscedasticity",
+    "pt": "Heterocedasticidade"
+  },
+  "160": {
+    "es": "Autocorrelación",
+    "en": "Autocorrelation",
+    "pt": "Autocorrelação"
+  },
+
+  "161": {
+    "es": "Modelos de Regresión Múltiple",
+    "en": "Multiple Regression Models",
+    "pt": "Modelos de Regressão Múltipla"
+  },
+  "162": {
+    "es": "Pruebas de Hipótesis en Econometría",
+    "en": "Hypothesis Testing in Econometrics",
+    "pt": "Testes de Hipóteses em Econometria"
+  },
+  "163": {
+    "es": "Variables Dependientes Cualitativas",
+    "en": "Qualitative Dependent Variables",
+    "pt": "Variáveis Dependentes Qualitativas"
+  },
+  "164": {
+    "es": "Series Temporales y Modelos ARIMA",
+    "en": "Time Series and ARIMA Models",
+    "pt": "Séries Temporais e Modelos ARIMA"
+  },
+  "165": {
+    "es": "Modelos de Corrección de Errores (VECM)",
+    "en": "Vector Error Correction Models (VECM)",
+    "pt": "Modelos Vetoriais de Correção de Erros (VECM)"
+  },
+  "166": {
+    "es": "Análisis de Cointegración",
+    "en": "Cointegration Analysis",
+    "pt": "Análise de Cointegração"
+  },
+  "167": {
+    "es": "Econometría Aplicada",
+    "en": "Applied Econometrics",
+    "pt": "Econometria Aplicada"
+  },
+  "168": {
+    "es": "Modelos No Lineales",
+    "en": "Nonlinear Models",
+    "pt": "Modelos Não Lineares"
+  },
+  "169": {
+    "es": "Métodos Econométricos Avanzados",
+    "en": "Advanced Econometric Methods",
+    "pt": "Métodos Econométricos Avançados"
+  },
+  "170": {
+    "es": "Software para Econometría (e.g., STATA, EViews, R)",
+    "en": "Econometrics Software (e.g., STATA, EViews, R)",
+    "pt": "Software para Econometria (por exemplo, STATA, EViews, R)"
+  },
+  "171": {
+    "es": "Matemáticas Financieras",
+    "en": "Financial Mathematics",
+    "pt": "Matemática Financeira"
+  },
+  "172": {
+    "es": "Modelación Financiera",
+    "en": "Financial Modeling",
+    "pt": "Modelagem Financeira"
+  },
+  "173": {
+    "es": "Economía Financiera",
+    "en": "Financial Economics",
+    "pt": "Economia Financeira"
+  },
+  "174": {
+    "es": "Aplicaciones Financieras",
+    "en": "Financial Applications",
+    "pt": "Aplicações Financeiras"
+  },
+  "175": {
+    "es": "Matemáticas Aplicadas a la Economía",
+    "en": "Mathematics Applied to Economics",
+    "pt": "Matemática Aplicada à Economia"
+  },
+  "176": {
+    "es": "Análisis de Estados Financieros",
+    "en": "Financial Statement Analysis",
+    "pt": "Análise das Demonstrações Financeiras"
+  },
+  "177": {
+    "es": "Finanzas Corporativas",
+    "en": "Corporate Finance",
+    "pt": "Finanças Corporativas"
+  },
+  "178": {
+    "es": "Finanzas a Corto Plazo",
+    "en": "Short-Term Finance",
+    "pt": "Finanças de Curto Prazo"
+  },
+  "179": {
+    "es": "Finanzas Estratégicas",
+    "en": "Strategic Finance",
+    "pt": "Finanças Estratégicas"
+  },
+  "180": {
+    "es": "Finanzas Empresariales",
+    "en": "Business Finance",
+    "pt": "Finanças Empresariais"
+  },
+
+  "181": {
+    "es": "Finanzas Internacionales",
+    "en": "International Finance",
+    "pt": "Finanças Internacionais"
+  },
+  "182": {
+    "es": "Introducción a la Economía Cuantitativa",
+    "en": "Introduction to Quantitative Economics",
+    "pt": "Introdução à Economia Quantitativa"
+  },
+  "183": {
+    "es": "Álgebra Aplicada a la Economía",
+    "en": "Algebra Applied to Economics",
+    "pt": "Álgebra Aplicada à Economia"
+  },
+  "184": {
+    "es": "Cálculo Diferencial e Integral en Economía",
+    "en": "Differential and Integral Calculus in Economics",
+    "pt": "Cálculo Diferencial e Integral em Economia"
+  },
+  "185": {
+    "es": "Optimización Económica",
+    "en": "Economic Optimization",
+    "pt": "Otimização Econômica"
+  },
+  "186": {
+    "es": "Modelos Matemáticos en Economía",
+    "en": "Mathematical Models in Economics",
+    "pt": "Modelos Matemáticos em Economia"
+  },
+  "187": {
+    "es": "Programación Lineal y No Lineal",
+    "en": "Linear and Nonlinear Programming",
+    "pt": "Programação Linear e Não Linear"
+  },
+  "188": {
+    "es": "Análisis Input-Output",
+    "en": "Input-Output Analysis",
+    "pt": "Análise de Insumo-Produto"
+  },
+  "189": {
+    "es": "Métodos Estadísticos para Economía",
+    "en": "Statistical Methods for Economics",
+    "pt": "Métodos Estatísticos para Economia"
+  },
+  "190": {
+    "es": "Análisis de Regresión y Correlación",
+    "en": "Regression and Correlation Analysis",
+    "pt": "Análise de Regressão e Correlação"
+  },
+  "191": {
+    "es": "Modelos de Series Temporales",
+    "en": "Time Series Models",
+    "pt": "Modelos de Séries Temporais"
+  },
+  "192": {
+    "es": "Economía Computacional",
+    "en": "Computational Economics",
+    "pt": "Economia Computacional"
+  },
+  "193": {
+    "es": "Econometría Básica y Avanzada",
+    "en": "Basic and Advanced Econometrics",
+    "pt": "Econometria Básica e Avançada"
+  },
+  "194": {
+    "es": "Modelos de Equilibrio General",
+    "en": "General Equilibrium Models",
+    "pt": "Modelos de Equilíbrio Geral"
+  },
+  "195": {
+    "es": "Simulación Económica",
+    "en": "Economic Simulation",
+    "pt": "Simulação Econômica"
+  },
+  "196": {
+    "es": "Modelos Dinámicos y Estocásticos",
+    "en": "Dynamic and Stochastic Models",
+    "pt": "Modelos Dinâmicos e Estocásticos"
+  },
+  "197": {
+    "es": "Métodos Cuantitativos Aplicados a Políticas Públicas",
+    "en": "Quantitative Methods Applied to Public Policy",
+    "pt": "Métodos Quantitativos Aplicados às Políticas Públicas"
+  },
+  "198": {
+    "es": "Análisis de Datos Económicos",
+    "en": "Economic Data Analysis",
+    "pt": "Análise de Dados Econômicos"
+  },
+  "199": {
+    "es": "Software para Análisis Cuantitativo (e.g., MATLAB, R, Python)",
+    "en": "Software for Quantitative Analysis (e.g., MATLAB, R, Python)",
+    "pt": "Software para Análise Quantitativa (por exemplo, MATLAB, R, Python)"
+  },
+  "200": {
+    "es": "Contabilidad Básica",
+    "en": "Basic Accounting",
+    "pt": "Contabilidade Básica"
+  },
+
+  "201": {
+    "es": "Contabilidad Intermedia",
+    "en": "Intermediate Accounting",
+    "pt": "Contabilidade Intermediária"
+  },
+  "202": {
+    "es": "Contabilidad de Sociedades",
+    "en": "Corporate Accounting",
+    "pt": "Contabilidade Societária"
+  },
+  "203": {
+    "es": "Contabilidad Agropecuaria",
+    "en": "Agricultural Accounting",
+    "pt": "Contabilidade Agropecuária"
+  },
+  "204": {
+    "es": "Contabilidad Especiales",
+    "en": "Specialized Accounting",
+    "pt": "Contabilidades Especiais"
+  },
+  "205": {
+    "es": "Contabilidad Fiscal",
+    "en": "Tax Accounting",
+    "pt": "Contabilidade Fiscal"
+  },
+  "206": {
+    "es": "Contabilidad Gubernamental",
+    "en": "Governmental Accounting",
+    "pt": "Contabilidade Governamental"
+  },
+  "207": {
+    "es": "Contabilidad Nacional",
+    "en": "National Accounting",
+    "pt": "Contabilidade Nacional"
+  },
+  "208": {
+    "es": "Contabilidad Tributaria",
+    "en": "Taxation Accounting",
+    "pt": "Contabilidade Tributária"
+  },
+  "209": {
+    "es": "Contabilidad de Costos",
+    "en": "Cost Accounting",
+    "pt": "Contabilidade de Custos"
+  },
+  "210": {
+    "es": "Introducción al Presupuesto",
+    "en": "Introduction to Budgeting",
+    "pt": "Introdução ao Orçamento"
+  },
+  "211": {
+    "es": "Ciclo Presupuestario",
+    "en": "Budget Cycle",
+    "pt": "Ciclo Orçamentário"
+  },
+  "212": {
+    "es": "Elaboración de Presupuestos",
+    "en": "Budget Preparation",
+    "pt": "Elaboração de Orçamentos"
+  },
+  "213": {
+    "es": "Clasificación del Presupuesto",
+    "en": "Budget Classification",
+    "pt": "Classificação do Orçamento"
+  },
+  "214": {
+    "es": "Presupuesto Público y Privado",
+    "en": "Public and Private Budgeting",
+    "pt": "Orçamento Público e Privado"
+  },
+  "215": {
+    "es": "Presupuesto de Ingresos y Egresos",
+    "en": "Revenue and Expenditure Budget",
+    "pt": "Orçamento de Receitas e Despesas"
+  },
+  "216": {
+    "es": "Control y Seguimiento Presupuestario",
+    "en": "Budget Control and Monitoring",
+    "pt": "Controle e Acompanhamento Orçamentário"
+  },
+  "217": {
+    "es": "Análisis de Desviaciones Presupuestarias",
+    "en": "Budget Variance Analysis",
+    "pt": "Análise de Desvios Orçamentários"
+  },
+  "218": {
+    "es": "Herramientas para la Gestión Presupuestaria",
+    "en": "Budget Management Tools",
+    "pt": "Ferramentas para a Gestão Orçamentária"
+  },
+  "219": {
+    "es": "Software de Presupuestación (e.g., Excel, SAP)",
+    "en": "Budgeting Software (e.g., Excel, SAP)",
+    "pt": "Software de Orçamentação (por exemplo, Excel, SAP)"
+  },
+  "220": {
+    "es": "Presupuesto",
+    "en": "Budgeting",
+    "pt": "Orçamento"
+  },
+
+  "221": {
+    "es": "Criptoactivos y Criptomonedas",
+    "en": "Cryptoassets and Cryptocurrencies",
+    "pt": "Criptoativos e Criptomoedas"
+  },
+  "222": {
+    "es": "Investigación de Operaciones",
+    "en": "Operations Research",
+    "pt": "Pesquisa Operacional"
+  },
+  "223": {
+    "es": "Métodos Cuantitativos para la Gestión",
+    "en": "Quantitative Methods for Management",
+    "pt": "Métodos Quantitativos para Gestão"
+  },
+  "224": {
+    "es": "Gestión de Contenidos Digitales",
+    "en": "Digital Content Management",
+    "pt": "Gestão de Conteúdos Digitais"
+  },
+  "225": {
+    "es": "Gestión de Redes Sociales",
+    "en": "Social Media Management",
+    "pt": "Gestão de Redes Sociais"
+  },
+  "226": {
+    "es": "Community Management",
+    "en": "Community Management",
+    "pt": "Gestão de Comunidade"
+  },
+  "227": {
+    "es": "Estrategias de Monetización en Redes Sociales",
+    "en": "Social Media Monetization Strategies",
+    "pt": "Estratégias de Monetização em Redes Sociais"
+  },
+  "228": {
+    "es": "Edición de Fotos con Adobe Photoshop",
+    "en": "Photo Editing with Adobe Photoshop",
+    "pt": "Edição de Fotos com Adobe Photoshop"
+  },
+  "229": {
+    "es": "Edición de Videos con Adobe Premiere",
+    "en": "Video Editing with Adobe Premiere",
+    "pt": "Edição de Vídeos com Adobe Premiere"
+  },
+  "230": {
+    "es": "Edición de Fotos y Videos en Dispositivos Móviles",
+    "en": "Photo and Video Editing on Mobile Devices",
+    "pt": "Edição de Fotos e Vídeos em Dispositivos Móveis"
+  },
+  "231": {
+    "es": "Fundamentos de Fotografía Digital",
+    "en": "Fundamentals of Digital Photography",
+    "pt": "Fundamentos da Fotografia Digital"
+  },
+  "232": {
+    "es": "Diseño Gráfico para Redes Sociales",
+    "en": "Graphic Design for Social Media",
+    "pt": "Design Gráfico para Redes Sociais"
+  },
+  "233": {
+    "es": "Herramientas Digitales para la Creación de Contenidos Visuales",
+    "en": "Digital Tools for Creating Visual Content",
+    "pt": "Ferramentas Digitais para Criação de Conteúdos Visuais"
+  },
+  "234": {
+    "es": "Creación de Video para Redes Sociales",
+    "en": "Video Creation for Social Media",
+    "pt": "Criação de Vídeos para Redes Sociais"
+  },
+  "235": {
+    "es": "Creación de Contenidos Digitales",
+    "en": "Digital Content Creation",
+    "pt": "Criação de Conteúdos Digitais"
+  },
+  "236": {
+    "es": "Producción Audiovisual para Plataformas Digitales",
+    "en": "Audiovisual Production for Digital Platforms",
+    "pt": "Produção Audiovisual para Plataformas Digitais"
+  },
+  "237": {
+    "es": "Configuración y Estructura de Campañas",
+    "en": "Campaign Setup and Structure",
+    "pt": "Configuração e Estrutura de Campanhas"
+  },
+  "238": {
+    "es": "Audiencias Personalizadas y Similares",
+    "en": "Custom and Lookalike Audiences",
+    "pt": "Públicos Personalizados e Semelhantes"
+  },
+  "239": {
+    "es": "Diseño de Creatividades Efectivas",
+    "en": "Design of Effective Creatives",
+    "pt": "Design de Criativos Eficazes"
+  },
+  "240": {
+    "es": "Métricas y Análisis en Facebook Ads",
+    "en": "Metrics and Analysis in Facebook Ads",
+    "pt": "Métricas e Análise em Facebook Ads"
+  },
+  "241": {
+    "es": "Publicidad en Stories y Reels",
+    "en": "Advertising in Stories and Reels",
+    "pt": "Publicidade em Stories e Reels"
+  },
+  "242": {
+    "es": "Branding Visual en Instagram",
+    "en": "Visual Branding on Instagram",
+    "pt": "Branding Visual no Instagram"
+  },
+  "243": {
+    "es": "Influencers y Colaboraciones Pagadas",
+    "en": "Influencers and Paid Collaborations",
+    "pt": "Influenciadores e Colaborações Pagas"
+  },
+  "244": {
+    "es": "Analítica en Instagram Ads",
+    "en": "Analytics in Instagram Ads",
+    "pt": "Análise em Instagram Ads"
+  },
+  "245": {
+    "es": "Algoritmo de TikTok y Engagement",
+    "en": "TikTok Algorithm and Engagement",
+    "pt": "Algoritmo do TikTok e Engajamento"
+  },
+  "246": {
+    "es": "Creación de Contenido Nativo y Viral",
+    "en": "Native and Viral Content Creation",
+    "pt": "Criação de Conteúdo Nativo e Viral"
+  },
+  "247": {
+    "es": "Segmentación y Tendencias en TikTok",
+    "en": "Segmentation and Trends on TikTok",
+    "pt": "Segmentação e Tendências no TikTok"
+  },
+  "248": {
+    "es": "TikTok Business Manager",
+    "en": "TikTok Business Manager",
+    "pt": "TikTok Business Manager"
+  },
+  "249": {
+    "es": "Anuncios TrueView y Bumper Ads",
+    "en": "TrueView Ads and Bumper Ads",
+    "pt": "Anúncios TrueView e Bumper Ads"
+  },
+  "250": {
+    "es": "Estrategias de Contenido de Video",
+    "en": "Video Content Strategies",
+    "pt": "Estratégias de Conteúdo em Vídeo"
+  },
+  "251": {
+    "es": "Optimización de SEO para YouTube",
+    "en": "SEO Optimization for YouTube",
+    "pt": "Otimização de SEO para YouTube"
+  },
+  "252": {
+    "es": "Analítica de Campañas en YouTube",
+    "en": "Campaign Analytics on YouTube",
+    "pt": "Análise de Campanhas no YouTube"
+  },
+  "253": {
+    "es": "LinkedIn Ads Manager",
+    "en": "LinkedIn Ads Manager",
+    "pt": "LinkedIn Ads Manager"
+  },
+  "254": {
+    "es": "Estrategias para B2B en LinkedIn",
+    "en": "B2B Strategies on LinkedIn",
+    "pt": "Estratégias para B2B no LinkedIn"
+  },
+  "255": {
+    "es": "Creación de Contenido Profesional",
+    "en": "Professional Content Creation",
+    "pt": "Criação de Conteúdo Profissional"
+  },
+  "256": {
+    "es": "Análisis de Campañas en LinkedIn",
+    "en": "Campaign Analysis on LinkedIn",
+    "pt": "Análise de Campanhas no LinkedIn"
+  },
+  "257": {
+    "es": "Formatos de Anuncios en Snapchat",
+    "en": "Ad Formats on Snapchat",
+    "pt": "Formatos de Anúncios no Snapchat"
+  },
+  "258": {
+    "es": "Filtros y Lentes Patrocinados",
+    "en": "Sponsored Filters and Lenses",
+    "pt": "Filtros e Lentes Patrocinadas"
+  },
+  "259": {
+    "es": "Estrategias de Segmentación Juvenil",
+    "en": "Youth Segmentation Strategies",
+    "pt": "Estratégias de Segmentação Juvenil"
+  },
+  "260": {
+    "es": "Métricas en Snapchat Ads",
+    "en": "Metrics in Snapchat Ads",
+    "pt": "Métricas em Snapchat Ads"
+  },
+  "261": {
+    "es": "Pruebas A/B en Publicidad Digital",
+    "en": "A/B Testing in Digital Advertising",
+    "pt": "Testes A/B em Publicidade Digital"
+  },
+  "262": {
+    "es": "Retargeting y Remarketing",
+    "en": "Retargeting and Remarketing",
+    "pt": "Retargeting e Remarketing"
+  },
+  "263": {
+    "es": "Optimización de Presupuesto",
+    "en": "Budget Optimization",
+    "pt": "Otimização de Orçamento"
+  },
+  "264": {
+    "es": "Automatización en Plataformas Publicitarias",
+    "en": "Automation in Advertising Platforms",
+    "pt": "Automação em Plataformas Publicitárias"
+  },
+  "265": {
+    "es": "Estrategias Integradas para Redes Sociales",
+    "en": "Integrated Social Media Strategies",
+    "pt": "Estratégias Integradas para Redes Sociais"
+  },
+  "266": {
+    "es": "Herramientas de Gestión Multiplataforma",
+    "en": "Multiplatform Management Tools",
+    "pt": "Ferramentas de Gestão Multiplataforma"
+  },
+  "267": {
+    "es": "Análisis de Datos Cruzados",
+    "en": "Cross-Data Analysis",
+    "pt": "Análise de Dados Cruzados"
+  },
+  "268": {
+    "es": "Creación de Contenido Omnicanal",
+    "en": "Omnichannel Content Creation",
+    "pt": "Criação de Conteúdo Omnicanal"
+  },
+  "269": {
+    "es": "Modelos matemáticos en procesos ambientales",
+    "en": "Mathematical Models in Environmental Processes",
+    "pt": "Modelos Matemáticos em Processos Ambientais"
+  },
+  "270": {
+    "es": "Estadística aplicada a problemas ambientales",
+    "en": "Statistics Applied to Environmental Problems",
+    "pt": "Estatística Aplicada a Problemas Ambientais"
+  },
+  "271": {
+    "es": "Optimización de recursos naturales",
+    "en": "Optimization of Natural Resources",
+    "pt": "Otimização de Recursos Naturais"
+  },
+  "272": {
+    "es": "Simulación matemática en ingeniería ambiental",
+    "en": "Mathematical Simulation in Environmental Engineering",
+    "pt": "Simulação Matemática em Engenharia Ambiental"
+  },
+  "273": {
+    "es": "Estadística probabilidades",
+    "en": "Statistics and Probability",
+    "pt": "Estatística e Probabilidade"
+  },
+  "274": {
+    "es": "Estadística Descriptiva",
+    "en": "Descriptive Statistics",
+    "pt": "Estatística Descritiva"
+  },
+  "275": {
+    "es": "Estadística Inferencial",
+    "en": "Inferential Statistics",
+    "pt": "Estatística Inferencial"
+  },
+  "276": {
+    "es": "Estadística Social",
+    "en": "Social Statistics",
+    "pt": "Estatística Social"
+  },
+  "277": {
+    "es": "Cálculo Diferencial ",
+    "en": "Differential Calculus",
+    "pt": "Cálculo Diferencial"
+  },
+  "278": {
+    "es": "Cálculo Aplicado",
+    "en": "Applied Calculus",
+    "pt": "Cálculo Aplicado"
+  },
+  "279": {
+    "es": "Cálculo Integral ",
+    "en": "Integral Calculus",
+    "pt": "Cálculo Integral"
+  },
+  "280": {
+    "es": "Cálculo Numérico\n\n",
+    "en": "Numerical Calculus",
+    "pt": "Cálculo Numérico"
+  },
+  "281": {
+    "es": "Introducción a las ecuaciones diferenciales",
+    "en": "Introduction to Differential Equations",
+    "pt": "Introdução às Equações Diferenciais"
+  },
+  "282": {
+    "es": "Ecuaciones diferenciales de primer orden",
+    "en": "First-Order Differential Equations",
+    "pt": "Equações Diferenciais de Primeira Ordem"
+  },
+  "283": {
+    "es": "Métodos de resolución para ecuaciones de primer orden",
+    "en": "Solution Methods for First-Order Equations",
+    "pt": "Métodos de Resolução para Equações de Primeira Ordem"
+  },
+  "284": {
+    "es": "Ecuaciones lineales de orden superior",
+    "en": "Higher-Order Linear Equations",
+    "pt": "Equações Lineares de Ordem Superior"
+  },
+  "285": {
+    "es": "Soluciones particulares y generales",
+    "en": "Particular and General Solutions",
+    "pt": "Soluções Particulares e Gerais"
+  },
+  "286": {
+    "es": "Métodos de coeficientes indeterminados",
+    "en": "Method of Undetermined Coefficients",
+    "pt": "Método dos Coeficientes Indeterminados"
+  },
+  "287": {
+    "es": "Variación de parámetros",
+    "en": "Variation of Parameters",
+    "pt": "Variação de Parâmetros"
+  },
+  "288": {
+    "es": "Sistemas de ecuaciones diferenciales",
+    "en": "Systems of Differential Equations",
+    "pt": "Sistemas de Equações Diferenciais"
+  },
+  "289": {
+    "es": "Transformada de Laplace y su aplicación",
+    "en": "Laplace Transform and Its Application",
+    "pt": "Transformada de Laplace e sua Aplicação"
+  },
+  "290": {
+    "es": "Series de Fourier y ecuaciones diferenciales",
+    "en": "Fourier Series and Differential Equations",
+    "pt": "Séries de Fourier e Equações Diferenciais"
+  },
+  "291": {
+    "es": "Ecuaciones diferenciales parciales",
+    "en": "Partial Differential Equations",
+    "pt": "Equações Diferenciais Parciais"
+  },
+  "292": {
+    "es": "Modelado matemático con ecuaciones diferenciales",
+    "en": "Mathematical Modeling with Differential Equations",
+    "pt": "Modelagem Matemática com Equações Diferenciais"
+  },
+  "293": {
+    "es": "Estabilidad y análisis de sistemas dinámicos",
+    "en": "Stability and Analysis of Dynamic Systems",
+    "pt": "Estabilidade e Análise de Sistemas Dinâmicos"
+  },
+  "294": {
+    "es": "Aplicaciones en física e ingeniería",
+    "en": "Applications in Physics and Engineering",
+    "pt": "Aplicações em Física e Engenharia"
+  },
+  "295": {
+    "es": "Métodos numéricos para ecuaciones diferenciales",
+    "en": "Numerical Methods for Differential Equations",
+    "pt": "Métodos Numéricos para Equações Diferenciais"
+  },
+  "296": {
+    "es": "Sistemas de Ecuaciones Lineales",
+    "en": "Systems of Linear Equations",
+    "pt": "Sistemas de Equações Lineares"
+  },
+  "297": {
+    "es": "Vectores y Espacios Vectoriales",
+    "en": "Vectors and Vector Spaces",
+    "pt": "Vetores e Espaços Vetoriais"
+  },
+  "298": {
+    "es": "Matrices y Determinantes",
+    "en": "Matrices and Determinants",
+    "pt": "Matrizes e Determinantes"
+  },
+  "299": {
+    "es": "Transformaciones Lineales",
+    "en": "Linear Transformations",
+    "pt": "Transformações Lineares"
+  },
+  "300": {
+    "es": "Valores y Vectores Propios",
+    "en": "Eigenvalues and Eigenvectors",
+    "pt": "Valores e Vetores Próprios"
+  },
+  "301": {
+    "es": "Diagonalización de Matrices",
+    "en": "Matrix Diagonalization",
+    "pt": "Diagonalização de Matrizes"
+  },
+  "302": {
+    "es": "Subespacios Vectoriales",
+    "en": "Vector Subspaces",
+    "pt": "Subespaços Vetoriais"
+  },
+  "303": {
+    "es": "Bases y Dimensiones",
+    "en": "Bases and Dimensions",
+    "pt": "Bases e Dimensões"
+  },
+  "304": {
+    "es": "Productos Escalares y Normas",
+    "en": "Inner Products and Norms",
+    "pt": "Produtos Internos e Normas"
+  },
+  "305": {
+    "es": "Espacios Ortogonales",
+    "en": "Orthogonal Spaces",
+    "pt": "Espaços Ortogonais"
+  },
+  "306": {
+    "es": "Descomposición en Valores Singulares (SVD)",
+    "en": "Singular Value Decomposition (SVD)",
+    "pt": "Decomposição em Valores Singulares (SVD)"
+  },
+  "307": {
+    "es": "Aplicaciones de Álgebra Lineal en Computación",
+    "en": "Applications of Linear Algebra in Computing",
+    "pt": "Aplicações da Álgebra Linear na Computação"
+  },
+  "308": {
+    "es": "Teoría de Matrices",
+    "en": "Matrix Theory",
+    "pt": "Teoria de Matrizes"
+  },
+  "309": {
+    "es": "Geometría de Espacios Vectoriales",
+    "en": "Geometry of Vector Spaces",
+    "pt": "Geometria dos Espaços Vetoriais"
+  },
+  "310": {
+    "es": "Álgebra Lineal Numérica",
+    "en": "Numerical Linear Algebra",
+    "pt": "Álgebra Linear Numérica"
+  },
+  "311": {
+    "es": "Álgebra Lineal Teoría Matricial",
+    "en": "Linear Algebra and Matrix Theory",
+    "pt": "Álgebra Linear e Teoria Matricial"
+  },
+  "312": {
+    "es": "Introducción a los métodos numéricos",
+    "en": "Introduction to Numerical Methods",
+    "pt": "Introdução aos Métodos Numéricos"
+  },
+  "313": {
+    "es": "Resolución de ecuaciones no lineales",
+    "en": "Solving Nonlinear Equations",
+    "pt": "Resolução de Equações Não Lineares"
+  },
+  "314": {
+    "es": "Interpolación y aproximación de funciones",
+    "en": "Interpolation and Function Approximation",
+    "pt": "Interpolação e Aproximação de Funções"
+  },
+  "315": {
+    "es": "Derivación e integración numérica",
+    "en": "Numerical Differentiation and Integration",
+    "pt": "Derivação e Integração Numérica"
+  },
+  "316": {
+    "es": "Solución de sistemas de ecuaciones lineales",
+    "en": "Solving Systems of Linear Equations",
+    "pt": "Solução de Sistemas de Equações Lineares"
+  },
+  "317": {
+    "es": "Métodos de mínimos cuadrados",
+    "en": "Least Squares Methods",
+    "pt": "Métodos dos Mínimos Quadrados"
+  },
+  "318": {
+    "es": "Solución numérica de ecuaciones diferenciales",
+    "en": "Numerical Solution of Differential Equations",
+    "pt": "Solução Numérica de Equações Diferenciais"
+  },
+  "319": {
+    "es": "Programación en MATLAB",
+    "en": "Programming in MATLAB",
+    "pt": "Programação em MATLAB"
+  },
+  "320": {
+    "es": "Implementación en Python para métodos numéricos",
+    "en": "Implementation in Python for Numerical Methods",
+    "pt": "Implementação em Python para Métodos Numéricos"
+  },
+  "321": {
+    "es": "Optimización numérica",
+    "en": "Numerical Optimization",
+    "pt": "Otimização Numérica"
+  },
+  "322": {
+    "es": "Introducción al modelado de sistemas",
+    "en": "Introduction to Systems Modeling",
+    "pt": "Introdução à Modelagem de Sistemas"
+  },
+  "323": {
+    "es": "Dinámica de sistemas",
+    "en": "System Dynamics",
+    "pt": "Dinâmica de Sistemas"
+  },
+  "324": {
+    "es": "Simulación discreta y continua",
+    "en": "Discrete and Continuous Simulation",
+    "pt": "Simulação Discreta e Contínua"
+  },
+  "325": {
+    "es": "Modelos matemáticos de fenómenos físicos",
+    "en": "Mathematical Models of Physical Phenomena",
+    "pt": "Modelos Matemáticos de Fenômenos Físicos"
+  },
+  "326": {
+    "es": "Uso de herramientas como Simulink y Arena",
+    "en": "Use of Tools such as Simulink and Arena",
+    "pt": "Uso de Ferramentas como Simulink e Arena"
+  },
+  "327": {
+    "es": "Validación y verificación de modelos",
+    "en": "Model Validation and Verification",
+    "pt": "Validação e Verificação de Modelos"
+  },
+  "328": {
+    "es": "Análisis de sensibilidad y escenarios",
+    "en": "Sensitivity and Scenario Analysis",
+    "pt": "Análise de Sensibilidade e Cenários"
+  },
+  "329": {
+    "es": "Aplicaciones en ingeniería y economía",
+    "en": "Applications in Engineering and Economics",
+    "pt": "Aplicações em Engenharia e Economia"
+  },
+  "330": {
+    "es": "Sistemas dinámicos y teoría de control",
+    "en": "Dynamic Systems and Control Theory",
+    "pt": "Sistemas Dinâmicos e Teoria de Controle"
+  },
+  "331": {
+    "es": "Simulación basada en agentes",
+    "en": "Agent-Based Simulation",
+    "pt": "Simulação Baseada em Agentes"
+  },
+  "332": {
+    "es": "Principios del diseño gráfico",
+    "en": "Principles of Graphic Design",
+    "pt": "Princípios do Design Gráfico"
+  },
+  "333": {
+    "es": "Herramientas de edición gráfica (e.g., Photoshop, Illustrator)",
+    "en": "Graphic Editing Tools (e.g., Photoshop, Illustrator)",
+    "pt": "Ferramentas de Edição Gráfica (por exemplo, Photoshop, Illustrator)"
+  },
+  "334": {
+    "es": "Diseño de interfaces y experiencia de usuario (UI/UX)",
+    "en": "Interface Design and User Experience (UI/UX)",
+    "pt": "Design de Interfaces e Experiência do Usuário (UI/UX)"
+  },
+  "335": {
+    "es": "Edición de video y animación (e.g., Premiere Pro, After Effects)",
+    "en": "Video Editing and Animation (e.g., Premiere Pro, After Effects)",
+    "pt": "Edição de Vídeo e Animação (por exemplo, Premiere Pro, After Effects)"
+  },
+  "336": {
+    "es": "Producción de contenido audiovisual",
+    "en": "Audiovisual Content Production",
+    "pt": "Produção de Conteúdo Audiovisual"
+  },
+  "337": {
+    "es": "Diseño 3D y modelado (e.g., Blender, Maya)",
+    "en": "3D Design and Modeling (e.g., Blender, Maya)",
+    "pt": "Design 3D e Modelagem (por exemplo, Blender, Maya)"
+  },
+  "338": {
+    "es": "Tipografía y composición visual",
+    "en": "Typography and Visual Composition",
+    "pt": "Tipografia e Composição Visual"
+  },
+  "339": {
+    "es": "Colorimetría y teoría del color",
+    "en": "Colorimetry and Color Theory",
+    "pt": "Colorimetria e Teoria das Cores"
+  },
+  "340": {
+    "es": "Narrativa visual y storytelling",
+    "en": "Visual Narrative and Storytelling",
+    "pt": "Narrativa Visual e Storytelling"
+  },
+  "341": {
+    "es": "Optimización de multimedia para plataformas digitales",
+    "en": "Multimedia Optimization for Digital Platforms",
+    "pt": "Otimização de Multimídia para Plataformas Digitais"
+  },
+  "342": {
+    "es": "Fundamentos de Electricidad",
+    "en": "Fundamentals of Electricity",
+    "pt": "Fundamentos de Eletricidade"
+  },
+  "343": {
+    "es": "Circuitos Eléctricos",
+    "en": "Electrical Circuits",
+    "pt": "Circuitos Elétricos"
+  },
+  "344": {
+    "es": "Electrónica Básica",
+    "en": "Basic Electronics",
+    "pt": "Eletrônica Básica"
+  },
+  "345": {
+    "es": "Electrónica Digital",
+    "en": "Digital Electronics",
+    "pt": "Eletrônica Digital"
+  },
+  "346": {
+    "es": "Sistemas de Potencia",
+    "en": "Power Systems",
+    "pt": "Sistemas de Potência"
+  },
+  "347": {
+    "es": "Máquinas Eléctricas",
+    "en": "Electrical Machines",
+    "pt": "Máquinas Elétricas"
+  },
+  "348": {
+    "es": "Electrónica Analógica",
+    "en": "Analog Electronics",
+    "pt": "Eletrônica Analógica"
+  },
+  "349": {
+    "es": "Control Automático",
+    "en": "Automatic Control",
+    "pt": "Controle Automático"
+  },
+  "350": {
+    "es": "Instrumentación y Medición",
+    "en": "Instrumentation and Measurement",
+    "pt": "Instrumentação e Medição"
+  },
+  "351": {
+    "es": "Energías Renovables",
+    "en": "Renewable Energy",
+    "pt": "Energias Renováveis"
+  },
+  "352": {
+    "es": "Electrónica de Potencia",
+    "en": "Power Electronics",
+    "pt": "Eletrônica de Potência"
+  },
+  "353": {
+    "es": "Instalaciones Eléctricas",
+    "en": "Electrical Installations",
+    "pt": "Instalações Elétricas"
+  },
+  "354": {
+    "es": "Microcontroladores y Sistemas Embebidos",
+    "en": "Microcontrollers and Embedded Systems",
+    "pt": "Microcontroladores e Sistemas Embarcados"
+  },
+  "355": {
+    "es": "Diseño de Circuitos Impresos (PCB)",
+    "en": "Printed Circuit Board Design (PCB)",
+    "pt": "Design de Placas de Circuito Impresso (PCB)"
+  },
+  "356": {
+    "es": "Robótica y Automatización",
+    "en": "Robotics and Automation",
+    "pt": "Robótica e Automação"
+  },
+  "357": {
+    "es": "Carpintería y Ebanistería",
+    "en": "Carpentry and Cabinetmaking",
+    "pt": "Carpintaria e Marcenaria"
+  },
+  "358": {
+    "es": "Mecánica Automotriz Básica",
+    "en": "Basic Automotive Mechanics",
+    "pt": "Mecânica Automotiva Básica"
+  },
+  "359": {
+    "es": "Soldadura",
+    "en": "Welding",
+    "pt": "Soldagem"
+  },
+  "360": {
+    "es": "Plomería Básica",
+    "en": "Basic Plumbing",
+    "pt": "Encanamento Básico"
+  },
+  "361": {
+    "es": "Introducción a la maquinaria pesada",
+    "en": "Introduction to Heavy Machinery",
+    "pt": "Introdução à Maquinaria Pesada"
+  },
+  "362": {
+    "es": "Tipos de maquinaria pesada y sus usos",
+    "en": "Types of Heavy Machinery and Their Uses",
+    "pt": "Tipos de Maquinaria Pesada e Seus Usos"
+  },
+  "363": {
+    "es": "Seguridad industrial y normativa aplicable",
+    "en": "Industrial Safety and Applicable Regulations",
+    "pt": "Segurança Industrial e Normas Aplicáveis"
+  },
+  "364": {
+    "es": "Mantenimiento preventivo de maquinaria",
+    "en": "Preventive Machinery Maintenance",
+    "pt": "Manutenção Preventiva de Maquinaria"
+  },
+  "365": {
+    "es": "Operación de excavadoras",
+    "en": "Excavator Operation",
+    "pt": "Operação de Escavadeiras"
+  },
+  "366": {
+    "es": "Manejo de retroexcavadoras",
+    "en": "Backhoe Operation",
+    "pt": "Operação de Retroescavadeiras"
+  },
+  "367": {
+    "es": "Uso de cargadores frontales",
+    "en": "Use of Front Loaders",
+    "pt": "Uso de Carregadeiras Frontais"
+  },
+  "368": {
+    "es": "Operación de motoniveladoras",
+    "en": "Motor Grader Operation",
+    "pt": "Operação de Motoniveladoras"
+  },
+  "369": {
+    "es": "Técnicas para el manejo de grúas",
+    "en": "Crane Operation Techniques",
+    "pt": "Técnicas para Operação de Guindastes"
+  },
+  "370": {
+    "es": "Operación de compactadoras y rodillos",
+    "en": "Compactor and Roller Operation",
+    "pt": "Operação de Compactadores e Rolos"
+  },
+  "371": {
+    "es": "Sistemas hidráulicos y eléctricos en maquinaria",
+    "en": "Hydraulic and Electrical Systems in Machinery",
+    "pt": "Sistemas Hidráulicos e Elétricos em Maquinaria"
+  },
+  "372": {
+    "es": "Interpretación de planos y trabajos en obra",
+    "en": "Blueprint Interpretation and On-Site Work",
+    "pt": "Interpretação de Plantas e Trabalhos em Obra"
+  },
+  "373": {
+    "es": "Técnicas de excavación y movimiento de tierra",
+    "en": "Excavation and Earthmoving Techniques",
+    "pt": "Técnicas de Escavação e Terraplenagem"
+  },
+  "374": {
+    "es": "Gestión de combustible y eficiencia operativa",
+    "en": "Fuel Management and Operational Efficiency",
+    "pt": "Gestão de Combustível e Eficiência Operacional"
+  },
+  "375": {
+    "es": "Diagnóstico y solución de problemas comunes",
+    "en": "Diagnosis and Troubleshooting of Common Problems",
+    "pt": "Diagnóstico e Solução de Problemas Comuns"
+  },
+  "376": {
+    "es": "Uso de simuladores de maquinaria pesada",
+    "en": "Use of Heavy Machinery Simulators",
+    "pt": "Uso de Simuladores de Maquinaria Pesada"
+  },
+  "377": {
+    "es": "Normas de medio ambiente y sostenibilidad en operación",
+    "en": "Environmental and Sustainability Standards in Operation",
+    "pt": "Normas Ambientais e de Sustentabilidade na Operação"
+  },
+  "378": {
+    "es": "Conceptos básicos de redes",
+    "en": "Basic Networking Concepts",
+    "pt": "Conceitos Básicos de Redes"
+  },
+  "379": {
+    "es": "Tipos de redes (LAN, WAN, MAN, WLAN)",
+    "en": "Types of Networks (LAN, WAN, MAN, WLAN)",
+    "pt": "Tipos de Redes (LAN, WAN, MAN, WLAN)"
+  },
+  "380": {
+    "es": "Componentes de redes (switches, routers, access points)",
+    "en": "Network Components (Switches, Routers, Access Points)",
+    "pt": "Componentes de Redes (Switches, Roteadores, Pontos de Acesso)"
+  },
+  "381": {
+    "es": "Cableado estructurado",
+    "en": "Structured Cabling",
+    "pt": "Cabeamento Estruturado"
+  },
+  "382": {
+    "es": "Protocolos de red (TCP/IP, UDP, DHCP, DNS)",
+    "en": "Network Protocols (TCP/IP, UDP, DHCP, DNS)",
+    "pt": "Protocolos de Rede (TCP/IP, UDP, DHCP, DNS)"
+  },
+  "383": {
+    "es": "Configuración de redes inalámbricas",
+    "en": "Wireless Network Configuration",
+    "pt": "Configuração de Redes Sem Fio"
+  },
+  "384": {
+    "es": "Seguridad en redes",
+    "en": "Network Security",
+    "pt": "Segurança em Redes"
+  },
+  "385": {
+    "es": "Redes privadas virtuales (VPN)",
+    "en": "Virtual Private Networks (VPN)",
+    "pt": "Redes Privadas Virtuais (VPN)"
+  },
+  "386": {
+    "es": "Diagnóstico y resolución de problemas en redes",
+    "en": "Network Diagnosis and Troubleshooting",
+    "pt": "Diagnóstico e Solução de Problemas em Redes"
+  },
+  "387": {
+    "es": "Instalación y configuración de servidores",
+    "en": "Server Installation and Configuration",
+    "pt": "Instalação e Configuração de Servidores"
+  },
+  "388": {
+    "es": "Implementación de redes de alta disponibilidad",
+    "en": "Implementation of High-Availability Networks",
+    "pt": "Implementação de Redes de Alta Disponibilidade"
+  },
+  "389": {
+    "es": "Herramientas de monitoreo de redes",
+    "en": "Network Monitoring Tools",
+    "pt": "Ferramentas de Monitoramento de Redes"
+  },
+  "390": {
+    "es": "Planificación y diseño de infraestructura de redes",
+    "en": "Network Infrastructure Planning and Design",
+    "pt": "Planejamento e Design de Infraestrutura de Redes"
+  },
+  "391": {
+    "es": "Introducción a redes SDN (Software Defined Networking)",
+    "en": "Introduction to SDN Networks (Software Defined Networking)",
+    "pt": "Introdução a Redes SDN (Software Defined Networking)"
+  },
+  "392": {
+    "es": "Conectividad IoT (Internet de las cosas)",
+    "en": "IoT Connectivity (Internet of Things)",
+    "pt": "Conectividade IoT (Internet das Coisas)"
+  },
+  "393": {
+    "es": "Gestión de Redes",
+    "en": "Network Management",
+    "pt": "Gestão de Redes"
+  },
+  "394": {
+    "es": "Seguridad en Redes y Transmisión de Datos",
+    "en": "Network Security and Data Transmission",
+    "pt": "Segurança em Redes e Transmissão de Dados"
+  },
+  "395": {
+    "es": "Criptografía y Seguridad",
+    "en": "Cryptography and Security",
+    "pt": "Criptografia e Segurança"
+  },
+  "396": {
+    "es": "Redes de Comunicación",
+    "en": "Communication Networks",
+    "pt": "Redes de Comunicação"
+  },
+  "397": {
+    "es": "Redes Inalámbricas y Comunicaciones Móviles",
+    "en": "Wireless Networks and Mobile Communications",
+    "pt": "Redes Sem Fio e Comunicações Móveis"
+  },
+  "398": {
+    "es": "Administración de Empresas Básica",
+    "en": "Basic Business Administration",
+    "pt": "Administração Básica de Empresas"
+  },
+  "399": {
+    "es": "Habilidades de Ventas y Atención al Cliente",
+    "en": "Sales and Customer Service Skills",
+    "pt": "Habilidades de Vendas e Atendimento ao Cliente"
+  },
+  "400": {
+    "es": "Emprendimiento y Gestión de Pequeñas Empresas",
+    "en": "Entrepreneurship and Small Business Management",
+    "pt": "Empreendedorismo e Gestão de Pequenas Empresas"
+  },
+  "401": {
+    "es": "Comunicación y herramientas digitales",
+    "en": "Communication and Digital Tools",
+    "pt": "Comunicação e Ferramentas Digitais"
+  },
+  "402": {
+    "es": "Mecanografía y Redacción Comercial",
+    "en": "Typing and Business Writing",
+    "pt": "Digitação e Redação Comercial"
+  },
+  "403": {
+    "es": "Herramientas de Ofimática (Word, Excel, PowerPoint)",
+    "en": "Office Tools (Word, Excel, PowerPoint)",
+    "pt": "Ferramentas de Escritório (Word, Excel, PowerPoint)"
+  },
+  "404": {
+    "es": "Programación Python",
+    "en": "Python Programming",
+    "pt": "Programação em Python"
+  },
+  "405": {
+    "es": "Programación de Aplicaciones de Tiempo Real",
+    "en": "Real-Time Application Programming",
+    "pt": "Programação de Aplicações em Tempo Real"
+  },
+  "406": {
+    "es": "Programación Ensamblador",
+    "en": "Assembly Language Programming",
+    "pt": "Programação em Assembly"
+  },
+  "407": {
+    "es": "Lenguajes Formales",
+    "en": "Formal Languages",
+    "pt": "Linguagens Formais"
+  },
+  "408": {
+    "es": "Algoritmos y Lógica",
+    "en": "Algorithms and Logic",
+    "pt": "Algoritmos e Lógica"
+  },
+  "409": {
+    "es": "Estructura de Datos",
+    "en": "Data Structures",
+    "pt": "Estruturas de Dados"
+  },
+  "410": {
+    "es": "Teoría de la Computación",
+    "en": "Theory of Computation",
+    "pt": "Teoria da Computação"
+  },
+  "411": {
+    "es": "Interacción Hombre_Computador",
+    "en": "Human-Computer Interaction",
+    "pt": "Interação Humano-Computador"
+  },
+  "412": {
+    "es": "Sistemas de Información",
+    "en": "Information Systems",
+    "pt": "Sistemas de Informação"
+  },
+  "413": {
+    "es": "Sistemas Operativos",
+    "en": "Operating Systems",
+    "pt": "Sistemas Operacionais"
+  },
+  "414": {
+    "es": "Sistemas Administrativos",
+    "en": "Administrative Systems",
+    "pt": "Sistemas Administrativos"
+  },
+  "415": {
+    "es": "Sistemas de Información Gerencial",
+    "en": "Management Information Systems",
+    "pt": "Sistemas de Informação Gerencial"
+  },
+  "416": {
+    "es": "Sistemas Distribuidos",
+    "en": "Distributed Systems",
+    "pt": "Sistemas Distribuídos"
+  },
+  "417": {
+    "es": "Sistemas de Ingeniería",
+    "en": "Engineering Systems",
+    "pt": "Sistemas de Engenharia"
+  },
+  "418": {
+    "es": "Sistemas Expertos",
+    "en": "Expert Systems",
+    "pt": "Sistemas Especialistas"
+  },
+  "419": {
+    "es": "Desarrollo de Sistemas de Información",
+    "en": "Information Systems Development",
+    "pt": "Desenvolvimento de Sistemas de Informação"
+  },
+  "420": {
+    "es": "Inteligencia Artificial",
+    "en": "Artificial Intelligence",
+    "pt": "Inteligência Artificial"
+  },
+  "421": {
+    "es": "Inteligencia de Software",
+    "en": "Software Intelligence",
+    "pt": "Inteligência de Software"
+  },
+  "422": {
+    "es": "Gestión de la Tecnología de la Información",
+    "en": "Information Technology Management",
+    "pt": "Gestão da Tecnologia da Informação"
+  },
+  "423": {
+    "es": "Introducción a las Bases de Datos",
+    "en": "Introduction to Databases",
+    "pt": "Introdução aos Bancos de Dados"
+  },
+  "424": {
+    "es": "Modelado de Datos y Diagramas Entidad-Relación",
+    "en": "Data Modeling and Entity-Relationship Diagrams",
+    "pt": "Modelagem de Dados e Diagramas Entidade-Relacionamento"
+  },
+  "425": {
+    "es": "Diseño de Bases de Datos Relacionales",
+    "en": "Relational Database Design",
+    "pt": "Design de Bancos de Dados Relacionais"
+  },
+  "426": {
+    "es": "Lenguaje SQL: Consultas Básicas y Avanzadas",
+    "en": "SQL Language: Basic and Advanced Queries",
+    "pt": "Linguagem SQL: Consultas Básicas e Avançadas"
+  },
+  "427": {
+    "es": "Gestión de Transacciones y Concurrencia",
+    "en": "Transaction and Concurrency Management",
+    "pt": "Gestão de Transações e Concorrência"
+  },
+  "428": {
+    "es": "Normalización y Desnormalización de Datos",
+    "en": "Data Normalization and Denormalization",
+    "pt": "Normalização e Desnormalização de Dados"
+  },
+  "429": {
+    "es": "Bases de Datos No Relacionales (NoSQL)",
+    "en": "Non-Relational Databases (NoSQL)",
+    "pt": "Bancos de Dados Não Relacionais (NoSQL)"
+  },
+  "430": {
+    "es": "Seguridad en Bases de Datos",
+    "en": "Database Security",
+    "pt": "Segurança em Bancos de Dados"
+  },
+  "431": {
+    "es": "Administración de Bases de Datos (e.g., MySQL, PostgreSQL, Oracle)",
+    "en": "Database Administration (e.g., MySQL, PostgreSQL, Oracle)",
+    "pt": "Administração de Bancos de Dados (por exemplo, MySQL, PostgreSQL, Oracle)"
+  },
+  "432": {
+    "es": "Optimización y Tuning de Bases de Datos",
+    "en": "Database Optimization and Tuning",
+    "pt": "Otimização e Ajuste de Bancos de Dados"
+  },
+  "433": {
+    "es": "Copias de Seguridad y Recuperación de Datos",
+    "en": "Data Backup and Recovery",
+    "pt": "Backup e Recuperação de Dados"
+  },
+  "434": {
+    "es": "Integridad Referencial y Reglas de Negocio",
+    "en": "Referential Integrity and Business Rules",
+    "pt": "Integridade Referencial e Regras de Negócio"
+  },
+  "435": {
+    "es": "Almacenamiento de Datos y Big Data",
+    "en": "Data Warehousing and Big Data",
+    "pt": "Armazenamento de Dados e Big Data"
+  },
+  "436": {
+    "es": "Herramientas para Bases de Datos Distribuidas",
+    "en": "Tools for Distributed Databases",
+    "pt": "Ferramentas para Bancos de Dados Distribuídos"
+  },
+  "437": {
+    "es": "Fundamentos de Auditoría",
+    "en": "Fundamentals of Auditing",
+    "pt": "Fundamentos de Auditoria"
+  },
+  "438": {
+    "es": "Normas Internacionales de Auditoría (ISA)",
+    "en": "International Standards on Auditing (ISA)",
+    "pt": "Normas Internacionais de Auditoria (ISA)"
+  },
+  "439": {
+    "es": "Auditoría de Sistemas de Información",
+    "en": "Information Systems Auditing",
+    "pt": "Auditoria de Sistemas de Informação"
+  },
+  "440": {
+    "es": "Evaluación de Riesgos y Controles Internos",
+    "en": "Risk Assessment and Internal Controls",
+    "pt": "Avaliação de Riscos e Controles Internos"
+  },
+  "441": {
+    "es": "Técnicas de Muestreo en Auditoría",
+    "en": "Audit Sampling Techniques",
+    "pt": "Técnicas de Amostragem em Auditoria"
+  },
+  "442": {
+    "es": "Auditoría de Bases de Datos",
+    "en": "Database Auditing",
+    "pt": "Auditoria de Bancos de Dados"
+  },
+  "443": {
+    "es": "Seguridad Informática y Auditoría de Redes",
+    "en": "Cybersecurity and Network Auditing",
+    "pt": "Segurança da Informação e Auditoria de Redes"
+  },
+  "444": {
+    "es": "Informes y Recomendaciones de Auditoría",
+    "en": "Audit Reports and Recommendations",
+    "pt": "Relatórios e Recomendações de Auditoria"
+  },
+  "445": {
+    "es": "Auditoría de Cumplimiento Legal",
+    "en": "Legal Compliance Auditing",
+    "pt": "Auditoria de Conformidade Legal"
+  },
+  "446": {
+    "es": "Herramientas Automatizadas de Auditoría",
+    "en": "Automated Auditing Tools",
+    "pt": "Ferramentas Automatizadas de Auditoria"
+  },
+  "447": {
+    "es": "Control y Evaluación de Proyectos Tecnológicos",
+    "en": "Technology Project Control and Evaluation",
+    "pt": "Controle e Avaliação de Projetos Tecnológicos"
+  },
+  "448": {
+    "es": "Análisis de Evidencias Digitales",
+    "en": "Digital Evidence Analysis",
+    "pt": "Análise de Evidências Digitais"
+  },
+  "449": {
+    "es": "Planificación y Ejecución de Auditorías Internas",
+    "en": "Planning and Execution of Internal Audits",
+    "pt": "Planejamento e Execução de Auditorias Internas"
+  },
+  "450": {
+    "es": "Ética Profesional en la Auditoría",
+    "en": "Professional Ethics in Auditing",
+    "pt": "Ética Profissional em Auditoria"
+  },
+  "451": {
+    "es": "Fundamentos de Desarrollo Web",
+    "en": "Web Development Fundamentals",
+    "pt": "Fundamentos do Desenvolvimento Web"
+  },
+  "452": {
+    "es": "Frameworks y Bibliotecas Web",
+    "en": "Web Frameworks and Libraries",
+    "pt": "Frameworks e Bibliotecas Web"
+  },
+  "453": {
+    "es": "Tecnologías Backend",
+    "en": "Backend Technologies",
+    "pt": "Tecnologias Backend"
+  },
+  "454": {
+    "es": "Herramientas Multimedia",
+    "en": "Multimedia Tools",
+    "pt": "Ferramentas Multimídia"
+  },
+  "455": {
+    "es": "Diseño Responsive y UX/UI",
+    "en": "Responsive Design and UX/UI",
+    "pt": "Design Responsivo e UX/UI"
+  },
+  "456": {
+    "es": "Gestión de Contenidos",
+    "en": "Content Management",
+    "pt": "Gestão de Conteúdos"
+  },
+  "457": {
+    "es": "Desarrollo de Aplicaciones Web",
+    "en": "Web Application Development",
+    "pt": "Desenvolvimento de Aplicações Web"
+  },
+  "458": {
+    "es": "Tecnologías Multimedia",
+    "en": "Multimedia Technologies",
+    "pt": "Tecnologias Multimídia"
+  },
+  "459": {
+    "es": "Seguridad y Rendimiento Web",
+    "en": "Web Security and Performance",
+    "pt": "Segurança e Desempenho Web"
+  },
+  "460": {
+    "es": "Tendencias y Nuevas Tecnologías",
+    "en": "Trends and Emerging Technologies",
+    "pt": "Tendências e Novas Tecnologias"
+  },
+  "461": {
+    "es": "Tecnologías Web",
+    "en": "Web Technologies",
+    "pt": "Tecnologias Web"
+  },
+  "462": {
+    "es": "Modelado y Simulacion de Sistemas",
+    "en": "Systems Modeling and Simulation",
+    "pt": "Modelagem e Simulação de Sistemas"
+  },
+  "463": {
+    "es": "Computación",
+    "en": "Computing",
+    "pt": "Computação"
+  },
+  "464": {
+    "es": "Instrumentación y Control Automático",
+    "en": "Instrumentation and Automatic Control",
+    "pt": "Instrumentação e Controle Automático"
+  },
+  "465": {
+    "es": "Automatización Industrial",
+    "en": "Industrial Automation",
+    "pt": "Automação Industrial"
+  },
+  "466": {
+    "es": "Diseño de Circuitos Impresos (PCB)",
+    "en": "Printed Circuit Board (PCB) Design",
+    "pt": "Projeto de Placas de Circuito Impresso (PCB)"
+  },
+  "467": {
+    "es": "Diseño Eléctrico Computarizado",
+    "en": "Computer-Aided Electrical Design",
+    "pt": "Projeto Elétrico Assistido por Computador"
+  },
+  "468": {
+    "es": "Microsoft Word",
+    "en": "Microsoft Word",
+    "pt": "Microsoft Word"
+  },
+  "469": {
+    "es": "Microsoft Excel",
+    "en": "Microsoft Excel",
+    "pt": "Microsoft Excel"
+  },
+  "470": {
+    "es": "Microsoft PowerPoint",
+    "en": "Microsoft PowerPoint",
+    "pt": "Microsoft PowerPoint"
+  },
+  "471": {
+    "es": "Microsoft Outlook",
+    "en": "Microsoft Outlook",
+    "pt": "Microsoft Outlook"
+  },
+  "472": {
+    "es": "Microsoft Access",
+    "en": "Microsoft Access",
+    "pt": "Microsoft Access"
+  },
+  "473": {
+    "es": "Microsoft OneNote",
+    "en": "Microsoft OneNote",
+    "pt": "Microsoft OneNote"
+  },
+  "474": {
+    "es": "Microsoft Publisher",
+    "en": "Microsoft Publisher",
+    "pt": "Microsoft Publisher"
+  },
+  "475": {
+    "es": "Microsoft Teams",
+    "en": "Microsoft Teams",
+    "pt": "Microsoft Teams"
+  },
+  "476": {
+    "es": "Fundamentos de Sistemas Financieros",
+    "en": "Fundamentals of Financial Systems",
+    "pt": "Fundamentos dos Sistemas Financeiros"
+  },
+  "477": {
+    "es": "Arquitectura de Sistemas Financieros",
+    "en": "Financial Systems Architecture",
+    "pt": "Arquitetura de Sistemas Financeiros"
+  },
+  "478": {
+    "es": "Regulaciones y Normativas Financieras",
+    "en": "Financial Regulations and Standards",
+    "pt": "Regulamentações e Normas Financeiras"
+  },
+  "479": {
+    "es": "Diseño de Bases de Datos Financieras",
+    "en": "Financial Database Design",
+    "pt": "Projeto de Bancos de Dados Financeiros"
+  },
+  "480": {
+    "es": "Análisis y Gestión de Riesgos Financieros",
+    "en": "Financial Risk Analysis and Management",
+    "pt": "Análise e Gestão de Riscos Financeiros"
+  },
+  "481": {
+    "es": "Modelado y Simulación de Flujos Financieros",
+    "en": "Financial Flow Modeling and Simulation",
+    "pt": "Modelagem e Simulação de Fluxos Financeiros"
+  },
+  "482": {
+    "es": "Implementación de Sistemas de Pago",
+    "en": "Payment Systems Implementation",
+    "pt": "Implementação de Sistemas de Pagamento"
+  },
+  "483": {
+    "es": "Seguridad y Ciberseguridad en Sistemas Financieros",
+    "en": "Security and Cybersecurity in Financial Systems",
+    "pt": "Segurança e Cibersegurança em Sistemas Financeiros"
+  },
+  "484": {
+    "es": "Tecnologías Financieras (FinTech)",
+    "en": "Financial Technologies (FinTech)",
+    "pt": "Tecnologias Financeiras (FinTech)"
+  },
+  "485": {
+    "es": "Integración de Blockchain en Sistemas Financieros",
+    "en": "Blockchain Integration in Financial Systems",
+    "pt": "Integração de Blockchain em Sistemas Financeiros"
+  },
+  "486": {
+    "es": "Diseño de Interfaces de Usuario (UI/UX) para Plataformas Financieras",
+    "en": "User Interface (UI/UX) Design for Financial Platforms",
+    "pt": "Design de Interfaces de Usuário (UI/UX) para Plataformas Financeiras"
+  },
+  "487": {
+    "es": "Automatización de Procesos Financieros (RPA)",
+    "en": "Financial Process Automation (RPA)",
+    "pt": "Automação de Processos Financeiros (RPA)"
+  },
+  "488": {
+    "es": "Evaluación de Costos y Beneficios en Sistemas Financieros",
+    "en": "Cost-Benefit Analysis in Financial Systems",
+    "pt": "Avaliação de Custos e Benefícios em Sistemas Financeiros"
+  },
+  "489": {
+    "es": "Escalabilidad y Sostenibilidad de Sistemas Financieros",
+    "en": "Scalability and Sustainability of Financial Systems",
+    "pt": "Escalabilidade e Sustentabilidade de Sistemas Financeiros"
+  },
+  "490": {
+    "es": "Pruebas y Validación de Sistemas Financieros",
+    "en": "Testing and Validation of Financial Systems",
+    "pt": "Testes e Validação de Sistemas Financeiros"
+  },
+  "491": {
+    "es": "Monitoreo y Mantenimiento de Sistemas Financieros",
+    "en": "Monitoring and Maintenance of Financial Systems",
+    "pt": "Monitoramento e Manutenção de Sistemas Financeiros"
+  },
+  "492": {
+    "es": "Herramientas y Software para el Diseño de Sistemas Financieros",
+    "en": "Tools and Software for Financial Systems Design",
+    "pt": "Ferramentas e Software para o Design de Sistemas Financeiros"
+  },
+  "493": {
+    "es": "Big Data y Analítica en Finanzas",
+    "en": "Big Data and Analytics in Finance",
+    "pt": "Big Data e Análise em Finanças"
+  },
+  "494": {
+    "es": "Innovación y Tendencias en Sistemas Financieros Digitales",
+    "en": "Innovation and Trends in Digital Financial Systems",
+    "pt": "Inovação e Tendências em Sistemas Financeiros Digitais"
+  },
+  "495": {
+    "es": "Introducción a la Interpretación",
+    "en": "Introduction to Interpreting",
+    "pt": "Introdução à Interpretação"
+  },
+  "496": {
+    "es": "Tipos de Interpretación (Simultánea, Consecutiva, Susurrada)",
+    "en": "Types of Interpreting (Simultaneous, Consecutive, Whispered)",
+    "pt": "Tipos de Interpretação (Simultânea, Consecutiva, Sussurrada)"
+  },
+  "497": {
+    "es": "Técnicas de Toma de Notas para Interpretación Consecutiva",
+    "en": "Note-Taking Techniques for Consecutive Interpreting",
+    "pt": "Técnicas de Anotação para Interpretação Consecutiva"
+  },
+  "498": {
+    "es": "Interpretación en Conferencias y Eventos",
+    "en": "Conference and Event Interpreting",
+    "pt": "Interpretação em Conferências e Eventos"
+  },
+  "499": {
+    "es": "Interpretación Telefónica y en Línea",
+    "en": "Telephone and Remote Interpreting",
+    "pt": "Interpretação Telefônica e Online"
+  },
+  "500": {
+    "es": "Desarrollo de Habilidades Auditivas y Retentivas",
+    "en": "Development of Listening and Retention Skills",
+    "pt": "Desenvolvimento de Habilidades Auditivas e de Retenção"
+  },
+  "501": {
+    "es": "Práctica de Interpretación en Contextos Específicos (Médico, Legal, Empresarial)",
+    "en": "Interpreting Practice in Specialized Contexts (Medical, Legal, Business)",
+    "pt": "Prática de Interpretação em Contextos Específicos (Médico, Jurídico, Empresarial)"
+  },
+  "502": {
+    "es": "Ética y Profesionalismo en Interpretación",
+    "en": "Ethics and Professionalism in Interpreting",
+    "pt": "Ética e Profissionalismo em Interpretação"
+  },
+  "503": {
+    "es": "Uso de Tecnología en Interpretación",
+    "en": "Use of Technology in Interpreting",
+    "pt": "Uso de Tecnologia em Interpretação"
+  },
+  "504": {
+    "es": "Fundamentos de la Traducción",
+    "en": "Fundamentals of Translation",
+    "pt": "Fundamentos da Tradução"
+  },
+  "505": {
+    "es": "Tipos de Traducción (Literaria, Técnica, Jurídica, Audiovisual)",
+    "en": "Types of Translation (Literary, Technical, Legal, Audiovisual)",
+    "pt": "Tipos de Tradução (Literária, Técnica, Jurídica, Audiovisual)"
+  },
+  "506": {
+    "es": "Estrategias de Traducción y Adaptación Cultural",
+    "en": "Translation Strategies and Cultural Adaptation",
+    "pt": "Estratégias de Tradução e Adaptação Cultural"
+  },
+  "507": {
+    "es": "Herramientas de Traducción Asistida (CAT Tools)",
+    "en": "Computer-Assisted Translation Tools (CAT Tools)",
+    "pt": "Ferramentas de Tradução Assistida por Computador (CAT Tools)"
+  },
+  "508": {
+    "es": "Gestión Terminológica y Creación de Glosarios",
+    "en": "Terminology Management and Glossary Creation",
+    "pt": "Gestão Terminológica e Criação de Glossários"
+  },
+  "509": {
+    "es": "Traducción de Documentos Especializados",
+    "en": "Translation of Specialized Documents",
+    "pt": "Tradução de Documentos Especializados"
+  },
+  "510": {
+    "es": "Revisión y Edición de Traducciones",
+    "en": "Translation Review and Editing",
+    "pt": "Revisão e Edição de Traduções"
+  },
+  "511": {
+    "es": "Localización de Contenido Digital",
+    "en": "Digital Content Localization",
+    "pt": "Localização de Conteúdo Digital"
+  },
+  "512": {
+    "es": "Normas de Calidad en Traducción",
+    "en": "Translation Quality Standards",
+    "pt": "Normas de Qualidade em Tradução"
+  },
+  "513": {
+    "es": "Lingüística Aplicada a la Traducción e Interpretación",
+    "en": "Applied Linguistics for Translation and Interpreting",
+    "pt": "Linguística Aplicada à Tradução e Interpretação"
+  },
+  "514": {
+    "es": "Desarrollo de Habilidades Bilingües Avanzadas",
+    "en": "Advanced Bilingual Skills Development",
+    "pt": "Desenvolvimento de Habilidades Bilíngues Avançadas"
+  },
+  "515": {
+    "es": "Análisis de Errores Comunes en Traducción e Interpretación",
+    "en": "Analysis of Common Errors in Translation and Interpreting",
+    "pt": "Análise de Erros Comuns em Tradução e Interpretação"
+  },
+  "516": {
+    "es": "Formación en Contextos Multiculturales",
+    "en": "Training in Multicultural Contexts",
+    "pt": "Formação em Contextos Multiculturais"
+  },
+  "517": {
+    "es": "Uso de Inteligencia Artificial y Herramientas de Traducción Automática",
+    "en": "Use of Artificial Intelligence and Machine Translation Tools",
+    "pt": "Uso de Inteligência Artificial e Ferramentas de Tradução Automática"
+  },
+  "518": {
+    "es": "Ética Profesional en la Traducción e Interpretación",
+    "en": "Professional Ethics in Translation and Interpreting",
+    "pt": "Ética Profissional na Tradução e Interpretação"
+  },
+  "519": {
+    "es": "Traducción de Textos",
+    "en": "Text Translation",
+    "pt": "Tradução de Textos"
+  },
+  "520": {
+    "es": "Traducción de Contratos",
+    "en": "Contract Translation",
+    "pt": "Tradução de Contratos"
+  },
+  "521": {
+    "es": "Terminología Legal en Inglés",
+    "en": "Legal English Terminology",
+    "pt": "Terminologia Jurídica em Inglês"
+  },
+  "522": {
+    "es": "Redacción de Contratos en Inglés",
+    "en": "Contract Drafting in English",
+    "pt": "Redação de Contratos em Inglês"
+  },
+  "523": {
+    "es": "Traducción Jurídica y Legal",
+    "en": "Legal Translation",
+    "pt": "Tradução Jurídica"
+  },
+  "524": {
+    "es": "Inglés para Juicios y Arbitrajes",
+    "en": "English for Trials and Arbitration",
+    "pt": "Inglês para Julgamentos e Arbitragem"
+  },
+  "525": {
+    "es": "Interpretación Legal en Inglés",
+    "en": "Legal Interpreting in English",
+    "pt": "Interpretação Jurídica em Inglês"
+  },
+  "526": {
+    "es": "Lectura de Documentos Legales Internacionales",
+    "en": "Reading International Legal Documents",
+    "pt": "Leitura de Documentos Jurídicos Internacionais"
+  },
+  "527": {
+    "es": "Correspondencia Jurídica en Inglés",
+    "en": "Legal Correspondence in English",
+    "pt": "Correspondência Jurídica em Inglês"
+  },
+  "528": {
+    "es": "Negociación y Mediación en Inglés",
+    "en": "Negotiation and Mediation in English",
+    "pt": "Negociação e Mediação em Inglês"
+  },
+  "529": {
+    "es": "Derecho Comparado (Sistemas Legales en Inglés)",
+    "en": "Comparative Law (Legal Systems in English)",
+    "pt": "Direito Comparado (Sistemas Jurídicos em Inglês)"
+  },
+  "530": {
+    "es": "Ética Profesional en Contextos Legales Internacionales",
+    "en": "Professional Ethics in International Legal Contexts",
+    "pt": "Ética Profissional em Contextos Jurídicos Internacionais"
+  },
+  "531": {
+    "es": "Perfeccionamiento Gramatical Avanzado",
+    "en": "Advanced Grammar Mastery",
+    "pt": "Aperfeiçoamento Gramatical Avançado"
+  },
+  "532": {
+    "es": "Expresiones Idiomáticas y Phrasal Verbs",
+    "en": "Idiomatic Expressions and Phrasal Verbs",
+    "pt": "Expressões Idiomáticas e Phrasal Verbs"
+  },
+  "533": {
+    "es": "Pronunciación y Reducción de Acento",
+    "en": "Pronunciation and Accent Reduction",
+    "pt": "Pronúncia e Redução de Sotaque"
+  },
+  "534": {
+    "es": "Escritura Académica Avanzada",
+    "en": "Advanced Academic Writing",
+    "pt": "Escrita Acadêmica Avançada"
+  },
+  "535": {
+    "es": "Comprensión Auditiva en Contextos Formales e Informales",
+    "en": "Listening Comprehension in Formal and Informal Contexts",
+    "pt": "Compreensão Auditiva em Contextos Formais e Informais"
+  },
+  "536": {
+    "es": "Inglés para Presentaciones y Oratoria",
+    "en": "English for Presentations and Public Speaking",
+    "pt": "Inglês para Apresentações e Oratória"
+  },
+  "537": {
+    "es": "Análisis de Textos Literarios y Técnicos",
+    "en": "Analysis of Literary and Technical Texts",
+    "pt": "Análise de Textos Literários e Técnicos"
+  },
+  "538": {
+    "es": "Preparación para Exámenes Internacionales (TOEFL, IELTS, CAE)",
+    "en": "Preparation for International Exams (TOEFL, IELTS, CAE)",
+    "pt": "Preparação para Exames Internacionais (TOEFL, IELTS, CAE)"
+  },
+  "539": {
+    "es": "Inglés en Contextos Empresariales",
+    "en": "Business English",
+    "pt": "Inglês para Contextos Empresariais"
+  },
+  "540": {
+    "es": "Debate y Argumentación en Inglés",
+    "en": "Debate and Argumentation in English",
+    "pt": "Debate e Argumentação em Inglês"
+  },
+  "541": {
+    "es": "Gramática y Sintaxis Avanzada en Francés",
+    "en": "Advanced French Grammar and Syntax",
+    "pt": "Gramática e Sintaxe Avançadas em Francês"
+  },
+  "542": {
+    "es": "Análisis de Textos Literarios y Filosóficos",
+    "en": "Analysis of Literary and Philosophical Texts",
+    "pt": "Análise de Textos Literários e Filosóficos"
+  },
+  "543": {
+    "es": "Francés para Negocios y Comercio",
+    "en": "French for Business and Commerce",
+    "pt": "Francês para Negócios e Comércio"
+  },
+  "544": {
+    "es": "Correspondencia Formal en Francés",
+    "en": "Formal Correspondence in French",
+    "pt": "Correspondência Formal em Francês"
+  },
+  "545": {
+    "es": "Traducción Técnica y Literaria",
+    "en": "Technical and Literary Translation",
+    "pt": "Tradução Técnica e Literária"
+  },
+  "546": {
+    "es": "Francés para Turismo y Hotelería",
+    "en": "French for Tourism and Hospitality",
+    "pt": "Francês para Turismo e Hotelaria"
+  },
+  "547": {
+    "es": "Fonética y Pronunciación Avanzada",
+    "en": "Advanced Phonetics and Pronunciation",
+    "pt": "Fonética e Pronúncia Avançadas"
+  },
+  "548": {
+    "es": "Preparación para Exámenes Internacionales (DALF C1/C2)",
+    "en": "Preparation for International Exams (DALF C1/C2)",
+    "pt": "Preparação para Exames Internacionais (DALF C1/C2)"
+  },
+  "549": {
+    "es": "Cultura y Civilización Francófona",
+    "en": "Francophone Culture and Civilization",
+    "pt": "Cultura e Civilização Francófona"
+  },
+  "550": {
+    "es": "Conversación y Debate en Francés",
+    "en": "French Conversation and Debate",
+    "pt": "Conversação e Debate em Francês"
+  },
+  "551": {
+    "es": "Gramática Avanzada del Alemán",
+    "en": "Advanced German Grammar",
+    "pt": "Gramática Avançada do Alemão"
+  },
+  "552": {
+    "es": "Escritura Técnica y Académica en Alemán",
+    "en": "Technical and Academic Writing in German",
+    "pt": "Escrita Técnica e Acadêmica em Alemão"
+  },
+  "553": {
+    "es": "Lectura y Análisis de Textos Especializados",
+    "en": "Reading and Analysis of Specialized Texts",
+    "pt": "Leitura e Análise de Textos Especializados"
+  },
+  "554": {
+    "es": "Alemán para el Ámbito Científico y Tecnológico",
+    "en": "German for Scientific and Technological Fields",
+    "pt": "Alemão para os Campos Científico e Tecnológico"
+  },
+  "555": {
+    "es": "Pronunciación y Acentuación Avanzada",
+    "en": "Advanced Pronunciation and Accentuation",
+    "pt": "Pronúncia e Acentuação Avançadas"
+  },
+  "556": {
+    "es": "Preparación para Exámenes Internacionales (Goethe C1/C2, TestDaF)",
+    "en": "Preparation for International Exams (Goethe C1/C2, TestDaF)",
+    "pt": "Preparação para Exames Internacionais (Goethe C1/C2, TestDaF)"
+  },
+  "557": {
+    "es": "Cultura y Tradiciones Germanas",
+    "en": "German Culture and Traditions",
+    "pt": "Cultura e Tradições Alemãs"
+  },
+  "558": {
+    "es": "Alemán en Contextos Laborales y Empresariales",
+    "en": "German for Professional and Business Contexts",
+    "pt": "Alemão para Contextos Profissionais e Empresariais"
+  },
+  "559": {
+    "es": "Traducción Profesional Alemán-Español",
+    "en": "Professional German-Spanish Translation",
+    "pt": "Tradução Profissional Alemão-Espanhol"
+  },
+  "560": {
+    "es": "Expresión Oral en Debates y Presentaciones Formales",
+    "en": "Oral Communication in Debates and Formal Presentations",
+    "pt": "Expressão Oral em Debates e Apresentações Formais"
+  },
+  "561": {
+    "es": "Introducción al Español",
+    "en": "Introduction to Spanish",
+    "pt": "Introdução ao Espanhol"
+  },
+  "562": {
+    "es": "Gramática Española",
+    "en": "Spanish Grammar",
+    "pt": "Gramática Espanhola"
+  },
+  "563": {
+    "es": "Vocabulario en Español",
+    "en": "Spanish Vocabulary",
+    "pt": "Vocabulário em Espanhol"
+  },
+  "564": {
+    "es": "Conversación en Español",
+    "en": "Spanish Conversation",
+    "pt": "Conversação em Espanhol"
+  },
+  "565": {
+    "es": "Lectura y Escritura en Español",
+    "en": "Spanish Reading and Writing",
+    "pt": "Leitura e Escrita em Espanhol"
+  },
+  "566": {
+    "es": "Cultura y Tradición Hispánica",
+    "en": "Hispanic Culture and Traditions",
+    "pt": "Cultura e Tradição Hispânica"
+  },
+  "567": {
+    "es": "Preparación para Exámenes Internacionales (DELE, SIELE)",
+    "en": "Preparation for International Exams (DELE, SIELE)",
+    "pt": "Preparação para Exames Internacionais (DELE, SIELE)"
+  },
+  "568": {
+    "es": "Introducción al Italiano",
+    "en": "Introduction to Italian",
+    "pt": "Introdução ao Italiano"
+  },
+  "569": {
+    "es": "Gramática Italiana",
+    "en": "Italian Grammar",
+    "pt": "Gramática Italiana"
+  },
+  "570": {
+    "es": "Vocabulario Italiano",
+    "en": "Italian Vocabulary",
+    "pt": "Vocabulário Italiano"
+  },
+  "571": {
+    "es": "Conversación en Italiano",
+    "en": "Italian Conversation",
+    "pt": "Conversação em Italiano"
+  },
+  "572": {
+    "es": "Lectura y Escritura en Italiano",
+    "en": "Italian Reading and Writing",
+    "pt": "Leitura e Escrita em Italiano"
+  },
+  "573": {
+    "es": "Cultura y Tradición Italiana",
+    "en": "Italian Culture and Traditions",
+    "pt": "Cultura e Tradição Italiana"
+  },
+  "574": {
+    "es": "Preparación para Exámenes Internacionales (CILS, CELI)",
+    "en": "Preparation for International Exams (CILS, CELI)",
+    "pt": "Preparação para Exames Internacionais (CILS, CELI)"
+  },
+  "575": {
+    "es": "Introducción al Portugués",
+    "en": "Introduction to Portuguese",
+    "pt": "Introdução ao Português"
+  },
+  "576": {
+    "es": "Gramática Portuguesa",
+    "en": "Portuguese Grammar",
+    "pt": "Gramática Portuguesa"
+  },
+  "577": {
+    "es": "Vocabulario en Portugués",
+    "en": "Portuguese Vocabulary",
+    "pt": "Vocabulário em Português"
+  },
+  "578": {
+    "es": "Conversación en Portugués",
+    "en": "Portuguese Conversation",
+    "pt": "Conversação em Português"
+  },
+  "579": {
+    "es": "Lectura y Escritura en Portugués",
+    "en": "Portuguese Reading and Writing",
+    "pt": "Leitura e Escrita em Português"
+  },
+  "580": {
+    "es": "Cultura y Tradición Lusófona",
+    "en": "Lusophone Culture and Traditions",
+    "pt": "Cultura e Tradição Lusófona"
+  },
+  "581": {
+    "es": "Preparación para Exámenes Internacionales (CELPE-Bras)",
+    "en": "Preparation for International Exams (CELPE-Bras)",
+    "pt": "Preparação para Exames Internacionais (CELPE-Bras)"
+  },
+  "582": {
+    "es": "Introducción al Ruso",
+    "en": "Introduction to Russian",
+    "pt": "Introdução ao Russo"
+  },
+  "583": {
+    "es": "Gramática Rusa",
+    "en": "Russian Grammar",
+    "pt": "Gramática Russa"
+  },
+  "584": {
+    "es": "Vocabulario en Ruso",
+    "en": "Russian Vocabulary",
+    "pt": "Vocabulário em Russo"
+  },
+  "585": {
+    "es": "Conversación en Ruso",
+    "en": "Russian Conversation",
+    "pt": "Conversação em Russo"
+  },
+  "586": {
+    "es": "Lectura y Escritura en Ruso (Cirílico)",
+    "en": "Russian Reading and Writing (Cyrillic)",
+    "pt": "Leitura e Escrita em Russo (Cirílico)"
+  },
+  "587": {
+    "es": "Cultura y Sociedad Rusa",
+    "en": "Russian Culture and Society",
+    "pt": "Cultura e Sociedade Russa"
+  },
+  "588": {
+    "es": "Preparación para Exámenes Internacionales (TRKI/TORFL)",
+    "en": "Preparation for International Exams (TRKI/TORFL)",
+    "pt": "Preparação para Exames Internacionais (TRKI/TORFL)"
+  },
+  "589": {
+    "es": "Introducción al Quechua",
+    "en": "Introduction to Quechua",
+    "pt": "Introdução ao Quéchua"
+  },
+  "590": {
+    "es": "Gramática del Quechua",
+    "en": "Quechua Grammar",
+    "pt": "Gramática do Quéchua"
+  },
+  "591": {
+    "es": "Vocabulario del Quechua",
+    "en": "Quechua Vocabulary",
+    "pt": "Vocabulário do Quéchua"
+  },
+  "592": {
+    "es": "Conversación en Quechua",
+    "en": "Quechua Conversation",
+    "pt": "Conversação em Quéchua"
+  },
+  "593": {
+    "es": "Lectura y Escritura en Quechua",
+    "en": "Quechua Reading and Writing",
+    "pt": "Leitura e Escrita em Quéchua"
+  },
+  "594": {
+    "es": "Cultura y Tradición en Quechua",
+    "en": "Quechua Culture and Traditions",
+    "pt": "Cultura e Tradições Quéchuas"
+  },
+  "595": {
+    "es": "Introducción al Aymara",
+    "en": "Introduction to Aymara",
+    "pt": "Introdução ao Aimará"
+  },
+  "596": {
+    "es": "Gramática del Aymara",
+    "en": "Aymara Grammar",
+    "pt": "Gramática do Aimará"
+  },
+  "597": {
+    "es": "Vocabulario del Aymara",
+    "en": "Aymara Vocabulary",
+    "pt": "Vocabulário do Aimará"
+  },
+  "598": {
+    "es": "Conversación en Aymara",
+    "en": "Aymara Conversation",
+    "pt": "Conversação em Aimará"
+  },
+  "599": {
+    "es": "Lectura y Escritura en Aymara",
+    "en": "Aymara Reading and Writing",
+    "pt": "Leitura e Escrita em Aimará"
+  },
+  "600": {
+    "es": "Cultura y Tradición en Aymara",
+    "en": "Aymara Culture and Traditions",
+    "pt": "Cultura e Tradições Aimarás"
+  },
+  "601": {
+    "es": "Introducción al Guaraní",
+    "en": "Introduction to Guarani",
+    "pt": "Introdução ao Guarani"
+  },
+  "602": {
+    "es": "Gramática del Guaraní",
+    "en": "Guarani Grammar",
+    "pt": "Gramática do Guarani"
+  },
+  "603": {
+    "es": "Vocabulario del Guaraní",
+    "en": "Guarani Vocabulary",
+    "pt": "Vocabulário do Guarani"
+  },
+  "604": {
+    "es": "Conversación en Guaraní",
+    "en": "Guarani Conversation",
+    "pt": "Conversação em Guarani"
+  },
+  "605": {
+    "es": "Lectura y Escritura en Guaraní",
+    "en": "Guarani Reading and Writing",
+    "pt": "Leitura e Escrita em Guarani"
+  },
+  "606": {
+    "es": "Carpintería y Ebanistería",
+    "en": "Carpentry and Cabinetmaking",
+    "pt": "Carpintaria e Marcenaria"
+  },
+  "607": {
+    "es": "Mecánica Automotriz Básica",
+    "en": "Basic Automotive Mechanics",
+    "pt": "Mecânica Automotiva Básica"
+  },
+  "608": {
+    "es": "Soldadura",
+    "en": "Welding",
+    "pt": "Soldagem"
+  },
+  "609": {
+    "es": "Plomería Básica",
+    "en": "Basic Plumbing",
+    "pt": "Encanamento Básico"
+  },
+  "610": {
+    "es": "Introducción a la Maquinaria Pesada",
+    "en": "Introduction to Heavy Machinery",
+    "pt": "Introdução às Máquinas Pesadas"
+  },
+  "611": {
+    "es": "Tipos de Maquinaria Pesada y Sus Usos",
+    "en": "Types of Heavy Machinery and Their Uses",
+    "pt": "Tipos de Máquinas Pesadas e Seus Usos"
+  },
+  "612": {
+    "es": "Seguridad Industrial y Normativa Aplicable",
+    "en": "Industrial Safety and Applicable Regulations",
+    "pt": "Segurança Industrial e Normas Aplicáveis"
+  },
+  "613": {
+    "es": "Mantenimiento Preventivo de Maquinaria",
+    "en": "Preventive Machinery Maintenance",
+    "pt": "Manutenção Preventiva de Máquinas"
+  },
+  "614": {
+    "es": "Operación de Excavadoras",
+    "en": "Excavator Operation",
+    "pt": "Operação de Escavadeiras"
+  },
+  "615": {
+    "es": "Manejo de Retroexcavadoras",
+    "en": "Backhoe Loader Operation",
+    "pt": "Operação de Retroescavadeiras"
+  },
+  "616": {
+    "es": "Uso de Cargadores Frontales",
+    "en": "Front Loader Operation",
+    "pt": "Operação de Carregadeiras Frontais"
+  },
+  "617": {
+    "es": "Operación de Motoniveladoras",
+    "en": "Motor Grader Operation",
+    "pt": "Operação de Motoniveladoras"
+  },
+  "618": {
+    "es": "Técnicas para el Manejo de Grúas",
+    "en": "Crane Operation Techniques",
+    "pt": "Técnicas de Operação de Guindastes"
+  },
+  "619": {
+    "es": "Operación de Compactadoras y Rodillos",
+    "en": "Compactor and Roller Operation",
+    "pt": "Operação de Compactadores e Rolos Compactadores"
+  },
+  "620": {
+    "es": "Sistemas Hidráulicos y Eléctricos en Maquinaria",
+    "en": "Hydraulic and Electrical Systems in Machinery",
+    "pt": "Sistemas Hidráulicos e Elétricos em Máquinas"
+  },
+  "621": {
+    "es": "Interpretación de Planos y Trabajos en Obra",
+    "en": "Blueprint Interpretation and On-Site Work",
+    "pt": "Interpretação de Plantas e Trabalhos em Obras"
+  },
+  "622": {
+    "es": "Técnicas de Excavación y Movimiento de Tierra",
+    "en": "Excavation and Earthmoving Techniques",
+    "pt": "Técnicas de Escavação e Movimentação de Terra"
+  },
+  "623": {
+    "es": "Gestión de Combustible y Eficiencia Operativa",
+    "en": "Fuel Management and Operational Efficiency",
+    "pt": "Gestão de Combustível e Eficiência Operacional"
+  },
+  "624": {
+    "es": "Diagnóstico y Solución de Problemas Comunes",
+    "en": "Diagnosis and Troubleshooting of Common Problems",
+    "pt": "Diagnóstico e Solução de Problemas Comuns"
+  },
+  "625": {
+    "es": "Uso de Simuladores de Maquinaria Pesada",
+    "en": "Use of Heavy Machinery Simulators",
+    "pt": "Uso de Simuladores de Máquinas Pesadas"
+  },
+  "626": {
+    "es": "Normas de Medio Ambiente y Sostenibilidad en Operación",
+    "en": "Environmental and Sustainability Standards in Operations",
+    "pt": "Normas Ambientais e de Sustentabilidade nas Operações"
+  },
+  "627": {
+    "es": "Conceptos Básicos de Redes",
+    "en": "Basic Networking Concepts",
+    "pt": "Conceitos Básicos de Redes"
+  },
+  "628": {
+    "es": "Tipos de Redes (LAN, WAN, MAN, WLAN)",
+    "en": "Types of Networks (LAN, WAN, MAN, WLAN)",
+    "pt": "Tipos de Redes (LAN, WAN, MAN, WLAN)"
+  },
+  "629": {
+    "es": "Componentes de Redes (Switches, Routers, Access Points)",
+    "en": "Network Components (Switches, Routers, Access Points)",
+    "pt": "Componentes de Redes (Switches, Roteadores, Pontos de Acesso)"
+  },
+  "630": {
+    "es": "Cableado Estructurado",
+    "en": "Structured Cabling",
+    "pt": "Cabeamento Estruturado"
+  },
+  "631": {
+    "es": "Protocolos de Red (TCP/IP, UDP, DHCP, DNS)",
+    "en": "Network Protocols (TCP/IP, UDP, DHCP, DNS)",
+    "pt": "Protocolos de Rede (TCP/IP, UDP, DHCP, DNS)"
+  },
+  "632": {
+    "es": "Configuración de Redes Inalámbricas",
+    "en": "Wireless Network Configuration",
+    "pt": "Configuração de Redes Sem Fio"
+  },
+  "633": {
+    "es": "Seguridad en Redes",
+    "en": "Network Security",
+    "pt": "Segurança de Redes"
+  },
+  "634": {
+    "es": "Redes Privadas Virtuales (VPN)",
+    "en": "Virtual Private Networks (VPN)",
+    "pt": "Redes Privadas Virtuais (VPN)"
+  },
+  "635": {
+    "es": "Diagnóstico y Resolución de Problemas en Redes",
+    "en": "Network Troubleshooting",
+    "pt": "Diagnóstico e Solução de Problemas em Redes"
+  },
+  "636": {
+    "es": "Instalación y Configuración de Servidores",
+    "en": "Server Installation and Configuration",
+    "pt": "Instalação e Configuração de Servidores"
+  },
+  "637": {
+    "es": "Implementación de Redes de Alta Disponibilidad",
+    "en": "Implementation of High-Availability Networks",
+    "pt": "Implementação de Redes de Alta Disponibilidade"
+  },
+  "638": {
+    "es": "Herramientas de Monitoreo de Redes",
+    "en": "Network Monitoring Tools",
+    "pt": "Ferramentas de Monitoramento de Redes"
+  },
+  "639": {
+    "es": "Planificación y Diseño de Infraestructura de Redes",
+    "en": "Network Infrastructure Planning and Design",
+    "pt": "Planejamento e Projeto de Infraestrutura de Redes"
+  },
+  "640": {
+    "es": "Introducción a Redes SDN (Software Defined Networking)",
+    "en": "Introduction to SDN (Software-Defined Networking)",
+    "pt": "Introdução às Redes SDN (Redes Definidas por Software)"
+  },
+  "641": {
+    "es": "Conectividad IoT (Internet de las Cosas)",
+    "en": "IoT Connectivity (Internet of Things)",
+    "pt": "Conectividade IoT (Internet das Coisas)"
+  },
+  "642": {
+    "es": "Introducción a la repostería",
+    "en": "Introduction to Pastry Making",
+    "pt": "Introdução à Confeitaria"
+  },
+  "643": {
+    "es": "Herramientas y utensilios básicos",
+    "en": "Basic Tools and Utensils",
+    "pt": "Ferramentas e Utensílios Básicos"
+  },
+  "644": {
+    "es": "Técnicas de horneado",
+    "en": "Baking Techniques",
+    "pt": "Técnicas de Assamento"
+  },
+  "645": {
+    "es": "Composición de alimentos (Proteínas, carbohidratos y lípidos)",
+    "en": "Food Composition (Proteins, Carbohydrates, and Lipids)",
+    "pt": "Composição dos Alimentos (Proteínas, Carboidratos e Lipídios)"
+  },
+  "646": {
+    "es": "Reacciones químicas en alimentos (e.g., fermentación, caramelización)",
+    "en": "Chemical Reactions in Food (e.g., Fermentation, Caramelization)",
+    "pt": "Reações Químicas nos Alimentos (por exemplo, Fermentação, Caramelização)"
+  },
+  "647": {
+    "es": "Aditivos alimentarios y su uso en repostería",
+    "en": "Food Additives and Their Use in Pastry Making",
+    "pt": "Aditivos Alimentares e Seu Uso na Confeitaria"
+  },
+  "648": {
+    "es": "Química de sabores y aromas",
+    "en": "Chemistry of Flavors and Aromas",
+    "pt": "Química dos Sabores e Aromas"
+  },
+  "649": {
+    "es": "Elaboración de masas básicas (hojaldre, quebrada, esponjosa)",
+    "en": "Preparation of Basic Doughs and Batters (Puff Pastry, Shortcrust, Sponge)",
+    "pt": "Preparação de Massas Básicas (Folhada, Quebrada, Aerada)"
+  },
+  "650": {
+    "es": "Técnicas de batido, amasado y laminado",
+    "en": "Mixing, Kneading, and Laminating Techniques",
+    "pt": "Técnicas de Batimento, Amassamento e Laminação"
+  },
+  "651": {
+    "es": "Preparación de rellenos y coberturas (cremas, ganaches, glaseados)",
+    "en": "Preparation of Fillings and Toppings (Creams, Ganaches, Icings)",
+    "pt": "Preparação de Recheios e Coberturas (Cremes, Ganaches, Glacês)"
+  },
+  "652": {
+    "es": "Decoración de pasteles",
+    "en": "Cake Decorating",
+    "pt": "Decoração de Bolos"
+  },
+  "653": {
+    "es": "Uso de fondant y glaseado real",
+    "en": "Use of Fondant and Royal Icing",
+    "pt": "Uso de Fondant e Glacê Real"
+  },
+  "654": {
+    "es": "Técnicas de aerografía y modelado de figuras",
+    "en": "Airbrushing and Figure Modeling Techniques",
+    "pt": "Técnicas de Aerografia e Modelagem de Figuras"
+  },
+  "655": {
+    "es": "Repostería francesa (macarons, éclairs, croissants)",
+    "en": "French Pastry (Macarons, Éclairs, Croissants)",
+    "pt": "Confeitaria Francesa (Macarons, Éclairs, Croissants)"
+  },
+  "656": {
+    "es": "Postres italianos (tiramisú, cannoli, panna cotta)",
+    "en": "Italian Desserts (Tiramisu, Cannoli, Panna Cotta)",
+    "pt": "Sobremesas Italianas (Tiramisù, Cannoli, Panna Cotta)"
+  },
+  "657": {
+    "es": "Repostería americana (cheesecake, brownies, cupcakes)",
+    "en": "American Pastry (Cheesecake, Brownies, Cupcakes)",
+    "pt": "Confeitaria Americana (Cheesecake, Brownies, Cupcakes)"
+  },
+  "658": {
+    "es": "Postres sin gluten",
+    "en": "Gluten-Free Desserts",
+    "pt": "Sobremesas Sem Glúten"
+  },
+  "659": {
+    "es": "Repostería vegana",
+    "en": "Vegan Pastry Making",
+    "pt": "Confeitaria Vegana"
+  },
+  "660": {
+    "es": "Uso de edulcorantes naturales y alternativos",
+    "en": "Use of Natural and Alternative Sweeteners",
+    "pt": "Uso de Adoçantes Naturais e Alternativos"
+  },
+  "661": {
+    "es": "Planificación y gestión de costos en repostería",
+    "en": "Cost Planning and Management in Pastry Making",
+    "pt": "Planejamento e Gestão de Custos em Confeitaria"
+  },
+  "662": {
+    "es": "Marketing para negocios de repostería",
+    "en": "Marketing for Pastry Businesses",
+    "pt": "Marketing para Negócios de Confeitaria"
+  },
+  "663": {
+    "es": "Estrategias de ventas y atención al cliente",
+    "en": "Sales and Customer Service Strategies",
+    "pt": "Estratégias de Vendas e Atendimento ao Cliente"
+  },
+  "664": {
+    "es": "Manipulación segura de alimentos",
+    "en": "Safe Food Handling",
+    "pt": "Manipulação Segura de Alimentos"
+  },
+  "665": {
+    "es": "Normas de higiene en la cocina",
+    "en": "Kitchen Hygiene Standards",
+    "pt": "Normas de Higiene na Cozinha"
+  },
+  "666": {
+    "es": "Conservación y almacenamiento de productos reposteros",
+    "en": "Preservation and Storage of Pastry Products",
+    "pt": "Conservação e Armazenamento de Produtos de Confeitaria"
+  },
+  "667": {
+    "es": "Introducción a la Psicología",
+    "en": "Introduction to Psychology",
+    "pt": "Introdução à Psicologia"
+  },
+  "668": {
+    "es": "Historia y Enfoques de la Psicología",
+    "en": "History and Approaches of Psychology",
+    "pt": "História e Abordagens da Psicologia"
+  },
+  "669": {
+    "es": "Psicología Experimental",
+    "en": "Experimental Psychology",
+    "pt": "Psicologia Experimental"
+  },
+  "670": {
+    "es": "Neurociencia y Psicología",
+    "en": "Neuroscience and Psychology",
+    "pt": "Neurociência e Psicologia"
+  },
+  "671": {
+    "es": "Psicología Infantil",
+    "en": "Child Psychology",
+    "pt": "Psicologia Infantil"
+  },
+  "672": {
+    "es": "Psicología Adolescente",
+    "en": "Adolescent Psychology",
+    "pt": "Psicologia do Adolescente"
+  },
+  "673": {
+    "es": "Psicología del Adulto y Envejecimiento",
+    "en": "Adult and Aging Psychology",
+    "pt": "Psicologia do Adulto e do Envelhecimento"
+  },
+  "674": {
+    "es": "Trastornos Mentales y Psicopatología",
+    "en": "Mental Disorders and Psychopathology",
+    "pt": "Transtornos Mentais e Psicopatologia"
+  },
+  "675": {
+    "es": "Evaluación Psicológica",
+    "en": "Psychological Assessment",
+    "pt": "Avaliação Psicológica"
+  },
+  "676": {
+    "es": "Terapias Cognitivo-Conductuales",
+    "en": "Cognitive Behavioral Therapies",
+    "pt": "Terapias Cognitivo-Comportamentais"
+  },
+  "677": {
+    "es": "Psicoterapia Humanista",
+    "en": "Humanistic Psychotherapy",
+    "pt": "Psicoterapia Humanista"
+  },
+  "678": {
+    "es": "Psicoanálisis y Terapia Psicodinámica",
+    "en": "Psychoanalysis and Psychodynamic Therapy",
+    "pt": "Psicanálise e Terapia Psicodinâmica"
+  },
+  "679": {
+    "es": "Aprendizaje y Desarrollo Cognitivo",
+    "en": "Learning and Cognitive Development",
+    "pt": "Aprendizagem e Desenvolvimento Cognitivo"
+  },
+  "680": {
+    "es": "Psicología del Aprendizaje",
+    "en": "Psychology of Learning",
+    "pt": "Psicologia da Aprendizagem"
+  },
+  "681": {
+    "es": "Intervención Psicopedagógica",
+    "en": "Psychopedagogical Intervention",
+    "pt": "Intervenção Psicopedagógica"
+  },
+  "682": {
+    "es": "Recursos Humanos y Comportamiento Organizacional",
+    "en": "Human Resources and Organizational Behavior",
+    "pt": "Recursos Humanos e Comportamento Organizacional"
+  },
+  "683": {
+    "es": "Liderazgo y Motivación Laboral",
+    "en": "Leadership and Work Motivation",
+    "pt": "Liderança e Motivação no Trabalho"
+  },
+  "684": {
+    "es": "Gestión del Estrés y Bienestar Organizacional",
+    "en": "Stress Management and Organizational Well-Being",
+    "pt": "Gestão do Estresse e Bem-Estar Organizacional"
+  },
+  "685": {
+    "es": "Psicología de Grupos",
+    "en": "Group Psychology",
+    "pt": "Psicologia de Grupos"
+  },
+  "686": {
+    "es": "Psicología del Comportamiento Colectivo",
+    "en": "Psychology of Collective Behavior",
+    "pt": "Psicologia do Comportamento Coletivo"
+  },
+  "687": {
+    "es": "Intervención Psicosocial",
+    "en": "Psychosocial Intervention",
+    "pt": "Intervenção Psicossocial"
+  },
+  "688": {
+    "es": "Psicología Criminal",
+    "en": "Criminal Psychology",
+    "pt": "Psicologia Criminal"
+  },
+  "689": {
+    "es": "Evaluación Psicológica en el Sistema Judicial",
+    "en": "Psychological Assessment in the Judicial System",
+    "pt": "Avaliação Psicológica no Sistema Judicial"
+  },
+  "690": {
+    "es": "Perfilación Criminal",
+    "en": "Criminal Profiling",
+    "pt": "Perfil Criminal"
+  },
+  "691": {
+    "es": "Dibujo Artístico",
+    "en": "Artistic Drawing",
+    "pt": "Desenho Artístico"
+  },
+  "692": {
+    "es": "Dibujo Técnico",
+    "en": "Technical Drawing",
+    "pt": "Desenho Técnico"
+  },
+  "693": {
+    "es": "Perspectiva y Proporción",
+    "en": "Perspective and Proportion",
+    "pt": "Perspectiva e Proporção"
+  },
+  "694": {
+    "es": "Técnicas de Pintura (Óleo, Acuarela, Acrílico)",
+    "en": "Painting Techniques (Oil, Watercolor, Acrylic)",
+    "pt": "Técnicas de Pintura (Óleo, Aquarela, Acrílica)"
+  },
+  "695": {
+    "es": "Teoría del Color",
+    "en": "Color Theory",
+    "pt": "Teoria das Cores"
+  },
+  "696": {
+    "es": "Estilos Pictóricos y Corrientes Artísticas",
+    "en": "Painting Styles and Art Movements",
+    "pt": "Estilos Pictóricos e Movimentos Artísticos"
+  },
+  "697": {
+    "es": "Escultura en Arcilla y Cerámica",
+    "en": "Clay and Ceramic Sculpture",
+    "pt": "Escultura em Argila e Cerâmica"
+  },
+  "698": {
+    "es": "Modelado en 3D y Digital",
+    "en": "3D and Digital Modeling",
+    "pt": "Modelagem 3D e Digital"
+  },
+  "699": {
+    "es": "Técnicas Mixtas en Escultura",
+    "en": "Mixed-Media Techniques in Sculpture",
+    "pt": "Técnicas Mistas em Escultura"
+  },
+  "700": {
+    "es": "Ilustración Digital",
+    "en": "Digital Illustration",
+    "pt": "Ilustração Digital"
+  },
+  "701": {
+    "es": "Diseño Editorial y Publicidad",
+    "en": "Editorial Design and Advertising",
+    "pt": "Design Editorial e Publicidade"
+  },
+  "702": {
+    "es": "Tipografía y Composición Visual",
+    "en": "Typography and Visual Composition",
+    "pt": "Tipografia e Composição Visual"
+  },
+  "703": {
+    "es": "Historia del Arte Clásico y Contemporáneo",
+    "en": "History of Classical and Contemporary Art",
+    "pt": "História da Arte Clássica e Contemporânea"
+  },
+  "704": {
+    "es": "Movimientos Artísticos del Siglo XX y XXI",
+    "en": "Art Movements of the 20th and 21st Centuries",
+    "pt": "Movimentos Artísticos dos Séculos XX e XXI"
+  },
+  "705": {
+    "es": "Grandes Maestros del Arte",
+    "en": "Great Masters of Art",
+    "pt": "Grandes Mestres da Arte"
+  },
+  "706": {
+    "es": "Instalaciones Artísticas",
+    "en": "Art Installations",
+    "pt": "Instalações Artísticas"
+  },
+  "707": {
+    "es": "Performance y Arte Conceptual",
+    "en": "Performance and Conceptual Art",
+    "pt": "Performance e Arte Conceitual"
+  },
+  "708": {
+    "es": "Arte Digital e Inteligencia Artificial en el Arte",
+    "en": "Digital Art and Artificial Intelligence in Art",
+    "pt": "Arte Digital e Inteligência Artificial na Arte"
+  },
+  "709": {
+    "es": "Introducción a la Colorimetría",
+    "en": "Introduction to Colorimetry",
+    "pt": "Introdução à Colorimetria"
+  },
+  "710": {
+    "es": "Propiedades del Color",
+    "en": "Properties of Color",
+    "pt": "Propriedades da Cor"
+  },
+  "711": {
+    "es": "Percepción Visual y Psicología del Color",
+    "en": "Visual Perception and Color Psychology",
+    "pt": "Percepção Visual e Psicologia das Cores"
+  },
+  "712": {
+    "es": "Colorimetría en la Moda y el Diseño",
+    "en": "Colorimetry in Fashion and Design",
+    "pt": "Colorimetria na Moda e no Design"
+  },
+  "713": {
+    "es": "Colorimetría en la Estética y Belleza",
+    "en": "Colorimetry in Aesthetics and Beauty",
+    "pt": "Colorimetria na Estética e Beleza"
+  },
+  "714": {
+    "es": "Colorimetría en la Publicidad y el Marketing",
+    "en": "Colorimetry in Advertising and Marketing",
+    "pt": "Colorimetria na Publicidade e no Marketing"
+  },
+  "715": {
+    "es": "Medición de Color con Herramientas Digitales",
+    "en": "Color Measurement with Digital Tools",
+    "pt": "Medição de Cores com Ferramentas Digitais"
+  },
+  "716": {
+    "es": "Gestión del Color en la Impresión y la Fotografía",
+    "en": "Color Management in Printing and Photography",
+    "pt": "Gestão de Cores na Impressão e Fotografia"
+  },
+  "717": {
+    "es": "Paletas de Color y Tendencias Cromáticas",
+    "en": "Color Palettes and Color Trends",
+    "pt": "Paletas de Cores e Tendências Cromáticas"
+  },
+  "718": {
+    "es": "Colorimetría en la Industria Textil",
+    "en": "Colorimetry in the Textile Industry",
+    "pt": "Colorimetria na Indústria Têxtil"
+  },
+  "719": {
+    "es": "Colorimetría en la Industria de Alimentos",
+    "en": "Colorimetry in the Food Industry",
+    "pt": "Colorimetria na Indústria de Alimentos"
+  },
+  "720": {
+    "es": "Colorimetría en la Arquitectura y el Diseño de Interiores",
+    "en": "Colorimetry in Architecture and Interior Design",
+    "pt": "Colorimetria na Arquitetura e no Design de Interiores"
+  },
+  "721": {
+    "es": "Armonía y Contraste de Colores",
+    "en": "Color Harmony and Contrast",
+    "pt": "Harmonia e Contraste de Cores"
+  },
+  "722": {
+    "es": "Teoría del Color Avanzada",
+    "en": "Advanced Color Theory",
+    "pt": "Teoria Avançada das Cores"
+  },
+  "723": {
+    "es": "Aplicaciones de Colorimetría en Branding y Identidad Visual",
+    "en": "Applications of Colorimetry in Branding and Visual Identity",
+    "pt": "Aplicações da Colorimetria em Branding e Identidade Visual"
+  },
+  "724": {
+    "es": "Introducción a la Gestión de Comunidades Digitales",
+    "en": "Introduction to Digital Community Management",
+    "pt": "Introdução à Gestão de Comunidades Digitais"
+  },
+  "725": {
+    "es": "Herramientas para Community Managers",
+    "en": "Tools for Community Managers",
+    "pt": "Ferramentas para Community Managers"
+  },
+  "726": {
+    "es": "Creación de Estrategias de Contenido para Redes",
+    "en": "Creation of Content Strategies for Social Media",
+    "pt": "Criação de Estratégias de Conteúdo para Redes Sociais"
+  },
+  "727": {
+    "es": "Atención al Cliente en Redes Sociales",
+    "en": "Customer Service on Social Media",
+    "pt": "Atendimento ao Cliente nas Redes Sociais"
+  },
+  "728": {
+    "es": "Análisis de Métricas y Reportes de Engagement",
+    "en": "Analysis of Metrics and Engagement Reports",
+    "pt": "Análise de Métricas e Relatórios de Engajamento"
+  },
+  "729": {
+    "es": "Introducción a la Publicidad y Medios Digitales",
+    "en": "Introduction to Advertising and Digital Media",
+    "pt": "Introdução à Publicidade e às Mídias Digitais"
+  },
+  "730": {
+    "es": "Psicología del Consumidor y Comportamiento de Compra",
+    "en": "Consumer Psychology and Buying Behavior",
+    "pt": "Psicologia do Consumidor e Comportamento de Compra"
+  },
+  "731": {
+    "es": "Creación de Campañas Publicitarias Digitales",
+    "en": "Creation of Digital Advertising Campaigns",
+    "pt": "Criação de Campanhas Publicitárias Digitais"
+  },
+  "732": {
+    "es": "Branding y Posicionamiento de Marca",
+    "en": "Branding and Brand Positioning",
+    "pt": "Branding e Posicionamento de Marca"
+  },
+  "733": {
+    "es": "Neuromarketing y Estrategias de Venta",
+    "en": "Neuromarketing and Sales Strategies",
+    "pt": "Neuromarketing e Estratégias de Vendas"
+  },
+  "734": {
+    "es": "Publicidad en Facebook e Instagram Ads",
+    "en": "Advertising with Facebook and Instagram Ads",
+    "pt": "Publicidade no Facebook e Instagram Ads"
+  },
+  "735": {
+    "es": "TikTok Marketing y Creación de Contenido Viral",
+    "en": "TikTok Marketing and Viral Content Creation",
+    "pt": "Marketing no TikTok e Criação de Conteúdo Viral"
+  },
+  "736": {
+    "es": "LinkedIn para Negocios y Marca Personal",
+    "en": "LinkedIn for Business and Personal Branding",
+    "pt": "LinkedIn para Negócios e Marca Pessoal"
+  },
+  "737": {
+    "es": "Email Marketing y Automatización",
+    "en": "Email Marketing and Automation",
+    "pt": "E-mail Marketing e Automação"
+  },
+  "738": {
+    "es": "SEO y Estrategias de Posicionamiento Web",
+    "en": "SEO and Web Positioning Strategies",
+    "pt": "SEO e Estratégias de Posicionamento na Web"
+  },
+  "739": {
+    "es": "Modelos de Negocio y Planificación Estratégica",
+    "en": "Business Models and Strategic Planning",
+    "pt": "Modelos de Negócios e Planejamento Estratégico"
+  },
+  "740": {
+    "es": "Finanzas para Emprendedores",
+    "en": "Finance for Entrepreneurs",
+    "pt": "Finanças para Empreendedores"
+  },
+  "741": {
+    "es": "Marketing para Startups y Negocios Digitales",
+    "en": "Marketing for Startups and Digital Businesses",
+    "pt": "Marketing para Startups e Negócios Digitais"
+  },
+  "742": {
+    "es": "Gestión de Proyectos y Liderazgo Empresarial",
+    "en": "Project Management and Business Leadership",
+    "pt": "Gestão de Projetos e Liderança Empresarial"
+  },
+  "743": {
+    "es": "Innovación y Desarrollo de Productos",
+    "en": "Innovation and Product Development",
+    "pt": "Inovação e Desenvolvimento de Produtos"
+  },
+  "744": {
+    "es": "Fundamentos del Diseño Gráfico para Redes",
+    "en": "Fundamentals of Graphic Design for Social Media",
+    "pt": "Fundamentos do Design Gráfico para Redes Sociais"
+  },
+  "745": {
+    "es": "Creación de Contenido Visual con Canva y Photoshop",
+    "en": "Visual Content Creation with Canva and Photoshop",
+    "pt": "Criação de Conteúdo Visual com Canva e Photoshop"
+  },
+  "746": {
+    "es": "Tipografía y Composición Visual",
+    "en": "Typography and Visual Composition",
+    "pt": "Tipografia e Composição Visual"
+  },
+  "747": {
+    "es": "Diseño de Identidad Corporativa",
+    "en": "Corporate Identity Design",
+    "pt": "Design de Identidade Corporativa"
+  },
+  "748": {
+    "es": "Edición de Imágenes y Diseño de Publicidad",
+    "en": "Image Editing and Advertising Design",
+    "pt": "Edição de Imagens e Design Publicitário"
+  },
+  "749": {
+    "es": "Introducción a la Fotografía Digital",
+    "en": "Introduction to Digital Photography",
+    "pt": "Introdução à Fotografia Digital"
+  },
+  "750": {
+    "es": "Técnicas de Iluminación y Composición Fotográfica",
+    "en": "Lighting and Photographic Composition Techniques",
+    "pt": "Técnicas de Iluminação e Composição Fotográfica"
+  },
+  "751": {
+    "es": "Edición de Fotos con Lightroom y Photoshop",
+    "en": "Photo Editing with Lightroom and Photoshop",
+    "pt": "Edição de Fotos com Lightroom e Photoshop"
+  },
+  "752": {
+    "es": "Fotografía de Productos y Moda",
+    "en": "Product and Fashion Photography",
+    "pt": "Fotografia de Produtos e Moda"
+  },
+  "753": {
+    "es": "Fotografía para Redes Sociales y Publicidad",
+    "en": "Photography for Social Media and Advertising",
+    "pt": "Fotografia para Redes Sociais e Publicidade"
+  },
+  "754": {
+    "es": "Creación y Edición de Videos para Redes Sociales",
+    "en": "Creation and Editing of Videos for Social Media",
+    "pt": "Criação e Edição de Vídeos para Redes Sociais"
+  },
+  "755": {
+    "es": "Producción de Contenido para TikTok y YouTube",
+    "en": "Content Production for TikTok and YouTube",
+    "pt": "Produção de Conteúdo para TikTok e YouTube"
+  },
+  "756": {
+    "es": "Técnicas de Storytelling para Creadores de Contenido",
+    "en": "Storytelling Techniques for Content Creators",
+    "pt": "Técnicas de Storytelling para Criadores de Conteúdo"
+  },
+  "757": {
+    "es": "Monetización de Canales Digitales y Estrategias de Crecimiento",
+    "en": "Digital Channel Monetization and Growth Strategies",
+    "pt": "Monetização de Canais Digitais e Estratégias de Crescimento"
+  },
+  "758": {
+    "es": "Técnicas de Guionismo para Video y Publicidad",
+    "en": "Screenwriting Techniques for Video and Advertising",
+    "pt": "Técnicas de Roteiro para Vídeo e Publicidade"
+  },
+  "759": {
+    "es": "Ilustración Digital y Creación de Personajes",
+    "en": "Digital Illustration and Character Creation",
+    "pt": "Ilustração Digital e Criação de Personagens"
+  },
+  "760": {
+    "es": "Diseño de Moda y Creación de Estilos",
+    "en": "Fashion Design and Style Creation",
+    "pt": "Design de Moda e Criação de Estilos"
+  },
+  "761": {
+    "es": "Dibujo Artístico y Perspectiva",
+    "en": "Artistic Drawing and Perspective",
+    "pt": "Desenho Artístico e Perspectiva"
+  },
+  "762": {
+    "es": "Técnicas de Pintura y Acuarela",
+    "en": "Painting and Watercolor Techniques",
+    "pt": "Técnicas de Pintura e Aquarela"
+  },
+  "763": {
+    "es": "Edición de Videos con Premiere Pro y After Effects",
+    "en": "Video Editing with Premiere Pro and After Effects",
+    "pt": "Edição de Vídeos com Premiere Pro e After Effects"
+  },
+  "764": {
+    "es": "Historia y Evolución del Arte Urbano",
+    "en": "History and Evolution of Urban Art",
+    "pt": "História e Evolução da Arte Urbana"
+  },
+  "765": {
+    "es": "Técnicas de Graffiti y Muralismo",
+    "en": "Graffiti and Mural Art Techniques",
+    "pt": "Técnicas de Grafite e Muralismo"
+  },
+  "766": {
+    "es": "Arte Digital e Inteligencia Artificial en el Diseño",
+    "en": "Digital Art and Artificial Intelligence in Design",
+    "pt": "Arte Digital e Inteligência Artificial no Design"
+  },
+  "767": {
+    "es": "Diseño de Merchandising y Estampado Textil",
+    "en": "Merchandising Design and Textile Printing",
+    "pt": "Design de Merchandising e Estamparia Têxtil"
+  },
+  "768": {
+    "es": "Técnicas de Tatuaje y Diseño Corporal",
+    "en": "Tattoo Techniques and Body Art Design",
+    "pt": "Técnicas de Tatuagem e Design Corporal"
+  },
+  "769": {
+    "es": "Introducción a la Filosofía y Pensamiento Crítico",
+    "en": "Introduction to Philosophy and Critical Thinking",
+    "pt": "Introdução à Filosofia e ao Pensamento Crítico"
+  },
+  "770": {
+    "es": "Lógica y Argumentación: Cómo Desarrollar un Razonamiento Sólido",
+    "en": "Logic and Argumentation: How to Develop Sound Reasoning",
+    "pt": "Lógica e Argumentação: Como Desenvolver um Raciocínio Sólido"
+  },
+  "771": {
+    "es": "Ética y Moral en el Mundo Moderno",
+    "en": "Ethics and Morality in the Modern World",
+    "pt": "Ética e Moral no Mundo Moderno"
+  },
+  "772": {
+    "es": "Filosofía Política y Modelos de Sociedad",
+    "en": "Political Philosophy and Models of Society",
+    "pt": "Filosofia Política e Modelos de Sociedade"
+  },
+  "773": {
+    "es": "Filosofía del Lenguaje y su Impacto en la Comunicación",
+    "en": "Philosophy of Language and Its Impact on Communication",
+    "pt": "Filosofia da Linguagem e Seu Impacto na Comunicação"
+  },
+  "774": {
+    "es": "Métodos de Enseñanza y Aprendizaje Innovadores",
+    "en": "Innovative Teaching and Learning Methods",
+    "pt": "Métodos Inovadores de Ensino e Aprendizagem"
+  },
+  "775": {
+    "es": "Estrategias Pedagógicas para la Educación en Línea",
+    "en": "Pedagogical Strategies for Online Education",
+    "pt": "Estratégias Pedagógicas para a Educação Online"
+  },
+  "776": {
+    "es": "Evaluación y Diseño de Material Educativo",
+    "en": "Assessment and Design of Educational Materials",
+    "pt": "Avaliação e Desenvolvimento de Material Educacional"
+  },
+  "777": {
+    "es": "Psicología del Aprendizaje y Desarrollo Cognitivo",
+    "en": "Psychology of Learning and Cognitive Development",
+    "pt": "Psicologia da Aprendizagem e Desenvolvimento Cognitivo"
+  },
+  "778": {
+    "es": "Educación Inclusiva y Enseñanza Adaptada",
+    "en": "Inclusive Education and Adapted Teaching",
+    "pt": "Educação Inclusiva e Ensino Adaptado"
+  },
+  "779": {
+    "es": "Técnicas de Traducción y Adaptación de Textos",
+    "en": "Translation and Text Adaptation Techniques",
+    "pt": "Técnicas de Tradução e Adaptação de Textos"
+  },
+  "780": {
+    "es": "Introducción a la Interpretación Simultánea y Consecutiva",
+    "en": "Introduction to Simultaneous and Consecutive Interpreting",
+    "pt": "Introdução à Interpretação Simultânea e Consecutiva"
+  },
+  "781": {
+    "es": "Localización de Contenidos Digitales y Audiovisuales",
+    "en": "Localization of Digital and Audiovisual Content",
+    "pt": "Localização de Conteúdos Digitais e Audiovisuais"
+  },
+  "782": {
+    "es": "Uso de Herramientas de Traducción Asistida",
+    "en": "Use of Computer-Assisted Translation Tools",
+    "pt": "Uso de Ferramentas de Tradução Assistida"
+  },
+  "783": {
+    "es": "Traducción Jurídica, Técnica y Literaria",
+    "en": "Legal, Technical, and Literary Translation",
+    "pt": "Tradução Jurídica, Técnica e Literária"
+  },
+  "784": {
+    "es": "Introducción a la Ingeniería Ambiental y Sostenibilidad",
+    "en": "Introduction to Environmental Engineering and Sustainability",
+    "pt": "Introdução à Engenharia Ambiental e Sustentabilidade"
+  },
+  "785": {
+    "es": "Gestión de Residuos y Reciclaje Urbano",
+    "en": "Waste Management and Urban Recycling",
+    "pt": "Gestão de Resíduos e Reciclagem Urbana"
+  },
+  "786": {
+    "es": "Cambio Climático y Energías Renovables",
+    "en": "Climate Change and Renewable Energy",
+    "pt": "Mudanças Climáticas e Energias Renováveis"
+  },
+  "787": {
+    "es": "Evaluación de Impacto Ambiental y Regulaciones",
+    "en": "Environmental Impact Assessment and Regulations",
+    "pt": "Avaliação de Impacto Ambiental e Regulamentações"
+  },
+  "788": {
+    "es": "Agricultura Sostenible y Producción Ecológica",
+    "en": "Sustainable Agriculture and Organic Production",
+    "pt": "Agricultura Sustentável e Produção Orgânica"
+  },
+  "789": {
+    "es": "Fundamentos de Estadística Descriptiva e Inferencial",
+    "en": "Fundamentals of Descriptive and Inferential Statistics",
+    "pt": "Fundamentos de Estatística Descritiva e Inferencial"
+  },
+  "790": {
+    "es": "Análisis de Datos con Excel y Power BI",
+    "en": "Data Analysis with Excel and Power BI",
+    "pt": "Análise de Dados com Excel e Power BI"
+  },
+  "791": {
+    "es": "Métodos Estadísticos Aplicados a Negocios",
+    "en": "Statistical Methods Applied to Business",
+    "pt": "Métodos Estatísticos Aplicados aos Negócios"
+  },
+  "792": {
+    "es": "Programación en R y Python para Ciencia de Datos",
+    "en": "Programming in R and Python for Data Science",
+    "pt": "Programação em R e Python para Ciência de Dados"
+  },
+  "793": {
+    "es": "Diseño de Encuestas y Métodos de Muestreo",
+    "en": "Survey Design and Sampling Methods",
+    "pt": "Elaboração de Pesquisas e Métodos de Amostragem"
+  },
+  "794": {
+    "es": "Técnicas Básicas de Carpintería y Mobiliario",
+    "en": "Basic Carpentry and Furniture-Making Techniques",
+    "pt": "Técnicas Básicas de Carpintaria e Fabricação de Móveis"
+  },
+  "795": {
+    "es": "Instalaciones Eléctricas Residenciales y Comerciales",
+    "en": "Residential and Commercial Electrical Installations",
+    "pt": "Instalações Elétricas Residenciais e Comerciais"
+  },
+  "796": {
+    "es": "Fontanería y Reparación de Tuberías",
+    "en": "Plumbing and Pipe Repair",
+    "pt": "Encanamento e Reparo de Tubulações"
+  },
+  "797": {
+    "es": "Albañilería y Construcción con Materiales Modernos",
+    "en": "Masonry and Construction with Modern Materials",
+    "pt": "Alvenaria e Construção com Materiais Modernos"
+  },
+  "798": {
+    "es": "Mantenimiento de Sistemas de Climatización",
+    "en": "Heating, Ventilation, and Air Conditioning System Maintenance",
+    "pt": "Manutenção de Sistemas de Climatização"
+  },
+  "799": {
+    "es": "Mecánica Automotriz: Diagnóstico y Reparación",
+    "en": "Automotive Mechanics: Diagnosis and Repair",
+    "pt": "Mecânica Automotiva: Diagnóstico e Reparo"
+  },
+  "800": {
+    "es": "Mantenimiento y Reparación de Motocicletas",
+    "en": "Motorcycle Maintenance and Repair",
+    "pt": "Manutenção e Reparo de Motocicletas"
+  },
+  "801": {
+    "es": "Introducción a la Electricidad Automotriz",
+    "en": "Introduction to Automotive Electrical Systems",
+    "pt": "Introdução à Elétrica Automotiva"
+  },
+  "802": {
+    "es": "Reparación de Bicicletas y Mantenimiento de Frenos",
+    "en": "Bicycle Repair and Brake Maintenance",
+    "pt": "Reparo de Bicicletas e Manutenção de Freios"
+  },
+  "803": {
+    "es": "Diagnóstico de Fallas en Sistemas de Combustión",
+    "en": "Fault Diagnosis in Combustion Systems",
+    "pt": "Diagnóstico de Falhas em Sistemas de Combustão"
+  },
+  "804": {
+    "es": "Repostería Clásica y Moderna",
+    "en": "Classical and Modern Pastry Making",
+    "pt": "Confeitaria Clássica e Moderna"
+  },
+  "805": {
+    "es": "Panadería Artesanal y Uso de Harinas Alternativas",
+    "en": "Artisanal Baking and the Use of Alternative Flours",
+    "pt": "Panificação Artesanal e Uso de Farinhas Alternativas"
+  },
+  "806": {
+    "es": "Decoración de Tortas y Postres de Alta Cocina",
+    "en": "Cake Decoration and Fine-Dining Desserts",
+    "pt": "Decoração de Bolos e Sobremesas de Alta Gastronomia"
+  },
+  "807": {
+    "es": "Chocolatería y Bombonería Profesional",
+    "en": "Professional Chocolate and Confectionery Making",
+    "pt": "Chocolateria e Bomboneria Profissional"
+  },
+  "808": {
+    "es": "Gestión y Administración de un Negocio de Repostería",
+    "en": "Management and Administration of a Pastry Business",
+    "pt": "Gestão e Administração de um Negócio de Confeitaria"
+  },
+  "809": {
+    "es": "Técnicas de Corte y Peinado Profesional",
+    "en": "Professional Haircutting and Styling Techniques",
+    "pt": "Técnicas Profissionais de Corte e Penteado"
+  },
+  "810": {
+    "es": "Colorimetría y Tintes para el Cabello",
+    "en": "Hair Colorimetry and Hair Dyes",
+    "pt": "Colorimetria e Tinturas Capilares"
+  },
+  "811": {
+    "es": "Maquillaje Profesional y Estilos de Belleza",
+    "en": "Professional Makeup and Beauty Styles",
+    "pt": "Maquiagem Profissional e Estilos de Beleza"
+  },
+  "812": {
+    "es": "Confección de Prendas y Diseño de Moda",
+    "en": "Garment Making and Fashion Design",
+    "pt": "Confecção de Roupas e Design de Moda"
+  },
+  "813": {
+    "es": "Creación y Personalización de Accesorios",
+    "en": "Creation and Customization of Accessories",
+    "pt": "Criação e Personalização de Acessórios"
+  },
+  "814": {
+    "es": "Fundamentos del Entrenamiento Funcional",
+    "en": "Fundamentals of Functional Training",
+    "pt": "Fundamentos do Treinamento Funcional"
+  },
+  "815": {
+    "es": "Nutrición para Atletas y Deportistas",
+    "en": "Nutrition for Athletes and Sportspeople",
+    "pt": "Nutrição para Atletas e Esportistas"
+  },
+  "816": {
+    "es": "Psicología del Deporte y Motivación",
+    "en": "Sports Psychology and Motivation",
+    "pt": "Psicologia do Esporte e Motivação"
+  },
+  "817": {
+    "es": "Prevención de Lesiones y Rehabilitación Deportiva",
+    "en": "Injury Prevention and Sports Rehabilitation",
+    "pt": "Prevenção de Lesões e Reabilitação Esportiva"
+  },
+  "818": {
+    "es": "Técnicas de Respiración y Relajación para Deportistas",
+    "en": "Breathing and Relaxation Techniques for Athletes",
+    "pt": "Técnicas de Respiração e Relaxamento para Atletas"
+  },
+  "819": {
+    "es": "Pesca Deportiva y Conservación de Ecosistemas",
+    "en": "Sport Fishing and Ecosystem Conservation",
+    "pt": "Pesca Esportiva e Conservação de Ecossistemas"
+  },
+  "820": {
+    "es": "Técnicas de Supervivencia y Campismo",
+    "en": "Survival and Camping Techniques",
+    "pt": "Técnicas de Sobrevivência e Acampamento"
+  },
+  "821": {
+    "es": "Planificación de Viajes y Turismo de Aventura",
+    "en": "Travel Planning and Adventure Tourism",
+    "pt": "Planejamento de Viagens e Turismo de Aventura"
+  },
+  "822": {
+    "es": "Ecoturismo y Gestión de Áreas Naturales",
+    "en": "Ecotourism and Natural Area Management",
+    "pt": "Ecoturismo e Gestão de Áreas Naturais"
+  },
+  "823": {
+    "es": "Fotografía de Paisajes y Vida Silvestre",
+    "en": "Landscape and Wildlife Photography",
+    "pt": "Fotografia de Paisagens e Vida Selvagem"
+  },
+  "824": {
+    "es": "Introducción a la Meditación y Mindfulness",
+    "en": "Introduction to Meditation and Mindfulness",
+    "pt": "Introdução à Meditação e ao Mindfulness"
+  },
+  "825": {
+    "es": "Astrología y Análisis de Cartas Astrales",
+    "en": "Astrology and Birth Chart Analysis",
+    "pt": "Astrologia e Análise de Mapas Astrais"
+  },
+  "826": {
+    "es": "Filosofía del Yoga y Técnicas de Relajación",
+    "en": "Yoga Philosophy and Relaxation Techniques",
+    "pt": "Filosofia do Yoga e Técnicas de Relaxamento"
+  },
+  "827": {
+    "es": "Técnicas de Visualización y Programación Mental",
+    "en": "Visualization and Mental Programming Techniques",
+    "pt": "Técnicas de Visualização e Programação Mental"
+  },
+  "828": {
+    "es": "Inteligencia Emocional y Control del Estrés",
+    "en": "Emotional Intelligence and Stress Management",
+    "pt": "Inteligência Emocional e Controle do Estresse"
+  },
+  "829": {
+    "es": "Fundamentos de Actuación para Cine y Teatro",
+    "en": "Fundamentals of Acting for Film and Theater",
+    "pt": "Fundamentos da Atuação para Cinema e Teatro"
+  },
+  "830": {
+    "es": "Expresión Corporal y Técnicas de Improvisación",
+    "en": "Body Expression and Improvisation Techniques",
+    "pt": "Expressão Corporal e Técnicas de Improvisação"
+  },
+  "831": {
+    "es": "Producción y Dirección de Espectáculos",
+    "en": "Production and Direction of Performances",
+    "pt": "Produção e Direção de Espetáculos"
+  },
+  "832": {
+    "es": "Creación de Personajes y Técnica Vocal",
+    "en": "Character Creation and Vocal Technique",
+    "pt": "Criação de Personagens e Técnica Vocal"
+  },
+  "833": {
+    "es": "Historia del Teatro y el Cine",
+    "en": "History of Theater and Film",
+    "pt": "História do Teatro e do Cinema"
+  },
+  "834": {
+    "es": "Introducción al Diseño de Videojuegos",
+    "en": "Introduction to Video Game Design",
+    "pt": "Introdução ao Design de Videogames"
+  },
+  "835": {
+    "es": "Creación de Personajes y Narrativa Interactiva",
+    "en": "Character Creation and Interactive Narrative",
+    "pt": "Criação de Personagens e Narrativa Interativa"
+  },
+  "836": {
+    "es": "Programación en Unity y Unreal Engine",
+    "en": "Programming in Unity and Unreal Engine",
+    "pt": "Programação em Unity e Unreal Engine"
+  },
+  "837": {
+    "es": "Diseño de Niveles y Experiencia del Usuario",
+    "en": "Level Design and User Experience",
+    "pt": "Design de Níveis e Experiência do Usuário"
+  },
+  "838": {
+    "es": "Gamificación y Monetización de Juegos",
+    "en": "Game Gamification and Monetization",
+    "pt": "Gamificação e Monetização de Jogos"
+  },
+  "840": {
+    "es": "Anatomía humana I",
+    "en": "Human Anatomy I",
+    "pt": "Anatomia Humana I"
+  },
+  "841": {
+    "es": "Histología I",
+    "en": "Histology I",
+    "pt": "Histologia I"
+  },
+  "842": {
+    "es": "Genética y embriología",
+    "en": "Genetics and Embryology",
+    "pt": "Genética e Embriologia"
+  },
+  "843": {
+    "es": "Bioestadística",
+    "en": "Biostatistics",
+    "pt": "Bioestatística"
+  },
+  "844": {
+    "es": "Inglés técnico",
+    "en": "Technical English",
+    "pt": "Inglês Técnico"
+  },
+  "845": {
+    "es": "Anatomía humana II",
+    "en": "Human Anatomy II",
+    "pt": "Anatomia Humana II"
+  },
+  "846": {
+    "es": "Histología II",
+    "en": "Histology II",
+    "pt": "Histologia II"
+  },
+  "847": {
+    "es": "Soporte básico de vida",
+    "en": "Basic Life Support",
+    "pt": "Suporte Básico de Vida"
+  },
+  "848": {
+    "es": "Med. Social y salud pública I",
+    "en": "Social Medicine and Public Health I",
+    "pt": "Medicina Social e Saúde Pública I"
+  },
+  "849": {
+    "es": "Biofísica",
+    "en": "Biophysics",
+    "pt": "Biofísica"
+  },
+  "850": {
+    "es": "Fisiología humana I",
+    "en": "Human Physiology I",
+    "pt": "Fisiologia Humana I"
+  },
+  "851": {
+    "es": "Bioquímica I",
+    "en": "Biochemistry I",
+    "pt": "Bioquímica I"
+  },
+  "852": {
+    "es": "Microbiología",
+    "en": "Microbiology",
+    "pt": "Microbiologia"
+  },
+  "853": {
+    "es": "Med. Social y salud pública II",
+    "en": "Social Medicine and Public Health II",
+    "pt": "Medicina Social e Saúde Pública II"
+  },
+  "854": {
+    "es": "Met. De la inv. Científica",
+    "en": "Scientific Research Methodology",
+    "pt": "Metodologia da Pesquisa Científica"
+  },
+  "855": {
+    "es": "Fisiología humana II",
+    "en": "Human Physiology II",
+    "pt": "Fisiologia Humana II"
+  },
+  "856": {
+    "es": "Bioquímica II",
+    "en": "Biochemistry II",
+    "pt": "Bioquímica II"
+  },
+  "857": {
+    "es": "Parasitología",
+    "en": "Parasitology",
+    "pt": "Parasitologia"
+  },
+  "858": {
+    "es": "Patología general",
+    "en": "General Pathology",
+    "pt": "Patologia Geral"
+  },
+  "859": {
+    "es": "Psicología médica",
+    "en": "Medical Psychology",
+    "pt": "Psicologia Médica"
+  },
+  "860": {
+    "es": "Farmacología I y terapéutica",
+    "en": "Pharmacology I and Therapeutics",
+    "pt": "Farmacologia I e Terapêutica"
+  },
+  "861": {
+    "es": "Semiología I",
+    "en": "Clinical Semiology I",
+    "pt": "Semiologia I"
+  },
+  "862": {
+    "es": "Patología especial",
+    "en": "Special Pathology",
+    "pt": "Patologia Especial"
+  },
+  "863": {
+    "es": "Fisiopatología I",
+    "en": "Pathophysiology I",
+    "pt": "Fisiopatologia I"
+  },
+  "864": {
+    "es": "Psicopatología",
+    "en": "Psychopathology",
+    "pt": "Psicopatologia"
+  },
+  "865": {
+    "es": "Farmacología II y terapéutica",
+    "en": "Pharmacology II and Therapeutics",
+    "pt": "Farmacologia II e Terapêutica"
+  },
+  "866": {
+    "es": "Semiología II",
+    "en": "Clinical Semiology II",
+    "pt": "Semiologia II"
+  },
+  "867": {
+    "es": "Fisiopatología II",
+    "en": "Pathophysiology II",
+    "pt": "Fisiopatologia II"
+  },
+  "868": {
+    "es": "Técnica quirúrgica",
+    "en": "Surgical Technique",
+    "pt": "Técnica Cirúrgica"
+  },
+  "869": {
+    "es": "Anestesiología",
+    "en": "Anesthesiology",
+    "pt": "Anestesiologia"
+  },
+  "870": {
+    "es": "Cardiología",
+    "en": "Cardiology",
+    "pt": "Cardiologia"
+  },
+  "871": {
+    "es": "Neumología",
+    "en": "Pulmonology",
+    "pt": "Pneumologia"
+  },
+  "872": {
+    "es": "Reumatología",
+    "en": "Rheumatology",
+    "pt": "Reumatologia"
+  },
+  "873": {
+    "es": "Hematología clínica",
+    "en": "Clinical Hematology",
+    "pt": "Hematologia Clínica"
+  },
+  "874": {
+    "es": "Epidemiología",
+    "en": "Epidemiology",
+    "pt": "Epidemiologia"
+  },
+  "875": {
+    "es": "Radiología",
+    "en": "Radiology",
+    "pt": "Radiologia"
+  },
+  "876": {
+    "es": "Cirugía I (cirugía general)",
+    "en": "Surgery I (General Surgery)",
+    "pt": "Cirurgia I (Cirurgia Geral)"
+  },
+  "877": {
+    "es": "Gastroenterología",
+    "en": "Gastroenterology",
+    "pt": "Gastroenterologia"
+  },
+  "878": {
+    "es": "Nefrología",
+    "en": "Nephrology",
+    "pt": "Nefrologia"
+  },
+  "879": {
+    "es": "Endocrinología",
+    "en": "Endocrinology",
+    "pt": "Endocrinologia"
+  },
+  "880": {
+    "es": "Inmunología",
+    "en": "Immunology",
+    "pt": "Imunologia"
+  },
+  "881": {
+    "es": "Medicina legal",
+    "en": "Forensic Medicine",
+    "pt": "Medicina Legal"
+  },
+  "882": {
+    "es": "Urología",
+    "en": "Urology",
+    "pt": "Urologia"
+  },
+  "883": {
+    "es": "Cirugía II (abdomen pelvis)",
+    "en": "Surgery II (Abdomen and Pelvis)",
+    "pt": "Cirurgia II (Abdômen e Pelve)"
+  },
+  "884": {
+    "es": "Neurología",
+    "en": "Neurology",
+    "pt": "Neurologia"
+  },
+  "885": {
+    "es": "Psiquiatría",
+    "en": "Psychiatry",
+    "pt": "Psiquiatria"
+  },
+  "886": {
+    "es": "Dermatología",
+    "en": "Dermatology",
+    "pt": "Dermatologia"
+  },
+  "887": {
+    "es": "Oftalmología",
+    "en": "Ophthalmology",
+    "pt": "Oftalmologia"
+  },
+  "888": {
+    "es": "Otorrinolaringología",
+    "en": "Otorhinolaryngology",
+    "pt": "Otorrinolaringologia"
+  },
+  "889": {
+    "es": "Traumatología",
+    "en": "Traumatology",
+    "pt": "Traumatologia"
+  },
+  "890": {
+    "es": "Enf. Tropicales e infectol",
+    "en": "Tropical Diseases and Infectious Diseases",
+    "pt": "Doenças Tropicais e Infectologia"
+  },
+  "891": {
+    "es": "Obstetricia y ginecología",
+    "en": "Obstetrics and Gynecology",
+    "pt": "Obstetrícia e Ginecologia"
+  },
+  "892": {
+    "es": "Pediatría",
+    "en": "Pediatrics",
+    "pt": "Pediatria"
+  },
+  "893": {
+    "es": "Salud materno infantil",
+    "en": "Maternal and Child Health",
+    "pt": "Saúde Materno-Infantil"
+  },
+  "894": {
+    "es": "Gerencia hospitalaria",
+    "en": "Hospital Management",
+    "pt": "Gestão Hospitalar"
+  },
+  "895": {
+    "es": "Internado rotatorio",
+    "en": "Rotating Internship",
+    "pt": "Internato Rotatório"
+  },
+  "896": {
+    "es": "Microeconomía I",
+    "en": "Microeconomics I",
+    "pt": "Microeconomia I"
+  },
+  "897": {
+    "es": "Microeconomía II",
+    "en": "Microeconomics II",
+    "pt": "Microeconomia II"
+  },
+  "898": {
+    "es": "Microeconomía I",
+    "en": "Microeconomics I",
+    "pt": "Microeconomia I"
+  },
+  "899": {
+    "es": "Estimulación Temprana",
+    "en": "Early Stimulation",
+    "pt": "Estimulação Precoce"
+  },
+  "900": {
+    "es": "Masoterapía",
+    "en": "Massage Therapy",
+    "pt": "Massoterapia"
+  },
+  "901": {
+    "es": "Calculo 1",
+    "en": "Calculus I",
+    "pt": "Cálculo I"
+  },
+  "902": {
+    "es": "Calculo 2",
+    "en": "Calculus II",
+    "pt": "Cálculo II"
+  },
+  "903": {
+    "es": "Estimulación Cognitiva",
+    "en": "Cognitive Stimulation",
+    "pt": "Estimulação Cognitiva"
+  },
+  "904": {
+    "es": "Atención con TDAH",
+    "en": "Support for ADHD",
+    "pt": "Atendimento para TDAH"
+  },
+  "905": {
+    "es": "Apoyo a la Iniciación de la Lectura y Escritura",
+    "en": "Support for Beginning Reading and Writing",
+    "pt": "Apoio à Iniciação da Leitura e da Escrita"
+  },
+  "906": {
+    "es": "Comprensión Lectora",
+    "en": "Reading Comprehension",
+    "pt": "Compreensão de Leitura"
+  },
+  "907": {
+    "es": "prueba",
+    "en": "Test",
+    "pt": "Teste"
+  },
+  "908": {
+    "es": "Introducción a la Música",
+    "en": "Introduction to Music",
+    "pt": "Introdução à Música"
+  },
+  "909": {
+    "es": "Teoría y Armonía Musical",
+    "en": "Music Theory and Harmony",
+    "pt": "Teoria e Harmonia Musical"
+  },
+  "910": {
+    "es": "Lectura Musical y Partituras",
+    "en": "Music Reading and Sheet Music",
+    "pt": "Leitura Musical e Partituras"
+  },
+  "911": {
+    "es": "Rudimentos y Técnica de Percusión",
+    "en": "Percussion Rudiments and Technique",
+    "pt": "Rudimentos e Técnica de Percussão"
+  }
+}

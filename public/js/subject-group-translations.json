@@ -1,0 +1,647 @@
+{
+    "1": {
+        "es": "Básico",
+        "en": "Basic",
+        "pt": "Básico"
+    },
+    "2": {
+        "es": "Primaria",
+        "en": "Primary",
+        "pt": "Ensino Primário"
+    },
+    "3": {
+        "es": "Secundaria",
+        "en": "Secondary",
+        "pt": "Ensino Secundário"
+    },
+    "4": {
+        "es": "Ciencias Exactas",
+        "en": "",
+        "pt": ""
+    },
+    "5": {
+        "es": "Química",
+        "en": "",
+        "pt": ""
+    },
+    "6": {
+        "es": "Econometría",
+        "en": "",
+        "pt": ""
+    },
+    "7": {
+        "es": "Finanzas",
+        "en": "Finance",
+        "pt": "Finanças"
+    },
+    "8": {
+        "es": "Economía Cuantitativa",
+        "en": "",
+        "pt": ""
+    },
+    "9": {
+        "es": "Contabilidad",
+        "en": "Accounting",
+        "pt": "Contabilidade"
+    },
+    "10": {
+        "es": "Presupuesto y Criptoactivos",
+        "en": "Budget and Cryptoassets",
+        "pt": "Orçamento e Criptoativos"
+    },
+    "11": {
+        "es": "Métodos Cuantitativos",
+        "en": "",
+        "pt": ""
+    },
+    "12": {
+        "es": "Gestión de Contenidos Digitales",
+        "en": "",
+        "pt": ""
+    },
+    "13": {
+        "es": "Gestión de Redes Sociales",
+        "en": "",
+        "pt": ""
+    },
+    "14": {
+        "es": "Community Management",
+        "en": "",
+        "pt": ""
+    },
+    "15": {
+        "es": "Estrategias de Monetización",
+        "en": "",
+        "pt": ""
+    },
+    "16": {
+        "es": "Edición Multimedia",
+        "en": "",
+        "pt": ""
+    },
+    "17": {
+        "es": "Diseño y Herramientas Visuales",
+        "en": "",
+        "pt": ""
+    },
+    "18": {
+        "es": "Creación de Contenidos",
+        "en": "",
+        "pt": ""
+    },
+    "19": {
+        "es": "Producción Audiovisual",
+        "en": "",
+        "pt": ""
+    },
+    "20": {
+        "es": "Publicidad en Facebook Ads",
+        "en": "",
+        "pt": ""
+    },
+    "21": {
+        "es": "Publicidad en Instagram",
+        "en": "",
+        "pt": ""
+    },
+    "22": {
+        "es": "Publicidad en TikTok",
+        "en": "",
+        "pt": ""
+    },
+    "23": {
+        "es": "Marketing y Publicidad en YouTube",
+        "en": "",
+        "pt": ""
+    },
+    "24": {
+        "es": "Publicidad en LinkedIn para Negocios",
+        "en": "",
+        "pt": ""
+    },
+    "25": {
+        "es": "Publicidad en Snapchat Ads",
+        "en": "",
+        "pt": ""
+    },
+    "26": {
+        "es": "Optimización de Campañas Publicitarias",
+        "en": "",
+        "pt": ""
+    },
+    "27": {
+        "es": "Multiplataformas en Redes Sociales",
+        "en": "",
+        "pt": ""
+    },
+    "28": {
+        "es": "Matemática Aplicada a la Ingeniería Ambiental",
+        "en": "",
+        "pt": ""
+    },
+    "29": {
+        "es": "Estadística",
+        "en": "Statistics",
+        "pt": "Estatística"
+    },
+    "30": {
+        "es": "Cálculo",
+        "en": "",
+        "pt": ""
+    },
+    "31": {
+        "es": "Ecuaciones Diferenciales",
+        "en": "",
+        "pt": ""
+    },
+    "32": {
+        "es": "Fundamentos",
+        "en": "",
+        "pt": ""
+    },
+    "33": {
+        "es": "Métodos Numéricos",
+        "en": "",
+        "pt": ""
+    },
+    "34": {
+        "es": "Programación",
+        "en": "",
+        "pt": ""
+    },
+    "35": {
+        "es": "Modelado y Simulación de Sistemas",
+        "en": "",
+        "pt": ""
+    },
+    "36": {
+        "es": "Edición y Diseño",
+        "en": "",
+        "pt": ""
+    },
+    "37": {
+        "es": "Aplicaciones",
+        "en": "",
+        "pt": ""
+    },
+    "38": {
+        "es": "Técnicas Básicas",
+        "en": "",
+        "pt": ""
+    },
+    "39": {
+        "es": "Operador de Maquinaria Pesada",
+        "en": "",
+        "pt": ""
+    },
+    "40": {
+        "es": "Redes y Conectividad",
+        "en": "",
+        "pt": ""
+    },
+    "41": {
+        "es": "Redes y Comunicaciones",
+        "en": "",
+        "pt": ""
+    },
+    "42": {
+        "es": "Comunicación",
+        "en": "",
+        "pt": ""
+    },
+    "43": {
+        "es": "Sistemas y Tecnologías de la Información",
+        "en": "",
+        "pt": ""
+    },
+    "44": {
+        "es": "Bases de Datos",
+        "en": "",
+        "pt": ""
+    },
+    "45": {
+        "es": "Auditoría",
+        "en": "",
+        "pt": ""
+    },
+    "46": {
+        "es": "Tecnologías Web",
+        "en": "",
+        "pt": ""
+    },
+    "47": {
+        "es": "Tecnologías Web y Multimedia",
+        "en": "",
+        "pt": ""
+    },
+    "48": {
+        "es": "Computación y Automatización",
+        "en": "",
+        "pt": ""
+    },
+    "49": {
+        "es": "Diseño Electrónico y Circuitos",
+        "en": "",
+        "pt": ""
+    },
+    "50": {
+        "es": "Herramientas Ofimáticas",
+        "en": "",
+        "pt": ""
+    },
+    "51": {
+        "es": "Diseño de Sistemas Financieros",
+        "en": "",
+        "pt": ""
+    },
+    "52": {
+        "es": "Interpretación y Traducción de Idiomas",
+        "en": "",
+        "pt": ""
+    },
+    "53": {
+        "es": "Traducción",
+        "en": "",
+        "pt": ""
+    },
+    "54": {
+        "es": "Inglés Profesional Jurídico",
+        "en": "",
+        "pt": ""
+    },
+    "55": {
+        "es": "Inglés Avanzado (CBA y Otros Institutos)",
+        "en": "Advanced English (CBA and Other Institutes)",
+        "pt": "Inglês Avançado (CBA e Outros Institutos)"
+    },
+    "56": {
+        "es": "Francés Avanzado",
+        "en": "",
+        "pt": ""
+    },
+    "57": {
+        "es": "Alemán Avanzado",
+        "en": "",
+        "pt": ""
+    },
+    "58": {
+        "es": "Español",
+        "en": "",
+        "pt": ""
+    },
+    "59": {
+        "es": "Italiano",
+        "en": "",
+        "pt": ""
+    },
+    "60": {
+        "es": "Portugués",
+        "en": "",
+        "pt": ""
+    },
+    "61": {
+        "es": "Ruso",
+        "en": "",
+        "pt": ""
+    },
+    "62": {
+        "es": "Quechua",
+        "en": "",
+        "pt": ""
+    },
+    "63": {
+        "es": "Aymara",
+        "en": "",
+        "pt": ""
+    },
+    "64": {
+        "es": "Guaraní",
+        "en": "",
+        "pt": ""
+    },
+    "65": {
+        "es": "Oficios Técnicos",
+        "en": "",
+        "pt": ""
+    },
+    "66": {
+        "es": "Instalación de Redes y Conectividad",
+        "en": "",
+        "pt": ""
+    },
+    "67": {
+        "es": "Fundamentos de Repostería",
+        "en": "",
+        "pt": ""
+    },
+    "68": {
+        "es": "Ingredientes y Química de Alimentos",
+        "en": "",
+        "pt": ""
+    },
+    "69": {
+        "es": "Técnicas de Repostería",
+        "en": "",
+        "pt": ""
+    },
+    "70": {
+        "es": "Pastelería Creativa",
+        "en": "",
+        "pt": ""
+    },
+    "71": {
+        "es": "Postres Internacionales",
+        "en": "",
+        "pt": ""
+    },
+    "72": {
+        "es": "Dietas Especiales y Saludables",
+        "en": "",
+        "pt": ""
+    },
+    "73": {
+        "es": "Gestión de Negocios de Repostería",
+        "en": "",
+        "pt": ""
+    },
+    "74": {
+        "es": "Seguridad e Higiene en Repostería",
+        "en": "",
+        "pt": ""
+    },
+    "75": {
+        "es": "Psicología General",
+        "en": "",
+        "pt": ""
+    },
+    "76": {
+        "es": "Psicología del Desarrollo",
+        "en": "",
+        "pt": ""
+    },
+    "77": {
+        "es": "Psicología Clínica",
+        "en": "",
+        "pt": ""
+    },
+    "78": {
+        "es": "Psicología Educativa",
+        "en": "",
+        "pt": ""
+    },
+    "79": {
+        "es": "Psicología Organizacional",
+        "en": "",
+        "pt": ""
+    },
+    "80": {
+        "es": "Psicología Social y Comunitaria",
+        "en": "",
+        "pt": ""
+    },
+    "81": {
+        "es": "Psicología Forense",
+        "en": "",
+        "pt": ""
+    },
+    "82": {
+        "es": "Dibujo y Técnicas Básicas",
+        "en": "",
+        "pt": ""
+    },
+    "83": {
+        "es": "Pintura y Color",
+        "en": "",
+        "pt": ""
+    },
+    "84": {
+        "es": "Escultura y Modelado",
+        "en": "",
+        "pt": ""
+    },
+    "85": {
+        "es": "Arte y Diseño Gráfico",
+        "en": "",
+        "pt": ""
+    },
+    "86": {
+        "es": "Historia del Arte",
+        "en": "",
+        "pt": ""
+    },
+    "87": {
+        "es": "Técnicas Experimentales y Nuevas Tendencias",
+        "en": "",
+        "pt": ""
+    },
+    "88": {
+        "es": "Fundamentos de la Colorimetría",
+        "en": "",
+        "pt": ""
+    },
+    "89": {
+        "es": "Colorimetría Aplicada",
+        "en": "",
+        "pt": ""
+    },
+    "90": {
+        "es": "Técnicas y Herramientas de Colorimetría",
+        "en": "",
+        "pt": ""
+    },
+    "91": {
+        "es": "Colorimetría en la Industria",
+        "en": "",
+        "pt": ""
+    },
+    "92": {
+        "es": "Color y Combinación Cromática",
+        "en": "",
+        "pt": ""
+    },
+    "93": {
+        "es": "Publicidad y Branding",
+        "en": "",
+        "pt": ""
+    },
+    "94": {
+        "es": "Marketing en Redes Sociales",
+        "en": "",
+        "pt": ""
+    },
+    "95": {
+        "es": "Emprendimiento y Gestión de Negocios",
+        "en": "",
+        "pt": ""
+    },
+    "96": {
+        "es": "Diseño y Comunicación Visual",
+        "en": "",
+        "pt": ""
+    },
+    "97": {
+        "es": "Fotografía Digital y Edición",
+        "en": "",
+        "pt": ""
+    },
+    "98": {
+        "es": "Creación de Contenido Digital",
+        "en": "",
+        "pt": ""
+    },
+    "99": {
+        "es": "Artes Visuales y Diseño",
+        "en": "",
+        "pt": ""
+    },
+    "100": {
+        "es": "Expresión Artística y Cultura",
+        "en": "",
+        "pt": ""
+    },
+    "101": {
+        "es": "Filosofía y Desarrollo del Pensamiento",
+        "en": "",
+        "pt": ""
+    },
+    "102": {
+        "es": "Formación Pedagógica y Didáctica",
+        "en": "",
+        "pt": ""
+    },
+    "103": {
+        "es": "Traducción e Interpretación Profesional",
+        "en": "",
+        "pt": ""
+    },
+    "104": {
+        "es": "Ingeniería y Medio Ambiente",
+        "en": "",
+        "pt": ""
+    },
+    "105": {
+        "es": "Análisis de Datos y Estadística",
+        "en": "",
+        "pt": ""
+    },
+    "106": {
+        "es": "Construcción y Mantenimiento",
+        "en": "",
+        "pt": ""
+    },
+    "107": {
+        "es": "Mecánica y Reparaciones",
+        "en": "",
+        "pt": ""
+    },
+    "108": {
+        "es": "Gastronomía y Repostería",
+        "en": "",
+        "pt": ""
+    },
+    "109": {
+        "es": "Estética y Moda",
+        "en": "",
+        "pt": ""
+    },
+    "110": {
+        "es": "Entrenamiento Físico y Bienestar",
+        "en": "",
+        "pt": ""
+    },
+    "111": {
+        "es": "Turismo y Naturaleza",
+        "en": "",
+        "pt": ""
+    },
+    "112": {
+        "es": "Desarrollo Personal y Espiritualidad",
+        "en": "",
+        "pt": ""
+    },
+    "113": {
+        "es": "Artes Escénicas y Actuación",
+        "en": "",
+        "pt": ""
+    },
+    "114": {
+        "es": "Diseño y Producción de Videojuegos",
+        "en": "",
+        "pt": ""
+    },
+    "115": {
+        "es": "Medicina",
+        "en": "",
+        "pt": ""
+    },
+    "1000": {
+        "es": "Colegio",
+        "en": "",
+        "pt": ""
+    },
+    "2000": {
+        "es": "Universidad",
+        "en": "",
+        "pt": ""
+    },
+    "2100": {
+        "es": "Ciencias Exactas",
+        "en": "",
+        "pt": ""
+    },
+    "2101": {
+        "es": "Ingeniería Avanzada",
+        "en": "",
+        "pt": ""
+    },
+    "2102": {
+        "es": "Ciencias Sociales y Económicas",
+        "en": "",
+        "pt": ""
+    },
+    "3000": {
+        "es": "Instituto",
+        "en": "",
+        "pt": ""
+    },
+    "3100": {
+        "es": "Idiomas",
+        "en": "",
+        "pt": ""
+    },
+    "3101": {
+        "es": "Marketing y Comunicación Digital",
+        "en": "",
+        "pt": ""
+    },
+    "3102": {
+        "es": "Arte y Diseño",
+        "en": "",
+        "pt": ""
+    },
+    "3103": {
+        "es": "Gastronomía y Repostería",
+        "en": "",
+        "pt": ""
+    },
+    "3104": {
+        "es": "Ingeniería y Tecnología",
+        "en": "",
+        "pt": ""
+    },
+    "3105": {
+        "es": "Psicología y Desarrollo Personal",
+        "en": "",
+        "pt": ""
+    },
+    "3106": {
+        "es": "Deporte y Bienestar",
+        "en": "",
+        "pt": ""
+    },
+    "3107": {
+        "es": "Música",
+        "en": "",
+        "pt": ""
+    }
+}

@@ -1,10 +1,12 @@
 @if(!empty(setting('_general.enable_multi_language')))
     @if(!empty(setting('_general.multi_language_list')))
         @php
-            $translatedLangs = getTranslatedLanguages();
-            $selectedLang = request()->cookie('selectedLanguage', app()->getLocale() ?? 'es');
+            $selectedLang = request()->cookie(
+                'selectedLanguage',
+                app()->getLocale() ?? 'es'
+            );
 
-            if (! in_array($selectedLang, ['es', 'en', 'pt'], true)) {
+            if (!in_array($selectedLang, ['es', 'en', 'pt'], true)) {
                 $selectedLang = 'es';
             }
         @endphp
@@ -15,12 +17,23 @@
                 <div class="am-language-select">
                     <a href="javascript:void(0);" class="am-lang-anchor" style="color: black">
                         <img src="{{ getLangFlag($selectedLang) }}" alt="{{ $selectedLang }}">
-                        {{ $translatedLangs[$selectedLang] }}
+
+                        <span class="am-current-language-name"
+                            data-language-code="{{ $selectedLang }}">
+                        </span>
                     </a>
                     <ul class="sub-menutwo locale-menu">
                         @foreach(setting('_general.multi_language_list') as $lang)
-                            <li data-lang="{{ $lang }}" class="{{ $selectedLang == $lang ? 'active' : '' }}">
-                                <span><img src="{{ getLangFlag($lang) }}" alt="{{ $lang }}">{{ $translatedLangs[$lang] }}</span>
+                            <li data-lang="{{ $lang }}"
+                                class="{{ $selectedLang == $lang ? 'active' : '' }}">
+
+                                <span>
+                                    <img src="{{ getLangFlag($lang) }}" alt="{{ $lang }}">
+
+                                    <span class="am-language-name"
+                                        data-language-code="{{ $lang }}">
+                                    </span>
+                                </span>
                             </li>
                         @endforeach
                     </ul>
@@ -34,33 +47,37 @@
             }
 
             function updateLanguageSwitcherView(lang) {
-                const activeItem = document.querySelector(`.locale-menu li[data-lang="${lang}"]`);
+                const activeItem = document.querySelector(
+                    `.locale-menu li[data-lang="${lang}"]`
+                );
+
                 const anchor = document.querySelector('.am-lang-anchor');
 
                 if (!activeItem || !anchor) {
                     return;
                 }
 
-                const img = activeItem.querySelector('img');
-                const text = activeItem.textContent.trim();
+                const itemImg = activeItem.querySelector('img');
+                const anchorImg = anchor.querySelector('img');
+                const anchorName = anchor.querySelector('.am-current-language-name');
 
-                if (img) {
-                    const anchorImg = anchor.querySelector('img');
-
-                    if (anchorImg) {
-                        anchorImg.src = img.src;
-                        anchorImg.alt = lang;
-                    }
+                if (itemImg && anchorImg) {
+                    anchorImg.src = itemImg.src;
+                    anchorImg.alt = lang;
                 }
 
-                const anchorImgHtml = anchor.querySelector('img') ? anchor.querySelector('img').outerHTML : '';
-                anchor.innerHTML = `${anchorImgHtml} ${text}`;
+                if (anchorName) {
+                    anchorName.setAttribute('data-language-code', lang);
+                    anchorName.textContent = getTranslatedLanguageName(lang);
+                }
 
-                document.querySelectorAll('.locale-menu li[data-lang]').forEach(function (li) {
+                document.querySelectorAll('.locale-menu li[data-lang]').forEach(function(li) {
                     li.classList.remove('active');
                 });
 
                 activeItem.classList.add('active');
+
+                applyTranslatedLanguageNames();
             }
 
             window.initLanguageSwitcher = function () {
@@ -79,6 +96,7 @@
                 localStorage.setItem('selectedLanguage', currentLang);
                 document.cookie = `selectedLanguage=${currentLang}; path=/; max-age=31536000; SameSite=Lax`;
 
+                applyTranslatedLanguageNames();
                 updateLanguageSwitcherView(currentLang);
 
                 if (typeof selectLanguage === 'function') {
@@ -118,6 +136,58 @@
 
             document.addEventListener('DOMContentLoaded', window.initLanguageSwitcher);
             document.addEventListener('livewire:navigated', window.initLanguageSwitcher);
+
+            function getTranslatedLanguageName(languageCode) {
+                const currentLang =
+                    localStorage.getItem('selectedLanguage') ||
+                    getCookieValue('selectedLanguage') ||
+                    'es';
+
+                const languageKeys = {
+                    es: 'language_spanish',
+                    en: 'language_english',
+                    pt: 'language_portuguese'
+                };
+
+                const fallbackNames = {
+                    es: 'Español',
+                    en: 'Inglés',
+                    pt: 'Portugués'
+                };
+
+                if (typeof translations === 'undefined') {
+                    return fallbackNames[languageCode] || languageCode;
+                }
+
+                const currentTranslations =
+                    translations[currentLang] ||
+                    translations.es ||
+                    {};
+
+                const key = languageKeys[languageCode];
+
+                return currentTranslations[key]
+                    || fallbackNames[languageCode]
+                    || languageCode;
+            }
+
+            function applyTranslatedLanguageNames() {
+                document.querySelectorAll('[data-language-code]').forEach(function(element) {
+                    const languageCode = element.getAttribute('data-language-code');
+
+                    element.textContent = getTranslatedLanguageName(languageCode);
+                });
+            }
+
+            document.addEventListener('languageChanged', function() {
+                applyTranslatedLanguageNames();
+
+                const currentLang =
+                    localStorage.getItem('selectedLanguage') ||
+                    'es';
+
+                updateLanguageSwitcherView(currentLang);
+            });
         </script>
     @endif
 @endif

@@ -116,22 +116,30 @@
                                         <span class="subjects-matched">
                                             {{-- Muestra solo los sujetos que coincidieron con la búsqueda --}}
                                             <span data-translate="tutor_search_i_can_teach">Puedo enseñar:</span>
-                                            <strong>{{ implode(', ', $profile['matched_subjects']) }}</strong>
+                                            <strong>
+                                                @foreach ($profile['matched_subjects_with_id'] as $subject)
+                                                    <span
+                                                        class="subject-translatable"
+                                                        data-subject-id="{{ $subject['id'] }}"
+                                                        data-subject-fallback="{{ $subject['name'] }}"
+                                                    >{{ $subject['name'] }}</span>@if (!$loop->last)<span>, </span>@endif
+                                                @endforeach
+                                            </strong>
                                         </span>
 
                                     @else
                                         {{-- Muestra TODOS los sujetos del tutor, separados por comas --}}
                                         
                                         @php
-                                            // Aseguramos que 'all_subjects' sea un array (aunque ya lo es por tu mapeo)
-                                            $allSubjects = $profile['all_subjects'];
+                                            // Aseguramos que 'all_subjects_with_id' sea un array
+                                            $allSubjectsWithId = $profile['all_subjects_with_id'];
                                             // Separar materias según si son de Primaria/Secundaria o no
                                             $materiasPrioritarias = [];
                                             $materiasAlFinal = [];
 
-                                            foreach ($allSubjects as $subject) {
+                                            foreach ($allSubjectsWithId as $subject) {
                                                 // Verificar si la materia contiene "Primaria" o "Secundaria" (case insensitive)
-                                                if (stripos($subject, 'Primaria') !== false || stripos($subject, 'Secundaria') !== false || stripos($subject, 'Básico') !== false ) {
+                                                if (stripos($subject['name'], 'Primaria') !== false || stripos($subject['name'], 'Secundaria') !== false || stripos($subject['name'], 'Básico') !== false ) {
                                                     $materiasAlFinal[] = $subject;
                                                 } else {
                                                     $materiasPrioritarias[] = $subject;
@@ -140,16 +148,21 @@
                                             
                                             // Combinar: primero las prioritarias, luego las de Primaria/Secundaria
                                             $subjectsOrdenados = array_merge($materiasPrioritarias, $materiasAlFinal);
+
                                             
-                                            // Convertir a string separado por comas
-                                            $subjectList = implode(', ', $subjectsOrdenados);
                                         @endphp
                                         
                                         <span class="subjects-summary">
                                             <span>
-                                            <strong data-translate="tutor_search_i_can_teach">Puedo enseñar:</strong>
-                                            {{ $subjectList }}
-                                        </span>
+                                                <strong data-translate="tutor_search_i_can_teach">Puedo enseñar:</strong>
+                                                @foreach ($subjectsOrdenados as $subject)
+                                                    <span
+                                                        class="subject-translatable"
+                                                        data-subject-id="{{ $subject['id'] }}"
+                                                        data-subject-fallback="{{ $subject['name'] }}"
+                                                    >{{ $subject['name'] }}</span>@if (!$loop->last)<span>, </span>@endif
+                                                @endforeach
+                                            </span>
                                         </span>
 
                                     @endif
@@ -239,6 +252,10 @@
 
             if (typeof selectLanguage === 'function') {
                 selectLanguage(lang, false);
+            }
+
+            if (typeof window.applySubjectTranslations === 'function') {
+                window.applySubjectTranslations();
             }
         }
 

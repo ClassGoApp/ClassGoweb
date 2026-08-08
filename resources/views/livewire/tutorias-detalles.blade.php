@@ -56,7 +56,9 @@
                             $student = $this->UserData($booking->student_id);
                         @endphp
 
-                        <span class="cg-ma-subject">
+                        <span class="cg-ma-subject subject-translatable" 
+                              data-subject-id="{{ $booking->subject_id ?? '' }}" 
+                              data-subject-fallback="{{ $booking->subject->name ?? ($booking->description ?? __('material-support.session', ['id' => $booking->id])) }}">
                             {{ $booking->subject->name ?? ($booking->description ?? __('material-support.session', ['id' => $booking->id])) }}
                         </span>
                         <h4 class="cg-ma-tutor">
@@ -190,7 +192,9 @@ $statusKey = mb_strtolower($statusValue);
                 @endphp
                 <div class="cg-ma-workspace-content">
                     <div class="cg-ma-detail-header">
-                        <span class="cg-ma-badge">
+                        <span class="cg-ma-badge subject-translatable" 
+                              data-subject-id="{{ $selectedBooking->subject_id ?? '' }}" 
+                              data-subject-fallback="{{ $selectedBooking->subject->name ?? __('material-support.subject_id', ['id' => $selectedBooking->subject_id]) }}">
                             {{ $selectedBooking->subject->name ?? __('material-support.subject_id', ['id' => $selectedBooking->subject_id]) }}
                         </span>
                         <p class="cg-ma-detail-meta">

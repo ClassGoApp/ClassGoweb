@@ -47,6 +47,12 @@
                     setTimeout(() => {
                         document.dispatchEvent(new CustomEvent('studentBookingModalOpened'));
                     }, 50);
+
+                    this.$nextTick(() => {
+                        if (typeof window.applySubjectTranslations === 'function') {
+                            window.applySubjectTranslations();
+                        }
+                    });
                 },
                 closeModal() {
                     this.showModal = false;
@@ -293,6 +299,7 @@
                                                                 hora_fin: @js(\Carbon\Carbon::parse($booking['end_time'])->format('H:i')),
                                                                 fecha: @js(\Carbon\Carbon::parse($booking['start_time'])->format('Y-m-d')),
                                                                 materia: @js($booking['subject_name']),
+                                                                subject_id: @js($booking['subject_id']),
                                                                 meeting_link: @js($booking['meeting_link'] ?? '')
                                                             })">
                                                                         {{ $statusMap[$booking['status_num']] ?? $booking['status_num'] }}
@@ -355,6 +362,7 @@
                                                                     hora_fin: @js(\Carbon\Carbon::parse($booking['end_time'])->format('H:i')),
                                                                     fecha: @js(\Carbon\Carbon::parse($booking['start_time'])->format('Y-m-d')),
                                                                     materia: @js($booking['subject_name']),
+                                                                    subject_id: @js($booking['subject_id']),
                                                                     meeting_link: @js($booking['meeting_link'] ?? '')
                                                                 })">
                                                                             <span data-translate="student_bookings_status"></span>
@@ -446,6 +454,7 @@
                                                         hora_fin: @js(\Carbon\Carbon::parse($booking['end_time'])->format('H:i')),
                                                         fecha: @js(\Carbon\Carbon::parse($booking['start_time'])->format('Y-m-d')),
                                                         materia: @js($booking['subject_name']),
+                                                        subject_id: @js($booking['subject_id']),
                                                         meeting_link: @js($booking['meeting_link'] ?? '')
                                                     })">
                                                                         <span data-translate="student_bookings_status"></span>
@@ -508,7 +517,7 @@
                         <strong data-translate="student_bookings_end_time">Hora fin:</strong> <span x-text="selectedTutoria.hora_fin"></span>
                     </p>
                     <p style="margin: 8px 0; font-size: 1rem;">
-                        <strong data-translate="student_bookings_subject">Materia:</strong> <span x-text="selectedTutoria.materia"></span>
+                        <strong data-translate="student_bookings_subject">Materia:</strong> <span class="subject-translatable" :data-subject-id="selectedTutoria.subject_id" :data-subject-fallback="selectedTutoria.materia" x-text="selectedTutoria.materia"></span>
                     </p>
                     <p style="margin: 8px 0; font-size: 1rem;">
                         <strong data-translate="student_bookings_link">Link de la tutoría:</strong>

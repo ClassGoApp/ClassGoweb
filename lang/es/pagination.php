@@ -3,7 +3,7 @@
 return [
     'per_page' => 'Por página',
     'previous' => 'Anterior',
-    'next' => 'Pr',
+    'next' => 'Próximo',
     'show' => 'Mostrar',
     'listing_per_page' => 'listados por página',
 ];

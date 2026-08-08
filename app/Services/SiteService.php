@@ -608,15 +608,21 @@ public function getTutors($data = array()) {
             $grupos = [];
             $allSubjects = [];
             $matchedSubjects = [];
+            $allSubjectsWithId = [];
+            $matchedSubjectsWithId = [];
 
             foreach ($tutor->userSubjects as $userSubject) {
                 if ($userSubject->subject) {
                     $subjectName = $userSubject->subject->name;
+                    $subjectId = $userSubject->subject->id;
+                    
                     $allSubjects[] = $subjectName;
+                    $allSubjectsWithId[] = ['id' => $subjectId, 'name' => $subjectName];
 
                     // Si hay una búsqueda, revisamos si esta materia coincide
                     if ($search && Str::contains(strtolower($subjectName), strtolower($search))) {
                         $matchedSubjects[] = $subjectName;
+                        $matchedSubjectsWithId[] = ['id' => $subjectId, 'name' => $subjectName];
                     }
                 }
             }
@@ -645,7 +651,9 @@ public function getTutors($data = array()) {
 
                 // **NUEVOS DATOS PARA LA VISTA**
                 'all_subjects' => array_unique($allSubjects), // Todas las materias del tutor
-                'matched_subjects' => array_unique($matchedSubjects) // Solo las que coinciden con la búsqueda
+                'matched_subjects' => array_unique($matchedSubjects), // Solo las que coinciden con la búsqueda
+                'all_subjects_with_id' => $allSubjectsWithId,
+                'matched_subjects_with_id' => $matchedSubjectsWithId
             ];
         });
 

@@ -3,26 +3,46 @@
 </h2>
     <div class="subjects-list">
         @php
-            // Agrupar materias por grupo (asumiendo que $tutor->userSubjects está disponible)
+            // Agrupar materias por grupo usando group_id como clave
             $materiasPorGrupo = [];
-            if(isset($tutor->userSubjects)) {
-                foreach($tutor->userSubjects as $userSubject) {
-                    $grupo = $userSubject->subject->group->name ?? 'Otros';
-                    $materia = $userSubject->subject->name ?? null;
-                    if($materia) {
-                        $materiasPorGrupo[$grupo][] = $materia;
+
+            if (isset($tutor->userSubjects)) {
+                foreach ($tutor->userSubjects as $userSubject) {
+                    $subject = $userSubject->subject;
+
+                    if (!$subject) {
+                        continue;
                     }
+
+                    // Usar group_id como clave, o 'sin_grupo' para materias sin grupo
+                    $grupoId = $subject->group->id ?? 'sin_grupo';
+                    $grupoNombre = $subject->group->name ?? 'Otros';
+
+                    // Inicializar el grupo si no existe
+                    if (!isset($materiasPorGrupo[$grupoId])) {
+                        $materiasPorGrupo[$grupoId] = [
+                            'group_id' => $grupoId === 'sin_grupo' ? null : $grupoId,
+                            'group_name' => $grupoNombre,
+                            'subjects' => []
+                        ];
+                    }
+
+                    // Agregar la materia al grupo
+                    $materiasPorGrupo[$grupoId]['subjects'][] = [
+                        'id' => $subject->id,
+                        'name' => $subject->name,
+                    ];
                 }
             }
             
-            // Ordenar grupos para que "Secundaria" y "Primaria" queden al final
-            $materiasPorGrupo = collect($materiasPorGrupo)->sortBy(function($value, $key) {
-                // Grupos que van al final
-                $gruposAlFinal = ['Secundaria', 'Primaria', 'Básico'];
+            // Ordenar grupos para que IDs 1, 2, 3 (Básico, Primaria, Secundaria) queden al final
+            $materiasPorGrupo = collect($materiasPorGrupo)->sortBy(function($grupoData, $key) {
+                // Grupos que van al final por ID
+                $gruposAlFinal = [1, 2, 3];
                 
                 // Si el grupo está en la lista, prioridad 1 (al final)
                 // Si no está, prioridad 0 (al inicio)
-                return in_array($key, $gruposAlFinal, true) ? 1 : 0;
+                return in_array($grupoData['group_id'], $gruposAlFinal, true) ? 1 : 0;
             })->toArray();
       
             // Definir los 3 bloques SVG completos que quieres alternar.
@@ -33,30 +53,33 @@
             ];
         @endphp
 
-        @foreach($materiasPorGrupo as $grupo => $materiasGrupo)
+        @foreach($materiasPorGrupo as $grupoKey => $grupoData)
             <div class="subject-item">
                 <div class="subject-item__header">
                     {!! $icons[$loop->index % count($icons)] !!}
 
-                    @php
-                        $grupoTranslateKey = match($grupo) {
-                            'Otros' => 'subject_group_others',
-                            'Secundaria' => 'subject_group_secondary',
-                            'Primaria' => 'subject_group_primary',
-                            'Básico' => 'subject_group_basic',
-                            default => null
-                        };
-                    @endphp
-
-                    <h3 class="subject-item__name"
-                        @if($grupoTranslateKey) data-translate="{{ $grupoTranslateKey }}" @endif>
-                        {{ $grupo }}
-                    </h3>
+                    @if($grupoData['group_id'] === null)
+                        {{-- Grupo sin ID: usar traducción hardcodeada para "Otros" --}}
+                        <h3 class="subject-item__name" data-translate="subject_group_others">
+                            {{ $grupoData['group_name'] }}
+                        </h3>
+                    @else
+                        {{-- Grupo con ID: usar traducción dinámica --}}
+                        <h3 class="subject-item__name subject-group-translatable"
+                            data-subject-group-id="{{ $grupoData['group_id'] }}"
+                            data-subject-group-fallback="{{ $grupoData['group_name'] }}">
+                            {{ $grupoData['group_name'] }}
+                        </h3>
+                    @endif
                 </div>
                 
                 <div class="subject-item__topics">
-                    @foreach($materiasGrupo as $materia)
-                        <span class="topic-tag">{{ $materia }}</span>
+                    @foreach($grupoData['subjects'] as $materia)
+                        <span class="topic-tag subject-translatable"
+                            data-subject-id="{{ $materia['id'] }}"
+                            data-subject-fallback="{{ e($materia['name']) }}">
+                            {{ $materia['name'] }}
+                        </span>
                     @endforeach
                 </div>
             </div>

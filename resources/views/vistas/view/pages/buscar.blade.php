@@ -29,7 +29,11 @@
             <div id="filterControls" class="filter-controls__list">
                 <button class="filter-btn filter-btn--active" data-subject-id="all" data-translate="filter_all">Todos</button>
                 @foreach ($topSubjects as $item)
-                    <button class="filter-btn" data-subject-id="{{ $item->subject_id }}">{{ $item->subject->name }}</button>
+                    <button 
+                        class="filter-btn subject-translatable" 
+                        data-subject-id="{{ $item->subject_id }}"
+                        data-subject-fallback="{{ $item->subject->name }}"
+                    >{{ $item->subject->name }}</button>
                 @endforeach
             </div>
 
@@ -71,7 +75,11 @@
                                                 $colorClass = ($index % 2 == 0) ? 'tag--blue' : 'tag--green';
                                             @endphp
                                             
-                                            <span class="{{ $colorClass }}">
+                                            <span 
+                                                class="{{ $colorClass }} subject-translatable"
+                                                data-subject-id="{{ $userSubject->subject->id }}"
+                                                data-subject-fallback="{{ $userSubject->subject->name }}"
+                                            >
                                                 {{ $userSubject->subject->name }}
                                             </span>
                                         @endforeach
@@ -114,7 +122,11 @@
                             
                             <div class="detail-panel__tags-container">
                                 @foreach ($tutor->userSubjects as $index => $userSubject)
-                                    <span class="tag--detail">{{ $userSubject->subject->name }}</span>
+                                    <span
+                                        class="tag--detail subject-translatable"
+                                        data-subject-id="{{ $userSubject->subject->id }}"
+                                        data-subject-fallback="{{ $userSubject->subject->name }}"
+                                    >{{ $userSubject->subject->name }}</span>
                                 @endforeach
                             </div>
 
