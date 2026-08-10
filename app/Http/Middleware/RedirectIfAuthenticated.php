@@ -19,6 +19,10 @@ class RedirectIfAuthenticated
         $guards = empty($guards) ? [null] : $guards;
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
+                $intended = session()->pull('url.intended') ?: $request->query('redirect');
+                if ($intended) {
+                    return redirect()->to($intended);
+                }
                 return redirect()->to(auth()->user()->redirect_after_login);
             }
         }   

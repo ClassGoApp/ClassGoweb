@@ -113,6 +113,11 @@ class SocialController extends Controller
 
         Auth::login($user, true);
 
+        $intended = session()->pull('url.intended');
+        if ($intended) {
+            return redirect()->to($intended);
+        }
+
         if ($user->roles()?->first()?->name == 'tutor') {
             return redirect()->route('tutor.dashboard');
         } else {
