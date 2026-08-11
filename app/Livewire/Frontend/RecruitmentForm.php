@@ -26,7 +26,7 @@ class RecruitmentForm extends Component
     protected $rules = [
         'full_name' => 'required|string|max:255',
         'email' => 'required|email|max:255',
-        'phone' => 'nullable|string|max:20',
+        'phone' => 'required|string|max:23',
         'description' => 'nullable|string|max:1000',
         'cv' => 'required|file|mimes:pdf,doc,docx|max:5120', // Max 5MB
     ];

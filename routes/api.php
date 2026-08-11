@@ -33,7 +33,9 @@ use App\Http\Controllers\Api\GoogleCalendarController;
 use App\Http\Controllers\Api\UserCouponController;
 use App\Http\Controllers\Api\SubjectPickerController;
 use App\Http\Controllers\Api\NotificacionController;
+use App\Http\Controllers\Api\TutoriaDetallesController;
 use App\Http\Controllers\HomeController;
+use App\Livewire\TutoriasDetalles;
 
 /*
 |--------------------------------------------------------------------------
@@ -88,6 +90,20 @@ Route::post('test-api', function() {
         'timestamp' => now()
     ]);
 });
+
+
+Route::middleware("auth:sanctum")->prefix("pr")->group(function(){
+    Route::get("/getmytutorias", function(){
+        return response()->json(["saludo"=> "HOLA "]);
+    });
+    Route::get("/use", [TutoriaDetallesController::class, "getMyTutorias"]);
+    // Route::post("material", [TutoriasDetallesController]);
+    Route::put("/material/{idMaterial}/update");
+    Route::delete("/material/{idMaterial}/delete");
+    
+});
+
+
 
 // Ruta de prueba para el controlador UserSubjectController
 Route::post('test-controller', [UserSubjectController::class, 'test']);
