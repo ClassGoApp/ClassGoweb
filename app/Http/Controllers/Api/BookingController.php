@@ -134,11 +134,41 @@ class BookingController extends Controller
     public function getUserBookingsById($id, Request $request)
     {
         // Buscar tutorías donde el usuario sea tutor o estudiante
+        // Mismos campos que muestra la web (tutor/estudiante = first_name + last_name de profiles,
+        // materia = subject->name, archivos = attachments count).
         $bookings = \App\Models\SlotBooking::where('tutor_id', $id)
             ->orWhere('student_id', $id)
+            ->with([
+                'tutor:profiles.id,profiles.user_id,profiles.first_name,profiles.last_name',
+                'student:profiles.id,profiles.user_id,profiles.first_name,profiles.last_name',
+                'subject:id,name',
+            ])
+            ->withCount('attachments')
             ->orderBy('start_time')
             ->get();
-        return response()->json($bookings);
+
+        $data = $bookings->map(function ($booking) {
+            $tutorName = $booking->tutor
+                ? trim(($booking->tutor->first_name ?? '') . ' ' . ($booking->tutor->last_name ?? ''))
+                : 'Tutor';
+            $studentName = $booking->student
+                ? trim(($booking->student->first_name ?? '') . ' ' . ($booking->student->last_name ?? ''))
+                : 'Estudiante';
+            if ($tutorName === '') {
+                $tutorName = 'Tutor';
+            }
+            if ($studentName === '') {
+                $studentName = 'Estudiante';
+            }
+
+            $booking->tutor_name = $tutorName;
+            $booking->student_name = $studentName;
+            $booking->subject_name = $booking->subject?->name;
+
+            return $booking->makeHidden(['tutor', 'student', 'subject']);
+        });
+
+        return response()->json($data);
     }
 
     //Metodo auxiliar para crear la reserva

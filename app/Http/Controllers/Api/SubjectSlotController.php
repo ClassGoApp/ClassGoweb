@@ -61,6 +61,22 @@ class SubjectSlotController extends Controller
             ], 422);
         }
 
+        // Validar solapamiento con horarios existentes (misma fecha y usuario)
+        $overlap = UserSubjectSlot::where('user_id', $request->user_id)
+            ->where('date', $request->date)
+            ->where(function ($query) use ($request) {
+                $query->where('start_time', '<', $request->end_time)
+                      ->where('end_time', '>', $request->start_time);
+            })
+            ->exists();
+
+        if ($overlap) {
+            return response()->json([
+                'success' => false,
+                'message' => "Ya tienes un horario existente que se solapa en la fecha {$request->date}"
+            ], 422);
+        }
+
         try {
             // Calcular duración automáticamente si no se proporciona
             $startTime = \Carbon\Carbon::createFromFormat('H:i', $request->start_time);
