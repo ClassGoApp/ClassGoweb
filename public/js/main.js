@@ -79,6 +79,14 @@
                         _this.val(event.value).trigger('change');
                     }
 
+                    // Aplicar traducciones solo para #subjects
+                    if (
+                        _this.attr('id') === 'subjects' &&
+                        typeof window.applySubjectsSelect2Translations === 'function'
+                    ) {
+                        window.applySubjectsSelect2Translations();
+                    }
+
                     // Agregar el event listener de cambio
                     if (_this.data('disable_onchange') != 'true') {
                         _this.on('change', function (e) {

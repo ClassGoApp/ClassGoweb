@@ -16,18 +16,18 @@
     },
     "4": {
         "es": "Ciencias Exactas",
-        "en": "",
-        "pt": ""
+        "en": "Exact Sciences",
+        "pt": "Ciências Exatas"
     },
     "5": {
         "es": "Química",
-        "en": "",
-        "pt": ""
+        "en": "Chemistry",
+        "pt": "Química"
     },
     "6": {
         "es": "Econometría",
-        "en": "",
-        "pt": ""
+        "en": "Econometrics",
+        "pt": "Econometria"
     },
     "7": {
         "es": "Finanzas",
@@ -36,8 +36,8 @@
     },
     "8": {
         "es": "Economía Cuantitativa",
-        "en": "",
-        "pt": ""
+        "en": "Quantitative Economics",
+        "pt": "Economia Quantitativa"
     },
     "9": {
         "es": "Contabilidad",
@@ -51,93 +51,93 @@
     },
     "11": {
         "es": "Métodos Cuantitativos",
-        "en": "",
-        "pt": ""
+        "en": "Quantitative Methods",
+        "pt": "Métodos Quantitativos"
     },
     "12": {
         "es": "Gestión de Contenidos Digitales",
-        "en": "",
-        "pt": ""
+        "en": "Digital Content Management",
+        "pt": "Gestão de Conteúdos Digitais"
     },
     "13": {
         "es": "Gestión de Redes Sociales",
-        "en": "",
-        "pt": ""
+        "en": "Social Media Management",
+        "pt": "Gestão de Redes Sociais"
     },
     "14": {
         "es": "Community Management",
-        "en": "",
-        "pt": ""
+        "en": "Community Management",
+        "pt": "Gestão de Comunidades"
     },
     "15": {
         "es": "Estrategias de Monetización",
-        "en": "",
-        "pt": ""
+        "en": "Monetization Strategies",
+        "pt": "Estratégias de Monetização"
     },
     "16": {
         "es": "Edición Multimedia",
-        "en": "",
-        "pt": ""
+        "en": "Multimedia Editing",
+        "pt": "Edição Multimídia"
     },
     "17": {
         "es": "Diseño y Herramientas Visuales",
-        "en": "",
-        "pt": ""
+        "en": "Design and Visual Tools",
+        "pt": "Design e Ferramentas Visuais"
     },
     "18": {
         "es": "Creación de Contenidos",
-        "en": "",
-        "pt": ""
+        "en": "Content Creation",
+        "pt": "Criação de Conteúdos"
     },
     "19": {
         "es": "Producción Audiovisual",
-        "en": "",
-        "pt": ""
+        "en": "Audiovisual Production",
+        "pt": "Produção Audiovisual"
     },
     "20": {
         "es": "Publicidad en Facebook Ads",
-        "en": "",
-        "pt": ""
+        "en": "Facebook Ads Advertising",
+        "pt": "Publicidade no Facebook Ads"
     },
     "21": {
         "es": "Publicidad en Instagram",
-        "en": "",
-        "pt": ""
+        "en": "Instagram Advertising",
+        "pt": "Publicidade no Instagram"
     },
     "22": {
         "es": "Publicidad en TikTok",
-        "en": "",
-        "pt": ""
+        "en": "TikTok Advertising",
+        "pt": "Publicidade no TikTok"
     },
     "23": {
         "es": "Marketing y Publicidad en YouTube",
-        "en": "",
-        "pt": ""
+        "en": "YouTube Marketing and Advertising",
+        "pt": "Marketing e Publicidade no YouTube"
     },
     "24": {
         "es": "Publicidad en LinkedIn para Negocios",
-        "en": "",
-        "pt": ""
+        "en": "LinkedIn Advertising for Business",
+        "pt": "Publicidade no LinkedIn para Negócios"
     },
     "25": {
         "es": "Publicidad en Snapchat Ads",
-        "en": "",
-        "pt": ""
+        "en": "Snapchat Ads Advertising",
+        "pt": "Publicidade no Snapchat Ads"
     },
     "26": {
         "es": "Optimización de Campañas Publicitarias",
-        "en": "",
-        "pt": ""
+        "en": "Advertising Campaign Optimization",
+        "pt": "Otimização de Campanhas Publicitárias"
     },
     "27": {
         "es": "Multiplataformas en Redes Sociales",
-        "en": "",
-        "pt": ""
+        "en": "Multiplatform Social Media",
+        "pt": "Multiplataformas em Redes Sociais"
     },
     "28": {
         "es": "Matemática Aplicada a la Ingeniería Ambiental",
-        "en": "",
-        "pt": ""
+        "en": "Applied Mathematics for Environmental Engineering",
+        "pt": "Matemática Aplicada à Engenharia Ambiental"
     },
     "29": {
         "es": "Estadística",
@@ -146,128 +146,128 @@
     },
     "30": {
         "es": "Cálculo",
-        "en": "",
-        "pt": ""
+        "en": "Calculus",
+        "pt": "Cálculo"
     },
     "31": {
         "es": "Ecuaciones Diferenciales",
-        "en": "",
-        "pt": ""
+        "en": "Differential Equations",
+        "pt": "Equações Diferenciais"
     },
     "32": {
         "es": "Fundamentos",
-        "en": "",
-        "pt": ""
+        "en": "Fundamentals",
+        "pt": "Fundamentos"
     },
     "33": {
         "es": "Métodos Numéricos",
-        "en": "",
-        "pt": ""
+        "en": "Numerical Methods",
+        "pt": "Métodos Numéricos"
     },
     "34": {
         "es": "Programación",
-        "en": "",
-        "pt": ""
+        "en": "Programming",
+        "pt": "Programação"
     },
     "35": {
         "es": "Modelado y Simulación de Sistemas",
-        "en": "",
-        "pt": ""
+        "en": "Systems Modeling and Simulation",
+        "pt": "Modelagem e Simulação de Sistemas"
     },
     "36": {
         "es": "Edición y Diseño",
-        "en": "",
-        "pt": ""
+        "en": "Editing and Design",
+        "pt": "Edição e Design"
     },
     "37": {
         "es": "Aplicaciones",
-        "en": "",
-        "pt": ""
+        "en": "Applications",
+        "pt": "Aplicações"
     },
     "38": {
         "es": "Técnicas Básicas",
-        "en": "",
-        "pt": ""
+        "en": "Basic Techniques",
+        "pt": "Técnicas Básicas"
     },
     "39": {
         "es": "Operador de Maquinaria Pesada",
-        "en": "",
-        "pt": ""
+        "en": "Heavy Machinery Operator",
+        "pt": "Operador de Maquinaria Pesada"
     },
     "40": {
         "es": "Redes y Conectividad",
-        "en": "",
-        "pt": ""
+        "en": "Networks and Connectivity",
+        "pt": "Redes e Conectividade"
     },
     "41": {
         "es": "Redes y Comunicaciones",
-        "en": "",
-        "pt": ""
+        "en": "Networks and Communications",
+        "pt": "Redes e Comunicações"
     },
     "42": {
         "es": "Comunicación",
-        "en": "",
-        "pt": ""
+        "en": "Communication",
+        "pt": "Comunicação"
     },
     "43": {
         "es": "Sistemas y Tecnologías de la Información",
-        "en": "",
-        "pt": ""
+        "en": "Information Systems and Technologies",
+        "pt": "Sistemas e Tecnologias da Informação"
     },
     "44": {
         "es": "Bases de Datos",
-        "en": "",
-        "pt": ""
+        "en": "Databases",
+        "pt": "Bases de Dados"
     },
     "45": {
         "es": "Auditoría",
-        "en": "",
-        "pt": ""
+        "en": "Auditing",
+        "pt": "Auditoria"
     },
     "46": {
         "es": "Tecnologías Web",
-        "en": "",
-        "pt": ""
+        "en": "Web Technologies",
+        "pt": "Tecnologias Web"
     },
     "47": {
         "es": "Tecnologías Web y Multimedia",
-        "en": "",
-        "pt": ""
+        "en": "Web and Multimedia Technologies",
+        "pt": "Tecnologias Web e Multimídia"
     },
     "48": {
         "es": "Computación y Automatización",
-        "en": "",
-        "pt": ""
+        "en": "Computing and Automation",
+        "pt": "Computação e Automação"
     },
     "49": {
         "es": "Diseño Electrónico y Circuitos",
-        "en": "",
-        "pt": ""
+        "en": "Electronic Design and Circuits",
+        "pt": "Design Eletrônico e Circuitos"
     },
     "50": {
         "es": "Herramientas Ofimáticas",
-        "en": "",
-        "pt": ""
+        "en": "Office Tools",
+        "pt": "Ferramentas de Escritório"
     },
     "51": {
         "es": "Diseño de Sistemas Financieros",
-        "en": "",
-        "pt": ""
+        "en": "Financial Systems Design",
+        "pt": "Design de Sistemas Financeiros"
     },
     "52": {
         "es": "Interpretación y Traducción de Idiomas",
-        "en": "",
-        "pt": ""
+        "en": "Language Interpretation and Translation",
+        "pt": "Interpretação e Tradução de Idiomas"
     },
     "53": {
         "es": "Traducción",
-        "en": "",
-        "pt": ""
+        "en": "Translation",
+        "pt": "Tradução"
     },
     "54": {
         "es": "Inglés Profesional Jurídico",
-        "en": "",
-        "pt": ""
+        "en": "Legal Professional English",
+        "pt": "Inglês Profissional Jurídico"
     },
     "55": {
         "es": "Inglés Avanzado (CBA y Otros Institutos)",
@@ -276,372 +276,372 @@
     },
     "56": {
         "es": "Francés Avanzado",
-        "en": "",
-        "pt": ""
+        "en": "Advanced French",
+        "pt": "Francês Avançado"
     },
     "57": {
         "es": "Alemán Avanzado",
-        "en": "",
-        "pt": ""
+        "en": "Advanced German",
+        "pt": "Alemão Avançado"
     },
     "58": {
         "es": "Español",
-        "en": "",
-        "pt": ""
+        "en": "Spanish",
+        "pt": "Espanhol"
     },
     "59": {
         "es": "Italiano",
-        "en": "",
-        "pt": ""
+        "en": "Italian",
+        "pt": "Italiano"
     },
     "60": {
         "es": "Portugués",
-        "en": "",
-        "pt": ""
+        "en": "Portuguese",
+        "pt": "Português"
     },
     "61": {
         "es": "Ruso",
-        "en": "",
-        "pt": ""
+        "en": "Russian",
+        "pt": "Russo"
     },
     "62": {
         "es": "Quechua",
-        "en": "",
-        "pt": ""
+        "en": "Quechua",
+        "pt": "Quíchua"
     },
     "63": {
         "es": "Aymara",
-        "en": "",
-        "pt": ""
+        "en": "Aymara",
+        "pt": "Aimará"
     },
     "64": {
         "es": "Guaraní",
-        "en": "",
-        "pt": ""
+        "en": "Guarani",
+        "pt": "Guarani"
     },
     "65": {
         "es": "Oficios Técnicos",
-        "en": "",
-        "pt": ""
+        "en": "Technical Trades",
+        "pt": "Ofícios Técnicos"
     },
     "66": {
         "es": "Instalación de Redes y Conectividad",
-        "en": "",
-        "pt": ""
+        "en": "Network and Connectivity Installation",
+        "pt": "Instalação de Redes e Conectividade"
     },
     "67": {
         "es": "Fundamentos de Repostería",
-        "en": "",
-        "pt": ""
+        "en": "Pastry Fundamentals",
+        "pt": "Fundamentos de Confeitaria"
     },
     "68": {
         "es": "Ingredientes y Química de Alimentos",
-        "en": "",
-        "pt": ""
+        "en": "Ingredients and Food Chemistry",
+        "pt": "Ingredientes e Química de Alimentos"
     },
     "69": {
         "es": "Técnicas de Repostería",
-        "en": "",
-        "pt": ""
+        "en": "Pastry Techniques",
+        "pt": "Técnicas de Confeitaria"
     },
     "70": {
         "es": "Pastelería Creativa",
-        "en": "",
-        "pt": ""
+        "en": "Creative Pastry",
+        "pt": "Pastelaria Criativa"
     },
     "71": {
         "es": "Postres Internacionales",
-        "en": "",
-        "pt": ""
+        "en": "International Desserts",
+        "pt": "Sobremesas Internacionais"
     },
     "72": {
         "es": "Dietas Especiales y Saludables",
-        "en": "",
-        "pt": ""
+        "en": "Special and Healthy Diets",
+        "pt": "Dietas Especiais e Saudáveis"
     },
     "73": {
         "es": "Gestión de Negocios de Repostería",
-        "en": "",
-        "pt": ""
+        "en": "Pastry Business Management",
+        "pt": "Gestão de Negócios de Confeitaria"
     },
     "74": {
         "es": "Seguridad e Higiene en Repostería",
-        "en": "",
-        "pt": ""
+        "en": "Safety and Hygiene in Pastry",
+        "pt": "Segurança e Higiene em Confeitaria"
     },
     "75": {
         "es": "Psicología General",
-        "en": "",
-        "pt": ""
+        "en": "General Psychology",
+        "pt": "Psicologia Geral"
     },
     "76": {
         "es": "Psicología del Desarrollo",
-        "en": "",
-        "pt": ""
+        "en": "Developmental Psychology",
+        "pt": "Psicologia do Desenvolvimento"
     },
     "77": {
         "es": "Psicología Clínica",
-        "en": "",
-        "pt": ""
+        "en": "Clinical Psychology",
+        "pt": "Psicologia Clínica"
     },
     "78": {
         "es": "Psicología Educativa",
-        "en": "",
-        "pt": ""
+        "en": "Educational Psychology",
+        "pt": "Psicologia Educacional"
     },
     "79": {
         "es": "Psicología Organizacional",
-        "en": "",
-        "pt": ""
+        "en": "Organizational Psychology",
+        "pt": "Psicologia Organizacional"
     },
     "80": {
         "es": "Psicología Social y Comunitaria",
-        "en": "",
-        "pt": ""
+        "en": "Social and Community Psychology",
+        "pt": "Psicologia Social e Comunitária"
     },
     "81": {
         "es": "Psicología Forense",
-        "en": "",
-        "pt": ""
+        "en": "Forensic Psychology",
+        "pt": "Psicologia Forense"
     },
     "82": {
         "es": "Dibujo y Técnicas Básicas",
-        "en": "",
-        "pt": ""
+        "en": "Drawing and Basic Techniques",
+        "pt": "Desenho e Técnicas Básicas"
     },
     "83": {
         "es": "Pintura y Color",
-        "en": "",
-        "pt": ""
+        "en": "Painting and Color",
+        "pt": "Pintura e Cor"
     },
     "84": {
         "es": "Escultura y Modelado",
-        "en": "",
-        "pt": ""
+        "en": "Sculpture and Modeling",
+        "pt": "Escultura e Modelagem"
     },
     "85": {
         "es": "Arte y Diseño Gráfico",
-        "en": "",
-        "pt": ""
+        "en": "Art and Graphic Design",
+        "pt": "Arte e Design Gráfico"
     },
     "86": {
         "es": "Historia del Arte",
-        "en": "",
-        "pt": ""
+        "en": "Art History",
+        "pt": "História da Arte"
     },
     "87": {
         "es": "Técnicas Experimentales y Nuevas Tendencias",
-        "en": "",
-        "pt": ""
+        "en": "Experimental Techniques and New Trends",
+        "pt": "Técnicas Experimentais e Novas Tendências"
     },
     "88": {
         "es": "Fundamentos de la Colorimetría",
-        "en": "",
-        "pt": ""
+        "en": "Colorimetry Fundamentals",
+        "pt": "Fundamentos da Colorimetria"
     },
     "89": {
         "es": "Colorimetría Aplicada",
-        "en": "",
-        "pt": ""
+        "en": "Applied Colorimetry",
+        "pt": "Colorimetria Aplicada"
     },
     "90": {
         "es": "Técnicas y Herramientas de Colorimetría",
-        "en": "",
-        "pt": ""
+        "en": "Colorimetry Techniques and Tools",
+        "pt": "Técnicas e Ferramentas de Colorimetria"
     },
     "91": {
         "es": "Colorimetría en la Industria",
-        "en": "",
-        "pt": ""
+        "en": "Colorimetry in Industry",
+        "pt": "Colorimetria na Indústria"
     },
     "92": {
         "es": "Color y Combinación Cromática",
-        "en": "",
-        "pt": ""
+        "en": "Color and Chromatic Combination",
+        "pt": "Cor e Combinação Cromática"
     },
     "93": {
         "es": "Publicidad y Branding",
-        "en": "",
-        "pt": ""
+        "en": "Advertising and Branding",
+        "pt": "Publicidade e Branding"
     },
     "94": {
         "es": "Marketing en Redes Sociales",
-        "en": "",
-        "pt": ""
+        "en": "Social Media Marketing",
+        "pt": "Marketing em Redes Sociais"
     },
     "95": {
         "es": "Emprendimiento y Gestión de Negocios",
-        "en": "",
-        "pt": ""
+        "en": "Entrepreneurship and Business Management",
+        "pt": "Empreendedorismo e Gestão de Negócios"
     },
     "96": {
         "es": "Diseño y Comunicación Visual",
-        "en": "",
-        "pt": ""
+        "en": "Design and Visual Communication",
+        "pt": "Design e Comunicação Visual"
     },
     "97": {
         "es": "Fotografía Digital y Edición",
-        "en": "",
-        "pt": ""
+        "en": "Digital Photography and Editing",
+        "pt": "Fotografia Digital e Edição"
     },
     "98": {
         "es": "Creación de Contenido Digital",
-        "en": "",
-        "pt": ""
+        "en": "Digital Content Creation",
+        "pt": "Criação de Conteúdo Digital"
     },
     "99": {
         "es": "Artes Visuales y Diseño",
-        "en": "",
-        "pt": ""
+        "en": "Visual Arts and Design",
+        "pt": "Artes Visuais e Design"
     },
     "100": {
         "es": "Expresión Artística y Cultura",
-        "en": "",
-        "pt": ""
+        "en": "Artistic Expression and Culture",
+        "pt": "Expressão Artística e Cultura"
     },
     "101": {
         "es": "Filosofía y Desarrollo del Pensamiento",
-        "en": "",
-        "pt": ""
+        "en": "Philosophy and Thought Development",
+        "pt": "Filosofia e Desenvolvimento do Pensamento"
     },
     "102": {
         "es": "Formación Pedagógica y Didáctica",
-        "en": "",
-        "pt": ""
+        "en": "Pedagogical and Didactic Training",
+        "pt": "Formação Pedagógica e Didática"
     },
     "103": {
         "es": "Traducción e Interpretación Profesional",
-        "en": "",
-        "pt": ""
+        "en": "Professional Translation and Interpretation",
+        "pt": "Tradução e Interpretação Profissional"
     },
     "104": {
         "es": "Ingeniería y Medio Ambiente",
-        "en": "",
-        "pt": ""
+        "en": "Engineering and Environment",
+        "pt": "Engenharia e Meio Ambiente"
     },
     "105": {
         "es": "Análisis de Datos y Estadística",
-        "en": "",
-        "pt": ""
+        "en": "Data Analysis and Statistics",
+        "pt": "Análise de Dados e Estatística"
     },
     "106": {
         "es": "Construcción y Mantenimiento",
-        "en": "",
-        "pt": ""
+        "en": "Construction and Maintenance",
+        "pt": "Construção e Manutenção"
     },
     "107": {
         "es": "Mecánica y Reparaciones",
-        "en": "",
-        "pt": ""
+        "en": "Mechanics and Repairs",
+        "pt": "Mecânica e Reparos"
     },
     "108": {
         "es": "Gastronomía y Repostería",
-        "en": "",
-        "pt": ""
+        "en": "Gastronomy and Pastry",
+        "pt": "Gastronomia e Confeitaria"
     },
     "109": {
         "es": "Estética y Moda",
-        "en": "",
-        "pt": ""
+        "en": "Aesthetics and Fashion",
+        "pt": "Estética e Moda"
     },
     "110": {
         "es": "Entrenamiento Físico y Bienestar",
-        "en": "",
-        "pt": ""
+        "en": "Physical Training and Wellness",
+        "pt": "Treinamento Físico e Bem-Estar"
     },
     "111": {
         "es": "Turismo y Naturaleza",
-        "en": "",
-        "pt": ""
+        "en": "Tourism and Nature",
+        "pt": "Turismo e Natureza"
     },
     "112": {
         "es": "Desarrollo Personal y Espiritualidad",
-        "en": "",
-        "pt": ""
+        "en": "Personal Development and Spirituality",
+        "pt": "Desenvolvimento Pessoal e Espiritualidade"
     },
     "113": {
         "es": "Artes Escénicas y Actuación",
-        "en": "",
-        "pt": ""
+        "en": "Performing Arts and Acting",
+        "pt": "Artes Cênicas e Atuação"
     },
     "114": {
         "es": "Diseño y Producción de Videojuegos",
-        "en": "",
-        "pt": ""
+        "en": "Video Game Design and Production",
+        "pt": "Design e Produção de Videogames"
     },
     "115": {
         "es": "Medicina",
-        "en": "",
-        "pt": ""
+        "en": "Medicine",
+        "pt": "Medicina"
     },
     "1000": {
         "es": "Colegio",
-        "en": "",
-        "pt": ""
+        "en": "School",
+        "pt": "Escola"
     },
     "2000": {
         "es": "Universidad",
-        "en": "",
-        "pt": ""
+        "en": "University",
+        "pt": "Universidade"
     },
     "2100": {
         "es": "Ciencias Exactas",
-        "en": "",
-        "pt": ""
+        "en": "Exact Sciences",
+        "pt": "Ciências Exatas"
     },
     "2101": {
         "es": "Ingeniería Avanzada",
-        "en": "",
-        "pt": ""
+        "en": "Advanced Engineering",
+        "pt": "Engenharia Avançada"
     },
     "2102": {
         "es": "Ciencias Sociales y Económicas",
-        "en": "",
-        "pt": ""
+        "en": "Social and Economic Sciences",
+        "pt": "Ciências Sociais e Econômicas"
     },
     "3000": {
         "es": "Instituto",
-        "en": "",
-        "pt": ""
+        "en": "Institute",
+        "pt": "Instituto"
     },
     "3100": {
         "es": "Idiomas",
-        "en": "",
-        "pt": ""
+        "en": "Languages",
+        "pt": "Idiomas"
     },
     "3101": {
         "es": "Marketing y Comunicación Digital",
-        "en": "",
-        "pt": ""
+        "en": "Digital Marketing and Communication",
+        "pt": "Marketing e Comunicação Digital"
     },
     "3102": {
         "es": "Arte y Diseño",
-        "en": "",
-        "pt": ""
+        "en": "Art and Design",
+        "pt": "Arte e Design"
     },
     "3103": {
         "es": "Gastronomía y Repostería",
-        "en": "",
-        "pt": ""
+        "en": "Gastronomy and Pastry",
+        "pt": "Gastronomia e Confeitaria"
     },
     "3104": {
         "es": "Ingeniería y Tecnología",
-        "en": "",
-        "pt": ""
+        "en": "Engineering and Technology",
+        "pt": "Engenharia e Tecnologia"
     },
     "3105": {
         "es": "Psicología y Desarrollo Personal",
-        "en": "",
-        "pt": ""
+        "en": "Psychology and Personal Development",
+        "pt": "Psicologia e Desenvolvimento Pessoal"
     },
     "3106": {
         "es": "Deporte y Bienestar",
-        "en": "",
-        "pt": ""
+        "en": "Sports and Wellness",
+        "pt": "Esporte e Bem-Estar"
     },
     "3107": {
         "es": "Música",
-        "en": "",
-        "pt": ""
+        "en": "Music",
+        "pt": "Música"
     }
 }

@@ -45,7 +45,11 @@
             <div class="am-group-card" wire:key="subject-group-{{ $group?->id }}">
                 <div x-data="{ open: false }">
                     <div class="am-group-header" @click="open = !open">
-                        <span class="am-group-title">{{ $group->name }}</span>
+                        <span class="am-group-title subject-group-translatable"
+                              data-subject-group-id="{{ $group->id }}"
+                              data-subject-group-fallback="{{ $group->name }}">
+                            {{ $group->name }}
+                        </span>
                         <span class="am-group-toggle" :class="{'open': open}"></span>
                     </div>
                     <div class="am-group-body" x-show="open">
@@ -54,7 +58,11 @@
                         @if($userSubject['subject']['subject_group_id'] == $group->id)
                         <div class="am-subject-card">
                             <div class="am-subject-info">
-                                <span class="am-subject-name">{{ $userSubject['subject']['name'] }}</span>
+                                <span class="am-subject-name subject-translatable"
+                                      data-subject-id="{{ $userSubject['subject']['id'] }}"
+                                      data-subject-fallback="{{ $userSubject['subject']['name'] }}">
+                                    {{ $userSubject['subject']['name'] }}
+                                </span>
                                 @if($userSubject['description'])
                                 <span class="am-subject-desc">{{ $userSubject['description'] }}</span>
                                 @endif

@@ -1,6 +1,7 @@
 @extends('vistas.view.layouts.blank')
 @section('content')
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="stylesheet" href="{{ asset('css/estilos/language-selector.css') }}">
 
 
 
@@ -204,6 +205,12 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
         }
 
         .header-bottom {
@@ -1531,7 +1538,7 @@
             </div>
         </div>
 
-        <button class="tutoria-fab" id="tutoriaFab" onclick="confirmarMateria()">Go!</button>
+        <button class="tutoria-fab" id="tutoriaFab" onclick="confirmarMateria()" data-translate="instant_tutor_go_button">Go!</button>
 
         <div id="app">
             <!-- VISTA 1: SELECCIÓN -->
@@ -1548,9 +1555,10 @@
                                 </svg>
                             </button>
 
+                            <div class="header-actions">
+                                @include('vistas.view.partials.language-selector', ['variant' => 'language-select--light'])
 
-
-                            @auth
+                                @auth
 
                                 <div class="user-menu">
                                     <button type="button" class="user-menu__trigger">
@@ -1779,13 +1787,14 @@
                                             class="fa-solid fa-user-plus icon-white"></i></a>
                                 </div>
                             @endauth
+                            </div>
 
                         </div>
 
                         <div class="header-bottom">
                             <div class="header-info">
-                                <h1>¿Qué necesitas aprender hoy?</h1>
-                                <p>Más de 600 materias con la que un tutor puede ayudarte ahora</p>
+                                <h1 data-translate="instant_tutor_title">¿Qué necesitas aprender hoy?</h1>
+                                <p data-translate="instant_tutor_subtitle">Más de 600 materias con la que un tutor puede ayudarte ahora</p>
                             </div>
                             <div class="search-wrapper">
                                 <svg class="search-icon" width="20" height="20" fill="none"
@@ -1794,6 +1803,7 @@
                                     <path d="M21 21l-4.35-4.35" />
                                 </svg>
                                 <input type="text" id="search-input" class="search-input"
+                                    data-translate-placeholder="instant_tutor_search_placeholder"
                                     placeholder="BUSCAR MATERIA...">
                             </div>
                         </div>
@@ -1834,7 +1844,7 @@
                         </div>
 
                         <div class="small-pill">
-                            Expira en: <b id="batchExpireCountdown" class="expire-normal">--:--</b>
+                            <span data-translate="instant_tutor_expires_in">Expira en:</span> <b id="batchExpireCountdown" class="expire-normal">--:--</b>
                         </div>
 
                         <button id="btnCancelBatch" type="button" class="btn-cancel-batch hidden">
@@ -1844,21 +1854,23 @@
                             <div class="cancel-modal__box">
                                 <div class="cancel-modal__icon">⚠️</div>
 
-                                <h3>Cancelar solicitud</h3>
+                                <h3 data-translate="instant_tutor_cancel_request">Cancelar solicitud</h3>
 
-                                <p>
+                                <p data-translate="instant_tutor_cancel_confirm_desc">
                                     ¿Seguro que deseas cancelar esta solicitud de tutoría?
                                     Podrás volver a elegir otra materia y presionar Go nuevamente.
                                 </p>
 
                                 <div class="cancel-modal__actions">
                                     <button type="button" id="btnCancelNo"
-                                        class="cancel-modal__btn cancel-modal__btn--secondary">
+                                        class="cancel-modal__btn cancel-modal__btn--secondary"
+                                        data-translate="instant_tutor_cancel_no">
                                         No, continuar
                                     </button>
 
                                     <button type="button" id="btnCancelYes"
-                                        class="cancel-modal__btn cancel-modal__btn--danger">
+                                        class="cancel-modal__btn cancel-modal__btn--danger"
+                                        data-translate="instant_tutor_cancel_yes">
                                         Sí, cancelar
                                     </button>
                                  </div>
@@ -1869,23 +1881,27 @@
                         <div id="reqScheduleModal" class="cancel-modal hidden">
                             <div class="cancel-modal__box" style="width: min(92vw, 450px); text-align: left;">
                                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem;">
-                                    <h3 style="font-size: 1.25rem; font-weight: 900; color: var(--primary-color); margin: 0;">Solicitar Horarios</h3>
+                                    <h3 style="font-size: 1.25rem; font-weight: 900; color: var(--primary-color); margin: 0;"
+                                        data-translate="instant_tutor_request_schedules">Solicitar Horarios</h3>
                                     <button type="button" onclick="closeReqScheduleModal()" style="background: none; border: none; font-size: 1.5rem; font-weight: bold; cursor: pointer; color: var(--text-muted);">&times;</button>
                                 </div>
 
                                 <div style="margin-bottom: 1rem;">
-                                    <label style="display: block; font-size: 0.75rem; font-weight: 700; color: var(--primary-color); margin-bottom: 0.3rem;">Materia Solicitada</label>
+                                    <label style="display: block; font-size: 0.75rem; font-weight: 700; color: var(--primary-color); margin-bottom: 0.3rem;"
+                                        data-translate="instant_tutor_requested_subject">Materia Solicitada</label>
                                     <div id="reqScheduleSubjectName" style="background: #f1f5f9; padding: 0.75rem 1rem; border-radius: 0.8rem; font-weight: 800; font-size: 0.9rem; color: var(--primary-color);">Materia</div>
                                 </div>
 
                                 <div style="margin-bottom: 1rem;">
-                                    <label style="display: block; font-size: 0.75rem; font-weight: 700; color: var(--primary-color); margin-bottom: 0.3rem;">Fecha sugerida (Hoy)</label>
+                                    <label style="display: block; font-size: 0.75rem; font-weight: 700; color: var(--primary-color); margin-bottom: 0.3rem;"
+                                        data-translate="instant_tutor_suggested_date_today">Fecha sugerida (Hoy)</label>
                                     <input type="text" id="reqScheduleDate" readonly style="width: 100%; padding: 0.75rem 1rem; border-radius: 0.8rem; border: 1px solid #e2e8f0; background: #f8fafc; font-weight: 800; font-size: 0.9rem; color: var(--text-muted); outline: none;" />
                                 </div>
 
                                 <!-- Hora de inicio -->
                                 <div style="margin-bottom: 1rem;">
-                                    <label style="display: block; font-size: 0.75rem; font-weight: 700; color: var(--primary-color); margin-bottom: 0.3rem;">Hora de inicio</label>
+                                    <label style="display: block; font-size: 0.75rem; font-weight: 700; color: var(--primary-color); margin-bottom: 0.3rem;"
+                                        data-translate="instant_tutor_start_time">Hora de inicio</label>
                                     <div style="display: flex; gap: 0.5rem;">
                                         <select id="reqScheduleHour" style="flex: 1; padding: 0.75rem; border-radius: 0.8rem; border: 1px solid #e2e8f0; font-weight: 800; font-size: 0.9rem; color: var(--primary-color); outline: none; background: #fff;">
                                             <option value="1">01</option>
@@ -1924,26 +1940,33 @@
 
                                 <!-- Duración -->
                                 <div style="margin-bottom: 1.2rem;">
-                                    <label style="display: block; font-size: 0.75rem; font-weight: 700; color: var(--primary-color); margin-bottom: 0.3rem;">Duración sugerida</label>
+                                    <label style="display: block; font-size: 0.75rem; font-weight: 700; color: var(--primary-color); margin-bottom: 0.3rem;"
+                                        data-translate="instant_tutor_suggested_duration">Duración sugerida</label>
                                     <select id="reqScheduleDuration" style="width: 100%; padding: 0.75rem; border-radius: 0.8rem; border: 1px solid #e2e8f0; font-weight: 800; font-size: 0.9rem; color: var(--primary-color); outline: none; background: #fff;">
-                                        <option value="20 min" selected>20 min</option>
-                                        <option value="40 min">40 min</option>
-                                        <option value="1 hora">1 hora</option>
-                                        <option value="1h 20m">1h 20m</option>
-                                        <option value="1h 40m">1h 40m</option>
-                                        <option value="2 horas">2 horas</option>
+                                        <option value="20 min" selected data-translate="instant_tutor_duration_20m">20 min</option>
+                                        <option value="40 min" data-translate="instant_tutor_duration_40m">40 min</option>
+                                        <option value="1 hora" data-translate="instant_tutor_duration_1h">1 hora</option>
+                                        <option value="1h 20m" data-translate="instant_tutor_duration_1h20">1h 20m</option>
+                                        <option value="1h 40m" data-translate="instant_tutor_duration_1h40">1h 40m</option>
+                                        <option value="2 horas" data-translate="instant_tutor_duration_2h">2 horas</option>
                                     </select>
                                 </div>
 
                                 <!-- Nota opcional -->
                                 <div style="margin-bottom: 1.5rem;">
-                                    <label style="display: block; font-size: 0.75rem; font-weight: 700; color: var(--primary-color); margin-bottom: 0.3rem;">Nota opcional</label>
-                                    <textarea id="reqScheduleNote" placeholder="Ej. Necesito ayuda con la tarea de álgebra..." maxlength="300" style="width: 100%; height: 80px; padding: 0.75rem; border-radius: 0.8rem; border: 1px solid #e2e8f0; font-family: inherit; font-size: 0.85rem; outline: none; resize: none;"></textarea>
+                                    <label style="display: block; font-size: 0.75rem; font-weight: 700; color: var(--primary-color); margin-bottom: 0.3rem;"
+                                        data-translate="instant_tutor_optional_note">Nota opcional</label>
+                                    <textarea id="reqScheduleNote"
+                                        placeholder="Ej. Necesito ayuda con la tarea de álgebra..."
+                                        data-translate-placeholder="instant_tutor_note_placeholder"
+                                        maxlength="300" style="width: 100%; height: 80px; padding: 0.75rem; border-radius: 0.8rem; border: 1px solid #e2e8f0; font-family: inherit; font-size: 0.85rem; outline: none; resize: none;"></textarea>
                                 </div>
 
                                 <div style="display: flex; gap: 0.7rem;">
-                                    <button type="button" onclick="closeReqScheduleModal()" class="cancel-modal__btn cancel-modal__btn--secondary" style="flex: 1; padding: 0.85rem;">Cancelar</button>
-                                    <button type="button" id="btnSubmitReqSchedule" onclick="submitReqSchedule()" class="cancel-modal__btn" style="flex: 1; background: var(--orange); color: white; padding: 0.85rem; font-weight: 900;">Enviar Solicitud</button>
+                                    <button type="button" onclick="closeReqScheduleModal()" class="cancel-modal__btn cancel-modal__btn--secondary" style="flex: 1; padding: 0.85rem;"
+                                        data-translate="instant_tutor_cancel">Cancelar</button>
+                                    <button type="button" id="btnSubmitReqSchedule" onclick="submitReqSchedule()" class="cancel-modal__btn" style="flex: 1; background: var(--orange); color: white; padding: 0.85rem; font-weight: 900;"
+                                        data-translate="instant_tutor_send_request">Enviar Solicitud</button>
                                 </div>
                             </div>
                         </div>
@@ -1956,17 +1979,20 @@
                 <div class="container">
                     <div style="display:flex;justify-content:space-between;align-items:center;gap:3rem; margin-top:10px;">
                         <h3
-                            style="font-size:.8rem;font-weight:1000;letter-spacing:.22em;color:#94a3b8;text-transform:uppercase;">
+                            style="font-size:.8rem;font-weight:1000;letter-spacing:.22em;color:#94a3b8;text-transform:uppercase;"
+                            data-translate="instant_tutor_accepted_tutors">
                             Tutores que aceptaron
                         </h3>
                         <div style="display: flex; gap: 0.5rem; align-items: center;">
                             <button id="btnNewSearch" type="button" class="pill hidden"
-                                style="letter-spacing:.14em;font-size:.6rem;">
+                                style="letter-spacing:.14em;font-size:.6rem;"
+                                data-translate="instant_tutor_new_request">
                                 Nueva solicitud
                             </button>
                             <button id="btnRequestSchedule" type="button" class="pill hidden"
                                 style="letter-spacing:.14em;font-size:.6rem; background: var(--orange); color: white; border-color: var(--orange);"
-                                onclick="openReqScheduleModal()">
+                                onclick="openReqScheduleModal()"
+                                data-translate="instant_tutor_request_schedules">
                                 Solicitar horarios
                             </button>
                         </div>
@@ -2033,6 +2059,10 @@
         }
     </style>
 
+    {{-- Cargar scripts de traducción ANTES del script inline para que estén disponibles --}}
+    <script src="{{ asset('js/translations.js') }}?v={{ filemtime(public_path('js/translations.js')) }}"></script>
+    <script src="{{ asset('js/subject-translations.js') }}?v={{ filemtime(public_path('js/subject-translations.js')) }}"></script>
+
     <script>
         /* ========================================================================
                                     CLASSGO | Student - Instant Tutors Script
@@ -2068,11 +2098,11 @@
         /* ========================================================================
           0) STATE GLOBAL + MEMORIA
         ======================================================================== */
-        let categories = ['Todas'];
+        let categories = [{ id: null, name: 'Todas' }];
         let subjects = []; // {id, name, category, category_id}
 
         let state = {
-            selectedCategory: 'Todas',
+            selectedCategoryId: null, // null = Todas, número = subject_group.id
             searchQuery: '',
             receipts: {}, // heroId -> File
             activeHeroId: null, // heroId activo (checkout abierto)
@@ -2104,7 +2134,7 @@
             if (!ct.includes('application/json')) {
                 const text = await res.text();
                 console.error('Respuesta NO JSON', ct, text.slice(0, 300));
-                categories = ['Todas'];
+                categories = [{ id: null, name: 'Todas' }];
                 subjects = [];
                 return;
             }
@@ -2112,7 +2142,13 @@
             const json = await res.json().catch(() => ({}));
             const data = Array.isArray(json.data) ? json.data : [];
 
-            categories = ['Todas', ...data.map(x => x.categoria)];
+            categories = [
+                { id: null, name: 'Todas' },
+                ...data.map(cat => ({
+                    id: Number(cat.id_categoria),
+                    name: cat.categoria
+                }))
+            ];
 
             subjects = [];
             for (const cat of data) {
@@ -2150,16 +2186,35 @@
 
         function renderCategoryPills() {
             const bar = document.getElementById('category-bar');
-            bar.innerHTML = categories.map(cat => `
-    <button class="pill ${state.selectedCategory === cat ? 'active':''}"
-            onclick="setCategory('${cat.replaceAll("'", "\\'")}')">
-      ${cat}
-    </button>
-  `).join('');
+            bar.innerHTML = categories.map(cat => {
+                const isActive = state.selectedCategoryId === cat.id ? 'active' : '';
+                
+                // "Todas" - usar window.translateText
+                if (cat.id === null) {
+                    const todasText = typeof window.translateText === 'function'
+                        ? window.translateText('instant_tutor_all_categories', 'Todas')
+                        : 'Todas';
+                    
+                    return `<button class="pill ${isActive}"
+                                    onclick="setCategory(null)"
+                                    data-translate="instant_tutor_all_categories">${todasText}</button>`;
+                }
+                
+                // Categorías reales - subject-group-translatable
+                return `<button class="pill ${isActive} subject-group-translatable"
+                                onclick="setCategory(${cat.id})"
+                                data-subject-group-id="${cat.id}"
+                                data-subject-group-fallback="${escapeHtml(cat.name)}">${escapeHtml(cat.name)}</button>`;
+            }).join('');
+            
+            // Aplicar traducciones después del render
+            if (typeof window.applyAllTranslations === 'function') {
+                window.applyAllTranslations();
+            }
         }
 
-        function setCategory(cat) {
-            state.selectedCategory = cat;
+        function setCategory(categoryId) {
+            state.selectedCategoryId = categoryId;
             renderCategoryPills();
             renderSubjectSections();
         }
@@ -2167,16 +2222,31 @@
         function getFilteredSubjects() {
             let filtered = [...subjects];
 
-            if (state.selectedCategory !== 'Todas') {
-                filtered = filtered.filter(s => s.category === state.selectedCategory);
+            if (state.selectedCategoryId !== null) {
+                filtered = filtered.filter(s => s.category_id === state.selectedCategoryId);
             }
 
             if (state.searchQuery !== '') {
                 const q = normalizeText(state.searchQuery);
 
-                filtered = filtered.filter(s =>
-                    normalizeText(s.name).includes(q)
-                );
+                filtered = filtered.filter(s => {
+                    const names = [
+                        s.name,
+                        typeof window.getSubjectTranslation === 'function'
+                            ? window.getSubjectTranslation(s.id, 'es')
+                            : null,
+                        typeof window.getSubjectTranslation === 'function'
+                            ? window.getSubjectTranslation(s.id, 'en')
+                            : null,
+                        typeof window.getSubjectTranslation === 'function'
+                            ? window.getSubjectTranslation(s.id, 'pt')
+                            : null,
+                    ].filter(Boolean);
+
+                    return names.some(name =>
+                        normalizeText(name).includes(q)
+                    );
+                });
             }
 
             return filtered;
@@ -2259,47 +2329,57 @@
 
             empty.classList.add('hidden');
 
-            const grouped = groupByCategory(results);
+            // Recorrer categories en orden, filtrando por category_id
+            let sectionIndex = 0;
+            sections.innerHTML = categories
+                .filter(cat => cat.id !== null) // Excluir "Todas"
+                .map(cat => {
+                    // Filtrar materias por category_id
+                    const items = results.filter(s => s.category_id === cat.id);
+                    
+                    if (items.length === 0) return '';
+                    
+                    const gridId = `grid-${cat.id}`;
+                    const isFirstSection = sectionIndex === 0;
+                    const collapsedClass = isFirstSection ? '' : 'collapsed';
+                    const rotatedClass = isFirstSection ? '' : 'rotated';
+                    
+                    sectionIndex++;
 
-            const orderedCats = Object.keys(grouped).sort((a, b) => {
-                const ia = categories.indexOf(a);
-                const ib = categories.indexOf(b);
-                if (ia === -1 && ib === -1) return a.localeCompare(b);
-                if (ia === -1) return 1;
-                if (ib === -1) return -1;
-                return ia - ib;
-            });
-
-            sections.innerHTML = orderedCats.map(cat => {
-                const items = grouped[cat];
-                const gridId = `grid-${cat.replace(/[^a-zA-Z0-9]/g, '-')}`;
-                // Collapse all sections by default, except the first one
-                const isFirstSection = orderedCats.indexOf(cat) === 0;
-                const collapsedClass = isFirstSection ? '' : 'collapsed';
-                const rotatedClass = isFirstSection ? '' : 'rotated';
-
-                return `
+                    return `
     <section>
         <div class="section-header" onclick="toggleSection('${gridId}')">
-          <h3>${cat}</h3>
+          <h3 class="subject-group-translatable"
+              data-subject-group-id="${cat.id}"
+              data-subject-group-fallback="${escapeHtml(cat.name)}">${escapeHtml(cat.name)}</h3>
           <svg class="toggle-icon ${rotatedClass}" id="icon-${gridId}" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
         </div>
 
         <div class="subject-grid ${collapsedClass}" id="${gridId}">
           ${items.map(sub => `
-                                        <button class="subject-card-btn" onclick="seleccionarMateria(this, ${sub.id}, '${sub.name.replaceAll("'", "\\'")}')">
-                                            <div class="subject-initial">${sub.name.charAt(0)}</div>
-                                            <div class="subject-meta">
-                                                <div class="subject-title">${sub.name}</div>
-                                            </div>
-                                        </button>
-                                        `).join('')}
+            <button class="subject-card-btn" onclick="seleccionarMateria(this, ${sub.id})">
+                <div class="subject-initial">${sub.name.charAt(0)}</div>
+                <div class="subject-meta">
+                    <div class="subject-title subject-translatable"
+                         data-subject-id="${sub.id}"
+                         data-subject-fallback="${escapeHtml(sub.name)}">${escapeHtml(sub.name)}</div>
+                </div>
+            </button>
+          `).join('')}
         </div>
     </section>
     `;
-            }).join('');
+                })
+                .filter(html => html !== '')
+                .join('');
+            
             setupHorizontalDraggableScroll('.category-bar');
             setupHorizontalDraggableScroll('.subject-grid');
+            
+            // Aplicar traducciones después del render
+            if (typeof window.applyAllTranslations === 'function') {
+                window.applyAllTranslations();
+            }
         }
 
 
@@ -2310,14 +2390,35 @@
         let materiaSeleccionadaId = null;
         let materiaSeleccionadaNombre = null;
 
-        function seleccionarMateria(btn, id, nombre) {
+        /**
+         * Obtiene el nombre visible actual de la materia seleccionada
+         * Usa traducción si está disponible, fallback al nombre original
+         */
+        function getMateriaSeleccionadaNombre() {
+            if (!materiaSeleccionadaId) return '';
+
+            const subject = subjects.find(s => s.id === materiaSeleccionadaId);
+            if (!subject) return '';
+
+            if (typeof window.getSubjectTranslation === 'function') {
+                return window.getSubjectTranslation(materiaSeleccionadaId) || subject.name;
+            }
+
+            return subject.name;
+        }
+
+        function seleccionarMateria(btn, id) {
             if (materiaSeleccionada) materiaSeleccionada.classList.remove('is-selected');
 
             btn.classList.add('is-selected');
             materiaSeleccionada = btn;
 
+            // Buscar la materia real
+            const subject = subjects.find(s => s.id === id);
+            if (!subject) return;
+
             materiaSeleccionadaId = id;
-            materiaSeleccionadaNombre = nombre;
+            materiaSeleccionadaNombre = subject.name; // Fallback
 
             fab.classList.add('visible');
         }
@@ -2328,7 +2429,7 @@
 
         function confirmarMateria() {
             if (!materiaSeleccionadaId) return;
-            selectSubject(materiaSeleccionadaNombre, materiaSeleccionadaId);
+            selectSubject(getMateriaSeleccionadaNombre(), materiaSeleccionadaId);
         }
 
 
@@ -2592,7 +2693,10 @@
                 stopPollingAll();
                 currentBatchId = null;
                 if (btnNewSearch) btnNewSearch.classList.remove('hidden');
-                if (waitMsg) waitMsg.textContent = 'La búsqueda terminó. Puedes iniciar una nueva solicitud.';
+                if (waitMsg) waitMsg.textContent = window.translateText(
+                    'instant_tutor_search_finished',
+                    'La búsqueda terminó. Puedes iniciar una nueva solicitud.'
+                );
                 if (acceptedMap.size === 0 && btnRequestSchedule) {
                     btnRequestSchedule.classList.remove('hidden');
                 }
@@ -2645,9 +2749,32 @@
 
             // 1. UI Feedback inmediato
             ocultarFabTutoria();
-            document.getElementById('selected-subject-name').innerText = subjectName;
+            
+            // Configurar badge con traducción
+            const selectedSubjectNameEl = document.getElementById('selected-subject-name');
+            if (selectedSubjectNameEl) {
+                // Buscar subject original
+                const subject = subjects.find(s => s.id === subjectId);
+                const fallbackName = subject ? subject.name : subjectName;
+                
+                selectedSubjectNameEl.classList.add('subject-translatable');
+                selectedSubjectNameEl.setAttribute('data-subject-id', subjectId);
+                selectedSubjectNameEl.setAttribute('data-subject-fallback', fallbackName);
+                selectedSubjectNameEl.textContent = subjectName;
+                
+                // Aplicar traducción inmediata
+                if (typeof window.applyAllTranslations === 'function') {
+                    window.applyAllTranslations();
+                }
+            }
+            
             showRadar();
-            if (statusMsg) statusMsg.innerText = 'Iniciando búsqueda de expertos...';
+            if (statusMsg) {
+                statusMsg.innerText = window.translateText(
+                    'instant_tutor_starting_search',
+                    'Iniciando búsqueda de expertos...'
+                );
+            }
 
             try {
                 const csrf = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
@@ -2803,7 +2930,9 @@
       <div class="tutor-card" id="hero-${id}">
         <div class="card-face card-face-front">
           <div class="card-header">
-            <span class="badge">${materiaSeleccionadaNombre}</span>
+            <span class="badge subject-translatable"
+                  data-subject-id="${materiaSeleccionadaId}"
+                  data-subject-fallback="${escapeHtml(materiaSeleccionadaNombre)}">${escapeHtml(getMateriaSeleccionadaNombre())}</span>
 
           </div>
 
@@ -3228,7 +3357,7 @@
 
             btnCancelBatch.classList.remove('hidden');
             btnCancelBatch.disabled = false;
-            btnCancelBatch.textContent = `Cancelar solicitud (${cancelBatchSecondsLeft}s)`;
+            btnCancelBatch.textContent = `${window.translateText('instant_tutor_cancel_request', 'Cancelar solicitud')} (${cancelBatchSecondsLeft}s)`;
 
             cancelBatchTimer = setInterval(() => {
                 cancelBatchSecondsLeft--;
@@ -3239,13 +3368,16 @@
 
                     btnCancelBatch.classList.add('hidden');
                     btnCancelBatch.disabled = true;
-                    btnCancelBatch.textContent = 'Cancelar solicitud';
+                    btnCancelBatch.textContent = window.translateText(
+                        'instant_tutor_cancel_request',
+                        'Cancelar solicitud'
+                    );
 
                     closeCancelBatchModal();
                     return;
                 }
 
-                btnCancelBatch.textContent = `Cancelar solicitud (${cancelBatchSecondsLeft}s)`;
+                btnCancelBatch.textContent = `${window.translateText('instant_tutor_cancel_request', 'Cancelar solicitud')} (${cancelBatchSecondsLeft}s)`;
             }, 1000);
         }
 
@@ -3258,7 +3390,10 @@
             if (btnCancelBatch) {
                 btnCancelBatch.classList.add('hidden');
                 btnCancelBatch.disabled = true;
-                btnCancelBatch.textContent = 'Cancelar solicitud';
+                btnCancelBatch.textContent = window.translateText(
+                    'instant_tutor_cancel_request',
+                    'Cancelar solicitud'
+                );
             }
         }
 
@@ -3297,7 +3432,10 @@
             btnCancelNo.disabled = true;
 
             const originalYesText = btnCancelYes.textContent;
-            btnCancelYes.textContent = 'Cancelando...';
+            btnCancelYes.textContent = window.translateText(
+                'instant_tutor_cancelling',
+                'Cancelando...'
+            );
 
             try {
                 const csrf = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
@@ -3479,8 +3617,37 @@
             const subjectLabel = document.getElementById('reqScheduleSubjectName');
             const dateInput = document.getElementById('reqScheduleDate');
             
-            if (subjectLabel) {
-                subjectLabel.textContent = materiaSeleccionadaNombre || 'Materia';
+            if (subjectLabel && materiaSeleccionadaId) {
+                const subject = subjects.find(
+                    s => s.id === materiaSeleccionadaId
+                );
+
+                const subjectFallback = window.translateText(
+                    'instant_tutor_subject',
+                    'Materia'
+                );
+
+                subjectLabel.classList.add('subject-translatable');
+                subjectLabel.setAttribute(
+                    'data-subject-id',
+                    materiaSeleccionadaId
+                );
+                subjectLabel.setAttribute(
+                    'data-subject-fallback',
+                    subject ? subject.name : subjectFallback
+                );
+
+                subjectLabel.textContent =
+                    getMateriaSeleccionadaNombre() || subjectFallback;
+
+                if (typeof window.applyAllTranslations === 'function') {
+                    window.applyAllTranslations();
+                }
+            } else if (subjectLabel) {
+                subjectLabel.classList.remove('subject-translatable');
+                subjectLabel.removeAttribute('data-subject-id');
+                subjectLabel.removeAttribute('data-subject-fallback');
+                subjectLabel.textContent = window.translateText('instant_tutor_subject', 'Materia');
             }
             
             const today = new Date();

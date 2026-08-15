@@ -10,6 +10,33 @@
                 $selectedLang = 'es';
             }
         @endphp
+        <style>
+            .am-switch-language.am-multi-lang .am-lang-anchor {
+                background: transparent;
+                border: none;
+                box-shadow: none;
+                padding: 0.5rem 0.6rem;
+                border-radius: 8px;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                cursor: pointer;
+                transition: background 0.3s ease;
+                text-decoration: none;
+            }
+
+            .am-switch-language.am-multi-lang .am-lang-anchor:hover {
+                background: rgba(0, 0, 0, 0.05);
+            }
+
+            .am-switch-language.am-multi-lang .am-lang-anchor img {
+                width: 20px;
+                height: 20px;
+                border-radius: 50%;
+                object-fit: cover;
+                margin: 0;
+            }
+        </style>
         <form class="am-switch-language am-multi-lang" action="{{ route('switch-lang') }}" method="POST">
             @csrf
             <div>
@@ -138,11 +165,6 @@
             document.addEventListener('livewire:navigated', window.initLanguageSwitcher);
 
             function getTranslatedLanguageName(languageCode) {
-                const currentLang =
-                    localStorage.getItem('selectedLanguage') ||
-                    getCookieValue('selectedLanguage') ||
-                    'es';
-
                 const languageKeys = {
                     es: 'language_spanish',
                     en: 'language_english',
@@ -151,22 +173,23 @@
 
                 const fallbackNames = {
                     es: 'Español',
-                    en: 'Inglés',
-                    pt: 'Portugués'
+                    en: 'English',
+                    pt: 'Português'
                 };
 
                 if (typeof translations === 'undefined') {
                     return fallbackNames[languageCode] || languageCode;
                 }
 
-                const currentTranslations =
-                    translations[currentLang] ||
+                // Leer el nombre desde la rama del idioma propio (nativo)
+                const nativeTranslations =
+                    translations[languageCode] ||
                     translations.es ||
                     {};
 
                 const key = languageKeys[languageCode];
 
-                return currentTranslations[key]
+                return nativeTranslations[key]
                     || fallbackNames[languageCode]
                     || languageCode;
             }

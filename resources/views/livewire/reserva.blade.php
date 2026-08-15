@@ -801,7 +801,12 @@
                             <select id="req-custom-subject" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; color: #334155; outline: none; background-color: #f8fafc; box-sizing: border-box;">
                                 @foreach($materiasTutor as $m)
                                     @if($m->subject)
-                                        <option value="{{ $m->subject->id }}">{{ $m->subject->name }}</option>
+                                        <option value="{{ $m->subject->id }}"
+                                                class="subject-translatable"
+                                                data-subject-id="{{ $m->subject->id }}"
+                                                data-subject-fallback="{{ $m->subject->name }}">
+                                            {{ $m->subject->name }}
+                                        </option>
                                     @endif
                                 @endforeach
                             </select>
