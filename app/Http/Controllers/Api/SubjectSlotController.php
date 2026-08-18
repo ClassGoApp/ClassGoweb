@@ -61,6 +61,7 @@ class SubjectSlotController extends Controller
             ], 422);
         }
 
+
         try {
             // Calcular duración automáticamente si no se proporciona
             $startTime = \Carbon\Carbon::createFromFormat('H:i', $request->start_time);

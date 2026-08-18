@@ -34,6 +34,7 @@ use App\Http\Controllers\Api\UserCouponController;
 use App\Http\Controllers\Api\SubjectPickerController;
 use App\Http\Controllers\Api\NotificacionController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Api\AttachmentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -165,6 +166,15 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/bookings/{booking}/status', [SubjectPickerController::class, 'studentBookingStatus']);
     Route::get('/bookings/{booking}/meet', [SubjectPickerController::class, 'studentMeet']);
     Route::post('solicitar-tutor', [BookingController::class, 'solicitarTutor']);
+});
+
+// Ruta para material de apoyo (attachments) 
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('bookings/{bookingId}/attachments',            [AttachmentController::class, 'index']);
+    Route::post('bookings/{bookingId}/attachments',           [AttachmentController::class, 'store']);
+    Route::put('attachments/{attachmentId}',                  [AttachmentController::class, 'update']);
+    Route::delete('attachments/{attachmentId}',               [AttachmentController::class, 'destroy']);
+    Route::get('attachments/{attachmentId}/download',         [AttachmentController::class, 'download']);
 });
 // Ruta para cambiar el estado de una tutoría a "Cursando"
 Route::post('booking/change-to-cursando', [BookingStatusController::class, 'changeToCursando']);
