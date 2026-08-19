@@ -2862,12 +2862,13 @@
             if (on) {
                 container.classList.add('has-error');
                 if (label) {
-                    label.textContent = 'adjuntar el comprobante...';
+                    label.textContent = window.translateText('instant_tutor_attach_receipt_error', 'Debes adjuntar el comprobante...');
                 }
             } else {
                 container.classList.remove('has-error');
-                if (label && (!label.textContent || label.textContent.includes('Debes adjuntar'))) {
-                    label.textContent = 'Adjuntar captura o PDF...';
+                const hasReceipt = !!state.receipts[String(heroId)];
+                if (label && !hasReceipt) {
+                    label.textContent = window.translateText('instant_tutor_attach_receipt', 'Adjuntar captura o PDF...');
                 }
             }
         }
@@ -2958,12 +2959,12 @@
 
             <div class="card-footer">
               <div style="text-align:left;">
-                <small>PRECIO</small>
+                <small>${window.translateText('instant_tutor_price', 'PRECIO')}</small>
                 <div class="price">${price} Bs</div>
               </div>
 
               <button class="btn" type="button" data-hero-open="${id}">
-                SOLICITAR
+                ${window.translateText('instant_tutor_request', 'SOLICITAR')}
                 <svg class="bolt" viewBox="0 0 24 24">
                   <path d="M13 2L3 14h7l-1 8 10-12h-7z"/>
                 </svg>
@@ -2975,7 +2976,7 @@
         <div class="card-face card-face-back">
           <div class="checkout-content">
             <h2 style="font-size: 1rem; text-transform: uppercase; color:var(--primary-color);">
-              Checkout Seguro
+              ${window.translateText('instant_tutor_secure_checkout', 'Checkout Seguro')}
             </h2>
 
             <div class="summary-box">
@@ -2983,41 +2984,41 @@
               <div>
                 <h4 style="font-size:0.8rem;">${name}</h4>
                 <span style="font-size:0.6rem; color:var(--secundary-color);">
-                  Conexión Segura
+                  ${window.translateText('instant_tutor_secure_connection', 'Conexión Segura')}
                 </span>
               </div>
             </div>
 
             <div class="qr-clickable" data-qr-src="{{ asset('images/Qr-pagos.png') }}">
-                <img src="{{ asset('images/Qr-pagos.png') }}" alt="QR de pago">
-                <p>Clic para ampliar</p>
+                <img src="{{ asset('images/Qr-pagos.png') }}" alt="${window.translateText('instant_tutor_payment_qr_alt', 'QR de pago')}">
+                <p>${window.translateText('instant_tutor_click_to_enlarge', 'Clic para ampliar')}</p>
             </div>
 
             <div class="upload-field" id="field-container-${id}">
-                <label>Comprobante de pago</label>
+                <label>${window.translateText('instant_tutor_payment_receipt', 'Comprobante de pago')}</label>
 
                 <input type="file" class="real-file-input"
                     accept="image/*,application/pdf" hidden>
 
                 <div class="custom-file-input">
                     <div class="receipt-preview hidden"></div>
-                    <span class="file-label">Adjuntar captura o PDF...</span>
+                    <span class="file-label">${window.translateText('instant_tutor_attach_receipt', 'Adjuntar captura o PDF...')}</span>
                 </div>
             </div>
 
             <div style="display:flex; justify-content:space-between; margin-bottom:0.5rem;">
-              <span style="font-size:0.65rem; font-weight:800; color:var(--text-muted);">TOTAL</span>
+              <span style="font-size:0.65rem; font-weight:800; color:var(--text-muted);">${window.translateText('instant_tutor_total', 'TOTAL')}</span>
               <div style="font-size:1.5rem; font-weight:900;">${price} Bs</div>
             </div>
 
-            <button class="btn-pay" type="button" data-pay="${id}">PAGAR AHORA</button>
+            <button class="btn-pay" type="button" data-pay="${id}">${window.translateText('instant_tutor_pay_now', 'PAGAR AHORA')}</button>
           </div>
 
           <div class="payment-success hidden" id="payment-success-${id}">
             <div style="font-size:3rem;">✅</div>
-            <h2 style="margin-top:1rem;">Pago exitoso</h2>
+            <h2 style="margin-top:1rem;">${window.translateText('instant_tutor_payment_success', 'Pago exitoso')}</h2>
             <p style="font-size:0.75rem; color:var(--text-muted);">
-              Redirigiendo a la tutoría...
+              ${window.translateText('instant_tutor_redirecting_tutoring', 'Redirigiendo a la tutoría...')}
             </p>
           </div>
         </div>
@@ -3031,7 +3032,7 @@
                 const qrClickable = wrapper.querySelector('.qr-clickable');
 
                 openBtn?.addEventListener('click', () => {
-                    openBtn.textContent = 'SOLICITANDO...';
+                    openBtn.textContent = window.translateText('instant_tutor_requesting', 'SOLICITANDO...');
                     reserveTutorAndOpen(id);
                 });
 
@@ -3164,7 +3165,7 @@
             }
 
             stopPollingAll();
-            if (waitMsg) waitMsg.textContent = 'Tutor elegido. Redirigiendo...';
+            if (waitMsg) waitMsg.textContent = window.translateText('instant_tutor_tutor_chosen_redirecting', 'Tutor elegido. Redirigiendo...');
 
             if (json.redirect_to) {
                 window.location.href = json.redirect_to;
@@ -3196,7 +3197,7 @@
         async function finishPayment(btn, heroId) {
             const bookingId = bookingByHeroId.get(String(heroId));
             if (!bookingId) {
-                alert('Primero debes SOLICITAR para generar la reserva.');
+                alert(window.translateText('instant_tutor_must_request_first', 'Primero debes SOLICITAR para generar la reserva.'));
                 return;
             }
 
@@ -3215,7 +3216,7 @@
             const originalText = btn.textContent;
             btn.disabled = true;
             btn.classList.add('sp-disabled');
-            btn.textContent = 'PROCESANDO...';
+            btn.textContent = window.translateText('instant_tutor_processing', 'PROCESANDO...');
 
             try {
                 const csrf = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
@@ -3246,7 +3247,7 @@
                     const err =
                         json?.errors?.comprobante?.[0] ||
                         json?.message ||
-                        `No se pudo subir (HTTP ${res.status})`;
+                        `${window.translateText('instant_tutor_upload_failed', 'No se pudo subir (HTTP ')}${res.status})`;
                     alert(err);
                     return;
                 }

@@ -338,7 +338,7 @@
                     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                     <path d="m9 12 2 2 4-4" />
                 </svg>
-                <span class="header-title">Tutoría Al Instante</span>
+                <span class="header-title" data-translate="instant_tutor_tutor_header">Tutoría Al Instante</span>
             </div>
         </header>
 
@@ -359,9 +359,8 @@
                 </div>
 
                 <div class="text-block">
-                    <h2 class="title">Buscando confirmación</h2>
-                    <p class="description">El estudiante está revisando tu perfil. Por favor, mantente en línea para recibir
-                        el pago.</p>
+                    <h2 class="title" data-translate="instant_tutor_waiting_confirmation">Buscando confirmación</h2>
+                    <p class="description" data-translate="instant_tutor_waiting_confirmation_desc">El estudiante está revisando tu perfil. Por favor, mantente en línea para recibir el pago.</p>
                 </div>
 
                 <div class="status-badge"
@@ -370,13 +369,13 @@
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M21 12a9 9 0 1 1-6.219-8.56" />
                     </svg>
-                    <span id="syncLabel">SINCRONIZANDO...</span>
+                    <span id="syncLabel" data-translate="instant_tutor_syncing">SINCRONIZANDO...</span>
                 </div>
 
                 <!-- 🔥 contador dentro del estado choosing -->
                 <div style="margin-top:6px;opacity:.8;font-size:14px;">
-                    Expira en: <span id="expiresAtText">{{ $expires_at ?? '-' }}</span><br>
-                    Tiempo restante: <b id="tutorCountdown">--:--</b>
+                    <span data-translate="instant_tutor_expires_label">Expira en:</span> <span id="expiresAtText">{{ $expires_at ?? '-' }}</span><br>
+                    <span data-translate="instant_tutor_time_remaining">Tiempo restante:</span> <b id="tutorCountdown">--:--</b>
                     <span id="tutorWarn" style="display:none;margin-left:8px;font-weight:700;color:#f59e0b;">⚠️ Expira
                         pronto</span>
                 </div>
@@ -398,9 +397,8 @@
                 </div>
 
                 <div class="text-block">
-                    <h2 class="title">¡Fuiste elegido!</h2>
-                    <p class="description">El estudiante está realizando el pago. Mantente en línea, en breve podrás iniciar
-                        la tutoría.</p>
+                    <h2 class="title" data-translate="instant_tutor_chosen_title">¡Fuiste elegido!</h2>
+                    <p class="description" data-translate="instant_tutor_chosen_desc">El estudiante está realizando el pago. Mantente en línea, en breve podrás iniciar la tutoría.</p>
                 </div>
 
                 <div class="status-badge"
@@ -409,7 +407,7 @@
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M21 12a9 9 0 1 1-6.219-8.56" />
                     </svg>
-                    <span>ESPERANDO COMPROBANTE...</span>
+                    <span data-translate="instant_tutor_waiting_receipt">ESPERANDO COMPROBANTE...</span>
                 </div>
             </div>
 
@@ -426,8 +424,8 @@
                 </div>
 
                 <div class="text-block">
-                    <h2 class="title">Tutoría lista</h2>
-                    <p class="description">El estudiante ya completó el proceso. Puedes iniciar la clase ahora mismo.</p>
+                    <h2 class="title" data-translate="instant_tutor_paid_title">Tutoría lista</h2>
+                    <p class="description" data-translate="instant_tutor_paid_desc">El estudiante ya completó el proceso. Puedes iniciar la clase ahora mismo.</p>
                 </div>
 
                 <div class="action-card">
@@ -440,13 +438,13 @@
                             </svg>
                         </div>
                         <div>
-                            <p class="action-label">CLASE</p>
-                            <p class="action-status">Lista para iniciar</p>
+                            <p class="action-label" data-translate="instant_tutor_class_label">CLASE</p>
+                            <p class="action-status" data-translate="instant_tutor_class_ready">Lista para iniciar</p>
                         </div>
                     </div>
 
                     <button id="btnGoMeet" class="btn-action" type="button">
-                        Entrar al Aula
+                        <span data-translate="instant_tutor_enter_classroom">Entrar al Aula</span>
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M5 12h14" />
@@ -471,14 +469,13 @@
                 </div>
 
                 <div class="text-block">
-                    <h2 class="title" style="color: var(--error-color)">Sesión no asignada</h2>
-                    <p class="description">El estudiante ha optado por otro tutor para esta sesión. ¡Sigue atento a nuevas
-                        solicitudes!</p>
+                    <h2 class="title" style="color: var(--error-color)" data-translate="instant_tutor_rejected_title">Sesión no asignada</h2>
+                    <p class="description" data-translate="instant_tutor_rejected_desc">El estudiante ha optado por otro tutor para esta sesión. ¡Sigue atento a nuevas solicitudes!</p>
                 </div>
 
                 <button class="btn-action" onclick="window.location.href='{{ route('home') }}'"
                     style="background-color: var(--slate-100); color: var(--slate-900); width: 100%">
-                    Volver al Inicio
+                    <span data-translate="instant_tutor_back_home">Volver al Inicio</span>
                 </button>
             </div>
 
@@ -496,14 +493,13 @@
                 </div>
 
                 <div class="text-block">
-                    <h2 class="title" style="color: var(--error-color)">La solicitud ya expiró</h2>
-                    <p class="description">El estudiante dejó de buscar tutor. Si vuelve a solicitar, te llegará otra
-                        invitación.</p>
+                    <h2 class="title" style="color: var(--error-color)" data-translate="instant_tutor_expired_title">La solicitud ya expiró</h2>
+                    <p class="description" data-translate="instant_tutor_expired_desc">El estudiante dejó de buscar tutor. Si vuelve a solicitar, te llegará otra invitación.</p>
                 </div>
 
                 <button class="btn-action" onclick="window.location.href='{{ route('home') }}'"
                     style="background-color: var(--slate-100); color: var(--slate-900); width: 100%">
-                    Volver al Inicio
+                    <span data-translate="instant_tutor_back_home">Volver al Inicio</span>
                 </button>
             </div>
 
@@ -513,6 +509,7 @@
     </div>
 
 
+    <script src="{{ asset('js/translations.js') }}?v={{ filemtime(public_path('js/translations.js')) }}"></script>
     <script>
         // ================== VARIABLES DESDE BACKEND (Blade) ==================
         const initialStatus = @json($status ?? 'choosing'); // choosing | payment_phase | accepted | rejected | expired
@@ -555,7 +552,7 @@
 
         function goMeet(link) {
             if (link) window.location.href = link;
-            else alert('Aún no hay link de Meet.');
+            else alert(window.translateText('instant_tutor_no_meet_link', 'Aún no hay link de Meet.'));
         }
 
         // click inicial (por si meetLink ya viene desde Blade)
@@ -588,7 +585,7 @@
             setState('expired');
 
             // Etiqueta opcional
-            if (syncLabel) syncLabel.textContent = 'FINALIZADO';
+            if (syncLabel) syncLabel.textContent = window.translateText('instant_tutor_finalized', 'FINALIZADO');
 
             // ✅ recargar solo 1 vez para que el backend confirme expired
             if (!sessionStorage.getItem('waitlist_reloaded')) {
@@ -609,7 +606,7 @@
                 if (warn) {
                     warn.style.display = 'inline';
                     warn.style.color = '#ef4444';
-                    warn.textContent = 'No se pudo calcular expiración';
+                    warn.textContent = window.translateText('instant_tutor_no_expiry', 'No se pudo calcular expiración');
                 }
                 return;
             }
@@ -627,7 +624,7 @@
                 if (diffSec <= 30) {
                     warn.style.display = 'inline';
                     warn.style.color = '#f59e0b';
-                    warn.textContent = '⚠️ Expira pronto';
+                    warn.textContent = window.translateText('instant_tutor_expires_soon', '⚠️ Expira pronto');
                 } else {
                     warn.style.display = 'none';
                 }
@@ -749,7 +746,7 @@
                 if (!token) return;
 
                 setButtonsEnabled(false);
-                setActionMsg('Aceptando...');
+                setActionMsg(window.translateText('instant_tutor_accepting', 'Aceptando...'));
 
                 const {
                     res,
@@ -760,7 +757,7 @@
 
                 if (!res.ok || !json.ok) {
                     setActionMsg('');
-                    alert(json.message || `No se pudo aceptar (HTTP ${res.status})`);
+                    alert(json.message || `${window.translateText('instant_tutor_accept_failed', 'No se pudo aceptar (HTTP ')}${res.status})`);
                     return;
                 }
 
@@ -771,7 +768,7 @@
                     return;
                 }
 
-                setActionMsg('✅ Aceptado. Actualizando...');
+                setActionMsg(window.translateText('instant_tutor_accepted_updating', '✅ Aceptado. Actualizando...'));
                 fetchStatusNice();
             });
         }
@@ -783,7 +780,7 @@
                 const reason = String(rejectReasonEl?.value || '').trim();
 
                 setButtonsEnabled(false);
-                setActionMsg('Rechazando...');
+                setActionMsg(window.translateText('instant_tutor_rejecting', 'Rechazando...'));
 
                 const {
                     res,
@@ -796,11 +793,11 @@
 
                 if (!res.ok || !json.ok) {
                     setActionMsg('');
-                    alert(json.message || `No se pudo rechazar (HTTP ${res.status})`);
+                    alert(json.message || `${window.translateText('instant_tutor_reject_failed', 'No se pudo rechazar (HTTP ')}${res.status})`);
                     return;
                 }
 
-                setActionMsg('❌ Rechazado. Actualizando...');
+                setActionMsg(window.translateText('instant_tutor_rejected_updating', '❌ Rechazado. Actualizando...'));
                 fetchStatusNice();
             });
         }
@@ -811,7 +808,7 @@
             if (!token || joining) return;
 
             if (!currentBookingId) {
-                alert('Aún no se encontró la reserva de esta tutoría.');
+                alert(window.translateText('instant_tutor_booking_not_found', 'Aún no se encontró la reserva de esta tutoría.'));
                 return;
             }
 
@@ -823,7 +820,7 @@
                 btnGoMeet.classList.add('is-loading');
                 btnGoMeet.innerHTML = `
             <span class="btn-spinner"></span>
-            <span>Cargando...</span>
+            <span>${window.translateText('instant_tutor_loading', 'Cargando...')}</span>
         `;
             }
 
@@ -839,7 +836,7 @@
                     btnGoMeet.classList.remove('is-loading');
                     btnGoMeet.innerHTML = originalBtnContent;
                 }
-                alert(json.message || `No se pudo aceptar (HTTP ${res.status})`);
+                alert(json.message || `${window.translateText('instant_tutor_accept_failed', 'No se pudo aceptar (HTTP ')}${res.status})`);
                 return;
             }
 
@@ -848,7 +845,7 @@
                 if (btnGoMeet) {
                     btnGoMeet.innerHTML = `
                 <span class="btn-spinner"></span>
-                <span>Ingresando...</span>
+                <span>${window.translateText('instant_tutor_entering', 'Ingresando...')}</span>
             `;
                 }
                 window.location.href = directLink;
@@ -871,14 +868,14 @@
                     btnGoMeet.classList.remove('is-loading');
                     btnGoMeet.innerHTML = originalBtnContent;
                 }
-                alert(meetJson.message || 'Aún no hay link de Meet.');
+                alert(meetJson.message || window.translateText('instant_tutor_no_meet_link', 'Aún no hay link de Meet.'));
                 return;
             }
 
             if (btnGoMeet) {
                 btnGoMeet.innerHTML = `
             <span class="btn-spinner"></span>
-            <span>Ingresando...</span>
+            <span>${window.translateText('instant_tutor_entering', 'Ingresando...')}</span>
         `;
             }
 
