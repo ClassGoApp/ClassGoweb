@@ -762,6 +762,15 @@ class BookingController extends Controller
             ->where('users.id', $request->tutor_id)
             ->select('users.*', DB::raw("TRIM(CONCAT(COALESCE(profiles.first_name,''), ' ', COALESCE(profiles.last_name,''))) as full_name"), 'profiles.first_name', 'profiles.last_name', 'profiles.price')
             ->first();
+
+        if ($student) {
+            $studentProfile = \App\Models\Profile::where('user_id', $student->id)->first();
+            $student->profile_image_url = $studentProfile?->profile_image;
+        }
+        if ($tutor) {
+            $tutorProfile = \App\Models\Profile::where('user_id', $tutor->id)->first();
+            $tutor->profile_image_url = $tutorProfile?->profile_image;
+        }
         $subject = DB::table('subjects')->where('id', $request->subject_id)->first();
 
         try {
