@@ -33,8 +33,15 @@ class IdentityStoreRequest extends BaseFormRequest {
             'city'        => 'nullable|string',
         ];
         
-        $key = auth()->user()->role == 'tutor' ? 'identificationCard' : 'transcript';
-        $rules[$key] = $imageValidation;
+        // Para tutores: validar ambas caras del carnet (front y back)
+        if (auth()->user()->role == 'tutor') {
+            $rules['identificationCardFront'] = $imageValidation;
+            $rules['identificationCardBack'] = $imageValidation;
+        } else {
+            // Para estudiantes: validar transcript
+            $rules['transcript'] = $imageValidation;
+        }
+        
         return $rules;
     }
 
