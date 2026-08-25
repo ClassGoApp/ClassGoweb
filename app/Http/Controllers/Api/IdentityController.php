@@ -83,10 +83,8 @@ class IdentityController extends Controller
             }
         } 
         else{
-            // Para tutores: procesar ambas caras del carnet y guardar como JSON (igual que Livewire)
             $attachmentsArray = [];
             
-            // Generar nombre base limpio a partir del nombre real del usuario
             $cleanName = Str::slug(trim($request->name));
             
             // Procesar foto FRONTAL del carnet
@@ -117,7 +115,6 @@ class IdentityController extends Controller
                 $attachmentsArray['back'] = 'identity_photo/' . $filenameBack;
             }
             
-            // Guardar como JSON (igual que Livewire línea 150)
             if (!empty($attachmentsArray)) {
                 $verificationData['attachments'] = json_encode($attachmentsArray);
             }
