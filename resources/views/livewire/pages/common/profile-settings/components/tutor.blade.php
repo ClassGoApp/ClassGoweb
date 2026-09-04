@@ -122,7 +122,16 @@
                                 style="display: flex;
                                       justify-content: space-between;
                                      align-items: center; width:100%;">
-                                <span id="selected-lema-text" style="font-size:20px;">
+                                @php
+                                    $mottoIndex = $selected_lema
+                                        ? array_search($selected_lema, $personalStatements, true)
+                                        : false;
+                                @endphp
+                                <span id="selected-lema-text"
+                                      style="font-size:20px;"
+                                      @if($mottoIndex !== false)
+                                          data-translate="profile_motto_{{ $mottoIndex }}"
+                                      @endif>
                                     {{ $selected_lema }}
                                 </span>
 
@@ -144,7 +153,8 @@
                                 @foreach ($personalStatements as $index => $statement)
                                     <label class="modern-dropdown-option" style="cursor:pointer;">
                                         <span style="width:100%;font-weight:bold;"
-                                            wire:click="selectLema({{ $index }})">
+                                            wire:click="selectLema({{ $index }})"
+                                            data-translate="profile_motto_{{ $index }}">
                                             {{ $statement }}
                                         </span>
                                     </label>
