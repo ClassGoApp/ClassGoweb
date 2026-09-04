@@ -3,6 +3,7 @@
 namespace App\Livewire\Pages\Admin\IdentityVerification;
 
 use App\Jobs\SendNotificationJob;
+use App\Jobs\SendTutorVerificationNotificationsJob;
 use App\Livewire\Forms\Admin\User\UserForm;
 use App\Models\Profile;
 use App\Models\Role;
@@ -136,8 +137,11 @@ class IdentityVerification extends Component
                         \Log::error('Error al enviar FCM al tutor: ' . $e->getMessage());
                     }
 
-                    // Notificar a todos los estudiantes sobre el nuevo tutor verificado
-                    $this->notifyStudentsAboutTutorVerification($userIdentityVerification->user);
+                    // Notificar a todos los estudiantes sobre el nuevo tutor verificado EN BACKGROUND
+                    dispatch(new SendTutorVerificationNotificationsJob(
+                        $userIdentityVerification->user->id,
+                        $userIdentityVerification->user->profile->full_name ?? 'Tutor'
+                    ));
                 } else {
                     dispatch(new SendNotificationJob('identityVerificationRejected', $userIdentityVerification->user, ['name' => $userIdentityVerification?->name]));
 
@@ -212,8 +216,11 @@ class IdentityVerification extends Component
                 \Log::error('Error al enviar FCM al tutor: ' . $e->getMessage());
             }
 
-            // Notificar a todos los estudiantes sobre el nuevo tutor verificado
-            $this->notifyStudentsAboutTutorVerification($userIdentityVerification->user);
+            // Notificar a todos los estudiantes sobre el nuevo tutor verificado EN BACKGROUND
+            dispatch(new SendTutorVerificationNotificationsJob(
+                $userIdentityVerification->user->id,
+                $userIdentityVerification->user->profile->full_name ?? 'Tutor'
+            ));
         } else {
             dispatch(new SendNotificationJob('identityVerificationRejected', $userIdentityVerification->user, ['name' => $userIdentityVerification?->name]));
 
@@ -241,44 +248,6 @@ class IdentityVerification extends Component
             'title' => __('general.success_title'),
             'message' => __('general.status_updated_successfully')
         ]);
-    }
-
-    /**
-     * Notifica a todos los estudiantes sobre un tutor verificado
-     *
-     * @param User $verifiedTutor
-     * @return void
-     */
-    private function notifyStudentsAboutTutorVerification(User $verifiedTutor): void
-    {
-        try {
-            // Verificar que el usuario sea un tutor
-            $isTutor = $verifiedTutor->hasRole('tutor');
-            
-            if (!$isTutor) {
-            Log::info('IdentityVerification: Usuario no es tutor, no se envían notificaciones a estudiantes', [
-                'user_id' => $verifiedTutor->id,
-                'user_roles' => $verifiedTutor->roles->pluck('name')->toArray()
-            ]);
-                return;
-            }
-
-            Log::info('IdentityVerification: Iniciando notificaciones a estudiantes sobre tutor verificado', [
-                'tutor_id' => $verifiedTutor->id,
-                'tutor_name' => $verifiedTutor->profile->full_name ?? 'Tutor'
-            ]);
-
-            // Usar el servicio de notificaciones
-            $notificationService = new TutorVerificationNotificationService();
-            $notificationService->notifyStudentsAboutTutorVerification($verifiedTutor);
-
-        } catch (\Exception $e) {
-            Log::error('IdentityVerification: Error al notificar estudiantes sobre tutor verificado', [
-                'tutor_id' => $verifiedTutor->id,
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
-            ]);
-        }
     }
 
 }

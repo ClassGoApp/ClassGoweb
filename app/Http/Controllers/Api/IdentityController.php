@@ -11,6 +11,7 @@ use App\Services\IdentityService;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Resources\IdentityResource;
+use Illuminate\Support\Str;
 
 class IdentityController extends Controller
 {
@@ -82,10 +83,40 @@ class IdentityController extends Controller
             }
         } 
         else{
-            if ($request->hasFile('identificationCard')) {
-                $fileName    = uniqueFileName('public/identity', $request->identificationCard->getClientOriginalName());
-                $request->identificationCard->move(public_path('storage/identity_photo'), $fileName);
-                $verificationData['attachments'] = 'identity_photo/' . $fileName;
+            $attachmentsArray = [];
+            
+            $cleanName = Str::slug(trim($request->name));
+            
+            // Procesar foto FRONTAL del carnet
+            if ($request->hasFile('identificationCardFront')) {
+                $extension = $request->identificationCardFront->getClientOriginalExtension();
+                $filenameFront = $cleanName . '-id-front-' . time() . '.' . $extension;
+                
+                $destinationPath = public_path('storage/identity_photo');
+                if (!file_exists($destinationPath)) {
+                    mkdir($destinationPath, 0775, true);
+                }
+                
+                $request->identificationCardFront->move($destinationPath, $filenameFront);
+                $attachmentsArray['front'] = 'identity_photo/' . $filenameFront;
+            }
+            
+            // Procesar foto TRASERA del carnet
+            if ($request->hasFile('identificationCardBack')) {
+                $extension = $request->identificationCardBack->getClientOriginalExtension();
+                $filenameBack = $cleanName . '-id-back-' . time() . '.' . $extension;
+                
+                $destinationPath = public_path('storage/identity_photo');
+                if (!file_exists($destinationPath)) {
+                    mkdir($destinationPath, 0775, true);
+                }
+                
+                $request->identificationCardBack->move($destinationPath, $filenameBack);
+                $attachmentsArray['back'] = 'identity_photo/' . $filenameBack;
+            }
+            
+            if (!empty($attachmentsArray)) {
+                $verificationData['attachments'] = json_encode($attachmentsArray);
             }
         }
 
