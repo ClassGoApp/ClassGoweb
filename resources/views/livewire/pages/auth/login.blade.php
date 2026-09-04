@@ -211,6 +211,11 @@ new #[Layout('layouts.guest')] class extends Component {
 
             session()->forget(['social_user_data', 'social_register_role', 'social_register_terms']);
 
+            $intended = session()->pull('url.intended');
+            if ($intended) {
+                return $this->redirect($intended);
+            }
+
             if ($user->roles()?->first()?->name == 'tutor') {
                 return $this->redirect(route('tutor.dashboard', absolute: false));
             } else {
@@ -229,6 +234,9 @@ new #[Layout('layouts.guest')] class extends Component {
     {
         if (isDemoSite()) {
             return;
+        }
+        if (request()->has('redirect')) {
+            session(['url.intended' => request()->get('redirect')]);
         }
         session()->forget(['social_register_role', 'social_register_terms', 'social_user_data']);
         return $this->redirect(route('social.redirect', ['provider' => 'google']));

@@ -1396,7 +1396,9 @@
                     cancelButtonText: 'Cancelar'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        window.location.href = '/login?redirect=' + encodeURIComponent(window.location.href);
+                        let currentUrl = new URL(window.location.href);
+                        currentUrl.searchParams.set('open_payment', '1');
+                        window.location.href = '/login?redirect=' + encodeURIComponent(currentUrl.toString());
                     }
                 });
                 return;
