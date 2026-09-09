@@ -120,7 +120,7 @@
         opacity: 0;
         pointer-events: none;
         border-left: 4px solid var(--terciary-color2);
-        animation: urgentAppear 10s ease forwards;
+        animation: urgentAppear 40s ease forwards;
     }
 
     .instant-btn-floating:hover .instant-tooltip {
@@ -156,14 +156,9 @@
             transform: translateY(-50%) scale(1);
         }
 
-        30% {
+        100% {
             opacity: 1;
             transform: translateY(-50%) scale(1);
-        }
-
-        100% {
-            opacity: 0;
-            transform: translateY(-50%) scale(0.95);
         }
     }
 
