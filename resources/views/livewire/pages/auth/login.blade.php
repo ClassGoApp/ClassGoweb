@@ -64,6 +64,9 @@ new #[Layout('layouts.guest')] class extends Component {
     public string $google_user_role = 'student';
     public bool $google_terms = false;
     public bool $autoShowGoogleModal = false;
+    public string $google_first_name = '';
+    public string $google_last_name = '';
+    public string $google_phone_number = '';
 
     // --- 3. LÓGICA RECUPERAR CONTRASEÑA ---
     public string $forgot_email = '';
@@ -97,6 +100,12 @@ new #[Layout('layouts.guest')] class extends Component {
         }
 
         if (request()->has('show_google_register')) {
+            $socialUserData = session('social_user_data');
+            if ($socialUserData && isset($socialUserData['name'])) {
+                $nameParts = explode(' ', $socialUserData['name'], 2);
+                $this->google_first_name = $nameParts[0] ?? '';
+                $this->google_last_name = $nameParts[1] ?? '';
+            }
             $this->autoShowGoogleModal = true;
         }
     }
@@ -162,6 +171,16 @@ new #[Layout('layouts.guest')] class extends Component {
             return;
         }
 
+        $this->validate([
+            'google_first_name' => ['required', 'string', 'max:255'],
+            'google_last_name' => ['required', 'string', 'max:255'],
+            'google_phone_number' => ['required', 'string', 'max:20'],
+        ], [
+            'google_first_name.required' => 'Nombre es requerido',
+            'google_last_name.required' => 'Apellido es requerido',
+            'google_phone_number.required' => 'Número de teléfono es requerido',
+        ]);
+
         $socialUserData = session('social_user_data');
         if ($socialUserData) {
             $role = $this->google_user_role;
@@ -191,14 +210,10 @@ new #[Layout('layouts.guest')] class extends Component {
                 ]);
             }
 
-            $nameParts = explode(' ', $name, 2);
-            $firstName = $nameParts[0] ?? '';
-            $lastName = $nameParts[1] ?? '';
-
             $data = [
-                'first_name'   => $firstName,
-                'last_name'    => $lastName,
-                'phone_number' => '',
+                'first_name'   => $this->google_first_name ?: explode(' ', $name, 2)[0] ?? '',
+                'last_name'    => $this->google_last_name ?: explode(' ', $name, 2)[1] ?? '',
+                'phone_number' => $this->google_phone_number,
                 'user_role'    => $role,
                 'terms'        => 'true',
             ];
@@ -1240,7 +1255,7 @@ new #[Layout('layouts.guest')] class extends Component {
                             <span class="am-signinoption_br">
                                 <em data-translate="auth_or">o</em>
                             </span>
-                            <a href="#" @click.prevent="showGoogleModal = true" wire:loading.class="am-btn_disable"
+                            <a href="#" wire:click.prevent="redirectGoogle" wire:loading.class="am-btn_disable"
                                 class="am-signinoption_btn">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21"
                                     fill="none">
@@ -1496,6 +1511,30 @@ new #[Layout('layouts.guest')] class extends Component {
                             <span data-translate="auth_tutor">Tutor</span>
                         </div>
                     </label>
+                </div>
+
+                <div class="cg-modal-fields">
+                    <div class="cg-modal-field">
+                        <label data-translate="auth.first_name" style="text-align: left; display: block;">Nombre</label>
+                        <input type="text" wire:model="google_first_name" placeholder="Tu nombre">
+                        @error('google_first_name')
+                            <span class="cg-modal-error" style="color: red; font-size: 12px; display: block; margin-top: 5px;">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="cg-modal-field">
+                        <label data-translate="auth.last_name" style="text-align: left; display: block;">Apellido</label>
+                        <input type="text" wire:model="google_last_name" placeholder="Tu apellido">
+                        @error('google_last_name')
+                            <span class="cg-modal-error" style="color: red; font-size: 12px; display: block; margin-top: 5px;">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="cg-modal-field">
+                        <label data-translate="auth.phone" style="text-align: left; display: block;">Número de teléfono</label>
+                        <input type="tel" wire:model="google_phone_number" placeholder="Tu número de teléfono">
+                        @error('google_phone_number')
+                            <span class="cg-modal-error" style="color: red; font-size: 12px; display: block; margin-top: 5px;">{{ $message }}</span>
+                        @enderror
+                    </div>
                 </div>
 
                 <div class="cg-modal-terms">
