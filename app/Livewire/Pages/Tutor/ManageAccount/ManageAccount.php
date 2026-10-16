@@ -202,10 +202,11 @@ class ManageAccount extends Component
     public function savePrice()
     {
         $this->validate([
-            'price' => 'nullable|numeric|min:0',
+            'price' => 'nullable|numeric|min:0|max:999999.99',
         ], [
             'price.numeric' => __('manage_account.price_numeric'),
             'price.min' => __('manage_account.price_min'),
+            'price.max' => __('manage_account.price_max'),
         ]);
 
         try {

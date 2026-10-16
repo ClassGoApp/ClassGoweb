@@ -13,6 +13,7 @@ return [
 
     'price_numeric' => 'El precio debe ser un número válido.',
     'price_min' => 'El precio no puede ser negativo.',
+    'price_max' => 'El precio no puede superar los 999999.99 Bs.',
     'price_saved_successfully' => 'Precio guardado correctamente.',
     'price_save_error' => 'Ocurrió un error al guardar el precio. Inténtalo de nuevo.',
 ];

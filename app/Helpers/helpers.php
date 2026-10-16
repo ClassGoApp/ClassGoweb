@@ -111,6 +111,77 @@ if (!function_exists('sanitizeTextField')) {
     }
 }
 
+/**
+ * Reglas de validación estándar para nombre y apellido.
+ *
+ * Fuente de verdad: la API (Api/ProfileController@updateUserProfile) usa
+ * max:100 + regex solo-letras (con espacios, apóstrofe y guión para apellidos
+ * bolivianos). Usar esta función en todos los formularios/backends evita que
+ * un dato pase en un lado y sea rechazado en el otro.
+ *
+ * @param  bool  $required  true = 'required', false = 'nullable'.
+ * @return string
+ */
+if (!function_exists('nameValidationRules')) {
+
+    function nameValidationRules($required = true)
+    {
+        return ($required ? 'required|' : 'nullable|')
+            . 'string|max:100'
+            . '|regex:/^[A-Za-zÀ-ÖØ-öø-ÿ]+(?:[ \'\-][A-Za-zÀ-ÖØ-öø-ÿ]+)*$/u';
+    }
+}
+
+/**
+ * Mensajes estándar (es) para las reglas de nombre/apellido.
+ *
+ * @return array<string, string>
+ */
+if (!function_exists('nameValidationMessages')) {
+
+    function nameValidationMessages()
+    {
+        return [
+            'first_name.regex' => 'El nombre solo puede contener letras, espacios y guiones.',
+            'last_name.regex'  => 'El apellido solo puede contener letras, espacios y guiones.',
+            'first_name.max'   => 'El nombre no puede tener más de 100 caracteres.',
+            'last_name.max'    => 'El apellido no puede tener más de 100 caracteres.',
+        ];
+    }
+}
+
+/**
+ * Construye la URL pública de un tutor a partir de su perfil.
+ *
+ * Si el slug falta o está vacío, Laravel lanzaría
+ * `Illuminate\Routing\Exceptions\UrlGenerationException` ("Missing required
+ * parameter ... slug"), tumbando toda la página. Con este helper, en ese caso
+ * devolvemos '#' y el enlace simplemente no navega.
+ *
+ * @param  mixed        $profile   Modelo Profile, array o null.
+ * @param  string       $routeName Nombre de la ruta ('tutor' por defecto).
+ * @return string
+ */
+if (!function_exists('tutorProfileUrl')) {
+
+    function tutorProfileUrl($profile, $routeName = 'tutor')
+    {
+        if (is_array($profile)) {
+            $slug = $profile['slug'] ?? null;
+        } elseif (is_object($profile)) {
+            $slug = $profile->slug ?? null;
+        } else {
+            $slug = null;
+        }
+
+        if ($slug === null || $slug === '') {
+            return '#';
+        }
+
+        return route($routeName, ['slug' => $slug]);
+    }
+}
+
 if (!function_exists('SanitizeArray')) {
 
     function SanitizeArray(&$arr)

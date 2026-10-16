@@ -7,7 +7,7 @@
         <ul>
             @forelse($results as $tutor)
                 <li>
-                    <a href=" {{ route('tutor', $tutor['slug']) }}">
+                    <a href=" {{ tutorProfileUrl($tutor) }}">
                         <strong>{{ $tutor['full_name'] }}</strong><br>
                         <small>{{ implode(', ', $tutor['materias']) }}</small>
                     </a>

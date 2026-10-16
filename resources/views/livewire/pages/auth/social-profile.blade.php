@@ -54,7 +54,8 @@ new #[Layout('layouts.guest')] class extends Component
             return;
         }
         
-        $validated = $this->validate((new SocialProfileRequest())->rules());
+        $request = new SocialProfileRequest();
+        $validated = $this->validate($request->rules(), $request->messages());
 
         $user = Auth::getProvider()->retrieveByCredentials($this->only(['email']));
 
@@ -104,12 +105,12 @@ new #[Layout('layouts.guest')] class extends Component
                         <div class="am-form-group-row">
                             <div class="form-group-half {{ $errors->get('first_name') ? 'am-invalid' : '' }}">
                                 <x-input-label for="first_name" :value="__('auth.first_name')" class="am-important" />
-                                <x-text-input id="first_name" wire:model="first_name" placeholder="{{ __('auth.first_name') }}" type="text"  autofocus autocomplete="name" />
+                                <x-text-input id="first_name" wire:model="first_name" placeholder="{{ __('auth.first_name') }}" type="text"  autofocus autocomplete="name" maxlength="100" pattern="[A-Za-zÀ-ÖØ-öø-ÿ]+([ ' \-][A-Za-zÀ-ÖØ-öø-ÿ]+)*" />
                                 <x-input-error field_name="first_name" />
                             </div>
                             <div class="form-group-half {{ $errors->get('last_name') ? 'am-invalid' : '' }}">
                                 <x-input-label for="last_name" :value="__('auth.last_name')" class="am-important" />
-                                <x-text-input id="last_name" wire:model="last_name" placeholder="{{ __('auth.last_name') }}" type="text"  autofocus  />
+                                <x-text-input id="last_name" wire:model="last_name" placeholder="{{ __('auth.last_name') }}" type="text"  autofocus maxlength="100" pattern="[A-Za-zÀ-ÖØ-öø-ÿ]+([ ' \-][A-Za-zÀ-ÖØ-öø-ÿ]+)*" />
                                 <x-input-error field_name="last_name" />
                             </div>
                         </div>

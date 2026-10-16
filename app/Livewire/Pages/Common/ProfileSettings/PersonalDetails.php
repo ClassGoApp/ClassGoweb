@@ -300,13 +300,18 @@ class PersonalDetails extends Component
         try {
             $this->ensureProfileService();
             $this->validate([
-                'first_name' => 'required|string|max:100',
-                'last_name' => 'required|string|max:100',
-                'phone_number' => 'required|string|max:20',
+                'first_name' => 'required|string|max:100|regex:/^[A-Za-zÀ-ÖØ-öø-ÿ]+(?:[ \'\-][A-Za-zÀ-ÖØ-öø-ÿ]+)*$/u',
+                'last_name' => 'required|string|max:100|regex:/^[A-Za-zÀ-ÖØ-öø-ÿ]+(?:[ \'\-][A-Za-zÀ-ÖØ-öø-ÿ]+)*$/u',
+                'phone_number' => 'required|string|max:15|regex:/^[0-9]{7,15}$/',
                 'description' => 'string|max:500',
                 'image' => 'required',
             ], [
-                // Mensajes personalizados (opcional)
+                'first_name.regex' => 'El nombre solo puede contener letras, espacios y guiones.',
+                'last_name.regex' => 'El apellido solo puede contener letras, espacios y guiones.',
+                'first_name.max' => 'El nombre no puede tener más de 100 caracteres.',
+                'last_name.max' => 'El apellido no puede tener más de 100 caracteres.',
+                'phone_number.regex' => 'El celular solo puede contener números (entre 7 y 15 dígitos).',
+                'phone_number.max' => 'El celular no puede tener más de 15 dígitos.',
             ], [
                 'first_name' => __('profile.first_name'),
                 'last_name' => __('profile.last_name'),

@@ -18,8 +18,8 @@ class RegisterUserRequest extends FormRequest
         $isProfilePhoneMendatory       = setting('_lernen.phone_number_on_signup') == 'yes' ? true : false;
         
         return [
-            'first_name'    => 'required|string|max:255',
-            'last_name'     => 'required|string|max:255',
+            'first_name'    => nameValidationRules(true),
+            'last_name'     => nameValidationRules(true),
             'email'         => 'required|string|lowercase|email|max:255|unique:'.User::class,
             'phone_number'  => $isProfilePhoneMendatory ? 'required|regex:/^(\+?\(?\d{1,4}\)?)?[\d\s\-]{7,15}$/' : 'nullable|regex:/^(\+?\(?\d{1,4}\)?)?[\d\s\-]{7,15}$/',
             'password'      => ['required', 'string', 'confirmed', Password::defaults()],
@@ -28,6 +28,16 @@ class RegisterUserRequest extends FormRequest
             'terms'         => 'required|string',
 
         ];
+    }
+
+    /**
+     * Get the custom messages for validation errors.
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return nameValidationMessages();
     }
 
     /**

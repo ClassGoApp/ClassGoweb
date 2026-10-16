@@ -49,7 +49,8 @@ new #[Layout('layouts.guest')] class extends Component
             return;
         }
         
-        $validated = $this->validate((new RegisterUserRequest())->rules());
+        $request = new RegisterUserRequest();
+        $validated = $this->validate($request->rules(), $request->messages());
         $user = (new RegisterService)->registerUser($validated);
         Auth::login($user);
         $this->redirect(route('tutor.profile.personal-details', absolute: false), navigate: true);
@@ -96,13 +97,16 @@ new #[Layout('layouts.guest')] class extends Component
                                 <label class="am-label-register" for="first_name">{{ __('auth.first_name') }}</label>
                                 <x-text-input id="first_name" wire:model="first_name"
                                     placeholder="{{ __('auth.first_name') }}" type="text" autofocus
-                                    autocomplete="name" />
+                                    autocomplete="name" maxlength="100"
+                                    pattern="[A-Za-zÀ-ÖØ-öø-ÿ]+([ ' \-][A-Za-zÀ-ÖØ-öø-ÿ]+)*" />
                                 <x-input-error field_name="first_name" />
                             </div>
                             <div class="form-group-half {{ $errors->get('last_name') ? 'am-invalid' : '' }}">
                                 <label class="am-label-register" for="last_name">{{ __('auth.last_name') }}</label>
                                 <x-text-input id="last_name" wire:model="last_name"
-                                    placeholder="{{ __('auth.last_name') }}" type="text" autofocus />
+                                    placeholder="{{ __('auth.last_name') }}" type="text" autofocus
+                                    maxlength="100"
+                                    pattern="[A-Za-zÀ-ÖØ-öø-ÿ]+([ ' \-][A-Za-zÀ-ÖØ-öø-ÿ]+)*" />
                                 <x-input-error field_name="last_name" />
                             </div>
                         </div>

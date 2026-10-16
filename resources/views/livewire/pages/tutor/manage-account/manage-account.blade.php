@@ -32,7 +32,7 @@
                 ¿Cuánto deseas cobrar por tutoría?
             </label>
 
-            <input id="price" type="number" step="0.01" min="0" class="form-control"
+            <input id="price" type="number" step="0.01" min="0" max="999999.99" class="form-control"
                 style="max-width:240px;" wire:model.defer="price"
                 placeholder="Ej. 120.00" data-translate-placeholder="manage_account_price_placeholder">
 

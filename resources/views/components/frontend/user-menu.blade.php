@@ -59,7 +59,7 @@
                          <h6>
                             <a href={{ url(auth()->user()->redirect_after_login) }}>{{ auth()?->user()?->profile?->full_name }}</a>
                             @if(auth()->user()->hasRole('tutor'))
-                                <a href="{{ route('tutor',['slug' => auth()?->user()?->profile?->slug]) }}" class="am-custom-tooltip">
+                                <a href="{{ tutorProfileUrl(auth()?->user()?->profile) }}" class="am-custom-tooltip">
                                     <span class="am-tooltip-text">
                                         <span>{{ __('general.visit_profile') }}</span>
                                     </span>

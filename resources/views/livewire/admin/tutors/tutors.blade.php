@@ -160,7 +160,8 @@
                                         <input type="text"
                                             class="form-control @error('first_name') tk-invalid @enderror"
                                             wire:model="first_name" 
-                                            placeholder="{{ __('general.name_placeholder') }}">
+                                            placeholder="{{ __('general.name_placeholder') }}"
+                                            maxlength="100">
                                         @error('first_name')
                                         <div class="tk-errormsg">
                                             <span>{{ $message }}</span>
@@ -172,7 +173,8 @@
                                         <input type="text"
                                             class="form-control @error('last_name') tk-invalid @enderror"
                                             wire:model="last_name"
-                                            placeholder="{{ __('general.lastname_placeholder') }}">
+                                            placeholder="{{ __('general.lastname_placeholder') }}"
+                                            maxlength="100">
                                         @error('last_name')
                                         <div class="tk-errormsg">
                                             <span>{{ $message }}</span>

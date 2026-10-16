@@ -63,7 +63,7 @@
                         class="buscartutor-tutor-img">
                     </a>
                     <div class="buscartutor-tutor-info">
-                        <a href="{{ route('tutor', ['slug' => $profile['slug']]) }}">
+                        <a href="{{ tutorProfileUrl($profile) }}">
                             <h3 class="buscartutor-tutor-name">{{ $profile['full_name'] }}</h3>
                             <div class="desk infor-tutor card-tutor__price-duration">
                                 <p class="card-tutor__price">
@@ -175,7 +175,7 @@
                         </p> --}}
                     </div>
                     <div class="buscartutor-tutor-actions">
-                        <a href="{{ route('tutor', ['slug' => $profile['slug']]) }}"
+                        <a href="{{ tutorProfileUrl($profile) }}"
                         class="buscartutor-tutor-btn buscartutor-tutor-btn-blue"
                         data-translate="view_profile">
                             Ver Perfil

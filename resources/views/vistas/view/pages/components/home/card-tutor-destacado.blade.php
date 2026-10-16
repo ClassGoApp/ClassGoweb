@@ -62,7 +62,7 @@
 
                         {{-- Botones --}}
                         <div class="tutor-actions">
-                            <button class="btn-perfil" onclick="window.location.href='{{ route('tutor', ['slug' => $tutor->profile['slug']]) }}'">
+                            <button class="btn-perfil" onclick="window.location.href='{{ tutorProfileUrl($tutor->profile) }}'">
                                 <span data-translate="view_profile">Ver perfil</span>
                             </button>
 

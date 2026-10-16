@@ -10,14 +10,16 @@
             <div class="tutor-profile-grid">
                 <div class="tutor-profile-field">
                     <label>{{ __('profile.first_name') }} </label>
-                    <input type="text" class="tutor-profile-input" wire:model="first_name">
+                    <input type="text" class="tutor-profile-input" maxlength="100"
+                        pattern="[A-Za-zÀ-ÖØ-öø-ÿ]+([ ' \-][A-Za-zÀ-ÖØ-öø-ÿ]+)*" wire:model="first_name">
                     @error('first_name')
                         <span style="color:rgb(251,133,0); font-size: medium;">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="tutor-profile-field">
                     <label> {{ __('profile.last_name') }} </label>
-                    <input type="text" class="tutor-profile-input" wire:model="last_name">
+                    <input type="text" class="tutor-profile-input" maxlength="100"
+                        pattern="[A-Za-zÀ-ÖØ-öø-ÿ]+([ ' \-][A-Za-zÀ-ÖØ-öø-ÿ]+)*" wire:model="last_name">
                     @error('last_name')
                         <span style="color:rgb(251,133,0);font-size: medium;">{{ $message }}</span>
                     @enderror
@@ -31,7 +33,8 @@
                 </div>
                 <div class="tutor-profile-field">
                     <label> {{ __('profile.phone_number') }} </label>
-                    <input type="text" class="tutor-profile-input" wire:model="phone_number">
+                    <input type="text" class="tutor-profile-input" maxlength="15" inputmode="numeric"
+                        pattern="[0-9]{7,15}" wire:model="phone_number">
                     @error('phone_number')
                         <span style="color:rgb(251,133,0);font-size: medium;">{{ $message }}</span>
                     @enderror
