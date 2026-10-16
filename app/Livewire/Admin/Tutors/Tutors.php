@@ -91,8 +91,8 @@ class Tutors extends Component
     {
         // Validar los datos
         $this->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
+            'first_name' => 'required|string|max:100',
+            'last_name' => 'required|string|max:100',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:8',
             'confirm_password' => 'required|same:password',

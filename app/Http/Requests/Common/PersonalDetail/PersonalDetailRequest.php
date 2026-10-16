@@ -19,9 +19,9 @@ class PersonalDetailRequest extends BaseFormRequest
         $isProfileVideoMendatory        = setting('_lernen.profile_video') == 'yes' ? true : false;
         $isProfileKeywordsMendatory     = setting('_lernen.profile_keywords') == 'yes' ? true : false;
         $rules = [
-            'first_name'        => 'required|string|min:3|max:150',
+            'first_name'        => nameValidationRules(true),
             'phone_number'      => $isProfilePhoneMendatory ? 'required|regex:/^(\+?\(?\d{1,4}\)?)?[\d\s\-]{7,15}$/' : 'nullable|regex:/^(\+?\(?\d{1,4}\)?)?[\d\s\-]{7,15}$/',
-            'last_name'         => 'sometimes|string|min:3|max:150',
+            'last_name'         => nameValidationRules(false),
             'gender'            => 'required|in:male,female,not_specified',
             'user_languages'    => 'required|array|min:1',
             'native_language'   => 'required|string:max:255',
@@ -66,6 +66,8 @@ class PersonalDetailRequest extends BaseFormRequest
             'zipcode.regex' => __('validation.min_length_field', ['field' => 'zipcode', 'length' => 5]),
 
         ];
+
+        $messages = array_merge($messages, nameValidationMessages());
 
         $socialPlatforms = setting('_social.platforms');
 

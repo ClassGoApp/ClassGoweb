@@ -3,7 +3,7 @@
     <div class="carousel-wrapper">
         <div class="carousel-track" id="carouselTrack">
             @foreach($featuredTutors as $tutor)
-            <div class="tutor-card" onclick="window.location.href='{{ route('tutor', ['slug' => $tutor->profile['slug']]) }}'">
+            <div class="tutor-card" onclick="window.location.href='{{ tutorProfileUrl($tutor->profile) }}'">
                 <div class="tutor-card-content">
                     <div class="tutor-avatar-container">
                         <img src="{{ $tutor->profile->image ? asset('storage/' . $tutor->profile->image) : asset('images/tutors/default.png') }}" alt="Tutor" class="tutor-avatar">

@@ -219,7 +219,8 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
     Route::get('/nosotros', [HomeController::class, 'nosotros'])->name('nosotros');
     Route::view('/como-trabajamos', 'vistas.view.pages.trabajamos')->name('como-trabajamos');
     Route::view('/preguntas', 'vistas.view.pages.preguntas')->name('preguntas');
-    Route::get('/tutores/{slug}', [HomeController::class, 'tutor'])->name('tutor');
+    // {slug?} opcional: evita UrlGenerationException si un perfil tiene slug vacío/nulo.
+    Route::get('/tutores/{slug?}', [HomeController::class, 'tutor'])->name('tutor');
     Route::get('/tutors', [HomeController::class, 'buscarTutor'])->name('buscar.tutor'); //<---ojo
     Route::get('/buscar', [HomeController::class, 'buscar'])->name('buscar');
     Route::view('/modal', 'vistas.view.pages.modals.modal-reserva')->name('modal');
@@ -421,7 +422,8 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
     Route::post('/solicitud-clase/{token}/contraofertar', [BookingController::class, 'counterNegotiation'])->name('tutor-request.counter');
     Route::post('/solicitud-clase/{token}/aceptar', [BookingController::class, 'acceptNegotiation'])->name('tutor-request.accept');
 
-    Route::get('tutor/{slug}', [SearchController::class, 'tutorDetail'])->name('tutor-detail');
+    // {slug?} opcional: evita UrlGenerationException si un perfil tiene slug vacío/nulo.
+    Route::get('tutor/{slug?}', [SearchController::class, 'tutorDetail'])->name('tutor-detail');
     Route::get('{gateway}/process/payment', [SiteController::class, 'processPayment'])->name('payment.process');
     Route::get('checkout/cancel', fn() => redirect()->route('invoices')->with('payment_cancel', __('general.payment_cancelled_desc')))->name('checkout.cancel');
     Route::post('payfast/webhook', [SiteController::class, 'payfastWebhook'])->name('payfast.webhook');

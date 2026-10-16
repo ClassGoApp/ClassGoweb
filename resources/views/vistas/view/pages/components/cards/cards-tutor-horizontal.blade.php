@@ -83,7 +83,7 @@
                             </div>
 
                             <div class="tutor-actions">
-                                <button class="btn-perfil btn-blue" onclick="window.location.href='{{ route('tutor', ['slug' => $tutor->profile['slug']]) }}'">
+                                <button class="btn-perfil btn-blue" onclick="window.location.href='{{ tutorProfileUrl($tutor->profile) }}'">
                                     <span data-translate="view_profile">Ver Perfil</span>
                                 </button> 
                                 <button class="btn-perfil btn-outline" data-translate="view_subjects">

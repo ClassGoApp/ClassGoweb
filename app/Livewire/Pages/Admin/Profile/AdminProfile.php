@@ -44,8 +44,8 @@ class AdminProfile extends Component {
         }
         
         $this->validate([
-            'first_name'            => 'required|string',
-            'last_name'             => 'nullable|string',
+            'first_name'            => 'required|string|max:100',
+            'last_name'             => 'nullable|string|max:100',
             'email'                 => 'required|email|unique:users,email,' . Auth::user()->id,
             'new_password'          => 'sometimes|nullable|min:5|required_with:current_password',
             'confirm_password'      => 'sometimes|nullable|min:5|same:new_password|required_with:current_password',

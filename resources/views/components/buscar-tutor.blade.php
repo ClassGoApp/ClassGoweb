@@ -74,7 +74,7 @@
                         Reservar una sesión
                     </button>
 
-                    <a href="{{ route('tutor', ['slug' => $profile['slug']]) }}"
+                    <a href="{{ tutorProfileUrl($profile) }}"
                     class="buscartutor-tutor-btn buscartutor-tutor-btn-blue"
                     data-translate="view_profile">
                         Ver Perfil

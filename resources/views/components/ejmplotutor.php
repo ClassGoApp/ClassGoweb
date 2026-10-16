@@ -46,7 +46,7 @@
                 </div>
                 <div class="buscartutor-tutor-actions">
                     <button class="buscartutor-tutor-btn buscartutor-tutor-btn-orange">Reservar una sesión</button>
-                    <a href="{{ route('tutor', ['slug' => $profile['slug']]) }}" class="buscartutor-tutor-btn buscartutor-tutor-btn-blue">
+                    <a href="{{ tutorProfileUrl($profile) }}" class="buscartutor-tutor-btn buscartutor-tutor-btn-blue">
                         Ver Perfil
                     </a>
                 </div>

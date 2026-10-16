@@ -167,16 +167,23 @@ class ProfileController extends Controller
 
         // Validar los datos de entrada
         $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
-            'first_name' => 'nullable|string|max:150',
-            'last_name' => 'nullable|string|max:150',
+            'first_name' => 'nullable|string|max:100|regex:/^[A-Za-zÀ-ÖØ-öø-ÿ]+(?:[ \'\-][A-Za-zÀ-ÖØ-öø-ÿ]+)*$/u',
+            'last_name' => 'nullable|string|max:100|regex:/^[A-Za-zÀ-ÖØ-öø-ÿ]+(?:[ \'\-][A-Za-zÀ-ÖØ-öø-ÿ]+)*$/u',
             'gender' => 'nullable|string|in:0,1,2', // Cambiado a string para form-data
             'recommend_tutor' => 'nullable|string|in:0,1', // Cambiado a string para form-data
             'slug' => 'nullable|string|max:255|unique:profiles,slug,' . $id . ',user_id',
             'native_language' => 'nullable|string|max:255',
             'tagline' => 'nullable|string|max:255',
             'description' => 'nullable|string',
-            'phone_number' => 'nullable|string|max:20',
+            'phone_number' => 'nullable|string|max:15|regex:/^[0-9]{7,15}$/',
             'keywords' => 'nullable|string|max:255',
+        ], [
+            'first_name.regex' => 'El nombre solo puede contener letras, espacios y guiones.',
+            'last_name.regex' => 'El apellido solo puede contener letras, espacios y guiones.',
+            'first_name.max' => 'El nombre no puede tener más de 100 caracteres.',
+            'last_name.max' => 'El apellido no puede tener más de 100 caracteres.',
+            'phone_number.regex' => 'El celular solo puede contener números (entre 7 y 15 dígitos).',
+            'phone_number.max' => 'El celular no puede tener más de 15 dígitos.',
         ]);
 
         if ($validator->fails()) {

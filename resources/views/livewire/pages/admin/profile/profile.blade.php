@@ -29,7 +29,7 @@
                             <div class="form-group-wrap">
                                 <div class="form-group form-group-3half">
                                     <label class="la-titleinput">{{ __('admin/general.first_name') }}</label>
-                                    <input type="text" wire:model.defer="first_name" class="form-control @error('first_name') lb-invalid @enderror" placeholder="{{ __('admin/general.name_placeholder') }}">
+                                    <input type="text" wire:model.defer="first_name" class="form-control @error('first_name') lb-invalid @enderror" placeholder="{{ __('admin/general.name_placeholder') }}" maxlength="100">
                                     @error('first_name')
                                         <div class="lb-errormsg">
                                             <span>{{$message}}</span>
@@ -38,7 +38,7 @@
                                 </div>
                                 <div class="form-group form-group-3half">
                                     <label class="la-titleinput">{{ __('admin/general.last_name') }}</label>
-                                    <input type="text" wire:model.defer="last_name" class="form-control @error('last_name') lb-invalid @enderror" placeholder="{{ __('admin/general.lastname_placeholder') }}">
+                                    <input type="text" wire:model.defer="last_name" class="form-control @error('last_name') lb-invalid @enderror" placeholder="{{ __('admin/general.lastname_placeholder') }}" maxlength="100">
                                     @error('last_name')
                                         <div class="lb-errormsg">
                                             <span>{{$message}}</span>

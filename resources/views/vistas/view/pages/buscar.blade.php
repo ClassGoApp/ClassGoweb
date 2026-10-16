@@ -95,7 +95,7 @@
                                 <button @click="expandedCard = {{ $tutorId }}" class="card-tutor__button-materias" data-translate="view_subjects">
                                     Ver Materias
                                 </button>
-                                <button class="card-tutor__button" onclick="window.location.href='{{ route('tutor', ['slug' => $tutor->profile['slug']]) }}'" data-translate="view_profile">
+                                <button class="card-tutor__button" onclick="window.location.href='{{ tutorProfileUrl($tutor->profile) }}'" data-translate="view_profile">
                                     Ver Perfil
                                 </button>
                             </div>

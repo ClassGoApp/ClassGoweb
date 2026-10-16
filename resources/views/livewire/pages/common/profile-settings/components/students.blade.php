@@ -27,7 +27,8 @@
                             {{ __('profile.first_name') }}
                         </label>
 
-                        <input type="text" id="first_name" class="profile-details-inputs" wire:model="first_name">
+                        <input type="text" id="first_name" class="profile-details-inputs" maxlength="100"
+                            pattern="[A-Za-zÀ-ÖØ-öø-ÿ]+([ ' \-][A-Za-zÀ-ÖØ-öø-ÿ]+)*" wire:model="first_name">
 
                         @error('first_name')
                             <span class="profile-details-error">{{ $message }}</span>
@@ -39,7 +40,8 @@
                             {{ __('profile.last_name') }}
                         </label>
 
-                        <input type="text" id="last_name" class="profile-details-inputs" wire:model="last_name">
+                        <input type="text" id="last_name" class="profile-details-inputs" maxlength="100"
+                            pattern="[A-Za-zÀ-ÖØ-öø-ÿ]+([ ' \-][A-Za-zÀ-ÖØ-öø-ÿ]+)*" wire:model="last_name">
 
                         @error('last_name')
                             <span class="profile-details-error">{{ $message }}</span>
@@ -59,7 +61,8 @@
                             {{ __('profile.phone_number') }}
                         </label>
 
-                        <input type="tel" id="phone_number" class="profile-details-inputs" wire:model="phone_number">
+                        <input type="tel" id="phone_number" class="profile-details-inputs" maxlength="15"
+                            inputmode="numeric" pattern="[0-9]{7,15}" wire:model="phone_number">
 
                         @error('phone_number')
                             <span class="profile-details-error">{{ $message }}</span>
