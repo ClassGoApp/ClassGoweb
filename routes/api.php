@@ -302,7 +302,9 @@ Route::get('google-calendar/callback', [GoogleCalendarController::class, 'handle
 
 Route::prefix('google-calendar')->middleware('auth:sanctum')->group(function () {
     Route::get('auth-url', [GoogleCalendarController::class, 'getAuthUrl']);
+    Route::get('native-config', [GoogleCalendarController::class, 'getNativeConfig']);
     Route::post('connect', [GoogleCalendarController::class, 'connectCalendar']);
+    Route::post('connect-native', [GoogleCalendarController::class, 'connectNative']);
     Route::get('status', [GoogleCalendarController::class, 'getConnectionStatus']);
     Route::post('events', [GoogleCalendarController::class, 'createEvent']);
     Route::delete('events/{eventId}', [GoogleCalendarController::class, 'deleteEvent']);
