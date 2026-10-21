@@ -47,7 +47,16 @@ class GoogleController extends Controller
 
         $googleCalenderService = new GoogleCalender($user);
         $code = $request->input('code');
-        $tokenInfo = $googleCalenderService->getAccessTokenInfo($code);
+        $tokenResponse = $googleCalenderService->getAccessTokenInfo($code);
+
+        // Guardar el token plano: getAccessTokenInfo() lo devuelve dentro de 'data'.
+        $tokenInfo = $tokenResponse['data'] ?? $tokenResponse;
+
+        if (empty($tokenInfo['access_token'])) {
+            return redirect()->route('tutor.profile.personal-details')
+                ->with('error', __('passwords.failed_retrieve_Google_token'));
+        }
+
         $userService = new UserService($user);
         try {
             $userService->setAccountSetting('google_access_token', $tokenInfo);
