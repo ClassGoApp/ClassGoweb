@@ -52,11 +52,54 @@ class GoogleController extends Controller
         try {
             $userService->setAccountSetting('google_access_token', $tokenInfo);
             \Log::info('Token guardado en accountSetting.');
+
+            // Guardar también la info del calendario primario.
+            // Sin esto, GoogleCalender::createEvent() responde "no_calendar"
+            // y nunca se crean eventos al reservar.
+            $this->storePrimaryCalendarInfo($userService, $tokenInfo);
         } catch (\Exception $e) {
             \Log::error('Error al guardar el token en accountSetting: '.$e->getMessage());
         }
 
         return redirect()->route('tutor.profile.personal-details')->with('success', 'Google Calendar conectado correctamente');
+    }
+
+    /**
+     * Guarda la información del calendario primario (id/summary) del usuario.
+     * Necesario para que GoogleCalender::createEvent() pueda insertar eventos.
+     *
+     * @param UserService $userService
+     * @param array       $tokenInfo
+     * @return void
+     */
+    protected function storePrimaryCalendarInfo(UserService $userService, $tokenInfo)
+    {
+        try {
+            if (empty($tokenInfo['access_token'])) {
+                return;
+            }
+
+            $client = new \Google\Client([
+                'client_id'     => config('services.google.client_id'),
+                'client_secret' => config('services.google.client_secret'),
+                'redirect_uri'  => 'https://www.classgoapp.com/api/google-calendar/callback',
+                'scopes'        => [\Google\Service\Calendar::CALENDAR],
+            ]);
+
+            $client->setAccessToken($tokenInfo);
+            $service = new \Google\Service\Calendar($client);
+            $calendar = $service->calendarList->get('primary');
+
+            $userService->setAccountSetting('google_calendar_info', [
+                'id'      => $calendar->getId(),
+                'summary' => $calendar->getSummary(),
+                'minutes' => 30,
+            ]);
+
+            \Log::info('google_calendar_info guardado en accountSetting.');
+        } catch (\Exception $e) {
+            \Log::error('Error al guardar google_calendar_info: '.$e->getMessage());
+        }
     }
 
     public function googlePrerequisitesCallback(Request $request)
@@ -103,6 +146,13 @@ class GoogleController extends Controller
 
             (new UserService($user))->setAccountSetting(
                 'google_access_token',
+                $tokenResponse['data']
+            );
+
+            // Guardar también la info del calendario primario (id/summary),
+            // requisito para poder crear eventos al reservar.
+            $this->storePrimaryCalendarInfo(
+                new UserService($user),
                 $tokenResponse['data']
             );
 

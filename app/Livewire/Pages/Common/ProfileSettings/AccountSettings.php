@@ -113,7 +113,10 @@ class AccountSettings extends Component
 
     public function disconnectCalender()
     {
-        $this->userService->setAccountSetting(['google_access_token','google_calendar_info'], null);
+        // Dos llamadas separadas: setAccountSetting() no acepta un array
+        // como clave (where meta_key = array rompe la consulta).
+        $this->userService->setAccountSetting('google_access_token', null);
+        $this->userService->setAccountSetting('google_calendar_info', null);
         $this->dispatch('showAlertMessage', type: 'success', title: __('passwords.success') , message: __('passwords.disconnect_calender'));
     }
 

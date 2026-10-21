@@ -226,8 +226,17 @@ class GoogleCalender
         $this->userAccountSettings = $this->userService->getAccountSetting();
         $isTokenExpired = $this->isTokenExpired($this->userAccountSettings['google_access_token']);
         if ($isTokenExpired) {
-            $this->userAccountSettings['google_access_token'] = $this->refreshAccessToken($this->userAccountSettings['google_access_token']['refresh_token']);
-            $this->userService->setAccountSetting('google_access_token', $this->userAccountSettings['google_access_token']);
+            $currentToken = $this->userAccountSettings['google_access_token'];
+            $newToken = $this->refreshAccessToken($currentToken['refresh_token']);
+
+            // Google NO devuelve refresh_token al refrescar: si sobrescribimos
+            // el token sin conservarlo, se pierde y los eventos dejan de crearse.
+            if (empty($newToken['refresh_token']) && ! empty($currentToken['refresh_token'])) {
+                $newToken['refresh_token'] = $currentToken['refresh_token'];
+            }
+
+            $this->userAccountSettings['google_access_token'] = $newToken;
+            $this->userService->setAccountSetting('google_access_token', $newToken);
         }
     }
 

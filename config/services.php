@@ -40,6 +40,7 @@ return [
     'google' => [
         'client_id'         => env('GOOGLE_CLIENT_ID'),
         'client_secret'     => env('GOOGLE_CLIENT_SECRET'),
+        'ios_client_id'     => env('GOOGLE_IOS_CLIENT_ID'),
         'redirect'          => env('GOOGLE_REDIRECT_URI'),
         'redirect_uri'      => env('GOOGLE_CALENDAR_REDIRECT_URI'),
     ],
