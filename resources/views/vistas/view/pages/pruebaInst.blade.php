@@ -781,16 +781,17 @@
             position: fixed;
             top: 50%;
             left: 50%;
-            width: 280px;
-            height: 490px;
-            transform: translate(-50%, -50%);
-            z-index: 90;
+            width: min(92vw, 290px);
+            height: min(68dvh, 420px);
+            max-height: calc(100dvh - 110px);
+            transform: translate(-50%, -46%);
+            z-index: 95;
             margin: 0;
             box-shadow: 0 40px 100px rgba(0, 0, 0, 0.4);
         }
 
         .tutor-card.is-flipped {
-            transform: translate(-50%, -50%) rotateY(180deg);
+            transform: translate(-50%, -46%) rotateY(180deg);
         }
 
         .card-face {
@@ -813,7 +814,7 @@
         }
 
         .card-header {
-            height: 130px;
+            height: 95px;
             background: var(--bg-gradient);
             position: relative;
         }
@@ -854,24 +855,24 @@
 
         .avatar-container {
             position: relative;
-            width: 140px;
-            height: 140px;
+            width: 112px;
+            height: 112px;
             z-index: 2;
         }
 
         .avatar-wrapper {
             position: relative;
-            margin-top: -65px;
+            margin-top: -48px;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 130px;
+            height: 100px;
         }
 
         .avatar-halo {
             position: absolute;
-            width: 180px;
-            height: 180px;
+            width: 155px;
+            height: 155px;
             top: 50%;
             transform: translateY(-50%);
             background: radial-gradient(ellipse at center,
@@ -882,8 +883,8 @@
         }
 
         .avatar {
-            width: 140px;
-            height: 140px;
+            width: 112px;
+            height: 112px;
             border-radius: 50%;
             border: 4px solid var(--primary-color);
             object-fit: cover;
@@ -898,11 +899,11 @@
             position: absolute;
             bottom: -2px;
             right: -2px;
-            width: 42px;
-            height: 42px;
+            width: 34px;
+            height: 34px;
             background: var(--secundary-color);
             border-radius: 50%;
-            border: 4px solid #fff;
+            border: 3px solid #fff;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -910,8 +911,8 @@
         }
 
         .verified-icon {
-            width: 22px;
-            height: 22px;
+            width: 17px;
+            height: 17px;
         }
 
         .verified-icon path {
@@ -924,12 +925,12 @@
 
         /* ================= BODY ================= */
         .card-body {
-            padding: 1.8rem 1rem 1px;
+            padding: 1.4rem 0.9rem 0.6rem;
             text-align: center;
         }
 
         .card-body h3 {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-weight: 800;
             color: var(--primary-color);
             transition: var(--transition);
@@ -947,13 +948,13 @@
 
         /* ================= FOOTER ================= */
         .card-footer {
-            margin-top: 5rem;
-            padding-top: 1.2rem;
+            margin-top: 2.8rem;
+            padding-top: 0.9rem;
             border-top: 1px solid #e5e7eb;
-            margin-bottom: 1rem;
+            margin-bottom: 0.7rem;
             display: flex;
             justify-content: space-between;
-            gap: 1rem;
+            gap: 0.7rem;
         }
 
         .price {
@@ -971,7 +972,7 @@
             gap: .5rem;
             background: var(--primary-color);
             color: #fff;
-            padding: 1rem 1.4rem;
+            padding: 0.85rem 1.2rem;
             border: none;
             border-radius: 1rem;
             font-weight: 700;
@@ -1004,7 +1005,7 @@
         .card-face-back {
             transform: rotateY(180deg);
             z-index: 1;
-            padding: 1rem;
+            padding: 0.7rem 0.8rem 0.8rem;
             justify-content: space-between;
             text-align: center;
             background: #ffffff;
@@ -1093,14 +1094,14 @@
         }
 
         .qr-clickable {
-            margin: 0.6rem 0 0.8rem;
+            margin: 0.4rem 0 0.6rem;
             cursor: zoom-in;
             text-align: center;
         }
 
         .qr-clickable img {
-            width: 130px;
-            height: 130px;
+            width: 115px;
+            height: 115px;
             border-radius: 12px;
             border: 1px solid #eee;
             object-fit: contain;
@@ -1847,7 +1848,7 @@
                             <span data-translate="instant_tutor_expires_in">Expira en:</span> <b id="batchExpireCountdown" class="expire-normal">--:--</b>
                         </div>
 
-                        <button id="btnCancelBatch" type="button" class="btn-cancel-batch hidden">
+                        <button id="btnCancelBatch" type="button" class="btn-cancel-batch hidden" style="position: relative; z-index: 110; margin-top: -0.4rem;">
                             Cancelar solicitud (30s)
                         </button>
                         <div id="cancelBatchModal" class="cancel-modal hidden">
@@ -3566,23 +3567,23 @@
             }
         }
         // Menú usuario
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', async function() {
             const userMenu = document.querySelector('.user-menu');
 
-            if (!userMenu) return;
+            if (userMenu) {
+                const trigger = userMenu.querySelector('.user-menu__trigger');
 
-            const trigger = userMenu.querySelector('.user-menu__trigger');
+                trigger.addEventListener('click', function(event) {
+                    event.stopPropagation();
+                    userMenu.classList.toggle('is-open');
+                });
 
-            trigger.addEventListener('click', function(event) {
-                event.stopPropagation();
-                userMenu.classList.toggle('is-open');
-            });
-
-            document.addEventListener('click', function(event) {
-                if (userMenu.classList.contains('is-open') && !userMenu.contains(event.target)) {
-                    userMenu.classList.remove('is-open');
-                }
-            });
+                document.addEventListener('click', function(event) {
+                    if (userMenu.classList.contains('is-open') && !userMenu.contains(event.target)) {
+                        userMenu.classList.remove('is-open');
+                    }
+                });
+            }
         });
 
         function openQRModal(imgSrc) {
@@ -3781,4 +3782,44 @@
 
         init();
     </script>
+    <style>
+        @media (max-height: 700px) {
+            .tutor-card.is-active {
+                height: min(64dvh, 380px);
+                max-height: calc(100dvh - 90px);
+                transform: translate(-50%, -46%);
+            }
+
+            .tutor-card.is-flipped {
+                transform: translate(-50%, -46%) rotateY(180deg);
+            }
+
+            .card-header {
+                height: 90px;
+            }
+
+            .avatar-wrapper {
+                margin-top: -46px;
+                height: 95px;
+            }
+
+            .avatar-container,
+            .avatar {
+                width: 106px;
+                height: 106px;
+            }
+
+            .card-body {
+                padding: 1.1rem 0.8rem 0.5rem;
+            }
+
+            .card-footer {
+                margin-top: 2rem;
+            }
+
+            .btn {
+                padding: 0.8rem 1rem;
+            }
+        }
+    </style>
 @endsection

@@ -17,6 +17,15 @@
     </div>
     <div class="tutor-actions-btns">
         @role('student')
+            <!-- Tutoría al instante - Nuevo botón -->
+            <button type="button" onclick="openInstantTutorModal()" class="tutor-btn tutor-btn-instant" id="btn-instant-tutoring" style="position: relative; overflow: visible;">
+                <span style="position: absolute; top: -8px; right: 10px; background: #ef4444; color: white; font-size: 9px; padding: 2px 6px; border-radius: 9999px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;" data-instant-badge>NEW</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="tutor-btn-icon bolt">
+                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                </svg>
+                <span data-translate="tutor_profile_instant_tutoring">Tutoría al instante</span>
+            </button>
+
             <!--<a href="#reservar">
                 <button onclick="goToTab('disponibilidad')" class="tutor-btn tutor-btn-now" id="btn-go-disponibilidad">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tutor-btn-icon"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect><line x1="16" x2="16" y1="2" y2="6"></line><line x1="8" x2="8" y1="2" y2="6"></line><line x1="3" x2="21" y1="10" y2="10"></line></svg>

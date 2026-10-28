@@ -467,16 +467,19 @@ class SubjectPickerController extends Controller
     {
         $data = $request->validate([
             'subject_id' => ['required', 'integer', 'min:1'],
+            'tutor_id' => ['nullable', 'integer', 'min:1'],
         ]);
 
         $subjectId = (int) $data['subject_id'];
+        $tutorId = isset($data['tutor_id']) ? (int) $data['tutor_id'] : null;
         $studentId = (int) Auth::id();
 
         $timeoutMinutes = 5; // define tu tiempo de espera real
 
-        return DB::transaction(function () use ($subjectId, $studentId, $timeoutMinutes) {
+        return DB::transaction(function () use ($subjectId, $tutorId, $studentId, $timeoutMinutes) {
 
             // ✅ 0) Si ya hay batch activo NO expirado, devolverlo (NO crear otro)
+            // For direct tutor requests, still check if student has active batch to avoid duplicates
             $active = EmailBatch::query()
                 ->where('created_by', $studentId)
                 ->whereIn('status', ['pending', 'running', 'matched']) // matched aún “vive” hasta que se cierre
@@ -501,11 +504,114 @@ class SubjectPickerController extends Controller
                     'batch_id' => $active->id,
                     'subject_id' => $active->subject_id,
                     'status' => $active->status,
+                    'target_tutor_id' => $active->target_tutor_id,
                     'expires_at' => optional($active->expires_at)->toDateTimeString(),
                 ]);
             }
 
-            // ✅ 1) Crear batch
+            // Si es solicitud directa a un tutor específico
+            if ($tutorId) {
+                // Validar que el tutor existe, tenga rol tutor y términos aceptados
+                $tutor = DB::table('users as u')
+                    ->join('model_has_roles as mhr', function ($join) {
+                        $join->on('u.id', '=', 'mhr.model_id')
+                            ->where('mhr.model_type', '=', User::class);
+                    })
+                    ->join('roles as r', 'r.id', '=', 'mhr.role_id')
+                    ->where('u.id', $tutorId)
+                    ->where('r.name', 'tutor')
+                    ->whereNotNull('u.terms_accepted_at')
+                    ->first(['u.id', 'u.email']);
+
+                if (! $tutor) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Tutor no válido o no cumple con los requisitos.',
+                    ], 422);
+                }
+
+                // Validar que el tutor tenga esa materia
+                $hasSubject = DB::table('user_subject')
+                    ->where('user_id', $tutorId)
+                    ->where('subject_id', $subjectId)
+                    ->exists();
+
+                if (! $hasSubject) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'El tutor no tiene asignada esta materia.',
+                    ], 422);
+                }
+
+                // Validar que el tutor no esté ocupado ahora
+                $busyNow = DB::table('slot_bookings')
+                    ->where('tutor_id', $tutorId)
+                    ->whereIn('status', [1, 2, 4])
+                    ->where('start_time', '<=', now())
+                    ->where('end_time', '>', now())
+                    ->exists();
+
+                if ($busyNow) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Este tutor no está disponible ahora para una tutoría al instante.',
+                    ], 409);
+                }
+
+                // ✅ Crear batch directo
+                $batch = EmailBatch::create([
+                    'subject_id' => $subjectId,
+                    'created_by' => $studentId,
+                    'target_tutor_id' => $tutorId,
+                    'status' => 'running',
+                    'last_tutor_id' => 0,
+                    'sent_count' => 0,
+                    'batch_size' => 1,
+                    'last_error' => null,
+                    'expires_at' => now()->addMinutes($timeoutMinutes),
+                ]);
+
+                session([
+                    'active_batch_id' => $batch->id,
+                    'active_subject_id' => $subjectId,
+                ]);
+
+                $now = now();
+                EmailBatchItem::insert([
+                    [
+                        'batch_id' => $batch->id,
+                        'user_id' => $tutorId,
+                        'position' => 1,
+                        'status' => 'pending',
+                        'sent_at' => null,
+                        'last_error' => null,
+                        'accept_token' => Str::random(64),
+                        'accepted_at' => null,
+                        'chosen_at' => null,
+                        'created_at' => $now,
+                        'updated_at' => $now,
+                    ],
+                ]);
+
+                // Enviar notificación inmediatamente al tutor
+                try {
+                    $this->sendBatchEmails(new Request(['batch_id' => $batch->id, 'limit' => 1]));
+                } catch (\Throwable $e) {
+                    \Log::warning('start: direct batch email send failed: '.$e->getMessage());
+                }
+
+                return response()->json([
+                    'success' => true,
+                    'already_active' => false,
+                    'direct' => true,
+                    'batch_id' => $batch->id,
+                    'subject_id' => $subjectId,
+                    'target_tutor_id' => $tutorId,
+                    'expires_at' => optional($batch->expires_at)->toDateTimeString(),
+                ]);
+            }
+
+            // ✅ 1) Crear batch broadcast (flujo original)
             $batch = EmailBatch::create([
                 'subject_id' => $subjectId,
                 'created_by' => $studentId,

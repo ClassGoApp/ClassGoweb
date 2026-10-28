@@ -77,6 +77,11 @@
     <script src="{{ asset('js/translations.js') }}?v={{ filemtime(public_path('js/translations.js')) }}"></script>
 
     <script src="{{ asset('js/subject-translations.js') }}?v={{ filemtime(public_path('js/subject-translations.js')) }}"></script>
+    @auth
+        @role('student')
+            <script src="{{ asset('js/instant-active-header.js') }}?v={{ filemtime(public_path('js/instant-active-header.js')) }}" defer></script>
+        @endrole
+    @endauth
 
 </body>
 

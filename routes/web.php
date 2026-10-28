@@ -225,6 +225,7 @@ Route::middleware(['locale', 'maintenance'])->group(function () {
     Route::get('/buscar', [HomeController::class, 'buscar'])->name('buscar');
     Route::view('/modal', 'vistas.view.pages.modals.modal-reserva')->name('modal');
     Route::get('/tutorias-instantaneas', [InstantTutoringController::class, 'index'])->name('tutorias-instantaneas');
+    Route::get('/student/waiting-tutor/{batch}', [InstantTutoringController::class, 'waitingTutor'])->name('student.waiting-tutor')->middleware(['auth', 'role:student']);
 
     Route::post('/tutor/{tutorId}/review', [HomeController::class, 'storeReview'])
         ->name('tutor.review.store')

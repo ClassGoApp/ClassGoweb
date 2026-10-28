@@ -325,6 +325,161 @@
 
     </script>
 
+    <!-- Modal Tutoría al instante -->
+    <div id="instant-tutor-modal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.6);z-index:10000;align-items:center;justify-content:center;padding:1rem;">
+        <div style="background:white;border-radius:1.5rem;max-width:420px;width:100%;max-height:90vh;overflow-y:auto;position:relative;box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);">
+            <button onclick="closeInstantTutorModal()" style="position:absolute;top:1rem;right:1rem;background:#f1f5f9;border:none;border-radius:50%;width:32px;height:32px;cursor:pointer;display:flex;align-items:center;justify-content:center;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+            <div style="padding:2rem;">
+                <div style="text-align:center;margin-bottom:1.5rem;">
+                    <div style="width:60px;height:60px;background:linear-gradient(135deg,#FB8500 0%,#FF6B00 100%);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                        </svg>
+                    </div>
+                    <h2 style="font-size:1.5rem;font-weight:800;color:#023047;margin-bottom:0.5rem;" data-translate="instant_tutor_direct_title">Tutoría al instante</h2>
+                    <p style="color:#64748b;font-size:0.9rem;" data-translate="instant_tutor_direct_desc">Elige la materia y solicita al instante a {{ $tutor->profile->first_name ?? '' }}</p>
+                </div>
+                
+                <div style="margin-bottom:1.5rem;">
+                    <label style="display:block;font-weight:600;color:#023047;margin-bottom:0.75rem;font-size:0.9rem;" data-translate="instant_tutor_select_subject">Selecciona una materia</label>
+                    <div style="display:flex;flex-direction:column;gap:0.5rem;max-height:250px;overflow-y:auto;">
+                        @if($tutor->userSubjects && $tutor->userSubjects->count() > 0)
+                            @foreach($tutor->userSubjects as $userSubject)
+                                @if($userSubject->subject)
+                                    <button type="button" onclick="selectInstantSubject({{ $userSubject->subject->id }}, '{{ addslashes($userSubject->subject->name) }}')" class="instant-subject-btn" style="padding:0.75rem 1rem;border:2px solid #e2e8f0;border-radius:0.75rem;background:white;text-align:left;cursor:pointer;transition:all 0.2s;font-weight:500;color:#023047;">
+                                        {{ $userSubject->subject->name }}
+                                    </button>
+                                @endif
+                            @endforeach
+                        @else
+                            <p style="color:#64748b;text-align:center;padding:1rem;" data-translate="instant_tutor_no_subjects">Este tutor no tiene materias asignadas</p>
+                        @endif
+                    </div>
+                </div>
+                
+                <div id="instant-tutor-confirm" style="display:none;">
+                    <div style="background:#f8fafc;padding:1rem;border-radius:0.75rem;margin-bottom:1rem;">
+                        <p style="font-size:0.875rem;color:#64748b;margin-bottom:0.25rem;" data-translate="instant_tutor_selected_subject">Materia seleccionada:</p>
+                        <p id="instant-selected-subject-name" style="font-weight:600;color:#023047;"></p>
+                    </div>
+                    <button onclick="startDirectInstantTutoring()" id="btn-start-instant" style="width:100%;padding:0.875rem;background:linear-gradient(135deg,#FB8500 0%,#FF6B00 100%);color:white;border:none;border-radius:0.75rem;font-weight:700;font-size:0.95rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:0.5rem;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                        </svg>
+                        <span data-translate="instant_tutor_send_request">Enviar solicitud al instante</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let instantTutorData = {
+            tutorId: {{ $tutor->id }},
+            subjectId: null,
+            subjectName: ''
+        };
+
+        function openInstantTutorModal() {
+            document.getElementById('instant-tutor-modal').style.display = 'flex';
+            document.getElementById('instant-tutor-confirm').style.display = 'none';
+            instantTutorData.subjectId = null;
+            instantTutorData.subjectName = '';
+            document.querySelectorAll('.instant-subject-btn').forEach(btn => {
+                btn.style.borderColor = '#e2e8f0';
+                btn.style.background = 'white';
+            });
+        }
+
+        function closeInstantTutorModal() {
+            document.getElementById('instant-tutor-modal').style.display = 'none';
+        }
+
+        function selectInstantSubject(subjectId, subjectName) {
+            instantTutorData.subjectId = subjectId;
+            instantTutorData.subjectName = subjectName;
+            document.querySelectorAll('.instant-subject-btn').forEach(btn => {
+                btn.style.borderColor = '#e2e8f0';
+                btn.style.background = 'white';
+            });
+            event.target.style.borderColor = '#FB8500';
+            event.target.style.background = '#FFF7ED';
+            document.getElementById('instant-selected-subject-name').textContent = subjectName;
+            document.getElementById('instant-tutor-confirm').style.display = 'block';
+        }
+
+        async function startDirectInstantTutoring() {
+            if (!instantTutorData.subjectId) {
+                alert('Por favor selecciona una materia');
+                return;
+            }
+            const btn = document.getElementById('btn-start-instant');
+            const originalHtml = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<span style="opacity:0.7;">Enviando...</span>';
+            
+            try {
+                const csrf = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+                const res = await fetch('/student/batches/start', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': csrf
+                    },
+                    credentials: 'same-origin',
+                    body: JSON.stringify({
+                        subject_id: instantTutorData.subjectId,
+                        tutor_id: instantTutorData.tutorId
+                    })
+                });
+                const json = await res.json();
+                if (json.success && json.batch_id) {
+                    closeInstantTutorModal();
+                    window.location.href = '/student/waiting-tutor/' + json.batch_id;
+                } else {
+                    alert(json.message || 'Error al enviar solicitud');
+                    btn.disabled = false;
+                    btn.innerHTML = originalHtml;
+                }
+            } catch (e) {
+                console.error(e);
+                alert('Error al enviar solicitud');
+                btn.disabled = false;
+                btn.innerHTML = originalHtml;
+            }
+        }
+
+        // Hide badge after 30 days
+        document.addEventListener('DOMContentLoaded', function() {
+            const badge = document.querySelector('[data-instant-badge]');
+            if (badge) {
+                const stored = localStorage.getItem('instant_badge_hide_until');
+                const now = Date.now();
+                if (stored && parseInt(stored) > now) {
+                    badge.style.display = 'none';
+                } else {
+                    // Set to hide after 30 days
+                    const hideUntil = now + (30 * 24 * 60 * 60 * 1000);
+                    localStorage.setItem('instant_badge_hide_until', hideUntil.toString());
+                    // Translate badge based on language
+                    const lang = localStorage.getItem('selectedLanguage') || 'es';
+                    if (lang === 'en') badge.textContent = 'NEW';
+                    else if (lang === 'pt') badge.textContent = 'NOVO';
+                    else badge.textContent = 'NUEVO';
+                }
+            }
+        });
+
+        document.getElementById('instant-tutor-modal')?.addEventListener('click', function(e) {
+            if (e.target.id === 'instant-tutor-modal') {
+                closeInstantTutorModal();
+            }
+        });
+    </script>
+
     <script>
         document.addEventListener('livewire:init', () => {
             Livewire.on('reload-page', (event) => {

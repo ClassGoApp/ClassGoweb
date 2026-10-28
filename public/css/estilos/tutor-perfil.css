@@ -1434,6 +1434,19 @@
     color: #fff;
 }
 
+.tutor-btn-instant {
+    background: linear-gradient(135deg, #FB8500 0%, #FF6B00 100%);
+    color: #fff;
+    position: relative;
+    overflow: visible;
+    box-shadow: 0 4px 14px 0 rgba(251, 133, 0, 0.39);
+}
+
+.tutor-btn-instant:hover {
+    background: linear-gradient(135deg, #FF6B00 0%, #FB8500 100%);
+    box-shadow: 0 6px 20px rgba(251, 133, 0, 0.5);
+}
+
 .tutor-btn-reservar {
     background: var(--secundary-color);
     color: #fff;
@@ -1446,6 +1459,7 @@
 
 .tutor-btn-reservar:hover,
 .tutor-btn-now:hover,
+.tutor-btn-instant:hover,
 .tutor-btn-share:hover {
     transform: scale(var(--button-hover-scale));
     box-shadow: var(--button-hover-shadow);

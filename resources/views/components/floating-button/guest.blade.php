@@ -7,19 +7,15 @@
         $hasTerms = Auth::user()?->terms_accepted_at;
     @endphp
 
-    <button class="instant-btn-floating " onclick="window.location.href='{{ $hasTerms ? url('tutorias-instantaneas') : route('home') . '#tutorias-instantaneas-seccion' }}'">
-    
-    
-            <i>
-                <svg class="bolt" viewBox="0 0 24 24">
-                    <path d="M13 2L3 14h7l-1 8 10-12h-7z" />
-                </svg>
-            </i>
-
-            <span class="instant-tooltip" data-translate="floating_instant_tutoring">
-                ¡Tutoría al Instante!
-            </span>
-    
+    <button class="instant-btn-floating" id="fab-instant-tutoring" onclick="window.location.href='{{ $hasTerms ? url('tutorias-instantaneas') : route('home') . '#tutorias-instantaneas-seccion' }}'">
+        <i>
+            <svg class="bolt" viewBox="0 0 24 24">
+                <path d="M13 2L3 14h7l-1 8 10-12h-7z" />
+            </svg>
+        </i>
+        <span class="instant-tooltip" data-translate="floating_instant_tutoring">
+            ¡Tutoría al Instante!
+        </span>
     </button>
 
     {{-- Botón de Reclutamiento (Notificación) --}}
