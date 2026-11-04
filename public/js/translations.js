@@ -952,8 +952,7 @@ var translations = {
     recruitment_growth_desc:
       "Buscamos socios estratégicos para transformar la empresa.",
     recruitment_current_priority: "Prioridad actual:",
-    recruitment_priority_areas:
-      "TI • Marketing • Finanzas • Administración • Ventas • ¡Y más!",
+    recruitment_priority_areas: "Marketing • Ventas",
     recruitment_form_time: "Solo te tomará unos minutos.",
     // Perfil Tutor - Acciones
     tutor_profile_per_tutoring: "/ tutoría",
@@ -2867,8 +2866,7 @@ var translations = {
     recruitment_growth_desc:
       "We are looking for strategic partners to transform the company.",
     recruitment_current_priority: "Current priority:",
-    recruitment_priority_areas:
-      "IT • Marketing • Finance • Administration • Sales • And more!",
+    recruitment_priority_areas: "Marketing • Sales",
     recruitment_form_time: "It will only take a few minutes.",
     // Tutor Profile - Actions
     tutor_profile_per_tutoring: "/ tutoring session",
@@ -4798,8 +4796,7 @@ var translations = {
     recruitment_growth_desc:
       "Buscamos parceiros estratégicos para transformar a empresa.",
     recruitment_current_priority: "Prioridade atual:",
-    recruitment_priority_areas:
-      "TI • Marketing • Finanças • Administração • Vendas • E mais!",
+    recruitment_priority_areas: "Marketing • Vendas",
     recruitment_form_time: "Levará apenas alguns minutos.",
     // Perfil do Tutor - Ações
     tutor_profile_per_tutoring: "/ tutoria",

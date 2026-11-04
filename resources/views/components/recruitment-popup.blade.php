@@ -72,7 +72,7 @@
 
             <div class="am-areas-badge">
                 <strong data-translate="recruitment_current_priority">Prioridad actual:</strong>
-                <span data-translate="recruitment_priority_areas">TI • Marketing • Finanzas • Administración • Ventas • ¡Y más!</span>
+                <span data-translate="recruitment_priority_areas">Marketing • Ventas</span>
             </div>
         </div>
 
