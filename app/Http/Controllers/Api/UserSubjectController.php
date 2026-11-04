@@ -8,6 +8,8 @@ use App\Models\Subject;
 use App\Models\SubjectGroup;
 use App\Services\SubjectService;
 use App\Traits\ApiResponser;
+use App\Http\Resources\SubjectResource;
+use App\Helpers\SubjectTranslationHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -140,6 +142,15 @@ class UserSubjectController extends Controller
         }]);
 
         $userSubjects = $userSubjects->map(function($userSubject) {
+            $subjectData = null;
+            if ($userSubject->subject) {
+                $subjectData = SubjectTranslationHelper::addTranslationsToSubject([
+                    'id' => $userSubject->subject->id,
+                    'name' => $userSubject->subject->name,
+                    'subject_group_id' => $userSubject->subject->subject_group_id
+                ]);
+            }
+
             return [
                 'id' => $userSubject->id,
                 'user_id' => $userSubject->user_id,
@@ -148,11 +159,7 @@ class UserSubjectController extends Controller
                 'image' => $userSubject->image,
                 'price' => $userSubject->price,
                 'status' => $userSubject->status,
-                'subject' => $userSubject->subject ? [
-                    'id' => $userSubject->subject->id,
-                    'name' => $userSubject->subject->name,
-                    'subject_group_id' => $userSubject->subject->subject_group_id
-                ] : null
+                'subject' => $subjectData
             ];
         });
 
@@ -406,12 +413,17 @@ class UserSubjectController extends Controller
     {
         $subjects = Subject::where('subject_group_id', $groupId)
             ->where('status', 'active')
-            ->select('id', 'name')
+            ->select('id', 'name', 'subject_group_id')
             ->orderBy('name')
             ->get();
 
+        // Agregar traducciones a cada materia
+        $subjectsWithTranslations = $subjects->map(function($subject) {
+            return SubjectTranslationHelper::addTranslationsToSubject($subject);
+        });
+
         return $this->success(
-            data: $subjects,
+            data: $subjectsWithTranslations,
             message: 'Materias del grupo obtenidas exitosamente'
         );
     }
@@ -467,6 +479,11 @@ class UserSubjectController extends Controller
             ")
             ->orderBy('subjects.name')
             ->paginate($request->get('per_page', 20));
+
+        // Agregar traducciones a cada materia en la paginación
+        $subjects->getCollection()->transform(function($subject) {
+            return SubjectTranslationHelper::addTranslationsToSubject($subject);
+        });
 
         return $this->success(
             data: $subjects,

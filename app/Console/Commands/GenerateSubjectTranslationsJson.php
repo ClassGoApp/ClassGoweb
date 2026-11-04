@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\Subject;
+use App\Helpers\SubjectTranslationHelper;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 use Throwable;
@@ -80,9 +81,13 @@ class GenerateSubjectTranslationsJson extends Command
             File::ensureDirectoryExists(dirname($jsonPath));
             File::put($jsonPath, $json . PHP_EOL);
 
+            // Limpiar cache de traducciones para que se recargue el nuevo JSON
+            SubjectTranslationHelper::clearCache();
+
             $this->info('JSON de materias generado correctamente.');
             $this->info('Materias registradas: ' . count($translations));
             $this->info('Archivo: ' . $jsonPath);
+            $this->info('Cache de traducciones limpiado.');
 
             return self::SUCCESS;
         } catch (Throwable $exception) {
