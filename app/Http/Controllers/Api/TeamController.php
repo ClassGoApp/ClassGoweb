@@ -8,25 +8,54 @@ use App\Models\TeamMember;
 
 class TeamController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $team = TeamMember::where('status', true)
             ->orderBy('order', 'asc')
+            ->orderBy('id', 'asc')
             ->get();
 
         return response()->json([
             'success' => true,
-            'data' => $team->map(function ($member) {
+            'data' => $team->map(function ($member) use ($request) {
+                $photoUrl = null;
+                $photoBase64 = null;
+
+                if (!empty($member->photo)) {
+                    $cleanPath = ltrim($member->photo, '/');
+                    // Construir URL usando el host actual de la petición para que funcione en red local / móvil
+                    $photoUrl = $request->getSchemeAndHttpHost() . '/storage/' . $cleanPath;
+
+                    // Igual que en nosotros.blade.php: verificar ruta física y generar base64 seguro
+                    $imagePath = storage_path('app/public/' . $cleanPath);
+                    if (!file_exists($imagePath)) {
+                        $publicStoragePath = public_path('storage/' . $cleanPath);
+                        if (file_exists($publicStoragePath)) {
+                            $imagePath = $publicStoragePath;
+                        }
+                    }
+
+                    if (file_exists($imagePath) && is_readable($imagePath)) {
+                        $imageData = base64_encode(file_get_contents($imagePath));
+                        $imageType = strtolower(pathinfo($imagePath, PATHINFO_EXTENSION)) ?: 'png';
+                        if ($imageType === 'jpg') {
+                            $imageType = 'jpeg';
+                        }
+                        $photoBase64 = 'data:image/' . $imageType . ';base64,' . $imageData;
+                    }
+                }
+
                 return [
-                    'id' => $member->id,
-                    'name' => $member->name,
-                    'last_name' => $member->last_name,
-                    'full_name' => $member->name . ' ' . $member->last_name,
-                    'role' => $member->role,
-                    'order' => $member->order,
+                    'id' => (int) $member->id,
+                    'name' => (string) ($member->name ?? ''),
+                    'last_name' => (string) ($member->last_name ?? ''),
+                    'full_name' => trim(($member->name ?? '') . ' ' . ($member->last_name ?? '')),
+                    'role' => (string) ($member->role ?? ''),
+                    'order' => (int) ($member->order ?? 1),
                     'platform' => $member->platform,
                     'platform_link' => $member->platform_link,
-                    'photo' => $member->photo ? asset('storage/' . $member->photo) : null,
+                    'photo' => $photoUrl,
+                    'photo_base64' => $photoBase64,
                 ];
             })
         ]);

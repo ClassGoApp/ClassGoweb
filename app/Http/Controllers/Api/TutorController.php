@@ -82,11 +82,17 @@ class TutorController extends Controller
                 })
                 ->where('available_for_tutoring', true); // Solo tutores disponibles
 
-            // Filtro por keyword (búsqueda en nombre de materia)
+            // Filtro por keyword (búsqueda en nombre de materia en español, inglés o portugués)
             if ($request->filled('keyword')) {
                 $keyword = trim($request->keyword);
-                $query->whereHas('subjects', function ($q) use ($keyword) {
-                    $q->where('name', 'LIKE', "%{$keyword}%");
+                $matchedSubjectIds = \App\Helpers\SubjectTranslationHelper::searchSubjectIdsByKeyword($keyword);
+                $query->whereHas('subjects', function ($q) use ($keyword, $matchedSubjectIds) {
+                    $q->where(function ($subQ) use ($keyword, $matchedSubjectIds) {
+                        $subQ->where('subjects.name', 'LIKE', "%{$keyword}%");
+                        if (!empty($matchedSubjectIds)) {
+                            $subQ->orWhereIn('subjects.id', $matchedSubjectIds);
+                        }
+                    });
                 });
             }
 
@@ -359,11 +365,17 @@ class TutorController extends Controller
                 })
                 ->whereHas('subjects'); // Solo tutores con materias registradas
 
-            // Filtro por keyword (búsqueda en nombre de materia)
+            // Filtro por keyword (búsqueda en nombre de materia en español, inglés o portugués)
             if ($request->filled('keyword')) {
                 $keyword = trim($request->keyword);
-                $query->whereHas('subjects', function ($q) use ($keyword) {
-                    $q->where('name', 'LIKE', "%{$keyword}%");
+                $matchedSubjectIds = \App\Helpers\SubjectTranslationHelper::searchSubjectIdsByKeyword($keyword);
+                $query->whereHas('subjects', function ($q) use ($keyword, $matchedSubjectIds) {
+                    $q->where(function ($subQ) use ($keyword, $matchedSubjectIds) {
+                        $subQ->where('subjects.name', 'LIKE', "%{$keyword}%");
+                        if (!empty($matchedSubjectIds)) {
+                            $subQ->orWhereIn('subjects.id', $matchedSubjectIds);
+                        }
+                    });
                 });
             }
 
@@ -790,11 +802,17 @@ class TutorController extends Controller
                     });
             });
 
-            // Filtro por keyword (búsqueda en nombre de materia)
+            // Filtro por keyword (búsqueda en nombre de materia en español, inglés o portugués)
             if ($request->filled('keyword')) {
                 $keyword = trim($request->keyword);
-                $query->whereHas('subjects', function ($q) use ($keyword) {
-                    $q->where('name', 'LIKE', "%{$keyword}%");
+                $matchedSubjectIds = \App\Helpers\SubjectTranslationHelper::searchSubjectIdsByKeyword($keyword);
+                $query->whereHas('subjects', function ($q) use ($keyword, $matchedSubjectIds) {
+                    $q->where(function ($subQ) use ($keyword, $matchedSubjectIds) {
+                        $subQ->where('subjects.name', 'LIKE', "%{$keyword}%");
+                        if (!empty($matchedSubjectIds)) {
+                            $subQ->orWhereIn('subjects.id', $matchedSubjectIds);
+                        }
+                    });
                 });
             }
 

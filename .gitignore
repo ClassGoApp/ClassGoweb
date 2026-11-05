@@ -43,3 +43,6 @@ storage/app/purifier/
 *.jpg
 *.webp
 *.pdf
+
+# Excepciones permitidas para logos del sistema
+!/public/images/bancos/*

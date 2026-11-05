@@ -560,8 +560,12 @@ public function getTutors($data = array()) {
             ->whereHas('userSubjects.subject.group');
 
         // 3. Si hay un término de búsqueda, aplicamos la lógica de filtrado.
+        $matchedSubjectIds = $search
+            ? \App\Helpers\SubjectTranslationHelper::searchSubjectIdsByKeyword($search)
+            : [];
+
         if ($search) {
-            $tutorsQuery->where(function ($query) use ($search) {
+            $tutorsQuery->where(function ($query) use ($search, $matchedSubjectIds) {
                 // Opción A: Buscar por nombre o apellido del tutor.
                 $query->whereHas('profile', function ($q) use ($search) {
                     $q->where(function($nameQuery) use ($search) {
@@ -571,9 +575,14 @@ public function getTutors($data = array()) {
                             ->orWhereRaw("CONCAT(last_name, ' ', first_name) LIKE ?", ["%$search%"]);
                     });
                 })
-                // Opción B: O buscar por el nombre de la materia (tabla 'subjects').
-                ->orWhereHas('userSubjects.subject', function ($q) use ($search) {
-                    $q->where('name', 'like', "%$search%");
+                // Opción B: O buscar por el nombre de la materia (español, inglés o portugués).
+                ->orWhereHas('userSubjects.subject', function ($q) use ($search, $matchedSubjectIds) {
+                    $q->where(function ($subQ) use ($search, $matchedSubjectIds) {
+                        $subQ->where('name', 'like', "%$search%");
+                        if (!empty($matchedSubjectIds)) {
+                            $subQ->orWhereIn('subjects.id', $matchedSubjectIds);
+                        }
+                    });
                 })
                 // Opción C: O buscar por el nombre del grupo de materias (tabla 'subject_groups').
                 ->orWhereHas('userSubjects.subject.group', function ($q) use ($search) {
@@ -602,7 +611,7 @@ public function getTutors($data = array()) {
             ->paginate($perPage);
 
         // 6. Mapeamos los resultados para darles el formato deseado. Esto no cambia.
-        $profiles = $tutors->map(function ($tutor) use ($search) {
+        $profiles = $tutors->map(function ($tutor) use ($search, $matchedSubjectIds) {
             $profile = $tutor->profile;
             $materias = [];
             $grupos = [];
@@ -619,8 +628,8 @@ public function getTutors($data = array()) {
                     $allSubjects[] = $subjectName;
                     $allSubjectsWithId[] = ['id' => $subjectId, 'name' => $subjectName];
 
-                    // Si hay una búsqueda, revisamos si esta materia coincide
-                    if ($search && Str::contains(strtolower($subjectName), strtolower($search))) {
+                    // Si hay una búsqueda, revisamos si esta materia coincide en nombre o en traducción (es/en/pt)
+                    if ($search && (Str::contains(strtolower($subjectName), strtolower($search)) || in_array((int) $subjectId, $matchedSubjectIds, true))) {
                         $matchedSubjects[] = $subjectName;
                         $matchedSubjectsWithId[] = ['id' => $subjectId, 'name' => $subjectName];
                     }
@@ -689,9 +698,15 @@ public function getTutors($data = array()) {
                             });
                     });
 
-                    // 2. O Búsqueda por Materias (NUEVA LÓGICA)
-                    $userQuery->orWhereHas('userSubjects.subject', function($q) use ($search) {
-                        $q->where('name', 'like', "%$search%");
+                    // 2. O Búsqueda por Materias en español, inglés o portugués (NUEVA LÓGICA)
+                    $matchedIds = \App\Helpers\SubjectTranslationHelper::searchSubjectIdsByKeyword($search);
+                    $userQuery->orWhereHas('userSubjects.subject', function($q) use ($search, $matchedIds) {
+                        $q->where(function ($subQ) use ($search, $matchedIds) {
+                            $subQ->where('name', 'like', "%$search%");
+                            if (!empty($matchedIds)) {
+                                $subQ->orWhereIn('subjects.id', $matchedIds);
+                            }
+                        });
                     });
                 }
             })

@@ -72,17 +72,41 @@
                         @enderror
                     </div>
 
-                    <!-- Nombre del banco -->
-                    <div class="form-group">
+                    <!-- Nombre del banco (Selector con buscador + check + opción Otro) -->
+                    <div class="form-group" style="position: relative;" id="bolivia-bank-selector-wrapper">
                         <label for="bankname" class="form-label" data-translate="manage_account_bank_name_label">
                             Nombre del banco
                         </label>
 
-                        <input wire:model.defer="bankName" id="bankname" name="bankname"
-                            placeholder="Introduzca el nombre del banco"
-                            data-translate-placeholder="manage_account_bank_name_placeholder"
-                            type="text"
-                            class="form-control bank-input @error('bankName') is-invalid @enderror" />
+                        <div class="bank-combobox-container" style="position: relative;">
+                            <input wire:model.defer="bankName" id="bankname" name="bankname"
+                                placeholder="Seleccione o escriba su banco (ej. Ganadero, Unión...)"
+                                data-translate-placeholder="manage_account_bank_name_placeholder"
+                                type="text"
+                                autocomplete="off"
+                                onclick="openBoliviaBankDropdown()"
+                                onfocus="openBoliviaBankDropdown()"
+                                oninput="filterBoliviaBankDropdown(this.value)"
+                                style="padding-right: 40px;"
+                                class="form-control bank-input @error('bankName') is-invalid @enderror" />
+
+                            <button type="button"
+                                onclick="toggleBoliviaBankDropdown(event)"
+                                tabindex="-1"
+                                style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: transparent; border: none; color: #504f4f; cursor: pointer; padding: 4px 6px; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-chevron-down" id="bankDropdownChevron" style="font-size: 13px; transition: transform 0.2s ease;"></i>
+                            </button>
+
+                            <!-- Lista desplegable simple estilo select -->
+                            <div id="boliviaBankDropdownList"
+                                wire:ignore
+                                style="display: none; position: absolute; left: 0; right: 0; top: calc(100% + 2px); max-height: 220px; overflow-y: auto; background: #ffffff; border: 1px solid #504f4f; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.12); z-index: 1060; padding: 4px 0;">
+                            </div>
+                        </div>
+
+                        <small id="customBankHint" style="display: none; color: #666; font-size: 12px; margin-top: 4px;">
+                            Escriba el nombre de su banco en el campo superior.
+                        </small>
 
                         @error('bankName')
                             <div class="invalid-feedback">

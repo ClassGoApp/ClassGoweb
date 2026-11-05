@@ -8,6 +8,7 @@ use Livewire\Attributes\Layout;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use App\Models\TeamMember;
+use Illuminate\Support\Facades\Storage;
 
 class Team extends Component
 {
@@ -85,10 +86,20 @@ class Team extends Component
         }
 
         if (!empty($params['id'])) {
-            TeamMember::findOrFail($params['id'])->delete();
+            $member = TeamMember::findOrFail($params['id']);
+            if ($member->photo && Storage::exists('public/' . $member->photo)) {
+                Storage::delete('public/' . $member->photo);
+            }
+            $member->delete();
             $message = 'Miembro eliminado correctamente';
         } elseif (!empty($this->selectedTeams)) {
-            TeamMember::whereIn('id', $this->selectedTeams)->delete();
+            $members = TeamMember::whereIn('id', $this->selectedTeams)->get();
+            foreach ($members as $member) {
+                if ($member->photo && Storage::exists('public/' . $member->photo)) {
+                    Storage::delete('public/' . $member->photo);
+                }
+                $member->delete();
+            }
             $message = 'Miembros eliminados correctamente';
         } else {
             return;

@@ -56,7 +56,7 @@
 
                 @if ($bank && !empty($bank->payout_details))
                     <div class="payment-method-card active"
-                        style="display: flex; flex-direction: column; padding: 24px 20px; border-color: var(--secundary-color);">
+                        style="display: flex; flex-direction: column; padding: 24px 20px; border-color: var(--secundary-color); width: 100%; max-width: 385px; box-sizing: border-box;">
                         <div
                             style="display: flex; width: 100%; align-items: center; justify-content: space-between; margin-bottom: 12px;">
                             <div style="display: flex; align-items: center; gap: 12px;">
@@ -116,7 +116,102 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div style="background-color:var(--secundary-color);    border-radius: inherit; height:100%;">
+                        @php
+                            $savedBankName = trim($bank->payout_details['bankName'] ?? 'Banco');
+                            $normalizedBank = mb_strtolower($savedBankName, 'UTF-8');
+
+                            $boliviaBanksCatalog = [
+                                [
+                                    'match' => ['union', 'unión', 'banco union'],
+                                    'logo' => asset('images/bancos/banco-union-logo.png'),
+                                    'bg' => '#ffffff',
+                                ],
+                                [
+                                    'match' => ['mercantil', 'bmsc', 'mercantil santa cruz'],
+                                    'logo' => asset('images/bancos/bmsc-logo.png'),
+                                    'bg' => '#00593B',
+                                ],
+                                [
+                                    'match' => ['nacional', 'bnb', 'banco nacional de bolivia'],
+                                    'logo' => asset('images/bancos/bnb_logo_portada.jpg'),
+                                    'bg' => '#00a837',
+                                ],
+                                [
+                                    'match' => ['bisa', 'banco bisa'],
+                                    'logo' => asset('images/bancos/bisa-logo.jpeg'),
+                                    'bg' => '#002D62',
+                                ],
+                                [
+                                    'match' => ['ganadero', 'banco ganadero', 'bg'],
+                                    'logo' => asset('images/bancos/ganadero-logo.png'),
+                                    'bg' => '#ffffff',
+                                ],
+                                [
+                                    'match' => ['economico', 'económico', 'banco economico', 'baneco'],
+                                    'logo' => asset('images/bancos/banco-economico-logo.png'),
+                                    'bg' => '#ffffff',
+                                ],
+                                [
+                                    'match' => ['fie', 'banco fie'],
+                                    'logo' => asset('images/bancos/fie-logo.png'),
+                                    'bg' => '#ffffff',
+                                ],
+                                [
+                                    'match' => ['sol', 'bancosol', 'banco sol'],
+                                    'logo' => asset('images/bancos/bancosol-logo.jpeg'),
+                                    'bg' => '#EA580C',
+                                ],
+                                [
+                                    'match' => ['fortaleza', 'banco fortaleza'],
+                                    'logo' => asset('images/bancos/fortaleza-logo.png'),
+                                    'bg' => '#1E3A8A',
+                                ],
+                                [
+                                    'match' => ['prodem', 'banco prodem'],
+                                    'logo' => asset('images/bancos/prodem-logo.png'),
+                                    'bg' => '#065F46',
+                                ],
+                                [
+                                    'match' => ['ecofuturo', 'banco ecofuturo'],
+                                    'logo' => asset('images/bancos/ecofuturo-logo.png'),
+                                    'bg' => '#14532D',
+                                ],
+                                [
+                                    'match' => ['jesus nazareno', 'jesús nazareno', 'cooperativa'],
+                                    'logo' => asset('images/bancos/jesus-nazareno-logo.png'),
+                                    'bg' => '#047857',
+                                ],
+                                [
+                                    'match' => ['yape', 'tigo money', 'billetera'],
+                                    'logo' => asset('images/bancos/yape-logo.png'),
+                                    'bg' => '#742384',
+                                ],
+                            ];
+
+                            $matchedBankInfo = null;
+                            foreach ($boliviaBanksCatalog as $item) {
+                                foreach ($item['match'] as $kw) {
+                                    if (str_contains($normalizedBank, $kw)) {
+                                        $matchedBankInfo = $item;
+                                        break 2;
+                                    }
+                                }
+                            }
+
+                            $bannerLogo = $matchedBankInfo['logo'] ?? null;
+                            $bannerBg = $matchedBankInfo['bg'] ?? 'var(--secundary-color)';
+                        @endphp
+
+                        <div style="background-color: {{ $bannerBg }}; border-radius: inherit; height: 100%; min-height: 165px; width: 100%; margin-bottom: 16px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; border: 1px solid #e2e8f0; box-sizing: border-box;">
+                            @if ($bannerLogo)
+                                <img src="{{ $bannerLogo }}"
+                                     alt="{{ $savedBankName }}"
+                                     style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; display: block;">
+                            @else
+                                <span style="font-size: 20px; font-weight: 700; color: #ffffff; text-align: center; padding: 16px;">
+                                    {{ $savedBankName }}
+                                </span>
+                            @endif
                         </div>
                         <div style="display: flex; gap: 8px; justify-content: flex-end; width: 100%; margin-top: auto;">
                             <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 13px;"
@@ -532,6 +627,162 @@
                 viewer.remove();
             }
         }
+
+        const BOLIVIA_BANKS_LIST = [
+            { name: 'Banco Unión S.A.', keywords: 'banco union sa estatal', short: 'UNIÓN', color: '#004B87', logo: "{{ asset('images/bancos/banco-union-logo.png') }}" },
+            { name: 'Banco Mercantil Santa Cruz (BMSC)', keywords: 'banco mercantil santa cruz bmsc', short: 'BMSC', color: '#00593B', logo: "{{ asset('images/bancos/bmsc-logo.png') }}" },
+            { name: 'Banco Nacional de Bolivia (BNB)', keywords: 'banco nacional de bolivia bnb', short: 'BNB', color: '#14532D', logo: "{{ asset('images/bancos/bnb_logo_portada.jpg') }}" },
+            { name: 'Banco BISA S.A.', keywords: 'banco bisa sa', short: 'BISA', color: '#003366', logo: "{{ asset('images/bancos/bisa-logo.jpeg') }}" },
+            { name: 'Banco Ganadero S.A.', keywords: 'banco ganadero sa bg', short: 'BG', color: '#15803D', logo: "{{ asset('images/bancos/ganadero-logo.png') }}" },
+            { name: 'Banco Económico S.A.', keywords: 'banco economico sa baneco', short: 'BANECO', color: '#B91C1C', logo: "{{ asset('images/bancos/banco-economico-logo.png') }}" },
+            { name: 'Banco FIE S.A.', keywords: 'banco fie sa', short: 'FIE', color: '#9D174D', logo: "{{ asset('images/bancos/fie-logo.png') }}" },
+            { name: 'BancoSol S.A.', keywords: 'bancosol banco sol solidario', short: 'SOL', color: '#C2410C', logo: "{{ asset('images/bancos/bancosol-logo.jpeg') }}" },
+            { name: 'Banco Fortaleza S.A.', keywords: 'banco fortaleza sa', short: 'FORT', color: '#1E3A8A', logo: "{{ asset('images/bancos/fortaleza-logo.png') }}" },
+            { name: 'Banco Prodem S.A.', keywords: 'banco prodem sa', short: 'PRODEM', color: '#065F46', logo: "{{ asset('images/bancos/prodem-logo.png') }}" },
+            { name: 'Banco PyME Ecofuturo', keywords: 'banco pyme ecofuturo', short: 'ECO', color: '#166534', logo: "{{ asset('images/bancos/ecofuturo-logo.png') }}" },
+            { name: 'Cooperativa Jesús Nazareno', keywords: 'cooperativa jesus nazareno cjn', short: 'CJN', color: '#047857', logo: "{{ asset('images/bancos/jesus-nazareno-logo.png') }}" },
+            { name: 'Yape / Billetera Móvil', keywords: 'yape tigo money billetera movil', short: 'YAPE', color: '#6B21A8', logo: "{{ asset('images/bancos/yape-logo.png') }}" }
+        ];
+
+        function normalizeBankSearch(str) {
+            return (str || '')
+                .toString()
+                .toLowerCase()
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .trim();
+        }
+
+        function renderBoliviaBankDropdown(query = '') {
+            const dropdown = document.getElementById('boliviaBankDropdownList');
+            const input = document.getElementById('bankname');
+            if (!dropdown || !input) return;
+
+            const currentVal = normalizeBankSearch(input.value);
+            const normQuery = normalizeBankSearch(query);
+
+            // Ordenar para que las coincidencias aparezcan primero al escribir con el teclado
+            let sortedBanks = [...BOLIVIA_BANKS_LIST];
+            if (normQuery.length > 0) {
+                sortedBanks.sort((a, b) => {
+                    const aName = normalizeBankSearch(a.name);
+                    const bName = normalizeBankSearch(b.name);
+                    const aKey = normalizeBankSearch(a.keywords);
+                    const bKey = normalizeBankSearch(b.keywords);
+
+                    const aStarts = aName.startsWith(normQuery) || aKey.split(' ').some(w => w.startsWith(normQuery));
+                    const bStarts = bName.startsWith(normQuery) || bKey.split(' ').some(w => w.startsWith(normQuery));
+                    if (aStarts && !bStarts) return -1;
+                    if (!aStarts && bStarts) return 1;
+
+                    const aContains = aName.includes(normQuery) || aKey.includes(normQuery);
+                    const bContains = bName.includes(normQuery) || bKey.includes(normQuery);
+                    if (aContains && !bContains) return -1;
+                    if (!aContains && bContains) return 1;
+                    return 0;
+                });
+            }
+
+            let html = '';
+            sortedBanks.forEach((bank) => {
+                const normBankName = normalizeBankSearch(bank.name);
+                const isSelected = currentVal.length > 0 && normBankName === currentVal;
+                const escapedName = bank.name.replace(/'/g, "\\'");
+
+                html += `
+                    <div onclick="selectBoliviaBank('${escapedName}', false)"
+                         onmouseover="this.style.backgroundColor='#f3f4f6'"
+                         onmouseout="this.style.backgroundColor='#ffffff'"
+                         style="display: flex; align-items: center; justify-content: space-between; padding: 9px 14px; cursor: pointer; background-color: #ffffff; font-size: 14px; color: #333333; ${isSelected ? 'font-weight: 600;' : 'font-weight: 400;'}">
+                        <div style="display: flex; align-items: center; gap: 10px; min-width: 0;">
+                            <img src="${bank.logo}" alt="${bank.short}" style="width: 20px; height: 20px; min-width: 20px; object-fit: contain; border-radius: 4px;"
+                                 onerror="this.style.display='none';">
+                            <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${bank.name}</span>
+                        </div>
+                        <span style="color: #333333; font-size: 13px; margin-left: 8px;">${isSelected ? '&#10003;' : ''}</span>
+                    </div>
+                `;
+            });
+
+            // Opción "Otro" al final con el mismo color y estilo simple que las demás opciones
+            html += `
+                <div onclick="selectBoliviaBank('', true)"
+                     onmouseover="this.style.backgroundColor='#f3f4f6'"
+                     onmouseout="this.style.backgroundColor='#ffffff'"
+                     style="display: flex; align-items: center; justify-content: space-between; padding: 9px 14px; cursor: pointer; background-color: #ffffff; font-size: 14px; color: #333333;">
+                    <span>Otro</span>
+                </div>
+            `;
+
+            dropdown.innerHTML = html;
+            dropdown.scrollTop = 0;
+        }
+
+        function openBoliviaBankDropdown() {
+            const dropdown = document.getElementById('boliviaBankDropdownList');
+            const chevron = document.getElementById('bankDropdownChevron');
+            const input = document.getElementById('bankname');
+            if (!dropdown) return;
+
+            renderBoliviaBankDropdown(input ? input.value : '');
+            dropdown.style.display = 'block';
+            if (chevron) chevron.style.transform = 'rotate(180deg)';
+        }
+
+        function closeBoliviaBankDropdown() {
+            const dropdown = document.getElementById('boliviaBankDropdownList');
+            const chevron = document.getElementById('bankDropdownChevron');
+            if (dropdown) dropdown.style.display = 'none';
+            if (chevron) chevron.style.transform = 'rotate(0deg)';
+        }
+
+        function toggleBoliviaBankDropdown(event) {
+            if (event) event.stopPropagation();
+            const dropdown = document.getElementById('boliviaBankDropdownList');
+            if (!dropdown) return;
+            if (dropdown.style.display === 'block') {
+                closeBoliviaBankDropdown();
+            } else {
+                openBoliviaBankDropdown();
+                const input = document.getElementById('bankname');
+                if (input) input.focus();
+            }
+        }
+
+        function filterBoliviaBankDropdown(value) {
+            const hint = document.getElementById('customBankHint');
+            if (hint) hint.style.display = 'none';
+            openBoliviaBankDropdown();
+            renderBoliviaBankDropdown(value);
+        }
+
+        function selectBoliviaBank(bankName, isOther = false) {
+            const input = document.getElementById('bankname');
+            const hint = document.getElementById('customBankHint');
+            if (!input) return;
+
+            if (isOther) {
+                input.value = '';
+                input.placeholder = 'Escriba aquí el nombre de su banco...';
+                input.dispatchEvent(new Event('input', { bubbles: true }));
+                if (hint) hint.style.display = 'block';
+                closeBoliviaBankDropdown();
+                setTimeout(() => input.focus(), 50);
+            } else {
+                input.value = bankName;
+                input.dispatchEvent(new Event('input', { bubbles: true }));
+                if (hint) hint.style.display = 'none';
+                closeBoliviaBankDropdown();
+            }
+        }
+
+        // Cerrar la lista al hacer clic fuera del selector
+        document.addEventListener('click', function(e) {
+            const wrapper = document.getElementById('bolivia-bank-selector-wrapper');
+            if (wrapper && !wrapper.contains(e.target)) {
+                closeBoliviaBankDropdown();
+            }
+        });
     </script>
 @endpush
 
