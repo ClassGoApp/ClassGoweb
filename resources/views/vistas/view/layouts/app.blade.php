@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="{{ asset('css/estilos/trabajamos.css') }}">
     <link rel="stylesheet" href="{{ asset('css/estilos/preguntas.css') }}">
     <link rel="stylesheet" href="{{ asset('css/estilos/buscartutor.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/estilos/tutor-perfil.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/estilos/tutor-perfil.css') }}?v={{ filemtime(public_path('css/estilos/tutor-perfil.css')) }}">
     <link rel="stylesheet" href="{{ asset('css/estilos/terminos.css') }}">
     <link rel="stylesheet" href="{{ asset('css/estilos/buscar.css') }}">
     <link rel="stylesheet" href="{{ asset('css/estilos/error404.css') }}">

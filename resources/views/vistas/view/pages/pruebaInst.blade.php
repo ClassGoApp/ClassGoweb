@@ -794,6 +794,11 @@
             transform: translate(-50%, -46%) rotateY(180deg);
         }
 
+        .tutor-card.is-active.is-flipped {
+            height: min(82dvh, 470px);
+            max-height: calc(100dvh - 70px);
+        }
+
         .card-face {
             position: absolute;
             inset: 0;
@@ -1009,6 +1014,15 @@
             justify-content: space-between;
             text-align: center;
             background: #ffffff;
+            overflow-y: auto;
+        }
+
+        .checkout-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+            width: 100%;
         }
 
         .summary-box {
@@ -1123,7 +1137,7 @@
 
         .upload-field {
             text-align: left;
-            margin-bottom: 1.2rem;
+            margin-bottom: 0.75rem;
         }
 
         .upload-field label {
@@ -1131,7 +1145,7 @@
             font-size: 0.7rem;
             font-weight: 700;
             color: var(--primary-color);
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.35rem;
             transition: var(--transition);
         }
 
@@ -1145,6 +1159,8 @@
             gap: 0.6rem;
             transition: var(--transition);
             background: #fff;
+            min-width: 0;
+            overflow: hidden;
         }
 
         .custom-file-input:hover {
@@ -1155,6 +1171,11 @@
             font-size: 0.6rem;
             color: var(--text-muted);
             transition: var(--transition);
+            display: block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
         }
 
         /* Estado de error */
@@ -3792,6 +3813,32 @@
 
             .tutor-card.is-flipped {
                 transform: translate(-50%, -46%) rotateY(180deg);
+            }
+
+            .tutor-card.is-active.is-flipped {
+                height: min(84dvh, 440px);
+                max-height: calc(100dvh - 60px);
+            }
+
+            .card-face-back {
+                padding: 0.55rem 0.75rem 0.65rem;
+            }
+
+            .qr-clickable {
+                margin: 0.2rem 0 0.35rem;
+            }
+
+            .qr-clickable img {
+                width: 96px;
+                height: 96px;
+            }
+
+            .upload-field {
+                margin-bottom: 0.45rem;
+            }
+
+            .btn-pay {
+                padding: 0.75rem;
             }
 
             .card-header {

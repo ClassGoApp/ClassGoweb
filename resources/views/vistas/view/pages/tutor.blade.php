@@ -310,15 +310,26 @@
     const actionBar = document.querySelector('.tutor-col-actions');
 
     window.addEventListener('scroll', () => {
+        if (!actionBar) return;
+        if (window.innerWidth > 768) {
+            actionBar.classList.remove('hidden');
+            return;
+        }
         const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
         if (currentScroll > lastScroll) {
-            // Scroll hacia abajo → ocultar
+            // Scroll hacia abajo → mostrar barra en móvil
             actionBar.classList.remove('hidden');
         } else {
-            // Scroll hacia arriba → mostrar
+            // Scroll hacia arriba → ocultar barra en móvil
             actionBar.classList.add('hidden');
         }
         lastScroll = currentScroll <= 0 ? 0 : currentScroll; // Evita valores negativos
+    });
+
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 768 && actionBar) {
+            actionBar.classList.remove('hidden');
+        }
     });
 
 
