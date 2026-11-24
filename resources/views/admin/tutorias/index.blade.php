@@ -59,6 +59,52 @@ td[data-label="Estado"] {
 .badge-rechazado      { background: #ffeaea; color: #ff0000; }
 .badge-completado     { background: #e6f7fa; color: #56C5DE; }
 .badge-no_completado  { background: #f0f0f0; color: #888; }
+.admin-tip {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: default;
+}
+.admin-tip::after {
+    content: attr(data-tip);
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1e293b;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 1.2;
+    padding: 4px 8px;
+    border-radius: 5px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.12s ease;
+    z-index: 9999;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+.admin-tip:hover::after {
+    opacity: 1;
+}
+.tb-table-compact th,
+.tb-table-compact td {
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+}
+.tb-table-compact {
+    table-layout: fixed;
+    width: 100%;
+}
+.tb-table-compact .col-tipo {
+    width: 42px !important;
+    max-width: 42px !important;
+    padding-left: 2px !important;
+    padding-right: 2px !important;
+    overflow: hidden;
+}
 </style>
 @endpush
 

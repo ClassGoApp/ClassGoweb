@@ -2,24 +2,44 @@
     <main class="tb-main am-dispute-system am-user-system">
         <div class="row">
             <div class="col-lg-12 col-md-12">
-                <div class="tb-dhb-mainheading">
-                    <h4> {{ __('Tutorías') }}</h4>
-                    <div class="tb-sortby">
-                        <form class="tb-themeform tb-displistform" wire:submit.prevent>
-                            <fieldset>
-                                @include('livewire.admin.components.filtros_tutorias')
-                            </fieldset>
-                        </form>
+                <div class="tb-dhb-mainheading" style="flex-direction: column; align-items: stretch; gap: 8px; padding-bottom: 10px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px;">
+                        <h4 style="margin: 0;"> {{ __('Tutorías') }}</h4>
+                        @if (isset($resumen))
+                        <div style="display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: 12px;">
+                            <span style="background: #f8f9fa; color: #222; border: 1px solid #e2e8f0; padding: 3px 8px; border-radius: 6px;">
+                                Total: <strong>{{ $resumen['total'] }}</strong>
+                            </span>
+                            <span class="admin-tip" data-tip="Tutorías Instantáneas" style="background: #f8f9fa; color: #222; border: 1px solid #e2e8f0; padding: 3px 8px; border-radius: 6px;">
+                                <i class="fas fa-bolt me-1"></i> <strong>{{ $resumen['instantaneas'] }}</strong>
+                            </span>
+                            <span class="admin-tip" data-tip="Tutorías por Reserva" style="background: #f8f9fa; color: #222; border: 1px solid #e2e8f0; padding: 3px 8px; border-radius: 6px;">
+                                <i class="far fa-calendar-check me-1"></i> <strong>{{ $resumen['directas'] }}</strong>
+                            </span>
+                            <span class="admin-tip" data-tip="Tutorías con comprobante subido" style="background: #f8f9fa; color: #222; border: 1px solid #e2e8f0; padding: 3px 8px; border-radius: 6px;">
+                                <i class="fas fa-receipt me-1"></i> <strong>{{ $resumen['con_comprobante'] }}</strong>
+                            </span>
+                            <span style="background: #f8f9fa; color: #222; border: 1px solid #e2e8f0; padding: 3px 8px; border-radius: 6px;">
+                                <strong>{{ number_format((float) $resumen['monto_total'], 2) }} Bs.</strong>
+                            </span>
+                        </div>
+                        @endif
                     </div>
+                    <form class="tb-themeform tb-displistform" wire:submit.prevent style="width: 100%; margin: 0;">
+                        <fieldset style="padding: 0; margin: 0;">
+                            @include('livewire.admin.components.filtros_tutorias')
+                        </fieldset>
+                    </form>
                 </div>
                 <div class="am-disputelist_wrap">
                     <div class="am-disputelist am-custom-scrollbar-y">
                         @if ($tutorias->count())
                         <table
-                            class="tb-table @if (setting('_general.table_responsive') == 'yes') tb-table-responsive @endif">
+                            class="tb-table tb-table-compact @if (setting('_general.table_responsive') == 'yes') tb-table-responsive @endif">
                             <thead>
                                 <tr>
                                     <th style="width: 40px; text-align: center;">#</th>
+                                    <th style="width: 85px; text-align: center;">Tipo</th>
                                     <th style="text-align: left;">Tutor</th>
                                     <th style="text-align: left;">Estudiante</th>
                                     <th style="width: 110px; text-align: center;">Fecha</th>
@@ -70,16 +90,47 @@
                                 @endphp --}}
 
 
+                                @php
+                                    $meta = $tutoria->meta_data;
+                                    if (is_string($meta)) {
+                                        $meta = json_decode($meta, true);
+                                    }
+                                    $meta = is_array($meta) ? $meta : [];
+                                    $esInstantanea = ($meta['source'] ?? null) === 'email_batch' || ($meta['mode'] ?? null) === 'instant_auto';
+                                    $canal = $meta['channel'] ?? null;
+                                @endphp
                                 <tr>
-                                    <td style="text-align: center;">{{ $tutoria->id }}</td>
+                                    <td style="text-align: center; white-space: nowrap;">{{ $tutoria->id }}</td>
+                                    <td style="text-align: center; white-space: nowrap; font-size: 13px;">
+                                        <div style="display: flex; flex-direction: column; align-items: center; gap: 1px; line-height: 1;">
+                                        @if ($esInstantanea)
+                                            <span class="admin-tip" data-tip="Instantánea" style="color: #222;">
+                                                <i class="fas fa-bolt"></i>
+                                            </span>
+                                        @else
+                                            <span class="admin-tip" data-tip="Reserva" style="color: #222;">
+                                                <i class="far fa-calendar-check"></i>
+                                            </span>
+                                        @endif
+                                        @if ($canal === 'app')
+                                            <span class="admin-tip" data-tip="App Móvil" style="color: #222;">
+                                                <i class="fas fa-mobile-alt"></i>
+                                            </span>
+                                        @else
+                                            <span class="admin-tip" data-tip="Web" style="color: {{ $canal === 'web' ? '#222' : '#888' }};">
+                                                <i class="fas fa-globe"></i>
+                                            </span>
+                                        @endif
+                                        </div>
+                                    </td>
                                     <td style="text-align: left;">{{ $tutoria->tutor?->full_name ?? '-' }}</td>
                                     <td style="text-align: left;">{{ $tutoria->student?->full_name ?? '-' }}
                                     </td>
-                                    <td style="text-align: center;">
+                                    <td style="text-align: center; white-space: nowrap;">
                                         {{ \Carbon\Carbon::parse($tutoria->start_time)->format('Y-m-d') }}</td>
-                                    <td style="text-align: center;">
+                                    <td style="text-align: center; white-space: nowrap;">
                                         {{ \Carbon\Carbon::parse($tutoria->start_time)->format('H:i') }}</td>
-                                    <td style="text-align: center;">
+                                    <td style="text-align: center; white-space: nowrap;">
                                         {{ \Carbon\Carbon::parse($tutoria->end_time)->format('H:i') }}</td>
                                     <td style="text-align: center;">
                                         <span
@@ -95,23 +146,21 @@
                                             style="display: flex; align-items: center; justify-content: center; width: 100%;">
                                             @if (!empty($tutoria->paymentSlotBooking?->image_url))
                                             <a href="{{ Storage::url($tutoria->paymentSlotBooking->image_url) }}"
-                                                target="_blank" style="margin-left: 12px;">
+                                                target="_blank">
                                                 <img src="{{ Storage::url($tutoria->paymentSlotBooking->image_url) }}"
                                                     alt="Comprobante"
                                                     style="max-width: 60px; max-height: 60px; border-radius: 6px; display: block;" />
                                             </a>
                                             @else
-                                            <span style="margin-left: 12px;">Sin comprobante</span>
+                                            <span style="color: #94a3b8; font-size: 12px;">Sin comprobante</span>
                                             @endif
                                         </div>
                                     </td>
 
                                     <td style="text-align: center;">
                                         @php
-                                        $qrPayout = $tutoria->tutor->user->userPayouts->firstWhere('payout_method',
-                                        'QR');
-                                        $bankPayout = $tutoria->tutor->user->userPayouts->firstWhere('payout_method',
-                                        'bank');
+                                        $qrPayout = $tutoria->tutor?->user?->userPayouts?->firstWhere('payout_method', 'QR');
+                                        $bankPayout = $tutoria->tutor?->user?->userPayouts?->firstWhere('payout_method', 'bank');
                                         $bankDetails = is_array($bankPayout?->payout_details)
                                         ? $bankPayout->payout_details
                                         : (is_string($bankPayout?->payout_details) ?
@@ -120,21 +169,20 @@
                                         <div
                                             style="display: flex; align-items: center; justify-content: center; width: 100%;">
                                             @if (!empty($qrPayout?->img_qr))
-                                            <a href="{{ Storage::url($qrPayout->img_qr) }}" target="_blank"
-                                                style="margin-left: 12px;">
+                                            <a href="{{ Storage::url($qrPayout->img_qr) }}" target="_blank">
                                                 <img src="{{ Storage::url($qrPayout->img_qr) }}" alt="QR de Pago Tutor"
                                                     style="max-width: 60px; max-height: 60px; border-radius: 6px; display: block;" />
                                             </a>
                                             @else
                                             @if(!empty($bankDetails))
-                                            <span style="margin-left: 12px;">
+                                            <span style="font-size: 12px; text-align: left;">
                                                 <strong>{{ $bankDetails['bankName'] ?? '-' }}</strong><br>
                                                 Tipo: {{ $bankDetails['title'] ?? '-' }}<br>
                                                 Cuenta: {{ $bankDetails['accountNumber'] ?? '-' }}<br>
                                                 Ruta: {{ $bankDetails['bankRoutingNumber'] ?? '-' }}
                                             </span>
                                             @else
-                                            <span style="margin-left: 12px;">Sin datos bancarios</span>
+                                            <span style="color: #94a3b8; font-size: 12px;">Sin datos bancarios</span>
                                             @endif
 
                                             @endif

@@ -1309,8 +1309,9 @@ class SubjectPickerController extends Controller
         ]);
 
         $itemId = (int) $data['item_id'];
+        $channel = $this->detectRequestChannel($request);
 
-        return DB::transaction(function () use ($batch, $itemId) {
+        return DB::transaction(function () use ($batch, $itemId, $channel) {
 
             // Lock del batch para evitar doble elección simultánea
             $batch = EmailBatch::query()
@@ -1623,8 +1624,9 @@ class SubjectPickerController extends Controller
         ]);
 
         $itemId = (int) $data['item_id'];
+        $channel = $this->detectRequestChannel($request);
 
-        return DB::transaction(function () use ($batch, $itemId) {
+        return DB::transaction(function () use ($batch, $itemId, $channel) {
 
             $batchRow = DB::table('email_batches')
                 ->where('id', (int) $batch->id)
@@ -1702,6 +1704,7 @@ class SubjectPickerController extends Controller
                 'meeting_link' => null,
                 'status' => 2, // Reserved / Pendiente de pago
                 'meta_data' => json_encode([
+                    'channel' => $channel,
                     'source' => 'email_batch',
                     'batch_id' => (int) $batchRow->id,
                     'item_id' => (int) $item->id,
@@ -3082,8 +3085,9 @@ class SubjectPickerController extends Controller
 
         $itemId = (int) $data['item_id'];
         $studentId = (int) Auth::id();
+        $channel = $this->detectRequestChannel($request);
 
-        return DB::transaction(function () use ($batch, $itemId, $studentId) {
+        return DB::transaction(function () use ($batch, $itemId, $studentId, $channel) {
 
             $b = EmailBatch::query()
                 ->whereKey($batch->id)
@@ -3188,6 +3192,7 @@ class SubjectPickerController extends Controller
                 'meeting_link' => $meetLink,
                 'status' => 2, // ✅ pendiente (reservado 7 min)
                 'meta_data' => json_encode([
+                    'channel' => $channel,
                     'mode' => 'instant_auto',
                     'wait_minutes' => $waitMinutes,
                     'session_minutes' => $sessionMinutes,
@@ -3321,5 +3326,28 @@ class SubjectPickerController extends Controller
             'student_phone' => $student->phone_number ?? '-',
             'subject_name' => $subjectName ?: '-',
         ];
+    }
+
+    /**
+     * Detecta si la petición proviene de la app móvil o de la web.
+     */
+    private function detectRequestChannel(Request $request): string
+    {
+        $ua = strtolower((string) $request->userAgent());
+        $platformHeader = strtolower((string) $request->header('X-Platform', ''));
+
+        if (
+            $platformHeader === 'app'
+            || $platformHeader === 'mobile'
+            || $request->bearerToken()
+            || str_contains($ua, 'dart')
+            || str_contains($ua, 'okhttp')
+            || str_contains($ua, 'expo')
+            || str_contains($ua, 'reactnative')
+        ) {
+            return 'app';
+        }
+
+        return 'web';
     }
 }

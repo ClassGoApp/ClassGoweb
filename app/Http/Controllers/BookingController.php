@@ -641,15 +641,16 @@ class BookingController extends Controller
 
 
             $metaData = [
-                'date'        => $dateStr,
-                'start'       => $reqStart,
-                'end'         => $reqEnd,
-                'coupon_id'   => $couponId,
-                'coupon_code' => $couponCodigo,
+                'channel'      => 'web',
+                'date'         => $dateStr,
+                'start'        => $reqStart,
+                'end'          => $reqEnd,
+                'coupon_id'    => $couponId,
+                'coupon_code'  => $couponCodigo,
                 'discount_pct' => $descuentoPct,
-                'base_price'  => $precioBase,
-                'final_price' => $precioFinal,
-                'is_free'     => $isFreeComputed ? 1 : 0,
+                'base_price'   => $precioBase,
+                'final_price'  => $precioFinal,
+                'is_free'      => $isFreeComputed ? 1 : 0,
             ];
 
             // Crear la reserva usando el método adaptado (en lugar de DB::table)
@@ -1104,16 +1105,17 @@ class BookingController extends Controller
             }
 
             $metaData = [
-                'date'        => $dateStr,
-                'start'       => $reqStart,
-                'end'         => $reqEnd,
-                'slots'       => $slots,
-                'coupon_id'   => $couponId,
-                'coupon_code' => $couponCodigo,
+                'channel'      => 'web',
+                'date'         => $dateStr,
+                'start'        => $reqStart,
+                'end'          => $reqEnd,
+                'slots'        => $slots,
+                'coupon_id'    => $couponId,
+                'coupon_code'  => $couponCodigo,
                 'discount_pct' => $descuentoPct,
-                'base_price'  => $precioBase,
-                'final_price' => $precioFinal,
-                'is_free'     => $isFreeComputed ? 1 : 0,
+                'base_price'   => $precioBase,
+                'final_price'  => $precioFinal,
+                'is_free'      => $isFreeComputed ? 1 : 0,
             ];
 
             // Crear la reserva única usando el método privado

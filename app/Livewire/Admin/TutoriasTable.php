@@ -18,6 +18,8 @@ class TutoriasTable extends Component
     public $tutor = '';
     public $student = '';
     public $status = '';
+    public $tipo = '';
+    public $canal = '';
     public $perPage = 10;
     public $showModal = false;
     public $modalTutoriaId;
@@ -35,44 +37,106 @@ class TutoriasTable extends Component
 
     public function updating($property)
     {
-        if (in_array($property, ['tutor', 'student', 'status'])) {
+        if (in_array($property, ['tutor', 'student', 'status', 'tipo', 'canal', 'fecha', 'fecha_inicio', 'fecha_fin'])) {
             $this->resetPage();
         }
     }
 
+    public function filtrarHoy()
+    {
+        $hoy = now()->toDateString();
+        $this->fecha = null;
+        $this->fecha_inicio = $hoy;
+        $this->fecha_fin = $hoy;
+        $this->resetPage();
+    }
+
+    public function filtrarAyer()
+    {
+        $ayer = now()->subDay()->toDateString();
+        $this->fecha = null;
+        $this->fecha_inicio = $ayer;
+        $this->fecha_fin = $ayer;
+        $this->resetPage();
+    }
+
     public function render()
     {
-        $query = SlotBooking::with(['tutor', 'student', 'paymentSlotBooking', 'payment']);
-        if ($this->status) {
-            $query->where('status', $this->status);
+        $query = SlotBooking::with(['tutor.user.userPayouts', 'student', 'paymentSlotBooking', 'payment']);
+
+        if ($this->status !== '' && $this->status !== null) {
+            $statusValue = is_numeric($this->status) ? (int) $this->status : $this->estado($this->status);
+            $query->where('status', $statusValue);
         }
 
         if ($this->tutor) {
             $query->whereHas('tutor', function ($q) {
-                $q->where('first_name', 'like', '%' . $this->tutor . '%');
+                $q->where('first_name', 'like', '%' . $this->tutor . '%')
+                  ->orWhere('last_name', 'like', '%' . $this->tutor . '%');
             });
         }
 
         if ($this->student) {
             $query->whereHas('student', function ($q) {
-                $q->where('first_name', 'like', '%' . $this->student . '%');
+                $q->where('first_name', 'like', '%' . $this->student . '%')
+                  ->orWhere('last_name', 'like', '%' . $this->student . '%');
             });
         }
 
-        if ($this->status) {
-            $this->status = $this->estado($this->status);
-            $query->where('status', $this->status);
+        if ($this->tipo === 'instantanea') {
+            $query->where(function ($q) {
+                $q->where('meta_data', 'like', '%email_batch%')
+                  ->orWhere('meta_data', 'like', '%instant_auto%');
+            });
+        } elseif ($this->tipo === 'directa') {
+            $query->where(function ($q) {
+                $q->whereNull('meta_data')
+                  ->orWhere(function ($q2) {
+                      $q2->where('meta_data', 'not like', '%email_batch%')
+                         ->where('meta_data', 'not like', '%instant_auto%');
+                  });
+            });
         }
 
-        // Filtro por una sola fecha
+        if ($this->canal === 'app') {
+            $query->where('meta_data', 'like', '%"channel":"app"%');
+        } elseif ($this->canal === 'web') {
+            $query->where('meta_data', 'like', '%"channel":"web"%');
+        }
+
+        // Filtro por una sola fecha o rango
         if ($this->fecha) {
             $query->whereDate('start_time', $this->fecha);
         } elseif ($this->fecha_inicio && $this->fecha_fin) {
             $query->whereBetween('start_time', [$this->fecha_inicio, $this->fecha_fin . ' 23:59:59']);
+        } elseif ($this->fecha_inicio) {
+            $query->where('start_time', '>=', $this->fecha_inicio . ' 00:00:00');
+        } elseif ($this->fecha_fin) {
+            $query->where('start_time', '<=', $this->fecha_fin . ' 23:59:59');
         }
+
+        $resumenQuery = clone $query;
+        $totalFiltradas = (clone $resumenQuery)->count();
+        $totalInstantaneas = (clone $resumenQuery)->where(function ($q) {
+            $q->where('meta_data', 'like', '%email_batch%')
+              ->orWhere('meta_data', 'like', '%instant_auto%');
+        })->count();
+        $conComprobante = (clone $resumenQuery)->whereHas('paymentSlotBooking', function ($q) {
+            $q->whereNotNull('image_url')->where('image_url', '!=', '');
+        })->count();
+        $montoTotal = (clone $resumenQuery)->whereIn('status', [1, 5, 6])->sum('session_fee');
+
+        $resumen = [
+            'total' => $totalFiltradas,
+            'instantaneas' => $totalInstantaneas,
+            'directas' => max(0, $totalFiltradas - $totalInstantaneas),
+            'con_comprobante' => $conComprobante,
+            'monto_total' => $montoTotal,
+        ];
+
         $tutorias = $query->orderByDesc('start_time')->paginate($this->perPage);
 
-        return view('livewire.admin.tutorias-table', compact('tutorias'));
+        return view('livewire.admin.tutorias-table', compact('tutorias', 'resumen'));
     }
 
 
@@ -167,7 +231,8 @@ class TutoriasTable extends Component
 
     public function clearFilters()
     {
-        $this->reset(['tutor', 'student', 'fecha', 'fecha_inicio', 'fecha_fin', 'status']);
+        $this->reset(['tutor', 'student', 'fecha', 'fecha_inicio', 'fecha_fin', 'status', 'tipo', 'canal']);
+        $this->resetPage();
     }
 
     public function abrirModalPagoTutor($tutoria)
