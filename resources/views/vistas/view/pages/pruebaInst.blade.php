@@ -795,8 +795,8 @@
         }
 
         .tutor-card.is-active.is-flipped {
-            height: min(82dvh, 470px);
-            max-height: calc(100dvh - 70px);
+            height: min(85dvh, 485px);
+            max-height: calc(100dvh - 65px);
         }
 
         .card-face {
@@ -2663,7 +2663,20 @@
 
             const data = Array.isArray(json.data) ? json.data : [];
             acceptedMap = new Map(data.map(row => [row.id, row]));
+
+            if (json.booking_id && json.accepted_item_id) {
+                bookingByHeroId.set(String(json.accepted_item_id), Number(json.booking_id));
+                state.pendingItemId = String(json.accepted_item_id);
+            }
+
             renderAcceptedCards();
+
+            if (String(json.status ?? '').toLowerCase() === 'matched' && state.pendingItemId && !state.activeHeroId) {
+                const pendingCard = document.getElementById(`hero-${state.pendingItemId}`);
+                if (pendingCard) {
+                    openHero(state.pendingItemId);
+                }
+            }
         }
 
         function startAcceptedPolling(batchId) {
@@ -2711,9 +2724,22 @@
             const st = String(batch.status ?? '').toLowerCase();
             const secondsLeft = Number(batch.seconds_left ?? NaN);
 
-            if (st === 'failed' || st === 'matched' || (Number.isFinite(secondsLeft) && secondsLeft <= 0)) {
+            if (st === 'matched' && batch.booking_id && batch.accepted_item_id && Number(batch.booking_status) === 2 && (!Number.isFinite(secondsLeft) || secondsLeft > 0)) {
+                bookingByHeroId.set(String(batch.accepted_item_id), Number(batch.booking_id));
+                state.pendingItemId = String(batch.accepted_item_id);
+                if (!state.activeHeroId) {
+                    const pendingCard = document.getElementById(`hero-${state.pendingItemId}`);
+                    if (pendingCard) {
+                        openHero(state.pendingItemId);
+                    }
+                }
+                return;
+            }
+
+            if (st === 'failed' || st === 'done' || st === 'matched' || (Number.isFinite(secondsLeft) && secondsLeft <= 0)) {
                 stopPollingAll();
                 currentBatchId = null;
+                closeHero(true);
                 if (btnNewSearch) btnNewSearch.classList.remove('hidden');
                 if (waitMsg) waitMsg.textContent = window.translateText(
                     'instant_tutor_search_finished',
@@ -2856,10 +2882,26 @@
                 });
 
                 const json = await res.json().catch(() => ({}));
-                if (!res.ok || !json.active || !json.batch_id) return false;
+                if (!res.ok || !json.active) return false;
+
+                if (json.phase === 'waiting_tutor' && json.redirect_url) {
+                    window.location.href = json.redirect_url;
+                    return true;
+                }
+
+                if (!json.batch_id) return false;
+
+                if (json.booking_id && json.accepted_item_id) {
+                    bookingByHeroId.set(String(json.accepted_item_id), Number(json.booking_id));
+                    state.pendingItemId = String(json.accepted_item_id);
+                }
 
                 showRadar();
-                if (statusMsg) statusMsg.innerText = `Reanudando búsqueda activa (Batch #${json.batch_id})...`;
+                if (statusMsg) {
+                    statusMsg.innerText = json.phase === 'payment_pending'
+                        ? `Retomando pago pendiente (Batch #${json.batch_id})...`
+                        : `Reanudando búsqueda activa (Batch #${json.batch_id})...`;
+                }
                 if (wBatchId) wBatchId.textContent = String(json.batch_id);
 
                 startPolling(json.batch_id);
@@ -3034,6 +3076,7 @@
             </div>
 
             <button class="btn-pay" type="button" data-pay="${id}">${window.translateText('instant_tutor_pay_now', 'PAGAR AHORA')}</button>
+            <button class="btn-cancel" type="button" data-cancel-pay="${id}" style="margin-top:0.35rem;width:100%;text-align:center;">${window.translateText('instant_tutor_cancel_request', 'Cancelar solicitud')}</button>
           </div>
 
           <div class="payment-success hidden" id="payment-success-${id}">
@@ -3049,9 +3092,14 @@
 
                 const openBtn = wrapper.querySelector('[data-hero-open]');
                 const payBtn = wrapper.querySelector('[data-pay]');
+                const cancelPayBtn = wrapper.querySelector('[data-cancel-pay]');
                 const fileInput = wrapper.querySelector('.real-file-input');
                 const fakePicker = wrapper.querySelector('.custom-file-input');
                 const qrClickable = wrapper.querySelector('.qr-clickable');
+
+                cancelPayBtn?.addEventListener('click', () => {
+                    openCancelBatchModal();
+                });
 
                 openBtn?.addEventListener('click', () => {
                     openBtn.textContent = window.translateText('instant_tutor_requesting', 'SOLICITANDO...');
@@ -3088,6 +3136,15 @@
             }
 
             state.activeHeroId = id;
+
+            // Historial del navegador: al abrir el checkout QR, registramos el estado.
+            // Si el usuario pulsa la flecha "Atrás" del navegador o móvil, popstate lo captura
+            // para cerrar la tarjeta sin sacarlo del sitio ni romper su flujo.
+            if (window.history && window.history.pushState) {
+                if (!window.history.state || window.history.state.instantModal !== 'qr_checkout') {
+                    window.history.pushState({ instantModal: 'qr_checkout', heroId: id }, '');
+                }
+            }
 
             const grid = document.getElementById('tutor-results');
             const card = document.getElementById(`hero-${id}`);
@@ -3345,7 +3402,7 @@
             bookingPollTimers.set(key, t);
         }
 
-        function closeHero(instant = false) {
+        function closeHero(instant = false, fromPopState = false) {
             const id = state.activeHeroId;
             if (!id) return;
 
@@ -3364,7 +3421,27 @@
             document.body.classList.remove('lock-scroll');
 
             state.activeHeroId = null;
+
+            if (!fromPopState && window.history && window.history.state && window.history.state.instantModal === 'qr_checkout') {
+                window.history.back();
+            }
         }
+
+        // Intercepta la flecha "Atrás" del navegador o gestos de regreso en móviles
+        window.addEventListener('popstate', (e) => {
+            if (state.activeHeroId) {
+                // En vez de sacar al usuario de la web, des-voltea la tarjeta de pago
+                closeHero(false, true);
+            }
+        });
+
+        // Advertencia si intenta recargar la página o cerrar la pestaña teniendo un pago pendiente
+        window.addEventListener('beforeunload', (e) => {
+            if (state.activeHeroId && bookingByHeroId.has(String(state.activeHeroId))) {
+                e.preventDefault();
+                e.returnValue = '';
+            }
+        });
 
         /* ========================================================================
               accion del boton de cancelar

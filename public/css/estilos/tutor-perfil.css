@@ -1419,6 +1419,12 @@
     margin-top: 1.5rem;
 }
 
+.tutor-guest-action-link {
+    display: block;
+    width: 100%;
+    text-decoration: none;
+}
+
 .tutor-btn {
     width: 100%;
     display: flex;
@@ -2555,6 +2561,15 @@ a.tutor-tooltip-wrapper {
     a.tutor-tooltip-wrapper {
         display: inline-flex;
         width: 50%;
+    }
+    .tutor-guest-action-link {
+        display: inline-flex;
+        flex: 1;
+        width: 50%;
+    }
+    .tutor-guest-action-link .tutor-btn {
+        font-size: 0.95rem;
+        padding: 0.8rem 0.5rem;
     }
     .favorite-button-container-blue {
         display: inline-flex;

@@ -274,14 +274,23 @@
         </div>
 
         @role('tutor')
-         <div class="am-title_wrap">
+         @php
+            $needsGoogleReconnect = !empty($getAccountSetting['google_calendar_needs_reconnect']['needs_reconnect']);
+         @endphp
+         <div class="am-title_wrap" id="google-calendar-section">
             <div class="am-title">
                 <h2>{{ __('passwords.link_google_calendar') }}</h2>
                 <p>{{ __('passwords.link__google_calendar_schedule') }}</p>
             </div>
-        </div> 
+        </div>
+        @if($needsGoogleReconnect)
+            <div style="background: #fef3c7; border: 1px solid #f59e0b; color: #92400e; padding: 12px 16px; border-radius: 10px; margin-bottom: 14px; font-size: 0.92rem;">
+                <strong>Tu conexión con Google Calendar caducó o fue revocada.</strong>
+                Reconéctala para seguir siendo el anfitrión de tus sesiones de Google Meet.
+            </div>
+        @endif
         <div class="am-linkaccount">
-            @if(!empty($getAccountSetting['google_access_token']))
+            @if(!empty($getAccountSetting['google_access_token']) && !$needsGoogleReconnect)
             <div class="am-linkaccount_option">
                 <div class="am-linkaccount_option_title">
                     <span>{{ __('passwords.connected_account') }}</span>

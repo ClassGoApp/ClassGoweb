@@ -156,50 +156,7 @@ class GoogleMeetService
      */
     public function createMeetingPorTutord(array $meetingData, User $user): ?string
     {
-        // --- PASO 1: Obtener los tokens del usuario desde la tabla account_settings ---
-        $tokenSetting = AccountSetting::where('user_id', $user->id)
-            ->where('meta_key', 'google_access_token')
-            ->first();
-        
-        // Validar que el registro exista.
-        if (!$tokenSetting) {
-            throw new Exception('El usuario no tiene los tokens de Google necesarios.');
-        }
-
-        // El modelo ya convierte meta_value en un array.
-        // Los tokens están anidados en meta_value['data']
-        $metaValue = $tokenSetting->meta_value;
-        // log raw metaValue para inspección
-        Log::info('Meta value raw:', ['meta' => $metaValue]);
-
-        $tokenData = isset($metaValue['data']) ? $metaValue['data'] : $metaValue;
-        // log tokenData after extraction
-        Log::info('Token data extracted:', ['tokens' => $tokenData]);
-
-        if (empty($tokenData['refresh_token'])) {
-            Log::error('Refresh token missing after extraction', ['tokenData' => $tokenData]);
-            throw new Exception('El usuario no tiene los tokens de Google necesarios o falta el refresh token.');
-        }
-
-        // --- PASO 2: Configurar el cliente de Google con las credenciales de la app ---
-        $client = new Google_Client();
-        $client->setClientId(config('services.google.client_id'));
-        $client->setClientSecret(config('services.google.client_secret'));
-        $client->setRedirectUri(config('services.google.redirect'));
-
-        // --- PASO 3: Establecer los tokens específicos del usuario ---
-        $client->setAccessToken($tokenData);
-
-        // --- PASO 4: Refrescar el token si ha expirado Y GUARDAR EL NUEVO ---
-        if ($client->isAccessTokenExpired()) {
-            // Obtenemos un nuevo token de acceso usando el refresh token.
-            $client->fetchAccessTokenWithRefreshToken($tokenData['refresh_token']);
-            $newAccessToken = $client->getAccessToken();
-
-            // ¡CRUCIAL! Actualiza el registro en la tabla account_settings.
-            $tokenSetting->meta_value = $newAccessToken;
-            $tokenSetting->save();
-        }
+        $client = $this->getAuthenticatedClientForUser($user);
 
         // --- PASO 5: Crear el evento (tu lógica original) ---
         $service = new Google_Service_Calendar($client);
@@ -227,6 +184,75 @@ class GoogleMeetService
         $createdEvent = $service->events->insert($calendarId, $event, ['conferenceDataVersion' => 1]);
 
         return $createdEvent->getHangoutLink();
+    }
+
+    /**
+     * Obtiene un Google_Client autenticado para el usuario, refrescando el token si expiró
+     * y preservando siempre el refresh_token. Marca reconexión solo ante invalid_grant.
+     */
+    public function getAuthenticatedClientForUser(User $user, bool $forceRefresh = false): Google_Client
+    {
+        $tokenSetting = AccountSetting::where('user_id', $user->id)
+            ->where('meta_key', 'google_access_token')
+            ->first();
+
+        if (!$tokenSetting || empty($tokenSetting->meta_value)) {
+            throw new Exception('El usuario no tiene los tokens de Google necesarios.');
+        }
+
+        $metaValue = is_string($tokenSetting->meta_value)
+            ? json_decode($tokenSetting->meta_value, true)
+            : $tokenSetting->meta_value;
+
+        $tokenData = (is_array($metaValue) && isset($metaValue['data'])) ? $metaValue['data'] : $metaValue;
+
+        if (!is_array($tokenData) || empty($tokenData['refresh_token'])) {
+            Log::error('Refresh token missing after extraction', ['user_id' => $user->id]);
+            throw new Exception('El usuario no tiene los tokens de Google necesarios o falta el refresh token.');
+        }
+
+        $client = new Google_Client();
+        $client->setClientId(config('services.google.client_id'));
+        $client->setClientSecret(config('services.google.client_secret'));
+        $client->setRedirectUri(config('services.google.redirect'));
+        $client->setAccessToken($tokenData);
+
+        if ($forceRefresh || $client->isAccessTokenExpired()) {
+            $newAccessToken = $client->fetchAccessTokenWithRefreshToken($tokenData['refresh_token']);
+
+            if (!is_array($newAccessToken) || isset($newAccessToken['error'])) {
+                $errorCode = is_array($newAccessToken) ? ($newAccessToken['error'] ?? 'unknown_error') : 'invalid_response';
+
+                // Solo marcar reconexión si Google confirma definitivamente que el token fue revocado/caducado
+                if ($errorCode === 'invalid_grant') {
+                    AccountSetting::updateOrCreate(
+                        ['user_id' => $user->id, 'meta_key' => 'google_calendar_needs_reconnect'],
+                        ['meta_value' => [
+                            'needs_reconnect' => true,
+                            'reason' => 'invalid_grant',
+                            'detected_at' => now()->toIso8601String(),
+                        ]]
+                    );
+                }
+
+                throw new Exception('Error al refrescar el token de Google: ' . $errorCode);
+            }
+
+            // Conservar siempre el refresh_token anterior si Google no lo reenvía
+            $newAccessToken['refresh_token'] = $newAccessToken['refresh_token'] ?? $tokenData['refresh_token'];
+
+            $tokenSetting->meta_value = $newAccessToken;
+            $tokenSetting->save();
+
+            // Limpiar bandera de reconexión si el refresh funcionó
+            AccountSetting::where('user_id', $user->id)
+                ->where('meta_key', 'google_calendar_needs_reconnect')
+                ->update(['meta_value' => null]);
+
+            $client->setAccessToken($newAccessToken);
+        }
+
+        return $client;
     }
 
 

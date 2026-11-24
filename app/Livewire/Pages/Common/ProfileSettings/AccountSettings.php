@@ -117,6 +117,7 @@ class AccountSettings extends Component
         // como clave (where meta_key = array rompe la consulta).
         $this->userService->setAccountSetting('google_access_token', null);
         $this->userService->setAccountSetting('google_calendar_info', null);
+        $this->userService->setAccountSetting('google_calendar_needs_reconnect', null);
         $this->dispatch('showAlertMessage', type: 'success', title: __('passwords.success') , message: __('passwords.disconnect_calender'));
     }
 

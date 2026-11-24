@@ -449,7 +449,11 @@
                 const json = await res.json();
                 if (json.success && json.batch_id) {
                     closeInstantTutorModal();
-                    window.location.href = '/student/waiting-tutor/' + json.batch_id;
+                    if (json.status === 'matched') {
+                        window.location.href = '/tutorias-instantaneas?batch=' + json.batch_id;
+                    } else {
+                        window.location.href = '/student/waiting-tutor/' + json.batch_id;
+                    }
                 } else {
                     alert(json.message || 'Error al enviar solicitud');
                     btn.disabled = false;

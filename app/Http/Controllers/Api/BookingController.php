@@ -39,6 +39,8 @@ class BookingController extends Controller
 
     public function getUpComingBooking(Request $request)
     {
+        SubjectPickerController::cleanupExpiredInstantBookings();
+
         $filter         = $request->filter ?? [];
         $showBy         = $request->show_by;
         $type           = $request->type;
@@ -133,6 +135,8 @@ class BookingController extends Controller
 
     public function getUserBookingsById($id, Request $request)
     {
+        SubjectPickerController::cleanupExpiredInstantBookings((int) $id, (int) $id);
+
         // Buscar tutorías donde el usuario sea tutor o estudiante
         // Mismos campos que muestra la web (tutor/estudiante = first_name + last_name de profiles,
         // materia = subject->name, archivos = attachments count).

@@ -16,6 +16,22 @@
         @endif
     </div>
 
+    @if(auth()->user()->hasRole('tutor') && ($googleCalendarStatus ?? 'ok') !== 'ok')
+        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; background: #fef3c7; border: 1px solid #f59e0b; color: #92400e; padding: 14px 18px; border-radius: 12px; margin-bottom: 18px;">
+            <div style="flex: 1 1 260px; font-size: 0.94rem; line-height: 1.4;">
+                @if($googleCalendarStatus === 'needs_reconnect')
+                    <strong>Tu conexión con Google Calendar caducó.</strong> Reconéctala para ser el anfitrión de tus próximas tutorías en Meet.
+                @else
+                    <strong>Conecta tu Google Calendar.</strong> Actívalo para generar salas de Meet propias y entrar como anfitrión a tus clases.
+                @endif
+            </div>
+            <a href="{{ route('tutor.profile.personal-details') }}#google-calendar-section"
+               style="display: inline-flex; align-items: center; gap: 6px; background: #d97706; color: #ffffff; font-weight: 600; font-size: 0.9rem; padding: 9px 16px; border-radius: 8px; text-decoration: none; white-space: nowrap;">
+                {{ $googleCalendarStatus === 'needs_reconnect' ? 'Reconectar Google Calendar' : 'Conectar Google Calendar' }}
+            </a>
+        </div>
+    @endif
+
     <div class="cg-ma-layout">
 
         <aside class="cg-ma-sidebar">

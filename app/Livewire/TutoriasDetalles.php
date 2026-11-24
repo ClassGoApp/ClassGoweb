@@ -70,6 +70,11 @@ public function getStatusNameAttribute(): string
         return collect();
     }
 
+    \App\Http\Controllers\Api\SubjectPickerController::cleanupExpiredInstantBookings(
+        $user->hasRole('student') ? (int) $user->id : null,
+        $user->hasRole('tutor') ? (int) $user->id : null
+    );
+
     $service = app(SlotBookingService::class);
 
     if ($user->hasRole('student')) {
@@ -266,10 +271,30 @@ public function saveFileEvent(
 
     public function render()
     {
+        $googleCalendarStatus = 'ok';
+        $authUser = Auth::user();
+
+        if ($authUser && $authUser->hasRole('tutor')) {
+            $settings = $authUser->accountSetting()
+                ->whereIn('meta_key', ['google_access_token', 'google_calendar_needs_reconnect'])
+                ->pluck('meta_value', 'meta_key');
+
+            $tokenRaw = $settings['google_access_token'] ?? null;
+            $tokenData = is_array($tokenRaw) && isset($tokenRaw['data']) ? $tokenRaw['data'] : $tokenRaw;
+            $needsReconnect = !empty($settings['google_calendar_needs_reconnect']['needs_reconnect']);
+
+            if ($needsReconnect) {
+                $googleCalendarStatus = 'needs_reconnect';
+            } elseif (empty($tokenData) || empty($tokenData['refresh_token'])) {
+                $googleCalendarStatus = 'missing';
+            }
+        }
+
         return view('livewire.tutorias-detalles', [
             'slotBookings' => $this->bookings,
             'selectedBooking' => $this->selectedBooking,
-        ])->layout('layouts.app');;
+            'googleCalendarStatus' => $googleCalendarStatus,
+        ])->layout('layouts.app');
     }
 
 }

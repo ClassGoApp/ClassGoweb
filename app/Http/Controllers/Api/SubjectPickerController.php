@@ -476,6 +476,41 @@ class SubjectPickerController extends Controller
 
         $timeoutMinutes = 5; // define tu tiempo de espera real
 
+        self::cleanupExpiredInstantBookings($studentId, $tutorId);
+
+        // 0.a) Validar que el estudiante haya aceptado términos y condiciones
+        $studentUser = DB::table('users')->where('id', $studentId)->first();
+        if (! $studentUser || empty($studentUser->terms_accepted_at)) {
+            return response()->json([
+                'success' => false,
+                'terms_required' => true,
+                'message' => 'Debes aceptar los términos y condiciones de tutoría al instante para continuar.',
+            ], 403);
+        }
+
+        // 0.b) Validar que el estudiante no tenga ya una tutoría activa en curso
+        $ongoingStudentClass = DB::table('slot_bookings')
+            ->where('student_id', $studentId)
+            ->where('status', 1)
+            ->where('start_time', '<=', now()->addMinutes(2)->toDateTimeString())
+            ->where('end_time', '>', now()->toDateTimeString())
+            ->first();
+
+        if ($ongoingStudentClass) {
+            $tutorProfile = DB::table('profiles')->where('user_id', (int) $ongoingStudentClass->tutor_id)->first(['first_name', 'last_name']);
+            $tutorName = $tutorProfile ? trim(($tutorProfile->first_name ?? '').' '.($tutorProfile->last_name ?? '')) : 'Tutor';
+            $endTime = \Carbon\Carbon::parse($ongoingStudentClass->end_time);
+
+            return response()->json([
+                'success' => false,
+                'has_ongoing_class' => true,
+                'message' => "Ya tienes una tutoría activa en curso con {$tutorName} hasta las {$endTime->format('H:i')}.",
+                'meeting_link' => $ongoingStudentClass->meeting_link,
+                'booking_id' => $ongoingStudentClass->id,
+                'end_time' => $endTime->toDateTimeString(),
+            ], 409);
+        }
+
         return DB::transaction(function () use ($subjectId, $tutorId, $studentId, $timeoutMinutes) {
 
             // ✅ 0) Si ya hay batch activo NO expirado, devolverlo (NO crear otro)
@@ -485,11 +520,40 @@ class SubjectPickerController extends Controller
                 ->whereIn('status', ['pending', 'running', 'matched']) // matched aún “vive” hasta que se cierre
                 ->where(function ($q) {
                     $q->whereNull('expires_at')
-                        ->orWhere('expires_at', '>', now());
+                        ->orWhere('expires_at', '>', now())
+                        ->orWhere('status', 'matched');
                 })
                 ->lockForUpdate()
                 ->orderByDesc('id')
                 ->first();
+
+            if ($active && $active->status === 'matched') {
+                // Verificar si el booking asociado sigue pendiente de pago dentro del TTL
+                $activeBooking = $active->booking_id
+                    ? DB::table('slot_bookings')->where('id', (int) $active->booking_id)->first()
+                    : null;
+                $hasReceipt = $activeBooking
+                    ? DB::table('payment_slot_bookings')->where('slot_booking_id', (int) $activeBooking->id)->exists()
+                    : false;
+                $payExpired = ! $activeBooking
+                    || (int) $activeBooking->status !== 2
+                    || $hasReceipt
+                    || (! empty($activeBooking->booked_at) && \Carbon\Carbon::parse($activeBooking->booked_at)->lte(now()->subMinutes(5)));
+
+                if ($payExpired) {
+                    if ($activeBooking && (int) $activeBooking->status === 2 && ! $hasReceipt) {
+                        DB::table('slot_bookings')->where('id', (int) $activeBooking->id)->update([
+                            'status' => 3,
+                            'meeting_link' => null,
+                        ]);
+                    }
+                    $active->update([
+                        'status' => 'done',
+                        'last_error' => $hasReceipt ? null : 'payment_ttl_expired',
+                    ]);
+                    $active = null;
+                }
+            }
 
             if ($active) {
                 // rehidratar sesión en este dispositivo (opcional)
@@ -498,14 +562,23 @@ class SubjectPickerController extends Controller
                     'active_subject_id' => $active->subject_id,
                 ]);
 
+                $isMatched = $active->status === 'matched';
+                $timing = $this->batchTimingPayload($active);
+
                 return response()->json([
                     'success' => true,
                     'already_active' => true,
+                    'phase' => $isMatched ? 'payment_pending' : 'searching',
                     'batch_id' => $active->id,
                     'subject_id' => $active->subject_id,
                     'status' => $active->status,
+                    'booking_id' => $active->booking_id,
+                    'accepted_item_id' => $active->accepted_item_id,
                     'target_tutor_id' => $active->target_tutor_id,
                     'expires_at' => optional($active->expires_at)->toDateTimeString(),
+                    'expires_at_ms' => $timing['expires_at_ms'],
+                    'seconds_left' => $timing['seconds_left'],
+                    'server_now_ms' => $timing['server_now_ms'],
                 ]);
             }
 
@@ -543,12 +616,26 @@ class SubjectPickerController extends Controller
                     ], 422);
                 }
 
-                // Validar que el tutor no esté ocupado ahora
-                $busyNow = DB::table('slot_bookings')
-                    ->where('tutor_id', $tutorId)
-                    ->whereIn('status', [1, 2, 4])
-                    ->where('start_time', '<=', now())
-                    ->where('end_time', '>', now())
+                // Validar que el tutor no esté ocupado ahora (solo reservas activas o reservas en pago dentro de los 5 min de TTL)
+                $freshCutoff = now()->subMinutes(5)->toDateTimeString();
+                $busyNow = DB::table('slot_bookings as sb')
+                    ->where('sb.tutor_id', $tutorId)
+                    ->where(function ($w) use ($freshCutoff) {
+                        $w->where('sb.status', 1)
+                            ->orWhere(function ($w2) use ($freshCutoff) {
+                                $w2->whereIn('sb.status', [2, 4])
+                                    ->where(function ($w3) use ($freshCutoff) {
+                                        $w3->where('sb.booked_at', '>', $freshCutoff)
+                                            ->orWhereExists(function ($sub) {
+                                                $sub->select(DB::raw(1))
+                                                    ->from('payment_slot_bookings as psb')
+                                                    ->whereColumn('psb.slot_booking_id', 'sb.id');
+                                            });
+                                    });
+                            });
+                    })
+                    ->where('sb.start_time', '<=', now()->addMinutes(5)->toDateTimeString())
+                    ->where('sb.end_time', '>', now()->toDateTimeString())
                     ->exists();
 
                 if ($busyNow) {
@@ -711,6 +798,22 @@ class SubjectPickerController extends Controller
     }
 
     DB::transaction(function () use ($batch) {
+        if (! empty($batch->booking_id)) {
+            $hasReceipt = DB::table('payment_slot_bookings')
+                ->where('slot_booking_id', (int) $batch->booking_id)
+                ->exists();
+
+            if (! $hasReceipt) {
+                DB::table('slot_bookings')
+                    ->where('id', (int) $batch->booking_id)
+                    ->whereIn('status', [2, 4])
+                    ->update([
+                        'status' => 3,
+                        'meeting_link' => null,
+                    ]);
+            }
+        }
+
         EmailBatchItem::query()
             ->where('batch_id', $batch->id)
             ->whereIn('status', ['pending', 'sending', 'sent', 'accepted', 'chosen'])
@@ -747,6 +850,9 @@ class SubjectPickerController extends Controller
     {
         $this->ensureBatchOwner($batch);
 
+        self::cleanupExpiredInstantBookings((int) $batch->created_by);
+        $batch->refresh();
+
         $items = DB::table('email_batch_items as ebi')
             ->join('users as u', 'u.id', '=', 'ebi.user_id')
             ->where('ebi.batch_id', $batch->id)
@@ -776,12 +882,39 @@ class SubjectPickerController extends Controller
             ->count();
 
         $timing = $this->batchTimingPayload($batch);
+        $booking = null;
+        $hasReceipt = false;
+
+        if (! empty($batch->booking_id)) {
+            $booking = DB::table('slot_bookings')->where('id', (int) $batch->booking_id)->first();
+            if ($booking) {
+                $hasReceipt = DB::table('payment_slot_bookings')
+                    ->where('slot_booking_id', (int) $booking->id)
+                    ->exists();
+
+                if ($batch->status === 'matched' && (int) $booking->status === 2 && ! $hasReceipt && ! empty($booking->booked_at)) {
+                    $payExpiresAt = \Carbon\Carbon::parse($booking->booked_at)->addMinutes(5);
+                    $timing = [
+                        'expires_at_ms' => $payExpiresAt->getTimestamp() * 1000,
+                        'seconds_left' => now()->diffInSeconds($payExpiresAt, false),
+                        'server_now_ms' => now()->getTimestamp() * 1000,
+                    ];
+                }
+            }
+        }
 
         return response()->json([
             'batch' => [
                 'id' => $batch->id,
                 'subject_id' => $batch->subject_id,
+                'target_tutor_id' => $batch->target_tutor_id,
                 'status' => $batch->status,
+                'booking_id' => $batch->booking_id,
+                'accepted_item_id' => $batch->accepted_item_id,
+                'accepted_user_id' => $batch->accepted_user_id,
+                'booking_status' => $booking ? (int) $booking->status : null,
+                'has_receipt' => $hasReceipt,
+                'meeting_link' => $booking->meeting_link ?? null,
                 'sent_count' => $batch->sent_count,
                 'batch_size' => $batch->batch_size,
                 'expires_at' => optional($batch->expires_at)->toDateTimeString(),
@@ -798,27 +931,71 @@ class SubjectPickerController extends Controller
     public function active()
     {
         $studentId = (int) Auth::id();
+        self::cleanupExpiredInstantBookings($studentId);
+
         $batchId = session('active_batch_id');
+        $batch = null;
 
         // 1) Intentar por sesión
         if ($batchId) {
-            $batch = EmailBatch::query()->find($batchId);
+            $candidate = EmailBatch::query()->find($batchId);
+            if ($candidate && (int) $candidate->created_by === $studentId && in_array($candidate->status, ['pending', 'running', 'matched'], true)) {
+                $batch = $candidate;
+            } else {
+                session()->forget(['active_batch_id', 'active_subject_id']);
+            }
+        }
 
-            if ($batch && ! in_array($batch->status, ['done', 'failed'], true)) {
+        // 2) Fallback por BD (incluye matched para retomar pago QR)
+        if (! $batch) {
+            $batch = EmailBatch::query()
+                ->where('created_by', '=', $studentId)
+                ->whereIn('status', ['pending', 'running', 'matched'])
+                ->where(function ($q) {
+                    $q->whereNull('expires_at')
+                        ->orWhere('expires_at', '>', now())
+                        ->orWhere('status', 'matched');
+                })
+                ->orderByDesc('id')
+                ->first();
+        }
+
+        if ($batch) {
+            $subjectName = DB::table('subjects')->where('id', (int) $batch->subject_id)->value('name');
+
+            // Caso A: Batch buscando / esperando aceptación del tutor
+            if (in_array($batch->status, ['pending', 'running'], true)) {
                 if (! $batch->expires_at || now()->lt($batch->expires_at)) {
+                    session([
+                        'active_batch_id' => $batch->id,
+                        'active_subject_id' => $batch->subject_id,
+                    ]);
+
+                    $acceptedCount = EmailBatchItem::query()
+                        ->where('batch_id', $batch->id)
+                        ->whereIn('status', ['accepted', 'chosen'])
+                        ->count();
+
+                    $isDirectWaiting = ! empty($batch->target_tutor_id) && $acceptedCount === 0;
+                    $phase = $isDirectWaiting ? 'waiting_tutor' : 'searching';
+                    $redirectUrl = $isDirectWaiting
+                        ? route('student.waiting-tutor', ['batch' => $batch->id], false)
+                        : route('tutorias-instantaneas', ['batch' => $batch->id], false);
 
                     $timing = $this->batchTimingPayload($batch);
 
                     return response()->json([
                         'active' => true,
+                        'phase' => $phase,
+                        'redirect_url' => $redirectUrl,
                         'batch_id' => $batch->id,
                         'subject_id' => $batch->subject_id,
+                        'subject_name' => $subjectName,
+                        'target_tutor_id' => $batch->target_tutor_id,
                         'status' => $batch->status,
                         'sent_count' => $batch->sent_count,
                         'batch_size' => $batch->batch_size,
                         'expires_at' => optional($batch->expires_at)->toDateTimeString(),
-
-                        // ✅ CLAVE para contador cross-device
                         'expires_at_ms' => $timing['expires_at_ms'],
                         'seconds_left' => $timing['seconds_left'],
                         'server_now_ms' => $timing['server_now_ms'],
@@ -826,47 +1003,102 @@ class SubjectPickerController extends Controller
                 }
             }
 
-            // sesión apunta a algo inválido
-            session()->forget(['active_batch_id', 'active_subject_id']);
+            // Caso B: Batch en matched (fase de pago QR pendiente)
+            if ($batch->status === 'matched' && ! empty($batch->booking_id)) {
+                $booking = DB::table('slot_bookings')->where('id', (int) $batch->booking_id)->first();
+                $hasReceipt = $booking
+                    ? DB::table('payment_slot_bookings')->where('slot_booking_id', (int) $booking->id)->exists()
+                    : false;
+
+                if ($booking && (int) $booking->status === 2 && ! $hasReceipt && ! empty($booking->booked_at)) {
+                    $payExpiresAt = \Carbon\Carbon::parse($booking->booked_at)->addMinutes(5);
+                    if (now()->lt($payExpiresAt)) {
+                        session([
+                            'active_batch_id' => $batch->id,
+                            'active_subject_id' => $batch->subject_id,
+                        ]);
+
+                        $tutorProfile = DB::table('profiles')->where('user_id', (int) $booking->tutor_id)->first(['first_name', 'last_name']);
+                        $tutorName = $tutorProfile ? trim(($tutorProfile->first_name ?? '').' '.($tutorProfile->last_name ?? '')) : null;
+
+                        return response()->json([
+                            'active' => true,
+                            'phase' => 'payment_pending',
+                            'redirect_url' => route('tutorias-instantaneas', ['batch' => $batch->id], false),
+                            'batch_id' => $batch->id,
+                            'subject_id' => $batch->subject_id,
+                            'subject_name' => $subjectName,
+                            'tutor_name' => $tutorName,
+                            'target_tutor_id' => $batch->target_tutor_id,
+                            'status' => $batch->status,
+                            'booking_id' => (int) $booking->id,
+                            'accepted_item_id' => (int) $batch->accepted_item_id,
+                            'accepted_user_id' => (int) $batch->accepted_user_id,
+                            'sent_count' => $batch->sent_count,
+                            'batch_size' => $batch->batch_size,
+                            'expires_at' => $payExpiresAt->toDateTimeString(),
+                            'expires_at_ms' => $payExpiresAt->getTimestamp() * 1000,
+                            'seconds_left' => now()->diffInSeconds($payExpiresAt, false),
+                            'server_now_ms' => now()->getTimestamp() * 1000,
+                        ]);
+                    }
+                }
+            }
         }
 
-        // 2) Fallback por BD (más robusto)
-        $batch = EmailBatch::query()
-            ->where('created_by', '=', $studentId)
-            ->whereIn('status', ['pending', 'running'])
-            ->where(function ($q) {
-                $q->whereNull('expires_at')
-                    ->orWhere('expires_at', '>', now());
+        // 3) Caso C: Tutoría al instante ya pagada / activa en curso (dura exactamente hasta end_time del servidor)
+        $activeBooking = DB::table('slot_bookings as sb')
+            ->where('sb.student_id', $studentId)
+            ->whereNull('sb.user_subject_slot_id')
+            ->where('sb.end_time', '>', now()->toDateTimeString())
+            ->where(function ($w) {
+                $w->where('sb.status', 1)
+                    ->orWhere(function ($w2) {
+                        $w2->where('sb.status', 2)
+                            ->whereExists(function ($sub) {
+                                $sub->select(DB::raw(1))
+                                    ->from('payment_slot_bookings as psb')
+                                    ->whereColumn('psb.slot_booking_id', 'sb.id');
+                            });
+                    });
             })
-            ->orderByDesc('id')
+            ->orderByDesc('sb.id')
             ->first();
 
-        if (! $batch) {
-            return response()->json(['active' => false]);
+        if ($activeBooking) {
+            $endAt = \Carbon\Carbon::parse($activeBooking->end_time);
+            $meta = json_decode($activeBooking->meta_data ?? '{}', true) ?: [];
+            $linkedBatchId = isset($meta['batch_id']) ? (int) $meta['batch_id'] : null;
+            $subjectName = DB::table('subjects')->where('id', (int) $activeBooking->subject_id)->value('name');
+            $tutorProfile = DB::table('profiles')->where('user_id', (int) $activeBooking->tutor_id)->first(['first_name', 'last_name']);
+            $tutorName = $tutorProfile ? trim(($tutorProfile->first_name ?? '').' '.($tutorProfile->last_name ?? '')) : null;
+            $meetUrl = ! empty($activeBooking->meeting_link)
+                ? $activeBooking->meeting_link
+                : url("/student/bookings/{$activeBooking->id}/meet");
+
+            return response()->json([
+                'active' => true,
+                'phase' => 'meet_ready',
+                'redirect_url' => $meetUrl,
+                'meeting_link' => $meetUrl,
+                'booking_id' => (int) $activeBooking->id,
+                'batch_id' => $linkedBatchId,
+                'subject_id' => (int) $activeBooking->subject_id,
+                'subject_name' => $subjectName,
+                'tutor_name' => $tutorName,
+                'status' => 'in_progress',
+                'start_time' => $activeBooking->start_time,
+                'end_time' => $activeBooking->end_time,
+                'expires_at' => $endAt->toDateTimeString(),
+                'expires_at_ms' => $endAt->getTimestamp() * 1000,
+                'seconds_left' => now()->diffInSeconds($endAt, false),
+                'server_now_ms' => now()->getTimestamp() * 1000,
+            ]);
         }
 
-        // rehidratar sesión
-        session([
-            'active_batch_id' => $batch->id,
-            'active_subject_id' => $batch->subject_id,
-        ]);
+        session()->forget(['active_batch_id', 'active_subject_id']);
 
-        $timing = $this->batchTimingPayload($batch);
-
-        return response()->json([
-            'active' => true,
-            'batch_id' => $batch->id,
-            'subject_id' => $batch->subject_id,
-            'status' => $batch->status,
-            'sent_count' => $batch->sent_count,
-            'batch_size' => $batch->batch_size,
-            'expires_at' => optional($batch->expires_at)->toDateTimeString(),
-
-            // ✅ CLAVE para contador cross-device
-            'expires_at_ms' => $timing['expires_at_ms'],
-            'seconds_left' => $timing['seconds_left'],
-            'server_now_ms' => $timing['server_now_ms'],
-        ]);
+        return response()->json(['active' => false]);
     }
 
     public function acceptWaitlist(Request $request)
@@ -968,6 +1200,9 @@ class SubjectPickerController extends Controller
     {
         $this->ensureBatchOwner($batch);
 
+        self::cleanupExpiredInstantBookings((int) $batch->created_by);
+        $batch->refresh();
+
         $afterAt = $request->query('after_accepted_at');
         $afterId = (int) $request->query('after_id', 0);
         $limit = max(1, min((int) $request->query('limit', 20), 50));
@@ -982,8 +1217,8 @@ class SubjectPickerController extends Controller
             })
             ->where('ebi.batch_id', $batch->id)
             ->whereNotNull('ebi.accepted_at')
-            // ✅ solo los que siguen aceptados (no expired/chosen)
-            ->where('ebi.status', 'accepted');
+            // ✅ Incluir también 'chosen' del propio batch para poder retomar el pago QR si retrocede
+            ->whereIn('ebi.status', ['accepted', 'chosen']);
 
         $this->applyAcceptedCursor($q, $afterAt, $afterId);
 
@@ -994,17 +1229,21 @@ class SubjectPickerController extends Controller
         $startAt = now()->addMinutes($waitMinutes);
         $endAt = (clone $startAt)->addMinutes($sessionMinutes);
 
-        // TTL de reserva: 7 min (status=2)
-        $reserveTtlMinutes = 7;
+        // TTL de reserva: 5 min (status=2)
+        $reserveTtlMinutes = 5;
         $freshCutoff = now()->subMinutes($reserveTtlMinutes)->toDateTimeString();
+        $currentBatchBookingId = ! empty($batch->booking_id) ? (int) $batch->booking_id : 0;
 
-        // Excluir tutores ocupados con overlap:
+        // Excluir tutores ocupados por OTRO booking (ignorando el booking_id pendiente de este mismo batch):
         // - status=1 bloquea siempre
-        // - status=2 bloquea solo si booked_at > now()-7min
-        $q->whereNotExists(function ($sub) use ($startAt, $endAt, $freshCutoff) {
+        // - status=2 bloquea solo si booked_at > now()-5min
+        $q->whereNotExists(function ($sub) use ($startAt, $endAt, $freshCutoff, $currentBatchBookingId) {
             $sub->select(DB::raw(1))
                 ->from('slot_bookings as sb')
                 ->whereColumn('sb.tutor_id', 'ebi.user_id')
+                ->when($currentBatchBookingId > 0, function ($q2) use ($currentBatchBookingId) {
+                    $q2->where('sb.id', '!=', $currentBatchBookingId);
+                })
                 ->where(function ($w) use ($freshCutoff) {
                     $w->where('sb.status', 1)
                         ->orWhere(function ($w2) use ($freshCutoff) {
@@ -1023,6 +1262,7 @@ class SubjectPickerController extends Controller
                 'ebi.id',
                 'ebi.user_id',
                 'ebi.accepted_at',
+                'ebi.status as item_status',
                 'u.email',
                 'p.first_name',
                 'p.last_name',
@@ -1040,6 +1280,8 @@ class SubjectPickerController extends Controller
             'count' => $rows->count(),
             'data' => $rows,
             'status' => $batch->status,
+            'booking_id' => $batch->booking_id,
+            'accepted_item_id' => $batch->accepted_item_id,
             'next_after_accepted_at' => $last?->accepted_at,
             'next_after_id' => $last?->id ?? $afterId,
         ])->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0, private')
@@ -1185,6 +1427,80 @@ class SubjectPickerController extends Controller
     }
 
     // /////////////////////  nuevo ///////////////////////
+    /**
+     * ✅ Limpia y libera automáticamente reservas de Tutoría al Instante en estado 2 (Pendiente)
+     * que superaron los 5 minutos desde booked_at sin haber subido comprobante de pago.
+     */
+    public static function cleanupExpiredInstantBookings(?int $studentId = null, ?int $tutorId = null): void
+    {
+        try {
+            $cutoff = now()->subMinutes(5)->toDateTimeString();
+
+            $expiredQuery = DB::table('slot_bookings as sb')
+                ->where('sb.status', 2)
+                ->whereNull('sb.user_subject_slot_id')
+                ->whereNotNull('sb.booked_at')
+                ->where('sb.booked_at', '<=', $cutoff)
+                ->whereNotExists(function ($sub) {
+                    $sub->select(DB::raw(1))
+                        ->from('payment_slot_bookings as psb')
+                        ->whereColumn('psb.slot_booking_id', 'sb.id');
+                });
+
+            if ($studentId) {
+                $expiredQuery->where('sb.student_id', $studentId);
+            }
+            if ($tutorId) {
+                $expiredQuery->where('sb.tutor_id', $tutorId);
+            }
+
+            $expiredBookingIds = $expiredQuery->pluck('sb.id')->map(fn ($id) => (int) $id)->toArray();
+
+            if (! empty($expiredBookingIds)) {
+                DB::table('slot_bookings')
+                    ->whereIn('id', $expiredBookingIds)
+                    ->where('status', 2)
+                    ->update([
+                        'status' => 3, // No completado / Expirado
+                        'meeting_link' => null,
+                    ]);
+
+                DB::table('email_batches')
+                    ->whereIn('booking_id', $expiredBookingIds)
+                    ->whereIn('status', ['pending', 'running', 'matched'])
+                    ->update([
+                        'status' => 'done',
+                        'last_error' => 'payment_ttl_expired',
+                        'updated_at' => now(),
+                    ]);
+            }
+
+            // También cerrar batches en 'matched' cuyo booking ya esté en estado 3 (expirado/cancelado)
+            $staleBatchesQuery = DB::table('email_batches as eb')
+                ->join('slot_bookings as sb', 'sb.id', '=', 'eb.booking_id')
+                ->where('eb.status', 'matched')
+                ->where('sb.status', 3);
+
+            if ($studentId) {
+                $staleBatchesQuery->where('eb.created_by', $studentId);
+            }
+
+            $staleBatchIds = $staleBatchesQuery->pluck('eb.id')->map(fn ($id) => (int) $id)->toArray();
+
+            if (! empty($staleBatchIds)) {
+                DB::table('email_batches')
+                    ->whereIn('id', $staleBatchIds)
+                    ->update([
+                        'status' => 'done',
+                        'last_error' => 'booking_not_completed',
+                        'updated_at' => now(),
+                    ]);
+            }
+        } catch (\Throwable $e) {
+            Log::warning('cleanupExpiredInstantBookings error: '.$e->getMessage());
+        }
+    }
+
     // ✅ Seguridad reusable
     private function ensureBatchOwner(EmailBatch $batch): void
     {
@@ -1246,13 +1562,27 @@ class SubjectPickerController extends Controller
         //     ->whereRaw('s.end_time > CURTIME()');
 
         // ✅ Ocupado AHORA según bookings (slot_bookings)
-        // (en curso o reservado/pending de pago)
+        // (en curso o reservado/pending de pago dentro de los 5 min de TTL)
+        $freshCutoff = now()->subMinutes(5)->toDateTimeString();
         $busyNowSub = DB::table('slot_bookings as sb')
             ->select(DB::raw(1))
             ->whereColumn('sb.tutor_id', 'us.user_id')
-            ->whereIn('sb.status', [1, 2, 4]) // 1 Active, 2 Rescheduled, 4 Reserved
-            ->where('sb.start_time', '<=', now())
-            ->where('sb.end_time', '>', now());
+            ->where(function ($w) use ($freshCutoff) {
+                $w->where('sb.status', 1)
+                    ->orWhere(function ($w2) use ($freshCutoff) {
+                        $w2->whereIn('sb.status', [2, 4])
+                            ->where(function ($w3) use ($freshCutoff) {
+                                $w3->where('sb.booked_at', '>', $freshCutoff)
+                                    ->orWhereExists(function ($sub) {
+                                        $sub->select(DB::raw(1))
+                                            ->from('payment_slot_bookings as psb')
+                                            ->whereColumn('psb.slot_booking_id', 'sb.id');
+                                    });
+                            });
+                    });
+            })
+            ->where('sb.start_time', '<=', now()->addMinutes(5)->toDateTimeString())
+            ->where('sb.end_time', '>', now()->toDateTimeString());
 
         if ($mustBeAvailableNow) {
             // ✅ SOLO: NO ocupado (ya no importa si tiene slot ahora)
@@ -1888,7 +2218,7 @@ class SubjectPickerController extends Controller
         $batchStatus = (string) ($batch->status ?? '');
         $batchExpired = ! empty($batch->expires_at) && now()->greaterThanOrEqualTo($batch->expires_at);
 
-        $isChosen = ($batchStatus === 'matched' && (int) $batch->accepted_item_id === (int) $item->id);
+        $isChosen = (in_array($batchStatus, ['matched', 'done'], true) && (int) $batch->accepted_item_id === (int) $item->id);
         $bookingId = (int) ($batch->booking_id ?? 0);
 
         // Si no es elegido y ya está matched/done/failed => cortar
@@ -2065,7 +2395,7 @@ class SubjectPickerController extends Controller
                 return response()->json(['ok' => false, 'message' => 'Batch not found'], 404);
             }
 
-            $isChosen = ((string) $batch->status === 'matched' && (int) $batch->accepted_item_id === (int) $item->id);
+            $isChosen = (in_array((string) $batch->status, ['matched', 'done'], true) && (int) $batch->accepted_item_id === (int) $item->id);
             if (! $isChosen) {
                 return response()->json(['ok' => false, 'message' => 'Not chosen'], 409);
             }
@@ -2086,6 +2416,17 @@ class SubjectPickerController extends Controller
 
             if ((int) $booking->tutor_id !== (int) $item->user_id) {
                 return response()->json(['ok' => false, 'message' => 'Token mismatch'], 403);
+            }
+
+            // ✅ Si el booking ya fue activado al subir el comprobante, responder idempotente con el meeting_link
+            if ((int) $booking->status === 1) {
+                return response()->json([
+                    'ok' => true,
+                    'ui_state' => 'accepted',
+                    'booking_id' => $bookingId,
+                    'booking_status' => 1,
+                    'meeting_link' => $booking->meeting_link ?: env('MEET_GENERIC_LINK', 'https://meet.google.com/upy-mxim-nrm'),
+                ]);
             }
 
             // ✅ TTL 7 min (expira en demanda)
@@ -2256,7 +2597,7 @@ class SubjectPickerController extends Controller
                 return response()->json(['ok' => false, 'message' => 'Batch not found'], 404);
             }
 
-            $isChosen = ((string) $batch->status === 'matched' && (int) $batch->accepted_item_id === (int) $item->id);
+            $isChosen = (in_array((string) $batch->status, ['matched', 'done'], true) && (int) $batch->accepted_item_id === (int) $item->id);
             if (! $isChosen) {
                 return response()->json(['ok' => false, 'message' => 'Not chosen'], 409);
             }
@@ -2277,6 +2618,17 @@ class SubjectPickerController extends Controller
 
             if ((int) $booking->tutor_id !== (int) $item->user_id) {
                 return response()->json(['ok' => false, 'message' => 'Token mismatch'], 403);
+            }
+
+            // ✅ Si el booking ya fue activado al subir el comprobante, responder idempotente con el meeting_link
+            if ((int) $booking->status === 1) {
+                return response()->json([
+                    'ok' => true,
+                    'ui_state' => 'accepted',
+                    'booking_id' => $bookingId,
+                    'booking_status' => 1,
+                    'meeting_link' => $booking->meeting_link ?: env('MEET_GENERIC_LINK', 'https://meet.google.com/upy-mxim-nrm'),
+                ]);
             }
 
             if ((int) $booking->status !== 4) {
@@ -2388,7 +2740,7 @@ class SubjectPickerController extends Controller
         $studentId = (int) Auth::id();
         $bookingId = (int) $booking;
 
-        $ttlMinutes = 7;
+        $ttlMinutes = 5;
 
         return DB::transaction(function () use ($request, $studentId, $bookingId, $ttlMinutes) {
 
@@ -2405,19 +2757,26 @@ class SubjectPickerController extends Controller
                 return response()->json(['ok' => false, 'message' => 'Forbidden'], 403);
             }
 
-            // ✅ Expirar en demanda si está pendiente(2) y ya pasaron 7 min
+            // ✅ Expirar en demanda si está pendiente(2) y ya pasaron 5 min
             if ((int) $b->status === 2 && ! empty($b->booked_at)) {
                 $bookedAt = \Carbon\Carbon::parse($b->booked_at);
                 if ($bookedAt->lte(now()->subMinutes($ttlMinutes))) {
                     DB::table('slot_bookings')->where('id', $bookingId)->update([
                         'status' => 3, // no completado / expirado
                         'meeting_link' => null,
-                        // 'updated_at' => now(),
                     ]);
+
+                    DB::table('email_batches')
+                        ->where('booking_id', $bookingId)
+                        ->update([
+                            'status' => 'done',
+                            'last_error' => 'payment_ttl_expired',
+                            'updated_at' => now(),
+                        ]);
 
                     return response()->json([
                         'ok' => false,
-                        'message' => 'La reserva expiró (7 min). Vuelve a elegir tutor.',
+                        'message' => 'La reserva expiró (5 min). Vuelve a solicitar tutor.',
                         'booking_status' => 3,
                     ], 409);
                 }
@@ -2457,40 +2816,71 @@ class SubjectPickerController extends Controller
                 ]
             );
 
-            // meet link genérico (opcional)
-            // $genericMeet = ;
-            // if (empty($b->meeting_link)) {
-            //     DB::table('slot_bookings')
-            //         ->where('id', $bookingId)
-            //         ->update([
-            //             'meeting_link' => $genericMeet,
-            //             //'updated_at' => now(),
-            //         ]);
-            // } else {
-            //     $genericMeet = $b->meeting_link;
-            // }
-            $meetingLink = $b->meeting_link; // $b viene de DB::table, puede ser null
+            DB::table('slot_payments')->updateOrInsert(
+                ['slot_booking_id' => $bookingId],
+                [
+                    'payment_date' => now()->toDateString(),
+                    'payment_method' => 'transfer',
+                    'amount' => (float) ($b->session_fee ?? 0),
+                    'status' => 2, // Pagado / verificado
+                    'message' => 'Comprobante de tutoría al instante recibido',
+                    'receipt_pdf' => $imageUrl,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]
+            );
+
+            $meetingLink = $b->meeting_link;
 
             if (empty($meetingLink)) {
-
-                // Cargar booking como Eloquent (para usar tu service tal cual lo tienes)
                 $bookingModel = SlotBooking::where('id', $bookingId)
                     ->lockForUpdate()
                     ->first();
 
-                // Llamar al servicio (DI rápido con app())
                 $slotBookingService = app(SlotBookingService::class);
 
                 $meetingLink = $slotBookingService->generarlink($bookingModel) ?: 'http://meet.google.com/upy-mxim-nrm';
+            }
 
-                if (! empty($meetingLink)) {
-                    DB::table('slot_bookings')
-                        ->where('id', $bookingId)
-                        ->update([
-                            'meeting_link' => $meetingLink,
-                            // 'updated_at' => now(),
-                        ]);
+            // ✅ Activar la tutoría (status = 1) y guardar el link de Meet
+            DB::table('slot_bookings')
+                ->where('id', $bookingId)
+                ->update([
+                    'status' => 1,
+                    'meeting_link' => $meetingLink,
+                ]);
+
+            // ✅ Cerrar el batch (la sesión continúa activa en slot_bookings hasta end_time)
+            DB::table('email_batches')
+                ->where('booking_id', $bookingId)
+                ->update([
+                    'status' => 'done',
+                    'updated_at' => now(),
+                ]);
+
+            // ✅ Enviar correo con el link de Google Meet a Estudiante y Tutor
+            try {
+                $info = $this->bookingEmailData($bookingId);
+                if ($info) {
+                    $bInfo = $info['booking'];
+                    $emails = array_filter([$info['student_email'] ?? null, $info['tutor_email'] ?? null]);
+                    $startTimeFormatted = \Carbon\Carbon::parse($bInfo->start_time)->format('H:i');
+                    $endTimeFormatted = \Carbon\Carbon::parse($bInfo->end_time)->format('H:i');
+
+                    foreach ($emails as $email) {
+                        Mail::to($email)->queue(new TutoriaInstanteAceptada(
+                            bookingId: $bookingId,
+                            subjectName: $info['subject_name'],
+                            tutorName: $info['tutor_name'] ?? '-',
+                            studentName: $info['student_name'] ?? '-',
+                            startTime: $startTimeFormatted,
+                            endTime: $endTimeFormatted,
+                            meetingLink: $meetingLink ?: env('MEET_GENERIC_LINK', 'https://meet.google.com/upy-mxim-nrm')
+                        ));
+                    }
                 }
+            } catch (\Throwable $mailErr) {
+                Log::warning('studentUploadReceipt mail queue error: '.$mailErr->getMessage());
             }
 
             // ====================================================================

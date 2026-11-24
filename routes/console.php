@@ -16,4 +16,6 @@ Schedule::command('app:complete-slot-bookings', )->everyMinute();
 
 Schedule::command('batches:tick')->everyMinute();
 
+Schedule::command('google:refresh-tokens')->monthly();
+
     

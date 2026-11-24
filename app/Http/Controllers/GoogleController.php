@@ -60,6 +60,7 @@ class GoogleController extends Controller
         $userService = new UserService($user);
         try {
             $userService->setAccountSetting('google_access_token', $tokenInfo);
+            $userService->setAccountSetting('google_calendar_needs_reconnect', null);
             \Log::info('Token guardado en accountSetting.');
 
             // Guardar también la info del calendario primario.
@@ -153,15 +154,20 @@ class GoogleController extends Controller
                 );
             }
 
-            (new UserService($user))->setAccountSetting(
+            $userService = new UserService($user);
+            $userService->setAccountSetting(
                 'google_access_token',
                 $tokenResponse['data']
+            );
+            $userService->setAccountSetting(
+                'google_calendar_needs_reconnect',
+                null
             );
 
             // Guardar también la info del calendario primario (id/summary),
             // requisito para poder crear eventos al reservar.
             $this->storePrimaryCalendarInfo(
-                new UserService($user),
+                $userService,
                 $tokenResponse['data']
             );
 

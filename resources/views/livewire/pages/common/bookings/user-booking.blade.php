@@ -16,6 +16,43 @@
         @role('tutor')
             @include('livewire.pages.tutor.manage-sessions.tabs')
         @endrole
+
+        @if (!empty($activeInstantSessions))
+            <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px;">
+                @foreach ($activeInstantSessions as $activeSession)
+                    <div style="background: {{ $activeSession['type'] === 'payment_pending' ? 'linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%)' : 'linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%)' }}; border: 2px solid {{ $activeSession['type'] === 'payment_pending' ? '#fb8500' : '#10b981' }}; border-radius: 14px; padding: 14px 18px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; box-shadow: 0 8px 20px rgba(2, 48, 71, 0.08);">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div style="width: 42px; height: 42px; border-radius: 50%; background: {{ $activeSession['type'] === 'payment_pending' ? '#fb8500' : '#10b981' }}; color: white; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: 800; flex-shrink: 0;">
+                                {{ $activeSession['type'] === 'payment_pending' ? '⚡' : '🎥' }}
+                            </div>
+                            <div>
+                                <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                    <span style="font-size: 0.72rem; font-weight: 800; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; background: {{ $activeSession['type'] === 'payment_pending' ? '#fed7aa' : '#a7f3d0' }}; color: {{ $activeSession['type'] === 'payment_pending' ? '#9a3412' : '#065f46' }};">
+                                        {{ $activeSession['type'] === 'payment_pending' ? 'Pago QR Pendiente' : 'Tutoría Activa' }}
+                                    </span>
+                                    <span style="font-size: 0.82rem; font-weight: 700; color: #475569;">
+                                        {{ $activeSession['start_time_formatted'] }} - {{ $activeSession['end_time_formatted'] }}
+                                    </span>
+                                </div>
+                                <p style="margin: 4px 0 0 0; font-size: 1rem; font-weight: 800; color: #023047;">
+                                    <span class="subject-translatable" data-subject-id="{{ $activeSession['subject_id'] }}" data-subject-fallback="{{ $activeSession['subject_name'] }}">{{ $activeSession['subject_name'] }}</span>
+                                    @if (!empty($activeSession['counterpart_name']))
+                                        <span style="font-weight: 600; color: #334155;"> • {{ $activeSession['counterpart_name'] }}</span>
+                                    @endif
+                                </p>
+                            </div>
+                        </div>
+                        <div>
+                            <a href="{{ $activeSession['action_url'] }}"
+                               @if ($activeSession['is_external']) target="_blank" @endif
+                               style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border-radius: 10px; font-weight: 700; font-size: 0.9rem; text-decoration: none; color: white; background: {{ $activeSession['type'] === 'payment_pending' ? 'linear-gradient(135deg, #FB8500 0%, #FF6B00 100%)' : 'linear-gradient(135deg, #10b981 0%, #059669 100%)' }}; box-shadow: 0 4px 12px rgba(0,0,0,0.12);">
+                                <span>{{ $activeSession['type'] === 'payment_pending' ? 'Retomar Pago QR' : 'Entrar al Aula (Meet)' }}</span>
+                            </a>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        @endif
         <div wire:target="switchShow,jumpToDate,nextBookings,previousBookings,filter"
             class="am-booking-wrapper am-upcomming-booking @role('student') am-student-booking @endrole"
             x-data="{
@@ -300,7 +337,8 @@
                                                                 fecha: @js(\Carbon\Carbon::parse($booking['start_time'])->format('Y-m-d')),
                                                                 materia: @js($booking['subject_name']),
                                                                 subject_id: @js($booking['subject_id']),
-                                                                meeting_link: @js($booking['meeting_link'] ?? '')
+                                                                meeting_link: @js($booking['meeting_link'] ?? ''),
+                                                                instant_batch_id: @js($booking['instant_batch_id'] ?? null)
                                                             })">
                                                                         {{ $statusMap[$booking['status_num']] ?? $booking['status_num'] }}
                                                                     </div>
@@ -363,7 +401,8 @@
                                                                     fecha: @js(\Carbon\Carbon::parse($booking['start_time'])->format('Y-m-d')),
                                                                     materia: @js($booking['subject_name']),
                                                                     subject_id: @js($booking['subject_id']),
-                                                                    meeting_link: @js($booking['meeting_link'] ?? '')
+                                                                    meeting_link: @js($booking['meeting_link'] ?? ''),
+                                                                    instant_batch_id: @js($booking['instant_batch_id'] ?? null)
                                                                 })">
                                                                             <span data-translate="student_bookings_status"></span>
                                                                             
@@ -455,7 +494,8 @@
                                                         fecha: @js(\Carbon\Carbon::parse($booking['start_time'])->format('Y-m-d')),
                                                         materia: @js($booking['subject_name']),
                                                         subject_id: @js($booking['subject_id']),
-                                                        meeting_link: @js($booking['meeting_link'] ?? '')
+                                                        meeting_link: @js($booking['meeting_link'] ?? ''),
+                                                        instant_batch_id: @js($booking['instant_batch_id'] ?? null)
                                                     })">
                                                                         <span data-translate="student_bookings_status"></span>
                                                                         <b>{{ $statusMap[$booking['status_num']] ?? $booking['status_num'] }}</b><br>
@@ -522,15 +562,29 @@
                     <p style="margin: 8px 0; font-size: 1rem;">
                         <strong data-translate="student_bookings_link">Link de la tutoría:</strong>
                         <template x-if="selectedTutoria.meeting_link">
-                            <a :href="selectedTutoria.meeting_link" target="_blank"
-                                style="color: #007BFF; text-decoration: underline; word-break: break-all;">
-                                <span x-text="selectedTutoria.meeting_link"></span>
-                            </a>
+                            <div style="margin-top: 6px;">
+                                <a :href="selectedTutoria.meeting_link" target="_blank"
+                                    style="color: #007BFF; text-decoration: underline; word-break: break-all; font-size: 0.9rem;">
+                                    <span x-text="selectedTutoria.meeting_link"></span>
+                                </a>
+                                <div style="margin-top: 10px;">
+                                    <a :href="selectedTutoria.meeting_link" target="_blank"
+                                        style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 10px 16px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border-radius: 8px; font-weight: 700; text-decoration: none; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);">
+                                        <span>🎥</span> <span data-translate="student_bookings_join_meet">Entrar a la Clase (Google Meet)</span>
+                                    </a>
+                                </div>
+                            </div>
                         </template>
                         <template x-if="!selectedTutoria.meeting_link">
                             <span style="color: #888;" data-translate="student_bookings_not_available">No disponible</span>
                         </template>
                     </p>
+                    <template x-if="selectedTutoria.instant_batch_id && !selectedTutoria.meeting_link">
+                        <a :href="'/tutorias-instantaneas?batch=' + selectedTutoria.instant_batch_id"
+                            style="margin-top: 12px; padding: 10px 16px; background: linear-gradient(135deg, #FB8500 0%, #FF6B00 100%); color: white; border-radius: 8px; text-align: center; font-weight: 700; text-decoration: none; display: block;">
+                            ⚡ Retomar Pago QR
+                        </a>
+                    </template>
                     <!-- Más campos aquí -->
 
                     <button @click="closeModal"

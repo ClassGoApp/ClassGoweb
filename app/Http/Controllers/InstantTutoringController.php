@@ -9,7 +9,13 @@ use Illuminate\Support\Facades\DB;
 
 class InstantTutoringController extends Controller
 {
-    public function index(){
+    public function index()
+    {
+        $user = Auth::user();
+        if ($user && empty($user->terms_accepted_at)) {
+            return redirect()->route('home')->with('warning', 'Debes aceptar los términos y condiciones para acceder a tutorías al instante.');
+        }
+
         return view('vistas.view.pages.pruebaInst');
     }
 
@@ -19,9 +25,14 @@ class InstantTutoringController extends Controller
             abort(403);
         }
 
+        $hasAcceptedTutor = DB::table('email_batch_items')
+            ->where('batch_id', $batch->id)
+            ->whereIn('status', ['accepted', 'chosen'])
+            ->exists();
+
         // Si ya hay un tutor aceptado/reservado o ya está en proceso de pago/reunión, 
         // no permitir volver a waiting-tutor, redirigir al flujo unificado
-        if (in_array($batch->status, ['matched', 'done', 'processing'])) {
+        if ($hasAcceptedTutor || in_array($batch->status, ['matched', 'done', 'processing'])) {
             return redirect()->route('tutorias-instantaneas', ['batch' => $batch->id]);
         }
 
@@ -30,7 +41,7 @@ class InstantTutoringController extends Controller
             $tutor = DB::table('users as u')
                 ->leftJoin('profiles as p', 'p.user_id', '=', 'u.id')
                 ->where('u.id', $batch->target_tutor_id)
-                ->first(['u.id', 'u.email', 'p.first_name', 'p.last_name', 'p.image', 'p.price']);
+                ->first(['u.id', 'u.email', 'p.first_name', 'p.last_name', 'p.image', 'p.price', 'p.slug']);
         }
 
         $subject = DB::table('subjects')->where('id', $batch->subject_id)->first(['id', 'name']);

@@ -75,6 +75,11 @@ class UserBooking extends Component
     #[Layout('layouts.app')]
    public function render()
 {
+    \App\Http\Controllers\Api\SubjectPickerController::cleanupExpiredInstantBookings(
+        Auth::user()->role == 'student' ? (int) Auth::id() : null,
+        Auth::user()->role == 'tutor' ? (int) Auth::id() : null
+    );
+
     // Cargar reservas desde la BD en memoria (mismas relaciones que se usan en la vista)
     $query = SlotBooking::with(['subject', 'tutor', 'booker'])->orderBy('start_time');
 
@@ -164,15 +169,73 @@ class UserBooking extends Component
 
     // Agrupar y transformar a array plano por fecha
     $grouped = [];
+    $activeInstantSessions = [];
+    $nowServer = now();
+
     foreach ($filtered as $booking) {
+        $rawStatus = (int) $booking->getRawOriginal('status');
+        $meta = is_array($booking->meta_data)
+            ? $booking->meta_data
+            : (json_decode((string) ($booking->getRawOriginal('meta_data') ?? '{}'), true) ?: []);
+        $batchId = isset($meta['batch_id']) ? (int) $meta['batch_id'] : null;
+        $isInstant = is_null($booking->user_subject_slot_id) || !empty($batchId);
+
+        // Si es tutor y la reserva instantánea está en estado 2 (aún sin comprobante) o 3 (expirada sin pago), no ensuciar su calendario
+        if (Auth::user()->role == 'tutor' && $isInstant && in_array($rawStatus, [2, 3], true)) {
+            $hasReceipt = \Illuminate\Support\Facades\DB::table('payment_slot_bookings')
+                ->where('slot_booking_id', $booking->id)
+                ->exists();
+            if (!$hasReceipt) {
+                continue;
+            }
+        }
+
         $date = parseToUserTz($booking->start_time)->toDateString();
         if (!isset($grouped[$date])) {
             $grouped[$date] = [];
         }
         $array = $booking->toArray();
         $array['subject_name'] = $booking->subject->name ?? '';
-        $array['status_num'] = $booking->getRawOriginal('status');
+        $array['status_num'] = $rawStatus;
+        $array['instant_batch_id'] = ($rawStatus === 2 && $isInstant && $batchId) ? $batchId : null;
         $grouped[$date][] = $array;
+
+        // Identificar tutoría en curso o pago QR pendiente dentro del tiempo real del servidor
+        $endTimeCarbon = Carbon::parse($booking->end_time);
+        $startTimeCarbon = Carbon::parse($booking->start_time);
+
+        if ($rawStatus === 1 && $endTimeCarbon->gt($nowServer) && $startTimeCarbon->lte($nowServer->copy()->addMinutes(30))) {
+            $activeInstantSessions[] = [
+                'id' => $booking->id,
+                'type' => 'meet_ready',
+                'subject_name' => $booking->subject->name ?? 'Tutoría',
+                'subject_id' => $booking->subject_id,
+                'counterpart_name' => Auth::user()->role == 'student'
+                    ? trim(($booking->tutor->first_name ?? '') . ' ' . ($booking->tutor->last_name ?? ''))
+                    : trim(($booking->booker->first_name ?? '') . ' ' . ($booking->booker->last_name ?? '')),
+                'start_time_formatted' => $startTimeCarbon->format('H:i'),
+                'end_time_formatted' => $endTimeCarbon->format('H:i'),
+                'expires_at_ms' => $endTimeCarbon->getTimestamp() * 1000,
+                'action_url' => !empty($booking->meeting_link) ? $booking->meeting_link : url("/student/bookings/{$booking->id}/meet"),
+                'is_external' => true,
+            ];
+        } elseif (Auth::user()->role == 'student' && $rawStatus === 2 && $isInstant && $batchId && !empty($booking->booked_at)) {
+            $payExp = Carbon::parse($booking->booked_at)->addMinutes(5);
+            if ($payExp->gt($nowServer)) {
+                $activeInstantSessions[] = [
+                    'id' => $booking->id,
+                    'type' => 'payment_pending',
+                    'subject_name' => $booking->subject->name ?? 'Tutoría al Instante',
+                    'subject_id' => $booking->subject_id,
+                    'counterpart_name' => trim(($booking->tutor->first_name ?? '') . ' ' . ($booking->tutor->last_name ?? '')),
+                    'start_time_formatted' => $startTimeCarbon->format('H:i'),
+                    'end_time_formatted' => $endTimeCarbon->format('H:i'),
+                    'expires_at_ms' => $payExp->getTimestamp() * 1000,
+                    'action_url' => route('tutorias-instantaneas', ['batch' => $batchId]),
+                    'is_external' => false,
+                ];
+            }
+        }
     }
 
     $this->upcomingBookings = $grouped;
@@ -181,6 +244,7 @@ class UserBooking extends Component
         'bookings' => $this->bookings,
         'upcomingBookings' => $this->upcomingBookings,
         'currentDate' => $this->currentDate,
+        'activeInstantSessions' => $activeInstantSessions,
     ]);
 }
 
