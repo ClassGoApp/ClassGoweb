@@ -294,6 +294,70 @@ new #[Layout('layouts.guest')] class extends Component {
             overflow-y: auto;
         }
 
+        /* BOTÓN REGRESAR AL INICIO */
+        .cg-home-btn {
+            position: absolute;
+            top: 18px;
+            right: 18px;
+            z-index: 20;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background-color: var(--cg-primary);
+            color: #fff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: 0 4px 10px rgba(33, 158, 188, 0.28);
+            transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .cg-home-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+
+        .cg-home-btn:hover,
+        .cg-home-btn:focus-visible {
+            background-color: #1a8aa5;
+            color: #fff;
+            transform: translateY(-1px) scale(1.05);
+            box-shadow: 0 6px 14px rgba(33, 158, 188, 0.36);
+            outline: none;
+        }
+
+        .cg-home-btn:focus-visible {
+            box-shadow: 0 0 0 3px rgba(33, 158, 188, 0.35), 0 6px 14px rgba(33, 158, 188, 0.36);
+        }
+
+        .cg-home-btn::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            background-color: #1f2937;
+            color: #fff;
+            font-size: 12px;
+            font-weight: 500;
+            line-height: 1;
+            padding: 5px 9px;
+            border-radius: 6px;
+            white-space: nowrap;
+            pointer-events: none;
+            opacity: 0;
+            transform: translateY(-4px);
+            transition: opacity 0.18s ease, transform 0.18s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
+        }
+
+        .cg-home-btn:hover::after,
+        .cg-home-btn:focus-visible::after {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         .cg-login {
             left: 0;
             width: 50%;
@@ -1079,6 +1143,11 @@ new #[Layout('layouts.guest')] class extends Component {
 
             {{-- REGISTER FORM --}}
             <div class="cg-form-panel cg-register">
+                <a href="{{ route('home') }}" class="cg-home-btn" aria-label="Inicio" data-tooltip="Inicio">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+                    </svg>
+                </a>
                 <form class="cg-form" wire:submit.prevent="register">
                     <input type="hidden" wire:model="selected_language" data-auth-selected-language>
 
@@ -1275,6 +1344,11 @@ new #[Layout('layouts.guest')] class extends Component {
 
             {{-- LOGIN FORM --}}
             <div class="cg-form-panel cg-login">
+                <a href="{{ route('home') }}" class="cg-home-btn" aria-label="Inicio" data-tooltip="Inicio">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+                    </svg>
+                </a>
 
                 {{-- VISTA 1: LOGIN --}}
                 <div style="width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center;"
